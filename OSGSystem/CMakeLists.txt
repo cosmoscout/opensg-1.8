@@ -18,22 +18,9 @@ set_target_properties(${TARGET_NAME} PROPERTIES DEBUG_POSTFIX "D")
 
 if (WIN32)
     add_definitions(-DOSG_COMPILESYSTEMLIB )
-    target_link_libraries(${TARGET_NAME} OSGBase opengl32 glu32
-        ${ZLIB_LIBRARIES}
-        ${TIFF_LIBRARIES}
-        ${JPEG_LIBRARIES}
-        ${PNG_LIBRARIES}
-        ${FREETYPE_LIBRARIES}
-    )
+    target_link_libraries(${TARGET_NAME} OSGBase opengl32 glu32)
 else()
-    target_link_libraries(${TARGET_NAME} OSGBase
-        ${ZLIB_LIBRARIES}
-        ${TIFF_LIBRARIES}
-        ${JPEG_LIBRARIES}
-        ${PNG_LIBRARIES}
-        ${FREETYPE_LIBRARIES}
-        fontconfig
-    )
+    target_link_libraries(${TARGET_NAME} OSGBase)
 endif()
 
 source_group("headers" FILES ${HEADER_FILES})
