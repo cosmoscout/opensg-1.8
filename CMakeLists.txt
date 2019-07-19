@@ -16,7 +16,7 @@ find_package(GLUT REQUIRED)
 if (WIN32)
     add_definitions("/W0 /MP /bigobj -DOSG_BUILD_DLL -D_OSG_HAVE_CONFIGURED_H_ -D_CRT_SECURE_NO_WARNINGS")
 else()
-    add_definitions("-s -Ofast -Wno-deprecated -Wno-write-strings -Wno-narrowing")
+    add_definitions("-s -Ofast -Wno-deprecated -Wno-write-strings -Wno-narrowing -Wno-unused-parameter -Wno-undefined-var-template")
 endif()
 
 add_definitions("-DOSG_WITH_GLUT")
@@ -31,5 +31,9 @@ include_directories(
 add_subdirectory(OSGBase)
 add_subdirectory(OSGSystem)
 add_subdirectory(OSGWindowGLUT)
-add_subdirectory(Test)
 
+option(OPENSG_BUILD_TESTS "Turn off building of test applications" ON)
+
+if (OPENSG_BUILD_TESTS)
+    add_subdirectory(Test)
+endif()
