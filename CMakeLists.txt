@@ -31,5 +31,9 @@ include_directories(
 add_subdirectory(OSGBase)
 add_subdirectory(OSGSystem)
 add_subdirectory(OSGWindowGLUT)
-add_subdirectory(Test)
 
+option(OPENSG_BUILD_TESTS "Turn off building of test applications" ON)
+
+if (OPENSG_BUILD_TESTS)
+    add_subdirectory(Test)
+endif()
