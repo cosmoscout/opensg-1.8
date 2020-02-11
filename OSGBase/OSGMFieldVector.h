@@ -159,7 +159,7 @@ class MFieldVector : public std::vector<Ty, A>
 
     explicit MFieldVector(const A& _Al = A());
 
-	explicit MFieldVector(      size_type  _N, 
+	explicit MFieldVector(      size_t  _N,
                           const Ty        &_V  = Ty(),
                           const A         &_Al = A ());
 

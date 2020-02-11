@@ -37,9 +37,6 @@
 \*---------------------------------------------------------------------------*/
 
 #define OSG_IMAGEGENERICATT
-        
-#include <stdlib.h>
-#include <stdio.h>
 
 #include "OSGConfig.h"
 
@@ -48,19 +45,8 @@
 #include "OSGImageGenericAtt.h"
 #include <OSGLog.h>
 
-#include <OSGNode.h>
-#include <OSGNodeCore.h>
 #include <OSGGroup.h>
-#include <OSGComponentTransform.h>
-#include <OSGGeometry.h>
 #include <OSGMaterialGroup.h>
-#include <OSGSimpleGeometry.h>
-#include <OSGExtrusionGeometry.h>
-#include <OSGTextureChunk.h>
-#include <OSGGeoFunctions.h>
-#include <OSGDistanceLOD.h>
-#include <OSGSwitch.h>
-#include <OSGInline.h>
 
 OSG_USING_NAMESPACE
 

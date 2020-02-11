@@ -54,10 +54,7 @@
 #include <OSGFileSystem.h>
 
 #include "OSGImageFileHandler.h"
-#include "OSGPathHandler.h"
 #include "OSGSceneFileHandler.h"
-
-#include "OSGImage.h"
 
 OSG_USING_NAMESPACE
 

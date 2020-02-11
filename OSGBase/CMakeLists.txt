@@ -20,10 +20,14 @@ if (WIN32)
     add_definitions(-DOSG_COMPILEBASELIB )
 endif()
 
-if (WIN32)
+if (MSVC)
 	target_link_libraries(${TARGET_NAME} winmm wsock32)
 else()
-	target_link_libraries(${TARGET_NAME} pthread dl)
+	if (WIN32)
+		target_link_libraries(${TARGET_NAME} pthread winmm wsock32)
+	else()
+		target_link_libraries(${TARGET_NAME} pthread dl)
+	endif()
 endif()
 
 

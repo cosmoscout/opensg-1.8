@@ -166,7 +166,7 @@ MFieldVector<Ty, A>::MFieldVector(const A &_Al) :
 }
 
 template<class Ty, class A> inline
-MFieldVector<Ty, A>::MFieldVector(      size_type  _N, 
+MFieldVector<Ty, A>::MFieldVector(      size_t  _N,
                                   const Ty        &_V,
                                   const A         &_Al) : 
     Inherited(_N, _V, _Al)

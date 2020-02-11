@@ -11,29 +11,33 @@ cmake_minimum_required(VERSION 3.12)
 cmake_policy(SET CMP0074 NEW)
 
 find_package(OpenGL REQUIRED)
-find_package(GLUT REQUIRED)
+#find_package(GLUT REQUIRED)
 
 if (WIN32)
-    add_definitions("/W0 /MP /bigobj -DOSG_BUILD_DLL -D_OSG_HAVE_CONFIGURED_H_ -D_CRT_SECURE_NO_WARNINGS")
-else()
-    add_definitions("-s -Ofast -Wno-deprecated -Wno-write-strings -Wno-narrowing -Wno-unused-parameter -Wno-undefined-var-template")
+    add_definitions("-DOSG_BUILD_DLL -D_OSG_HAVE_CONFIGURED_H_ -D_CRT_SECURE_NO_WARNINGS -DOSG_WIN32_ICL")
 endif()
 
-add_definitions("-DOSG_WITH_GLUT")
+if (MSVC)
+    add_definitions("/W0 /MP /bigobj")
+else()
+    add_definitions("-s -Ofast -Wno-deprecated -Wno-write-strings -Wno-narrowing -Wno-unused-parameter -Wno-undefined-var-template -fpermissive")
+endif()
+
+#add_definitions("-DOSG_WITH_GLUT")
 
 include_directories(
     "OSGBase"
     "OSGSystem"
-    "OSGWindowGLUT"
+#    "OSGWindowGLUT"
     "OSGSystem/LexGenerated"
 )
 
 add_subdirectory(OSGBase)
 add_subdirectory(OSGSystem)
 
-option(OPENSG_BUILD_TESTS "Turn off building of test applications" ON)
+option(OPENSG_BUILD_TESTS "Turn off building of test applications" OFF)
 
-if (OPENSG_BUILD_TESTS)
-    add_subdirectory(OSGWindowGLUT)
-    add_subdirectory(Test)
-endif()
+#if (OPENSG_BUILD_TESTS)
+#    add_subdirectory(OSGWindowGLUT)
+#    add_subdirectory(Test)
+#endif()

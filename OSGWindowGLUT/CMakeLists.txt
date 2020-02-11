@@ -16,7 +16,7 @@ file(GLOB HEADER_FILES *.h *.inl)
 add_library(${TARGET_NAME} SHARED ${SOURCE_FILES} ${HEADER_FILES})
 set_target_properties(${TARGET_NAME} PROPERTIES DEBUG_POSTFIX "D")
 
-if (WIN32)
+if (MSVC)
     add_definitions(-DOSG_COMPILEWINDOWGLUTLIB )
     target_link_libraries(${TARGET_NAME} 
         OSGSystem 

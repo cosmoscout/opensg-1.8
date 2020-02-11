@@ -728,7 +728,7 @@ TextWIN32VectorGlyph::TextWIN32VectorGlyph(Index glyphIndex, Real32 scale,
     // Loop until we have processed the entire buffer of contours.
     // The buffer may contain one or more contours that begin with
     // a TTPOLYGONHEADER. We have them all when we the end of the buffer.
-    while ((DWORD)lpHeader < (DWORD)(((LPSTR)lpStart) + size))
+    while ((DWORD)(lpHeader) < (DWORD)(((LPSTR)lpStart) + size))
     {
         if (lpHeader->dwType == TT_POLYGON_TYPE)
         // Draw each coutour, currently this is the only valid
