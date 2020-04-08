@@ -571,29 +571,3 @@ void Slices::drawSlices(Window *win, const Vec3f &planeNormal,
         } 
     }
 }
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: FCTemplate_cpp.h,v 1.12 2002/04/30 09:29:13 vossg Exp $";
-    static Char8 cvsid_hpp       [] = OSGSLICESBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGSLICESBASE_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGSLICESFIELDS_HEADER_CVSID;
-}
-
-#ifdef __sgi
-#pragma reset woff 1174
-#endif
-
-

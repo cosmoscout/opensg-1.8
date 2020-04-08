@@ -141,20 +141,4 @@ bool TwoSidedLightingChunk::operator !=(const StateChunk &other) const
 }
 
 
-/*-------------------------------------------------------------------------*/
-/*                              cvs id's                                   */
 
-#ifdef __sgi
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static char cvsid_cpp[] = "@(#)$Id: OSGTwoSidedLightingChunk.cpp,v 1.2 2006/04/25 05:49:02 dirk Exp $";
-    static char cvsid_hpp[] = OSGTWOSIDEDLIGHTINGCHUNK_HEADER_CVSID;
-    static char cvsid_inl[] = OSGTWOSIDEDLIGHTINGCHUNK_HEADER_CVSID;
-}

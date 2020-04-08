@@ -280,26 +280,5 @@ DataType FieldDataTraits<ShaderParameterMVec4fPtr>::_type("ShaderParameterMVec4f
 OSG_DLLEXPORT_SFIELD_DEF1(ShaderParameterMVec4fPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 OSG_DLLEXPORT_MFIELD_DEF1(ShaderParameterMVec4fPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGShaderParameterMVec4fBase.cpp,v 1.1 2007/03/09 18:11:49 a-m-z Exp $";
-    static Char8 cvsid_hpp       [] = OSGSHADERPARAMETERMVEC4FBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGSHADERPARAMETERMVEC4FBASE_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGSHADERPARAMETERMVEC4FFIELDS_HEADER_CVSID;
-}
-
 OSG_END_NAMESPACE
 

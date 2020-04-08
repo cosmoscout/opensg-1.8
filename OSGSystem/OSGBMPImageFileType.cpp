@@ -794,12 +794,11 @@ static void bmp_24_data_write(std::ostream &os, unsigned long int width,
 // -----------
 
 // Static Class Variable implementations:
-static const Char8 *suffixArray[] = {
+static const Char8 *bmpSuffixArray[] = {
     "bmp", "dib", "rle"
 };
 
-BMPImageFileType BMPImageFileType::_the("image/bmp",
-                                        suffixArray, sizeof(suffixArray),
+BMPImageFileType BMPImageFileType::_the("image/bmp", bmpSuffixArray, sizeof(bmpSuffixArray),
                                         OSG_READ_SUPPORTED |
                                         OSG_WRITE_SUPPORTED);
 

@@ -166,20 +166,4 @@ void StateSortingGroup::initMethod(void)
 }
 
 
-/*-------------------------------------------------------------------------*/
-/*                              cvs id's                                   */
 
-#ifdef __sgi
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp[] = "@(#)$Id: OSGStateSortingGroup.cpp,v 1.1 2005/04/06 09:35:00 a-m-z Exp $";
-    static Char8 cvsid_hpp[] = OSGSTATESORTINGGROUP_HEADER_CVSID;
-    static Char8 cvsid_inl[] = OSGSTATESORTINGGROUP_INLINE_CVSID;
-}

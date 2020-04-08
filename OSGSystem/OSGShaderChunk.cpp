@@ -194,28 +194,3 @@ bool ShaderChunk::readFragmentProgram(std::istream &stream)
     
     return true;
 }
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGShaderChunk.cpp,v 1.4 2004/08/27 12:50:51 a-m-z Exp $";
-    static Char8 cvsid_hpp       [] = OSGSHADERCHUNKBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGSHADERCHUNKBASE_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGSHADERCHUNKFIELDS_HEADER_CVSID;
-}
-
-#ifdef __sgi
-#pragma reset woff 1174
-#endif
-

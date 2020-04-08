@@ -97,20 +97,4 @@ void StereoCameraDecorator::dump(      UInt32    ,
 }
 
 
-/*-------------------------------------------------------------------------*/
-/*                              cvs id's                                   */
 
-#ifdef __sgi
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static char cvsid_cpp[] = "@(#)$Id: $";
-    static char cvsid_hpp[] = OSGSTEREOCAMERADECORATOR_HEADER_CVSID;
-    static char cvsid_inl[] = OSGSTEREOCAMERADECORATOR_INLINE_CVSID;
-}

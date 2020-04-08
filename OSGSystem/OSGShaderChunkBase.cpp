@@ -335,26 +335,5 @@ DataType FieldDataTraits<ShaderChunkPtr>::_type("ShaderChunkPtr", "ShaderParamet
 OSG_DLLEXPORT_SFIELD_DEF1(ShaderChunkPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 OSG_DLLEXPORT_MFIELD_DEF1(ShaderChunkPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGShaderChunkBase.cpp,v 1.8 2006/11/17 17:16:04 a-m-z Exp $";
-    static Char8 cvsid_hpp       [] = OSGSHADERCHUNKBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGSHADERCHUNKBASE_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGSHADERCHUNKFIELDS_HEADER_CVSID;
-}
-
 OSG_END_NAMESPACE
 

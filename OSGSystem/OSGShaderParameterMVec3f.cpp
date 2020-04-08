@@ -111,30 +111,5 @@ void ShaderParameterMVec3f::dump(      UInt32    ,
     SLOG << "Dump ShaderParameterMVec3f NI" << std::endl;
 }
 
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGShaderParameterMVec3f.cpp,v 1.1 2007/03/09 18:11:49 a-m-z Exp $";
-    static Char8 cvsid_hpp       [] = OSGSHADERPARAMETERMVEC3FBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGSHADERPARAMETERMVEC3FBASE_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGSHADERPARAMETERMVEC3FFIELDS_HEADER_CVSID;
-}
-
-#ifdef __sgi
-#pragma reset woff 1174
-#endif
-
 OSG_END_NAMESPACE
 

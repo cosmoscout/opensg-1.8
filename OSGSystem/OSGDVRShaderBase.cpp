@@ -222,24 +222,3 @@ OSG_DLLEXPORT_SFIELD_DEF1(DVRShaderPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
 
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: FCBaseTemplate_cpp.h,v 1.45 2005/07/20 00:10:14 vossg Exp $";
-    static Char8 cvsid_hpp       [] = OSGDVRSHADERBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGDVRSHADERBASE_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGDVRSHADERFIELDS_HEADER_CVSID;
-}
-

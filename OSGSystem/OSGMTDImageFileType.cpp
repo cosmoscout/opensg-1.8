@@ -70,13 +70,13 @@ not depend on external libs.
  *****************************/
 // Static Class Varible implementations: 
 
-static const Char8 *suffixArray[] = 
+static const Char8 *mtdSuffixArray[] =
 {
     "mtd","opensg","opensgImage"
 };
 
 MTDImageFileType MTDImageFileType::_the("image/x-mtd",
-                                        suffixArray, sizeof(suffixArray),
+                                        mtdSuffixArray, sizeof(mtdSuffixArray),
                                         OSG_READ_SUPPORTED | 
                                         OSG_WRITE_SUPPORTED );
 
@@ -204,10 +204,10 @@ UInt64 MTDImageFileType::storeData(const ImagePtr &image,
 Constructor used for the singleton object
 */
 MTDImageFileType::MTDImageFileType ( const Char8 *mimeType,
-                                     const Char8 *suffixArray[], 
+                                     const Char8 *mtdSuffixArray[],
                                      UInt16 suffixByteCount,
                                      UInt32 flags )
-    : ImageFileType ( mimeType, suffixArray, suffixByteCount, flags )
+    : ImageFileType ( mimeType, mtdSuffixArray, suffixByteCount, flags )
 {}
 
 //-------------------------------------------------------------------------

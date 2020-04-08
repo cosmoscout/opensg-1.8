@@ -266,25 +266,3 @@ OSG_DLLEXPORT_SFIELD_DEF1(MaterialDrawablePtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 OSG_DLLEXPORT_MFIELD_DEF1(MaterialDrawablePtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
-
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGMaterialDrawableBase.cpp,v 1.9 2006/02/20 16:54:27 dirk Exp $";
-    static Char8 cvsid_hpp       [] = OSGMATERIALDRAWABLEBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGMATERIALDRAWABLEBASE_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGMATERIALDRAWABLEFIELDS_HEADER_CVSID;
-}
-

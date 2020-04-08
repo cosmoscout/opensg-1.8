@@ -615,24 +615,3 @@ void TextVectorGlyph::computeContourOrientations() const
 OSG_END_NAMESPACE
 
 
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static OSG::Char8 cvsid_cpp[] = "@(#)$Id: OSGTextVectorGlyph.cpp,v 1.11 2005/11/09 22:26:28 dirk Exp $";
-    static OSG::Char8 cvsid_hpp[] = OSGTEXTVECTORGLYPH_HEADER_CVSID;
-    static OSG::Char8 cvsid_inl[] = OSGTEXTVECTORGLYPH_INLINE_CVSID;
-}
-
-#ifdef __sgi
-#pragma reset woff 1174
-#endif

@@ -2763,23 +2763,3 @@ bool Geometry::drawVBO(Window *win, UInt32 id)
 
 //#undef copyAttrib
 //#undef copyAllAttrib
-
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning(disable : 177)
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: $";
-    static Char8 cvsid_hpp       [] = OSGGEOMETRY_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGGEOMETRY_INLINE_CVSID;
-}
-

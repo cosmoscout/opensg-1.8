@@ -339,24 +339,3 @@ DataType FieldDataTraits<ParallelComposerPtr>::_type("ParallelComposerPtr", "Ima
 
 OSG_END_NAMESPACE
 
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGParallelComposerBase.cpp,v 1.1 2006/05/08 04:00:01 eysquared Exp $";
-    static Char8 cvsid_hpp       [] = OSGPARALLELCOMPOSERBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGPARALLELCOMPOSERBASE_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGPARALLELCOMPOSERFIELDS_HEADER_CVSID;
-}
-

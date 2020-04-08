@@ -227,25 +227,3 @@ DataType FieldDataTraits<TwoSidedLightingChunkPtr>::_type("TwoSidedLightingChunk
 
 
 OSG_END_NAMESPACE
-
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGTwoSidedLightingChunkBase.cpp,v 1.4 2006/02/20 17:04:46 dirk Exp $";
-    static Char8 cvsid_hpp       [] = OSGTWOSIDEDLIGHTINGCHUNKBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGTWOSIDEDLIGHTINGCHUNKBASE_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGTWOSIDEDLIGHTINGCHUNKFIELDS_HEADER_CVSID;
-}
-

@@ -412,12 +412,12 @@ static bool readImageData(std::istream &is, const PSDHeader &header, UInt16 rele
 
 
 // Static Class Varible implementations:
-static const Char8 *suffixArray[] = {
+static const Char8 *psdSuffixArray[] = {
   "psd"
 };
 
 PSDImageFileType PSDImageFileType::_the("image/x-photoshop",
-                                        suffixArray, sizeof(suffixArray),
+                                        psdSuffixArray, sizeof(psdSuffixArray),
                                         OSG_READ_SUPPORTED);
 
 //-------------------------------------------------------------------------
@@ -576,10 +576,10 @@ std::string PSDImageFileType::determineMimetypeFromStream(std::istream &is)
 Constructor used for the singleton object
 */
 PSDImageFileType::PSDImageFileType(const Char8 *mimeType,
-                                   const Char8 *suffixArray[],
+                                   const Char8 *psdSuffixArray[],
                                    UInt16 suffixByteCount,
                                    UInt32 flags) :
-    ImageFileType(mimeType,suffixArray, suffixByteCount, flags)
+    ImageFileType(mimeType,psdSuffixArray, suffixByteCount, flags)
 {}
 
 //-------------------------------------------------------------------------

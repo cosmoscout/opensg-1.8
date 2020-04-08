@@ -123,11 +123,11 @@ bool BINSceneFileType::write(const NodePtr &node,
 
 /*! constructor
  */
-BINSceneFileType::BINSceneFileType(const Char8 *suffixArray[],
+BINSceneFileType::BINSceneFileType(const Char8 *binSuffixArray[],
                                    UInt16 suffixByteCount, bool override,
                                    UInt32 overridePriority,
                                    UInt32 flags) :
-        SceneFileType(suffixArray, suffixByteCount, override, overridePriority,
+        SceneFileType(binSuffixArray, suffixByteCount, override, overridePriority,
                       flags)
 {
 }
@@ -156,18 +156,4 @@ BINSceneFileType BINSceneFileType:: _the(_suffixA,
                                          OSG_READ_SUPPORTED | 
                                          OSG_WRITE_SUPPORTED);
 
-/*-------------------------------------------------------------------------*/
-/*                              cvs id's                                   */
 
-#ifdef __sgi
-#pragma set woff 1174
-#endif
-#ifdef OSG_LINUX_ICC
-#pragma warning(disable : 177)
-#endif
-
-namespace
-{
-    static Char8    cvsid_cpp[] = "@(#)$Id: $";
-    static Char8    cvsid_hpp[] = OSGBINSCENEFILETYPE_HEADER_CVSID;
-}

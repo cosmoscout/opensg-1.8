@@ -3264,20 +3264,4 @@ ParticlesDrawer *Particles::findDrawer(void)
     return NULL;
 }
  
-/*-------------------------------------------------------------------------*/
-/*                              cvs id's                                   */
 
-#ifdef __sgi
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static char cvsid_cpp[] = "@(#)$Id: OSGParticles.cpp,v 1.24 2002/06/30 05:04:22 vossg Exp $";
-    static char cvsid_hpp[] = OSGPARTICLES_HEADER_CVSID;
-    static char cvsid_inl[] = OSGPARTICLES_INLINE_CVSID;
-}

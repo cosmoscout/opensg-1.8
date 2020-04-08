@@ -187,29 +187,5 @@ bool LogicOpChunk::operator != (const StateChunk &other) const
     return ! (*this == other);
 }
 
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGLogicOpChunk.cpp,v 1.1 2007/06/25 14:32:45 neumannc Exp $";
-    static Char8 cvsid_hpp       [] = OSGLOGICOPCHUNKBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGLOGICOPCHUNKBASE_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGLOGICOPCHUNKFIELDS_HEADER_CVSID;
-}
-
-#ifdef __sgi
-#pragma reset woff 1174
-#endif
-
 OSG_END_NAMESPACE
 

@@ -516,26 +516,5 @@ DataType FieldDataTraits<TextureBackgroundPtr>::_type("TextureBackgroundPtr", "B
 
 OSG_DLLEXPORT_SFIELD_DEF1(TextureBackgroundPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGTextureBackgroundBase.cpp,v 1.8 2006/09/08 13:45:30 yjung Exp $";
-    static Char8 cvsid_hpp       [] = OSGTEXTUREBACKGROUNDBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGTEXTUREBACKGROUNDBASE_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGTEXTUREBACKGROUNDFIELDS_HEADER_CVSID;
-}
-
 OSG_END_NAMESPACE
 

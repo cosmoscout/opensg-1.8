@@ -5439,19 +5439,4 @@ OSG_DLLEXPORT_MFIELD_DEF1(GenericAttPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 #endif
 OSG_END_NAMESPACE
 
-/*-------------------------------------------------------------------------*/
-/*                              cvs id's                                   */
 
-#ifdef __sgi
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp[] = "@(#)$Id: $";
-    static Char8 cvsid_hpp[] = OSGVRMLNODEDESCS_HEADER_CVSID;
-}

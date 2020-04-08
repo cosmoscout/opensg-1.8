@@ -138,10 +138,9 @@ static jas_stream_ops_t istream_ops =
  *  Classvariables
  *****************************/
 // Static Class Varible implementations:
-static const Char8                  *suffixArray[] = { "jp2" };
+static const Char8                  *jp2000SuffixArray[] = { "jp2" };
 
-JP2ImageFileType JP2ImageFileType:: _the("image/jpeg2000",
-                                         suffixArray, sizeof(suffixArray),
+JP2ImageFileType JP2ImageFileType:: _the("image/jpeg2000", jp2000SuffixArray, sizeof(jp2000SuffixArray),
                                          OSG_READ_SUPPORTED);
 
 /********************************

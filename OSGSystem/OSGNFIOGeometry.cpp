@@ -538,20 +538,3 @@ void NFIOGeometry::writeQuantizedVectors(const GeoPropType &prop,
         }
     }
 }
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning(disable : 177)
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGNFIOGeometry.cpp,v 1.5 2005/09/30 21:27:48 a-m-z Exp $";
-    static Char8 cvsid_hpp       [] = OSGNFIOGEOMETRY_HEADER_CVSID;
-}

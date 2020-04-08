@@ -108,7 +108,7 @@ class OSG_SYSTEMLIB_DLLMAPPING BINSceneFileType : public SceneFileType
     /*! \name                   Constructors                               */
     /*! \{                                                                 */
 
-    BINSceneFileType(const Char8  *suffixArray[],
+    BINSceneFileType(const Char8  *binSuffixArray[],
                            UInt16  suffixByteCount,
                            bool    override,
                            UInt32  overridePriority,

@@ -252,20 +252,3 @@ bool NFIOImage::isImageTypeSupported(const std::string &imageType)
     }
     return (_imageTypes.count(imageType) > 0);
 }
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning(disable : 177)
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGNFIOImage.cpp,v 1.9 2006/11/07 16:09:10 mroth Exp $";
-    static Char8 cvsid_hpp       [] = OSGNFIOIMAGE_HEADER_CVSID;
-}

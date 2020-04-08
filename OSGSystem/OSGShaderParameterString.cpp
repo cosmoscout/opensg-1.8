@@ -112,27 +112,3 @@ void ShaderParameterString::dump(      UInt32    ,
 }
 
 
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGShaderParameterString.cpp,v 1.1 2005/05/27 16:06:52 a-m-z Exp $";
-    static Char8 cvsid_hpp       [] = OSGSHADERPARAMETERSTRINGBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGSHADERPARAMETERSTRINGBASE_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGSHADERPARAMETERSTRINGFIELDS_HEADER_CVSID;
-}
-
-#ifdef __sgi
-#pragma reset woff 1174
-#endif
-

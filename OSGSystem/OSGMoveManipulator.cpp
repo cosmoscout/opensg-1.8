@@ -186,30 +186,3 @@ void  MoveManipulator::doMovement(TransformPtr t,
 	}	
 	endEditCP(t, Transform::MatrixFieldMask);
 }
-
-
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGMoveManipulator.cpp,v 1.3 2005/12/19 12:04:26 vossg Exp $";
-    static Char8 cvsid_hpp       [] = OSGMOVEMANIPULATORBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGMOVEMANIPULATORBASE_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGMOVEMANIPULATORFIELDS_HEADER_CVSID;
-}
-
-#ifdef __sgi
-#pragma reset woff 1174
-#endif
-

@@ -777,24 +777,3 @@ OSG_DLLEXPORT_MFIELD_DEF1(ManipulatorPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
 
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGManipulatorBase.cpp,v 1.5 2006/02/20 17:04:35 dirk Exp $";
-    static Char8 cvsid_hpp       [] = OSGMANIPULATORBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGMANIPULATORBASE_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGMANIPULATORFIELDS_HEADER_CVSID;
-}
-

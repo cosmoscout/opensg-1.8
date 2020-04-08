@@ -866,26 +866,5 @@ DataType FieldDataTraits<ShadowViewportPtr>::_type("ShadowViewportPtr", "StereoB
 OSG_DLLEXPORT_SFIELD_DEF1(ShadowViewportPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 OSG_DLLEXPORT_MFIELD_DEF1(ShadowViewportPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGShadowViewportBase.cpp,v 1.12 2006/12/01 18:12:43 a-m-z Exp $";
-    static Char8 cvsid_hpp       [] = OSGSHADOWVIEWPORTBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGSHADOWVIEWPORTBASE_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGSHADOWVIEWPORTFIELDS_HEADER_CVSID;
-}
-
 OSG_END_NAMESPACE
 

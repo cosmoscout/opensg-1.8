@@ -209,12 +209,11 @@ static void errorHandler (const char *module, const char *fmt, va_list ap)
 #endif // OSG_WITH_TIF
 
 // Static Class Varible implementations:
-static const Char8 *suffixArray[] = {
+static const Char8 *tiffSuffixArray[] = {
   "tif", "tiff"
 };
 
-TIFImageFileType TIFImageFileType:: _the("image/tiff",
-                                         suffixArray, sizeof(suffixArray),
+TIFImageFileType TIFImageFileType:: _the("image/tiff", tiffSuffixArray, sizeof(tiffSuffixArray),
                                          OSG_READ_SUPPORTED | 
                                          OSG_WRITE_SUPPORTED);
 

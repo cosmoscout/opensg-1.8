@@ -624,26 +624,5 @@ DataType FieldDataTraits<PolygonBackgroundPtr>::_type("PolygonBackgroundPtr", "B
 OSG_DLLEXPORT_SFIELD_DEF1(PolygonBackgroundPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 OSG_DLLEXPORT_MFIELD_DEF1(PolygonBackgroundPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGPolygonBackgroundBase.cpp,v 1.9 2007/03/09 16:59:50 yjung Exp $";
-    static Char8 cvsid_hpp       [] = OSGPOLYGONBACKGROUNDBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGPOLYGONBACKGROUNDBASE_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGPOLYGONBACKGROUNDFIELDS_HEADER_CVSID;
-}
-
 OSG_END_NAMESPACE
 

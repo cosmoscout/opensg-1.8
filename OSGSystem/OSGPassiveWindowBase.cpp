@@ -232,25 +232,3 @@ OSG_DLLEXPORT_SFIELD_DEF1(PassiveWindowPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 OSG_DLLEXPORT_MFIELD_DEF1(PassiveWindowPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
-
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: FCBaseTemplate_cpp.h,v 1.45 2005/07/20 00:10:14 vossg Exp $";
-    static Char8 cvsid_hpp       [] = OSGPASSIVEWINDOWBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGPASSIVEWINDOWBASE_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGPASSIVEWINDOWFIELDS_HEADER_CVSID;
-}
-

@@ -1314,30 +1314,6 @@ TextWIN32TXFGlyph::TextWIN32TXFGlyph(Index glyphIndex, TextWIN32TXFFace *face, R
 //----------------------------------------------------------------------
 TextWIN32TXFGlyph::~TextWIN32TXFGlyph() {}
 
-
 OSG_END_NAMESPACE
 
-
 #endif // _WIN32
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static OSG::Char8 cvsid_cpp[] = "@(#)$Id: OSGTextWIN32Backend.cpp,v 1.5 2007/03/30 14:53:22 pdaehne Exp $";
-    static OSG::Char8 cvsid_hpp[] = OSGTEXTWIN32BACKEND_HEADER_CVSID;
-    static OSG::Char8 cvsid_inl[] = OSGTEXTWIN32BACKEND_INLINE_CVSID;
-}
-
-#ifdef __sgi
-#pragma reset woff 1174
-#endif

@@ -229,29 +229,3 @@ bool LightModelChunk::operator != (const StateChunk &other) const
 {
     return ! (*this == other);
 }
-
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGLightModelChunk.cpp,v 1.2 2005/12/16 11:05:45 a-m-z Exp $";
-    static Char8 cvsid_hpp       [] = OSGLIGHTMODELCHUNKBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGLIGHTMODELCHUNKBASE_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGLIGHTMODELCHUNKFIELDS_HEADER_CVSID;
-}
-
-#ifdef __sgi
-#pragma reset woff 1174
-#endif
-

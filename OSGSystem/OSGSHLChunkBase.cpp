@@ -455,26 +455,5 @@ DataType FieldDataTraits<SHLChunkPtr>::_type("SHLChunkPtr", "ShaderChunkPtr");
 OSG_DLLEXPORT_SFIELD_DEF1(SHLChunkPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 OSG_DLLEXPORT_MFIELD_DEF1(SHLChunkPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGSHLChunkBase.cpp,v 1.14 2006/11/17 17:16:04 a-m-z Exp $";
-    static Char8 cvsid_hpp       [] = OSGSHLCHUNKBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGSHLCHUNKBASE_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGSHLCHUNKFIELDS_HEADER_CVSID;
-}
-
 OSG_END_NAMESPACE
 

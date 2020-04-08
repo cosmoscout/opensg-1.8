@@ -185,20 +185,4 @@ StatElem &StatTimeStampElem::operator += (const StatElem &other)
 }
 
 
-/*-------------------------------------------------------------------------*/
-/*                              cvs id's                                   */
 
-#ifdef __sgi
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp[] = "@(#)$Id: OSGStatTimeStampElem.cpp,v 1.1 2005/10/02 15:16:45 dirk Exp $";
-    static Char8 cvsid_hpp[] = OSGSTATTIMESTAMPELEM_HEADER_CVSID;
-    static Char8 cvsid_inl[] = OSGSTATTIMESTAMPELEM_INLINE_CVSID;
-}

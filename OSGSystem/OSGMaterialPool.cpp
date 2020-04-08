@@ -383,20 +383,4 @@ Action::ResultE MaterialPool::subMaterialCB(NodePtr &node)
     return Action::Continue;
 }
 
-/*-------------------------------------------------------------------------*/
-/*                              cvs id's                                   */
 
-#ifdef __sgi
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp[] = "@(#)$Id: OSGMaterialPool.cpp,v 1.1 2005/04/30 15:03:19 a-m-z Exp $";
-    static Char8 cvsid_hpp[] = OSGMATERIALPOOL_HEADER_CVSID;
-    static Char8 cvsid_inl[] = OSGMATERIALPOOL_INLINE_CVSID;
-}

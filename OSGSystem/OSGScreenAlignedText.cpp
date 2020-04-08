@@ -240,28 +240,3 @@ void ScreenAlignedText::adjustVolume( Volume & volume )
 							pos[1] - 0.0000001f,
 							pos[2] - 0.0000001f ) );
 }
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: FCTemplate_cpp.h,v 1.14 2002/06/30 05:04:23 vossg Exp $";
-    static Char8 cvsid_hpp       [] = OSGSCREENALIGNEDTEXTBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGSCREENALIGNEDTEXTBASE_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGSCREENALIGNEDTEXTFIELDS_HEADER_CVSID;
-}
-
-#ifdef __sgi
-#pragma reset woff 1174
-#endif
-

@@ -1457,26 +1457,3 @@ OSG_END_NAMESPACE
 
 
 #endif // FT2_LIB
-
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static OSG::Char8 cvsid_cpp[] = "@(#)$Id: OSGTextFT2Backend.cpp,v 1.7 2007/03/30 14:53:22 pdaehne Exp $";
-    static OSG::Char8 cvsid_hpp[] = OSGTEXTFT2BACKEND_HEADER_CVSID;
-    static OSG::Char8 cvsid_inl[] = OSGTEXTFT2BACKEND_INLINE_CVSID;
-}
-
-#ifdef __sgi
-#pragma reset woff 1174
-#endif

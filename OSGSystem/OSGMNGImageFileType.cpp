@@ -71,19 +71,19 @@
 OSG_USING_NAMESPACE
 
 
-/*! \class osg::MNGImageFileType 
+/*! \class osg::MNGImageFileType
     \ingroup GrpSystemImage
 
 Image File Type to read/write and store/restore Image objects as
 MNG data.
 
-To be able to load MNG images you need the MNG library, 
-(check the Prerequisites page on www.opensg.org). 
+To be able to load MNG images you need the MNG library,
+(check the Prerequisites page on www.opensg.org).
 The lib comes with all Linux distributions.
 
 You have to --enable-mng in the configure line to enable
 the singleton object.
-    
+
 */
 
 /*****************************
@@ -96,12 +96,11 @@ the singleton object.
  *****************************/
 
 // Static Class Varible implementations:
-static const Char8 *suffixArray[] = {
+static const Char8 *mngSuffixArray[] = {
   "mng"
 };
 
-MNGImageFileType MNGImageFileType::_the ( "video/x-mng",
-                                          suffixArray, sizeof(suffixArray) );
+MNGImageFileType MNGImageFileType::_the ( "video/x-mng", mngSuffixArray, sizeof(mngSuffixArray) );
 
 /********************************
  *    Class methodes

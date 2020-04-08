@@ -344,25 +344,3 @@ OSG_DLLEXPORT_SFIELD_DEF1(LightModelChunkPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 OSG_DLLEXPORT_MFIELD_DEF1(LightModelChunkPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
-
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGLightModelChunkBase.cpp,v 1.3 2006/02/20 17:04:46 dirk Exp $";
-    static Char8 cvsid_hpp       [] = OSGLIGHTMODELCHUNKBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGLIGHTMODELCHUNKBASE_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGLIGHTMODELCHUNKFIELDS_HEADER_CVSID;
-}
-

@@ -590,26 +590,5 @@ DataType FieldDataTraits<ShadowMapViewportPtr>::_type("ShadowMapViewportPtr", "S
 OSG_DLLEXPORT_SFIELD_DEF1(ShadowMapViewportPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 OSG_DLLEXPORT_MFIELD_DEF1(ShadowMapViewportPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGShadowMapViewportBase.cpp,v 1.13 2006/07/27 13:43:08 a-m-z Exp $";
-    static Char8 cvsid_hpp       [] = OSGSHADOWMAPVIEWPORTBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGSHADOWMAPVIEWPORTBASE_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGSHADOWMAPVIEWPORTFIELDS_HEADER_CVSID;
-}
-
 OSG_END_NAMESPACE
 

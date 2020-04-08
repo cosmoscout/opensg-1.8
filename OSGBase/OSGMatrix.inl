@@ -781,7 +781,7 @@ void TransformationMatrix<ValueTypeT>::setTransform(
     factor() where "t" is translation, "u" is rotation, "s" is
     scaleFactor, and "r" is ScaleOrientattion.
 */
-
+/*
 template<class ValueTypeT> inline
 void TransformationMatrix<ValueTypeT>::getTransform(
           VectorType3f   &translation,
@@ -803,7 +803,7 @@ void TransformationMatrix<ValueTypeT>::getTransform(
 
 	m.getTransform(translation, rotation, scaleFactor, scaleOrientation);
 }
-
+*/
 //! Decomposes the matrix into a translation, rotation  and scale
 
 template<class ValueTypeT> inline

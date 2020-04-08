@@ -471,20 +471,4 @@ void SortFirstWindow::clientSwap( void )
 }
 
 
-/*-------------------------------------------------------------------------*/
-/*                              cvs id's                                   */
 
-#ifdef __sgi
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static char cvsid_cpp[] = "@(#)$Id:$";
-    static char cvsid_hpp[] = OSGSORTFIRSTWINDOW_HEADER_CVSID;
-    static char cvsid_inl[] = OSGSORTFIRSTWINDOW_INLINE_CVSID;
-}

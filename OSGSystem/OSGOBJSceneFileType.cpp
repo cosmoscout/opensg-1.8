@@ -939,20 +939,4 @@ Int32 OBJSceneFileType::readMTL ( const Char8 *fileName,
 }
 
 
-/*-------------------------------------------------------------------------*/
-/*                              cvs id's                                   */
-
-#ifdef __sgi
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp[] = "@(#)$Id: $";
-    static Char8 cvsid_hpp[] = OSGOBJSCENEFILETYPE_HEADER_CVSID;
-}
 

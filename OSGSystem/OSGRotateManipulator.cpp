@@ -186,29 +186,3 @@ void  RotateManipulator::doMovement(TransformPtr t,
 	}	
 	endEditCP(t, Transform::MatrixFieldMask);
 }
-
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGRotateManipulator.cpp,v 1.3 2005/12/19 12:04:26 vossg Exp $";
-    static Char8 cvsid_hpp       [] = OSGROTATEMANIPULATORBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGROTATEMANIPULATORBASE_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGROTATEMANIPULATORFIELDS_HEADER_CVSID;
-}
-
-#ifdef __sgi
-#pragma reset woff 1174
-#endif
-

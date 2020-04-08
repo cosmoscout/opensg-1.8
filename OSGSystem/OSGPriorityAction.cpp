@@ -464,29 +464,3 @@ PriorityAction::enqueueChildren(const NodePtr &pNode, ResultE result)
     // lost refs: current node
     decRefCount(_itActiveState);
 }
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning(disable : 177)
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGPriorityAction.cpp,v 1.3 2004/09/17 14:09:43 neumannc Exp $";
-    static Char8 cvsid_hpp       [] = OSGPRIORITYACTION_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGPRIORITYACTION_INLINE_CVSID;
-}
-
-#ifdef OSG_LINUX_ICC
-#pragma warning(enable : 177)
-#endif
-
-#ifdef OSG_SGI_CC
-#pragma reset woff 1174
-#endif

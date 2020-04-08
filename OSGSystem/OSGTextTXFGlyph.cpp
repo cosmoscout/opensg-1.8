@@ -127,26 +127,3 @@ void TextTXFGlyph::calculateCoordinates(UInt32 textureWidth,
 
 
 OSG_END_NAMESPACE
-
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static OSG::Char8 cvsid_cpp[] = "@(#)$Id: OSGTextTXFGlyph.cpp,v 1.1 2005/03/03 13:43:07 a-m-z Exp $";
-    static OSG::Char8 cvsid_hpp[] = OSGTEXTTXFGLYPH_HEADER_CVSID;
-    static OSG::Char8 cvsid_inl[] = OSGTEXTTXFGLYPH_INLINE_CVSID;
-}
-
-#ifdef __sgi
-#pragma reset woff 1174
-#endif

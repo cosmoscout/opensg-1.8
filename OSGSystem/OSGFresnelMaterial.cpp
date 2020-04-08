@@ -403,26 +403,3 @@ bool FresnelMaterial::isTransparent(void) const
     return ((getTransparency() > Eps) || (Inherited::isTransparent()));
 }
 
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGFresnelMaterial.cpp,v 1.5 2006/04/13 16:24:29 a-m-z Exp $";
-    static Char8 cvsid_hpp       [] = OSGFRESNELMATERIAL_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGFRESNELMATERIAL_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGFRESNELMATERIALFIELDS_HEADER_CVSID;
-}
-
-#ifdef __sgi
-#pragma reset woff 1174
-#endif

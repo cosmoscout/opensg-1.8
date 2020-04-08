@@ -238,20 +238,3 @@ std::string NFIOOptions::getString(const std::string &str)
     }
     return rstr;
 }
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning(disable : 177)
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGNFIOOptions.cpp,v 1.6 2005/09/30 12:52:24 a-m-z Exp $";
-    static Char8 cvsid_hpp       [] = OSGNFIOOPTIONS_HEADER_CVSID;
-}
