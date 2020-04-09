@@ -342,26 +342,5 @@ DataType FieldDataTraits<ClipPlanePtr>::_type("ClipPlanePtr", "GroupPtr");
 
 OSG_DLLEXPORT_SFIELD_DEF1(ClipPlanePtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGClipPlaneBase.cpp,v 1.1 2007/04/26 15:22:01 a-m-z Exp $";
-    static Char8 cvsid_hpp       [] = OSGCLIPPLANEBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGCLIPPLANEBASE_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGCLIPPLANEFIELDS_HEADER_CVSID;
-}
-
 OSG_END_NAMESPACE
 

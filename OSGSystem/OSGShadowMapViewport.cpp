@@ -104,7 +104,7 @@ OSG_USING_NAMESPACE
 \***************************************************************************/
 
 /*! \class osg::ShadowMapViewport
-Erste Version des Shadowviewports für Shadowmapping
+Erste Version des Shadowviewports fï¿½r Shadowmapping
 */
 
 /***************************************************************************\
@@ -1173,28 +1173,3 @@ void ShadowMapViewport::projectShadowMaps(RenderActionBase* action)
 
 }
 //------------------------------------------------
-
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGShadowMapViewport.cpp,v 1.17 2007/04/03 03:16:54 dirk Exp $";
-    static Char8 cvsid_hpp       [] = OSGSHADOWMAPVIEWPORTBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGSHADOWMAPVIEWPORTBASE_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGSHADOWMAPVIEWPORTFIELDS_HEADER_CVSID;
-}
-
-#ifdef __sgi
-#pragma reset woff 1174
-#endif

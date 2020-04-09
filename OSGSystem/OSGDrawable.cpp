@@ -112,29 +112,3 @@ void Drawable::dump(      UInt32    ,
 {
     SLOG << "Dump Drawable NI" << std::endl;
 }
-
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGDrawable.cpp,v 1.7 2007/05/31 10:48:57 a-m-z Exp $";
-    static Char8 cvsid_hpp       [] = OSGDRAWABLEBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGDRAWABLEBASE_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGDRAWABLEFIELDS_HEADER_CVSID;
-}
-
-#ifdef __sgi
-#pragma reset woff 1174
-#endif
-

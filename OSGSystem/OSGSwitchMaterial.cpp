@@ -97,7 +97,7 @@ SwitchMaterial::~SwitchMaterial(void)
     // wenn nun die Materialien zerstoert werden dann wird im Material::~Material
     // ein subRefCP(_pState) aufgerufen. Dieser subRefCP wuerde dann nochmal mit dem
     // gleichen ungueltigen pointer fuer das SwitchMaterial aufgerufen werden und
-    // das kracht natürlich, deswegen wird er jetzt einfach auf NullFC gesetzt!
+    // das kracht natï¿½rlich, deswegen wird er jetzt einfach auf NullFC gesetzt!
     _pState = NullFC;
     MFMaterialPtr::iterator       matIt        = _mfMaterials.begin();
     MFMaterialPtr::const_iterator matEnd       = _mfMaterials.end  ();
@@ -361,28 +361,4 @@ void SwitchMaterial::dump(      UInt32    ,
 {
     SLOG << "Dump SwitchMaterial NI" << std::endl;
 }
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGSwitchMaterial.cpp,v 1.4 2006/08/22 10:11:44 a-m-z Exp $";
-    static Char8 cvsid_hpp       [] = OSGSWITCHMATERIALBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGSWITCHMATERIALBASE_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGSWITCHMATERIALFIELDS_HEADER_CVSID;
-}
-
-#ifdef __sgi
-#pragma reset woff 1174
-#endif
 

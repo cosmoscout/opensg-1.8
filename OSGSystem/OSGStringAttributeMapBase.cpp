@@ -315,25 +315,3 @@ DataType FieldDataTraits<StringAttributeMapPtr>::_type("StringAttributeMapPtr", 
 OSG_DLLEXPORT_SFIELD_DEF1(StringAttributeMapPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
-
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGStringAttributeMapBase.cpp,v 1.2 2006/02/20 16:54:57 dirk Exp $";
-    static Char8 cvsid_hpp       [] = OSGSTRINGATTRIBUTEMAPBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGSTRINGATTRIBUTEMAPBASE_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGSTRINGATTRIBUTEMAPFIELDS_HEADER_CVSID;
-}
-

@@ -78,14 +78,14 @@ not depend on external libs.
  *   Types
  *****************************/
 // Static Class Varible implementations:
-static const Char8 *suffixArray[] =
+static const Char8 *pxmSuffixArray[] =
 {
     "pnm", "pbm", "pgm", "ppm"
 };
 
 
 PNMImageFileType PNMImageFileType::_the("image/x-portable-bitmap",
-                                        suffixArray, sizeof(suffixArray),
+                                        pxmSuffixArray, sizeof(pxmSuffixArray),
                                         OSG_READ_SUPPORTED | 
                                         OSG_WRITE_SUPPORTED);
 

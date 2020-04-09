@@ -645,25 +645,3 @@ DataType FieldDataTraits<FresnelMaterialPtr>::_type("FresnelMaterialPtr", "Chunk
 
 
 OSG_END_NAMESPACE
-
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGFresnelMaterialBase.cpp,v 1.6 2006/02/20 17:04:43 dirk Exp $";
-    static Char8 cvsid_hpp       [] = OSGFRESNELMATERIALBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGFRESNELMATERIALBASE_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGFRESNELMATERIALFIELDS_HEADER_CVSID;
-}
-

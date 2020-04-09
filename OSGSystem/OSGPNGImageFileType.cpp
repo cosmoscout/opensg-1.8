@@ -90,7 +90,7 @@ the singleton object.
  *  Classvariables
  *****************************/
 // Static Class Varible implementations:
-static const Char8 *suffixArray[] = {
+static const Char8 *pngSuffixArray[] = {
   "png"
 };
 
@@ -140,8 +140,7 @@ static void warningOutput (png_structp OSG_CHECK_ARG(png_ptr),
 
 #endif
 
-PNGImageFileType PNGImageFileType:: _the("image/png",
-                                         suffixArray, sizeof(suffixArray),
+PNGImageFileType PNGImageFileType:: _the("image/png", pngSuffixArray, sizeof(pngSuffixArray),
                                          OSG_READ_SUPPORTED | 
                                          OSG_WRITE_SUPPORTED);
 

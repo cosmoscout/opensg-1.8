@@ -475,29 +475,3 @@ NewActionBase::stopActors(void)
 
     return result;
 }
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning(disable : 177)
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGNewActionBase.cpp,v 1.4 2005/08/30 13:18:01 dirk Exp $";
-    static Char8 cvsid_hpp       [] = OSGNEWACTIONBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGNEWACTIONBASE_INLINE_CVSID;
-}
-
-#ifdef OSG_LINUX_ICC
-#pragma warning(enable : 177)
-#endif
-
-#ifdef OSG_SGI_CC
-#pragma reset woff 1174
-#endif

@@ -74,13 +74,12 @@ not depend on external libs.
  *****************************/
 // Static Class Varible implementations: 
 
-static const Char8 *suffixArray[] = 
+static const Char8 *datSuffixArray[] =
 {
     "dat"
 };
 
-DATImageFileType DATImageFileType::_the( "image/x-dat",
-                                         suffixArray, sizeof(suffixArray) );
+DATImageFileType DATImageFileType::_the( "image/x-dat", datSuffixArray, sizeof(datSuffixArray) );
 
 std::map<std::string, 
          DATImageFileType::KeyType   > DATImageFileType::_keyStrMap;

@@ -134,20 +134,3 @@ void NFIOGenericAtt::writeFC(const FieldContainerPtr &/*fc*/)
 
     writeEndMarker();
 }
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning(disable : 177)
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGNFIOGenericAtt.cpp,v 1.2 2004/06/15 14:56:45 a-m-z Exp $";
-    static Char8 cvsid_hpp       [] = OSGNFIOGENERICATT_HEADER_CVSID;
-}

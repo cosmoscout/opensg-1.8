@@ -501,28 +501,3 @@ IntersectActorBase::subEvent(NewActionBase *pAction, UInt32 uiActorId)
     Inherited::subEvent(pAction, uiActorId);
 }
 
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning(disable : 177)
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGIntersectActorBase.cpp,v 1.6 2004/09/17 14:09:47 neumannc Exp $";
-    static Char8 cvsid_hpp       [] = OSGINTERSECTACTORBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGINTERSECTACTORBASE_INLINE_CVSID;
-}
-
-#ifdef OSG_LINUX_ICC
-#pragma warning(enable : 177)
-#endif
-
-#ifdef OSG_SGI_CC
-#pragma reset woff 1174
-#endif

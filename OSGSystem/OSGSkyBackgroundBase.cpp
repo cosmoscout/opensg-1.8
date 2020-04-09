@@ -960,26 +960,5 @@ DataType FieldDataTraits<SkyBackgroundPtr>::_type("SkyBackgroundPtr", "Backgroun
 
 OSG_DLLEXPORT_MFIELD_DEF1(SkyBackgroundPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: FCBaseTemplate_cpp.h,v 1.47 2006/03/17 17:03:19 pdaehne Exp $";
-    static Char8 cvsid_hpp       [] = OSGSKYBACKGROUNDBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGSKYBACKGROUNDBASE_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGSKYBACKGROUNDFIELDS_HEADER_CVSID;
-}
-
 OSG_END_NAMESPACE
 

@@ -191,27 +191,3 @@ bool SHLParameterChunk::operator != (const StateChunk &other) const
 {
     return ! (*this == other);
 }
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGSHLParameterChunk.cpp,v 1.4 2006/09/01 16:39:42 a-m-z Exp $";
-    static Char8 cvsid_hpp       [] = OSGSHLPARAMETERCHUNKBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGSHLPARAMETERCHUNKBASE_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGSHLPARAMETERCHUNKFIELDS_HEADER_CVSID;
-}
-
-#ifdef __sgi
-#pragma reset woff 1174
-#endif

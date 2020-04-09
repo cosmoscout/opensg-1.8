@@ -83,14 +83,13 @@ not depend on external libs.
  *   Types
  *****************************/
 // Static Class Varible implementations:
-static const Char8 *suffixArray[] =
+static const Char8 *ddsSuffixArray[] =
 {
     "dds"
 };
 
 
-DDSImageFileType DDSImageFileType::_the("image/x-dds",
-                                        suffixArray, sizeof(suffixArray),
+DDSImageFileType DDSImageFileType::_the("image/x-dds", ddsSuffixArray, sizeof(ddsSuffixArray),
                                         OSG_READ_SUPPORTED |
                                         OSG_WRITE_SUPPORTED);
 

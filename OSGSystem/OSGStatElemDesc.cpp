@@ -195,20 +195,4 @@ bool StatElemDescBase::operator < (const StatElemDescBase &other) const
 }
 
 
-/*-------------------------------------------------------------------------*/
-/*                              cvs id's                                   */
 
-#ifdef __sgi
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp[] = "@(#)$Id: $";
-    static Char8 cvsid_hpp[] = OSGSTATELEMDESC_HEADER_CVSID;
-    static Char8 cvsid_inl[] = OSGSTATELEMDESC_INLINE_CVSID;
-}

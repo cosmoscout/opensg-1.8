@@ -1254,7 +1254,7 @@ void ShadowViewport::initializeLights(RenderActionBase *action)
         else
             //Light is a point light
         {
-            //TODO: Texturgrösse anpassen, je nach Bedarf
+            //TODO: Texturgrï¿½sse anpassen, je nach Bedarf
             GLint   max_texture_size;
             glGetIntegerv(GL_MAX_TEXTURE_SIZE, &max_texture_size);
 
@@ -1489,29 +1489,3 @@ void ShadowViewport::setReadBuffer(void)
         }
     }
 }
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-static Char8 cvsid_cpp       [] =
-    "@(#)$Id: OSGShadowViewport.cpp,v 1.31 2007/06/13 16:51:56 yjung Exp $";
-static Char8 cvsid_hpp       [] = OSGSHADOWVIEWPORTBASE_HEADER_CVSID;
-static Char8 cvsid_inl       [] = OSGSHADOWVIEWPORTBASE_INLINE_CVSID;
-
-static Char8 cvsid_fields_hpp[] = OSGSHADOWVIEWPORTFIELDS_HEADER_CVSID;
-}
-
-#ifdef __sgi
-#pragma reset woff 1174
-#endif
-

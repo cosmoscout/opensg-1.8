@@ -1321,26 +1321,3 @@ bool FBOViewport::checkFrameBufferStatus(Window *win)
         (PFNGLRENDERBUFFERSTORAGEEXTPROC)win->getFunction(_funcRenderbufferStorage);
 #endif
 
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGFBOViewport.cpp,v 1.8 2007/06/22 00:13:01 dirk Exp $";
-    static Char8 cvsid_hpp       [] = OSGFBOVIEWPORTBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGFBOVIEWPORTBASE_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGFBOVIEWPORTFIELDS_HEADER_CVSID;
-}
-
-#ifdef __sgi
-#pragma reset woff 1174
-#endif

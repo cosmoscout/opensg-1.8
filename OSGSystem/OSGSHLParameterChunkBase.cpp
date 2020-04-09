@@ -276,24 +276,3 @@ OSG_DLLEXPORT_MFIELD_DEF1(SHLParameterChunkPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
 
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGSHLParameterChunkBase.cpp,v 1.7 2006/02/20 17:04:38 dirk Exp $";
-    static Char8 cvsid_hpp       [] = OSGSHLPARAMETERCHUNKBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGSHLPARAMETERCHUNKBASE_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGSHLPARAMETERCHUNKFIELDS_HEADER_CVSID;
-}
-

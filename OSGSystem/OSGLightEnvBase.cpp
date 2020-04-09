@@ -227,25 +227,3 @@ DataType FieldDataTraits<LightEnvPtr>::_type("LightEnvPtr", "NodeCorePtr");
 
 
 OSG_END_NAMESPACE
-
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGLightEnvBase.cpp,v 1.6 2006/02/20 16:54:23 dirk Exp $";
-    static Char8 cvsid_hpp       [] = OSGLIGHTENVBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGLIGHTENVBASE_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGLIGHTENVFIELDS_HEADER_CVSID;
-}
-

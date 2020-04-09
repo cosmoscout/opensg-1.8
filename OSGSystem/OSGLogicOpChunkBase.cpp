@@ -276,26 +276,5 @@ DataType FieldDataTraits<LogicOpChunkPtr>::_type("LogicOpChunkPtr", "StateChunkP
 OSG_DLLEXPORT_SFIELD_DEF1(LogicOpChunkPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 OSG_DLLEXPORT_MFIELD_DEF1(LogicOpChunkPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGLogicOpChunkBase.cpp,v 1.1 2007/06/25 14:32:45 neumannc Exp $";
-    static Char8 cvsid_hpp       [] = OSGLOGICOPCHUNKBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGLOGICOPCHUNKBASE_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGLOGICOPCHUNKFIELDS_HEADER_CVSID;
-}
-
 OSG_END_NAMESPACE
 

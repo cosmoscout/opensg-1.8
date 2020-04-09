@@ -83,21 +83,6 @@
 
 OSG_USING_NAMESPACE
 
-#ifdef __sgi
-#pragma set woff 1174
-#endif
-
-namespace
-{
-    static char cvsid_cpp[] = "@(#)$Id: OSGSurface.cpp,v 1.13 2006-11-17 17:59:30 edhellon Exp $";
-    static char cvsid_hpp[] = OSGSURFACE_HEADER_CVSID;
-    static char cvsid_inl[] = OSGSURFACE_INLINE_CVSID;
-}
-
-#ifdef __sgi
-#pragma reset woff 1174
-#endif
-
 /***************************************************************************\
  *                               Types                                     *
 \***************************************************************************/

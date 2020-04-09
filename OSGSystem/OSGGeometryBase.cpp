@@ -1070,26 +1070,5 @@ DataType FieldDataTraits<GeometryPtr>::_type("GeometryPtr", "MaterialDrawablePtr
 OSG_DLLEXPORT_SFIELD_DEF1(GeometryPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 OSG_DLLEXPORT_MFIELD_DEF1(GeometryPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: FCBaseTemplate_cpp.h,v 1.47 2006/03/17 17:03:19 pdaehne Exp $";
-    static Char8 cvsid_hpp       [] = OSGGEOMETRYBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGGEOMETRYBASE_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGGEOMETRYFIELDS_HEADER_CVSID;
-}
-
 OSG_END_NAMESPACE
 

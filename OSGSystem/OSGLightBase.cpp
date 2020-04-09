@@ -563,27 +563,5 @@ void LightBase::execBeginEditImpl (const BitVector &whichField,
 DataType FieldDataTraits<LightPtr>::_type("LightPtr", "GroupPtr");
 #endif
 
-
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: FCBaseTemplate_cpp.h,v 1.47 2006/03/17 17:03:19 pdaehne Exp $";
-    static Char8 cvsid_hpp       [] = OSGLIGHTBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGLIGHTBASE_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGLIGHTFIELDS_HEADER_CVSID;
-}
-
 OSG_END_NAMESPACE
 

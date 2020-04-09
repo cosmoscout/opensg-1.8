@@ -240,30 +240,3 @@ void OffCenterPerspectiveCamera::dump(      UInt32    OSG_CHECK_ARG(uiIndent),
 {
     SLOG << "Dump OffCenterPerspectiveCamera NI" << std::endl;
 }
-
-    
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning(disable : 177)
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGOffCenterPerspectiveCamera.cpp,v 1.1 2005/07/18 18:46:23 dirk Exp $";
-    static Char8 cvsid_hpp       [] = OSGOFFCENTERPERSPECTIVECAMERA_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGOFFCENTERPERSPECTIVECAMERA_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGOFFCENTERPERSPECTIVECAMERAFIELDS_HEADER_CVSID;
-}
-
-#ifdef __sgi
-#pragma reset woff 1174
-#endif
-

@@ -83,7 +83,6 @@ FieldDescription *GeoIndicesUI16PropertyDesc::_desc[] =
 #endif
 };
 
-
 OSG_GEO_PROP_TYPE_TMPL_DEF(GeoProperty, GeoPropertyDesc, PtrType)
 
 OSG_BEGIN_NAMESPACE

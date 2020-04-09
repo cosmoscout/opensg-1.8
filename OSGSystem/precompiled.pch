@@ -1,0 +1,30 @@
+// C++
+#include <string>
+#include <vector>
+#include <map>
+#include <iostream>
+#include <fstream>
+
+// C
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+
+// OSG Base
+#include <OSGBaseTypes.h>
+#include <OSGBoolFields.h>
+#include <OSGConfig.h>
+#include <OSGGL.h>
+#include <OSGGLenumFields.h>
+#include <OSGGLEXT.h>
+#include <OSGGLU.h>
+#include <OSGInt32Fields.h>
+#include <OSGLog.h>
+#include <OSGMatrix.h>
+#include <OSGMatrixUtility.h>
+#include <OSGMFieldTypeDef.inl>
+#include <OSGReal32Fields.h>
+#include <OSGSFieldTypeDef.inl>
+#include <OSGStringFields.h>
+#include <OSGUInt32Fields.h>
+#include <OSGVector.h>

@@ -415,17 +415,4 @@ void SimpleStatisticsForeground::drawCharacters(const TextLayoutResult &layoutRe
     glEnd();
 }
 
-/*-------------------------------------------------------------------------*/
-/*                              cvs id's                                   */
-#ifdef __sgi
-#pragma set woff 1174
-#endif
-#ifdef OSG_LINUX_ICC
-#pragma warning(disable : 177)
-#endif
-namespace
-{
-static char cvsid_cpp[] = "@(#)$Id: OSGSimpleStatisticsForeground.cpp,v 1.11 2002/08/07 04:04:13 vossg Exp $";
-static char cvsid_hpp[] = OSGSIMPLESTATISTICSFOREGROUND_HEADER_CVSID;
-static char cvsid_inl[] = OSGSIMPLESTATISTICSFOREGROUND_INLINE_CVSID;
-}
+

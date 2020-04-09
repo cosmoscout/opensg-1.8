@@ -16541,7 +16541,7 @@ Real16::overflow ()
 
     for (int i = 0; i < 10; i++)    
     f *= f;                // this will overflow before
-                    // the for­loop terminates
+                    // the forï¿½loop terminates
     return f;
 }
 
@@ -16845,19 +16845,4 @@ printBits (char c[35], float f)
 
 OSG_END_NAMESPACE
 
-/*-------------------------------------------------------------------------*/
-/*                              cvs id's                                   */
 
-#ifdef __sgi
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static OSG::Char8 cvsid_cpp[] = "@(#)$Id: $";
-    static OSG::Char8 cvsid_hpp[] = OSGREAL16_HEADER_CVSID;
-}

@@ -40,6 +40,9 @@
 //  Includes
 //---------------------------------------------------------------------------
 
+#ifndef OSG_M_FIELD_TYPE_DEF_INL
+#define OSG_M_FIELD_TYPE_DEF_INL
+
 OSG_BEGIN_NAMESPACE
 
 /*-------------------------------------------------------------------------*/
@@ -81,3 +84,5 @@ const FieldType &MField<FieldTypeT, fieldNameSpace>::getType(void) const
 OSG_END_NAMESPACE
 
 #define OSGMFIELDTYPEDEF_INLINE_CVSID "@(#)$Id: $"
+
+#endif // OSG_M_FIELD_TYPE_DEF_INL

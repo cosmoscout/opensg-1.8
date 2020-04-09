@@ -268,25 +268,5 @@ OSG_DLLEXPORT_SFIELD_DEF1(DisplayFilterPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 OSG_DLLEXPORT_MFIELD_DEF1(DisplayFilterPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: FCBaseTemplate_cpp.h,v 1.46 2006/03/16 17:01:53 dirk Exp $";
-    static Char8 cvsid_hpp       [] = OSGDISPLAYFILTERBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGDISPLAYFILTERBASE_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGDISPLAYFILTERFIELDS_HEADER_CVSID;
-}
-
 OSG_END_NAMESPACE
 

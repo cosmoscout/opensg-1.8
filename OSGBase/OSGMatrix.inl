@@ -788,7 +788,7 @@ void TransformationMatrix<ValueTypeT>::getTransform(
           QuaternionType &rotation,
           VectorType3f   &scaleFactor,
           QuaternionType &scaleOrientation,
-    const VectorType3f   &center          ) const
+          VectorType3f   &center          ) const
 {
 	TransformationMatrix m;
     TransformationMatrix c;

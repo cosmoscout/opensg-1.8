@@ -276,24 +276,3 @@ OSG_DLLEXPORT_MFIELD_DEF1(OffCenterPerspectiveCameraPtr, OSG_SYSTEMLIB_DLLTMPLMA
 
 OSG_END_NAMESPACE
 
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGOffCenterPerspectiveCameraBase.cpp,v 1.2 2006/02/20 16:54:30 dirk Exp $";
-    static Char8 cvsid_hpp       [] = OSGOFFCENTERPERSPECTIVECAMERABASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGOFFCENTERPERSPECTIVECAMERABASE_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGOFFCENTERPERSPECTIVECAMERAFIELDS_HEADER_CVSID;
-}
-

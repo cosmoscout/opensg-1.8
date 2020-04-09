@@ -111,20 +111,3 @@ NFIOFactory::registryMap &NFIOFactory::getMap(void)
 {
     return _registry;
 }
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning(disable : 177)
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGNFIOFactory.cpp,v 1.1 2004/01/08 18:00:04 a-m-z Exp $";
-    static Char8 cvsid_hpp       [] = OSGNFIOFACTORY_HEADER_CVSID;
-}

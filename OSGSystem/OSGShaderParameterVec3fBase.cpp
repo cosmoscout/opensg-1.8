@@ -275,25 +275,3 @@ OSG_DLLEXPORT_SFIELD_DEF1(ShaderParameterVec3fPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 OSG_DLLEXPORT_MFIELD_DEF1(ShaderParameterVec3fPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
-
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGShaderParameterVec3fBase.cpp,v 1.6 2006/02/20 17:04:38 dirk Exp $";
-    static Char8 cvsid_hpp       [] = OSGSHADERPARAMETERVEC3FBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGSHADERPARAMETERVEC3FBASE_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGSHADERPARAMETERVEC3FFIELDS_HEADER_CVSID;
-}
-

@@ -135,24 +135,4 @@ NodePtr OSG::makeNodeFor(NodeCorePtr core)
 }
 
 
-/*-------------------------------------------------------------------------*/
-/*                              cvs id's                                   */
-
-#ifdef __sgi
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp[] = "@(#)$Id: $";
-    static Char8 cvsid_inl[] = OSGNODEPTR_INLINE_CVSID;
-    static Char8 cvsid_hpp[] = OSGNODEPTR_HEADER_CVSID;
-}
-
-
-
 

@@ -167,26 +167,3 @@ TextPixmapFace *TextPixmapFace::create(const std::string &family, Style style, U
 
 
 OSG_END_NAMESPACE
-
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static OSG::Char8 cvsid_cpp[] = "@(#)$Id: OSGTextPixmapFace.cpp,v 1.4 2006/08/01 16:38:26 pdaehne Exp $";
-    static OSG::Char8 cvsid_hpp[] = OSGTEXTPIXMAPFACE_HEADER_CVSID;
-    static OSG::Char8 cvsid_inl[] = OSGTEXTPIXMAPFACE_INLINE_CVSID;
-}
-
-#ifdef __sgi
-#pragma reset woff 1174
-#endif

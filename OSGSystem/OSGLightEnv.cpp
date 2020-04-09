@@ -134,20 +134,4 @@ void LightEnv::initMethod(void)
 }
 
 
-/*-------------------------------------------------------------------------*/
-/*                              cvs id's                                   */
 
-#ifdef __sgi
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp[] = "@(#)$Id: OSGLightEnv.cpp,v 1.1 2005/04/23 11:00:58 a-m-z Exp $";
-    static Char8 cvsid_hpp[] = OSGLIGHTENV_HEADER_CVSID;
-    static Char8 cvsid_inl[] = OSGLIGHTENV_INLINE_CVSID;
-}

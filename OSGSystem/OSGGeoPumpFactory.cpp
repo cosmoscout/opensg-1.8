@@ -3063,23 +3063,3 @@ void GeoVBO::draw(void)
     _glBindBufferARB(GL_ARRAY_BUFFER_ARB, 0);
     _glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, 0);
 }
-
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: $";
-    static Char8 cvsid_hpp       [] = OSGGEOPUMPFACTORY_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGGEOPUMPFACTORY_INLINE_CVSID;
-}
-

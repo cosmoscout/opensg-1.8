@@ -250,21 +250,4 @@ void ClipPlane::initMethod(void)
 }
 
 
-/*-------------------------------------------------------------------------*/
-/*                              cvs id's                                   */
-
-#ifdef __sgi
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp[] = "@(#)$Id: OSGClipPlane.cpp,v 1.1 2007/04/26 15:22:01 a-m-z Exp $";
-    static Char8 cvsid_hpp[] = OSGCLIPPLANE_HEADER_CVSID;
-    static Char8 cvsid_inl[] = OSGCLIPPLANE_INLINE_CVSID;
-}
 

@@ -7,6 +7,11 @@
 project(OpenSG CXX)
 cmake_minimum_required(VERSION 3.12)
 
+if (${CMAKE_VERSION} GREATER_EQUAL 3.16)
+    set(CMAKE_UNITY_BUILD On)
+    set(CMAKE_UNITY_BUILD_BATCH_SIZE 20)
+endif()
+
 # use cmake 3.12's <PACKAGE>_ROOT variabled for searching
 cmake_policy(SET CMP0074 NEW)
 

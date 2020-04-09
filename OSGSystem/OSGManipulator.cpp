@@ -558,28 +558,3 @@ void Manipulator::mouseButtonRelease (UInt16 button, Int16 x, Int16 y)
 {
     setActive(false);
 }
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGManipulator.cpp,v 1.3 2005/08/12 15:27:36 dirk Exp $";
-    static Char8 cvsid_hpp       [] = OSGMANIPULATORBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGMANIPULATORBASE_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGMANIPULATORFIELDS_HEADER_CVSID;
-}
-
-#ifdef __sgi
-#pragma reset woff 1174
-#endif
-

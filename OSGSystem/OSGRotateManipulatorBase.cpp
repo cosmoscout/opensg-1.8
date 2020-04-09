@@ -227,25 +227,3 @@ DataType FieldDataTraits<RotateManipulatorPtr>::_type("RotateManipulatorPtr", "M
 
 
 OSG_END_NAMESPACE
-
-
-/*------------------------------------------------------------------------*/
-/*                              cvs id's                                  */
-
-#ifdef OSG_SGI_CC
-#pragma set woff 1174
-#endif
-
-#ifdef OSG_LINUX_ICC
-#pragma warning( disable : 177 )
-#endif
-
-namespace
-{
-    static Char8 cvsid_cpp       [] = "@(#)$Id: OSGRotateManipulatorBase.cpp,v 1.5 2006/02/20 17:04:35 dirk Exp $";
-    static Char8 cvsid_hpp       [] = OSGROTATEMANIPULATORBASE_HEADER_CVSID;
-    static Char8 cvsid_inl       [] = OSGROTATEMANIPULATORBASE_INLINE_CVSID;
-
-    static Char8 cvsid_fields_hpp[] = OSGROTATEMANIPULATORFIELDS_HEADER_CVSID;
-}
-
