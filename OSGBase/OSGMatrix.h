@@ -265,11 +265,11 @@ class TransformationMatrix
     /*! \name                   Get Transformations                        */
     /*! \{                                                                 */
 
-    /*void getTransform(      VectorType3f         &translation,
+    void getTransform(      VectorType3f         &translation,
                             QuaternionType       &rotation,
                             VectorType3f         &scaleFactor, 
                             QuaternionType       &scaleOrientation,
-                      const VectorType3f         &center) const;*/
+                            VectorType3f         &center) const;
 
     void getTransform(      VectorType3f         &translation, 
                             QuaternionType       &rotation,
