@@ -54,10 +54,11 @@
 
 #ifdef OSG_SGI_STL
 
-#include <limits>
-#ifndef INT_MAX
-#define INT_MAX std::numeric_limits<int>::max()
-#endif
+// #include <limits>
+// #ifndef INT_MAX
+// #define INT_MAX std::numeric_limits<int>::max()
+// #endif
+
 #else
 #include <limits.h>
 #endif
