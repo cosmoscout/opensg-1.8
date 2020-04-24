@@ -16,7 +16,7 @@ file(GLOB HEADER_FILES *.h *.inl)
 add_library(${TARGET_NAME} SHARED ${SOURCE_FILES} ${SOURCE_FILES})
 set_target_properties(${TARGET_NAME} PROPERTIES DEBUG_POSTFIX "D")
 
-if (${CMAKE_VERSION} GREATER_EQUAL 3.16)
+if (OPENSG_USE_PRECOMPILED_HEADERS)
 	target_precompile_headers(${TARGET_NAME} PRIVATE precompiled.pch)
 endif()
 
