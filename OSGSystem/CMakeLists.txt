@@ -17,7 +17,7 @@ add_library(${TARGET_NAME} SHARED ${SOURCE_FILES} ${HEADER_FILES})
 set_target_properties(${TARGET_NAME} PROPERTIES DEBUG_POSTFIX "D")
 
 
-if (${CMAKE_VERSION} GREATER_EQUAL 3.16)
+if (OPENSG_USE_PRECOMPILED_HEADERS)
     file(GLOB LEX_SOURCES LexGenerated/*.cpp LexGenerated/*.cc)
 
     foreach(FILE IN LISTS LEX_SOURCES)

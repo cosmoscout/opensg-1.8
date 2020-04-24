@@ -8,7 +8,7 @@ project(OpenSG CXX)
 cmake_minimum_required(VERSION 3.12)
 
 if (${CMAKE_VERSION} GREATER_EQUAL 3.16)
-    set(CMAKE_UNITY_BUILD On)
+    option(OPENSG_USE_PRECOMPILED_HEADERS "Turn on generation of precompiled headers" OFF)
     set(CMAKE_UNITY_BUILD_BATCH_SIZE 20)
 endif()
 
