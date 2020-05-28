@@ -47,13 +47,6 @@ OSG_USING_NAMESPACE
 // FIXME: clean up all of the copy'n'paste mess...
 // FIXME: double-check that we actually got it correct...
 
-#ifdef _DEBUG
- #ifdef WIN32
-  #undef THIS_FILE
-  static char THIS_FILE[] = __FILE__;
- #endif
-#endif
-
   const char BSplineTensorSurface::ff_const_1[]="BEGINBSPLINETENSORSURFACE";
   const char BSplineTensorSurface::ff_const_2[]="DIMENSIONU";
   const char BSplineTensorSurface::ff_const_3[]="DIMENSIONV";

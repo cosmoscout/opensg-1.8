@@ -42,13 +42,6 @@
 
 OSG_USING_NAMESPACE
 
-#ifdef _DEBUG
- #ifdef WIN32
-  #undef THIS_FILE
-  static char THIS_FILE[] = __FILE__;
- #endif
-#endif
-
   const char BSplineCurve2D::ff_const_1[]="BEGINBSPLINECURVE2D";
   const char BSplineCurve2D::ff_const_2[]="DIMENSION";
   const char BSplineCurve2D::ff_const_3[]="NUMBEROFCONTROLPOINTS";

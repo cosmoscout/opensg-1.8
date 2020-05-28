@@ -42,14 +42,6 @@
 
 OSG_USING_NAMESPACE
 
-
-#ifdef _DEBUG
- #ifdef WIN32
-  #undef THIS_FILE
-  static char THIS_FILE[] = __FILE__;
- #endif
-#endif
-
   const char BSplineTrimmedSurface::ff_const_1[]="BEGINTRIMMEDSURFACE";
   const char BSplineTrimmedSurface::ff_const_2[]="NUMBEROFCURVELOOPS";
   const char BSplineTrimmedSurface::ff_const_3[]="CURVESPERLOOP";
