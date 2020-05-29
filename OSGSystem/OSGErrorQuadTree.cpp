@@ -1750,7 +1750,7 @@ void CErrorQuadTree::ComputeError( DCTPFace *pclFace )
   #else
 			if( m_sbNormalApproximation )
 			{
-				// TODO Vec3f f�r normale, Pnt3f f�r punkt
+				// TODO Vec3f for normals, Pnt3f for points
 				cl_nbij = pcl_surface->computeNormal( cl_uv, i_err, cl_bij );
 				d_quad_size = cl_ncij.squareLength( );
 				if( d_quad_size > DCTP_EPS * DCTP_EPS )
