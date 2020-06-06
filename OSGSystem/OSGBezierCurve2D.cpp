@@ -43,14 +43,6 @@
 
 OSG_USING_NAMESPACE
 
-
-#ifdef _DEBUG
- #ifdef WIN32
-  #undef THIS_FILE
-  static char THIS_FILE[] = __FILE__;
- #endif
-#endif
-
 //construction (& destruction, but not here :)
 BezierCurve2D::BezierCurve2D()
 {

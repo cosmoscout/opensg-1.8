@@ -54,13 +54,6 @@ OSG_USING_NAMESPACE
 
 //#define OSG_EUCLID_ERRORS
 
-#ifdef _DEBUG
- #ifdef WIN32
-  #undef THIS_FILE
-  static char THIS_FILE[] = __FILE__;
- #endif
-#endif
-
 bool	CErrorQuadTree::m_sbNormalApproximation = false;
 
 CErrorQuadTree::CErrorQuadTree( )
@@ -1757,7 +1750,7 @@ void CErrorQuadTree::ComputeError( DCTPFace *pclFace )
   #else
 			if( m_sbNormalApproximation )
 			{
-				// TODO Vec3f für normale, Pnt3f für punkt
+				// TODO Vec3f for normals, Pnt3f for points
 				cl_nbij = pcl_surface->computeNormal( cl_uv, i_err, cl_bij );
 				d_quad_size = cl_ncij.squareLength( );
 				if( d_quad_size > DCTP_EPS * DCTP_EPS )
