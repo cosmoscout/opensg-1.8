@@ -42,15 +42,8 @@
 
 OSG_USING_NAMESPACE
 
-#ifdef _DEBUG
- #ifdef WIN32
-  #undef THIS_FILE
-  static char THIS_FILE[] = __FILE__;
- #endif
-#endif
-
-  const char DCTPMesh::ff_const_1[]="BEGINTRIANGLESOUP";
-  const char DCTPMesh::ff_const_2[]="BEGINQUADSOUP";
+const char DCTPMesh::ff_const_1[]="BEGINTRIANGLESOUP";
+const char DCTPMesh::ff_const_2[]="BEGINQUADSOUP";
 
 DCTPMesh::DCTPMesh()
 {

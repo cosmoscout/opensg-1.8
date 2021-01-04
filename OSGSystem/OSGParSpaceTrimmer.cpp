@@ -54,13 +54,6 @@ OSG_USING_NAMESPACE
 #pragma warning (disable : 985)
 #endif
 
-#ifdef _DEBUG
- #ifdef OSG_WIN32
-  #undef THIS_FILE
-  static char THIS_FILE[] = __FILE__;
- #endif
-#endif
-
 #ifdef OSG_USE_SIMPLIFIER
  #define OSG_SIMPLIFIER_TESS_ERR 0.75
 #endif

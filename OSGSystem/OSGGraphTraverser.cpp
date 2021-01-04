@@ -49,13 +49,6 @@ OSG_USING_NAMESPACE
 #pragma warning (disable : 985)
 #endif
 
-#ifdef _DEBUG
- #ifdef WIN32
-  #undef THIS_FILE
-  static char THIS_FILE[] = __FILE__;
- #endif
-#endif
-
 
 /***********************************************************/
 void GraphTraverser::Initialize( DirectedGraph<Vec2d, unsigned char >& gg, bool

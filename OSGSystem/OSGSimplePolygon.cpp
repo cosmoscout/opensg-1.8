@@ -55,12 +55,6 @@ OSG_USING_NAMESPACE
 #  define M_PI_2		( M_PI * 0.5 )
 #endif /* M_PI_2 */
 
-#ifdef _DEBUG
- #ifdef WIN32
-  #undef THIS_FILE
-  static char THIS_FILE[] = __FILE__;
- #endif
-#endif
 
 /*
  * Converted to use robust predicates, see `predicates.c' and
