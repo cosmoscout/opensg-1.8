@@ -42,11 +42,19 @@
 
 OSG_USING_NAMESPACE
 
+<<<<<<< HEAD
 const char BSplineCurve2D::ff_const_1[]="BEGINBSPLINECURVE2D";
 const char BSplineCurve2D::ff_const_2[]="DIMENSION";
 const char BSplineCurve2D::ff_const_3[]="NUMBEROFCONTROLPOINTS";
 const char BSplineCurve2D::ff_const_4[]="BEGINRATIONALBSPLINECURVE2D";
 
+=======
+  const char BSplineCurve2D::ff_const_1[]="BEGINBSPLINECURVE2D";
+  const char BSplineCurve2D::ff_const_2[]="DIMENSION";
+  const char BSplineCurve2D::ff_const_3[]="NUMBEROFCONTROLPOINTS";
+  const char BSplineCurve2D::ff_const_4[]="BEGINRATIONALBSPLINECURVE2D";
+  
+>>>>>>> 2aa0979ecdbd6f1465f9df03a6912c3e17abd010
 //construction (& destruction, but not here :)
 BSplineCurve2D::BSplineCurve2D()
 {

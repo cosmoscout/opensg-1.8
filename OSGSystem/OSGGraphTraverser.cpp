@@ -49,7 +49,10 @@ OSG_USING_NAMESPACE
 #pragma warning (disable : 985)
 #endif
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2aa0979ecdbd6f1465f9df03a6912c3e17abd010
 /***********************************************************/
 void GraphTraverser::Initialize( DirectedGraph<Vec2d, unsigned char >& gg, bool
         usedelaunaytri )
