@@ -55,10 +55,6 @@ OSG_USING_NAMESPACE
 #  define M_PI_2		( M_PI * 0.5 )
 #endif /* M_PI_2 */
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 2aa0979ecdbd6f1465f9df03a6912c3e17abd010
 /*
  * Converted to use robust predicates, see `predicates.c' and
  * `predicates.h'

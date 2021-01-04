@@ -41,17 +41,11 @@
 #include "OSGBSplineBasisFunction.h"
 
 
-OSG_USING_NAMESPACE
+OSG_USING_NAMESPAC
 
-<<<<<<< HEAD
 const char BSplineBasisFunction::ff_const_1[]="BEGINBSPLINEBASISFUNCTION";
 const char BSplineBasisFunction::ff_const_2[]="NUMBEROFKNOTS";
 const char BSplineBasisFunction::ff_const_3[]="KNOTS";
-=======
-  const char BSplineBasisFunction::ff_const_1[]="BEGINBSPLINEBASISFUNCTION";
-  const char BSplineBasisFunction::ff_const_2[]="NUMBEROFKNOTS";
-  const char BSplineBasisFunction::ff_const_3[]="KNOTS";
->>>>>>> 2aa0979ecdbd6f1465f9df03a6912c3e17abd010
 
 BSplineBasisFunction::BSplineBasisFunction()
 {
