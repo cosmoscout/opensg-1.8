@@ -42,8 +42,8 @@
 
 OSG_USING_NAMESPACE
 
-  const char DCTPMesh::ff_const_1[]="BEGINTRIANGLESOUP";
-  const char DCTPMesh::ff_const_2[]="BEGINQUADSOUP";
+const char DCTPMesh::ff_const_1[]="BEGINTRIANGLESOUP";
+const char DCTPMesh::ff_const_2[]="BEGINQUADSOUP";
 
 DCTPMesh::DCTPMesh()
 {

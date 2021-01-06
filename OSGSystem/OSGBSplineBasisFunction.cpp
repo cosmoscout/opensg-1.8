@@ -43,9 +43,9 @@
 
 OSG_USING_NAMESPACE
 
-  const char BSplineBasisFunction::ff_const_1[]="BEGINBSPLINEBASISFUNCTION";
-  const char BSplineBasisFunction::ff_const_2[]="NUMBEROFKNOTS";
-  const char BSplineBasisFunction::ff_const_3[]="KNOTS";
+const char BSplineBasisFunction::ff_const_1[]="BEGINBSPLINEBASISFUNCTION";
+const char BSplineBasisFunction::ff_const_2[]="NUMBEROFKNOTS";
+const char BSplineBasisFunction::ff_const_3[]="KNOTS";
 
 BSplineBasisFunction::BSplineBasisFunction()
 {

@@ -64,8 +64,6 @@ void GraphTraverser::Initialize( DirectedGraph<Vec2d, unsigned char >& gg, bool
   polys.clear();
 }
 
-
-
 int GraphTraverser::triangulatePolygon( DCTPivector& nodes, bool bConvex ) {
 	unsigned int i;
         

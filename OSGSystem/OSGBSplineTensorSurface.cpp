@@ -47,11 +47,11 @@ OSG_USING_NAMESPACE
 // FIXME: clean up all of the copy'n'paste mess...
 // FIXME: double-check that we actually got it correct...
 
-  const char BSplineTensorSurface::ff_const_1[]="BEGINBSPLINETENSORSURFACE";
-  const char BSplineTensorSurface::ff_const_2[]="DIMENSIONU";
-  const char BSplineTensorSurface::ff_const_3[]="DIMENSIONV";
-  const char BSplineTensorSurface::ff_const_4[]="NUMBEROFCONTROLPOINTS";
-  const char BSplineTensorSurface::ff_const_5[]="BEGINRATIONALBSPLINETENSORSURFACE";
+const char BSplineTensorSurface::ff_const_1[]="BEGINBSPLINETENSORSURFACE";
+const char BSplineTensorSurface::ff_const_2[]="DIMENSIONU";
+const char BSplineTensorSurface::ff_const_3[]="DIMENSIONV";
+const char BSplineTensorSurface::ff_const_4[]="NUMBEROFCONTROLPOINTS";
+const char BSplineTensorSurface::ff_const_5[]="BEGINRATIONALBSPLINETENSORSURFACE";
 
 //construction (& destruction, but not here :)
 BSplineTensorSurface::BSplineTensorSurface()
