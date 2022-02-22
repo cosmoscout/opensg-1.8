@@ -252,7 +252,6 @@ void GroupSockConnection::setParams(const std::string &params)
     then -1 is returned if timeout is reached
 */
 Connection::Channel GroupSockConnection::selectChannel(Time timeout)
-    throw (ReadError)
 {
     Int32 maxnread=0,nread;
     ChannelIndex index;
@@ -313,7 +312,7 @@ Connection::Channel GroupSockConnection::selectChannel(Time timeout)
 
 /*! wait for signal
  */
-bool GroupSockConnection::wait(Time timeout) throw (ReadError)
+bool GroupSockConnection::wait(Time timeout)
 {
     UInt32 len;
     UInt32 index;
@@ -358,7 +357,7 @@ bool GroupSockConnection::wait(Time timeout) throw (ReadError)
 
 /*! send signal
  */
-void GroupSockConnection::signal(void) throw (WriteError)
+void GroupSockConnection::signal(void)
 {
     UInt32 tag=osghtonl(314156);
     UInt32 index;

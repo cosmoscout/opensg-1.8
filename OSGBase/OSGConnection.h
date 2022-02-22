@@ -97,15 +97,15 @@ class OSG_BASE_DLLMAPPING Connection : public BinaryDataHandler
     /*! \name                   synchronisation                            */
     /*! \{                                                                 */
 
-    virtual bool wait  (Time timeout = -1) throw (ReadError ) = 0;
-    virtual void signal(void             ) throw (WriteError) = 0;
+    virtual bool wait  (Time timeout = -1) = 0;
+    virtual void signal(void             ) = 0;
 
     /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
     /*! \name                   channel handling                           */
     /*! \{                                                                 */
 
-    virtual Channel selectChannel(Time timeout=-1) throw (ReadError) = 0;
+    virtual Channel selectChannel(Time timeout=-1) = 0;
 
     /*! \}                                                                 */
     /*---------------------------------------------------------------------*/

@@ -944,7 +944,7 @@ void FBOViewport::render(RenderActionBase* action)
                 endEditCP(shadowVptPtr, LeftFieldMask | RightFieldMask |
                                         BottomFieldMask | TopFieldMask);
                 
-                check++;
+                check = true;
             }
             
             subRefCP(tiledeco);

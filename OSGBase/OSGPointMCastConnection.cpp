@@ -155,7 +155,6 @@ Connection::Channel PointMCastConnection::acceptGroup(Time timeout)
     then -1 is returned if timeout is reached
 */
 Connection::Channel PointMCastConnection::selectChannel(Time timeout)
-    throw (ReadError)
 {
     if(_pointToPoint)
         return Inherited::selectChannel(timeout);
@@ -199,7 +198,7 @@ Connection::Channel PointMCastConnection::selectChannel(Time timeout)
 
 /*! wait for signal
  */
-bool PointMCastConnection::wait(Time timeout) throw (ReadError)
+bool PointMCastConnection::wait(Time timeout)
 {
     UInt32 tag;
 
