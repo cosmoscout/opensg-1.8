@@ -94,15 +94,15 @@ class OSG_BASE_DLLMAPPING PointSockConnection : public PointConnection
     /*! \name                   synchronisation                            */
     /*! \{                                                                 */
 
-    virtual bool wait  (Time timeout) throw (ReadError );
-    virtual void signal(void        ) throw (WriteError);
+    virtual bool wait  (Time timeout);
+    virtual void signal(void        );
 
     /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
     /*! \name                   channel handling                           */
     /*! \{                                                                 */
 
-    virtual Channel selectChannel (Time timeout=-1) throw (ReadError);
+    virtual Channel selectChannel (Time timeout=-1);
 
     /*! \}                                                                 */
     /*---------------------------------------------------------------------*/

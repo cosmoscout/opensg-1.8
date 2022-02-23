@@ -193,7 +193,7 @@ void GroupMCastConnection::setParams(const std::string &params)
 
 /*! wait for signal
  */
-bool GroupMCastConnection::wait(Time timeout) throw (ReadError)
+bool GroupMCastConnection::wait(Time timeout)
 {
     // todo
     return Inherited::wait(timeout);
@@ -201,7 +201,7 @@ bool GroupMCastConnection::wait(Time timeout) throw (ReadError)
 
 /*! send signal
  */
-void GroupMCastConnection::signal(void) throw (WriteError)
+void GroupMCastConnection::signal(void)
 {
     UInt32 tag=314156;
     putValue(tag);

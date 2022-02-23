@@ -126,7 +126,6 @@ Connection::Channel PointSockPipeline::acceptGroup(Time timeout)
     then -1 is returned if timeout is reached
 */
 Connection::Channel PointSockPipeline::selectChannel(Time timeout)
-    throw (ReadError)
 {
     if(!_initialized)
         initialize();

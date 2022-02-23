@@ -100,7 +100,7 @@ class OSG_BASE_DLLMAPPING GroupSockConnection : public GroupConnection
     /*! \name                   channel handling                           */
     /*! \{                                                                 */
 
-    virtual Channel selectChannel   (Time timeout=-1) throw (ReadError);
+    virtual Channel selectChannel   (Time timeout=-1);
 
     /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
@@ -149,8 +149,8 @@ class OSG_BASE_DLLMAPPING GroupSockConnection : public GroupConnection
     /*! \name                   synchronisation                            */
     /*! \{                                                                 */
     
-    virtual bool wait  (Time timeout) throw (ReadError);
-    virtual void signal(void        ) throw (WriteError);
+    virtual bool wait  (Time timeout);
+    virtual void signal(void        );
     
     /*! \}                                                                 */
 
