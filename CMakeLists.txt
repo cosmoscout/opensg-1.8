@@ -24,6 +24,12 @@ else()
     add_definitions("-s -Ofast -Wno-deprecated -Wno-write-strings -Wno-narrowing -Wno-unused-parameter -Wno-undefined-var-template")
 endif()
 
+option(OPENSG_INFINITE_REVERSE_PROJECTION "Use a reverse infinite projection instead of the standard OpenGL projection" OFF)
+if(OPENSG_INFINITE_REVERSE_PROJECTION)
+    add_definitions("-DOSG_INFINITE_REVERSE_PROJECTION")
+endif(OPENSG_INFINITE_REVERSE_PROJECTION)
+
+
 add_definitions("-DOSG_WITH_GLUT")
 
 include_directories(

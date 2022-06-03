@@ -98,6 +98,28 @@ OSG_BASE_DLLMAPPING bool MatrixFrustum(Matrix &result,
     Real32 dy = rTop   - rBottom;
     Real32 n2 = 2.f    * rNear;
 
+#ifdef OSG_INFINITE_REVERSE_PROJECTION
+    result.setValueTransposed(
+         n2 / dx,
+         0.f,
+         0.f,
+         0.f,
+
+         0.f,
+         n2 / dy,
+         0.f,
+         0.f,
+
+         (rRight + rLeft  ) / dx,
+         (rTop   + rBottom) / dy,
+         1.0,
+        -1.f,
+
+         0.f,
+         0.f,
+         n2,
+         0.f);
+#else
     result.setValueTransposed(
          n2 / dx, 
          0.f, 
@@ -118,6 +140,7 @@ OSG_BASE_DLLMAPPING bool MatrixFrustum(Matrix &result,
          0.f, 
         -(rFar * n2) / dz, 
          0.f);
+#endif
 
     return false;
 }
