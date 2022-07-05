@@ -198,7 +198,11 @@ SolidBackgroundBase::SolidBackgroundBase(void) :
     _sfColor                  (Color3f(0,0,0)), 
     _sfClearStencilBit        (Int32(-1)), 
     _sfAlpha                  (Real32(1.f)), 
+#ifdef OSG_INFINITE_REVERSE_PROJECTION
+    _sfDepth                  (Real32(0.f)), 
+#else
     _sfDepth                  (Real32(1.f)), 
+#endif
     Inherited() 
 {
 }
