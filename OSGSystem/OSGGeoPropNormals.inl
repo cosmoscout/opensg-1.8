@@ -43,6 +43,8 @@
 
 OSG_BEGIN_NAMESPACE
 
+#define DOXYGEN_SHOULD_SKIP_THIS
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 // Normals3s
 
@@ -243,5 +245,7 @@ bool GeoProperty<GeoNormals3bPropertyDesc>::insertValue(const Vec3f & val,
     }
 }
 #endif
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 OSG_END_NAMESPACE

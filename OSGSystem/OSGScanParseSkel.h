@@ -42,7 +42,7 @@
 #pragma once
 #endif
 
-
+#include <OSGImage.h>
 #include <OSGSystemDef.h>
 #include <OSGBaseTypes.h>
 #include <OSGColor.h>
@@ -51,7 +51,6 @@
 #include <OSGPlane.h>
 #include <OSGMatrix.h>
 #include <OSGDynamicVolume.h>
-#include <OSGImage.h>
 // We have to prevent double inclusion of the scanner header file
 #ifndef TOK_HEADER
 #include "OSGScanParseSkel.tab.h"

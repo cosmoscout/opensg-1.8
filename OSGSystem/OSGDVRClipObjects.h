@@ -44,9 +44,9 @@
 
 #include <OSGConfig.h>
 
-#include <OSGPlane.h>
-
 #include <OSGDVRClipObjectsBase.h>
+
+#include <OSGPlane.h>
 
 OSG_BEGIN_NAMESPACE
 

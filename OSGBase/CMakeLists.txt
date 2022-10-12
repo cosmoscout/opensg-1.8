@@ -20,14 +20,14 @@ if (OPENSG_USE_PRECOMPILED_HEADERS)
 	target_precompile_headers(${TARGET_NAME} PRIVATE precompiled.pch)
 endif()
 
-if (WIN32)
+if (WIN32 AND MSVC)
     add_definitions(-DOSG_COMPILEBASELIB )
 endif()
 
-if (WIN32)
+if (WIN32 AND MSVC)
 	target_link_libraries(${TARGET_NAME} winmm wsock32)
 else()
-	target_link_libraries(${TARGET_NAME} pthread dl)
+	target_link_libraries(${TARGET_NAME} pthread dl $<$<BOOL:${WIN32}>:wsock32 winmm>)
 endif()
 
 

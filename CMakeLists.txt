@@ -18,10 +18,10 @@ cmake_policy(SET CMP0074 NEW)
 find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)
 
-if (WIN32)
+if (WIN32 AND MSVC)
     add_definitions("/W0 /MP /bigobj -DOSG_BUILD_DLL -D_OSG_HAVE_CONFIGURED_H_ -D_CRT_SECURE_NO_WARNINGS")
 else()
-    add_definitions("-s -Ofast -Wno-deprecated -Wno-write-strings -Wno-narrowing -Wno-unused-parameter -Wno-undefined-var-template")
+    add_definitions("-s -Ofast -Wno-deprecated -Wno-write-strings -Wno-narrowing -Wno-unused-parameter -Wno-undefined-var-template -Wno-register -Wno-attributes -fpermissive")
 endif()
 
 option(OPENSG_INFINITE_REVERSE_PROJECTION "Use a reverse infinite projection instead of the standard OpenGL projection" OFF)
@@ -30,7 +30,7 @@ if(OPENSG_INFINITE_REVERSE_PROJECTION)
 endif(OPENSG_INFINITE_REVERSE_PROJECTION)
 
 
-add_definitions("-DOSG_WITH_GLUT")
+add_definitions("-DOSG_WITH_GLUT -DOSG_SUPPORT_NO_GEO_INTERFACE")
 
 include_directories(
     "OSGBase"

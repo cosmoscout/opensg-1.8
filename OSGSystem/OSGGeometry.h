@@ -47,6 +47,7 @@
 #include <OSGAction.h>
 #include <OSGWindow.h>
 
+#include <OSGGeoProperty.h>
 #include <OSGGeometryBase.h>
 #include <OSGGeoPropPtrs.h>
 #include <OSGMaterial.h>

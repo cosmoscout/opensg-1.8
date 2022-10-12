@@ -59,15 +59,15 @@
 
 
 #include <OSGConfig.h>
-#include <OSGSystemDef.h>
+#include <OSGDVRClipGeometry.h> // ClipObjects type
 
+#include <OSGSystemDef.h>
 #include <OSGBaseTypes.h>
 #include <OSGRefPtr.h>
+
 #include <OSGCoredNodePtr.h>
 
 #include <OSGAttachment.h> // Parent
-
-#include <OSGDVRClipGeometry.h> // ClipObjects type
 #include <OSGInt32Fields.h> // ClipMode type
 #include <OSGBoolFields.h> // DoContours type
 

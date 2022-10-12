@@ -58,7 +58,6 @@
 
 #include <string>
 #include <sstream>
-using namespace std;
 
 #include <OSGConfig.h>
 
@@ -119,10 +118,10 @@ struct FieldDataTraits<FontStyleP> :
 		PathHandler paths;
 		paths.push_backPath(".");
 
-		istringstream buf( inVal );
+		std::istringstream buf( inVal );
 
 		Real32 fontSize;
-		string fontName;
+                std::string fontName;
 
 		buf >> fontSize
 			>> fontName;
@@ -131,20 +130,20 @@ struct FieldDataTraits<FontStyleP> :
 
 		if(outVal == NULL)
 		{
-			cout << "************* getFromString: FontStyleFactory "
+                  std::cout << "************* getFromString: FontStyleFactory "
                  << "returned NULL, when trying to load font: " 
 				 << inVal 
-				 << endl;
+				 << std::endl;
 
 			exit(3);
 
 			return false;
 		}
 
-		cout << " ************* getFromString in OSGFontStyleFields "
+                std::cout << " ************* getFromString in OSGFontStyleFields "
              << "called successfully, loaded font: " 
 			 << inVal 
-			 << endl;
+			 << std::endl;
 
         return true;
     }
@@ -152,7 +151,7 @@ struct FieldDataTraits<FontStyleP> :
     static void putToString( const FontStyleP &inVal,
 							 std::string     &outVal )
     {
-		ostringstream buf;
+      std::ostringstream buf;
 		
 		buf << '\"' 
 			<< inVal->getSize()
@@ -167,8 +166,8 @@ struct FieldDataTraits<FontStyleP> :
     {
 		// AT: HIER WEITERMACHEN!
 
-		cout << "getBinSize in OSGFontStyleFields called with " 
-             << &oObject << endl;
+                std::cout << "getBinSize in OSGFontStyleFields called with "
+             << &oObject << std::endl;
 
 		return 0;
 
@@ -187,11 +186,11 @@ struct FieldDataTraits<FontStyleP> :
 	   
 		// AT: HIER WEITERMACHEN!
 		//oObject.copyToBin(pMem);
-		cout << "copyToBin in OSGFontStyleFields called with " 
+                std::cout << "copyToBin in OSGFontStyleFields called with "
 			 << &pMem 
 			 << " " 
 			 << &oObject 
-			 << endl;
+			 << std::endl;
     }
 
     static void copyToBin(      BinaryDataHandler &pMem, 
@@ -209,10 +208,10 @@ struct FieldDataTraits<FontStyleP> :
     {
 		// AT: HIER WEITERMACHEN!
         //oObject.copyFromBin(pMem);
-		cout << "copyFromBin in OSGFontStyleFields called" 
+                std::cout << "copyFromBin in OSGFontStyleFields called"
 			 << &pMem 
 			 << " " 
-			 << &oObject << endl;
+			 << &oObject << std::endl;
     }
 
     static void copyFromBin(BinaryDataHandler &pMem, 

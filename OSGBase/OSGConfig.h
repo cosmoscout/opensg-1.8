@@ -935,7 +935,6 @@
 #define OSG_DEBUG_CHECK_ARG(ARG)
 #endif
 
-
 #include <OSGBase.h>
 #include <OSGExportDefines.h>
 

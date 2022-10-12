@@ -58,6 +58,7 @@
 
 #include <OSGConfig.h>
 
+#include <OSGGeoProperty.h>
 #include "OSGDisplayFilterForegroundBase.h"
 #include "OSGDisplayFilterForeground.h"
 

@@ -73,7 +73,7 @@ MFieldVector<Tp, Alloc>::MFieldVector(const allocator_type& __a) :
 }
 
 template <class Tp, class Alloc> inline
-MFieldVector<Tp, Alloc>::MFieldVector(      size_type       __n, 
+MFieldVector<Tp, Alloc>::MFieldVector(      size_t       __n, 
                                       const Tp             &__value,
                                       const allocator_type &__a    ) :
     Inherited(__n, __value, __a)
@@ -81,7 +81,7 @@ MFieldVector<Tp, Alloc>::MFieldVector(      size_type       __n,
 }
     
 template <class Tp, class Alloc> inline
-MFieldVector<Tp, Alloc>::MFieldVector(size_type __n) :
+MFieldVector<Tp, Alloc>::MFieldVector(size_t __n) :
     Inherited(__n)
 {
 }
@@ -166,7 +166,7 @@ MFieldVector<Ty, A>::MFieldVector(const A &_Al) :
 }
 
 template<class Ty, class A> inline
-MFieldVector<Ty, A>::MFieldVector(      size_type  _N, 
+MFieldVector<Ty, A>::MFieldVector(      size_t  _N, 
                                   const Ty        &_V,
                                   const A         &_Al) : 
     Inherited(_N, _V, _Al)

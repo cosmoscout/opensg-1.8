@@ -43,6 +43,8 @@
 
 OSG_BEGIN_NAMESPACE
 
+#define DOXYGEN_SHOULD_SKIP_THIS
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 // TexCoords1f
 
@@ -521,5 +523,7 @@ bool GeoProperty<GeoTexCoords4dPropertyDesc>::insertValue(const Vec2f & val,
         return true;
     }
 }
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 OSG_END_NAMESPACE

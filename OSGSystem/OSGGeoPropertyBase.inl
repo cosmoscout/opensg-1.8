@@ -324,6 +324,8 @@ GeoProperty<GeoPropertyDesc>::clone(void)
     return obj;
 }
 
+#define DOXYGEN_SHOULD_SKIP_THIS
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 /*! Returns the format of this property. 
 
@@ -477,5 +479,7 @@ void GeoProperty<GeoPropertyDesc>::dump(      UInt32    uiIndent,
 {
     LocalInherited::dump(uiIndent, bvFlags);
 }
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 OSG_END_NAMESPACE

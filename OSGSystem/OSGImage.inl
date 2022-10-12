@@ -99,7 +99,7 @@ inline const UInt8 *Image::getData( UInt32 mipmapNum,
   
     return data;
 }
-
+/*
 // Specialization for Image we need this to support VRML PixelTextures.
 template <> inline
 void SFImagePtr::pushValueByStr(const Char8 *str)
@@ -107,7 +107,7 @@ void SFImagePtr::pushValueByStr(const Char8 *str)
     if(getValue() != NullFC)
         getValue()->addValue(str);
 }
-
+*/
 OSG_END_NAMESPACE
 
 #define OSGIMAGE_INLINE_CVSID "@(#)$Id: $"

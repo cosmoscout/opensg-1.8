@@ -217,7 +217,7 @@ AnonSymbolHandle SharedObject::getSymbol(const Char8 *szSymbolName)
 #ifndef WIN32
         returnValue = dlsym(_pHandle, szSymbolName);
 #else
-        returnValue = GetProcAddress(_pHandle, szSymbolName);
+        returnValue = reinterpret_cast<AnonSymbolHandle>(GetProcAddress(_pHandle, szSymbolName));
 #endif
     }
 

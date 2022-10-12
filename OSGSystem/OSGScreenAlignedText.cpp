@@ -159,13 +159,13 @@ void ScreenAlignedText::tessellate(void)
 
 	if( psfs == NullFC )
 	{
-		cerr << "ScreenAlignedText::tessellate:  psfs = NullFC ! " << endl;
+		std::cerr << "ScreenAlignedText::tessellate:  psfs = NullFC ! " << std::endl;
 		return;
 	}
 	FontStyleP pFS = psfs->getContainedFontStyle();
 	if( pFS == NULL )
 	{		
-		cerr << "ScreenAlignedText::tessellate:  pFS = NULL ! " << endl;
+          std::cerr << "ScreenAlignedText::tessellate:  pFS = NULL ! " << std::endl;
 		return;
 	}
 
@@ -186,7 +186,7 @@ void ScreenAlignedText::tessellate(void)
 		lineVec.push_back( _mfText[i] );
 	}
 
-	vector<NodePtr> cNodes;
+        std::vector<NodePtr> cNodes;
 
     if(fontText.fillImage(pImg, lineVec, &col1, &col2,
 						  false, 0, 0, SET_TEX_TCM, CLEAR_ADD_MM, 1, true ) )
@@ -202,7 +202,7 @@ void ScreenAlignedText::tessellate(void)
 void ScreenAlignedText::dump(      UInt32    , 
                          const BitVector ) const
 {
-    SLOG << "Dump ScreenAlignedText NI" << endl;
+    SLOG << "Dump ScreenAlignedText NI" << std::endl;
 }
 Action::ResultE ScreenAlignedText::drawPrimitives( DrawActionBase * )
 {

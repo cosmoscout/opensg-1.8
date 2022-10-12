@@ -42,6 +42,7 @@
 #endif
 
 #include <OSGConfig.h>
+#include <OSGGeoProperty.h>
 #include <OSGBaseTypes.h>
 #include <OSGNode.h>
 #include <OSGSystemDef.h>

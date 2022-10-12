@@ -43,6 +43,7 @@
 #endif
 
 #include <OSGConfig.h>
+#include <OSGGeoProperty.h>
 #include <OSGGeometry.h>
 #include <OSGPlane.h>
 
