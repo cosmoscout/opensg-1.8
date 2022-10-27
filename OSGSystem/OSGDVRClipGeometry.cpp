@@ -44,6 +44,7 @@
 #include <stdio.h>
 
 #include <OSGConfig.h>
+#include <OSGGeoPropPositions.h>
 #include <OSGTriangleIterator.h>
 #include <OSGVector.h>
 #include <OSGGeometry.h>

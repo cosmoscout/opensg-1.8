@@ -43,9 +43,6 @@
 
 OSG_BEGIN_NAMESPACE
 
-#define DOXYGEN_SHOULD_SKIP_THIS
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-
 // Positions2s
 
 template<> inline 
@@ -598,10 +595,6 @@ bool GeoProperty<GeoPositions4dPropertyDesc>::insertValue(const Pnt3f &val,
         return true;
     }
 }
-
-
-
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 OSG_END_NAMESPACE
 

@@ -1,4 +1,5 @@
 
+#include <OSGGeoPropPositions.h>
 #include <OSGDVRClipObjects.h>
 #include <OSGDVRTriangle.h>
 #include <OSGDVRClipper.h>

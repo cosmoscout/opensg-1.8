@@ -93,16 +93,7 @@ struct GeoPositions2fPropertyDesc : public GeoPositionsPropertyDesc
     /*! \}                                                                 */
 };
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
 typedef GeoProperty<GeoPositions2fPropertyDesc> GeoPositions2f;
-#endif
-
-#if !defined(OSG_COMPILEGEOPROPPOSITIONINST) && !defined(OSG_DO_DOC)
-OSG_FC_DLLEXPORT_DECL(GeoProperty,
-                      GeoPositions2fPropertyDesc,
-                      OSG_SYSTEMLIB_DLLTMPLMAPPING)
-#endif
-
 
 /*! \brief The descriptor trait for osg::GeoPositions3f.
     \ingroup GrpSystemDrawablesGeometryProperties
@@ -150,15 +141,7 @@ struct GeoPositions3fPropertyDesc : public GeoPositionsPropertyDesc
     /*! \}                                                                 */
 };
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
 typedef GeoProperty<GeoPositions3fPropertyDesc> GeoPositions3f;
-#endif
-
-#if !defined(OSG_COMPILEGEOPROPPOSITIONINST) && !defined(OSG_DO_DOC)
-OSG_FC_DLLEXPORT_DECL(GeoProperty,
-                      GeoPositions3fPropertyDesc,
-                      OSG_SYSTEMLIB_DLLTMPLMAPPING)
-#endif
 
 
 /*! \brief The descriptor trait for osg::GeoPositions4f.
@@ -207,16 +190,7 @@ struct GeoPositions4fPropertyDesc : public GeoPositionsPropertyDesc
     /*! \}                                                                 */
 };
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
 typedef GeoProperty<GeoPositions4fPropertyDesc> GeoPositions4f;
-#endif
-
-#if !defined(OSG_COMPILEGEOPROPPOSITIONINST) && !defined(OSG_DO_DOC)
-OSG_FC_DLLEXPORT_DECL(GeoProperty,
-                      GeoPositions4fPropertyDesc,
-                      OSG_SYSTEMLIB_DLLTMPLMAPPING)
-#endif
-
 
 /*! \brief The descriptor trait for osg::GeoPositions2d.
     \ingroup GrpSystemDrawablesGeometryProperties
@@ -264,16 +238,7 @@ struct GeoPositions2dPropertyDesc : public GeoPositionsPropertyDesc
     /*! \}                                                                 */
 };
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
 typedef GeoProperty<GeoPositions2dPropertyDesc> GeoPositions2d;
-#endif
-
-#if !defined(OSG_COMPILEGEOPROPPOSITIONINST) && !defined(OSG_DO_DOC)
-OSG_FC_DLLEXPORT_DECL(GeoProperty,
-                      GeoPositions2dPropertyDesc,
-                      OSG_SYSTEMLIB_DLLTMPLMAPPING)
-#endif
-
 
 /*! \brief The descriptor trait for osg::GeoPositions3d.
     \ingroup GrpSystemDrawablesGeometryProperties
@@ -321,16 +286,7 @@ struct GeoPositions3dPropertyDesc : public GeoPositionsPropertyDesc
     /*! \}                                                                 */
 };
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
 typedef GeoProperty<GeoPositions3dPropertyDesc> GeoPositions3d;
-#endif
-
-#if !defined(OSG_COMPILEGEOPROPPOSITIONINST) && !defined(OSG_DO_DOC)
-OSG_FC_DLLEXPORT_DECL(GeoProperty,
-                      GeoPositions3dPropertyDesc,
-                      OSG_SYSTEMLIB_DLLTMPLMAPPING)
-#endif
-
 
 /*! \brief The descriptor trait for osg::GeoPositions4d.
     \ingroup GrpSystemDrawablesGeometryProperties
@@ -378,17 +334,7 @@ struct GeoPositions4dPropertyDesc : public GeoPositionsPropertyDesc
     /*! \}                                                                 */
 };
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
 typedef GeoProperty<GeoPositions4dPropertyDesc> GeoPositions4d;
-#endif
-
-#if !defined(OSG_COMPILEGEOPROPPOSITIONINST) && !defined(OSG_DO_DOC)
-OSG_FC_DLLEXPORT_DECL(GeoProperty,
-                      GeoPositions4dPropertyDesc,
-                      OSG_SYSTEMLIB_DLLTMPLMAPPING)
-#endif
-
-
 
 /*! \brief The descriptor trait for osg::GeoPositions2s.
     \ingroup GrpSystemDrawablesGeometryProperties
@@ -436,16 +382,7 @@ struct GeoPositions2sPropertyDesc : public GeoPositionsPropertyDesc
     /*! \}                                                                 */
 };
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent shorts
 typedef GeoProperty<GeoPositions2sPropertyDesc> GeoPositions2s;
-#endif
-
-#if !defined(OSG_COMPILEGEOPROPPOSITIONINST) && !defined(OSG_DO_DOC)
-OSG_FC_DLLEXPORT_DECL(GeoProperty,
-                      GeoPositions2sPropertyDesc,
-                      OSG_SYSTEMLIB_DLLTMPLMAPPING)
-#endif
-
 
 /*! \brief The descriptor trait for osg::GeoPositions3s.
     \ingroup GrpSystemDrawablesGeometryProperties
@@ -493,16 +430,7 @@ struct GeoPositions3sPropertyDesc : public GeoPositionsPropertyDesc
     /*! \}                                                                 */
 };
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent shorts
 typedef GeoProperty<GeoPositions3sPropertyDesc> GeoPositions3s;
-#endif
-
-#if !defined(OSG_COMPILEGEOPROPPOSITIONINST) && !defined(OSG_DO_DOC)
-OSG_FC_DLLEXPORT_DECL(GeoProperty,
-                      GeoPositions3sPropertyDesc,
-                      OSG_SYSTEMLIB_DLLTMPLMAPPING)
-#endif
-
 
 /*! \brief The descriptor trait for osg::GeoPositions4s.
     \ingroup GrpSystemDrawablesGeometryProperties
@@ -550,18 +478,52 @@ struct GeoPositions4sPropertyDesc : public GeoPositionsPropertyDesc
     /*! \}                                                                 */
 };
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent shorts
 typedef GeoProperty<GeoPositions4sPropertyDesc> GeoPositions4s;
-#endif
-
-#if !defined(OSG_COMPILEGEOPROPPOSITIONINST) && !defined(OSG_DO_DOC)
-OSG_FC_DLLEXPORT_DECL(GeoProperty,
-                      GeoPositions4sPropertyDesc,
-                      OSG_SYSTEMLIB_DLLTMPLMAPPING)
-#endif
 
 OSG_END_NAMESPACE
 
 #include <OSGGeoPropPositions.inl>
+
+OSG_BEGIN_NAMESPACE
+
+#if !defined(OSG_COMPILEGEOPROPPOSITIONINST)
+OSG_FC_DLLEXPORT_DECL(GeoProperty,
+    GeoPositions2fPropertyDesc,
+    OSG_SYSTEMLIB_DLLTMPLMAPPING)
+
+OSG_FC_DLLEXPORT_DECL(GeoProperty,
+    GeoPositions3fPropertyDesc,
+    OSG_SYSTEMLIB_DLLTMPLMAPPING)
+
+OSG_FC_DLLEXPORT_DECL(GeoProperty,
+    GeoPositions4fPropertyDesc,
+    OSG_SYSTEMLIB_DLLTMPLMAPPING)
+
+OSG_FC_DLLEXPORT_DECL(GeoProperty,
+    GeoPositions2dPropertyDesc,
+    OSG_SYSTEMLIB_DLLTMPLMAPPING)
+
+OSG_FC_DLLEXPORT_DECL(GeoProperty,
+    GeoPositions3dPropertyDesc,
+    OSG_SYSTEMLIB_DLLTMPLMAPPING)
+
+OSG_FC_DLLEXPORT_DECL(GeoProperty,
+    GeoPositions4dPropertyDesc,
+    OSG_SYSTEMLIB_DLLTMPLMAPPING)
+
+OSG_FC_DLLEXPORT_DECL(GeoProperty,
+    GeoPositions2sPropertyDesc,
+    OSG_SYSTEMLIB_DLLTMPLMAPPING)
+
+OSG_FC_DLLEXPORT_DECL(GeoProperty,
+    GeoPositions3sPropertyDesc,
+    OSG_SYSTEMLIB_DLLTMPLMAPPING)
+
+OSG_FC_DLLEXPORT_DECL(GeoProperty,
+    GeoPositions4sPropertyDesc,
+    OSG_SYSTEMLIB_DLLTMPLMAPPING)
+#endif
+
+OSG_END_NAMESPACE
 
 #endif /* _OSGGEOPROPPOSITIONS_H_ */

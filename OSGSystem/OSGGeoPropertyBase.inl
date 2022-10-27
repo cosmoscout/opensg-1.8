@@ -324,7 +324,6 @@ GeoProperty<GeoPropertyDesc>::clone(void)
     return obj;
 }
 
-#define DOXYGEN_SHOULD_SKIP_THIS
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 /*! Returns the format of this property. 
@@ -381,7 +380,7 @@ UInt8 *GeoProperty<GeoPropertyDesc>::getData(void) const
 }
 
 
-template <class GeoPropertyDesc> inline 
+template <class GeoPropertyDesc> inline
 typename GeoProperty<GeoPropertyDesc>::StoredGenericType
     GeoProperty<GeoPropertyDesc>::getValue(const UInt32 index)
 {

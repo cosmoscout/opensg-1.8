@@ -366,80 +366,51 @@ class GeoProperty :
     static FieldContainerType  _type;
 };
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
 typedef AbstractGeoProperty<GeoPositionsPropertyDesc> GeoPositions;
-#endif
-
-#ifndef OSG_COMPILEGEOPROPINST
-OSG_ABSTR_FC_DLLEXPORT_DECL(AbstractGeoProperty,
-                            GeoPositionsPropertyDesc,
-                            OSG_SYSTEMLIB_DLLTMPLMAPPING)
-#endif
-
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
 typedef AbstractGeoProperty<GeoNormalsPropertyDesc> GeoNormals;
-#endif
-
-#ifndef OSG_COMPILEGEOPROPINST
-OSG_ABSTR_FC_DLLEXPORT_DECL(AbstractGeoProperty,
-                            GeoNormalsPropertyDesc,
-                            OSG_SYSTEMLIB_DLLTMPLMAPPING)
-#endif
-
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
 typedef AbstractGeoProperty<GeoColorsPropertyDesc> GeoColors;
-#endif
-
-#ifndef OSG_COMPILEGEOPROPINST
-OSG_ABSTR_FC_DLLEXPORT_DECL(AbstractGeoProperty,
-                            GeoColorsPropertyDesc,
-                            OSG_SYSTEMLIB_DLLTMPLMAPPING)
-#endif
-
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
 typedef AbstractGeoProperty<GeoTexCoordsPropertyDesc> GeoTexCoords;
-#endif
-
-#ifndef OSG_COMPILEGEOPROPINST
-OSG_ABSTR_FC_DLLEXPORT_DECL(AbstractGeoProperty,
-                            GeoTexCoordsPropertyDesc,
-                            OSG_SYSTEMLIB_DLLTMPLMAPPING)
-#endif
-
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
 typedef AbstractGeoProperty<GeoIndicesPropertyDesc> GeoIndices;
-#endif
-
-#ifndef OSG_COMPILEGEOPROPINST
-OSG_ABSTR_FC_DLLEXPORT_DECL(AbstractGeoProperty,
-                            GeoIndicesPropertyDesc,
-                            OSG_SYSTEMLIB_DLLTMPLMAPPING)
-#endif
-
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
 typedef AbstractGeoProperty<GeoPTypesPropertyDesc> GeoPTypes;
-#endif
-
-#ifndef OSG_COMPILEGEOPROPINST
-OSG_ABSTR_FC_DLLEXPORT_DECL(AbstractGeoProperty,
-                            GeoPTypesPropertyDesc,
-                            OSG_SYSTEMLIB_DLLTMPLMAPPING)
-#endif
-
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
 typedef AbstractGeoProperty<GeoPLengthsPropertyDesc> GeoPLengths;
-#endif
-
-#ifndef OSG_COMPILEGEOPROPINST
-OSG_ABSTR_FC_DLLEXPORT_DECL(AbstractGeoProperty,
-                            GeoPLengthsPropertyDesc,
-                            OSG_SYSTEMLIB_DLLTMPLMAPPING)
-#endif
 
 OSG_END_NAMESPACE
 
 #include <OSGGeoPropertyBase.inl>
 
+OSG_BEGIN_NAMESPACE
+
+#ifndef OSG_COMPILEGEOPROPINST
+OSG_ABSTR_FC_DLLEXPORT_DECL(AbstractGeoProperty,
+    GeoPositionsPropertyDesc,
+    OSG_SYSTEMLIB_DLLTMPLMAPPING)
+
+OSG_ABSTR_FC_DLLEXPORT_DECL(AbstractGeoProperty,
+    GeoNormalsPropertyDesc,
+    OSG_SYSTEMLIB_DLLTMPLMAPPING)
+
+OSG_ABSTR_FC_DLLEXPORT_DECL(AbstractGeoProperty,
+    GeoColorsPropertyDesc,
+    OSG_SYSTEMLIB_DLLTMPLMAPPING)
+
+OSG_ABSTR_FC_DLLEXPORT_DECL(AbstractGeoProperty,
+    GeoTexCoordsPropertyDesc,
+    OSG_SYSTEMLIB_DLLTMPLMAPPING)
+
+OSG_ABSTR_FC_DLLEXPORT_DECL(AbstractGeoProperty,
+    GeoIndicesPropertyDesc,
+    OSG_SYSTEMLIB_DLLTMPLMAPPING)
+
+OSG_ABSTR_FC_DLLEXPORT_DECL(AbstractGeoProperty,
+    GeoPTypesPropertyDesc,
+    OSG_SYSTEMLIB_DLLTMPLMAPPING)
+
+OSG_ABSTR_FC_DLLEXPORT_DECL(AbstractGeoProperty,
+    GeoPLengthsPropertyDesc,
+    OSG_SYSTEMLIB_DLLTMPLMAPPING)
+#endif
+
+OSG_END_NAMESPACE
 
 #endif /* _OSGGEOPROPERTYBASE_H_ */
 

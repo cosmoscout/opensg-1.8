@@ -92,16 +92,7 @@ struct GeoColors3fPropertyDesc : public GeoColorsPropertyDesc
     /*! \}                                                                 */
 };
 
-
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
 typedef GeoProperty<GeoColors3fPropertyDesc> GeoColors3f;
-#endif
-
-#if !defined(OSG_COMPILEGEOPROPCOLORINST) && !defined(OSG_DO_DOC)
-OSG_FC_DLLEXPORT_DECL(GeoProperty,
-                      GeoColors3fPropertyDesc,
-                      OSG_SYSTEMLIB_DLLTMPLMAPPING)
-#endif
 
 /*! \brief The descriptor trait for osg::GeoColors4f.
     \ingroup GrpSystemDrawablesGeometryProperties
@@ -149,15 +140,7 @@ struct GeoColors4fPropertyDesc : public GeoColorsPropertyDesc
     /*! \}                                                                 */
 };
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
 typedef GeoProperty<GeoColors4fPropertyDesc> GeoColors4f;
-#endif
-
-#if !defined(OSG_COMPILEGEOPROPCOLORINST) && !defined(OSG_DO_DOC)
-OSG_FC_DLLEXPORT_DECL(GeoProperty,
-                      GeoColors4fPropertyDesc,
-                      OSG_SYSTEMLIB_DLLTMPLMAPPING)
-#endif
 
 /*! \brief The descriptor trait for osg::GeoColors3ub.
     \ingroup GrpSystemDrawablesGeometryProperties
@@ -205,15 +188,7 @@ struct GeoColors3ubPropertyDesc : public GeoColorsPropertyDesc
     /*! \}                                                                 */
 };
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
 typedef GeoProperty<GeoColors3ubPropertyDesc> GeoColors3ub;
-#endif
-
-#if !defined(OSG_COMPILEGEOPROPCOLORINST) && !defined(OSG_DO_DOC)
-OSG_FC_DLLEXPORT_DECL(GeoProperty,
-                      GeoColors3ubPropertyDesc,
-                      OSG_SYSTEMLIB_DLLTMPLMAPPING)
-#endif
 
 /*! \brief The descriptor trait for osg::GeoColors4ub.
     \ingroup GrpSystemDrawablesGeometryProperties
@@ -261,19 +236,33 @@ struct GeoColors4ubPropertyDesc : public GeoColorsPropertyDesc
     /*! \}                                                                 */
 };
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
 typedef GeoProperty<GeoColors4ubPropertyDesc> GeoColors4ub;
-#endif
-
-#if !defined(OSG_COMPILEGEOPROPCOLORINST) && !defined(OSG_DO_DOC)
-OSG_FC_DLLEXPORT_DECL(GeoProperty,
-                      GeoColors4ubPropertyDesc,
-                      OSG_SYSTEMLIB_DLLTMPLMAPPING)
-#endif
 
 OSG_END_NAMESPACE
 
 #include <OSGGeoPropColors.inl>
+
+OSG_BEGIN_NAMESPACE
+
+#if !defined(OSG_COMPILEGEOPROPCOLORINST)
+OSG_FC_DLLEXPORT_DECL(GeoProperty,
+    GeoColors3fPropertyDesc,
+    OSG_SYSTEMLIB_DLLTMPLMAPPING)
+
+OSG_FC_DLLEXPORT_DECL(GeoProperty,
+    GeoColors4fPropertyDesc,
+    OSG_SYSTEMLIB_DLLTMPLMAPPING)
+
+OSG_FC_DLLEXPORT_DECL(GeoProperty,
+    GeoColors3ubPropertyDesc,
+    OSG_SYSTEMLIB_DLLTMPLMAPPING)
+
+OSG_FC_DLLEXPORT_DECL(GeoProperty,
+    GeoColors4ubPropertyDesc,
+    OSG_SYSTEMLIB_DLLTMPLMAPPING)
+#endif
+
+OSG_END_NAMESPACE
 
 #endif /* _OSGGEOPROPCOLORS_H_ */
 

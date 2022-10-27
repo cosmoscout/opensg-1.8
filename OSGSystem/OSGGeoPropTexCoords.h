@@ -92,16 +92,7 @@ struct GeoTexCoords1fPropertyDesc : public GeoTexCoordsPropertyDesc
     /*! \}                                                                 */
 };
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
 typedef GeoProperty<GeoTexCoords1fPropertyDesc> GeoTexCoords1f;
-#endif
-
-#if !defined(OSG_COMPILEGEOPROPTEXCOORDSINST) && !defined(OSG_DO_DOC)
-OSG_FC_DLLEXPORT_DECL(GeoProperty,
-                      GeoTexCoords1fPropertyDesc,
-                      OSG_SYSTEMLIB_DLLTMPLMAPPING)
-#endif
-
 
 /*! \brief The descriptor trait for osg::GeoTexCoords2f.
     \ingroup GrpSystemDrawablesGeometryProperties
@@ -149,16 +140,7 @@ struct GeoTexCoords2fPropertyDesc : public GeoTexCoordsPropertyDesc
     /*! \}                                                                 */
 };
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
 typedef GeoProperty<GeoTexCoords2fPropertyDesc> GeoTexCoords2f;
-#endif
-
-#if !defined(OSG_COMPILEGEOPROPTEXCOORDSINST) && !defined(OSG_DO_DOC)
-OSG_FC_DLLEXPORT_DECL(GeoProperty,
-                      GeoTexCoords2fPropertyDesc,
-                      OSG_SYSTEMLIB_DLLTMPLMAPPING)
-#endif
-
 
 /*! \brief The descriptor trait for osg::GeoTexCoords3f.
     \ingroup GrpSystemDrawablesGeometryProperties
@@ -206,15 +188,7 @@ struct GeoTexCoords3fPropertyDesc : public GeoTexCoordsPropertyDesc
     /*! \}                                                                 */
 };
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
 typedef GeoProperty<GeoTexCoords3fPropertyDesc> GeoTexCoords3f;
-#endif
-
-#if !defined(OSG_COMPILEGEOPROPTEXCOORDSINST) && !defined(OSG_DO_DOC)
-OSG_FC_DLLEXPORT_DECL(GeoProperty,
-                      GeoTexCoords3fPropertyDesc,
-                      OSG_SYSTEMLIB_DLLTMPLMAPPING)
-#endif
 
 /*! \brief The descriptor trait for osg::GeoTexCoords4f.
     \ingroup GrpSystemDrawablesGeometryProperties
@@ -262,16 +236,7 @@ struct GeoTexCoords4fPropertyDesc : public GeoTexCoordsPropertyDesc
     /*! \}                                                                 */
 };
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
 typedef GeoProperty<GeoTexCoords4fPropertyDesc> GeoTexCoords4f;
-#endif
-
-#if !defined(OSG_COMPILEGEOPROPTEXCOORDSINST) && !defined(OSG_DO_DOC)
-OSG_FC_DLLEXPORT_DECL(GeoProperty,
-                      GeoTexCoords4fPropertyDesc,
-                      OSG_SYSTEMLIB_DLLTMPLMAPPING)
-#endif
-
 
 /*! \brief The descriptor trait for osg::GeoTexCoords1d.
     \ingroup GrpSystemDrawablesGeometryProperties
@@ -319,16 +284,7 @@ struct GeoTexCoords1dPropertyDesc : public GeoTexCoordsPropertyDesc
     /*! \}                                                                 */
 };
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
 typedef GeoProperty<GeoTexCoords1dPropertyDesc> GeoTexCoords1d;
-#endif
-
-#if !defined(OSG_COMPILEGEOPROPTEXCOORDSINST) && !defined(OSG_DO_DOC)
-OSG_FC_DLLEXPORT_DECL(GeoProperty,
-                      GeoTexCoords1dPropertyDesc,
-                      OSG_SYSTEMLIB_DLLTMPLMAPPING)
-#endif
-
 
 /*! \brief The descriptor trait for osg::GeoTexCoords2d.
     \ingroup GrpSystemDrawablesGeometryProperties
@@ -376,16 +332,7 @@ struct GeoTexCoords2dPropertyDesc : public GeoTexCoordsPropertyDesc
     /*! \}                                                                 */
 };
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
 typedef GeoProperty<GeoTexCoords2dPropertyDesc> GeoTexCoords2d;
-#endif
-
-#if !defined(OSG_COMPILEGEOPROPTEXCOORDSINST) && !defined(OSG_DO_DOC)
-OSG_FC_DLLEXPORT_DECL(GeoProperty,
-                      GeoTexCoords2dPropertyDesc,
-                      OSG_SYSTEMLIB_DLLTMPLMAPPING)
-#endif
-
 
 /*! \brief The descriptor trait for osg::GeoTexCoords3d.
     \ingroup GrpSystemDrawablesGeometryProperties
@@ -433,15 +380,7 @@ struct GeoTexCoords3dPropertyDesc : public GeoTexCoordsPropertyDesc
     /*! \}                                                                 */
 };
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
 typedef GeoProperty<GeoTexCoords3dPropertyDesc> GeoTexCoords3d;
-#endif
-
-#if !defined(OSG_COMPILEGEOPROPTEXCOORDSINST) && !defined(OSG_DO_DOC)
-OSG_FC_DLLEXPORT_DECL(GeoProperty,
-                      GeoTexCoords3dPropertyDesc,
-                      OSG_SYSTEMLIB_DLLTMPLMAPPING)
-#endif
 
 /*! \brief The descriptor trait for osg::GeoTexCoords4d.
     \ingroup GrpSystemDrawablesGeometryProperties
@@ -489,19 +428,48 @@ struct GeoTexCoords4dPropertyDesc : public GeoTexCoordsPropertyDesc
     /*! \}                                                                 */
 };
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
 typedef GeoProperty<GeoTexCoords4dPropertyDesc> GeoTexCoords4d;
-#endif
-
-#if !defined(OSG_COMPILEGEOPROPTEXCOORDSINST) && !defined(OSG_DO_DOC)
-OSG_FC_DLLEXPORT_DECL(GeoProperty,
-                      GeoTexCoords4dPropertyDesc,
-                      OSG_SYSTEMLIB_DLLTMPLMAPPING)
-#endif
-
 
 OSG_END_NAMESPACE
 
 #include <OSGGeoPropTexCoords.inl>
+
+OSG_BEGIN_NAMESPACE
+
+#if !defined(OSG_COMPILEGEOPROPTEXCOORDSINST)
+OSG_FC_DLLEXPORT_DECL(GeoProperty,
+    GeoTexCoords1fPropertyDesc,
+    OSG_SYSTEMLIB_DLLTMPLMAPPING)
+
+OSG_FC_DLLEXPORT_DECL(GeoProperty,
+    GeoTexCoords2fPropertyDesc,
+    OSG_SYSTEMLIB_DLLTMPLMAPPING)
+
+OSG_FC_DLLEXPORT_DECL(GeoProperty,
+    GeoTexCoords3fPropertyDesc,
+    OSG_SYSTEMLIB_DLLTMPLMAPPING)
+
+OSG_FC_DLLEXPORT_DECL(GeoProperty,
+    GeoTexCoords4fPropertyDesc,
+    OSG_SYSTEMLIB_DLLTMPLMAPPING)
+
+OSG_FC_DLLEXPORT_DECL(GeoProperty,
+    GeoTexCoords1dPropertyDesc,
+    OSG_SYSTEMLIB_DLLTMPLMAPPING)
+
+OSG_FC_DLLEXPORT_DECL(GeoProperty,
+    GeoTexCoords2dPropertyDesc,
+    OSG_SYSTEMLIB_DLLTMPLMAPPING)
+
+OSG_FC_DLLEXPORT_DECL(GeoProperty,
+    GeoTexCoords3dPropertyDesc,
+    OSG_SYSTEMLIB_DLLTMPLMAPPING)
+
+OSG_FC_DLLEXPORT_DECL(GeoProperty,
+    GeoTexCoords4dPropertyDesc,
+    OSG_SYSTEMLIB_DLLTMPLMAPPING)
+#endif
+
+OSG_END_NAMESPACE
 
 #endif /* _OSGGEOPROPTEXCOORDS_H_ */

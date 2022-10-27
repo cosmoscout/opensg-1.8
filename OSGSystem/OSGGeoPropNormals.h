@@ -93,15 +93,7 @@ struct GeoNormals3fPropertyDesc : public GeoNormalsPropertyDesc
     /*! \}                                                                 */
 };
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
 typedef GeoProperty<GeoNormals3fPropertyDesc> GeoNormals3f;
-#endif
-
-#if !defined(OSG_COMPILEGEOPROPNORMALINST) && !defined(OSG_DO_DOC)
-OSG_FC_DLLEXPORT_DECL(GeoProperty,
-                      GeoNormals3fPropertyDesc,
-                      OSG_SYSTEMLIB_DLLTMPLMAPPING)
-#endif
 
 /*! \brief The descriptor trait for osg::GeoNormals3s.
     \ingroup GrpSystemDrawablesGeometryProperties
@@ -149,15 +141,7 @@ struct GeoNormals3sPropertyDesc : public GeoNormalsPropertyDesc
     /*! \}                                                                 */
 };
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
 typedef GeoProperty<GeoNormals3sPropertyDesc> GeoNormals3s;
-#endif
-
-#if !defined(OSG_COMPILEGEOPROPNORMALINST) && !defined(OSG_DO_DOC)
-OSG_FC_DLLEXPORT_DECL(GeoProperty,
-                      GeoNormals3sPropertyDesc,
-                      OSG_SYSTEMLIB_DLLTMPLMAPPING)
-#endif
 
 #ifndef OSG_NO_INT8_PNT
 
@@ -207,20 +191,33 @@ struct GeoNormals3bPropertyDesc : public GeoNormalsPropertyDesc
     /*! \}                                                                 */
 };
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
 typedef GeoProperty<GeoNormals3bPropertyDesc> GeoNormals3b;
-#endif
-
-#if !defined(OSG_COMPILEGEOPROPNORMALINST) && !defined(OSG_DO_DOC)
-OSG_FC_DLLEXPORT_DECL(GeoProperty,
-                      GeoNormals3bPropertyDesc,
-                      OSG_SYSTEMLIB_DLLTMPLMAPPING)
-#endif
 
 #endif // OSG_NO_INT8_PNT
 
 OSG_END_NAMESPACE
 
 #include <OSGGeoPropNormals.inl>
+
+OSG_BEGIN_NAMESPACE
+
+#if !defined(OSG_COMPILEGEOPROPNORMALINST)
+
+OSG_FC_DLLEXPORT_DECL(GeoProperty,
+    GeoNormals3fPropertyDesc,
+    OSG_SYSTEMLIB_DLLTMPLMAPPING)
+
+OSG_FC_DLLEXPORT_DECL(GeoProperty,
+    GeoNormals3sPropertyDesc,
+    OSG_SYSTEMLIB_DLLTMPLMAPPING)
+
+#ifndef OSG_NO_INT8_PNT
+OSG_FC_DLLEXPORT_DECL(GeoProperty,
+    GeoNormals3bPropertyDesc,
+    OSG_SYSTEMLIB_DLLTMPLMAPPING)
+#endif // OSG_NO_INT8_PNT
+#endif
+
+OSG_END_NAMESPACE
 
 #endif /* _OSGGEOPROPNORMALS_H_ */

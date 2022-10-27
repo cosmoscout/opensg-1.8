@@ -58,6 +58,7 @@
 
 #include <OSGConfig.h>
 
+#include <OSGGeoPropPositions.h>
 #include "OSGDVRClipObjectsBase.h"
 #include "OSGDVRClipObjects.h"
 
