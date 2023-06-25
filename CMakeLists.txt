@@ -16,7 +16,6 @@ endif()
 cmake_policy(SET CMP0074 NEW)
 
 find_package(OpenGL REQUIRED)
-find_package(GLUT REQUIRED)
 
 if (WIN32)
     add_definitions("/W0 /MP /bigobj -DOSG_BUILD_DLL -D_OSG_HAVE_CONFIGURED_H_ -D_CRT_SECURE_NO_WARNINGS")
@@ -30,12 +29,10 @@ if(OPENSG_INFINITE_REVERSE_PROJECTION)
 endif(OPENSG_INFINITE_REVERSE_PROJECTION)
 
 
-add_definitions("-DOSG_WITH_GLUT")
 
 include_directories(
     "OSGBase"
     "OSGSystem"
-    "OSGWindowGLUT"
     "OSGSystem/LexGenerated"
 )
 
@@ -45,6 +42,9 @@ add_subdirectory(OSGSystem)
 option(OPENSG_BUILD_TESTS "Turn off building of test applications" ON)
 
 if (OPENSG_BUILD_TESTS)
+    find_package(GLUT REQUIRED)
+    add_definitions("-DOSG_WITH_GLUT")
+    include_directories("OSGWindowGLUT")
     add_subdirectory(OSGWindowGLUT)
     add_subdirectory(Test)
 endif()
