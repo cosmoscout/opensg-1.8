@@ -39,12 +39,20 @@ include_directories(
 add_subdirectory(OSGBase)
 add_subdirectory(OSGSystem)
 
-option(OPENSG_BUILD_TESTS "Turn off building of test applications" ON)
+option(OPENSG_BUILD_TESTS "Turn off building on test applications" ON)
+option(OPENSG_BUILD_WINDOW "Turn on building the window API" ON)
 
-if (OPENSG_BUILD_TESTS)
+if (OPENSG_BUILD_WINDOW)
     find_package(GLUT REQUIRED)
     add_definitions("-DOSG_WITH_GLUT")
     include_directories("OSGWindowGLUT")
     add_subdirectory(OSGWindowGLUT)
-    add_subdirectory(Test)
+endif()
+
+if (OPENSG_BUILD_TESTS)
+    if (OPENSG_BUILD_WINDOW)
+        add_subdirectory(Test)
+    else()
+        message(WARNING "OSGWindow not enabled, but required for building tests. Skipping tests.")
+    endif()
 endif()
