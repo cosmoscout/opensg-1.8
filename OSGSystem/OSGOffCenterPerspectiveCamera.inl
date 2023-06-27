@@ -34,7 +34,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -42,9 +41,7 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 OSG_END_NAMESPACE
 
-
-#define OSGOFFCENTERPERSPECTIVECAMERA_INLINE_CVSID "@(#)$Id: OSGOffCenterPerspectiveCamera.inl,v 1.1 2005/07/18 18:46:23 dirk Exp $"
-
+#define OSGOFFCENTERPERSPECTIVECAMERA_INLINE_CVSID                                                 \
+  "@(#)$Id: OSGOffCenterPerspectiveCamera.inl,v 1.1 2005/07/18 18:46:23 dirk Exp $"

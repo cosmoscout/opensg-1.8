@@ -51,95 +51,87 @@ OSG_BEGIN_NAMESPACE
     \ingroup GrpSystemNodeCoresLights
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING DirectionalLight : public DirectionalLightBase
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING DirectionalLight : public DirectionalLightBase {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                  static stat elem                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  static stat elem                            */
-    /*! \{                                                                 */
+  static StatElemDesc<StatIntElem> statNDirectionalLights;
 
-    static StatElemDesc<StatIntElem>  statNDirectionalLights;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Set                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Set                                    */
-    /*! \{                                                                 */
+  void setDirection(Real32 rX, Real32 rY, Real32 rZ);
+  void setDirection(const Vec3f& direction);
 
-    void setDirection(      Real32  rX, 
-                            Real32  rY, 
-                            Real32  rZ);
-    void setDirection(const Vec3f  &direction);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    virtual void changed(BitVector whichField,
-                         UInt32    origin    );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Chunk                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Chunk                                   */
-    /*! \{                                                                 */
+  virtual void makeChunk(void);
 
-    virtual void makeChunk(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Dump                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Dump                                    */
-    /*! \{                                                                 */
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    virtual void dump(      UInt32    uiIndent = 0,
-                      const BitVector bvFlags  = 0) const;
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  typedef DirectionalLightBase Inherited;
 
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    typedef DirectionalLightBase Inherited;
+  DirectionalLight(void);
+  DirectionalLight(const DirectionalLight& source);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    DirectionalLight(void);
-    DirectionalLight(const DirectionalLight &source);
+  virtual ~DirectionalLight(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Actions                                */
+  /*! \{                                                                 */
 
-    virtual ~DirectionalLight(void);
+  // execute the OpenGL commands to draw the light
+  Action::ResultE drawEnter(Action* action);
+  Action::ResultE drawLeave(Action* action);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Actions                                */
-    /*! \{                                                                 */
+  // generate drawtree
+  Action::ResultE renderEnter(Action* action);
+  Action::ResultE renderLeave(Action* action);
 
-    // execute the OpenGL commands to draw the light
-    Action::ResultE drawEnter  (Action *action);
-    Action::ResultE drawLeave  (Action *action);
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class DirectionalLightBase;
 
-    // generate drawtree
-    Action::ResultE renderEnter(Action *action);
-    Action::ResultE renderLeave(Action *action);
+  static void initMethod(void);
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
-
-    friend class FieldContainer;
-    friend class DirectionalLightBase;
-
-    static void initMethod( void );
-
-    /*! \brief prohibit default function (move to 'public' if needed) */
-    void operator =(const DirectionalLight &source);
+  /*! \brief prohibit default function (move to 'public' if needed) */
+  void operator=(const DirectionalLight& source);
 };
 
 OSG_END_NAMESPACE
@@ -150,4 +142,3 @@ OSG_END_NAMESPACE
 #define OSGDIRECTIONALLIGHT_HEADER_CVSID "@(#)$Id: $"
 
 #endif /* _OSGDIRECTIONALLIGHT_H_ */
-

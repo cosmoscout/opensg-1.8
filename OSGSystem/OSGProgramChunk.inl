@@ -42,63 +42,43 @@
 
 OSG_BEGIN_NAMESPACE
 
-inline
-UInt32 ProgramChunk::getStaticClassId(void)
-{
-    return getStaticClass()->getId();
+inline UInt32 ProgramChunk::getStaticClassId(void) {
+  return getStaticClass()->getId();
 }
 
-inline
-const StateChunkClass *ProgramChunk::getStaticClass(void)
-{
-    return &ProgramChunk::_class;
+inline const StateChunkClass* ProgramChunk::getStaticClass(void) {
+  return &ProgramChunk::_class;
 }
-
 
 /*--------------------------- Access ------------------------------------*/
 
 /*! Concvenience function to add a new parameter and directly set its value.
-*/
-inline
-bool ProgramChunk::addParameter(const char   *name, 
-                                      Int16  index, 
-                                const Vec4f  &value)
-{
-    addParameter(name, index);
-    return setParameter(index, value);
+ */
+inline bool ProgramChunk::addParameter(const char* name, Int16 index, const Vec4f& value) {
+  addParameter(name, index);
+  return setParameter(index, value);
 }
 
-inline 
-const Vec4f &ProgramChunk::getParameter(const char *name)
-{
-    return getParameter(findParameter(name));
+inline const Vec4f& ProgramChunk::getParameter(const char* name) {
+  return getParameter(findParameter(name));
 }
 
-inline 
-const Vec4f &ProgramChunk::getParameter(const std::string &name)
-{
-    return getParameter(findParameter(name.c_str()));
+inline const Vec4f& ProgramChunk::getParameter(const std::string& name) {
+  return getParameter(findParameter(name.c_str()));
 }
 
-inline       
-bool ProgramChunk::setParameter(const char *name, const Vec4f& value)
-{
-    return setParameter(findParameter(name), value);
+inline bool ProgramChunk::setParameter(const char* name, const Vec4f& value) {
+  return setParameter(findParameter(name), value);
 }
 
-inline       
-bool ProgramChunk::setParameter(const std::string &name, const Vec4f &value)
-{
-    return setParameter(findParameter(name.c_str()), value);
+inline bool ProgramChunk::setParameter(const std::string& name, const Vec4f& value) {
+  return setParameter(findParameter(name.c_str()), value);
 }
-    
-inline
-Int16 ProgramChunk::findParameter(const char *name)
-{
-    return findParameter(std::string(name));
+
+inline Int16 ProgramChunk::findParameter(const char* name) {
+  return findParameter(std::string(name));
 }
 
 OSG_END_NAMESPACE
 
 #define OSGPROGRAMCHUNK_INLINE_CVSID "@(#)$Id: $"
-

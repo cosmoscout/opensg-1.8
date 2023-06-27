@@ -52,81 +52,59 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &ShaderParameterMIntBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& ShaderParameterMIntBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 ShaderParameterMIntBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 ShaderParameterMIntBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-ShaderParameterMIntPtr ShaderParameterMIntBase::create(void) 
-{
-    ShaderParameterMIntPtr fc; 
+inline ShaderParameterMIntPtr ShaderParameterMIntBase::create(void) {
+  ShaderParameterMIntPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = ShaderParameterMIntPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = ShaderParameterMIntPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-ShaderParameterMIntPtr ShaderParameterMIntBase::createEmpty(void) 
-{ 
-    ShaderParameterMIntPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline ShaderParameterMIntPtr ShaderParameterMIntBase::createEmpty(void) {
+  ShaderParameterMIntPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the ShaderParameterMInt::_mfValue field.
-inline
-MFInt32 *ShaderParameterMIntBase::getMFValue(void)
-{
-    return &_mfValue;
+inline MFInt32* ShaderParameterMIntBase::getMFValue(void) {
+  return &_mfValue;
 }
-
-
 
 //! Get the value of the \a index element the ShaderParameterMInt::_mfValue field.
-inline
-Int32 &ShaderParameterMIntBase::getValue(const UInt32 index)
-{
-    return _mfValue[index];
+inline Int32& ShaderParameterMIntBase::getValue(const UInt32 index) {
+  return _mfValue[index];
 }
 
 //! Get the ShaderParameterMInt::_mfValue field.
-inline
-MFInt32 &ShaderParameterMIntBase::getValue(void)
-{
-    return _mfValue;
+inline MFInt32& ShaderParameterMIntBase::getValue(void) {
+  return _mfValue;
 }
 
 //! Get the ShaderParameterMInt::_mfValue field.
-inline
-const MFInt32 &ShaderParameterMIntBase::getValue(void) const
-{
-    return _mfValue;
+inline const MFInt32& ShaderParameterMIntBase::getValue(void) const {
+  return _mfValue;
 }
 
 OSG_END_NAMESPACE
 
-#define OSGSHADERPARAMETERMINTBASE_INLINE_CVSID "@(#)$Id: OSGShaderParameterMIntBase.inl,v 1.1 2007/03/09 18:11:48 a-m-z Exp $"
-
+#define OSGSHADERPARAMETERMINTBASE_INLINE_CVSID                                                    \
+  "@(#)$Id: OSGShaderParameterMIntBase.inl,v 1.1 2007/03/09 18:11:48 a-m-z Exp $"

@@ -72,10 +72,6 @@
 
 \*---------------------------------------------------------------------------*/
 
-
-
-
-
 #ifndef _OSGMATRIXCAMERA_H_
 
 #define _OSGMATRIXCAMERA_H_
@@ -86,181 +82,121 @@
 
 #endif
 
-
-
 //---------------------------------------------------------------------------
 
 //  Includes
 
 //---------------------------------------------------------------------------
 
-
-
 #include <OSGConfig.h>
-
-
 
 #include <OSGMatrixCameraBase.h>
 
-
-
 OSG_BEGIN_NAMESPACE
 
-
-
-/*! \brief Matrix Camera class. See \ref PageSystemWindowCameraMatrix for 
+/*! \brief Matrix Camera class. See \ref PageSystemWindowCameraMatrix for
 
     a description.
 
 */
 
-
-
 class OSG_SYSTEMLIB_DLLMAPPING MatrixCamera : public MatrixCameraBase
 
 {
 
+  /*==========================  PUBLIC  =================================*/
 
+ public:
+  /*---------------------------------------------------------------------*/
 
-    /*==========================  PUBLIC  =================================*/
+  /*! \name                    Class Get                                 */
 
-  public:
+  /*! \{                                                                 */
 
-    
+  static const char* getClassname(void) {
+    return "MatrixCamera";
+  };
 
-    /*---------------------------------------------------------------------*/
+  /*! \}                                                                 */
 
-    /*! \name                    Class Get                                 */
+  /*---------------------------------------------------------------------*/
 
-    /*! \{                                                                 */
+  /*! \name                    transformation                            */
 
+  /*! \{                                                                 */
 
+  virtual void changed(BitVector whichField,
 
-    static const char *getClassname(void) { return "MatrixCamera"; };
+      UInt32 origin);
 
-    
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
 
-    /*---------------------------------------------------------------------*/
+  /*! \name                   your_category                              */
 
-    /*! \name                    transformation                            */
+  /*! \{                                                                 */
 
-    /*! \{                                                                 */
+  virtual void draw(DrawAction* action, const Viewport& port);
 
+  virtual void getProjection(Matrix& result, UInt32 width, UInt32 height);
 
+  virtual void getViewing(Matrix& result, UInt32 width, UInt32 height);
 
-    virtual void changed(BitVector whichField, 
+  /*! \}                                                                 */
 
-                         UInt32    origin    );
+  /*---------------------------------------------------------------------*/
 
-    /*! \}                                                                 */
+  /*! \name                    dump                                      */
 
-    /*---------------------------------------------------------------------*/
+  /*! \{                                                                 */
 
-    /*! \name                   your_category                              */
+  virtual void dump(UInt32 uiIndent = 0,
 
-    /*! \{                                                                 */
+      const BitVector bvFlags = 0) const;
 
+  /*! \}                                                                 */
 
+  /*=========================  PROTECTED  ===============================*/
 
-    virtual void draw( DrawAction * action, const Viewport& port );
+ protected:
+  /*---------------------------------------------------------------------*/
 
+  /*! \name                    Constructors                              */
 
+  /*! \{                                                                 */
 
-    virtual void getProjection( Matrix& result, UInt32 width, UInt32 height );
+  MatrixCamera(void);
 
+  MatrixCamera(const MatrixCamera& source);
 
+  /*! \}                                                                 */
 
-    virtual void getViewing( Matrix& result, UInt32 width, UInt32 height); 
+  /*---------------------------------------------------------------------*/
 
+  /*! \name                    Destructors                               */
 
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  virtual ~MatrixCamera(void);
 
-    /*---------------------------------------------------------------------*/
+  /*! \}                                                                 */
 
-    /*! \name                    dump                                      */
+  /*==========================  PRIVATE  ================================*/
 
-    /*! \{                                                                 */
+ private:
+  typedef MatrixCameraBase Inherited;
 
+  friend class FieldContainer;
 
+  friend class MatrixCameraBase;
 
-    virtual void dump(      UInt32    uiIndent = 0, 
+  static void initMethod(void);
 
-                      const BitVector bvFlags  = 0) const;
+  // prohibit default functions (move to 'public' if you need one)
 
-
-
-    /*! \}                                                                 */
-
-    /*=========================  PROTECTED  ===============================*/
-
-  protected:
-
- 
-
-    /*---------------------------------------------------------------------*/
-
-    /*! \name                    Constructors                              */
-
-    /*! \{                                                                 */
-
-
-
-    MatrixCamera(void);
-
-    MatrixCamera(const MatrixCamera &source);
-
-    
-
-    /*! \}                                                                 */
-
-    /*---------------------------------------------------------------------*/
-
-    /*! \name                    Destructors                               */
-
-    /*! \{                                                                 */
-
-
-
-    virtual ~MatrixCamera(void); 
-
-     
-
-    /*! \}                                                                 */
-
-    /*==========================  PRIVATE  ================================*/  
-
-   
-
-  private:
-
-
-
-    typedef MatrixCameraBase Inherited;
-
-
-
-    friend class FieldContainer;
-
-    friend class MatrixCameraBase;
-
-
-
-    static void initMethod( void );
-
-
-
-    // prohibit default functions (move to 'public' if you need one)
-
-
-
-    void operator =(const MatrixCamera &source);
-
+  void operator=(const MatrixCamera& source);
 };
-
-
 
 //---------------------------------------------------------------------------
 
@@ -268,25 +204,15 @@ class OSG_SYSTEMLIB_DLLMAPPING MatrixCamera : public MatrixCameraBase
 
 //---------------------------------------------------------------------------
 
-
-
-typedef MatrixCamera *MatrixCameraP;
-
-
+typedef MatrixCamera* MatrixCameraP;
 
 OSG_END_NAMESPACE
-
-
 
 #include <OSGMatrixCameraBase.inl>
 
 #include <OSGMatrixCamera.inl>
 
-
-
-#define OSGMATRIXCAMERA_HEADER_CVSID "@(#)$Id: FCTemplate_h.h,v 1.15 2002/06/01 10:37:25 vossg Exp $"
-
-
+#define OSGMATRIXCAMERA_HEADER_CVSID                                                               \
+  "@(#)$Id: FCTemplate_h.h,v 1.15 2002/06/01 10:37:25 vossg Exp $"
 
 #endif /* _OSGMATRIXCAMERA_H_ */
-

@@ -60,97 +60,87 @@ OSG_BEGIN_NAMESPACE
 /*! \ingroup GrpBaseStringConversion
  */
 
-class OSG_BASE_DLLMAPPING StandardStringConversionState : 
-    public StringConversionStateBase
-{
+class OSG_BASE_DLLMAPPING StandardStringConversionState : public StringConversionStateBase {
 
-    /*==========================  PUBLIC  =================================*/
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constants                                  */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constants                                  */
-    /*! \{                                                                 */
+  static const UInt32 DefaultIndent = 0;
+  static const UInt32 DefaultWidth  = 80;
 
-    static const UInt32 DefaultIndent  = 0; 
-    static const UInt32 DefaultWidth   = 80; 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  StandardStringConversionState(UInt32 indent = DefaultIndent, UInt32 width = DefaultWidth);
 
-    StandardStringConversionState(UInt32 indent = DefaultIndent,
-                                  UInt32 width  = DefaultWidth);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  virtual ~StandardStringConversionState(void);
 
-    virtual ~StandardStringConversionState(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Get                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Get                                     */
-    /*! \{                                                                 */
+  UInt32 getIndent(void) const;
+  UInt32 getWidth(void) const;
 
-    UInt32 getIndent(void) const;
-    UInt32 getWidth (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Set                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Set                                     */
-    /*! \{                                                                 */
+  void setIndent(UInt32 newIndent);
+  void setWidth(UInt32 newWidth);
 
-    void setIndent(UInt32 newIndent);
-    void setWidth (UInt32 newWidth );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Handle Fields                              */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Handle Fields                              */
-    /*! \{                                                                 */
+  virtual std::string& beginField(const Field* pF, std::string& outStr);
+  virtual std::string& addValueStr(std::string& value, std::string& outStr);
+  virtual std::string& endField(const Field* pF, std::string& outStr);
 
-    virtual std::string &beginField (const      Field  *pF,    
-                                           std::string &outStr);
-    virtual std::string &addValueStr(      std::string &value, 
-                                           std::string &outStr);
-    virtual std::string &endField   (const      Field  *pF,    
-                                           std::string &outStr);
-    
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-  protected:
+ protected:
+  typedef StringConversionStateBase Inherited;
 
-    typedef StringConversionStateBase Inherited;
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Member                                  */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Member                                  */
-    /*! \{                                                                 */
-    
-    Indenter    _indent;
-    UInt32      _width;
+  Indenter _indent;
+  UInt32   _width;
 
-    UInt32      _lineLength;
+  UInt32 _lineLength;
 
-    bool        _noLineBreakHint;
-    bool        _multiFieldHint;
+  bool _noLineBreakHint;
+  bool _multiFieldHint;
 
-    std::string _mfSeparator;
-    UInt32      _mfSepLength;
-    UInt32      _lastMFSepStart;
+  std::string _mfSeparator;
+  UInt32      _mfSepLength;
+  UInt32      _lastMFSepStart;
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-  private:
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    StandardStringConversionState(const StandardStringConversionState &source);
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    StandardStringConversionState& operator =(
-        const StandardStringConversionState &source);
+ private:
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  StandardStringConversionState(const StandardStringConversionState& source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  StandardStringConversionState& operator=(const StandardStringConversionState& source);
 };
 
 OSG_END_NAMESPACE
@@ -160,4 +150,3 @@ OSG_END_NAMESPACE
 #include "OSGStandardStringConversionState.inl"
 
 #endif /* _OSGSTANDARDSTRINGCONVERSIONSTATE_H_ */
-

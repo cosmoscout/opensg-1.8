@@ -54,232 +54,173 @@
 
 OSG_USING_NAMESPACE
 
-
 #ifdef WIN32
-OSG_FC_TYPE_FUNCTIONS_INL_TMPL_DEF(AttachmentDescT,
-                                   SimpleAttachment);
+OSG_FC_TYPE_FUNCTIONS_INL_TMPL_DEF(AttachmentDescT, SimpleAttachment);
 #endif
 
 /*-------------------------------------------------------------------------*/
 /*                            Name Attachment                              */
 
-FieldDescription *NameAttachmentDesc::_desc[] =
-{
-    new FieldDescription(
-        FieldTypeT::getClassType(), 
-        getFieldName(), 
-        OSG_FC_FIELD_IDM_DESC(
-            SimpleAttachment<NameAttachmentDesc>::SimpleField),
-        false,
-        (FieldAccessMethod) &SimpleAttachment<
-                                  NameAttachmentDesc>::getFieldPtr)
-};
+FieldDescription* NameAttachmentDesc::_desc[] = {new FieldDescription(FieldTypeT::getClassType(),
+    getFieldName(), OSG_FC_FIELD_IDM_DESC(SimpleAttachment<NameAttachmentDesc>::SimpleField), false,
+    (FieldAccessMethod)&SimpleAttachment<NameAttachmentDesc>::getFieldPtr)};
 
 OSG_BEGIN_NAMESPACE
 
-OSG_FC_DLLEXPORT_DEF(SimpleAttachment,
-                     NameAttachmentDesc,
-                     OSG_SYSTEMLIB_DLLTMPLMAPPING);
+OSG_FC_DLLEXPORT_DEF(SimpleAttachment, NameAttachmentDesc, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
 
 /*-------------------------------------------------------------------------*/
 /*                            VoidP Attachment                             */
 
-FieldDescription *VoidPAttachmentDesc::_desc[] =
-{
-    new FieldDescription(
-        FieldTypeT::getClassType(), 
-        getFieldName(), 
-        OSG_FC_FIELD_IDM_DESC(
-            SimpleAttachment<VoidPAttachmentDesc>::SimpleField),
-        false,
-        (FieldAccessMethod) &SimpleAttachment<
-                                  VoidPAttachmentDesc>::getFieldPtr)
-};
+FieldDescription* VoidPAttachmentDesc::_desc[] = {new FieldDescription(FieldTypeT::getClassType(),
+    getFieldName(), OSG_FC_FIELD_IDM_DESC(SimpleAttachment<VoidPAttachmentDesc>::SimpleField),
+    false, (FieldAccessMethod)&SimpleAttachment<VoidPAttachmentDesc>::getFieldPtr)};
 
 OSG_BEGIN_NAMESPACE
 
-OSG_FC_DLLEXPORT_DEF(SimpleAttachment,
-                     VoidPAttachmentDesc,
-                     OSG_SYSTEMLIB_DLLTMPLMAPPING);
-
+OSG_FC_DLLEXPORT_DEF(SimpleAttachment, VoidPAttachmentDesc, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 /*-------------------------------------------------------------------------*/
 /*                   Name Attachment Utility Functions                     */
 
-/*! 
+/*!
   Return the name attached to the container, NULL if none attached or
   container is NULL.
  */
 
-const Char8 *getName(AttachmentContainerPtr container)
-{
-    if(container == NullFC)
-        return NULL;
-   
-    // Get attachment pointer
-    AttachmentPtr att = 
-        container->findAttachment(Name::getClassType().getGroupId());
+const Char8* getName(AttachmentContainerPtr container) {
+  if (container == NullFC)
+    return NULL;
 
-    if(att == NullFC)
-        return NULL;
-   
-    // Cast to name pointer                           
+  // Get attachment pointer
+  AttachmentPtr att = container->findAttachment(Name::getClassType().getGroupId());
 
-    NamePtr name = NamePtr::dcast(att);
+  if (att == NullFC)
+    return NULL;
 
-    if(name == NullFC)
-        return NULL;
-   
-    return name->getFieldPtr()->getValue().c_str();
+  // Cast to name pointer
+
+  NamePtr name = NamePtr::dcast(att);
+
+  if (name == NullFC)
+    return NULL;
+
+  return name->getFieldPtr()->getValue().c_str();
 }
 
 /*! Set the name attached to the container. If the container doesn't have a
-    name attachement yet one is created. 
+    name attachement yet one is created.
  */
 
-void setName(      AttachmentContainerPtr  container, 
-             const std::string            &namestring)
-{
-    if(container == NullFC)
-    {
-        FFATAL(("setName: no container?!?\n"));
-        return;
-    }
-   
-    // Get attachment pointer
+void setName(AttachmentContainerPtr container, const std::string& namestring) {
+  if (container == NullFC) {
+    FFATAL(("setName: no container?!?\n"));
+    return;
+  }
 
-    NamePtr       name = NullFC;
-    AttachmentPtr att  = 
-        container->findAttachment(Name::getClassType().getGroupId());
-    
-    if(att == NullFC)
-    {
-        name = Name::create();
-        beginEditCP(container, AttachmentContainer::AttachmentsFieldMask);
-        {
-            container->addAttachment(name);
-        }
-        endEditCP(container, AttachmentContainer::AttachmentsFieldMask);
-    }
-    else
-    {   
-        name = NamePtr::dcast(att);
+  // Get attachment pointer
 
-        if(name == NullFC)
-        {
-            FFATAL(("setName: Name Attachment is not castable to Name?!?\n"));
-            return;
-        }
+  NamePtr       name = NullFC;
+  AttachmentPtr att  = container->findAttachment(Name::getClassType().getGroupId());
+
+  if (att == NullFC) {
+    name = Name::create();
+    beginEditCP(container, AttachmentContainer::AttachmentsFieldMask);
+    { container->addAttachment(name); }
+    endEditCP(container, AttachmentContainer::AttachmentsFieldMask);
+  } else {
+    name = NamePtr::dcast(att);
+
+    if (name == NullFC) {
+      FFATAL(("setName: Name Attachment is not castable to Name?!?\n"));
+      return;
     }
-    
-  
-    beginEditCP(name);
-    {
-        name->getFieldPtr()->getValue().assign(namestring);   
-    }
-    endEditCP(name);
+  }
+
+  beginEditCP(name);
+  { name->getFieldPtr()->getValue().assign(namestring); }
+  endEditCP(name);
 }
 
-/*! 
-  Set the name attached to the container. If the container doesn't have 
+/*!
+  Set the name attached to the container. If the container doesn't have
   name attachement yet one is created. If the name is NULL, an attached
   name is removed.
  */
 
-void setName(AttachmentContainerPtr container, const Char8 *name)
-{
-    if(name == NULL)
-    {
-        AttachmentPtr att = 
-            container->findAttachment(Name::getClassType().getGroupId());
- 
-        if(att != NullFC)
-        {
-            container->subAttachment(att);
-        }       
-    }
-    else
-    {
-        setName(container, std::string(name));
-    }
-}
+void setName(AttachmentContainerPtr container, const Char8* name) {
+  if (name == NULL) {
+    AttachmentPtr att = container->findAttachment(Name::getClassType().getGroupId());
 
+    if (att != NullFC) {
+      container->subAttachment(att);
+    }
+  } else {
+    setName(container, std::string(name));
+  }
+}
 
 /*-------------------------------------------------------------------------*/
 /*                   VoidP Attachment Utility Functions                    */
 
-/*! 
+/*!
   Return the void * attached to the container, NULL if none attached or
   container is NULL.
  */
 
-void *getVoidP(AttachmentContainerPtr container)
-{
-    if(container == NullFC)
-        return NULL;
-   
-    // Get attachment pointer
-    AttachmentPtr att = 
-       container->findAttachment(VoidPAttachment::getClassType().getGroupId());
+void* getVoidP(AttachmentContainerPtr container) {
+  if (container == NullFC)
+    return NULL;
 
-    if(att == NullFC)
-        return NULL;
-   
-    // Cast to name pointer                           
+  // Get attachment pointer
+  AttachmentPtr att = container->findAttachment(VoidPAttachment::getClassType().getGroupId());
 
-    VoidPAttachmentPtr pVoid = VoidPAttachmentPtr::dcast(att);
+  if (att == NullFC)
+    return NULL;
 
-    if(pVoid == NullFC)
-        return NULL;
-   
-    return pVoid->getFieldPtr()->getValue();
+  // Cast to name pointer
+
+  VoidPAttachmentPtr pVoid = VoidPAttachmentPtr::dcast(att);
+
+  if (pVoid == NullFC)
+    return NULL;
+
+  return pVoid->getFieldPtr()->getValue();
 }
 
-/*! 
+/*!
   Set the void * attached to the container. If the container doesn't have a
-  VoidP attachement yet one is created. 
+  VoidP attachement yet one is created.
  */
 
-void setVoidP(AttachmentContainerPtr  container, 
-              void                   *pData,
-              bool                   internal )
-{
-    if(container == NullFC)
-    {
-        FFATAL(("setVoidP: no container?!?\n"));
-        return;
-    }
-   
-    // Get attachment pointer
+void setVoidP(AttachmentContainerPtr container, void* pData, bool internal) {
+  if (container == NullFC) {
+    FFATAL(("setVoidP: no container?!?\n"));
+    return;
+  }
 
-    VoidPAttachmentPtr  pVoid = NullFC;
-    AttachmentPtr       att   = 
-       container->findAttachment(VoidPAttachment::getClassType().getGroupId());
-    
-    if(att == NullFC)
-    {
-        pVoid = VoidPAttachment::create();
-        container->addAttachment(pVoid);
-    }
-    else
-    {   
-        pVoid = VoidPAttachmentPtr::dcast(att);
+  // Get attachment pointer
 
-        if(pVoid == NullFC)
-        {
-            FFATAL(("setVoidP: VoidP Attachment is not castable "
-                    "to VoidPAttachment?!?\n"));
-            return;
-        }
+  VoidPAttachmentPtr pVoid = NullFC;
+  AttachmentPtr      att = container->findAttachment(VoidPAttachment::getClassType().getGroupId());
+
+  if (att == NullFC) {
+    pVoid = VoidPAttachment::create();
+    container->addAttachment(pVoid);
+  } else {
+    pVoid = VoidPAttachmentPtr::dcast(att);
+
+    if (pVoid == NullFC) {
+      FFATAL(("setVoidP: VoidP Attachment is not castable "
+              "to VoidPAttachment?!?\n"));
+      return;
     }
-  
-    pVoid->setInternal(internal);
-    pVoid->getFieldPtr()->setValue(pData);
+  }
+
+  pVoid->setInternal(internal);
+  pVoid->getFieldPtr()->setValue(pData);
 }
 
 OSG_END_NAMESPACE
-
-
-

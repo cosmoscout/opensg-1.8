@@ -13,148 +13,128 @@
 
 OSG_USING_NAMESPACE
 
-SimpleSceneManager *mgr;
+SimpleSceneManager* mgr;
 
-StatCollector *collector;
+StatCollector* collector;
 
 bool show = true;
 
 // redraw the window
-void display(void)
-{   
-    mgr->redraw();
+void display(void) {
+  mgr->redraw();
 
-    // all done, swap    
-    glutSwapBuffers();
+  // all done, swap
+  glutSwapBuffers();
 }
 
 // react to size changes
-void reshape(int w, int h)
-{
-    mgr->resize(w,h);
-    glutPostRedisplay();
+void reshape(int w, int h) {
+  mgr->resize(w, h);
+  glutPostRedisplay();
 }
 
 // react to mouse button presses
-void mouse(int button, int state, int x, int y)
-{
-    if (state)
-        mgr->mouseButtonRelease(button, x, y);
-    else
-        mgr->mouseButtonPress(button, x, y);
-        
-    glutPostRedisplay();
+void mouse(int button, int state, int x, int y) {
+  if (state)
+    mgr->mouseButtonRelease(button, x, y);
+  else
+    mgr->mouseButtonPress(button, x, y);
+
+  glutPostRedisplay();
 }
 
 // react to mouse motions with pressed buttons
-void motion(int x, int y)
-{
-    mgr->mouseMove(x, y);
-    glutPostRedisplay();
+void motion(int x, int y) {
+  mgr->mouseMove(x, y);
+  glutPostRedisplay();
 }
 
 // react to keys
-void keyboard(unsigned char k, int, int)
-{
-    switch(k)
-    {
-        case 27:    
-        {
-            osgExit();
-            exit(0);
-        }
-        
-        case 'v':
-        {
-            mgr->getAction()->setVolumeDrawing(
-                                    !mgr->getAction()->getVolumeDrawing());
-		    std::cerr << "Volume Drawing: " 
-                      << (mgr->getAction()->getVolumeDrawing()?"on":"off") 
-                      << std::endl;
-        }
-        
-        case 's':
-        {
-            RenderAction *ract = dynamic_cast<RenderAction *>(mgr->getAction());
-            ract->setZWriteTrans(!ract->getZWriteTrans());
-		    std::cerr << "Switch TransZWrite to " 
-                      << (ract->getZWriteTrans()?"on":"off") 
-                      << std::endl;
-             
-        }
-        break;
-    }
+void keyboard(unsigned char k, int, int) {
+  switch (k) {
+  case 27: {
+    osgExit();
+    exit(0);
+  }
+
+  case 'v': {
+    mgr->getAction()->setVolumeDrawing(!mgr->getAction()->getVolumeDrawing());
+    std::cerr << "Volume Drawing: " << (mgr->getAction()->getVolumeDrawing() ? "on" : "off")
+              << std::endl;
+  }
+
+  case 's': {
+    RenderAction* ract = dynamic_cast<RenderAction*>(mgr->getAction());
+    ract->setZWriteTrans(!ract->getZWriteTrans());
+    std::cerr << "Switch TransZWrite to " << (ract->getZWriteTrans() ? "on" : "off") << std::endl;
+
+  } break;
+  }
 }
 
+int main(int argc, char** argv) {
+  osgInit(argc, argv);
 
-int main(int argc, char **argv)
-{
-    osgInit(argc,argv);
+  // GLUT init
+  glutInit(&argc, argv);
 
-    // GLUT init
-    glutInit(&argc, argv);
-    
-    glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
+  glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
 
-    glutInitWindowSize(500, 500);
-    glutCreateWindow("OpenSG");
-    
-    glutReshapeFunc(reshape);
-    glutDisplayFunc(display);
-    glutIdleFunc(display);
-    glutMouseFunc(mouse);
-    glutMotionFunc(motion);
-    glutKeyboardFunc(keyboard);
+  glutInitWindowSize(500, 500);
+  glutCreateWindow("OpenSG");
 
-    PassiveWindowPtr pwin=PassiveWindow::create();
-    pwin->init();
+  glutReshapeFunc(reshape);
+  glutDisplayFunc(display);
+  glutIdleFunc(display);
+  glutMouseFunc(mouse);
+  glutMotionFunc(motion);
+  glutKeyboardFunc(keyboard);
 
-    // create the scene
-    NodePtr scene;
-    
-    if(argc > 1 && !strcmp(argv[1],"-s"))
-    {
-        show = false;
-        argv++;
-        argc--;
-    }
-    
-    if(argc > 1)
-    {
-        scene = Node::create();
-        GroupPtr g = Group::create();
-        
-        beginEditCP(scene);
-        scene->setCore(g);
-        
-        for(UInt16 i = 1; i < argc; ++i)
-            scene->addChild(SceneFileHandler::the().read(argv[i]));
-        
-        endEditCP(scene);
-    }
-    else
-    {
-        scene = makeTorus(.5, 3, 16, 16);
-    }
+  PassiveWindowPtr pwin = PassiveWindow::create();
+  pwin->init();
 
-    // create the SimpleSceneManager helper
-    mgr = new SimpleSceneManager;
+  // create the scene
+  NodePtr scene;
 
-    // create the window and initial camera/viewport
-    mgr->setWindow(pwin );
-    // tell the manager what to manage
-    mgr->setRoot  (scene);
-    
-    // show the whole scene
-    mgr->showAll();
+  if (argc > 1 && !strcmp(argv[1], "-s")) {
+    show = false;
+    argv++;
+    argc--;
+  }
 
-    // add the statistics forground
-    
-    SimpleStatisticsForegroundPtr statfg = SimpleStatisticsForeground::create();
-    
-    beginEditCP(statfg);
-    statfg->setSize(25);
-    statfg->setColor(Color4f(0,1,0,0.7));
+  if (argc > 1) {
+    scene      = Node::create();
+    GroupPtr g = Group::create();
+
+    beginEditCP(scene);
+    scene->setCore(g);
+
+    for (UInt16 i = 1; i < argc; ++i)
+      scene->addChild(SceneFileHandler::the().read(argv[i]));
+
+    endEditCP(scene);
+  } else {
+    scene = makeTorus(.5, 3, 16, 16);
+  }
+
+  // create the SimpleSceneManager helper
+  mgr = new SimpleSceneManager;
+
+  // create the window and initial camera/viewport
+  mgr->setWindow(pwin);
+  // tell the manager what to manage
+  mgr->setRoot(scene);
+
+  // show the whole scene
+  mgr->showAll();
+
+  // add the statistics forground
+
+  SimpleStatisticsForegroundPtr statfg = SimpleStatisticsForeground::create();
+
+  beginEditCP(statfg);
+  statfg->setSize(25);
+  statfg->setColor(Color4f(0, 1, 0, 0.7));
 #if 0
     statfg->addElement(RenderAction::statDrawTime, "Draw FPS: %r.3f");
     statfg->addElement(DrawActionBase::statTravTime, "TravTime: %.3f s");
@@ -184,24 +164,23 @@ int main(int argc, char **argv)
     statfg->addElement(RenderAction::statNTextures, "%d textures used");
     statfg->addElement(RenderAction::statNTexBytes, "%d bytes of texture used");
 #endif
-    endEditCP(statfg);
-    
-    collector = &statfg->getCollector();
-    
-    // add optional elements
-    collector->getElem(Drawable::statNTriangles);
-    
-    mgr->getAction()->setStatistics(collector);
-    
-    if(show)
-    {
-        beginEditCP(pwin->getPort(0));
-        pwin->getPort(0)->getForegrounds().push_back(statfg);
-        endEditCP  (pwin->getPort(0));
-    }
-    
-    // GLUT main loop
-    glutMainLoop();
+  endEditCP(statfg);
 
-    return 0;
+  collector = &statfg->getCollector();
+
+  // add optional elements
+  collector->getElem(Drawable::statNTriangles);
+
+  mgr->getAction()->setStatistics(collector);
+
+  if (show) {
+    beginEditCP(pwin->getPort(0));
+    pwin->getPort(0)->getForegrounds().push_back(statfg);
+    endEditCP(pwin->getPort(0));
+  }
+
+  // GLUT main loop
+  glutMainLoop();
+
+  return 0;
 }

@@ -38,8 +38,8 @@
 
 #ifndef _OSGSLPSCENEFILETYPE_H_
 #define _OSGSLPSCENEFILETYPE_H_
-#ifdef  __sgi
-#pragma  once
+#ifdef __sgi
+#pragma once
 #endif
 
 #include <OSGBaseTypes.h>
@@ -49,88 +49,80 @@
 OSG_BEGIN_NAMESPACE
 
 /*! \brief OSGSLPSceneFileType
-*/
+ */
 
-class OSG_SYSTEMLIB_DLLMAPPING SLPSceneFileType : public SceneFileType
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING SLPSceneFileType : public SceneFileType {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Class Get                                  */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Class Get                                  */
-    /*! \{                                                                 */
+  static SLPSceneFileType& the(void);
 
-    static SLPSceneFileType &the(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  virtual ~SLPSceneFileType(void);
 
-    virtual ~SLPSceneFileType(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Get                                        */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Get                                        */
-    /*! \{                                                                 */
+  virtual const Char8* getName(void) const;
 
-    virtual const Char8 *getName(void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Read                                       */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Read                                       */
-    /*! \{                                                                 */
+  virtual NodePtr read(std::istream& is, const Char8* fileNameOrExtension) const;
 
-    virtual NodePtr read(std::istream &is,
-                         const Char8 *fileNameOrExtension) const;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Member                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  static const Char8*     _suffixA[];
+  static SLPSceneFileType _the;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Member                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    static const Char8            *_suffixA[];
-    static       SLPSceneFileType  _the;
+  SLPSceneFileType(const Char8* suffixArray[], UInt16 suffixByteCount, bool override,
+      UInt32 overridePriority, UInt32 flags);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  SLPSceneFileType(const SLPSceneFileType& obj);
 
-    SLPSceneFileType(const Char8  *suffixArray[],
-                           UInt16  suffixByteCount,
-                           bool    override,
-                           UInt32  overridePriority,
-                           UInt32  flags);
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  struct SLPFace {
+    Real64 v1x, v1y, v1z;
+    Real64 v2x, v2y, v2z;
+    Real64 v3x, v3y, v3z;
+    Real64 n1x, n1y, n1z;
+    Real64 n2x, n2y, n2z;
+    Real64 n3x, n3y, n3z;
+  };
 
-    SLPSceneFileType(const SLPSceneFileType &obj);
-
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
-
-    struct SLPFace
-    {
-          Real64 v1x, v1y, v1z; 
-          Real64 v2x, v2y, v2z; 
-          Real64 v3x, v3y, v3z; 
-          Real64 n1x, n1y, n1z; 
-          Real64 n2x, n2y, n2z; 
-          Real64 n3x, n3y, n3z; 
-    };
-
-    typedef SceneFileType Inherited;
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const SLPSceneFileType &source);
+  typedef SceneFileType Inherited;
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const SLPSceneFileType& source);
 };
 
 typedef SLPSceneFileType* SLPSceneFileTypeP;
 
 OSG_END_NAMESPACE
 
-#define OSGSLPSCENEFILETYPE_HEADER_CVSID "@(#)$Id: OSGSLPSceneFileType.h,v 1.1 2004/04/16 12:43:58 a-m-z Exp $"
+#define OSGSLPSCENEFILETYPE_HEADER_CVSID                                                           \
+  "@(#)$Id: OSGSLPSceneFileType.h,v 1.1 2004/04/16 12:43:58 a-m-z Exp $"
 
 #endif // _OSGSLPSCENEFILETYPE_H_

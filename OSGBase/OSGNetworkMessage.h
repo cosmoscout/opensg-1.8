@@ -47,63 +47,59 @@
 
 OSG_BEGIN_NAMESPACE
 
-class OSG_BASE_DLLMAPPING NetworkMessage 
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
-    
-    /** \class Header
-     *  \ingroup GrpBaseNetwork
-     *  \brief Header of socket messages
-     **/
-    struct Header
-    {
-        UInt32 size;
-    };
+class OSG_BASE_DLLMAPPING NetworkMessage {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /** \class Header
+   *  \ingroup GrpBaseNetwork
+   *  \brief Header of socket messages
+   **/
+  struct Header {
+    UInt32 size;
+  };
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    NetworkMessage(void);
-    NetworkMessage(const NetworkMessage &source);
+  NetworkMessage(void);
+  NetworkMessage(const NetworkMessage& source);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    virtual ~NetworkMessage(void);
+  virtual ~NetworkMessage(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Get                                     */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Get                                     */
+  /*! \{                                                                 */
 
-    virtual UInt32        getSize   (void)=0;
-    virtual MemoryHandle  getBuffer (void)=0;
-            Header       &getHeader (void);
+  virtual UInt32       getSize(void)   = 0;
+  virtual MemoryHandle getBuffer(void) = 0;
+  Header&              getHeader(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Set                                     */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Set                                     */
+  /*! \{                                                                 */
 
-    virtual void setSize                (UInt32 size)=0;
+  virtual void setSize(UInt32 size) = 0;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Assignment                              */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Assignment                              */
+  /*! \{                                                                 */
 
-    NetworkMessage &operator =(const NetworkMessage &source);
+  NetworkMessage& operator=(const NetworkMessage& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
-
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*==========================  PRIVATE  ================================*/
+ private:
 };
 
 //---------------------------------------------------------------------------
@@ -112,7 +108,7 @@ class OSG_BASE_DLLMAPPING NetworkMessage
 
 // class pointer
 
-typedef NetworkMessage *NetworkMessageP;
+typedef NetworkMessage* NetworkMessageP;
 
 OSG_END_NAMESPACE
 

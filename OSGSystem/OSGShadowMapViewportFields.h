@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGSHADOWMAPVIEWPORTFIELDS_H_
 #define _OSGSHADOWMAPVIEWPORTFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class ShadowMapViewport;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! ShadowMapViewportPtr
 
 typedef FCPtr<StereoBufferViewportPtr, ShadowMapViewport> ShadowMapViewportPtr;
@@ -81,18 +80,23 @@ typedef FCPtr<StereoBufferViewportPtr, ShadowMapViewport> ShadowMapViewportPtr;
 #endif
 
 template <>
-struct FieldDataTraits<ShadowMapViewportPtr> : 
-    public FieldTraitsRecurseMapper<ShadowMapViewportPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<ShadowMapViewportPtr>
+    : public FieldTraitsRecurseMapper<ShadowMapViewportPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getSName(void) { return "SFShadowMapViewportPtr"; }
-    static const char *getMName(void) { return "MFShadowMapViewportPtr"; }
+  static const char* getSName(void) {
+    return "SFShadowMapViewportPtr";
+  }
+  static const char* getMName(void) {
+    return "MFShadowMapViewportPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -102,7 +106,6 @@ struct FieldDataTraits<ShadowMapViewportPtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
@@ -126,6 +129,7 @@ OSG_DLLEXPORT_DECL1(MField, ShadowMapViewportPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 
 OSG_END_NAMESPACE
 
-#define OSGSHADOWMAPVIEWPORTFIELDS_HEADER_CVSID "@(#)$Id: OSGShadowMapViewportFields.h,v 1.12 2006/07/27 13:43:08 a-m-z Exp $"
+#define OSGSHADOWMAPVIEWPORTFIELDS_HEADER_CVSID                                                    \
+  "@(#)$Id: OSGShadowMapViewportFields.h,v 1.12 2006/07/27 13:43:08 a-m-z Exp $"
 
 #endif /* _OSGSHADOWMAPVIEWPORTFIELDS_H_ */

@@ -71,7 +71,3 @@
 #include <OSGPrimary.h>
 
 #endif /* _OSGFIELDCONTAINERPTR_H_ */
-
-
-
-

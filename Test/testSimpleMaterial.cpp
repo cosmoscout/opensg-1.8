@@ -9,55 +9,53 @@
 
 OSG_USING_NAMESPACE
 
+int main(int argc, char* argv[]) {
+  osgInit(argc, argv);
 
-int main( int argc, char *argv[] )
-{
-    osgInit(argc, argv);
+  osgLog().setLogLevel(LOG_DEBUG);
 
-    osgLog().setLogLevel( LOG_DEBUG );
+  MaterialPtr m;
 
-    MaterialPtr m;
+  SimpleMaterialPtr b = SimpleMaterial::create();
 
-    SimpleMaterialPtr b = SimpleMaterial::create();
+  b->dump();
 
-    b->dump();
+  // test simple settings
 
-    // test simple settings
+  b->setAmbient(Color3f(0.1, 0.1, 0.1));
+  b->setDiffuse(Color3f(0.5, 0.5, 0.5));
+  b->setSpecular(Color3f(0.7, 0.7, 0.7));
+  b->setShininess(25);
+  b->setEmission(Color3f(0.1, 0.2, 0.3));
+  b->setTransparency(0.5);
 
-    b->setAmbient( Color3f( 0.1, 0.1, 0.1) );
-    b->setDiffuse( Color3f( 0.5, 0.5, 0.5) );
-    b->setSpecular( Color3f( 0.7, 0.7, 0.7) );
-    b->setShininess( 25 );
-    b->setEmission( Color3f( 0.1, 0.2, 0.3) );
-    b->setTransparency( 0.5 );
+  b->dump();
 
-    b->dump();
+  // add a non-standard chunk
+  MaterialChunkPtr mchunk1;
+  mchunk1 = MaterialChunk::create();
+  mchunk1->setDiffuse(Color4f(1, 0, 0, 0));
+  mchunk1->setAmbient(Color4f(1, 0, 0, 0));
+  mchunk1->setShininess(20);
+  b->addChunk(mchunk1);
 
-    // add a non-standard chunk
-    MaterialChunkPtr mchunk1;
-    mchunk1 = MaterialChunk::create();
-    mchunk1->setDiffuse( Color4f( 1,0,0,0 ) );
-    mchunk1->setAmbient( Color4f( 1,0,0,0 ) );
-    mchunk1->setShininess( 20 );
-    b->addChunk( mchunk1 );
+  b->dump();
 
-    b->dump();
+  b->subChunk(mchunk1);
 
-    b->subChunk( mchunk1 );
+  b->dump();
 
-    b->dump();
+  OSG::beginEditCP(b);
+  OSG::endEditCP(b);
 
-    OSG::beginEditCP(b);
-    OSG::endEditCP  (b);
+  b->getState();
+  b->getState();
 
-    b->getState();
-    b->getState();
+  fprintf(stderr, "start subref\n");
 
-    fprintf(stderr, "start subref\n");
+  subRefCP(b);
 
-    subRefCP(b);
+  fprintf(stderr, "end subref\n");
 
-    fprintf(stderr, "end subref\n");
-
-    return 0;
+  return 0;
 }

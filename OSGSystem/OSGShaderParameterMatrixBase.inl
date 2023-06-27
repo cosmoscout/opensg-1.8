@@ -52,81 +52,59 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &ShaderParameterMatrixBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& ShaderParameterMatrixBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 ShaderParameterMatrixBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 ShaderParameterMatrixBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-ShaderParameterMatrixPtr ShaderParameterMatrixBase::create(void) 
-{
-    ShaderParameterMatrixPtr fc; 
+inline ShaderParameterMatrixPtr ShaderParameterMatrixBase::create(void) {
+  ShaderParameterMatrixPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = ShaderParameterMatrixPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = ShaderParameterMatrixPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-ShaderParameterMatrixPtr ShaderParameterMatrixBase::createEmpty(void) 
-{ 
-    ShaderParameterMatrixPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline ShaderParameterMatrixPtr ShaderParameterMatrixBase::createEmpty(void) {
+  ShaderParameterMatrixPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the ShaderParameterMatrix::_sfValue field.
-inline
-SFMatrix *ShaderParameterMatrixBase::getSFValue(void)
-{
-    return &_sfValue;
-}
-
-
-//! Get the value of the ShaderParameterMatrix::_sfValue field.
-inline
-Matrix &ShaderParameterMatrixBase::getValue(void)
-{
-    return _sfValue.getValue();
+inline SFMatrix* ShaderParameterMatrixBase::getSFValue(void) {
+  return &_sfValue;
 }
 
 //! Get the value of the ShaderParameterMatrix::_sfValue field.
-inline
-const Matrix &ShaderParameterMatrixBase::getValue(void) const
-{
-    return _sfValue.getValue();
+inline Matrix& ShaderParameterMatrixBase::getValue(void) {
+  return _sfValue.getValue();
+}
+
+//! Get the value of the ShaderParameterMatrix::_sfValue field.
+inline const Matrix& ShaderParameterMatrixBase::getValue(void) const {
+  return _sfValue.getValue();
 }
 
 //! Set the value of the ShaderParameterMatrix::_sfValue field.
-inline
-void ShaderParameterMatrixBase::setValue(const Matrix &value)
-{
-    _sfValue.setValue(value);
+inline void ShaderParameterMatrixBase::setValue(const Matrix& value) {
+  _sfValue.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGSHADERPARAMETERMATRIXBASE_INLINE_CVSID "@(#)$Id: OSGShaderParameterMatrixBase.inl,v 1.5 2006/02/20 17:04:38 dirk Exp $"
-
+#define OSGSHADERPARAMETERMATRIXBASE_INLINE_CVSID                                                  \
+  "@(#)$Id: OSGShaderParameterMatrixBase.inl,v 1.5 2006/02/20 17:04:38 dirk Exp $"

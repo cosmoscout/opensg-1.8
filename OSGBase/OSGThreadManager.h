@@ -69,92 +69,84 @@ OSG_BEGIN_NAMESPACE
  */
 
 template <class MPFieldT>
-class MPFieldStore
-{
-    /*==========================  PUBLIC  =================================*/
+class MPFieldStore {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  typedef typename MPFieldT::Type MPFieldType;
 
-    typedef typename MPFieldT::Type MPFieldType;
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructor                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructor                                */
-    /*! \{                                                                 */
+  MPFieldStore(void);
 
-    MPFieldStore(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  virtual ~MPFieldStore(void);
 
-    virtual ~MPFieldStore(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Get                                      */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Get                                      */
-    /*! \{                                                                 */
+  MPFieldT* getMPField(const Char8* szName, const Char8* szTypeName);
 
-    MPFieldT *getMPField   (const Char8    *szName,
-                            const Char8    *szTypeName);
+  MPFieldT* findMPField(const Char8* szName);
 
-    MPFieldT *findMPField  (const Char8    *szName);
+  void removeMPField(MPFieldT* pField);
 
-    void      removeMPField(      MPFieldT *pField);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Helper                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Helper                                    */
-    /*! \{                                                                 */
+  void clear(void);
 
-    void clear(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Find                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Find                                   */
-    /*! \{                                                                 */
+  MPFieldType* findMPFieldType(const Char8* szName) const;
 
-    MPFieldType *findMPFieldType(const Char8 *szName) const;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Types                                   */
+  /*! \{                                                                 */
 
-  protected:
+  typedef std::map<IDStringLink, MPFieldType*> MPFieldTypeMap;
+  typedef typename MPFieldTypeMap::iterator    MPFieldTypeMapIt;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Types                                   */
-    /*! \{                                                                 */
+  typedef typename MPFieldTypeMap::const_iterator MPFieldTypeMapCIt;
 
-    typedef std::map<IDStringLink, MPFieldType  *>  MPFieldTypeMap;
-    typedef typename MPFieldTypeMap::iterator       MPFieldTypeMapIt;
+  typedef std::map<IDStringLink, MPFieldT*> MPFieldMap;
+  typedef typename MPFieldMap::iterator     MPFieldMapIt;
 
-    typedef typename MPFieldTypeMap::const_iterator MPFieldTypeMapCIt;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
 
-    typedef std::map<IDStringLink, MPFieldT     *>  MPFieldMap;
-    typedef typename MPFieldMap::iterator           MPFieldMapIt;
+  MPFieldTypeMap _mFieldTypeMap;
+  MPFieldMap     _mFieldMap;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
+  UInt32 registerMPType(MPFieldType* pType);
 
-    MPFieldTypeMap _mFieldTypeMap;
-    MPFieldMap     _mFieldMap;
+  /*==========================  PRIVATE  ================================*/
 
-    UInt32 registerMPType(MPFieldType *pType);
+ private:
+  friend class ThreadManager;
 
-    /*==========================  PRIVATE  ================================*/
-
-  private:
-
-    friend class ThreadManager;
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    MPFieldStore   (const MPFieldStore &source);
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const MPFieldStore &source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  MPFieldStore(const MPFieldStore& source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const MPFieldStore& source);
 };
-
-
-
 
 //---------------------------------------------------------------------------
 //  Class
@@ -163,165 +155,156 @@ class MPFieldStore
 /*! \ingroup GrpBaseBaseMultiThreading
  */
 
-class OSG_BASE_DLLMAPPING ThreadManager
-{
-    /*==========================  PUBLIC  =================================*/
+class OSG_BASE_DLLMAPPING ThreadManager {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Types                                   */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Types                                   */
-    /*! \{                                                                 */
+  typedef MPFieldStore<BaseThread> ThreadStore;
+  typedef MPFieldStore<Barrier>    BarrierStore;
+  typedef MPFieldStore<Lock>       LockStore;
+  typedef MPFieldStore<LockPool>   LockPoolStore;
 
-    typedef MPFieldStore<BaseThread> ThreadStore;
-    typedef MPFieldStore<Barrier   > BarrierStore;
-    typedef MPFieldStore<Lock      > LockStore;
-    typedef MPFieldStore<LockPool  > LockPoolStore;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Set / Get                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Set / Get                               */
-    /*! \{                                                                 */
+  static void setAppThreadType(const Char8* szAppThreadType);
 
-    static void           setAppThreadType(const Char8  *szAppThreadType);
+  static ThreadManager* the(void);
 
-    static ThreadManager *the             (      void                   );
+  static BaseThread* getAppThread(void);
 
-    static BaseThread    *getAppThread    (      void                   );
+  static void   setNumAspects(UInt32 uiNumApects);
+  static UInt32 getNumAspects(void);
 
-    static void           setNumAspects   (      UInt32  uiNumApects    );
-    static UInt32         getNumAspects   (      void                   );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name               Create Threading Element                       */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name               Create Threading Element                       */
-    /*! \{                                                                 */
+  BaseThread* getThread(const Char8* szName, const Char8* szTypeName = "OSGThread");
+  Barrier*    getBarrier(const Char8* szName, const Char8* szTypeName = "OSGBarrier");
+  Lock*       getLock(const Char8* szName, const Char8* szTypeName = "OSGLock");
+  LockPool*   getLockPool(const Char8* szName, const Char8* szTypeName = "OSGLockPool");
 
-    BaseThread   *getThread   (const Char8 *szName,
-                               const Char8 *szTypeName = "OSGThread");
-    Barrier      *getBarrier  (const Char8 *szName,
-                               const Char8 *szTypeName = "OSGBarrier");
-    Lock         *getLock     (const Char8 *szName,
-                               const Char8 *szTypeName = "OSGLock");
-    LockPool     *getLockPool (const Char8 *szName,
-                               const Char8 *szTypeName = "OSGLockPool");
-
-    BaseThread   *findThread  (const Char8 *szName);
-    Barrier      *findBarrier (const Char8 *szName);
-    Lock         *findLock    (const Char8 *szName);
-    LockPool     *findLockPool(const Char8 *szName);
+  BaseThread* findThread(const Char8* szName);
+  Barrier*    findBarrier(const Char8* szName);
+  Lock*       findLock(const Char8* szName);
+  LockPool*   findLockPool(const Char8* szName);
 
 #if defined(OSG_USE_SPROC)
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Set / Get                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Set / Get                               */
+  /*! \{                                                                 */
 
-    usptr_t *getArena(void);
+  usptr_t* getArena(void);
 #endif
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-  protected:
+ protected:
+  static bool initialize(void);
+  static bool terminate(void);
 
-    static bool   initialize          (void                     );
-    static bool   terminate           (void                     );
+  void removeThread(BaseThread* pThread);
+  void removeBarrier(Barrier* pBarrier);
+  void removeLock(Lock* pLock);
+  void removeLockPool(LockPool* pLockPool);
 
-           void   removeThread        (BaseThread     *pThread  );
-           void   removeBarrier       (Barrier        *pBarrier );
-           void   removeLock          (Lock           *pLock    );
-           void   removeLockPool      (LockPool       *pLockPool);
+  UInt32 registerThreadType(MPThreadType* pType);
+  UInt32 registerBarrierType(MPBarrierType* pType);
+  UInt32 registerLockType(MPLockType* pType);
+  UInt32 registerLockPoolType(MPLockPoolType* pType);
 
-           UInt32 registerThreadType  (MPThreadType   *pType    );
-           UInt32 registerBarrierType (MPBarrierType  *pType    );
-           UInt32 registerLockType    (MPLockType     *pType    );
-           UInt32 registerLockPoolType(MPLockPoolType *pType    );
+  bool init(void);
+  bool shutdown(void);
 
-           bool   init                (void                     );
-           bool   shutdown            (void                     );
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  ThreadManager(void);
 
-    ThreadManager(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  virtual ~ThreadManager(void);
 
-    virtual ~ThreadManager(void);
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
+ private:
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Friend Classes                              */
+  /*! \{                                                                 */
 
-  private:
+  friend class MPThreadType;
+  friend class MPBarrierType;
+  friend class MPLockType;
+  friend class MPLockPoolType;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Friend Classes                              */
-    /*! \{                                                                 */
+  friend class BaseThread;
+  friend class Barrier;
+  friend class Lock;
+  friend class LockPool;
 
-    friend class MPThreadType;
-    friend class MPBarrierType;
-    friend class MPLockType;
-    friend class MPLockPoolType;
+  OSG_BASE_DLLMAPPING
+  friend bool osgInit(Int32 argc, Char8** argv, UInt16 major, UInt16 minor, UInt16 release,
+      bool debug, bool dll, bool mt);
 
-    friend class BaseThread;
-    friend class Barrier;
-    friend class Lock;
-    friend class LockPool;
+  OSG_BASE_DLLMAPPING
+  friend bool osgExit(void);
 
-    OSG_BASE_DLLMAPPING 
-    friend bool osgInit(Int32 argc, Char8 **argv, 
-                        UInt16 major, UInt16 minor, UInt16 release,
-                        bool debug, bool dll, bool mt);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Class Variable                             */
+  /*! \{                                                                 */
 
-    OSG_BASE_DLLMAPPING 
-    friend bool osgExit(void                    );
+  static ThreadManager* _pThreadManager;
+  static BaseThread*    _pAppThread;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Class Variable                             */
-    /*! \{                                                                 */
+  static bool _bShutdownInProgress;
 
-    static ThreadManager   *_pThreadManager;
-    static BaseThread      *_pAppThread;
-
-    static bool             _bShutdownInProgress;
-
-    static UInt32          _uiNumAspects;
+  static UInt32 _uiNumAspects;
 
 #ifdef OSG_RUNTIME_NUM_ASPECTS
-    static bool            _bNumAspectSet;
+  static bool _bNumAspectSet;
 #endif
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                Instance Variables                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                Instance Variables                            */
+  /*! \{                                                                 */
 
-    ThreadStore    _sThreadStore;
-    BarrierStore   _sBarrierStore;
-    LockStore      _sLockStore;
-    LockPoolStore  _sLockPoolStore;
+  ThreadStore   _sThreadStore;
+  BarrierStore  _sBarrierStore;
+  LockStore     _sLockStore;
+  LockPoolStore _sLockPoolStore;
 
-    Lock          *_storePLock;
+  Lock* _storePLock;
 
-    static Char8  *_szAppThreadType;
+  static Char8* _szAppThreadType;
 
 #if defined(OSG_USE_SPROC)
-    usptr_t *_pArena;
+  usptr_t* _pArena;
 #endif
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
 
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    ThreadManager  (const ThreadManager &source);
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const ThreadManager &source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  ThreadManager(const ThreadManager& source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const ThreadManager& source);
 };
 
 OSG_END_NAMESPACE
@@ -331,5 +314,3 @@ OSG_END_NAMESPACE
 #define OSGTHREADMANAGER_HEADER_CVSID "@(#)$Id: $"
 
 #endif /* _OSGTHREADMANAGER_H_ */
-
-

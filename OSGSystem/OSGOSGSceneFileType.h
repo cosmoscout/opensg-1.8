@@ -49,84 +49,75 @@
 OSG_BEGIN_NAMESPACE
 
 /*! \brief OSGSceneFileType
-*/
+ */
 
-class OSG_SYSTEMLIB_DLLMAPPING OSGSceneFileType : public SceneFileType
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING OSGSceneFileType : public SceneFileType {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef std::vector<FieldContainerPtr> FCPtrStore;
 
-    typedef std::vector<FieldContainerPtr> FCPtrStore;
+  /*---------------------------------------------------------------------*/
+  /*! \name                Class Get                                     */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                Class Get                                     */
-    /*! \{                                                                 */
+  static OSGSceneFileType& the(void);
 
-    static OSGSceneFileType &the(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  virtual ~OSGSceneFileType(void);
 
-    virtual ~OSGSceneFileType (void);
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Get                                        */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Get                                        */
-    /*! \{                                                                 */
+  virtual const Char8* getName(void) const;
 
-    virtual const Char8            *getName(void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Read                                       */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Read                                       */
-    /*! \{                                                                 */
+  virtual NodePtr read(std::istream& is, const Char8* fileNameOrExtension) const;
 
-    virtual NodePtr     read        (std::istream &is,
-                                     const Char8 *fileNameOrExtension) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Write                                      */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Write                                      */
-    /*! \{                                                                 */
+  virtual bool write(const NodePtr& node, std::ostream& os, const Char8* fileNameOrExtension) const;
 
-    virtual bool write(const NodePtr &node, std::ostream &os,
-                       const Char8 *fileNameOrExtension) const;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Member                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  static const Char8*     _suffixA[];
+  static OSGSceneFileType _the;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Member                                  */
-    /*! \{                                                                 */
+  static OSGLoader* _pFile;
 
-    static const Char8            *_suffixA[];
-    static       OSGSceneFileType  _the;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    static       OSGLoader        *_pFile;
+  OSGSceneFileType(const Char8* suffixArray[], UInt16 suffixByteCount, bool override,
+      UInt32 overridePriority, UInt32 flags);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  typedef SceneFileType Inherited;
 
-    OSGSceneFileType(const Char8  *suffixArray[],
-                           UInt16  suffixByteCount,
-                           bool    override,
-                           UInt32  overridePriority,
-                           UInt32  flags);
-
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
-
-    typedef SceneFileType Inherited;
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    OSGSceneFileType(const OSGSceneFileType &source);
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const OSGSceneFileType &source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  OSGSceneFileType(const OSGSceneFileType& source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const OSGSceneFileType& source);
 };
 
 //---------------------------------------------------------------------------

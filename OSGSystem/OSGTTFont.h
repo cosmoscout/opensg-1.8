@@ -12,31 +12,27 @@
 
 OSG_BEGIN_NAMESPACE
 
-class OSG_SYSTEMLIB_DLLMAPPING TTFont : public virtual Font
-{
-    typedef Font Inherited;
+class OSG_SYSTEMLIB_DLLMAPPING TTFont : public virtual Font {
+  typedef Font Inherited;
 
-  private:
+ private:
+  TTFont(const TTFont& obj);
+  void operator=(const TTFont& obj);
 
-    TTFont(const TTFont &obj);
-    void operator =(const TTFont &obj);
+ protected:
+  TT_Engine _ttEngine;
+  TT_Face   _ttFace;
+  TT_Error  _ttError;
 
-  protected:
+ public:
+  TTFont(void);
+  TTFont(const Char8* name, std::string path);
 
-    TT_Engine _ttEngine;
-    TT_Face   _ttFace;
-    TT_Error  _ttError;
+  virtual ~TTFont(void);
 
-  public:
-
-    TTFont(void);
-    TTFont(const Char8 *name, std::string path);
-
-    virtual ~TTFont(void);
-
-    virtual bool       initFont      (void        );
-    virtual bool       createInstance(Text   *text);
-    virtual FontStyle *createInstance(Real32  size);
+  virtual bool       initFont(void);
+  virtual bool       createInstance(Text* text);
+  virtual FontStyle* createInstance(Real32 size);
 };
 
 OSG_END_NAMESPACE

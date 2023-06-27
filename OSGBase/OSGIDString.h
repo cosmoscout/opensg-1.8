@@ -53,104 +53,88 @@ OSG_BEGIN_NAMESPACE
 
 class IDString;
 
-OSG_BASE_DLLMAPPING std::ostream &operator <<(      std::ostream  &os,
-                                              const IDString      &obj);
+OSG_BASE_DLLMAPPING std::ostream& operator<<(std::ostream& os, const IDString& obj);
 
 /*! \ingroup GrpBaseBase
  */
 
-class OSG_BASE_DLLMAPPING IDString
-{
-    /*==========================  PUBLIC  =================================*/
+class OSG_BASE_DLLMAPPING IDString {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  enum MemType { COPY, LINK };
 
-    enum MemType
-    {
-        COPY,
-        LINK
-    };
+  typedef std::vector<IDString>  StringVec;
+  typedef std::vector<IDString*> StringPVec;
 
-    typedef std::vector<IDString  > StringVec;
-    typedef std::vector<IDString *> StringPVec;
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  explicit IDString(UInt32 size = 0);
 
-    explicit IDString(      UInt32    size    = 0   );
+  explicit IDString(const Char8* str, MemType memType = COPY);
+  IDString(const IDString& obj, MemType memType = COPY);
 
-    explicit IDString(const Char8    *str,  
-                            MemType   memType = COPY);
-             IDString(const IDString &obj,  
-                            MemType   memType = COPY);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  virtual ~IDString(void);
 
-    virtual ~IDString(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Access                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Access                                  */
-    /*! \{                                                                 */
+  const Char8* str(void) const;
 
-    const Char8 *str      (      void                      ) const;
+  bool isEmpty(void) const;
 
-          bool   isEmpty  (      void                      ) const;
-                                       
+  void set(const Char8* str, MemType memType = COPY);
 
-          void   set      (const Char8 *str, 
-                                 MemType     memType = COPY);
+  void toUpper(void);
+  void toLower(void);
 
-          void   toUpper  (      void                      );
-          void   toLower  (      void                      );
+  UInt32 getLength(void) const;
+  void   setLength(UInt32 length);
 
-          UInt32 getLength(      void                      ) const;
-          void   setLength(      UInt32      length        );
+  void tokenize(StringVec& v);
+  void tokenize(StringPVec& v);
 
-          void   tokenize (      StringVec  &v             );
-          void   tokenize (      StringPVec &v             );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Assignment                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Assignment                                 */
-    /*! \{                                                                 */
+  const IDString& operator=(const IDString& obj);
 
-    const IDString & operator =(const IDString &obj);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Comparison                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Comparison                                  */
-    /*! \{                                                                 */
+  bool operator==(const IDString& obj) const;
+  bool operator!=(const IDString& obj) const;
 
-    bool operator ==(const IDString &obj) const;
-    bool operator !=(const IDString &obj) const;
+  bool operator<(const IDString& obj) const;
+  bool operator>(const IDString& obj) const;
 
-    bool operator < (const IDString &obj) const;
-    bool operator > (const IDString &obj) const;
+  bool operator>=(const IDString& obj) const;
+  bool operator<=(const IDString& obj) const;
 
-    bool operator >=(const IDString &obj) const;
-    bool operator <=(const IDString &obj) const;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*==========================  PRIVATE  ================================*/
 
-  protected:
+  Char8*  _str;
+  MemType _memType;
 
-    /*==========================  PRIVATE  ================================*/
-
-    Char8   *_str;
-    MemType  _memType;
-
-    private:
-
-    friend OSG_BASE_DLLMAPPING
-    std::ostream &operator <<(      std::ostream  &os,
-                              const IDString      &obj);
-
+ private:
+  friend OSG_BASE_DLLMAPPING std::ostream& operator<<(std::ostream& os, const IDString& obj);
 };
 
 OSG_END_NAMESPACE
@@ -159,6 +143,3 @@ OSG_END_NAMESPACE
 #include <OSGIDStringLink.h>
 
 #endif /* _OSGSTRING_H_ */
-
-
-

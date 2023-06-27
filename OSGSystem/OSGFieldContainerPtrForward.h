@@ -46,7 +46,7 @@
 
 OSG_BEGIN_NAMESPACE
 
-#if !defined(OSG_DO_DOC)       
+#if !defined(OSG_DO_DOC)
 
 class FieldContainerPtrBase;
 
@@ -55,7 +55,7 @@ class FieldContainerPtr;
 class NodePtr;
 class CNodePtr;
 
-template <class BasePtrTypeT, class FieldContainerTypeT> 
+template <class BasePtrTypeT, class FieldContainerTypeT>
 class FCPtr;
 
 class AttachmentContainerPtr;

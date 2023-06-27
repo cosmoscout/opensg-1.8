@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGSHADERPARAMETERMVEC4FBASE_H_
 #define _OSGSHADERPARAMETERMVEC4FBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -78,181 +76,157 @@ class BinaryDataHandler;
 
 //! \brief ShaderParameterMVec4f Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING ShaderParameterMVec4fBase : public ShaderParameter
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING ShaderParameterMVec4fBase : public ShaderParameter {
+ private:
+  typedef ShaderParameter Inherited;
 
-    typedef ShaderParameter    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef ShaderParameterMVec4fPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum { ValueFieldId = Inherited::NextFieldId, NextFieldId = ValueFieldId + 1 };
 
-    typedef ShaderParameterMVec4fPtr  Ptr;
+  static const OSG::BitVector ValueFieldMask;
 
-    enum
-    {
-        ValueFieldId = Inherited::NextFieldId,
-        NextFieldId  = ValueFieldId + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector ValueFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  MFVec4f* getMFValue(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  Vec4f&         getValue(const UInt32 index);
+  MFVec4f&       getValue(void);
+  const MFVec4f& getValue(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           MFVec4f             *getMFValue          (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-           Vec4f               &getValue          (const UInt32 index);
-           MFVec4f             &getValue          (void);
-     const MFVec4f             &getValue          (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  static ShaderParameterMVec4fPtr create(void);
+  static ShaderParameterMVec4fPtr createEmpty(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    static  ShaderParameterMVec4fPtr      create          (void); 
-    static  ShaderParameterMVec4fPtr      createEmpty     (void); 
+  MFVec4f _mfValue;
 
-    /*! \}                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  ShaderParameterMVec4fBase(void);
+  ShaderParameterMVec4fBase(const ShaderParameterMVec4fBase& source);
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  virtual ~ShaderParameterMVec4fBase(void);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
-
-    MFVec4f             _mfValue;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    ShaderParameterMVec4fBase(void);
-    ShaderParameterMVec4fBase(const ShaderParameterMVec4fBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~ShaderParameterMVec4fBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      ShaderParameterMVec4fBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(ShaderParameterMVec4fBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      ShaderParameterMVec4fBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      ShaderParameterMVec4fBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const ShaderParameterMVec4fBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const ShaderParameterMVec4fBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef ShaderParameterMVec4fBase* ShaderParameterMVec4fBaseP;
 
-typedef ShaderParameterMVec4fBase *ShaderParameterMVec4fBaseP;
-
-typedef osgIF<ShaderParameterMVec4fBase::isNodeCore,
-              CoredNodePtr<ShaderParameterMVec4f>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet ShaderParameterMVec4fNodePtr;
+typedef osgIF<ShaderParameterMVec4fBase::isNodeCore, CoredNodePtr<ShaderParameterMVec4f>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet
+    ShaderParameterMVec4fNodePtr;
 
 typedef RefPtr<ShaderParameterMVec4fPtr> ShaderParameterMVec4fRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGSHADERPARAMETERMVEC4FBASE_HEADER_CVSID "@(#)$Id: OSGShaderParameterMVec4fBase.h,v 1.1 2007/03/09 18:11:49 a-m-z Exp $"
+#define OSGSHADERPARAMETERMVEC4FBASE_HEADER_CVSID                                                  \
+  "@(#)$Id: OSGShaderParameterMVec4fBase.h,v 1.1 2007/03/09 18:11:49 a-m-z Exp $"
 
 #endif /* _OSGSHADERPARAMETERMVEC4FBASE_H_ */

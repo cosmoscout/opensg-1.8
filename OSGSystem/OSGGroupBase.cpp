@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEGROUPINST
 
 #include <stdlib.h>
@@ -61,163 +60,113 @@
 #include "OSGGroupBase.h"
 #include "OSGGroup.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector GroupBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
+const OSG::BitVector GroupBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
+FieldContainerType GroupBase::_type("Group", "NodeCore", NULL,
+    (PrototypeCreateF)&GroupBase::createEmpty, Group::initMethod, NULL, 0);
 
-
-FieldContainerType GroupBase::_type(
-    "Group",
-    "NodeCore",
-    NULL,
-    (PrototypeCreateF) &GroupBase::createEmpty,
-    Group::initMethod,
-    NULL,
-    0);
-
-//OSG_FIELD_CONTAINER_DEF(GroupBase, GroupPtr)
+// OSG_FIELD_CONTAINER_DEF(GroupBase, GroupPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &GroupBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &GroupBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr GroupBase::shallowCopy(void) const 
-{ 
-    GroupPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const Group *>(this)); 
-
-    return returnValue; 
+FieldContainerType& GroupBase::getType(void) {
+  return _type;
 }
 
-UInt32 GroupBase::getContainerSize(void) const 
-{ 
-    return sizeof(Group); 
+const FieldContainerType& GroupBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr GroupBase::shallowCopy(void) const {
+  GroupPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const Group*>(this));
+
+  return returnValue;
+}
+
+UInt32 GroupBase::getContainerSize(void) const {
+  return sizeof(Group);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void GroupBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((GroupBase *) &other, whichField);
+void GroupBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((GroupBase*)&other, whichField);
 }
 #else
-void GroupBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((GroupBase *) &other, whichField, sInfo);
+void GroupBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((GroupBase*)&other, whichField, sInfo);
 }
-void GroupBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void GroupBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void GroupBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void GroupBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-GroupBase::GroupBase(void) :
-    Inherited() 
-{
+GroupBase::GroupBase(void)
+    : Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-GroupBase::GroupBase(const GroupBase &source) :
-    Inherited                 (source)
-{
+GroupBase::GroupBase(const GroupBase& source)
+    : Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-GroupBase::~GroupBase(void)
-{
+GroupBase::~GroupBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 GroupBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 GroupBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void GroupBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
-
-
+void GroupBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 }
 
-void GroupBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
-
-
+void GroupBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void GroupBase::executeSyncImpl(      GroupBase *pOther,
-                                        const BitVector         &whichField)
-{
+void GroupBase::executeSyncImpl(GroupBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
-
-
+  Inherited::executeSyncImpl(pOther, whichField);
 }
 #else
-void GroupBase::executeSyncImpl(      GroupBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void GroupBase::executeSyncImpl(
+    GroupBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
-
-
-
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 }
 
-void GroupBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void GroupBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>
@@ -232,6 +181,3 @@ OSG_DLLEXPORT_SFIELD_DEF1(GroupPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 OSG_DLLEXPORT_MFIELD_DEF1(GroupPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
-
-
-

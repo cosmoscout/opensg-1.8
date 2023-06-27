@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGSTATELEMDESC_H_
 #define _OSGSTATELEMDESC_H_
 #ifdef __sgi
@@ -58,133 +57,119 @@ class StatElem;
  *
  *  detailed
  */
- 
-class OSG_SYSTEMLIB_DLLMAPPING StatElemDescBase
-{
+
+class OSG_SYSTEMLIB_DLLMAPPING StatElemDescBase {
   friend class StatCollector;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    instance                                  */
+  /*! \{                                                                 */
 
-   /*---------------------------------------------------------------------*/
-   /*! \name                    instance                                  */
-   /*! \{                                                                 */
+  inline static bool isValidID(Int32 descId);
 
-    inline  static bool isValidID (Int32 descId);
+  inline static StatElemDescBase* getDesc(Int32 descId);
 
-    inline  static StatElemDescBase *getDesc (Int32 descId);
+  static StatElemDescBase* findDescByName(const Char8* name);
 
-    static StatElemDescBase *findDescByName (const Char8 *name);
+  inline static Int32 getNumOfDescs(void);
 
-    inline  static Int32 getNumOfDescs(void);
+  inline static const Char8* getClassname(void);
 
-    inline  static const Char8 *getClassname(void);
+  static void printAll(void);
 
-    static void printAll (void);
+  void print(void);
 
-    void print(void);
+  inline Int32 getID(void);
 
-    inline        Int32   getID(void);
+  inline const IDString& getName(void);
 
-    inline  const IDString &getName(void);
+  inline const IDString& getDescription(void);
 
-    inline  const IDString &getDescription (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Constructors                              */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Constructors                              */
-    /*! \{                                                                 */
+  StatElemDescBase(const Char8* name, const Char8* description);
 
-    StatElemDescBase( const Char8 *name, const Char8 *description);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  virtual ~StatElemDescBase(void);
 
-    virtual ~StatElemDescBase(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Comparison                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Comparison                                 */
-    /*! \{                                                                 */
+  bool operator<(const StatElemDescBase& other) const;
 
-    bool operator < (const StatElemDescBase &other) const;
+  // OSGbool operator == (const CLASSNAME &other) const;
+  // OSGbool operator != (const CLASSNAME &other) const;
 
-    //OSGbool operator == (const CLASSNAME &other) const;
-    //OSGbool operator != (const CLASSNAME &other) const;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*==========================  PRIVATE  ================================*/
+ private:
+  // typedef PARENTCLASS Inherited;
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  static std::vector<StatElemDescBase*>* _descVec;
 
+  static char cvsid[];
 
-    /*==========================  PRIVATE  ================================*/
-  private:
+  Int32 _id;
 
+  IDString _name;
 
-    // typedef PARENTCLASS Inherited;
+  IDString _description;
 
-    static std::vector<StatElemDescBase*> *_descVec;
+  // prohibit default functions (move to 'public' if you need one)
 
-    static char cvsid[];
+  // only called by OSGStatCollector friend
+  virtual StatElem* createElem(void) = 0;
 
-
-    Int32                _id;
-
-    IDString             _name;
-
-    IDString             _description;
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    // only called by OSGStatCollector friend
-    virtual StatElem* createElem(void) = 0;
-
-    StatElemDescBase (const StatElemDescBase &source);
-    StatElemDescBase& operator =(const StatElemDescBase &source);
-
+  StatElemDescBase(const StatElemDescBase& source);
+  StatElemDescBase& operator=(const StatElemDescBase& source);
 };
 
 template <class Type>
-class StatElemDesc : public StatElemDescBase
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class StatElemDesc : public StatElemDescBase {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Constructors                              */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Constructors                              */
-    /*! \{                                                                 */
+  StatElemDesc(const Char8* name, const Char8* description);
 
-    StatElemDesc( const Char8 *name, const Char8 *description );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  virtual ~StatElemDesc(void);
 
-    virtual ~StatElemDesc(void);
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*==========================  PRIVATE  ================================*/
+ private:
+  // typedef PARENTCLASS Inherited;
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  static char cvsid[];
 
+  virtual StatElem* createElem(void);
 
-    /*==========================  PRIVATE  ================================*/
-  private:
-
-
-    // typedef PARENTCLASS Inherited;
-
-    static char cvsid[];
-
-    virtual StatElem* createElem(void);
-
-    StatElemDesc (const StatElemDesc &source);
-    StatElemDesc& operator =(const StatElemDesc &source);
+  StatElemDesc(const StatElemDesc& source);
+  StatElemDesc& operator=(const StatElemDesc& source);
 };
 
-typedef StatElemDescBase *StatElemDescBaseP;
+typedef StatElemDescBase* StatElemDescBaseP;
 
 OSG_END_NAMESPACE
 

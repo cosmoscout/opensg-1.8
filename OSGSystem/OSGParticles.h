@@ -53,113 +53,113 @@ class DrawActionBase;
 
 struct ParticlesDrawer;
 
-class OSG_SYSTEMLIB_DLLMAPPING Particles : public ParticlesBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING Particles : public ParticlesBase {
+ private:
+  typedef ParticlesBase Inherited;
 
-    typedef ParticlesBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Modes                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    Points = 0,
+    Lines,
+    ViewDirQuads,
+    ViewerQuads,
+    Arrows,
+    ViewerArrows,
+    Rectangles,
+    ShaderQuads,
+    ShaderStrips,
+    LastMode
+  } ModeE;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Modes                                    */
-    /*! \{                                                                 */
-    
-    enum { Points=0, Lines, ViewDirQuads, ViewerQuads, Arrows, 
-           ViewerArrows, Rectangles, ShaderQuads, ShaderStrips,
-           LastMode }
-           ModeE;
-    
-    enum { Any=0, BackToFront, FrontToBack } DrawOrderE;
-       
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  enum { Any = 0, BackToFront, FrontToBack } DrawOrderE;
 
-    virtual void changed(BitVector whichField, 
-                         UInt32    origin    );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Draw                                   */
-    /*! \{                                                                 */
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    Action::ResultE drawPrimitives (DrawActionBase *action);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Draw                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
-    
-    void setPositions      (const GeoPositionsPtr &value);
-    void setSecPositions      (const GeoPositionsPtr &value);
-    void setColors         (const GeoColorsPtr    &value);
-    void setNormals        (const GeoNormalsPtr   &value);
-    void setMaterial       (const MaterialPtr     &value);
+  Action::ResultE drawPrimitives(DrawActionBase* action);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-    // Variables should all be in ParticlesBase.
+  void setPositions(const GeoPositionsPtr& value);
+  void setSecPositions(const GeoPositionsPtr& value);
+  void setColors(const GeoColorsPtr& value);
+  void setNormals(const GeoNormalsPtr& value);
+  void setMaterial(const MaterialPtr& value);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in ParticlesBase.
 
-    Particles(void);
-    Particles(const Particles &source);
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  Particles(void);
+  Particles(const Particles& source);
 
-    virtual ~Particles(void); 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                NodeCore Specific                             */
-    /*! \{                                                                 */
+  virtual ~Particles(void);
 
-    void    adjustVolume(Volume & volume);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                NodeCore Specific                             */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-     /*---------------------------------------------------------------------*/
-    /*! \name                Particles Specific                            */
-    /*! \{                                                                 */
+  void adjustVolume(Volume& volume);
 
-    Int32 *calcIndex(DrawActionBase *action, UInt32 &len, 
-                     Int32 *index = NULL);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                Particles Specific                            */
+  /*! \{                                                                 */
 
-    ParticlesDrawer *findDrawer(void);
-    
-    /*! \}                                                                 */
-   
-    /*==========================  PRIVATE  ================================*/
-  private:
+  Int32* calcIndex(DrawActionBase* action, UInt32& len, Int32* index = NULL);
 
-    friend class FieldContainer;
-    friend class ParticlesBase;
+  ParticlesDrawer* findDrawer(void);
 
-    static void initMethod(void);
-    
-    // prohibit default functions (move to 'public' if you need one)
+  /*! \}                                                                 */
 
-    void operator =(const Particles &source);
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class ParticlesBase;
+
+  static void initMethod(void);
+
+  // prohibit default functions (move to 'public' if you need one)
+
+  void operator=(const Particles& source);
 };
 
-typedef Particles *ParticlesP;
+typedef Particles* ParticlesP;
 
 OSG_END_NAMESPACE
 

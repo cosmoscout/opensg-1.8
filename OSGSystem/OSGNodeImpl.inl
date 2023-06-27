@@ -53,386 +53,281 @@ OSG_BEGIN_NAMESPACE
 /*-------------------------------------------------------------------------*/
 /*                                Get                                      */
 
-inline
-const DynamicVolume &Node::getVolume(void) const
-{
-    return _sfVolume.getValue();
+inline const DynamicVolume& Node::getVolume(void) const {
+  return _sfVolume.getValue();
 }
 
-inline
-DynamicVolume &Node::getVolume(bool update)
-{
-    if(update == true)
-        updateVolume();
+inline DynamicVolume& Node::getVolume(bool update) {
+  if (update == true)
+    updateVolume();
 
-    return _sfVolume.getValue();
+  return _sfVolume.getValue();
 }
 
-inline
-NodePtr Node::getParent(void)
-{
-    return _sfParent.getValue();
+inline NodePtr Node::getParent(void) {
+  return _sfParent.getValue();
 }
 
-inline
-UInt32 Node::getNChildren(void) const
-{
-    return _mfChildren.size();
-}
- 
-inline
-NodePtr Node::getChild(UInt32 childIndex)
-{
-    OSG_ASSERT((childIndex < _mfChildren.size()));
-
-    return _mfChildren[childIndex];
+inline UInt32 Node::getNChildren(void) const {
+  return _mfChildren.size();
 }
 
+inline NodePtr Node::getChild(UInt32 childIndex) {
+  OSG_ASSERT((childIndex < _mfChildren.size()));
 
-inline
-UInt32 Node::getTravMask(void) const
-{
-    return _sfTravMask.getValue();
+  return _mfChildren[childIndex];
 }
 
-inline
-void  Node::setTravMask(UInt32 val)
-{
-    _sfTravMask.setValue(val);
+inline UInt32 Node::getTravMask(void) const {
+  return _sfTravMask.getValue();
 }
 
-inline
-bool Node::getActive(void) const
-{
-    return getTravMask() == TypeTraits<UInt32>::getMax();
+inline void Node::setTravMask(UInt32 val) {
+  _sfTravMask.setValue(val);
 }
 
-inline
-void  Node::setActive(bool val)
-{
-    _sfTravMask.setValue(val ? TypeTraits<UInt32>::getMax()        :
-                               TypeTraits<UInt32>::getZeroElement() );
+inline bool Node::getActive(void) const {
+  return getTravMask() == TypeTraits<UInt32>::getMax();
 }
 
-inline
-void Node::setOcclusionMask(UInt8 val)
-{
-    _occlusionMask = val;
+inline void Node::setActive(bool val) {
+  _sfTravMask.setValue(val ? TypeTraits<UInt32>::getMax() : TypeTraits<UInt32>::getZeroElement());
 }
 
-inline
-UInt8 Node::getOcclusionMask(void) const
-{
-    return _occlusionMask;
+inline void Node::setOcclusionMask(UInt8 val) {
+  _occlusionMask = val;
+}
+
+inline UInt8 Node::getOcclusionMask(void) const {
+  return _occlusionMask;
 }
 
 /*-------------------------------------------------------------------------*/
 /*                          Access Fields                                  */
 
-inline
-SFDynamicVolume *Node::getSFVolume(void)
-{
-    return &_sfVolume;
+inline SFDynamicVolume* Node::getSFVolume(void) {
+  return &_sfVolume;
 }
 
-inline
-SFUInt32 *Node::getSFTravMask(void)
-{
-    return &_sfTravMask;
+inline SFUInt32* Node::getSFTravMask(void) {
+  return &_sfTravMask;
 }
 
-inline
-SFNodePtr *Node::getSFParent(void)
-{
-    return &_sfParent;
+inline SFNodePtr* Node::getSFParent(void) {
+  return &_sfParent;
 }
 
-inline
-SFNodeCorePtr *Node::getSFCore(void)
-{
-    return &_sfCore;
+inline SFNodeCorePtr* Node::getSFCore(void) {
+  return &_sfCore;
 }
 
-inline
-MFNodePtr *Node::getMFChildren(void)
-{
-    return &_mfChildren;
+inline MFNodePtr* Node::getMFChildren(void) {
+  return &_mfChildren;
 }
-
 
 /*-------------------------------------------------------------------------*/
 /*                              Changed                                    */
 
-inline
-void Node::changed(BitVector  whichField,
-                   UInt32     origin    )
-{
-    Inherited::changed(whichField, origin);
+inline void Node::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 
-    if(whichField & CoreFieldMask)
-    {
-        invalidateVolume();
+  if (whichField & CoreFieldMask) {
+    invalidateVolume();
 
-        if(origin & ChangedOrigin::Abstract)
-        {
-            if(origin & ChangedOrigin::AbstrIncRefCount)
-            {
-                addRefCP(_sfCore.getValue());
-            }
-        }
+    if (origin & ChangedOrigin::Abstract) {
+      if (origin & ChangedOrigin::AbstrIncRefCount) {
+        addRefCP(_sfCore.getValue());
+      }
     }
+  }
 
-    if(whichField & TravMaskFieldMask)
-    {
-        beginEditCP(getParent(), Node::VolumeFieldMask);
-        if(getParent() != NullFC)
-        {
-            getParent()->invalidateVolume();
-        }
-        else
-        {
-            invalidateVolume();
-        }
-        endEditCP(getParent(), Node::VolumeFieldMask);
+  if (whichField & TravMaskFieldMask) {
+    beginEditCP(getParent(), Node::VolumeFieldMask);
+    if (getParent() != NullFC) {
+      getParent()->invalidateVolume();
+    } else {
+      invalidateVolume();
     }
-    
-    if(whichField & ChildrenFieldMask)
-    {
-        invalidateVolume();
+    endEditCP(getParent(), Node::VolumeFieldMask);
+  }
 
-        if(origin & ChangedOrigin::Abstract)
-        {
-            if(origin & ChangedOrigin::AbstrIncRefCount)
-            {
-                MFNodePtr::iterator       vChildIt    = _mfChildren.begin();
-                MFNodePtr::const_iterator endChildren = _mfChildren.end  ();
-                
-                while(vChildIt != endChildren)
-                {
-                    addRefCP(*vChildIt);
+  if (whichField & ChildrenFieldMask) {
+    invalidateVolume();
 
-                    ++vChildIt;
-                }
-            }
+    if (origin & ChangedOrigin::Abstract) {
+      if (origin & ChangedOrigin::AbstrIncRefCount) {
+        MFNodePtr::iterator       vChildIt    = _mfChildren.begin();
+        MFNodePtr::const_iterator endChildren = _mfChildren.end();
+
+        while (vChildIt != endChildren) {
+          addRefCP(*vChildIt);
+
+          ++vChildIt;
         }
+      }
     }
+  }
 }
 
 /*-------------------------------------------------------------------------*/
 /*                           Binary Interface                              */
 
-inline
-UInt32 Node::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+inline UInt32 Node::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (VolumeFieldMask & whichField))
-    {
-        returnValue += _sfVolume       .getBinSize();
-    }
+  if (FieldBits::NoField != (VolumeFieldMask & whichField)) {
+    returnValue += _sfVolume.getBinSize();
+  }
 
-    if(FieldBits::NoField != (TravMaskFieldMask & whichField))
-    {
-        returnValue += _sfTravMask     .getBinSize();
-    }
+  if (FieldBits::NoField != (TravMaskFieldMask & whichField)) {
+    returnValue += _sfTravMask.getBinSize();
+  }
 
-    if(FieldBits::NoField != (ParentFieldMask & whichField))
-    {
-        returnValue += _sfParent       .getBinSize();
-    }
+  if (FieldBits::NoField != (ParentFieldMask & whichField)) {
+    returnValue += _sfParent.getBinSize();
+  }
 
-    if(FieldBits::NoField != (ChildrenFieldMask & whichField))
-    {
-        returnValue += _mfChildren     .getBinSize();
-    }
+  if (FieldBits::NoField != (ChildrenFieldMask & whichField)) {
+    returnValue += _mfChildren.getBinSize();
+  }
 
-    if(FieldBits::NoField != (CoreFieldMask & whichField))
-    {
-        returnValue += _sfCore         .getBinSize();
-    }
+  if (FieldBits::NoField != (CoreFieldMask & whichField)) {
+    returnValue += _sfCore.getBinSize();
+  }
 
-    return returnValue;
+  return returnValue;
 }
 
-inline
-void Node::copyToBin(      BinaryDataHandler &pMem,
-                     const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+inline void Node::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (VolumeFieldMask & whichField))
-    {
-        _sfVolume.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (VolumeFieldMask & whichField)) {
+    _sfVolume.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (TravMaskFieldMask & whichField))
-    {
-        _sfTravMask.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (TravMaskFieldMask & whichField)) {
+    _sfTravMask.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ParentFieldMask & whichField))
-    {
-        _sfParent.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (ParentFieldMask & whichField)) {
+    _sfParent.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ChildrenFieldMask & whichField))
-    {
-        _mfChildren.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (ChildrenFieldMask & whichField)) {
+    _mfChildren.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (CoreFieldMask & whichField))
-    {
-        _sfCore.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (CoreFieldMask & whichField)) {
+    _sfCore.copyToBin(pMem);
+  }
 }
 
-inline
-void Node::copyFromBin(      BinaryDataHandler &pMem,
-                       const BitVector         &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+inline void Node::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (VolumeFieldMask & whichField))
-    {
-        _sfVolume.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (VolumeFieldMask & whichField)) {
+    _sfVolume.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (TravMaskFieldMask & whichField))
-    {
-        _sfTravMask.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (TravMaskFieldMask & whichField)) {
+    _sfTravMask.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ParentFieldMask & whichField))
-    {
-        _sfParent.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (ParentFieldMask & whichField)) {
+    _sfParent.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ChildrenFieldMask & whichField))
-    {
-        _mfChildren.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (ChildrenFieldMask & whichField)) {
+    _mfChildren.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (CoreFieldMask & whichField))
-    {
-        _sfCore.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (CoreFieldMask & whichField)) {
+    _sfCore.copyFromBin(pMem);
+  }
 }
-
 
 /*-------------------------------------------------------------------------*/
 /*                           MT Construction                               */
 
-inline
-void Node::setParent(const NodePtr &parent)
-{
-    _sfParent.setValue(parent);
+inline void Node::setParent(const NodePtr& parent) {
+  _sfParent.setValue(parent);
 }
 
 /*-------------------------------------------------------------------------*/
 /*                                Sync                                     */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-inline
-void Node::executeSyncImpl(      Node      *pOther,
-                           const BitVector &whichField)
-{
-    Inherited::executeSyncImpl(pOther, whichField);
+inline void Node::executeSyncImpl(Node* pOther, const BitVector& whichField) {
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if (FieldBits::NoField != (VolumeFieldMask & whichField))
-    {
-        _sfVolume.syncWith(pOther->_sfVolume);
-    }
+  if (FieldBits::NoField != (VolumeFieldMask & whichField)) {
+    _sfVolume.syncWith(pOther->_sfVolume);
+  }
 
-    if (FieldBits::NoField != (TravMaskFieldMask & whichField))
-    {
-        _sfTravMask.syncWith(pOther->_sfTravMask);
-    }
+  if (FieldBits::NoField != (TravMaskFieldMask & whichField)) {
+    _sfTravMask.syncWith(pOther->_sfTravMask);
+  }
 
-    if (FieldBits::NoField != (ParentFieldMask & whichField))
-    {
-        _sfParent.syncWith(pOther->_sfParent);
-    }
+  if (FieldBits::NoField != (ParentFieldMask & whichField)) {
+    _sfParent.syncWith(pOther->_sfParent);
+  }
 
-    if (FieldBits::NoField != (ChildrenFieldMask & whichField))
-    {
-        _mfChildren.syncWith(pOther->_mfChildren);
-    }
+  if (FieldBits::NoField != (ChildrenFieldMask & whichField)) {
+    _mfChildren.syncWith(pOther->_mfChildren);
+  }
 
-    if (FieldBits::NoField != (CoreFieldMask & whichField))
-    {
-        _sfCore.syncWith(pOther->_sfCore);
-    }
+  if (FieldBits::NoField != (CoreFieldMask & whichField)) {
+    _sfCore.syncWith(pOther->_sfCore);
+  }
 }
 
-inline
-void Node::executeSync(      FieldContainer &other,
-                       const BitVector      &whichField)
-{
-    this->executeSyncImpl((Node *) &other, whichField);
+inline void Node::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((Node*)&other, whichField);
 }
 #else
-inline
-void Node::executeSyncImpl(      Node      *pOther,
-                           const BitVector &whichField,
-                           const SyncInfo  &sInfo     )
-{
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+inline void Node::executeSyncImpl(
+    Node* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if (FieldBits::NoField != (VolumeFieldMask & whichField))
-    {
-        _sfVolume.syncWith(pOther->_sfVolume);
-    }
+  if (FieldBits::NoField != (VolumeFieldMask & whichField)) {
+    _sfVolume.syncWith(pOther->_sfVolume);
+  }
 
-    if (FieldBits::NoField != (TravMaskFieldMask & whichField))
-    {
-        _sfTravMask.syncWith(pOther->_sfTravMask);
-    }
+  if (FieldBits::NoField != (TravMaskFieldMask & whichField)) {
+    _sfTravMask.syncWith(pOther->_sfTravMask);
+  }
 
-    if (FieldBits::NoField != (ParentFieldMask & whichField))
-    {
-        _sfParent.syncWith(pOther->_sfParent);
-    }
+  if (FieldBits::NoField != (ParentFieldMask & whichField)) {
+    _sfParent.syncWith(pOther->_sfParent);
+  }
 
-    if (FieldBits::NoField != (ChildrenFieldMask & whichField))
-    {
-        _mfChildren.syncWith(pOther->_mfChildren, sInfo);
-    }
+  if (FieldBits::NoField != (ChildrenFieldMask & whichField)) {
+    _mfChildren.syncWith(pOther->_mfChildren, sInfo);
+  }
 
-    if (FieldBits::NoField != (CoreFieldMask & whichField))
-    {
-        _sfCore.syncWith(pOther->_sfCore);
-    }
+  if (FieldBits::NoField != (CoreFieldMask & whichField)) {
+    _sfCore.syncWith(pOther->_sfCore);
+  }
 }
 
-inline
-void Node::executeSync(      FieldContainer &other,
-                       const BitVector      &whichField,
-                       const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((Node *) &other, whichField, sInfo);
+inline void Node::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((Node*)&other, whichField, sInfo);
 }
 
-inline
-void Node::execBeginEditImpl (const BitVector &whichField, 
-                                    UInt32     uiAspect,
-                                    UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+inline void Node::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 
-    if (FieldBits::NoField != (ChildrenFieldMask & whichField))
-    {
-        _mfChildren.beginEdit(uiAspect, uiContainerSize);
-    }
+  if (FieldBits::NoField != (ChildrenFieldMask & whichField)) {
+    _mfChildren.beginEdit(uiAspect, uiContainerSize);
+  }
 }
 
-inline
-void Node::execBeginEdit(const BitVector &whichField, 
-                               UInt32     uiAspect,
-                               UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+inline void Node::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
-
 
 #endif
 

@@ -52,277 +52,199 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &TextureBackgroundBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& TextureBackgroundBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 TextureBackgroundBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 TextureBackgroundBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-TextureBackgroundPtr TextureBackgroundBase::create(void) 
-{
-    TextureBackgroundPtr fc; 
+inline TextureBackgroundPtr TextureBackgroundBase::create(void) {
+  TextureBackgroundPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = TextureBackgroundPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = TextureBackgroundPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-TextureBackgroundPtr TextureBackgroundBase::createEmpty(void) 
-{ 
-    TextureBackgroundPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline TextureBackgroundPtr TextureBackgroundBase::createEmpty(void) {
+  TextureBackgroundPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the TextureBackground::_sfColor field.
-inline
-SFColor4f *TextureBackgroundBase::getSFColor(void)
-{
-    return &_sfColor;
+inline SFColor4f* TextureBackgroundBase::getSFColor(void) {
+  return &_sfColor;
 }
 
 //! Get the TextureBackground::_sfTexture field.
-inline
-SFTextureChunkPtr *TextureBackgroundBase::getSFTexture(void)
-{
-    return &_sfTexture;
+inline SFTextureChunkPtr* TextureBackgroundBase::getSFTexture(void) {
+  return &_sfTexture;
 }
 
 //! Get the TextureBackground::_mfTexCoords field.
-inline
-MFPnt2f *TextureBackgroundBase::getMFTexCoords(void)
-{
-    return &_mfTexCoords;
+inline MFPnt2f* TextureBackgroundBase::getMFTexCoords(void) {
+  return &_mfTexCoords;
 }
 
 //! Get the TextureBackground::_sfRadialDistortion field.
-inline
-SFReal32 *TextureBackgroundBase::getSFRadialDistortion(void)
-{
-    return &_sfRadialDistortion;
+inline SFReal32* TextureBackgroundBase::getSFRadialDistortion(void) {
+  return &_sfRadialDistortion;
 }
 
 //! Get the TextureBackground::_sfCenterOfDistortion field.
-inline
-SFVec2f *TextureBackgroundBase::getSFCenterOfDistortion(void)
-{
-    return &_sfCenterOfDistortion;
+inline SFVec2f* TextureBackgroundBase::getSFCenterOfDistortion(void) {
+  return &_sfCenterOfDistortion;
 }
 
 //! Get the TextureBackground::_sfHor field.
-inline
-SFUInt16 *TextureBackgroundBase::getSFHor(void)
-{
-    return &_sfHor;
+inline SFUInt16* TextureBackgroundBase::getSFHor(void) {
+  return &_sfHor;
 }
 
 //! Get the TextureBackground::_sfVert field.
-inline
-SFUInt16 *TextureBackgroundBase::getSFVert(void)
-{
-    return &_sfVert;
+inline SFUInt16* TextureBackgroundBase::getSFVert(void) {
+  return &_sfVert;
 }
 
 //! Get the TextureBackground::_sfClearStencilBit field.
-inline
-SFInt32 *TextureBackgroundBase::getSFClearStencilBit(void)
-{
-    return &_sfClearStencilBit;
-}
-
-
-//! Get the value of the TextureBackground::_sfColor field.
-inline
-Color4f &TextureBackgroundBase::getColor(void)
-{
-    return _sfColor.getValue();
+inline SFInt32* TextureBackgroundBase::getSFClearStencilBit(void) {
+  return &_sfClearStencilBit;
 }
 
 //! Get the value of the TextureBackground::_sfColor field.
-inline
-const Color4f &TextureBackgroundBase::getColor(void) const
-{
-    return _sfColor.getValue();
+inline Color4f& TextureBackgroundBase::getColor(void) {
+  return _sfColor.getValue();
+}
+
+//! Get the value of the TextureBackground::_sfColor field.
+inline const Color4f& TextureBackgroundBase::getColor(void) const {
+  return _sfColor.getValue();
 }
 
 //! Set the value of the TextureBackground::_sfColor field.
-inline
-void TextureBackgroundBase::setColor(const Color4f &value)
-{
-    _sfColor.setValue(value);
+inline void TextureBackgroundBase::setColor(const Color4f& value) {
+  _sfColor.setValue(value);
 }
 
 //! Get the value of the TextureBackground::_sfTexture field.
-inline
-TextureChunkPtr &TextureBackgroundBase::getTexture(void)
-{
-    return _sfTexture.getValue();
+inline TextureChunkPtr& TextureBackgroundBase::getTexture(void) {
+  return _sfTexture.getValue();
 }
 
 //! Get the value of the TextureBackground::_sfTexture field.
-inline
-const TextureChunkPtr &TextureBackgroundBase::getTexture(void) const
-{
-    return _sfTexture.getValue();
+inline const TextureChunkPtr& TextureBackgroundBase::getTexture(void) const {
+  return _sfTexture.getValue();
 }
 
 //! Set the value of the TextureBackground::_sfTexture field.
-inline
-void TextureBackgroundBase::setTexture(const TextureChunkPtr &value)
-{
-    _sfTexture.setValue(value);
+inline void TextureBackgroundBase::setTexture(const TextureChunkPtr& value) {
+  _sfTexture.setValue(value);
 }
 
 //! Get the value of the TextureBackground::_sfRadialDistortion field.
-inline
-Real32 &TextureBackgroundBase::getRadialDistortion(void)
-{
-    return _sfRadialDistortion.getValue();
+inline Real32& TextureBackgroundBase::getRadialDistortion(void) {
+  return _sfRadialDistortion.getValue();
 }
 
 //! Get the value of the TextureBackground::_sfRadialDistortion field.
-inline
-const Real32 &TextureBackgroundBase::getRadialDistortion(void) const
-{
-    return _sfRadialDistortion.getValue();
+inline const Real32& TextureBackgroundBase::getRadialDistortion(void) const {
+  return _sfRadialDistortion.getValue();
 }
 
 //! Set the value of the TextureBackground::_sfRadialDistortion field.
-inline
-void TextureBackgroundBase::setRadialDistortion(const Real32 &value)
-{
-    _sfRadialDistortion.setValue(value);
+inline void TextureBackgroundBase::setRadialDistortion(const Real32& value) {
+  _sfRadialDistortion.setValue(value);
 }
 
 //! Get the value of the TextureBackground::_sfCenterOfDistortion field.
-inline
-Vec2f &TextureBackgroundBase::getCenterOfDistortion(void)
-{
-    return _sfCenterOfDistortion.getValue();
+inline Vec2f& TextureBackgroundBase::getCenterOfDistortion(void) {
+  return _sfCenterOfDistortion.getValue();
 }
 
 //! Get the value of the TextureBackground::_sfCenterOfDistortion field.
-inline
-const Vec2f &TextureBackgroundBase::getCenterOfDistortion(void) const
-{
-    return _sfCenterOfDistortion.getValue();
+inline const Vec2f& TextureBackgroundBase::getCenterOfDistortion(void) const {
+  return _sfCenterOfDistortion.getValue();
 }
 
 //! Set the value of the TextureBackground::_sfCenterOfDistortion field.
-inline
-void TextureBackgroundBase::setCenterOfDistortion(const Vec2f &value)
-{
-    _sfCenterOfDistortion.setValue(value);
+inline void TextureBackgroundBase::setCenterOfDistortion(const Vec2f& value) {
+  _sfCenterOfDistortion.setValue(value);
 }
 
 //! Get the value of the TextureBackground::_sfHor field.
-inline
-UInt16 &TextureBackgroundBase::getHor(void)
-{
-    return _sfHor.getValue();
+inline UInt16& TextureBackgroundBase::getHor(void) {
+  return _sfHor.getValue();
 }
 
 //! Get the value of the TextureBackground::_sfHor field.
-inline
-const UInt16 &TextureBackgroundBase::getHor(void) const
-{
-    return _sfHor.getValue();
+inline const UInt16& TextureBackgroundBase::getHor(void) const {
+  return _sfHor.getValue();
 }
 
 //! Set the value of the TextureBackground::_sfHor field.
-inline
-void TextureBackgroundBase::setHor(const UInt16 &value)
-{
-    _sfHor.setValue(value);
+inline void TextureBackgroundBase::setHor(const UInt16& value) {
+  _sfHor.setValue(value);
 }
 
 //! Get the value of the TextureBackground::_sfVert field.
-inline
-UInt16 &TextureBackgroundBase::getVert(void)
-{
-    return _sfVert.getValue();
+inline UInt16& TextureBackgroundBase::getVert(void) {
+  return _sfVert.getValue();
 }
 
 //! Get the value of the TextureBackground::_sfVert field.
-inline
-const UInt16 &TextureBackgroundBase::getVert(void) const
-{
-    return _sfVert.getValue();
+inline const UInt16& TextureBackgroundBase::getVert(void) const {
+  return _sfVert.getValue();
 }
 
 //! Set the value of the TextureBackground::_sfVert field.
-inline
-void TextureBackgroundBase::setVert(const UInt16 &value)
-{
-    _sfVert.setValue(value);
+inline void TextureBackgroundBase::setVert(const UInt16& value) {
+  _sfVert.setValue(value);
 }
 
 //! Get the value of the TextureBackground::_sfClearStencilBit field.
-inline
-Int32 &TextureBackgroundBase::getClearStencilBit(void)
-{
-    return _sfClearStencilBit.getValue();
+inline Int32& TextureBackgroundBase::getClearStencilBit(void) {
+  return _sfClearStencilBit.getValue();
 }
 
 //! Get the value of the TextureBackground::_sfClearStencilBit field.
-inline
-const Int32 &TextureBackgroundBase::getClearStencilBit(void) const
-{
-    return _sfClearStencilBit.getValue();
+inline const Int32& TextureBackgroundBase::getClearStencilBit(void) const {
+  return _sfClearStencilBit.getValue();
 }
 
 //! Set the value of the TextureBackground::_sfClearStencilBit field.
-inline
-void TextureBackgroundBase::setClearStencilBit(const Int32 &value)
-{
-    _sfClearStencilBit.setValue(value);
+inline void TextureBackgroundBase::setClearStencilBit(const Int32& value) {
+  _sfClearStencilBit.setValue(value);
 }
-
 
 //! Get the value of the \a index element the TextureBackground::_mfTexCoords field.
-inline
-Pnt2f &TextureBackgroundBase::getTexCoords(const UInt32 index)
-{
-    return _mfTexCoords[index];
+inline Pnt2f& TextureBackgroundBase::getTexCoords(const UInt32 index) {
+  return _mfTexCoords[index];
 }
 
 //! Get the TextureBackground::_mfTexCoords field.
-inline
-MFPnt2f &TextureBackgroundBase::getTexCoords(void)
-{
-    return _mfTexCoords;
+inline MFPnt2f& TextureBackgroundBase::getTexCoords(void) {
+  return _mfTexCoords;
 }
 
 //! Get the TextureBackground::_mfTexCoords field.
-inline
-const MFPnt2f &TextureBackgroundBase::getTexCoords(void) const
-{
-    return _mfTexCoords;
+inline const MFPnt2f& TextureBackgroundBase::getTexCoords(void) const {
+  return _mfTexCoords;
 }
 
 OSG_END_NAMESPACE
 
-#define OSGTEXTUREBACKGROUNDBASE_INLINE_CVSID "@(#)$Id: OSGTextureBackgroundBase.inl,v 1.7 2006/09/08 13:45:30 yjung Exp $"
-
+#define OSGTEXTUREBACKGROUNDBASE_INLINE_CVSID                                                      \
+  "@(#)$Id: OSGTextureBackgroundBase.inl,v 1.7 2006/09/08 13:45:30 yjung Exp $"

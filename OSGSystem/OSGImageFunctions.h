@@ -50,81 +50,46 @@
 #include <string>
 #include <iostream>
 
-
 OSG_BEGIN_NAMESPACE
 
-enum SliceDataType {
-  INVALID_SDT = 0,
-  DEPTH_SDT,
-  FRAME_SDT,
-  SIDE_SDT
-};
+enum SliceDataType { INVALID_SDT = 0, DEPTH_SDT, FRAME_SDT, SIDE_SDT };
 
 OSG_SYSTEMLIB_DLLMAPPING
-bool createComposedImage ( std::vector<ImagePtr> srcImageVec,
-                           ImagePtr              dstImage,
-                           SliceDataType sliceDataType = DEPTH_SDT );
-
-
-OSG_SYSTEMLIB_DLLMAPPING 
-bool createNormalMapFromBump ( ImagePtr srcImage,
-                               ImagePtr dstImage,
-                               Vec3f    normalMapScale);
+bool createComposedImage(
+    std::vector<ImagePtr> srcImageVec, ImagePtr dstImage, SliceDataType sliceDataType = DEPTH_SDT);
 
 OSG_SYSTEMLIB_DLLMAPPING
-bool createNormalVolume ( ImagePtr srcImage,
-                          ImagePtr dstImage,
-                          const std::string &outputFormat );
-
-OSG_SYSTEMLIB_DLLMAPPING 
-bool create2DPreIntegrationLUT ( ImagePtr dstImage,
-                                 ImagePtr srcImage,
-                                 Real32   thickness = 1.0 );
-OSG_SYSTEMLIB_DLLMAPPING 
-bool splitRGBA ( ImagePtr rgba,
-                 ImagePtr rgb,
-                 ImagePtr alpha);
-
-OSG_SYSTEMLIB_DLLMAPPING 
-bool mergeRGBA ( ImagePtr rgb,
-                 ImagePtr alpha,
-                 ImagePtr rgba);
+bool createNormalMapFromBump(ImagePtr srcImage, ImagePtr dstImage, Vec3f normalMapScale);
 
 OSG_SYSTEMLIB_DLLMAPPING
-bool blendImage ( ImagePtr canvas, 
-                  ImagePtr brush,
-                  Vec3f    position,
-                  Color4f  color, 
-                  Real32   alphaScale = 1,
-                  Real32   paintZ  = 0 );
-
-OSG_SYSTEMLIB_DLLMAPPING 
-bool createPhongTexture ( ImagePtr image,
-                          UInt32   size = 512,
-                          Real32   specular_exponent = 10,
-                          Real32   ka = 0,
-                          Real32   kd = 0,
-                          Real32   ks = 1);
-
-OSG_SYSTEMLIB_DLLMAPPING 
-bool createPhongVolume ( ImagePtr image,
-                         Color3f  diffuseColor,
-                         Color3f  specularColor,
-                         UInt32   lutSize,
-                         UInt32   lutScalar,
-                         Real32   lutIncr );
+bool createNormalVolume(ImagePtr srcImage, ImagePtr dstImage, const std::string& outputFormat);
 
 OSG_SYSTEMLIB_DLLMAPPING
-bool createNormalizationCubeMap ( std::vector<ImagePtr> imageVec,
-                                  UInt32 size );
+bool create2DPreIntegrationLUT(ImagePtr dstImage, ImagePtr srcImage, Real32 thickness = 1.0);
+OSG_SYSTEMLIB_DLLMAPPING
+bool splitRGBA(ImagePtr rgba, ImagePtr rgb, ImagePtr alpha);
 
 OSG_SYSTEMLIB_DLLMAPPING
-bool createNoise ( ImagePtr image,
-                   Image::PixelFormat pixelformat = Image::OSG_RGBA_PF,
-                   UInt16 numOctaves = 6,
-                   UInt16 size = 128,
-                   UInt8  dim  = 2,
-                   bool   splitOctaves = false);
+bool mergeRGBA(ImagePtr rgb, ImagePtr alpha, ImagePtr rgba);
+
+OSG_SYSTEMLIB_DLLMAPPING
+bool blendImage(ImagePtr canvas, ImagePtr brush, Vec3f position, Color4f color,
+    Real32 alphaScale = 1, Real32 paintZ = 0);
+
+OSG_SYSTEMLIB_DLLMAPPING
+bool createPhongTexture(ImagePtr image, UInt32 size = 512, Real32 specular_exponent = 10,
+    Real32 ka = 0, Real32 kd = 0, Real32 ks = 1);
+
+OSG_SYSTEMLIB_DLLMAPPING
+bool createPhongVolume(ImagePtr image, Color3f diffuseColor, Color3f specularColor, UInt32 lutSize,
+    UInt32 lutScalar, Real32 lutIncr);
+
+OSG_SYSTEMLIB_DLLMAPPING
+bool createNormalizationCubeMap(std::vector<ImagePtr> imageVec, UInt32 size);
+
+OSG_SYSTEMLIB_DLLMAPPING
+bool createNoise(ImagePtr image, Image::PixelFormat pixelformat = Image::OSG_RGBA_PF,
+    UInt16 numOctaves = 6, UInt16 size = 128, UInt8 dim = 2, bool splitOctaves = false);
 
 OSG_END_NAMESPACE
 

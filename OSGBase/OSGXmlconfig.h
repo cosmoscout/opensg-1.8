@@ -35,22 +35,22 @@
 #ifdef WIN32
 
 // define's for the boost::shared_ptr
-# define BOOST_NO_MEMBER_TEMPLATES
-# define BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+#define BOOST_NO_MEMBER_TEMPLATES
+#define BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 
 // switch some warnings off
-# pragma warning( disable: 4786 4275 4251 )
+#pragma warning(disable : 4786 4275 4251)
 
 // export/import #define's for building a win32 dll
 //# ifdef XMLPP_EXPORTS
 #if defined(WIN32) && defined(OSG_BUILD_DLL)
-#   ifdef OSG_COMPILEBASELIB
-#     define XMLPP_API __declspec(dllexport)
-#   else
-#     define XMLPP_API __declspec(dllimport)
-#   endif
+#ifdef OSG_COMPILEBASELIB
+#define XMLPP_API __declspec(dllexport)
 #else
-#  define XMLPP_API
+#define XMLPP_API __declspec(dllimport)
+#endif
+#else
+#define XMLPP_API
 #endif
 
 //# ifdef XMLPP_NOEXPORTS
@@ -65,19 +65,18 @@
 
 // -----------------------------------
 // unix/linux configuration
-#ifndef WIN32 
+#ifndef WIN32
 
 // dummy define
-# define XMLPP_API
+#define XMLPP_API
 
 // defines for the boost library
-# define BOOST_NO_MEMBER_TEMPLATE_FRIENDS
+#define BOOST_NO_MEMBER_TEMPLATE_FRIENDS
 
 // includes building of the httpinstream class
 #define XMLPP_WITH_CUSTOM_IOSTREAM
 
 #endif
-
 
 // -----------------------------------
 #endif

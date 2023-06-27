@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILESKYBACKGROUNDINST
 
 #include <stdlib.h>
@@ -61,87 +60,89 @@
 #include "OSGSkyBackgroundBase.h"
 #include "OSGSkyBackground.h"
 
-
 OSG_BEGIN_NAMESPACE
 
-const OSG::BitVector  SkyBackgroundBase::SkyColorFieldMask = 
+const OSG::BitVector SkyBackgroundBase::SkyColorFieldMask =
     (TypeTraits<BitVector>::One << SkyBackgroundBase::SkyColorFieldId);
 
-const OSG::BitVector  SkyBackgroundBase::SkyAngleFieldMask = 
+const OSG::BitVector SkyBackgroundBase::SkyAngleFieldMask =
     (TypeTraits<BitVector>::One << SkyBackgroundBase::SkyAngleFieldId);
 
-const OSG::BitVector  SkyBackgroundBase::GroundColorFieldMask = 
+const OSG::BitVector SkyBackgroundBase::GroundColorFieldMask =
     (TypeTraits<BitVector>::One << SkyBackgroundBase::GroundColorFieldId);
 
-const OSG::BitVector  SkyBackgroundBase::GroundAngleFieldMask = 
+const OSG::BitVector SkyBackgroundBase::GroundAngleFieldMask =
     (TypeTraits<BitVector>::One << SkyBackgroundBase::GroundAngleFieldId);
 
-const OSG::BitVector  SkyBackgroundBase::SphereResFieldMask = 
+const OSG::BitVector SkyBackgroundBase::SphereResFieldMask =
     (TypeTraits<BitVector>::One << SkyBackgroundBase::SphereResFieldId);
 
-const OSG::BitVector  SkyBackgroundBase::BackTextureFieldMask = 
+const OSG::BitVector SkyBackgroundBase::BackTextureFieldMask =
     (TypeTraits<BitVector>::One << SkyBackgroundBase::BackTextureFieldId);
 
-const OSG::BitVector  SkyBackgroundBase::BottomTextureFieldMask = 
+const OSG::BitVector SkyBackgroundBase::BottomTextureFieldMask =
     (TypeTraits<BitVector>::One << SkyBackgroundBase::BottomTextureFieldId);
 
-const OSG::BitVector  SkyBackgroundBase::FrontTextureFieldMask = 
+const OSG::BitVector SkyBackgroundBase::FrontTextureFieldMask =
     (TypeTraits<BitVector>::One << SkyBackgroundBase::FrontTextureFieldId);
 
-const OSG::BitVector  SkyBackgroundBase::LeftTextureFieldMask = 
+const OSG::BitVector SkyBackgroundBase::LeftTextureFieldMask =
     (TypeTraits<BitVector>::One << SkyBackgroundBase::LeftTextureFieldId);
 
-const OSG::BitVector  SkyBackgroundBase::RightTextureFieldMask = 
+const OSG::BitVector SkyBackgroundBase::RightTextureFieldMask =
     (TypeTraits<BitVector>::One << SkyBackgroundBase::RightTextureFieldId);
 
-const OSG::BitVector  SkyBackgroundBase::TopTextureFieldMask = 
+const OSG::BitVector SkyBackgroundBase::TopTextureFieldMask =
     (TypeTraits<BitVector>::One << SkyBackgroundBase::TopTextureFieldId);
 
-const OSG::BitVector  SkyBackgroundBase::BoxInsideFieldMask = 
+const OSG::BitVector SkyBackgroundBase::BoxInsideFieldMask =
     (TypeTraits<BitVector>::One << SkyBackgroundBase::BoxInsideFieldId);
 
-const OSG::BitVector  SkyBackgroundBase::TopTexCoordFieldMask = 
+const OSG::BitVector SkyBackgroundBase::TopTexCoordFieldMask =
     (TypeTraits<BitVector>::One << SkyBackgroundBase::TopTexCoordFieldId);
 
-const OSG::BitVector  SkyBackgroundBase::BottomTexCoordFieldMask = 
+const OSG::BitVector SkyBackgroundBase::BottomTexCoordFieldMask =
     (TypeTraits<BitVector>::One << SkyBackgroundBase::BottomTexCoordFieldId);
 
-const OSG::BitVector  SkyBackgroundBase::RightTexCoordFieldMask = 
+const OSG::BitVector SkyBackgroundBase::RightTexCoordFieldMask =
     (TypeTraits<BitVector>::One << SkyBackgroundBase::RightTexCoordFieldId);
 
-const OSG::BitVector  SkyBackgroundBase::LeftTexCoordFieldMask = 
+const OSG::BitVector SkyBackgroundBase::LeftTexCoordFieldMask =
     (TypeTraits<BitVector>::One << SkyBackgroundBase::LeftTexCoordFieldId);
 
-const OSG::BitVector  SkyBackgroundBase::FrontTexCoordFieldMask = 
+const OSG::BitVector SkyBackgroundBase::FrontTexCoordFieldMask =
     (TypeTraits<BitVector>::One << SkyBackgroundBase::FrontTexCoordFieldId);
 
-const OSG::BitVector  SkyBackgroundBase::BackTexCoordFieldMask = 
+const OSG::BitVector SkyBackgroundBase::BackTexCoordFieldMask =
     (TypeTraits<BitVector>::One << SkyBackgroundBase::BackTexCoordFieldId);
 
-const OSG::BitVector  SkyBackgroundBase::BeaconFieldMask = 
+const OSG::BitVector SkyBackgroundBase::BeaconFieldMask =
     (TypeTraits<BitVector>::One << SkyBackgroundBase::BeaconFieldId);
 
-const OSG::BitVector  SkyBackgroundBase::ClearStencilBitFieldMask = 
+const OSG::BitVector SkyBackgroundBase::ClearStencilBitFieldMask =
     (TypeTraits<BitVector>::One << SkyBackgroundBase::ClearStencilBitFieldId);
 
-const OSG::BitVector SkyBackgroundBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector SkyBackgroundBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
 /*! \var Color4f         SkyBackgroundBase::_mfSkyColor
-    The colors for the sky gradient bands. Corresponds to the skyAngle         angles.  The first value is for the apex (i.e. straight up), which         doesn't need an angle, thus there  should be one more color than         angles. If no angles are given color[0] is used, or black if none are         given.
+    The colors for the sky gradient bands. Corresponds to the skyAngle         angles.  The first
+   value is for the apex (i.e. straight up), which         doesn't need an angle, thus there  should
+   be one more color than         angles. If no angles are given color[0] is used, or black if none
+   are         given.
 */
 /*! \var Real32          SkyBackgroundBase::_mfSkyAngle
-    The angles for the sky gradient bands. Corresponds to the skyColor colors,          with the exception of the apex. Values should be between 0 and PI.
+    The angles for the sky gradient bands. Corresponds to the skyColor colors,          with the
+   exception of the apex. Values should be between 0 and PI.
 */
 /*! \var Color4f         SkyBackgroundBase::_mfGroundColor
     The colors of the ground sphere-part. Interpretation is similar to the sky.
 */
 /*! \var Real32          SkyBackgroundBase::_mfGroundAngle
-    The angles of the ground sphere-part. Interpretation is similar to the sky, with          0 being straight down.
+    The angles of the ground sphere-part. Interpretation is similar to the sky, with          0
+   being straight down.
 */
 /*! \var UInt32          SkyBackgroundBase::_sfSphereRes
     The polygonal resolution of the sky/ground sphere.
@@ -194,759 +195,593 @@ const OSG::BitVector SkyBackgroundBase::MTInfluenceMask =
 
 //! SkyBackground description
 
-FieldDescription *SkyBackgroundBase::_desc[] = 
-{
-    new FieldDescription(MFColor4f::getClassType(), 
-                     "skyColor", 
-                     SkyColorFieldId, SkyColorFieldMask,
-                     false,
-                     (FieldAccessMethod) &SkyBackgroundBase::getMFSkyColor),
-    new FieldDescription(MFReal32::getClassType(), 
-                     "skyAngle", 
-                     SkyAngleFieldId, SkyAngleFieldMask,
-                     false,
-                     (FieldAccessMethod) &SkyBackgroundBase::getMFSkyAngle),
-    new FieldDescription(MFColor4f::getClassType(), 
-                     "groundColor", 
-                     GroundColorFieldId, GroundColorFieldMask,
-                     false,
-                     (FieldAccessMethod) &SkyBackgroundBase::getMFGroundColor),
-    new FieldDescription(MFReal32::getClassType(), 
-                     "groundAngle", 
-                     GroundAngleFieldId, GroundAngleFieldMask,
-                     false,
-                     (FieldAccessMethod) &SkyBackgroundBase::getMFGroundAngle),
-    new FieldDescription(SFUInt32::getClassType(), 
-                     "sphereRes", 
-                     SphereResFieldId, SphereResFieldMask,
-                     false,
-                     (FieldAccessMethod) &SkyBackgroundBase::getSFSphereRes),
-    new FieldDescription(SFTextureChunkPtr::getClassType(), 
-                     "backTexture", 
-                     BackTextureFieldId, BackTextureFieldMask,
-                     false,
-                     (FieldAccessMethod) &SkyBackgroundBase::getSFBackTexture),
-    new FieldDescription(SFTextureChunkPtr::getClassType(), 
-                     "bottomTexture", 
-                     BottomTextureFieldId, BottomTextureFieldMask,
-                     false,
-                     (FieldAccessMethod) &SkyBackgroundBase::getSFBottomTexture),
-    new FieldDescription(SFTextureChunkPtr::getClassType(), 
-                     "frontTexture", 
-                     FrontTextureFieldId, FrontTextureFieldMask,
-                     false,
-                     (FieldAccessMethod) &SkyBackgroundBase::getSFFrontTexture),
-    new FieldDescription(SFTextureChunkPtr::getClassType(), 
-                     "leftTexture", 
-                     LeftTextureFieldId, LeftTextureFieldMask,
-                     false,
-                     (FieldAccessMethod) &SkyBackgroundBase::getSFLeftTexture),
-    new FieldDescription(SFTextureChunkPtr::getClassType(), 
-                     "rightTexture", 
-                     RightTextureFieldId, RightTextureFieldMask,
-                     false,
-                     (FieldAccessMethod) &SkyBackgroundBase::getSFRightTexture),
-    new FieldDescription(SFTextureChunkPtr::getClassType(), 
-                     "topTexture", 
-                     TopTextureFieldId, TopTextureFieldMask,
-                     false,
-                     (FieldAccessMethod) &SkyBackgroundBase::getSFTopTexture),
-    new FieldDescription(SFBool::getClassType(), 
-                     "boxInside", 
-                     BoxInsideFieldId, BoxInsideFieldMask,
-                     false,
-                     (FieldAccessMethod) &SkyBackgroundBase::getSFBoxInside),
-    new FieldDescription(MFVec3f::getClassType(), 
-                     "topTexCoord", 
-                     TopTexCoordFieldId, TopTexCoordFieldMask,
-                     false,
-                     (FieldAccessMethod) &SkyBackgroundBase::getMFTopTexCoord),
-    new FieldDescription(MFVec3f::getClassType(), 
-                     "bottomTexCoord", 
-                     BottomTexCoordFieldId, BottomTexCoordFieldMask,
-                     false,
-                     (FieldAccessMethod) &SkyBackgroundBase::getMFBottomTexCoord),
-    new FieldDescription(MFVec3f::getClassType(), 
-                     "rightTexCoord", 
-                     RightTexCoordFieldId, RightTexCoordFieldMask,
-                     false,
-                     (FieldAccessMethod) &SkyBackgroundBase::getMFRightTexCoord),
-    new FieldDescription(MFVec3f::getClassType(), 
-                     "leftTexCoord", 
-                     LeftTexCoordFieldId, LeftTexCoordFieldMask,
-                     false,
-                     (FieldAccessMethod) &SkyBackgroundBase::getMFLeftTexCoord),
-    new FieldDescription(MFVec3f::getClassType(), 
-                     "frontTexCoord", 
-                     FrontTexCoordFieldId, FrontTexCoordFieldMask,
-                     false,
-                     (FieldAccessMethod) &SkyBackgroundBase::getMFFrontTexCoord),
-    new FieldDescription(MFVec3f::getClassType(), 
-                     "backTexCoord", 
-                     BackTexCoordFieldId, BackTexCoordFieldMask,
-                     false,
-                     (FieldAccessMethod) &SkyBackgroundBase::getMFBackTexCoord),
-    new FieldDescription(SFNodePtr::getClassType(), 
-                     "beacon", 
-                     BeaconFieldId, BeaconFieldMask,
-                     false,
-                     (FieldAccessMethod) &SkyBackgroundBase::getSFBeacon),
-    new FieldDescription(SFInt32::getClassType(), 
-                     "clearStencilBit", 
-                     ClearStencilBitFieldId, ClearStencilBitFieldMask,
-                     false,
-                     (FieldAccessMethod) &SkyBackgroundBase::getSFClearStencilBit)
-};
+FieldDescription* SkyBackgroundBase::_desc[] = {
+    new FieldDescription(MFColor4f::getClassType(), "skyColor", SkyColorFieldId, SkyColorFieldMask,
+        false, (FieldAccessMethod)&SkyBackgroundBase::getMFSkyColor),
+    new FieldDescription(MFReal32::getClassType(), "skyAngle", SkyAngleFieldId, SkyAngleFieldMask,
+        false, (FieldAccessMethod)&SkyBackgroundBase::getMFSkyAngle),
+    new FieldDescription(MFColor4f::getClassType(), "groundColor", GroundColorFieldId,
+        GroundColorFieldMask, false, (FieldAccessMethod)&SkyBackgroundBase::getMFGroundColor),
+    new FieldDescription(MFReal32::getClassType(), "groundAngle", GroundAngleFieldId,
+        GroundAngleFieldMask, false, (FieldAccessMethod)&SkyBackgroundBase::getMFGroundAngle),
+    new FieldDescription(SFUInt32::getClassType(), "sphereRes", SphereResFieldId,
+        SphereResFieldMask, false, (FieldAccessMethod)&SkyBackgroundBase::getSFSphereRes),
+    new FieldDescription(SFTextureChunkPtr::getClassType(), "backTexture", BackTextureFieldId,
+        BackTextureFieldMask, false, (FieldAccessMethod)&SkyBackgroundBase::getSFBackTexture),
+    new FieldDescription(SFTextureChunkPtr::getClassType(), "bottomTexture", BottomTextureFieldId,
+        BottomTextureFieldMask, false, (FieldAccessMethod)&SkyBackgroundBase::getSFBottomTexture),
+    new FieldDescription(SFTextureChunkPtr::getClassType(), "frontTexture", FrontTextureFieldId,
+        FrontTextureFieldMask, false, (FieldAccessMethod)&SkyBackgroundBase::getSFFrontTexture),
+    new FieldDescription(SFTextureChunkPtr::getClassType(), "leftTexture", LeftTextureFieldId,
+        LeftTextureFieldMask, false, (FieldAccessMethod)&SkyBackgroundBase::getSFLeftTexture),
+    new FieldDescription(SFTextureChunkPtr::getClassType(), "rightTexture", RightTextureFieldId,
+        RightTextureFieldMask, false, (FieldAccessMethod)&SkyBackgroundBase::getSFRightTexture),
+    new FieldDescription(SFTextureChunkPtr::getClassType(), "topTexture", TopTextureFieldId,
+        TopTextureFieldMask, false, (FieldAccessMethod)&SkyBackgroundBase::getSFTopTexture),
+    new FieldDescription(SFBool::getClassType(), "boxInside", BoxInsideFieldId, BoxInsideFieldMask,
+        false, (FieldAccessMethod)&SkyBackgroundBase::getSFBoxInside),
+    new FieldDescription(MFVec3f::getClassType(), "topTexCoord", TopTexCoordFieldId,
+        TopTexCoordFieldMask, false, (FieldAccessMethod)&SkyBackgroundBase::getMFTopTexCoord),
+    new FieldDescription(MFVec3f::getClassType(), "bottomTexCoord", BottomTexCoordFieldId,
+        BottomTexCoordFieldMask, false, (FieldAccessMethod)&SkyBackgroundBase::getMFBottomTexCoord),
+    new FieldDescription(MFVec3f::getClassType(), "rightTexCoord", RightTexCoordFieldId,
+        RightTexCoordFieldMask, false, (FieldAccessMethod)&SkyBackgroundBase::getMFRightTexCoord),
+    new FieldDescription(MFVec3f::getClassType(), "leftTexCoord", LeftTexCoordFieldId,
+        LeftTexCoordFieldMask, false, (FieldAccessMethod)&SkyBackgroundBase::getMFLeftTexCoord),
+    new FieldDescription(MFVec3f::getClassType(), "frontTexCoord", FrontTexCoordFieldId,
+        FrontTexCoordFieldMask, false, (FieldAccessMethod)&SkyBackgroundBase::getMFFrontTexCoord),
+    new FieldDescription(MFVec3f::getClassType(), "backTexCoord", BackTexCoordFieldId,
+        BackTexCoordFieldMask, false, (FieldAccessMethod)&SkyBackgroundBase::getMFBackTexCoord),
+    new FieldDescription(SFNodePtr::getClassType(), "beacon", BeaconFieldId, BeaconFieldMask, false,
+        (FieldAccessMethod)&SkyBackgroundBase::getSFBeacon),
+    new FieldDescription(SFInt32::getClassType(), "clearStencilBit", ClearStencilBitFieldId,
+        ClearStencilBitFieldMask, false,
+        (FieldAccessMethod)&SkyBackgroundBase::getSFClearStencilBit)};
 
-
-FieldContainerType SkyBackgroundBase::_type(
-    "SkyBackground",
-    "Background",
-    NULL,
-    (PrototypeCreateF) &SkyBackgroundBase::createEmpty,
-    SkyBackground::initMethod,
-    _desc,
+FieldContainerType SkyBackgroundBase::_type("SkyBackground", "Background", NULL,
+    (PrototypeCreateF)&SkyBackgroundBase::createEmpty, SkyBackground::initMethod, _desc,
     sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(SkyBackgroundBase, SkyBackgroundPtr)
+// OSG_FIELD_CONTAINER_DEF(SkyBackgroundBase, SkyBackgroundPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &SkyBackgroundBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &SkyBackgroundBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr SkyBackgroundBase::shallowCopy(void) const 
-{ 
-    SkyBackgroundPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const SkyBackground *>(this)); 
-
-    return returnValue; 
+FieldContainerType& SkyBackgroundBase::getType(void) {
+  return _type;
 }
 
-UInt32 SkyBackgroundBase::getContainerSize(void) const 
-{ 
-    return sizeof(SkyBackground); 
+const FieldContainerType& SkyBackgroundBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr SkyBackgroundBase::shallowCopy(void) const {
+  SkyBackgroundPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const SkyBackground*>(this));
+
+  return returnValue;
+}
+
+UInt32 SkyBackgroundBase::getContainerSize(void) const {
+  return sizeof(SkyBackground);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void SkyBackgroundBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((SkyBackgroundBase *) &other, whichField);
+void SkyBackgroundBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((SkyBackgroundBase*)&other, whichField);
 }
 #else
-void SkyBackgroundBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((SkyBackgroundBase *) &other, whichField, sInfo);
+void SkyBackgroundBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((SkyBackgroundBase*)&other, whichField, sInfo);
 }
-void SkyBackgroundBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void SkyBackgroundBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void SkyBackgroundBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
+void SkyBackgroundBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 
-    _mfSkyColor.terminateShare(uiAspect, this->getContainerSize());
-    _mfSkyAngle.terminateShare(uiAspect, this->getContainerSize());
-    _mfGroundColor.terminateShare(uiAspect, this->getContainerSize());
-    _mfGroundAngle.terminateShare(uiAspect, this->getContainerSize());
-    _mfTopTexCoord.terminateShare(uiAspect, this->getContainerSize());
-    _mfBottomTexCoord.terminateShare(uiAspect, this->getContainerSize());
-    _mfRightTexCoord.terminateShare(uiAspect, this->getContainerSize());
-    _mfLeftTexCoord.terminateShare(uiAspect, this->getContainerSize());
-    _mfFrontTexCoord.terminateShare(uiAspect, this->getContainerSize());
-    _mfBackTexCoord.terminateShare(uiAspect, this->getContainerSize());
+  _mfSkyColor.terminateShare(uiAspect, this->getContainerSize());
+  _mfSkyAngle.terminateShare(uiAspect, this->getContainerSize());
+  _mfGroundColor.terminateShare(uiAspect, this->getContainerSize());
+  _mfGroundAngle.terminateShare(uiAspect, this->getContainerSize());
+  _mfTopTexCoord.terminateShare(uiAspect, this->getContainerSize());
+  _mfBottomTexCoord.terminateShare(uiAspect, this->getContainerSize());
+  _mfRightTexCoord.terminateShare(uiAspect, this->getContainerSize());
+  _mfLeftTexCoord.terminateShare(uiAspect, this->getContainerSize());
+  _mfFrontTexCoord.terminateShare(uiAspect, this->getContainerSize());
+  _mfBackTexCoord.terminateShare(uiAspect, this->getContainerSize());
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-SkyBackgroundBase::SkyBackgroundBase(void) :
-    _mfSkyColor               (), 
-    _mfSkyAngle               (), 
-    _mfGroundColor            (), 
-    _mfGroundAngle            (), 
-    _sfSphereRes              (UInt32(8)), 
-    _sfBackTexture            (TextureChunkPtr(NullFC)), 
-    _sfBottomTexture          (TextureChunkPtr(NullFC)), 
-    _sfFrontTexture           (TextureChunkPtr(NullFC)), 
-    _sfLeftTexture            (TextureChunkPtr(NullFC)), 
-    _sfRightTexture           (TextureChunkPtr(NullFC)), 
-    _sfTopTexture             (TextureChunkPtr(NullFC)), 
-    _sfBoxInside              (bool(true)), 
-    _mfTopTexCoord            (), 
-    _mfBottomTexCoord         (), 
-    _mfRightTexCoord          (), 
-    _mfLeftTexCoord           (), 
-    _mfFrontTexCoord          (), 
-    _mfBackTexCoord           (), 
-    _sfBeacon                 (), 
-    _sfClearStencilBit        (Int32(-1)), 
-    Inherited() 
-{
+SkyBackgroundBase::SkyBackgroundBase(void)
+    : _mfSkyColor()
+    , _mfSkyAngle()
+    , _mfGroundColor()
+    , _mfGroundAngle()
+    , _sfSphereRes(UInt32(8))
+    , _sfBackTexture(TextureChunkPtr(NullFC))
+    , _sfBottomTexture(TextureChunkPtr(NullFC))
+    , _sfFrontTexture(TextureChunkPtr(NullFC))
+    , _sfLeftTexture(TextureChunkPtr(NullFC))
+    , _sfRightTexture(TextureChunkPtr(NullFC))
+    , _sfTopTexture(TextureChunkPtr(NullFC))
+    , _sfBoxInside(bool(true))
+    , _mfTopTexCoord()
+    , _mfBottomTexCoord()
+    , _mfRightTexCoord()
+    , _mfLeftTexCoord()
+    , _mfFrontTexCoord()
+    , _mfBackTexCoord()
+    , _sfBeacon()
+    , _sfClearStencilBit(Int32(-1))
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-SkyBackgroundBase::SkyBackgroundBase(const SkyBackgroundBase &source) :
-    _mfSkyColor               (source._mfSkyColor               ), 
-    _mfSkyAngle               (source._mfSkyAngle               ), 
-    _mfGroundColor            (source._mfGroundColor            ), 
-    _mfGroundAngle            (source._mfGroundAngle            ), 
-    _sfSphereRes              (source._sfSphereRes              ), 
-    _sfBackTexture            (source._sfBackTexture            ), 
-    _sfBottomTexture          (source._sfBottomTexture          ), 
-    _sfFrontTexture           (source._sfFrontTexture           ), 
-    _sfLeftTexture            (source._sfLeftTexture            ), 
-    _sfRightTexture           (source._sfRightTexture           ), 
-    _sfTopTexture             (source._sfTopTexture             ), 
-    _sfBoxInside              (source._sfBoxInside              ), 
-    _mfTopTexCoord            (source._mfTopTexCoord            ), 
-    _mfBottomTexCoord         (source._mfBottomTexCoord         ), 
-    _mfRightTexCoord          (source._mfRightTexCoord          ), 
-    _mfLeftTexCoord           (source._mfLeftTexCoord           ), 
-    _mfFrontTexCoord          (source._mfFrontTexCoord          ), 
-    _mfBackTexCoord           (source._mfBackTexCoord           ), 
-    _sfBeacon                 (source._sfBeacon                 ), 
-    _sfClearStencilBit        (source._sfClearStencilBit        ), 
-    Inherited                 (source)
-{
+SkyBackgroundBase::SkyBackgroundBase(const SkyBackgroundBase& source)
+    : _mfSkyColor(source._mfSkyColor)
+    , _mfSkyAngle(source._mfSkyAngle)
+    , _mfGroundColor(source._mfGroundColor)
+    , _mfGroundAngle(source._mfGroundAngle)
+    , _sfSphereRes(source._sfSphereRes)
+    , _sfBackTexture(source._sfBackTexture)
+    , _sfBottomTexture(source._sfBottomTexture)
+    , _sfFrontTexture(source._sfFrontTexture)
+    , _sfLeftTexture(source._sfLeftTexture)
+    , _sfRightTexture(source._sfRightTexture)
+    , _sfTopTexture(source._sfTopTexture)
+    , _sfBoxInside(source._sfBoxInside)
+    , _mfTopTexCoord(source._mfTopTexCoord)
+    , _mfBottomTexCoord(source._mfBottomTexCoord)
+    , _mfRightTexCoord(source._mfRightTexCoord)
+    , _mfLeftTexCoord(source._mfLeftTexCoord)
+    , _mfFrontTexCoord(source._mfFrontTexCoord)
+    , _mfBackTexCoord(source._mfBackTexCoord)
+    , _sfBeacon(source._sfBeacon)
+    , _sfClearStencilBit(source._sfClearStencilBit)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-SkyBackgroundBase::~SkyBackgroundBase(void)
-{
+SkyBackgroundBase::~SkyBackgroundBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 SkyBackgroundBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 SkyBackgroundBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (SkyColorFieldMask & whichField))
-    {
-        returnValue += _mfSkyColor.getBinSize();
-    }
+  if (FieldBits::NoField != (SkyColorFieldMask & whichField)) {
+    returnValue += _mfSkyColor.getBinSize();
+  }
 
-    if(FieldBits::NoField != (SkyAngleFieldMask & whichField))
-    {
-        returnValue += _mfSkyAngle.getBinSize();
-    }
+  if (FieldBits::NoField != (SkyAngleFieldMask & whichField)) {
+    returnValue += _mfSkyAngle.getBinSize();
+  }
 
-    if(FieldBits::NoField != (GroundColorFieldMask & whichField))
-    {
-        returnValue += _mfGroundColor.getBinSize();
-    }
+  if (FieldBits::NoField != (GroundColorFieldMask & whichField)) {
+    returnValue += _mfGroundColor.getBinSize();
+  }
 
-    if(FieldBits::NoField != (GroundAngleFieldMask & whichField))
-    {
-        returnValue += _mfGroundAngle.getBinSize();
-    }
+  if (FieldBits::NoField != (GroundAngleFieldMask & whichField)) {
+    returnValue += _mfGroundAngle.getBinSize();
+  }
 
-    if(FieldBits::NoField != (SphereResFieldMask & whichField))
-    {
-        returnValue += _sfSphereRes.getBinSize();
-    }
+  if (FieldBits::NoField != (SphereResFieldMask & whichField)) {
+    returnValue += _sfSphereRes.getBinSize();
+  }
 
-    if(FieldBits::NoField != (BackTextureFieldMask & whichField))
-    {
-        returnValue += _sfBackTexture.getBinSize();
-    }
+  if (FieldBits::NoField != (BackTextureFieldMask & whichField)) {
+    returnValue += _sfBackTexture.getBinSize();
+  }
 
-    if(FieldBits::NoField != (BottomTextureFieldMask & whichField))
-    {
-        returnValue += _sfBottomTexture.getBinSize();
-    }
+  if (FieldBits::NoField != (BottomTextureFieldMask & whichField)) {
+    returnValue += _sfBottomTexture.getBinSize();
+  }
 
-    if(FieldBits::NoField != (FrontTextureFieldMask & whichField))
-    {
-        returnValue += _sfFrontTexture.getBinSize();
-    }
+  if (FieldBits::NoField != (FrontTextureFieldMask & whichField)) {
+    returnValue += _sfFrontTexture.getBinSize();
+  }
 
-    if(FieldBits::NoField != (LeftTextureFieldMask & whichField))
-    {
-        returnValue += _sfLeftTexture.getBinSize();
-    }
+  if (FieldBits::NoField != (LeftTextureFieldMask & whichField)) {
+    returnValue += _sfLeftTexture.getBinSize();
+  }
 
-    if(FieldBits::NoField != (RightTextureFieldMask & whichField))
-    {
-        returnValue += _sfRightTexture.getBinSize();
-    }
+  if (FieldBits::NoField != (RightTextureFieldMask & whichField)) {
+    returnValue += _sfRightTexture.getBinSize();
+  }
 
-    if(FieldBits::NoField != (TopTextureFieldMask & whichField))
-    {
-        returnValue += _sfTopTexture.getBinSize();
-    }
+  if (FieldBits::NoField != (TopTextureFieldMask & whichField)) {
+    returnValue += _sfTopTexture.getBinSize();
+  }
 
-    if(FieldBits::NoField != (BoxInsideFieldMask & whichField))
-    {
-        returnValue += _sfBoxInside.getBinSize();
-    }
+  if (FieldBits::NoField != (BoxInsideFieldMask & whichField)) {
+    returnValue += _sfBoxInside.getBinSize();
+  }
 
-    if(FieldBits::NoField != (TopTexCoordFieldMask & whichField))
-    {
-        returnValue += _mfTopTexCoord.getBinSize();
-    }
+  if (FieldBits::NoField != (TopTexCoordFieldMask & whichField)) {
+    returnValue += _mfTopTexCoord.getBinSize();
+  }
 
-    if(FieldBits::NoField != (BottomTexCoordFieldMask & whichField))
-    {
-        returnValue += _mfBottomTexCoord.getBinSize();
-    }
+  if (FieldBits::NoField != (BottomTexCoordFieldMask & whichField)) {
+    returnValue += _mfBottomTexCoord.getBinSize();
+  }
 
-    if(FieldBits::NoField != (RightTexCoordFieldMask & whichField))
-    {
-        returnValue += _mfRightTexCoord.getBinSize();
-    }
+  if (FieldBits::NoField != (RightTexCoordFieldMask & whichField)) {
+    returnValue += _mfRightTexCoord.getBinSize();
+  }
 
-    if(FieldBits::NoField != (LeftTexCoordFieldMask & whichField))
-    {
-        returnValue += _mfLeftTexCoord.getBinSize();
-    }
+  if (FieldBits::NoField != (LeftTexCoordFieldMask & whichField)) {
+    returnValue += _mfLeftTexCoord.getBinSize();
+  }
 
-    if(FieldBits::NoField != (FrontTexCoordFieldMask & whichField))
-    {
-        returnValue += _mfFrontTexCoord.getBinSize();
-    }
+  if (FieldBits::NoField != (FrontTexCoordFieldMask & whichField)) {
+    returnValue += _mfFrontTexCoord.getBinSize();
+  }
 
-    if(FieldBits::NoField != (BackTexCoordFieldMask & whichField))
-    {
-        returnValue += _mfBackTexCoord.getBinSize();
-    }
+  if (FieldBits::NoField != (BackTexCoordFieldMask & whichField)) {
+    returnValue += _mfBackTexCoord.getBinSize();
+  }
 
-    if(FieldBits::NoField != (BeaconFieldMask & whichField))
-    {
-        returnValue += _sfBeacon.getBinSize();
-    }
+  if (FieldBits::NoField != (BeaconFieldMask & whichField)) {
+    returnValue += _sfBeacon.getBinSize();
+  }
 
-    if(FieldBits::NoField != (ClearStencilBitFieldMask & whichField))
-    {
-        returnValue += _sfClearStencilBit.getBinSize();
-    }
+  if (FieldBits::NoField != (ClearStencilBitFieldMask & whichField)) {
+    returnValue += _sfClearStencilBit.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void SkyBackgroundBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void SkyBackgroundBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (SkyColorFieldMask & whichField))
-    {
-        _mfSkyColor.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (SkyColorFieldMask & whichField)) {
+    _mfSkyColor.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (SkyAngleFieldMask & whichField))
-    {
-        _mfSkyAngle.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (SkyAngleFieldMask & whichField)) {
+    _mfSkyAngle.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GroundColorFieldMask & whichField))
-    {
-        _mfGroundColor.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (GroundColorFieldMask & whichField)) {
+    _mfGroundColor.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GroundAngleFieldMask & whichField))
-    {
-        _mfGroundAngle.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (GroundAngleFieldMask & whichField)) {
+    _mfGroundAngle.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (SphereResFieldMask & whichField))
-    {
-        _sfSphereRes.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (SphereResFieldMask & whichField)) {
+    _sfSphereRes.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BackTextureFieldMask & whichField))
-    {
-        _sfBackTexture.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (BackTextureFieldMask & whichField)) {
+    _sfBackTexture.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BottomTextureFieldMask & whichField))
-    {
-        _sfBottomTexture.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (BottomTextureFieldMask & whichField)) {
+    _sfBottomTexture.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (FrontTextureFieldMask & whichField))
-    {
-        _sfFrontTexture.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (FrontTextureFieldMask & whichField)) {
+    _sfFrontTexture.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (LeftTextureFieldMask & whichField))
-    {
-        _sfLeftTexture.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (LeftTextureFieldMask & whichField)) {
+    _sfLeftTexture.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (RightTextureFieldMask & whichField))
-    {
-        _sfRightTexture.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (RightTextureFieldMask & whichField)) {
+    _sfRightTexture.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (TopTextureFieldMask & whichField))
-    {
-        _sfTopTexture.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (TopTextureFieldMask & whichField)) {
+    _sfTopTexture.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BoxInsideFieldMask & whichField))
-    {
-        _sfBoxInside.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (BoxInsideFieldMask & whichField)) {
+    _sfBoxInside.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (TopTexCoordFieldMask & whichField))
-    {
-        _mfTopTexCoord.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (TopTexCoordFieldMask & whichField)) {
+    _mfTopTexCoord.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BottomTexCoordFieldMask & whichField))
-    {
-        _mfBottomTexCoord.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (BottomTexCoordFieldMask & whichField)) {
+    _mfBottomTexCoord.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (RightTexCoordFieldMask & whichField))
-    {
-        _mfRightTexCoord.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (RightTexCoordFieldMask & whichField)) {
+    _mfRightTexCoord.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (LeftTexCoordFieldMask & whichField))
-    {
-        _mfLeftTexCoord.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (LeftTexCoordFieldMask & whichField)) {
+    _mfLeftTexCoord.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (FrontTexCoordFieldMask & whichField))
-    {
-        _mfFrontTexCoord.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (FrontTexCoordFieldMask & whichField)) {
+    _mfFrontTexCoord.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BackTexCoordFieldMask & whichField))
-    {
-        _mfBackTexCoord.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (BackTexCoordFieldMask & whichField)) {
+    _mfBackTexCoord.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BeaconFieldMask & whichField))
-    {
-        _sfBeacon.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (BeaconFieldMask & whichField)) {
+    _sfBeacon.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ClearStencilBitFieldMask & whichField))
-    {
-        _sfClearStencilBit.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (ClearStencilBitFieldMask & whichField)) {
+    _sfClearStencilBit.copyToBin(pMem);
+  }
 }
 
-void SkyBackgroundBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void SkyBackgroundBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (SkyColorFieldMask & whichField))
-    {
-        _mfSkyColor.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (SkyColorFieldMask & whichField)) {
+    _mfSkyColor.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (SkyAngleFieldMask & whichField))
-    {
-        _mfSkyAngle.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (SkyAngleFieldMask & whichField)) {
+    _mfSkyAngle.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GroundColorFieldMask & whichField))
-    {
-        _mfGroundColor.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (GroundColorFieldMask & whichField)) {
+    _mfGroundColor.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GroundAngleFieldMask & whichField))
-    {
-        _mfGroundAngle.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (GroundAngleFieldMask & whichField)) {
+    _mfGroundAngle.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (SphereResFieldMask & whichField))
-    {
-        _sfSphereRes.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (SphereResFieldMask & whichField)) {
+    _sfSphereRes.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BackTextureFieldMask & whichField))
-    {
-        _sfBackTexture.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (BackTextureFieldMask & whichField)) {
+    _sfBackTexture.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BottomTextureFieldMask & whichField))
-    {
-        _sfBottomTexture.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (BottomTextureFieldMask & whichField)) {
+    _sfBottomTexture.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (FrontTextureFieldMask & whichField))
-    {
-        _sfFrontTexture.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (FrontTextureFieldMask & whichField)) {
+    _sfFrontTexture.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (LeftTextureFieldMask & whichField))
-    {
-        _sfLeftTexture.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (LeftTextureFieldMask & whichField)) {
+    _sfLeftTexture.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (RightTextureFieldMask & whichField))
-    {
-        _sfRightTexture.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (RightTextureFieldMask & whichField)) {
+    _sfRightTexture.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (TopTextureFieldMask & whichField))
-    {
-        _sfTopTexture.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (TopTextureFieldMask & whichField)) {
+    _sfTopTexture.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BoxInsideFieldMask & whichField))
-    {
-        _sfBoxInside.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (BoxInsideFieldMask & whichField)) {
+    _sfBoxInside.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (TopTexCoordFieldMask & whichField))
-    {
-        _mfTopTexCoord.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (TopTexCoordFieldMask & whichField)) {
+    _mfTopTexCoord.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BottomTexCoordFieldMask & whichField))
-    {
-        _mfBottomTexCoord.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (BottomTexCoordFieldMask & whichField)) {
+    _mfBottomTexCoord.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (RightTexCoordFieldMask & whichField))
-    {
-        _mfRightTexCoord.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (RightTexCoordFieldMask & whichField)) {
+    _mfRightTexCoord.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (LeftTexCoordFieldMask & whichField))
-    {
-        _mfLeftTexCoord.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (LeftTexCoordFieldMask & whichField)) {
+    _mfLeftTexCoord.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (FrontTexCoordFieldMask & whichField))
-    {
-        _mfFrontTexCoord.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (FrontTexCoordFieldMask & whichField)) {
+    _mfFrontTexCoord.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BackTexCoordFieldMask & whichField))
-    {
-        _mfBackTexCoord.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (BackTexCoordFieldMask & whichField)) {
+    _mfBackTexCoord.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BeaconFieldMask & whichField))
-    {
-        _sfBeacon.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (BeaconFieldMask & whichField)) {
+    _sfBeacon.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ClearStencilBitFieldMask & whichField))
-    {
-        _sfClearStencilBit.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (ClearStencilBitFieldMask & whichField)) {
+    _sfClearStencilBit.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void SkyBackgroundBase::executeSyncImpl(      SkyBackgroundBase *pOther,
-                                        const BitVector         &whichField)
-{
+void SkyBackgroundBase::executeSyncImpl(SkyBackgroundBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (SkyColorFieldMask & whichField))
-        _mfSkyColor.syncWith(pOther->_mfSkyColor);
+  if (FieldBits::NoField != (SkyColorFieldMask & whichField))
+    _mfSkyColor.syncWith(pOther->_mfSkyColor);
 
-    if(FieldBits::NoField != (SkyAngleFieldMask & whichField))
-        _mfSkyAngle.syncWith(pOther->_mfSkyAngle);
+  if (FieldBits::NoField != (SkyAngleFieldMask & whichField))
+    _mfSkyAngle.syncWith(pOther->_mfSkyAngle);
 
-    if(FieldBits::NoField != (GroundColorFieldMask & whichField))
-        _mfGroundColor.syncWith(pOther->_mfGroundColor);
+  if (FieldBits::NoField != (GroundColorFieldMask & whichField))
+    _mfGroundColor.syncWith(pOther->_mfGroundColor);
 
-    if(FieldBits::NoField != (GroundAngleFieldMask & whichField))
-        _mfGroundAngle.syncWith(pOther->_mfGroundAngle);
+  if (FieldBits::NoField != (GroundAngleFieldMask & whichField))
+    _mfGroundAngle.syncWith(pOther->_mfGroundAngle);
 
-    if(FieldBits::NoField != (SphereResFieldMask & whichField))
-        _sfSphereRes.syncWith(pOther->_sfSphereRes);
+  if (FieldBits::NoField != (SphereResFieldMask & whichField))
+    _sfSphereRes.syncWith(pOther->_sfSphereRes);
 
-    if(FieldBits::NoField != (BackTextureFieldMask & whichField))
-        _sfBackTexture.syncWith(pOther->_sfBackTexture);
+  if (FieldBits::NoField != (BackTextureFieldMask & whichField))
+    _sfBackTexture.syncWith(pOther->_sfBackTexture);
 
-    if(FieldBits::NoField != (BottomTextureFieldMask & whichField))
-        _sfBottomTexture.syncWith(pOther->_sfBottomTexture);
+  if (FieldBits::NoField != (BottomTextureFieldMask & whichField))
+    _sfBottomTexture.syncWith(pOther->_sfBottomTexture);
 
-    if(FieldBits::NoField != (FrontTextureFieldMask & whichField))
-        _sfFrontTexture.syncWith(pOther->_sfFrontTexture);
+  if (FieldBits::NoField != (FrontTextureFieldMask & whichField))
+    _sfFrontTexture.syncWith(pOther->_sfFrontTexture);
 
-    if(FieldBits::NoField != (LeftTextureFieldMask & whichField))
-        _sfLeftTexture.syncWith(pOther->_sfLeftTexture);
+  if (FieldBits::NoField != (LeftTextureFieldMask & whichField))
+    _sfLeftTexture.syncWith(pOther->_sfLeftTexture);
 
-    if(FieldBits::NoField != (RightTextureFieldMask & whichField))
-        _sfRightTexture.syncWith(pOther->_sfRightTexture);
+  if (FieldBits::NoField != (RightTextureFieldMask & whichField))
+    _sfRightTexture.syncWith(pOther->_sfRightTexture);
 
-    if(FieldBits::NoField != (TopTextureFieldMask & whichField))
-        _sfTopTexture.syncWith(pOther->_sfTopTexture);
+  if (FieldBits::NoField != (TopTextureFieldMask & whichField))
+    _sfTopTexture.syncWith(pOther->_sfTopTexture);
 
-    if(FieldBits::NoField != (BoxInsideFieldMask & whichField))
-        _sfBoxInside.syncWith(pOther->_sfBoxInside);
+  if (FieldBits::NoField != (BoxInsideFieldMask & whichField))
+    _sfBoxInside.syncWith(pOther->_sfBoxInside);
 
-    if(FieldBits::NoField != (TopTexCoordFieldMask & whichField))
-        _mfTopTexCoord.syncWith(pOther->_mfTopTexCoord);
+  if (FieldBits::NoField != (TopTexCoordFieldMask & whichField))
+    _mfTopTexCoord.syncWith(pOther->_mfTopTexCoord);
 
-    if(FieldBits::NoField != (BottomTexCoordFieldMask & whichField))
-        _mfBottomTexCoord.syncWith(pOther->_mfBottomTexCoord);
+  if (FieldBits::NoField != (BottomTexCoordFieldMask & whichField))
+    _mfBottomTexCoord.syncWith(pOther->_mfBottomTexCoord);
 
-    if(FieldBits::NoField != (RightTexCoordFieldMask & whichField))
-        _mfRightTexCoord.syncWith(pOther->_mfRightTexCoord);
+  if (FieldBits::NoField != (RightTexCoordFieldMask & whichField))
+    _mfRightTexCoord.syncWith(pOther->_mfRightTexCoord);
 
-    if(FieldBits::NoField != (LeftTexCoordFieldMask & whichField))
-        _mfLeftTexCoord.syncWith(pOther->_mfLeftTexCoord);
+  if (FieldBits::NoField != (LeftTexCoordFieldMask & whichField))
+    _mfLeftTexCoord.syncWith(pOther->_mfLeftTexCoord);
 
-    if(FieldBits::NoField != (FrontTexCoordFieldMask & whichField))
-        _mfFrontTexCoord.syncWith(pOther->_mfFrontTexCoord);
+  if (FieldBits::NoField != (FrontTexCoordFieldMask & whichField))
+    _mfFrontTexCoord.syncWith(pOther->_mfFrontTexCoord);
 
-    if(FieldBits::NoField != (BackTexCoordFieldMask & whichField))
-        _mfBackTexCoord.syncWith(pOther->_mfBackTexCoord);
+  if (FieldBits::NoField != (BackTexCoordFieldMask & whichField))
+    _mfBackTexCoord.syncWith(pOther->_mfBackTexCoord);
 
-    if(FieldBits::NoField != (BeaconFieldMask & whichField))
-        _sfBeacon.syncWith(pOther->_sfBeacon);
+  if (FieldBits::NoField != (BeaconFieldMask & whichField))
+    _sfBeacon.syncWith(pOther->_sfBeacon);
 
-    if(FieldBits::NoField != (ClearStencilBitFieldMask & whichField))
-        _sfClearStencilBit.syncWith(pOther->_sfClearStencilBit);
-
-
+  if (FieldBits::NoField != (ClearStencilBitFieldMask & whichField))
+    _sfClearStencilBit.syncWith(pOther->_sfClearStencilBit);
 }
 #else
-void SkyBackgroundBase::executeSyncImpl(      SkyBackgroundBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void SkyBackgroundBase::executeSyncImpl(
+    SkyBackgroundBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (SphereResFieldMask & whichField))
-        _sfSphereRes.syncWith(pOther->_sfSphereRes);
+  if (FieldBits::NoField != (SphereResFieldMask & whichField))
+    _sfSphereRes.syncWith(pOther->_sfSphereRes);
 
-    if(FieldBits::NoField != (BackTextureFieldMask & whichField))
-        _sfBackTexture.syncWith(pOther->_sfBackTexture);
+  if (FieldBits::NoField != (BackTextureFieldMask & whichField))
+    _sfBackTexture.syncWith(pOther->_sfBackTexture);
 
-    if(FieldBits::NoField != (BottomTextureFieldMask & whichField))
-        _sfBottomTexture.syncWith(pOther->_sfBottomTexture);
+  if (FieldBits::NoField != (BottomTextureFieldMask & whichField))
+    _sfBottomTexture.syncWith(pOther->_sfBottomTexture);
 
-    if(FieldBits::NoField != (FrontTextureFieldMask & whichField))
-        _sfFrontTexture.syncWith(pOther->_sfFrontTexture);
+  if (FieldBits::NoField != (FrontTextureFieldMask & whichField))
+    _sfFrontTexture.syncWith(pOther->_sfFrontTexture);
 
-    if(FieldBits::NoField != (LeftTextureFieldMask & whichField))
-        _sfLeftTexture.syncWith(pOther->_sfLeftTexture);
+  if (FieldBits::NoField != (LeftTextureFieldMask & whichField))
+    _sfLeftTexture.syncWith(pOther->_sfLeftTexture);
 
-    if(FieldBits::NoField != (RightTextureFieldMask & whichField))
-        _sfRightTexture.syncWith(pOther->_sfRightTexture);
+  if (FieldBits::NoField != (RightTextureFieldMask & whichField))
+    _sfRightTexture.syncWith(pOther->_sfRightTexture);
 
-    if(FieldBits::NoField != (TopTextureFieldMask & whichField))
-        _sfTopTexture.syncWith(pOther->_sfTopTexture);
+  if (FieldBits::NoField != (TopTextureFieldMask & whichField))
+    _sfTopTexture.syncWith(pOther->_sfTopTexture);
 
-    if(FieldBits::NoField != (BoxInsideFieldMask & whichField))
-        _sfBoxInside.syncWith(pOther->_sfBoxInside);
+  if (FieldBits::NoField != (BoxInsideFieldMask & whichField))
+    _sfBoxInside.syncWith(pOther->_sfBoxInside);
 
-    if(FieldBits::NoField != (BeaconFieldMask & whichField))
-        _sfBeacon.syncWith(pOther->_sfBeacon);
+  if (FieldBits::NoField != (BeaconFieldMask & whichField))
+    _sfBeacon.syncWith(pOther->_sfBeacon);
 
-    if(FieldBits::NoField != (ClearStencilBitFieldMask & whichField))
-        _sfClearStencilBit.syncWith(pOther->_sfClearStencilBit);
+  if (FieldBits::NoField != (ClearStencilBitFieldMask & whichField))
+    _sfClearStencilBit.syncWith(pOther->_sfClearStencilBit);
 
+  if (FieldBits::NoField != (SkyColorFieldMask & whichField))
+    _mfSkyColor.syncWith(pOther->_mfSkyColor, sInfo);
 
-    if(FieldBits::NoField != (SkyColorFieldMask & whichField))
-        _mfSkyColor.syncWith(pOther->_mfSkyColor, sInfo);
+  if (FieldBits::NoField != (SkyAngleFieldMask & whichField))
+    _mfSkyAngle.syncWith(pOther->_mfSkyAngle, sInfo);
 
-    if(FieldBits::NoField != (SkyAngleFieldMask & whichField))
-        _mfSkyAngle.syncWith(pOther->_mfSkyAngle, sInfo);
+  if (FieldBits::NoField != (GroundColorFieldMask & whichField))
+    _mfGroundColor.syncWith(pOther->_mfGroundColor, sInfo);
 
-    if(FieldBits::NoField != (GroundColorFieldMask & whichField))
-        _mfGroundColor.syncWith(pOther->_mfGroundColor, sInfo);
+  if (FieldBits::NoField != (GroundAngleFieldMask & whichField))
+    _mfGroundAngle.syncWith(pOther->_mfGroundAngle, sInfo);
 
-    if(FieldBits::NoField != (GroundAngleFieldMask & whichField))
-        _mfGroundAngle.syncWith(pOther->_mfGroundAngle, sInfo);
+  if (FieldBits::NoField != (TopTexCoordFieldMask & whichField))
+    _mfTopTexCoord.syncWith(pOther->_mfTopTexCoord, sInfo);
 
-    if(FieldBits::NoField != (TopTexCoordFieldMask & whichField))
-        _mfTopTexCoord.syncWith(pOther->_mfTopTexCoord, sInfo);
+  if (FieldBits::NoField != (BottomTexCoordFieldMask & whichField))
+    _mfBottomTexCoord.syncWith(pOther->_mfBottomTexCoord, sInfo);
 
-    if(FieldBits::NoField != (BottomTexCoordFieldMask & whichField))
-        _mfBottomTexCoord.syncWith(pOther->_mfBottomTexCoord, sInfo);
+  if (FieldBits::NoField != (RightTexCoordFieldMask & whichField))
+    _mfRightTexCoord.syncWith(pOther->_mfRightTexCoord, sInfo);
 
-    if(FieldBits::NoField != (RightTexCoordFieldMask & whichField))
-        _mfRightTexCoord.syncWith(pOther->_mfRightTexCoord, sInfo);
+  if (FieldBits::NoField != (LeftTexCoordFieldMask & whichField))
+    _mfLeftTexCoord.syncWith(pOther->_mfLeftTexCoord, sInfo);
 
-    if(FieldBits::NoField != (LeftTexCoordFieldMask & whichField))
-        _mfLeftTexCoord.syncWith(pOther->_mfLeftTexCoord, sInfo);
+  if (FieldBits::NoField != (FrontTexCoordFieldMask & whichField))
+    _mfFrontTexCoord.syncWith(pOther->_mfFrontTexCoord, sInfo);
 
-    if(FieldBits::NoField != (FrontTexCoordFieldMask & whichField))
-        _mfFrontTexCoord.syncWith(pOther->_mfFrontTexCoord, sInfo);
-
-    if(FieldBits::NoField != (BackTexCoordFieldMask & whichField))
-        _mfBackTexCoord.syncWith(pOther->_mfBackTexCoord, sInfo);
-
-
+  if (FieldBits::NoField != (BackTexCoordFieldMask & whichField))
+    _mfBackTexCoord.syncWith(pOther->_mfBackTexCoord, sInfo);
 }
 
-void SkyBackgroundBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void SkyBackgroundBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (SkyColorFieldMask & whichField))
-        _mfSkyColor.beginEdit(uiAspect, uiContainerSize);
+  if (FieldBits::NoField != (SkyColorFieldMask & whichField))
+    _mfSkyColor.beginEdit(uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (SkyAngleFieldMask & whichField))
-        _mfSkyAngle.beginEdit(uiAspect, uiContainerSize);
+  if (FieldBits::NoField != (SkyAngleFieldMask & whichField))
+    _mfSkyAngle.beginEdit(uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (GroundColorFieldMask & whichField))
-        _mfGroundColor.beginEdit(uiAspect, uiContainerSize);
+  if (FieldBits::NoField != (GroundColorFieldMask & whichField))
+    _mfGroundColor.beginEdit(uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (GroundAngleFieldMask & whichField))
-        _mfGroundAngle.beginEdit(uiAspect, uiContainerSize);
+  if (FieldBits::NoField != (GroundAngleFieldMask & whichField))
+    _mfGroundAngle.beginEdit(uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (TopTexCoordFieldMask & whichField))
-        _mfTopTexCoord.beginEdit(uiAspect, uiContainerSize);
+  if (FieldBits::NoField != (TopTexCoordFieldMask & whichField))
+    _mfTopTexCoord.beginEdit(uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (BottomTexCoordFieldMask & whichField))
-        _mfBottomTexCoord.beginEdit(uiAspect, uiContainerSize);
+  if (FieldBits::NoField != (BottomTexCoordFieldMask & whichField))
+    _mfBottomTexCoord.beginEdit(uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (RightTexCoordFieldMask & whichField))
-        _mfRightTexCoord.beginEdit(uiAspect, uiContainerSize);
+  if (FieldBits::NoField != (RightTexCoordFieldMask & whichField))
+    _mfRightTexCoord.beginEdit(uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (LeftTexCoordFieldMask & whichField))
-        _mfLeftTexCoord.beginEdit(uiAspect, uiContainerSize);
+  if (FieldBits::NoField != (LeftTexCoordFieldMask & whichField))
+    _mfLeftTexCoord.beginEdit(uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (FrontTexCoordFieldMask & whichField))
-        _mfFrontTexCoord.beginEdit(uiAspect, uiContainerSize);
+  if (FieldBits::NoField != (FrontTexCoordFieldMask & whichField))
+    _mfFrontTexCoord.beginEdit(uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (BackTexCoordFieldMask & whichField))
-        _mfBackTexCoord.beginEdit(uiAspect, uiContainerSize);
-
+  if (FieldBits::NoField != (BackTexCoordFieldMask & whichField))
+    _mfBackTexCoord.beginEdit(uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 OSG_END_NAMESPACE
 
@@ -961,4 +796,3 @@ DataType FieldDataTraits<SkyBackgroundPtr>::_type("SkyBackgroundPtr", "Backgroun
 OSG_DLLEXPORT_MFIELD_DEF1(SkyBackgroundPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
-

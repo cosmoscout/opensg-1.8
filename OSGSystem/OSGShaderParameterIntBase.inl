@@ -52,81 +52,59 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &ShaderParameterIntBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& ShaderParameterIntBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 ShaderParameterIntBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 ShaderParameterIntBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-ShaderParameterIntPtr ShaderParameterIntBase::create(void) 
-{
-    ShaderParameterIntPtr fc; 
+inline ShaderParameterIntPtr ShaderParameterIntBase::create(void) {
+  ShaderParameterIntPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = ShaderParameterIntPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = ShaderParameterIntPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-ShaderParameterIntPtr ShaderParameterIntBase::createEmpty(void) 
-{ 
-    ShaderParameterIntPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline ShaderParameterIntPtr ShaderParameterIntBase::createEmpty(void) {
+  ShaderParameterIntPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the ShaderParameterInt::_sfValue field.
-inline
-SFInt32 *ShaderParameterIntBase::getSFValue(void)
-{
-    return &_sfValue;
-}
-
-
-//! Get the value of the ShaderParameterInt::_sfValue field.
-inline
-Int32 &ShaderParameterIntBase::getValue(void)
-{
-    return _sfValue.getValue();
+inline SFInt32* ShaderParameterIntBase::getSFValue(void) {
+  return &_sfValue;
 }
 
 //! Get the value of the ShaderParameterInt::_sfValue field.
-inline
-const Int32 &ShaderParameterIntBase::getValue(void) const
-{
-    return _sfValue.getValue();
+inline Int32& ShaderParameterIntBase::getValue(void) {
+  return _sfValue.getValue();
+}
+
+//! Get the value of the ShaderParameterInt::_sfValue field.
+inline const Int32& ShaderParameterIntBase::getValue(void) const {
+  return _sfValue.getValue();
 }
 
 //! Set the value of the ShaderParameterInt::_sfValue field.
-inline
-void ShaderParameterIntBase::setValue(const Int32 &value)
-{
-    _sfValue.setValue(value);
+inline void ShaderParameterIntBase::setValue(const Int32& value) {
+  _sfValue.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGSHADERPARAMETERINTBASE_INLINE_CVSID "@(#)$Id: OSGShaderParameterIntBase.inl,v 1.5 2006/02/20 17:04:38 dirk Exp $"
-
+#define OSGSHADERPARAMETERINTBASE_INLINE_CVSID                                                     \
+  "@(#)$Id: OSGShaderParameterIntBase.inl,v 1.5 2006/02/20 17:04:38 dirk Exp $"

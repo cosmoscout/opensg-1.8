@@ -36,14 +36,13 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 OSG_BEGIN_NAMESPACE
 
-
-inline TextFaceFactory &TextFaceFactory::the() { return _the; } 
-
+inline TextFaceFactory& TextFaceFactory::the() {
+  return _the;
+}
 
 OSG_END_NAMESPACE
 
-
-#define OSGTEXTFACEFACTORY_INLINE_CVSID "@(#)$Id: OSGTextFaceFactory.inl,v 1.1 2005/03/03 13:43:06 a-m-z Exp $"
+#define OSGTEXTFACEFACTORY_INLINE_CVSID                                                            \
+  "@(#)$Id: OSGTextFaceFactory.inl,v 1.1 2005/03/03 13:43:06 a-m-z Exp $"

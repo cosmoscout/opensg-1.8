@@ -67,132 +67,123 @@ class CNodePtr;
  */
 
 #ifdef __sgi
-#pragma set woff 1375,1424
+#pragma set woff 1375, 1424
 #endif
 
 #ifdef OSG_LINUX_ICC
-#pragma warning( disable : 444 )
+#pragma warning(disable : 444)
 #endif
 
-class OSG_SYSTEMLIB_DLLMAPPING NodePtr : public AttachmentContainerPtr
-{
-    /*==========================  PUBLIC  =================================*/
+class OSG_SYSTEMLIB_DLLMAPPING NodePtr : public AttachmentContainerPtr {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  typedef Node    StoredObjectType;
+  typedef NodePtr ObjectType;
 
-    typedef Node                   StoredObjectType;
-    typedef NodePtr                ObjectType;
+  typedef AttachmentContainerPtr Inherited;
 
-    typedef AttachmentContainerPtr Inherited;
+  /*---------------------------------------------------------------------*/
+  /*! \name                      dcast                                   */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      dcast                                   */
-    /*! \{                                                                 */
+  template <class InTypeT>
+  static NodePtr dcast(const InTypeT oIn);
 
-    template <class InTypeT> 
-    static NodePtr dcast(const InTypeT oIn);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  NodePtr(void);
+  NodePtr(const NodePtr& source);
+  NodePtr(const NullFieldContainerPtr& source);
+  explicit NodePtr(const CNodePtr& source);
 
-             NodePtr(void);
-             NodePtr(const NodePtr               &source);
-             NodePtr(const NullFieldContainerPtr &source);
-    explicit NodePtr(const CNodePtr              &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  ~NodePtr(void);
 
-    ~NodePtr(void); 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                        Core                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                        Core                                  */
-    /*! \{                                                                 */
+  NodeCore* getCore(void);
+  NodeCore* getCore(void) const;
 
-    NodeCore *getCore(void);
-    NodeCore *getCore(void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                 Container Access                             */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                 Container Access                             */
-    /*! \{                                                                 */
+  Node* operator->(void);
+  Node* operator->(void) const;
 
-    Node *operator->(void);
-    Node *operator->(void) const;
+  Node& operator*(void);
+  Node& operator*(void) const;
 
-    Node &operator *(void);
-    Node &operator *(void) const;
+  Node* getCPtr(void);
+  Node* getCPtr(void) const;
 
-    Node *getCPtr   (void);
-    Node *getCPtr   (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Assignment                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Assignment                                */
-    /*! \{                                                                 */
+  void operator=(const CNodePtr& source);
+  void operator=(const NodePtr& source);
+  void operator=(const NullFieldContainerPtr& source);
 
-    void operator =(const CNodePtr              &source);
-    void operator =(const NodePtr               &source);
-    void operator =(const NullFieldContainerPtr &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name             Container Constructors                           */
+  /*! \{                                                                 */
+  /*! \brief Container Constructor, used to work around MS Bugs,
+   *  use them only if you really now what you are doing ;-)             */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name             Container Constructors                           */
-    /*! \{                                                                 */
-    /*! \brief Container Constructor, used to work around MS Bugs,  
-     *  use them only if you really now what you are doing ;-)             */
+  explicit NodePtr(const Node& source);
+  explicit NodePtr(const Node* source);
 
-    explicit NodePtr(const Node   &source);
-    explicit NodePtr(const Node   *source);
-    
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-  protected:
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name             Internal Constructors                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name             Internal Constructors                            */
-    /*! \{                                                                 */
-    
-    NodePtr(const Node   *source,
-            const UInt16  uiSize,
-            const UInt16  uiParentPos);
+  NodePtr(const Node* source, const UInt16 uiSize, const UInt16 uiParentPos);
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-  private:
-
-    friend class FieldContainer;
+ private:
+  friend class FieldContainer;
 };
 
 #ifdef OSG_LINUX_ICC
-#pragma warning( default : 444 )
+#pragma warning(default : 444)
 #endif
 
 #ifdef __sgi
-#pragma reset woff 1375,1424
+#pragma reset woff 1375, 1424
 #endif
 
 /*! \ingroup GrpSystemFieldContainerFuncs
  */
 
 OSG_SYSTEMLIB_DLLMAPPING
-std::ostream &operator <<(      std::ostream &os,
-                          const NodePtr      &fc);
-
+std::ostream& operator<<(std::ostream& os, const NodePtr& fc);
 
 /*! \ingroup GrpSystemFieldContainerFuncs
  */
 
 OSG_SYSTEMLIB_DLLMAPPING
 NodePtr makeNodeFor(NodeCorePtr core);
-
 
 OSG_END_NAMESPACE
 

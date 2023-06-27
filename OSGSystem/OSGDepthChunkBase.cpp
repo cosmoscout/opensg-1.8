@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEDEPTHCHUNKINST
 
 #include <stdlib.h>
@@ -61,29 +60,27 @@
 #include "OSGDepthChunkBase.h"
 #include "OSGDepthChunk.h"
 
-#include <OSGGL.h>                        // Func default header
+#include <OSGGL.h> // Func default header
 
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  DepthChunkBase::EnableFieldMask = 
+const OSG::BitVector DepthChunkBase::EnableFieldMask =
     (TypeTraits<BitVector>::One << DepthChunkBase::EnableFieldId);
 
-const OSG::BitVector  DepthChunkBase::FuncFieldMask = 
+const OSG::BitVector DepthChunkBase::FuncFieldMask =
     (TypeTraits<BitVector>::One << DepthChunkBase::FuncFieldId);
 
-const OSG::BitVector  DepthChunkBase::NearFieldMask = 
+const OSG::BitVector DepthChunkBase::NearFieldMask =
     (TypeTraits<BitVector>::One << DepthChunkBase::NearFieldId);
 
-const OSG::BitVector  DepthChunkBase::FarFieldMask = 
+const OSG::BitVector DepthChunkBase::FarFieldMask =
     (TypeTraits<BitVector>::One << DepthChunkBase::FarFieldId);
 
-const OSG::BitVector  DepthChunkBase::ReadOnlyFieldMask = 
+const OSG::BitVector DepthChunkBase::ReadOnlyFieldMask =
     (TypeTraits<BitVector>::One << DepthChunkBase::ReadOnlyFieldId);
 
-const OSG::BitVector DepthChunkBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector DepthChunkBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
@@ -105,299 +102,220 @@ const OSG::BitVector DepthChunkBase::MTInfluenceMask =
 
 //! DepthChunk description
 
-FieldDescription *DepthChunkBase::_desc[] = 
-{
-    new FieldDescription(SFBool::getClassType(), 
-                     "enable", 
-                     EnableFieldId, EnableFieldMask,
-                     false,
-                     (FieldAccessMethod) &DepthChunkBase::getSFEnable),
-    new FieldDescription(SFGLenum::getClassType(), 
-                     "func", 
-                     FuncFieldId, FuncFieldMask,
-                     false,
-                     (FieldAccessMethod) &DepthChunkBase::getSFFunc),
-    new FieldDescription(SFReal32::getClassType(), 
-                     "near", 
-                     NearFieldId, NearFieldMask,
-                     false,
-                     (FieldAccessMethod) &DepthChunkBase::getSFNear),
-    new FieldDescription(SFReal32::getClassType(), 
-                     "far", 
-                     FarFieldId, FarFieldMask,
-                     false,
-                     (FieldAccessMethod) &DepthChunkBase::getSFFar),
-    new FieldDescription(SFBool::getClassType(), 
-                     "readOnly", 
-                     ReadOnlyFieldId, ReadOnlyFieldMask,
-                     false,
-                     (FieldAccessMethod) &DepthChunkBase::getSFReadOnly)
-};
+FieldDescription* DepthChunkBase::_desc[] = {
+    new FieldDescription(SFBool::getClassType(), "enable", EnableFieldId, EnableFieldMask, false,
+        (FieldAccessMethod)&DepthChunkBase::getSFEnable),
+    new FieldDescription(SFGLenum::getClassType(), "func", FuncFieldId, FuncFieldMask, false,
+        (FieldAccessMethod)&DepthChunkBase::getSFFunc),
+    new FieldDescription(SFReal32::getClassType(), "near", NearFieldId, NearFieldMask, false,
+        (FieldAccessMethod)&DepthChunkBase::getSFNear),
+    new FieldDescription(SFReal32::getClassType(), "far", FarFieldId, FarFieldMask, false,
+        (FieldAccessMethod)&DepthChunkBase::getSFFar),
+    new FieldDescription(SFBool::getClassType(), "readOnly", ReadOnlyFieldId, ReadOnlyFieldMask,
+        false, (FieldAccessMethod)&DepthChunkBase::getSFReadOnly)};
 
+FieldContainerType DepthChunkBase::_type("DepthChunk", "StateChunk", NULL,
+    (PrototypeCreateF)&DepthChunkBase::createEmpty, DepthChunk::initMethod, _desc, sizeof(_desc));
 
-FieldContainerType DepthChunkBase::_type(
-    "DepthChunk",
-    "StateChunk",
-    NULL,
-    (PrototypeCreateF) &DepthChunkBase::createEmpty,
-    DepthChunk::initMethod,
-    _desc,
-    sizeof(_desc));
-
-//OSG_FIELD_CONTAINER_DEF(DepthChunkBase, DepthChunkPtr)
+// OSG_FIELD_CONTAINER_DEF(DepthChunkBase, DepthChunkPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &DepthChunkBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &DepthChunkBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr DepthChunkBase::shallowCopy(void) const 
-{ 
-    DepthChunkPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const DepthChunk *>(this)); 
-
-    return returnValue; 
+FieldContainerType& DepthChunkBase::getType(void) {
+  return _type;
 }
 
-UInt32 DepthChunkBase::getContainerSize(void) const 
-{ 
-    return sizeof(DepthChunk); 
+const FieldContainerType& DepthChunkBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr DepthChunkBase::shallowCopy(void) const {
+  DepthChunkPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const DepthChunk*>(this));
+
+  return returnValue;
+}
+
+UInt32 DepthChunkBase::getContainerSize(void) const {
+  return sizeof(DepthChunk);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void DepthChunkBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((DepthChunkBase *) &other, whichField);
+void DepthChunkBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((DepthChunkBase*)&other, whichField);
 }
 #else
-void DepthChunkBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((DepthChunkBase *) &other, whichField, sInfo);
+void DepthChunkBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((DepthChunkBase*)&other, whichField, sInfo);
 }
-void DepthChunkBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void DepthChunkBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void DepthChunkBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void DepthChunkBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-DepthChunkBase::DepthChunkBase(void) :
-    _sfEnable                 (bool(true)), 
-    _sfFunc                   (GLenum(GL_LEQUAL)), 
-    _sfNear                   (Real32(-1.f)), 
-    _sfFar                    (Real32(-1.f)), 
-    _sfReadOnly               (bool(false)), 
-    Inherited() 
-{
+DepthChunkBase::DepthChunkBase(void)
+    : _sfEnable(bool(true))
+    , _sfFunc(GLenum(GL_LEQUAL))
+    , _sfNear(Real32(-1.f))
+    , _sfFar(Real32(-1.f))
+    , _sfReadOnly(bool(false))
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-DepthChunkBase::DepthChunkBase(const DepthChunkBase &source) :
-    _sfEnable                 (source._sfEnable                 ), 
-    _sfFunc                   (source._sfFunc                   ), 
-    _sfNear                   (source._sfNear                   ), 
-    _sfFar                    (source._sfFar                    ), 
-    _sfReadOnly               (source._sfReadOnly               ), 
-    Inherited                 (source)
-{
+DepthChunkBase::DepthChunkBase(const DepthChunkBase& source)
+    : _sfEnable(source._sfEnable)
+    , _sfFunc(source._sfFunc)
+    , _sfNear(source._sfNear)
+    , _sfFar(source._sfFar)
+    , _sfReadOnly(source._sfReadOnly)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-DepthChunkBase::~DepthChunkBase(void)
-{
+DepthChunkBase::~DepthChunkBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 DepthChunkBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 DepthChunkBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (EnableFieldMask & whichField))
-    {
-        returnValue += _sfEnable.getBinSize();
-    }
+  if (FieldBits::NoField != (EnableFieldMask & whichField)) {
+    returnValue += _sfEnable.getBinSize();
+  }
 
-    if(FieldBits::NoField != (FuncFieldMask & whichField))
-    {
-        returnValue += _sfFunc.getBinSize();
-    }
+  if (FieldBits::NoField != (FuncFieldMask & whichField)) {
+    returnValue += _sfFunc.getBinSize();
+  }
 
-    if(FieldBits::NoField != (NearFieldMask & whichField))
-    {
-        returnValue += _sfNear.getBinSize();
-    }
+  if (FieldBits::NoField != (NearFieldMask & whichField)) {
+    returnValue += _sfNear.getBinSize();
+  }
 
-    if(FieldBits::NoField != (FarFieldMask & whichField))
-    {
-        returnValue += _sfFar.getBinSize();
-    }
+  if (FieldBits::NoField != (FarFieldMask & whichField)) {
+    returnValue += _sfFar.getBinSize();
+  }
 
-    if(FieldBits::NoField != (ReadOnlyFieldMask & whichField))
-    {
-        returnValue += _sfReadOnly.getBinSize();
-    }
+  if (FieldBits::NoField != (ReadOnlyFieldMask & whichField)) {
+    returnValue += _sfReadOnly.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void DepthChunkBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void DepthChunkBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (EnableFieldMask & whichField))
-    {
-        _sfEnable.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (EnableFieldMask & whichField)) {
+    _sfEnable.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (FuncFieldMask & whichField))
-    {
-        _sfFunc.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (FuncFieldMask & whichField)) {
+    _sfFunc.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (NearFieldMask & whichField))
-    {
-        _sfNear.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (NearFieldMask & whichField)) {
+    _sfNear.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (FarFieldMask & whichField))
-    {
-        _sfFar.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (FarFieldMask & whichField)) {
+    _sfFar.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ReadOnlyFieldMask & whichField))
-    {
-        _sfReadOnly.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (ReadOnlyFieldMask & whichField)) {
+    _sfReadOnly.copyToBin(pMem);
+  }
 }
 
-void DepthChunkBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void DepthChunkBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (EnableFieldMask & whichField))
-    {
-        _sfEnable.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (EnableFieldMask & whichField)) {
+    _sfEnable.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (FuncFieldMask & whichField))
-    {
-        _sfFunc.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (FuncFieldMask & whichField)) {
+    _sfFunc.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (NearFieldMask & whichField))
-    {
-        _sfNear.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (NearFieldMask & whichField)) {
+    _sfNear.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (FarFieldMask & whichField))
-    {
-        _sfFar.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (FarFieldMask & whichField)) {
+    _sfFar.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ReadOnlyFieldMask & whichField))
-    {
-        _sfReadOnly.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (ReadOnlyFieldMask & whichField)) {
+    _sfReadOnly.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void DepthChunkBase::executeSyncImpl(      DepthChunkBase *pOther,
-                                        const BitVector         &whichField)
-{
+void DepthChunkBase::executeSyncImpl(DepthChunkBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (EnableFieldMask & whichField))
-        _sfEnable.syncWith(pOther->_sfEnable);
+  if (FieldBits::NoField != (EnableFieldMask & whichField))
+    _sfEnable.syncWith(pOther->_sfEnable);
 
-    if(FieldBits::NoField != (FuncFieldMask & whichField))
-        _sfFunc.syncWith(pOther->_sfFunc);
+  if (FieldBits::NoField != (FuncFieldMask & whichField))
+    _sfFunc.syncWith(pOther->_sfFunc);
 
-    if(FieldBits::NoField != (NearFieldMask & whichField))
-        _sfNear.syncWith(pOther->_sfNear);
+  if (FieldBits::NoField != (NearFieldMask & whichField))
+    _sfNear.syncWith(pOther->_sfNear);
 
-    if(FieldBits::NoField != (FarFieldMask & whichField))
-        _sfFar.syncWith(pOther->_sfFar);
+  if (FieldBits::NoField != (FarFieldMask & whichField))
+    _sfFar.syncWith(pOther->_sfFar);
 
-    if(FieldBits::NoField != (ReadOnlyFieldMask & whichField))
-        _sfReadOnly.syncWith(pOther->_sfReadOnly);
-
-
+  if (FieldBits::NoField != (ReadOnlyFieldMask & whichField))
+    _sfReadOnly.syncWith(pOther->_sfReadOnly);
 }
 #else
-void DepthChunkBase::executeSyncImpl(      DepthChunkBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void DepthChunkBase::executeSyncImpl(
+    DepthChunkBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (EnableFieldMask & whichField))
-        _sfEnable.syncWith(pOther->_sfEnable);
+  if (FieldBits::NoField != (EnableFieldMask & whichField))
+    _sfEnable.syncWith(pOther->_sfEnable);
 
-    if(FieldBits::NoField != (FuncFieldMask & whichField))
-        _sfFunc.syncWith(pOther->_sfFunc);
+  if (FieldBits::NoField != (FuncFieldMask & whichField))
+    _sfFunc.syncWith(pOther->_sfFunc);
 
-    if(FieldBits::NoField != (NearFieldMask & whichField))
-        _sfNear.syncWith(pOther->_sfNear);
+  if (FieldBits::NoField != (NearFieldMask & whichField))
+    _sfNear.syncWith(pOther->_sfNear);
 
-    if(FieldBits::NoField != (FarFieldMask & whichField))
-        _sfFar.syncWith(pOther->_sfFar);
+  if (FieldBits::NoField != (FarFieldMask & whichField))
+    _sfFar.syncWith(pOther->_sfFar);
 
-    if(FieldBits::NoField != (ReadOnlyFieldMask & whichField))
-        _sfReadOnly.syncWith(pOther->_sfReadOnly);
-
-
-
+  if (FieldBits::NoField != (ReadOnlyFieldMask & whichField))
+    _sfReadOnly.syncWith(pOther->_sfReadOnly);
 }
 
-void DepthChunkBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void DepthChunkBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>

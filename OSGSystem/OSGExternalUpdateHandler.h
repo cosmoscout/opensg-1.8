@@ -7,12 +7,11 @@
 
 using namespace osg;
 
-class OSG_SYSTEMLIB_DLLMAPPING ExternalUpdateHandler
-{
-public:
-    virtual ~ExternalUpdateHandler() {}
-    virtual void update( NodePtr& TransformNode ) = 0;
+class OSG_SYSTEMLIB_DLLMAPPING ExternalUpdateHandler {
+ public:
+  virtual ~ExternalUpdateHandler() {
+  }
+  virtual void update(NodePtr& TransformNode) = 0;
 };
 
 #endif // _OSGEXTERNALUPDATEHANDLER_H
-

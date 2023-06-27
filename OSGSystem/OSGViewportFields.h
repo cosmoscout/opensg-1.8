@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGVIEWPORTFIELDS_H_
 #define _OSGVIEWPORTFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class Viewport;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! ViewportPtr
 
 typedef FCPtr<AttachmentContainerPtr, Viewport> ViewportPtr;
@@ -81,18 +80,22 @@ typedef FCPtr<AttachmentContainerPtr, Viewport> ViewportPtr;
 #endif
 
 template <>
-struct FieldDataTraits<ViewportPtr> : 
-    public FieldTraitsRecurseMapper<ViewportPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<ViewportPtr> : public FieldTraitsRecurseMapper<ViewportPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getSName(void) { return "SFViewportPtr"; }
-    static const char *getMName(void) { return "MFViewportPtr"; }
+  static const char* getSName(void) {
+    return "SFViewportPtr";
+  }
+  static const char* getMName(void) {
+    return "MFViewportPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -102,7 +105,6 @@ struct FieldDataTraits<ViewportPtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
@@ -126,6 +128,7 @@ OSG_DLLEXPORT_DECL1(MField, ViewportPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 
 OSG_END_NAMESPACE
 
-#define OSGVIEWPORTFIELDS_HEADER_CVSID "@(#)$Id: FCFieldsTemplate_h.h,v 1.25 2005/04/04 14:51:48 dirk Exp $"
+#define OSGVIEWPORTFIELDS_HEADER_CVSID                                                             \
+  "@(#)$Id: FCFieldsTemplate_h.h,v 1.25 2005/04/04 14:51:48 dirk Exp $"
 
 #endif /* _OSGVIEWPORTFIELDS_H_ */

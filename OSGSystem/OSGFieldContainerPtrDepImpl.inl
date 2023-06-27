@@ -47,127 +47,94 @@
 
 OSG_BEGIN_NAMESPACE
 
-template <class BasePtrTypeT, class FieldContainerTypeT> inline
-std::ostream &operator <<(
-          std::ostream                             &os,
-    const FCPtr<BasePtrTypeT, FieldContainerTypeT> &fc)
-{
-    if(fc == NullFC)
-    {
-        os << std::hex << "FCPtr 0x" << &fc << std::dec << ":NullFC";
-    }
-    else
-    {
-        os << std::hex 
-           << "FCPtr 0x"
-           << &fc 
-           << std::dec 
-           << ":" 
-           << fc->getType().getName() 
-           << "Ptr(0x"
-           << std::hex 
-           << (&(*fc)) 
-           << std::dec 
-           << ")";
-    }
+template <class BasePtrTypeT, class FieldContainerTypeT>
+inline std::ostream& operator<<(
+    std::ostream& os, const FCPtr<BasePtrTypeT, FieldContainerTypeT>& fc) {
+  if (fc == NullFC) {
+    os << std::hex << "FCPtr 0x" << &fc << std::dec << ":NullFC";
+  } else {
+    os << std::hex << "FCPtr 0x" << &fc << std::dec << ":" << fc->getType().getName() << "Ptr(0x"
+       << std::hex << (&(*fc)) << std::dec << ")";
+  }
 
-    return os;
+  return os;
 }
 
-inline
-void FieldContainerPtrBase::deleteContainers(void) const
-{
-//    dump(0, FCDumpFlags::RefCount);
+inline void FieldContainerPtrBase::deleteContainers(void) const {
+  //    dump(0, FCDumpFlags::RefCount);
 
-    Thread::getCurrentChangeList()->addDestroyed(*getIdP());
-    
-    if (FieldContainerFactory::the()->unregisterFieldContainer(
-            *((const FieldContainerPtr *) this)))
-    {
-        return;
-    }
-    
-    UInt8 *pTmp = getFirstElemP();
-    
-    ((FieldContainer *) pTmp)->onDestroy();
-    
+  Thread::getCurrentChangeList()->addDestroyed(*getIdP());
+
+  if (FieldContainerFactory::the()->unregisterFieldContainer(*((const FieldContainerPtr*)this))) {
+    return;
+  }
+
+  UInt8* pTmp = getFirstElemP();
+
+  ((FieldContainer*)pTmp)->onDestroy();
+
 #if defined(OSG_GV_BETA) && defined(OSG_DBG_MEM)
 
-    fprintf(stderr, "GV_MEM_FC_DBG : (%u) d (%p|%u)\n", 
-            Thread::getAspect(),
-            pTmp,
-//            ((FieldContainer *) pTmp)->getType().getCName(),
-            ((FieldContainer *) pTmp)->getType().getId());
+  fprintf(stderr, "GV_MEM_FC_DBG : (%u) d (%p|%u)\n", Thread::getAspect(), pTmp,
+      //            ((FieldContainer *) pTmp)->getType().getCName(),
+      ((FieldContainer*)pTmp)->getType().getId());
 #endif
- 
+
 #if defined(OSG_FIXED_MFIELDSYNC)
-    ((FieldContainer *) pTmp)->~FieldContainer();
+  ((FieldContainer*)pTmp)->~FieldContainer();
 #endif
-   
-    for(UInt32 i = 0; i < ThreadManager::getNumAspects(); i++)
-    {
+
+  for (UInt32 i = 0; i < ThreadManager::getNumAspects(); i++) {
 #if defined(OSG_FIXED_MFIELDSYNC)
-        ((FieldContainer *) pTmp)->onDestroyAspect(*(getIdP()), i);
+    ((FieldContainer*)pTmp)->onDestroyAspect(*(getIdP()), i);
 #endif
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-        ((FieldContainer *) pTmp)->~FieldContainer();
+    ((FieldContainer*)pTmp)->~FieldContainer();
 #endif
 
-        pTmp += _containerSize;
-    }
-    
-    operator delete(_storeP + getRefCountOff());
+    pTmp += _containerSize;
+  }
+
+  operator delete(_storeP + getRefCountOff());
 }
 
-inline
-void FieldContainerPtrBase::subRef(void) const
-{
+inline void FieldContainerPtrBase::subRef(void) const {
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    _pRefCountLock->aquire(_storeP);
+  _pRefCountLock->aquire(_storeP);
 
-    (*getRefCountP())--;
+  (*getRefCountP())--;
 
-    if((*getRefCountP()) <= 0)
-    {
-        _pRefCountLock->release(_storeP);
+  if ((*getRefCountP()) <= 0) {
+    _pRefCountLock->release(_storeP);
 
-        deleteContainers();
-        
-         // Clean up a little.
-        const_cast<FieldContainerPtrBase*>(this)->_storeP = NULL;
-    }
-    else
-    {
-        _pRefCountLock->release(_storeP);
+    deleteContainers();
 
-        Thread::getCurrentChangeList()->addSubRefd(
-            *(static_cast<const FieldContainerPtr *>(this)));
-    }
+    // Clean up a little.
+    const_cast<FieldContainerPtrBase*>(this)->_storeP = NULL;
+  } else {
+    _pRefCountLock->release(_storeP);
+
+    Thread::getCurrentChangeList()->addSubRefd(*(static_cast<const FieldContainerPtr*>(this)));
+  }
 #else
-    Thread::getCurrentChangeList()->addSubRefd(
-        *(static_cast<const FieldContainerPtr *>(this)));
+  Thread::getCurrentChangeList()->addSubRefd(*(static_cast<const FieldContainerPtr*>(this)));
 #endif
 }
 
 #if defined(OSG_FIXED_MFIELDSYNC)
-inline
-void FieldContainerPtrBase::doSubRef(void) const
-{
-    _pRefCountLock->aquire(_storeP);
+inline void FieldContainerPtrBase::doSubRef(void) const {
+  _pRefCountLock->aquire(_storeP);
 
-    (*getRefCountP())--;
+  (*getRefCountP())--;
 
-    if((*getRefCountP()) <= 0)
-    {
-        _pRefCountLock->release(_storeP);
+  if ((*getRefCountP()) <= 0) {
+    _pRefCountLock->release(_storeP);
 
-        deleteContainers();
-    }
-    else
-    {
-        _pRefCountLock->release(_storeP);
-    }
+    deleteContainers();
+  } else {
+    _pRefCountLock->release(_storeP);
+  }
 }
 #endif
 

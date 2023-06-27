@@ -56,15 +56,15 @@
 
 // _GLUfuncptr doesn't exist on all platforms.
 #if defined(WIN32)
-typedef void (CALLBACK *OSGGLUfuncptr)();
+typedef void(CALLBACK* OSGGLUfuncptr)();
 #elif defined(__linux)
-#  ifdef GLAPIENTRY
-typedef void (GLAPIENTRY *OSGGLUfuncptr)();
-#  elif defined(APIENTRY)
-typedef void (APIENTRY *OSGGLUfuncptr)();
-#  else
+#ifdef GLAPIENTRY
+typedef void(GLAPIENTRY* OSGGLUfuncptr)();
+#elif defined(APIENTRY)
+typedef void(APIENTRY* OSGGLUfuncptr)();
+#else
 typedef void (*OSGGLUfuncptr)();
-#  endif
+#endif
 #elif defined(__APPLE__)
 typedef GLvoid (*OSGGLUfuncptr)(...);
 #else

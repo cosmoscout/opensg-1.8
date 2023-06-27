@@ -45,19 +45,15 @@
 
 OSG_BEGIN_NAMESPACE
 
-inline
-UInt32 StencilChunk::getStaticClassId(void)
-{
-    return getStaticClass()->getId();
+inline UInt32 StencilChunk::getStaticClassId(void) {
+  return getStaticClass()->getId();
 }
 
-inline
-const StateChunkClass *StencilChunk::getStaticClass(void)
-{
-    return &StencilChunk::_class;
+inline const StateChunkClass* StencilChunk::getStaticClass(void) {
+  return &StencilChunk::_class;
 }
 
 OSG_END_NAMESPACE
 
-#define OSGSTENCILCHUNK_INLINE_CVSID "@(#)$Id: OSGStencilChunk.inl,v 1.1 2005/03/21 14:41:41 yjung Exp $"
-
+#define OSGSTENCILCHUNK_INLINE_CVSID                                                               \
+  "@(#)$Id: OSGStencilChunk.inl,v 1.1 2005/03/21 14:41:41 yjung Exp $"

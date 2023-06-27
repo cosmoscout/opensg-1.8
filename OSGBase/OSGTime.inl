@@ -37,99 +37,87 @@
 \*---------------------------------------------------------------------------*/
 
 #ifdef WIN32
-  #include <mmsystem.h>
+#include <mmsystem.h>
 #else
-  #include <sys/types.h>
-  #include <sys/time.h>
+#include <sys/types.h>
+#include <sys/time.h>
 #endif
 
 OSG_BEGIN_NAMESPACE
 
-inline
-Time getSystemTime (void)
-{
-    Time time;
+inline Time getSystemTime(void) {
+  Time time;
 
 #ifdef WIN32
-    time = Time(timeGetTime()) / 1000.0;
+  time = Time(timeGetTime()) / 1000.0;
 #else
-    struct timeval tv;
-    gettimeofday(&tv, 0);
-    time = Time(tv.tv_usec) / 1000000.0 + Time(tv.tv_sec);
+  struct timeval tv;
+  gettimeofday(&tv, 0);
+  time = Time(tv.tv_usec) / 1000000.0 + Time(tv.tv_sec);
 #endif
 
-    return time;
+  return time;
 }
 
-
-inline
-TimeStamp getTimeStamp(void)
-{
+inline TimeStamp getTimeStamp(void) {
 #ifdef WIN32
-    Int64 iCounter;
-    
-    QueryPerformanceCounter(reinterpret_cast<LARGE_INTEGER *>(&iCounter));
+  Int64 iCounter;
 
-    return  static_cast<TimeStamp>(iCounter);
+  QueryPerformanceCounter(reinterpret_cast<LARGE_INTEGER*>(&iCounter));
+
+  return static_cast<TimeStamp>(iCounter);
 #elif defined(__linux) && defined(__i386)
 
-    register uint64_t result;
-    //asm volatile ("rdtsc" : "=A"(result));
-    asm volatile (".byte 0x0f, 0x31" : "=A" (result)); // same thing as rdtsc... inject the bytes for the opcode.
-    return static_cast<TimeStamp>(result);
-    
+  register uint64_t result;
+  // asm volatile ("rdtsc" : "=A"(result));
+  asm volatile(".byte 0x0f, 0x31"
+               : "=A"(result)); // same thing as rdtsc... inject the bytes for the opcode.
+  return static_cast<TimeStamp>(result);
+
 #else
-    return static_cast<TimeStamp>(getSystemTime() * 1000.f);
+  return static_cast<TimeStamp>(getSystemTime() * 1000.f);
 #endif
 }
 
-
-inline
-TimeStamp getTimeStampFreq(void)
-{
+inline TimeStamp getTimeStampFreq(void) {
 #ifdef WIN32
-    Int64 iCounterFreq;
-    
-    QueryPerformanceFrequency(
-        reinterpret_cast<LARGE_INTEGER *>(&iCounterFreq));
+  Int64 iCounterFreq;
 
-    return static_cast<TimeStamp>(iCounterFreq);
-    
+  QueryPerformanceFrequency(reinterpret_cast<LARGE_INTEGER*>(&iCounterFreq));
+
+  return static_cast<TimeStamp>(iCounterFreq);
+
 #elif defined(__linux) && defined(__i386)
 
-    static Int64 iCounterFreq = 0;
-    
-    if(iCounterFreq == 0)
-    {
-        // Calibrate against gettimeofday
+  static Int64 iCounterFreq = 0;
 
-        Time start, end;
-        Int64 cstart, cend;
+  if (iCounterFreq == 0) {
+    // Calibrate against gettimeofday
 
-        cstart = getTimeStamp();
-        start = getSystemTime();
+    Time  start, end;
+    Int64 cstart, cend;
 
-        osgsleep(200);
+    cstart = getTimeStamp();
+    start  = getSystemTime();
 
-        cend = getTimeStamp();
-        end = getSystemTime();
+    osgsleep(200);
 
-        iCounterFreq = static_cast<Int64>((cend - cstart) / (end - start));    
-    }
-    return static_cast<TimeStamp>(iCounterFreq);
-    
+    cend = getTimeStamp();
+    end  = getSystemTime();
+
+    iCounterFreq = static_cast<Int64>((cend - cstart) / (end - start));
+  }
+  return static_cast<TimeStamp>(iCounterFreq);
+
 #else
-    return static_cast<TimeStamp>(1000000);
+  return static_cast<TimeStamp>(1000000);
 #endif
 }
 
-inline
-Real64 getTimeStampMsecs(TimeStamp ticks)
-{
-    return ticks * 1000. / getTimeStampFreq();
+inline Real64 getTimeStampMsecs(TimeStamp ticks) {
+  return ticks * 1000. / getTimeStampFreq();
 }
 
 OSG_END_NAMESPACE
 
 #define OSGTIME_INLINE_CVSID "@(#)$Id: $"
-

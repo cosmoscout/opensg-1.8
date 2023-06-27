@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGMATERIALCHUNK_H_
 #define _OSGMATERIALCHUNK_H_
 #ifdef __sgi
@@ -48,118 +47,112 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief State chunk for material properties. See \ref 
+/*! \brief State chunk for material properties. See \ref
     PageSystemMaterialChunk for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING MaterialChunk : public MaterialChunkBase
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING MaterialChunk : public MaterialChunkBase {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                 Chunk Class Access                           */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                 Chunk Class Access                           */
-    /*! \{                                                                 */
+  virtual const StateChunkClass* getClass(void) const;
 
-           virtual const StateChunkClass * getClass         (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name              Static Chunk Class Access                       */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name              Static Chunk Class Access                       */
-    /*! \{                                                                 */
+  inline static UInt32                 getStaticClassId(void);
+  inline static const StateChunkClass* getStaticClass(void);
 
-    inline static        UInt32            getStaticClassId (void);
-    inline static  const StateChunkClass * getStaticClass   (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    virtual void changed(BitVector whichField,
-                         UInt32    origin    );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Output                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Output                                  */
-    /*! \{                                                                 */
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    virtual void dump(      UInt32    uiIndent = 0,
-                      const BitVector bvFlags  = 0) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      State                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      State                                   */
-    /*! \{                                                                 */
+  virtual void activate(DrawActionBase* action, UInt32 index = 0);
 
-    virtual void activate      (DrawActionBase * action, UInt32 index = 0);
+  virtual void changeFrom(DrawActionBase* action, StateChunk* old, UInt32 index = 0);
 
-    virtual void changeFrom    (DrawActionBase * action, StateChunk * old,
-                                UInt32 index = 0);
+  virtual void deactivate(DrawActionBase* action, UInt32 index = 0);
 
-    virtual void deactivate    (DrawActionBase * action, UInt32 index = 0);
+  virtual bool isTransparent(void) const;
 
-    virtual bool isTransparent (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Comparison                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Comparison                                */
-    /*! \{                                                                 */
+  virtual Real32 switchCost(StateChunk* chunk);
 
-    virtual Real32  switchCost    ( StateChunk * chunk );
+  virtual bool operator<(const StateChunk& other) const;
 
-    virtual bool operator <  (const StateChunk &other) const;
+  virtual bool operator==(const StateChunk& other) const;
+  virtual bool operator!=(const StateChunk& other) const;
 
-    virtual bool operator == (const StateChunk &other) const;
-    virtual bool operator != (const StateChunk &other) const;
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  MaterialChunk(void);
+  MaterialChunk(const MaterialChunk& source);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    MaterialChunk(void);
-    MaterialChunk(const MaterialChunk &source);
+  virtual ~MaterialChunk(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    virtual ~MaterialChunk(void);
+  /*==========================  PRIVATE  ================================*/
+ private:
+  typedef MaterialChunkBase Inherited;
 
-    /*! \}                                                                 */
+  friend class FieldContainer;
+  friend class MaterialChunkBase;
 
-    /*==========================  PRIVATE  ================================*/
-  private:
+  static char cvsid[];
 
-    typedef MaterialChunkBase Inherited;
+  // class. Used for indexing in State
+  static StateChunkClass _class;
 
-    friend class FieldContainer;
-    friend class MaterialChunkBase;
+  static void initMethod(void);
 
-    static char cvsid[];
-
-    // class. Used for indexing in State
-    static StateChunkClass _class;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const MaterialChunk &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const MaterialChunk& source);
 };
 
-typedef MaterialChunk *MaterialChunkP;
+typedef MaterialChunk* MaterialChunkP;
 
 OSG_END_NAMESPACE
 
 #include <OSGMaterialChunkBase.inl>
 #include <OSGMaterialChunk.inl>
 
-#define OSGMATERIALCHUNK_HEADER_CVSID "@(#)$Id: FCTemplate_h.h,v 1.15 2002/06/01 10:37:25 vossg Exp $"
+#define OSGMATERIALCHUNK_HEADER_CVSID                                                              \
+  "@(#)$Id: FCTemplate_h.h,v 1.15 2002/06/01 10:37:25 vossg Exp $"
 
 #endif /* _OSGMATERIALCHUNK_H_ */

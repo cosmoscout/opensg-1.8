@@ -69,62 +69,55 @@ OSG_BEGIN_NAMESPACE
  */
 
 template <class SizeTraitsT = DefaultFunctorSizeTraits>
-class TypedFunctorBase : public FunctorBase<SizeTraitsT>
-{
-    /*==========================  PUBLIC  =================================*/
+class TypedFunctorBase : public FunctorBase<SizeTraitsT> {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  TypedFunctorBase(void);
+  TypedFunctorBase(const TypedFunctorBase& source);
 
-    TypedFunctorBase(void);
-    TypedFunctorBase(const TypedFunctorBase &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  virtual ~TypedFunctorBase(void);
 
-    virtual ~TypedFunctorBase(void); 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Operators                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Operators                                 */
-    /*! \{                                                                 */
+  void operator=(const TypedFunctorBase& source);
 
-    void operator =(const TypedFunctorBase &source);
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Helper                                    */
+  /*! \{                                                                 */
 
-  protected:
+  void postCopyConstruct(const TypedFunctorBase& source);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Helper                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-    void postCopyConstruct(const TypedFunctorBase &source);
+ private:
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Types                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
+  typedef FunctorBase<SizeTraitsT> Inherited;
 
-  private:
+  typedef TypedFunctorBase<SizeTraitsT> Self;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Types                                    */
-    /*! \{                                                                 */
-
-    typedef FunctorBase     <SizeTraitsT> Inherited;
-
-    typedef TypedFunctorBase<SizeTraitsT> Self;
-
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 };
-
-
-
 
 //---------------------------------------------------------------------------
 //  Class
@@ -135,68 +128,62 @@ class TypedFunctorBase : public FunctorBase<SizeTraitsT>
  */
 
 template <class Parent, class Params>
-class TypedFunctionFunctorBase : public Parent
-{
-    /*==========================  PUBLIC  =================================*/
+class TypedFunctionFunctorBase : public Parent {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Types                                   */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Types                                   */
-    /*! \{                                                                 */
+  typedef typename Params::FunctionF FunctionF;
 
-    typedef typename Params::FunctionF FunctionF;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  TypedFunctionFunctorBase(void);
+  TypedFunctionFunctorBase(const TypedFunctionFunctorBase& source);
 
-    TypedFunctionFunctorBase(void);
-    TypedFunctionFunctorBase(const TypedFunctionFunctorBase &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
-    
-    virtual ~TypedFunctionFunctorBase(void); 
+  virtual ~TypedFunctionFunctorBase(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Set                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Set                                    */
+  /*! \{                                                                 */
 
-    void setMethod(FunctionF pFunc);
+  void setMethod(FunctionF pFunc);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-  protected:
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Operators                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Operators                                 */
-    /*! \{                                                                 */
+  void operator=(const TypedFunctionFunctorBase& source);
 
-    void operator =(const TypedFunctionFunctorBase &source);
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
+ private:
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Types                                    */
+  /*! \{                                                                 */
 
-  private:
+  typedef Parent Inherited;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Types                                    */
-    /*! \{                                                                 */
+  typedef TypedFunctionFunctorBase<Parent, Params> Self;
 
-    typedef Parent                                   Inherited;
-
-    typedef TypedFunctionFunctorBase<Parent, Params> Self;
-
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 };
-
-
 
 //---------------------------------------------------------------------------
 //  Class
@@ -207,70 +194,62 @@ class TypedFunctionFunctorBase : public Parent
  */
 
 template <class Parent, class Params>
-class TypedObjectFunctorBase : public Parent
-{
-    /*==========================  PUBLIC  =================================*/
+class TypedObjectFunctorBase : public Parent {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Types                                   */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Types                                   */
-    /*! \{                                                                 */
+  typedef typename Params::ObjMethodF ObjMethodF;
 
-    typedef typename Params::ObjMethodF ObjMethodF;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  TypedObjectFunctorBase(void);
+  TypedObjectFunctorBase(const TypedObjectFunctorBase& source);
 
-    TypedObjectFunctorBase(void);
-    TypedObjectFunctorBase(const TypedObjectFunctorBase &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
-    
-    virtual ~TypedObjectFunctorBase(void); 
+  virtual ~TypedObjectFunctorBase(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Set                                     */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Set                                     */
+  /*! \{                                                                 */
 
-    void setMethod(ObjMethodF pFunc);
+  void setMethod(ObjMethodF pFunc);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-  protected:
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Operators                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Operators                                 */
-    /*! \{                                                                 */
+  void operator=(const TypedObjectFunctorBase& source);
 
-    void operator =(const TypedObjectFunctorBase &source);
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
+ private:
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Types                                    */
+  /*! \{                                                                 */
 
-  private:
+  typedef Parent Inherited;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Types                                    */
-    /*! \{                                                                 */
+  typedef TypedObjectFunctorBase<Parent, Params> Self;
 
-    typedef Parent                                 Inherited;
-
-    typedef TypedObjectFunctorBase<Parent, Params> Self;
-
-    /*! \}                                                                 */
-
+  /*! \}                                                                 */
 };
-
-
-
 
 //---------------------------------------------------------------------------
 //  Class
@@ -280,74 +259,68 @@ class TypedObjectFunctorBase : public Parent
     \hideinhierarchy
  */
 
-template <class Parent,
-          class Params>
-class TypedStoredObjectFunctorBase : public Parent
-{
-    /*==========================  PUBLIC  =================================*/
+template <class Parent, class Params>
+class TypedStoredObjectFunctorBase : public Parent {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Types                                   */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Types                                   */
-    /*! \{                                                                 */
+  typedef typename Params::ObjMethodF ObjMethodF;
 
-    typedef typename Params::ObjMethodF ObjMethodF;
+  typedef typename Params::SetObjectT SetObjectT;
 
-    typedef typename Params::SetObjectT SetObjectT;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  TypedStoredObjectFunctorBase(void);
+  TypedStoredObjectFunctorBase(const TypedStoredObjectFunctorBase& source);
 
-    TypedStoredObjectFunctorBase(void);
-    TypedStoredObjectFunctorBase(const TypedStoredObjectFunctorBase &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
-    
-    virtual ~TypedStoredObjectFunctorBase(void); 
+  virtual ~TypedStoredObjectFunctorBase(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Set                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Set                                    */
+  /*! \{                                                                 */
 
-    void setMethod         (ObjMethodF  pFunc);
+  void setMethod(ObjMethodF pFunc);
 
-    void setCalledObject   (SetObjectT  pObj);
-    
-    void setObjectAndMethod(SetObjectT  pObj, 
-                            ObjMethodF  pFunc);
+  void setCalledObject(SetObjectT pObj);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  void setObjectAndMethod(SetObjectT pObj, ObjMethodF pFunc);
 
-  protected:
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Operators                                 */
-    /*! \{                                                                 */
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Operators                                 */
+  /*! \{                                                                 */
 
-    void operator =(const TypedStoredObjectFunctorBase &source);
+  void operator=(const TypedStoredObjectFunctorBase& source);
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-  private:
+ private:
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Types                                    */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Types                                    */
-    /*! \{                                                                 */
+  typedef Parent Inherited;
 
-    typedef Parent                                       Inherited;
+  typedef TypedStoredObjectFunctorBase<Parent, Params> Self;
 
-    typedef TypedStoredObjectFunctorBase<Parent, Params> Self;
-
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 };
 
 OSG_END_NAMESPACE
@@ -355,4 +328,3 @@ OSG_END_NAMESPACE
 #include <OSGTypedFunctorBase.inl>
 
 #endif /* _OSGTYPEDFUNCTORBASE_H_ */
-

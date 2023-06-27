@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGCAMERABASE_H_
 #define _OSGCAMERABASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -67,7 +65,7 @@
 
 #include <OSGAttachmentContainer.h> // Parent
 
-#include <OSGNodeFields.h> // Beacon type
+#include <OSGNodeFields.h>   // Beacon type
 #include <OSGReal32Fields.h> // Near type
 #include <OSGReal32Fields.h> // Far type
 
@@ -80,179 +78,157 @@ class BinaryDataHandler;
 
 //! \brief Camera Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING CameraBase : public AttachmentContainer
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING CameraBase : public AttachmentContainer {
+ private:
+  typedef AttachmentContainer Inherited;
 
-    typedef AttachmentContainer    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef CameraPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    BeaconFieldId = Inherited::NextFieldId,
+    NearFieldId   = BeaconFieldId + 1,
+    FarFieldId    = NearFieldId + 1,
+    NextFieldId   = FarFieldId + 1
+  };
 
-    typedef CameraPtr  Ptr;
+  static const OSG::BitVector BeaconFieldMask;
+  static const OSG::BitVector NearFieldMask;
+  static const OSG::BitVector FarFieldMask;
 
-    enum
-    {
-        BeaconFieldId = Inherited::NextFieldId,
-        NearFieldId   = BeaconFieldId + 1,
-        FarFieldId    = NearFieldId   + 1,
-        NextFieldId   = FarFieldId    + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector BeaconFieldMask;
-    static const OSG::BitVector NearFieldMask;
-    static const OSG::BitVector FarFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  virtual SFNodePtr* getSFBeacon(void);
+  virtual SFReal32*  getSFNear(void);
+  virtual SFReal32*  getSFFar(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  virtual NodePtr&       getBeacon(void);
+  virtual const NodePtr& getBeacon(void) const;
+  virtual Real32&        getNear(void);
+  virtual const Real32&  getNear(void) const;
+  virtual Real32&        getFar(void);
+  virtual const Real32&  getFar(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-    virtual       SFNodePtr           *getSFBeacon         (void);
-    virtual       SFReal32            *getSFNear           (void);
-    virtual       SFReal32            *getSFFar            (void);
+  virtual void setBeacon(const NodePtr& value);
+  virtual void setNear(const Real32& value);
+  virtual void setFar(const Real32& value);
 
-    virtual       NodePtr             &getBeacon         (void);
-    virtual const NodePtr             &getBeacon         (void) const;
-    virtual       Real32              &getNear           (void);
-    virtual const Real32              &getNear           (void) const;
-    virtual       Real32              &getFar            (void);
-    virtual const Real32              &getFar            (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-    virtual void setBeacon         ( const NodePtr &value );
-    virtual void setNear           ( const Real32 &value );
-    virtual void setFar            ( const Real32 &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  SFNodePtr _sfBeacon;
+  SFReal32  _sfNear;
+  SFReal32  _sfFar;
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
+  CameraBase(void);
+  CameraBase(const CameraBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~CameraBase(void);
 
-    SFNodePtr           _sfBeacon;
-    SFReal32            _sfNear;
-    SFReal32            _sfFar;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    CameraBase(void);
-    CameraBase(const CameraBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~CameraBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      CameraBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(CameraBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      CameraBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(CameraBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const CameraBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const CameraBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef CameraBase* CameraBaseP;
 
-typedef CameraBase *CameraBaseP;
-
-typedef osgIF<CameraBase::isNodeCore,
-              CoredNodePtr<Camera>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet CameraNodePtr;
+typedef osgIF<CameraBase::isNodeCore, CoredNodePtr<Camera>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet CameraNodePtr;
 
 typedef RefPtr<CameraPtr> CameraRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGCAMERABASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGCAMERABASE_HEADER_CVSID                                                                 \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGCAMERABASE_H_ */

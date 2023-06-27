@@ -50,126 +50,92 @@
 OSG_USING_NAMESPACE
 
 /*! \class osg::Switch
-*/
+ */
 
 /*-------------------------------------------------------------------------*/
 /*                                Sync                                     */
 
-void Switch::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void Switch::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
 /*-------------------------------------------------------------------------*/
 /*                               Dump                                      */
 
-void Switch::dump(      UInt32    OSG_CHECK_ARG(uiIndent), 
-                  const BitVector OSG_CHECK_ARG(bvFlags )) const
-{
-    SLOG << "Dump Switch NI" << std::endl;
+void Switch::dump(UInt32 OSG_CHECK_ARG(uiIndent), const BitVector OSG_CHECK_ARG(bvFlags)) const {
+  SLOG << "Dump Switch NI" << std::endl;
 }
 
 /*-------------------------------------------------------------------------*/
 /*                            Constructors                                 */
 
-Switch::Switch(void) :
-    Inherited()
-{
+Switch::Switch(void)
+    : Inherited() {
 }
 
-Switch::Switch(const Switch &source) :
-    Inherited(source)
-{
+Switch::Switch(const Switch& source)
+    : Inherited(source) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Destructor                                  */
 
-Switch::~Switch(void)
-{
+Switch::~Switch(void) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                               Draw                                      */
 
-Action::ResultE Switch::draw(Action *action)
-{
-    Action::ResultE  returnValue = Action::Continue;
+Action::ResultE Switch::draw(Action* action) {
+  Action::ResultE returnValue = Action::Continue;
 
-    DrawActionBase  *da          = dynamic_cast<DrawActionBase *>(action);
+  DrawActionBase* da = dynamic_cast<DrawActionBase*>(action);
 
-    if((getChoice() >= 0                          ) && 
-       (UInt32(getChoice()) < action->getNNodes()))
-    {
-        da->useNodeList();
+  if ((getChoice() >= 0) && (UInt32(getChoice()) < action->getNNodes())) {
+    da->useNodeList();
 
-        if(da->isVisible(action->getNode(getChoice()).getCPtr()))
-        {
-            da->addNode(action->getNode(getChoice()));
-        }
+    if (da->isVisible(action->getNode(getChoice()).getCPtr())) {
+      da->addNode(action->getNode(getChoice()));
     }
-    else if(getChoice() == ALL)
-    {
-        if(da->selectVisibles() == 0)
-            returnValue = Action::Skip;
-    }
-    else
-    {
-        returnValue = Action::Skip;
-    }
+  } else if (getChoice() == ALL) {
+    if (da->selectVisibles() == 0)
+      returnValue = Action::Skip;
+  } else {
+    returnValue = Action::Skip;
+  }
 
-    return returnValue;
+  return returnValue;
 }
 
-Action::ResultE Switch::intersect(Action *action)
-{
-    Action::ResultE  returnValue = Action::Continue;
+Action::ResultE Switch::intersect(Action* action) {
+  Action::ResultE returnValue = Action::Continue;
 
-    IntersectAction  *da          = dynamic_cast<IntersectAction *>(action);
+  IntersectAction* da = dynamic_cast<IntersectAction*>(action);
 
-    if((getChoice() >= 0                          ) && 
-       (UInt32(getChoice()) < action->getNNodes()))
-    {
-        da->addNode(action->getNode(getChoice()));
-    }
-    else if(getChoice() == ALL)
-    {
-        returnValue = Action::Continue;
-    }
-    else
-    {
-        returnValue = Action::Skip;
-    }
+  if ((getChoice() >= 0) && (UInt32(getChoice()) < action->getNNodes())) {
+    da->addNode(action->getNode(getChoice()));
+  } else if (getChoice() == ALL) {
+    returnValue = Action::Continue;
+  } else {
+    returnValue = Action::Skip;
+  }
 
-    return returnValue;
+  return returnValue;
 }
- 
+
 /*-------------------------------------------------------------------------*/
 /*                                Init                                     */
 
-void Switch::initMethod(void)
-{
-    DrawAction::registerEnterDefault(
-        getClassType(),
-        osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE,
-                                          SwitchPtr       ,
-                                          CNodePtr        ,
-                                          Action         *>(&Switch::draw));
+void Switch::initMethod(void) {
+  DrawAction::registerEnterDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, SwitchPtr, CNodePtr, Action*>(
+          &Switch::draw));
 
-    RenderAction::registerEnterDefault(
-        getClassType(),
-        osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE,
-                                          SwitchPtr       ,
-                                          CNodePtr        ,
-                                          Action         *>(&Switch::draw));
+  RenderAction::registerEnterDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, SwitchPtr, CNodePtr, Action*>(
+          &Switch::draw));
 
-    IntersectAction::registerEnterDefault(
-        getClassType(),
-        osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE,
-                                          SwitchPtr       ,
-                                          CNodePtr        ,
-                                          Action         *>(&Switch::intersect));
+  IntersectAction::registerEnterDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, SwitchPtr, CNodePtr, Action*>(
+          &Switch::intersect));
 }
-
-
-

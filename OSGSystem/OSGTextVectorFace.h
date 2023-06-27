@@ -40,9 +40,8 @@
 #define _OSGTEXTVECTORFACE_H_
 
 #ifdef _MSC_VER
-# pragma once
+#pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -57,13 +56,10 @@
 #include <map>
 #include <memory>
 
-
 OSG_BEGIN_NAMESPACE
-
 
 class TextVectorGlyph;
 class TextLayoutResult;
-
 
 /**
  * Represents a vector face. A vector face allows to create texts as
@@ -108,134 +104,127 @@ class TextLayoutResult;
  *
  * @author Patrick D&auml;hne
  */
-class OSG_SYSTEMLIB_DLLMAPPING TextVectorFace: public TextFace
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING TextVectorFace : public TextFace {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /**
+   * Returns information about a glyph.
+   * @param glyphIndex The index of the glyph. Use the layout method
+   * to get the glyph indices corresponding to a character string.
+   * @return A glyph object containing information about the glyph.
+   */
+  virtual const TextGlyph& getGlyph(TextGlyph::Index glyphIndex);
 
-    /**
-     * Returns information about a glyph.
-     * @param glyphIndex The index of the glyph. Use the layout method
-     * to get the glyph indices corresponding to a character string.
-     * @return A glyph object containing information about the glyph.
-     */
-    virtual const TextGlyph &getGlyph(TextGlyph::Index glyphIndex);
+  /**
+   * Returns information about a glyph.
+   * @param glyphIndex The index of the glyph. Use the layout method
+   * to get the glyph indices corresponding to a character string.
+   * @return A glyph object containing information about the glyph.
+   */
+  const TextVectorGlyph& getVectorGlyph(TextGlyph::Index glyphIndex);
 
-    /**
-     * Returns information about a glyph.
-     * @param glyphIndex The index of the glyph. Use the layout method
-     * to get the glyph indices corresponding to a character string.
-     * @return A glyph object containing information about the glyph.
-     */
-    const TextVectorGlyph &getVectorGlyph(TextGlyph::Index glyphIndex);
+  /**
+   * Fills a geometry with a new text.
+   * @param geoPtr The geometry that gets filled with the new text.
+   * @param layoutResult The result of a layout operation.
+   * @param scale The size of the glyphs.
+   * @param depth The depth of the VectorGlyphs. If depth is 0.f no
+   *              backside will be generated.
+   * @param level The level of detail. Usually between 0 and 10.
+   * @param creaseAngle The angle (in radians) which determines how faceted the
+   *                    glyphs should be lighted.
+   *                    If the angle enclosed by two vertex normals in a point
+   *                    exceeds the creaseAngle both of the two normals will
+   *                    be attached to the point. Otherwise their mean is used.
+   */
+  void fillGeo(GeometryPtr& geoPtr, const TextLayoutResult& layoutResult, Real32 scale = 1.f,
+      Real32 depth = 0.f, UInt32 level = 2, Real32 creaseAngle = Pi / 4.f);
 
-    /**
-     * Fills a geometry with a new text.
-     * @param geoPtr The geometry that gets filled with the new text.
-     * @param layoutResult The result of a layout operation.
-     * @param scale The size of the glyphs.
-     * @param depth The depth of the VectorGlyphs. If depth is 0.f no
-     *              backside will be generated.
-     * @param level The level of detail. Usually between 0 and 10.
-     * @param creaseAngle The angle (in radians) which determines how faceted the 
-     *                    glyphs should be lighted.
-     *                    If the angle enclosed by two vertex normals in a point
-     *                    exceeds the creaseAngle both of the two normals will 
-     *                    be attached to the point. Otherwise their mean is used.
-     */
-    void fillGeo(GeometryPtr &geoPtr, const TextLayoutResult &layoutResult,
-                 Real32 scale = 1.f, Real32 depth = 0.f, UInt32 level = 2, 
-                 Real32 creaseAngle = Pi / 4.f);
+  /**
+   * Creates a new text geometry.
+   * @param layoutResult The result of a layout operation.
+   * @param scale The size of the glyphs.
+   * @param depth The depth of the VectorGlyphs. If depth is 0.f no
+   *              backside will be generated.
+   * @param level The level of detail. Usually between 0 and 10.
+   * @param creaseAngle The angle (in radians) which determines how faceted the
+   *                    glyphs should be lighted.
+   *                    If the angle enclosed by two vertex normals in a point
+   *                    exceeds the creaseAngle both of the two normals will
+   *                    be attached to the point. Otherwise their mean is used.
+   * @return A new text geometry.
+   */
+  GeometryPtr makeGeo(const TextLayoutResult& layoutResult, Real32 scale = 1.f, Real32 depth = 0.f,
+      UInt32 level = 2, Real32 creaseAngle = Pi / 4.f);
 
-    /**
-     * Creates a new text geometry.
-     * @param layoutResult The result of a layout operation.
-     * @param scale The size of the glyphs.
-     * @param depth The depth of the VectorGlyphs. If depth is 0.f no
-     *              backside will be generated.
-     * @param level The level of detail. Usually between 0 and 10.
-     * @param creaseAngle The angle (in radians) which determines how faceted the 
-     *                    glyphs should be lighted.
-     *                    If the angle enclosed by two vertex normals in a point
-     *                    exceeds the creaseAngle both of the two normals will 
-     *                    be attached to the point. Otherwise their mean is used.
-     * @return A new text geometry.
-     */
-    GeometryPtr makeGeo(const TextLayoutResult &layoutResult, Real32 scale = 1.f,
-                        Real32 depth = 0.f, UInt32 level = 2, Real32 creaseAngle = Pi / 4.f);
+  /**
+   * Creates a new node with a text geometry.
+   * @param layoutResult The result of a layout operation.
+   * @param scale The size of the glyphs.
+   * @param depth The depth of the VectorGlyphs. If depth is 0.f no
+   *              backside will be generated.
+   * @param level The level of detail. Usually between 0 and 10.
+   * @param creaseAngle The angle (in radians) which determines how faceted the
+   *                    glyphs should be lighted.
+   *                    If the angle enclosed by two vertex normals in a point
+   *                    exceeds the creaseAngle both of the two normals will
+   *                    be attached to the point. Otherwise their mean is used.
+   * @return A new node containing a text geometry.
+   */
+  NodePtr makeNode(const TextLayoutResult& layoutResult, Real32 scale = 1.f, Real32 depth = 0.f,
+      UInt32 level = 2, Real32 creaseAngle = Pi / 4.f);
 
-    /**
-     * Creates a new node with a text geometry.
-     * @param layoutResult The result of a layout operation.
-     * @param scale The size of the glyphs.
-     * @param depth The depth of the VectorGlyphs. If depth is 0.f no
-     *              backside will be generated.
-     * @param level The level of detail. Usually between 0 and 10.
-     * @param creaseAngle The angle (in radians) which determines how faceted the 
-     *                    glyphs should be lighted.
-     *                    If the angle enclosed by two vertex normals in a point
-     *                    exceeds the creaseAngle both of the two normals will 
-     *                    be attached to the point. Otherwise their mean is used.
-     * @return A new node containing a text geometry.
-     */
-    NodePtr makeNode(const TextLayoutResult &layoutResult, Real32 scale = 1.f,
-                     Real32 depth = 0.f, UInt32 level = 2, Real32 creaseAngle = Pi / 4.f);
+  /**
+   * Tries to create a vector face.
+   * @param family The font family of the face (Arial, Courier etc.)
+   * @param style The style of the face (bold, italic etc.)
+   * @return The vector face object or 0 in case of an error.
+   */
+  static TextVectorFace* create(const std::string& family, Style style = STYLE_PLAIN);
 
-    /**
-     * Tries to create a vector face.
-     * @param family The font family of the face (Arial, Courier etc.)
-     * @param style The style of the face (bold, italic etc.)
-     * @return The vector face object or 0 in case of an error.
-     */
-    static TextVectorFace *create(const std::string &family,
-                                  Style style = STYLE_PLAIN);
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /** Creates a new %TextVectorFace object. */
+  inline TextVectorFace();
 
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /** Destroys the %TextVectorFace object. */
+  virtual ~TextVectorFace();
 
-    /** Creates a new %TextVectorFace object. */
-    inline TextVectorFace();
+  /** The scale factor used to scale font metrics */
+  Real32 _scale;
 
-    /** Destroys the %TextVectorFace object. */
-    virtual ~TextVectorFace();
+  /** Defines a map of glyphs */
+  typedef std::map<TextGlyph::Index, TextVectorGlyph*> GlyphMap;
 
-    /** The scale factor used to scale font metrics */
-    Real32 _scale;
+  /** The map of glyphs */
+  GlyphMap _glyphMap;
 
-    /** Defines a map of glyphs */
-    typedef std::map<TextGlyph::Index, TextVectorGlyph*> GlyphMap;
+  /**
+   * Creates a new Glyph object.
+   * This method has to be implemented by descendants of the %VectorFace class.
+   * @param glyphIndex The index of the glyph.
+   * @return The glyph object or 0 when no glyph exists for the given
+   * glyph index.
+   */
+  virtual std::auto_ptr<TextVectorGlyph> createGlyph(TextGlyph::Index glyphIndex) = 0;
 
-    /** The map of glyphs */
-    GlyphMap _glyphMap;
+  /** An empty glyph */
+  static TextVectorGlyph _emptyGlyph;
 
-    /**
-     * Creates a new Glyph object.
-     * This method has to be implemented by descendants of the %VectorFace class.
-     * @param glyphIndex The index of the glyph.
-     * @return The glyph object or 0 when no glyph exists for the given
-     * glyph index.
-     */
-    virtual std::auto_ptr<TextVectorGlyph> createGlyph(TextGlyph::Index glyphIndex) = 0;
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /** Copy constructor (not implemented!) */
+  TextVectorFace(const TextVectorFace&);
 
-    /** An empty glyph */
-    static TextVectorGlyph _emptyGlyph;
-
-    /*==========================  PRIVATE  ================================*/
-  private:
-
-    /** Copy constructor (not implemented!) */
-    TextVectorFace(const TextVectorFace &);
-
-    /** Copy operator (not implemented!) */
-    const TextVectorFace &operator=(const TextVectorFace &);
+  /** Copy operator (not implemented!) */
+  const TextVectorFace& operator=(const TextVectorFace&);
 };
-
 
 OSG_END_NAMESPACE
 
-
 #include <OSGTextVectorFace.inl>
 
-#define OSGTEXTVECTORFACE_HEADER_CVSID "@(#)$Id: OSGTextVectorFace.h,v 1.1 2005/03/03 13:43:07 a-m-z Exp $"
+#define OSGTEXTVECTORFACE_HEADER_CVSID                                                             \
+  "@(#)$Id: OSGTextVectorFace.h,v 1.1 2005/03/03 13:43:07 a-m-z Exp $"
 
 #endif /* _OSGTEXTVECTORFACE_H_ */

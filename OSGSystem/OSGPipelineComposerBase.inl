@@ -52,165 +52,118 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &PipelineComposerBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& PipelineComposerBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 PipelineComposerBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 PipelineComposerBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-PipelineComposerPtr PipelineComposerBase::create(void) 
-{
-    PipelineComposerPtr fc; 
+inline PipelineComposerPtr PipelineComposerBase::create(void) {
+  PipelineComposerPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = PipelineComposerPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = PipelineComposerPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-PipelineComposerPtr PipelineComposerBase::createEmpty(void) 
-{ 
-    PipelineComposerPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline PipelineComposerPtr PipelineComposerBase::createEmpty(void) {
+  PipelineComposerPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the PipelineComposer::_sfShort field.
-inline
-SFBool *PipelineComposerBase::getSFShort(void)
-{
-    return &_sfShort;
+inline SFBool* PipelineComposerBase::getSFShort(void) {
+  return &_sfShort;
 }
 
 //! Get the PipelineComposer::_sfAlpha field.
-inline
-SFBool *PipelineComposerBase::getSFAlpha(void)
-{
-    return &_sfAlpha;
+inline SFBool* PipelineComposerBase::getSFAlpha(void) {
+  return &_sfAlpha;
 }
 
 //! Get the PipelineComposer::_sfTileSize field.
-inline
-SFUInt32 *PipelineComposerBase::getSFTileSize(void)
-{
-    return &_sfTileSize;
+inline SFUInt32* PipelineComposerBase::getSFTileSize(void) {
+  return &_sfTileSize;
 }
 
 //! Get the PipelineComposer::_sfPipelined field.
-inline
-SFBool *PipelineComposerBase::getSFPipelined(void)
-{
-    return &_sfPipelined;
-}
-
-
-//! Get the value of the PipelineComposer::_sfShort field.
-inline
-bool &PipelineComposerBase::getShort(void)
-{
-    return _sfShort.getValue();
+inline SFBool* PipelineComposerBase::getSFPipelined(void) {
+  return &_sfPipelined;
 }
 
 //! Get the value of the PipelineComposer::_sfShort field.
-inline
-const bool &PipelineComposerBase::getShort(void) const
-{
-    return _sfShort.getValue();
+inline bool& PipelineComposerBase::getShort(void) {
+  return _sfShort.getValue();
+}
+
+//! Get the value of the PipelineComposer::_sfShort field.
+inline const bool& PipelineComposerBase::getShort(void) const {
+  return _sfShort.getValue();
 }
 
 //! Set the value of the PipelineComposer::_sfShort field.
-inline
-void PipelineComposerBase::setShort(const bool &value)
-{
-    _sfShort.setValue(value);
+inline void PipelineComposerBase::setShort(const bool& value) {
+  _sfShort.setValue(value);
 }
 
 //! Get the value of the PipelineComposer::_sfAlpha field.
-inline
-bool &PipelineComposerBase::getAlpha(void)
-{
-    return _sfAlpha.getValue();
+inline bool& PipelineComposerBase::getAlpha(void) {
+  return _sfAlpha.getValue();
 }
 
 //! Get the value of the PipelineComposer::_sfAlpha field.
-inline
-const bool &PipelineComposerBase::getAlpha(void) const
-{
-    return _sfAlpha.getValue();
+inline const bool& PipelineComposerBase::getAlpha(void) const {
+  return _sfAlpha.getValue();
 }
 
 //! Set the value of the PipelineComposer::_sfAlpha field.
-inline
-void PipelineComposerBase::setAlpha(const bool &value)
-{
-    _sfAlpha.setValue(value);
+inline void PipelineComposerBase::setAlpha(const bool& value) {
+  _sfAlpha.setValue(value);
 }
 
 //! Get the value of the PipelineComposer::_sfTileSize field.
-inline
-UInt32 &PipelineComposerBase::getTileSize(void)
-{
-    return _sfTileSize.getValue();
+inline UInt32& PipelineComposerBase::getTileSize(void) {
+  return _sfTileSize.getValue();
 }
 
 //! Get the value of the PipelineComposer::_sfTileSize field.
-inline
-const UInt32 &PipelineComposerBase::getTileSize(void) const
-{
-    return _sfTileSize.getValue();
+inline const UInt32& PipelineComposerBase::getTileSize(void) const {
+  return _sfTileSize.getValue();
 }
 
 //! Set the value of the PipelineComposer::_sfTileSize field.
-inline
-void PipelineComposerBase::setTileSize(const UInt32 &value)
-{
-    _sfTileSize.setValue(value);
+inline void PipelineComposerBase::setTileSize(const UInt32& value) {
+  _sfTileSize.setValue(value);
 }
 
 //! Get the value of the PipelineComposer::_sfPipelined field.
-inline
-bool &PipelineComposerBase::getPipelined(void)
-{
-    return _sfPipelined.getValue();
+inline bool& PipelineComposerBase::getPipelined(void) {
+  return _sfPipelined.getValue();
 }
 
 //! Get the value of the PipelineComposer::_sfPipelined field.
-inline
-const bool &PipelineComposerBase::getPipelined(void) const
-{
-    return _sfPipelined.getValue();
+inline const bool& PipelineComposerBase::getPipelined(void) const {
+  return _sfPipelined.getValue();
 }
 
 //! Set the value of the PipelineComposer::_sfPipelined field.
-inline
-void PipelineComposerBase::setPipelined(const bool &value)
-{
-    _sfPipelined.setValue(value);
+inline void PipelineComposerBase::setPipelined(const bool& value) {
+  _sfPipelined.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
 #define OSGPIPELINECOMPOSERBASE_INLINE_CVSID "@(#)$Id: $"
-

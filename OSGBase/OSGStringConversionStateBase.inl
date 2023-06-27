@@ -44,17 +44,12 @@
 
 OSG_BEGIN_NAMESPACE
 
-inline
-StringConversionStateBase::StringConversionStateBase(void)
-{
+inline StringConversionStateBase::StringConversionStateBase(void) {
 }
 
-inline
-StringConversionStateBase::~StringConversionStateBase(void)
-{
+inline StringConversionStateBase::~StringConversionStateBase(void) {
 }
 
 OSG_END_NAMESPACE
 
 #define OSG_INLINE_CVSID "@(#)$Id: $"
-

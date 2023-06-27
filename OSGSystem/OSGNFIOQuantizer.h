@@ -1,39 +1,39 @@
 /*---------------------------------------------------------------------------*\
- *                                OpenSG                                     * 
- *                                                                           * 
- *                                                                           * 
- *           Copyright (C) 2000,2001,2002 by the OpenSG Forum                * 
- *                                                                           * 
- *                            www.opensg.org                                 * 
- *                                                                           * 
- *   contact: dirk@opensg.org, gerrit.voss@vossg.org, jbehr@zgdv.de          * 
- *                                                                           * 
+ *                                OpenSG                                     *
+ *                                                                           *
+ *                                                                           *
+ *           Copyright (C) 2000,2001,2002 by the OpenSG Forum                *
+ *                                                                           *
+ *                            www.opensg.org                                 *
+ *                                                                           *
+ *   contact: dirk@opensg.org, gerrit.voss@vossg.org, jbehr@zgdv.de          *
+ *                                                                           *
 \*---------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------*\
- *                                License                                    * 
- *                                                                           * 
- * This library is free software; you can redistribute it and/or modify it   * 
- * under the terms of the GNU Library General Public License as published    * 
- * by the Free Software Foundation, version 2.                               * 
- *                                                                           * 
- * This library is distributed in the hope that it will be useful, but       * 
- * WITHOUT ANY WARRANTY; without even the implied warranty of                * 
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU         * 
- * Library General Public License for more details.                          * 
- *                                                                           * 
- * You should have received a copy of the GNU Library General Public         * 
- * License along with this library; if not, write to the Free Software       * 
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.                 * 
- *                                                                           * 
+ *                                License                                    *
+ *                                                                           *
+ * This library is free software; you can redistribute it and/or modify it   *
+ * under the terms of the GNU Library General Public License as published    *
+ * by the Free Software Foundation, version 2.                               *
+ *                                                                           *
+ * This library is distributed in the hope that it will be useful, but       *
+ * WITHOUT ANY WARRANTY; without even the implied warranty of                *
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU         *
+ * Library General Public License for more details.                          *
+ *                                                                           *
+ * You should have received a copy of the GNU Library General Public         *
+ * License along with this library; if not, write to the Free Software       *
+ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.                 *
+ *                                                                           *
 \*---------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------*\
- *                                Changes                                    * 
- *                                                                           * 
- *                                                                           * 
- *                                                                           * 
- *                                                                           * 
- *                                                                           * 
- *                                                                           * 
+ *                                Changes                                    *
+ *                                                                           *
+ *                                                                           *
+ *                                                                           *
+ *                                                                           *
+ *                                                                           *
+ *                                                                           *
 \*---------------------------------------------------------------------------*/
 
 #ifndef _OSGNFIOQUANTIZER_H_
@@ -51,51 +51,48 @@ OSG_BEGIN_NAMESPACE
           round then left-reconstruct
 */
 
-class Quantizer
-{
-    /*==========================  PUBLIC  =================================*/
-public:
-    
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructor                                 */
-    /*! \{                                                                 */
-    
-    Quantizer(Real32 input_min, Real32 input_max, UInt8 res);
+class Quantizer {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Encode/Decode                               */
-    /*! \{                                                                 */
+  Quantizer(Real32 input_min, Real32 input_max, UInt8 res);
 
-    UInt32 encode(Real32 input);
-    Real32 decode(UInt32 encoded_value);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Encode/Decode                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Constants                                 */
-    /*! \{                                                                 */
+  UInt32 encode(Real32 input);
+  Real32 decode(UInt32 encoded_value);
 
-    static const UInt8 QRES_OFF;
-    static const UInt8 QRES_8BIT;
-    static const UInt8 QRES_16BIT;
-    static const UInt8 QRES_24BIT;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Constants                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */ 
-    /*==========================  PRIVATE  ================================*/
+  static const UInt8 QRES_OFF;
+  static const UInt8 QRES_8BIT;
+  static const UInt8 QRES_16BIT;
+  static const UInt8 QRES_24BIT;
 
-private:
-    
-    Real32 normalize_input(Real32 input, Real32 input_min,
-                           Real32 input_scale);
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-    Real32 _input_min, _input_max;
-    UInt32 _resolution;
-    Real32 _interval_size;
-    Real32 _input_scale;
+ private:
+  Real32 normalize_input(Real32 input, Real32 input_min, Real32 input_scale);
+
+  Real32 _input_min, _input_max;
+  UInt32 _resolution;
+  Real32 _interval_size;
+  Real32 _input_scale;
 };
 
 OSG_END_NAMESPACE
 
-#define OSGNFIOQUANTIZER_HEADER_CVSID "@(#)$Id: OSGNFIOQuantizer.h,v 1.2 2004/01/09 09:09:31 a-m-z Exp $"
+#define OSGNFIOQUANTIZER_HEADER_CVSID                                                              \
+  "@(#)$Id: OSGNFIOQuantizer.h,v 1.2 2004/01/09 09:09:31 a-m-z Exp $"
 
 #endif /* _OSGNFIOQUANTIZER_H_ */

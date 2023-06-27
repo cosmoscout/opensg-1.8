@@ -44,5 +44,5 @@ OSG_BEGIN_NAMESPACE
 
 OSG_END_NAMESPACE
 
-#define OSGPOLYGONFOREGROUND_INLINE_CVSID "@(#)$Id: OSGPolygonForeground.inl,v 1.1 2003/10/08 03:35:00 dirk Exp $"
-
+#define OSGPOLYGONFOREGROUND_INLINE_CVSID                                                          \
+  "@(#)$Id: OSGPolygonForeground.inl,v 1.1 2003/10/08 03:35:00 dirk Exp $"

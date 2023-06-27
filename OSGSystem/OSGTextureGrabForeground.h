@@ -48,77 +48,70 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief Foreground class for grabbing the viewport into a texture. See \ref 
+/*! \brief Foreground class for grabbing the viewport into a texture. See \ref
     PageSystemWindowForegroundTextureGrab for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING TextureGrabForeground : public TextureGrabForegroundBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING TextureGrabForeground : public TextureGrabForegroundBase {
+ private:
+  typedef TextureGrabForegroundBase Inherited;
 
-    typedef TextureGrabForegroundBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   draw                                       */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  virtual void draw(DrawActionBase* action, Viewport* port);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   draw                                       */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in TextureGrabForegroundBase.
 
-    virtual void draw( DrawActionBase * action, Viewport * port );
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  TextureGrabForeground(void);
+  TextureGrabForeground(const TextureGrabForeground& source);
 
-    // Variables should all be in TextureGrabForegroundBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~TextureGrabForeground(void);
 
-    TextureGrabForeground(void);
-    TextureGrabForeground(const TextureGrabForeground &source);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class TextureGrabForegroundBase;
 
-    virtual ~TextureGrabForeground(void); 
+  static void initMethod(void);
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  // prohibit default functions (move to 'public' if you need one)
 
-    friend class FieldContainer;
-    friend class TextureGrabForegroundBase;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const TextureGrabForeground &source);
+  void operator=(const TextureGrabForeground& source);
 };
 
-typedef TextureGrabForeground *TextureGrabForegroundP;
+typedef TextureGrabForeground* TextureGrabForegroundP;
 
 OSG_END_NAMESPACE
 

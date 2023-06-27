@@ -36,7 +36,6 @@
 *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGMAKETRANSPARENTGRAPHOP_H_
 #define _OSGMAKETRANSPARENTGRAPHOP_H_
 #ifdef __sgi
@@ -56,75 +55,66 @@
 
 OSG_BEGIN_NAMESPACE
 
-class OSG_SYSTEMLIB_DLLMAPPING MakeTransparentGraphOp : public GraphOp
-{
-public:
-    class MaterialObject
-    {
-    public:
-        MaterialObject(GeometryPtr geo)
-        {
-            _geo = geo;
-        }
+class OSG_SYSTEMLIB_DLLMAPPING MakeTransparentGraphOp : public GraphOp {
+ public:
+  class MaterialObject {
+   public:
+    MaterialObject(GeometryPtr geo) {
+      _geo = geo;
+    }
 
-        MaterialObject(MaterialGroupPtr mg)
-        {
-            _mg = mg;
-        }
+    MaterialObject(MaterialGroupPtr mg) {
+      _mg = mg;
+    }
 
-        MaterialPtr getMaterial()
-        {
-            return (_geo != osg::NullFC
-                    ? _geo->getMaterial()
-                    : _mg->getMaterial());
-        }
+    MaterialPtr getMaterial() {
+      return (_geo != osg::NullFC ? _geo->getMaterial() : _mg->getMaterial());
+    }
 
-        void setMaterial(MaterialPtr mat)
-        {
-            if (_geo != osg::NullFC)
-            {
-                beginEditCP(_geo);
-                _geo->setMaterial(mat);
-                endEditCP(_geo);
-            }
-            else
-            {
-                beginEditCP(_mg);
-                _mg->setMaterial(mat);
-                endEditCP(_mg);
-            }
-        }
+    void setMaterial(MaterialPtr mat) {
+      if (_geo != osg::NullFC) {
+        beginEditCP(_geo);
+        _geo->setMaterial(mat);
+        endEditCP(_geo);
+      } else {
+        beginEditCP(_mg);
+        _mg->setMaterial(mat);
+        endEditCP(_mg);
+      }
+    }
 
-    private:
-        GeometryPtr _geo;
-        MaterialGroupPtr _mg;
-    };
+   private:
+    GeometryPtr      _geo;
+    MaterialGroupPtr _mg;
+  };
 
-    static const char *getClassname(void) { return "MakeTransparentGraphOp"; };
+  static const char* getClassname(void) {
+    return "MakeTransparentGraphOp";
+  };
 
-    MakeTransparentGraphOp(const char* name = "MakeTransparent");
+  MakeTransparentGraphOp(const char* name = "MakeTransparent");
 
-    GraphOp* create();
+  GraphOp* create();
 
-    bool traverse(NodePtr& node);
+  bool traverse(NodePtr& node);
 
-    void setParams(const std::string params);
-    
-    std::string usage(void);
+  void setParams(const std::string params);
 
-private:
-    Action::ResultE traverseEnter(NodePtr& node);
-    Action::ResultE traverseLeave(NodePtr& node, Action::ResultE res);
+  std::string usage(void);
 
-    void addObject(MaterialObject m);
-    void applyTransparency(MaterialPtr m);
+ private:
+  Action::ResultE traverseEnter(NodePtr& node);
+  Action::ResultE traverseLeave(NodePtr& node, Action::ResultE res);
 
-    typedef std::list<MaterialObject> MaterialObjectList;
-    typedef std::map<MaterialPtr, MaterialObjectList> MaterialObjectMap;
+  void addObject(MaterialObject m);
+  void applyTransparency(MaterialPtr m);
 
-    MaterialObjectMap _materialObjects;
-    
-    Real32 _transparency;
+  typedef std::list<MaterialObject>                 MaterialObjectList;
+  typedef std::map<MaterialPtr, MaterialObjectList> MaterialObjectMap;
+
+  MaterialObjectMap _materialObjects;
+
+  Real32 _transparency;
 };
 
 OSG_END_NAMESPACE

@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGSTATECHUNKBASE_H_
 #define _OSGSTATECHUNKBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -78,165 +76,140 @@ class BinaryDataHandler;
 
 //! \brief StateChunk Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING StateChunkBase : public Attachment
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING StateChunkBase : public Attachment {
+ private:
+  typedef Attachment Inherited;
 
-    typedef Attachment    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef StateChunkPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum { IgnoreFieldId = Inherited::NextFieldId, NextFieldId = IgnoreFieldId + 1 };
 
-    typedef StateChunkPtr  Ptr;
+  static const OSG::BitVector IgnoreFieldMask;
 
-    enum
-    {
-        IgnoreFieldId = Inherited::NextFieldId,
-        NextFieldId   = IgnoreFieldId + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector IgnoreFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFBool* getSFIgnore(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  bool&       getIgnore(void);
+  const bool& getIgnore(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFBool              *getSFIgnore         (void);
+  void setIgnore(const bool& value);
 
-           bool                &getIgnore         (void);
-     const bool                &getIgnore         (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setIgnore         ( const bool &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  SFBool _sfIgnore;
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
+  StateChunkBase(void);
+  StateChunkBase(const StateChunkBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~StateChunkBase(void);
 
-    SFBool              _sfIgnore;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    StateChunkBase(void);
-    StateChunkBase(const StateChunkBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~StateChunkBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      StateChunkBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(StateChunkBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      StateChunkBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(StateChunkBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const StateChunkBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const StateChunkBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef StateChunkBase* StateChunkBaseP;
 
-typedef StateChunkBase *StateChunkBaseP;
-
-typedef osgIF<StateChunkBase::isNodeCore,
-              CoredNodePtr<StateChunk>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet StateChunkNodePtr;
+typedef osgIF<StateChunkBase::isNodeCore, CoredNodePtr<StateChunk>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet StateChunkNodePtr;
 
 typedef RefPtr<StateChunkPtr> StateChunkRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGSTATECHUNKBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGSTATECHUNKBASE_HEADER_CVSID                                                             \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGSTATECHUNKBASE_H_ */

@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGFRAGMENTPROGRAMCHUNKBASE_H_
 #define _OSGFRAGMENTPROGRAMCHUNKBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -67,7 +65,6 @@
 
 #include <OSGProgramChunk.h> // Parent
 
-
 #include <OSGFragmentProgramChunkFields.h>
 
 OSG_BEGIN_NAMESPACE
@@ -77,148 +74,129 @@ class BinaryDataHandler;
 
 //! \brief FragmentProgramChunk Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING FragmentProgramChunkBase : public ProgramChunk
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING FragmentProgramChunkBase : public ProgramChunk {
+ private:
+  typedef ProgramChunk Inherited;
 
-    typedef ProgramChunk    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef FragmentProgramChunkPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  static const OSG::BitVector MTInfluenceMask;
 
-    typedef FragmentProgramChunkPtr  Ptr;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-    virtual       UInt32              getContainerSize(void) const;
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static FragmentProgramChunkPtr create(void);
+  static FragmentProgramChunkPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  FragmentProgramChunkPtr      create          (void); 
-    static  FragmentProgramChunkPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  FragmentProgramChunkBase(void);
+  FragmentProgramChunkBase(const FragmentProgramChunkBase& source);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  virtual ~FragmentProgramChunkBase(void);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
-
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    FragmentProgramChunkBase(void);
-    FragmentProgramChunkBase(const FragmentProgramChunkBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~FragmentProgramChunkBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      FragmentProgramChunkBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(FragmentProgramChunkBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      FragmentProgramChunkBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      FragmentProgramChunkBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldContainerType _type;
 
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const FragmentProgramChunkBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const FragmentProgramChunkBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef FragmentProgramChunkBase* FragmentProgramChunkBaseP;
 
-typedef FragmentProgramChunkBase *FragmentProgramChunkBaseP;
-
-typedef osgIF<FragmentProgramChunkBase::isNodeCore,
-              CoredNodePtr<FragmentProgramChunk>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet FragmentProgramChunkNodePtr;
+typedef osgIF<FragmentProgramChunkBase::isNodeCore, CoredNodePtr<FragmentProgramChunk>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet
+    FragmentProgramChunkNodePtr;
 
 typedef RefPtr<FragmentProgramChunkPtr> FragmentProgramChunkRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGFRAGMENTPROGRAMCHUNKBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGFRAGMENTPROGRAMCHUNKBASE_HEADER_CVSID                                                   \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGFRAGMENTPROGRAMCHUNKBASE_H_ */

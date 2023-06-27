@@ -58,149 +58,118 @@ OSG_USING_NAMESPACE
 /*-------------------------------------------------------------------------*/
 /*                            Constructors                                 */
 
+StandardStringConversionState::StandardStringConversionState(UInt32 indent, UInt32 width)
+    : Inherited()
+    ,
 
-StandardStringConversionState::StandardStringConversionState(UInt32 indent,
-                                                             UInt32 width  ) :
-     Inherited      (      ),
+    _indent(indent)
+    , _width(width)
+    ,
 
-    _indent         (indent),
-    _width          (width ), 
-    
-    _lineLength     (     0),
-    _noLineBreakHint(false ), 
-    _multiFieldHint (false ), 
-    _mfSeparator    (", "  ),
-    _mfSepLength    (     2),
-    _lastMFSepStart (      0)
-{
+    _lineLength(0)
+    , _noLineBreakHint(false)
+    , _multiFieldHint(false)
+    , _mfSeparator(", ")
+    , _mfSepLength(2)
+    , _lastMFSepStart(0) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Destructor                                  */
 
-StandardStringConversionState::~StandardStringConversionState(void)
-{
+StandardStringConversionState::~StandardStringConversionState(void) {
 }
-
 
 /*-------------------------------------------------------------------------*/
 /*                             Handle Fields                               */
 
 /*! beginField. StandardStringConversionState adds _indent many spaces
-    before the values of a field. 
+    before the values of a field.
 */
 
-std::string &StandardStringConversionState::beginField(
-    const Field       *pF, 
-          std::string &outStr)
-{
-    _lineLength     = 0;
-    _lastMFSepStart = 0;
+std::string& StandardStringConversionState::beginField(const Field* pF, std::string& outStr) {
+  _lineLength     = 0;
+  _lastMFSepStart = 0;
 
-    if(pF->getCardinality() == FieldType::MULTI_FIELD)
-    {
-        _multiFieldHint = true;
-    }
-    else
-    {
-        _multiFieldHint = false;
-    }
+  if (pF->getCardinality() == FieldType::MULTI_FIELD) {
+    _multiFieldHint = true;
+  } else {
+    _multiFieldHint = false;
+  }
 
-    if(strstr(pF->getContentType().getCName(), "String") != NULL)
-    {
-        _noLineBreakHint = true;
-    }
-    else
-    {
-        _noLineBreakHint = false;
-    }
+  if (strstr(pF->getContentType().getCName(), "String") != NULL) {
+    _noLineBreakHint = true;
+  } else {
+    _noLineBreakHint = false;
+  }
 
-    outStr.append(_indent.str());
-    return outStr;
+  outStr.append(_indent.str());
+  return outStr;
 }
 
 /*! addValueStr. StandardStringConversionState formats fields with indention
     and a limitation on the width of the rows.
 */
 
-std::string &StandardStringConversionState::addValueStr(std::string &value, 
-                                                        std::string &outStr)
-{
-    UInt32 valLength = value.length();
+std::string& StandardStringConversionState::addValueStr(std::string& value, std::string& outStr) {
+  UInt32 valLength = value.length();
 
-    if(_noLineBreakHint)
-    {
-        if(_lineLength+valLength > _width)
-        {
-            outStr.append("\n");
-            _lineLength = 0;
-            outStr.append(_indent.str());
-        }
-        
-        outStr.append(value);
-        _lineLength += valLength;
-    }
-    else
-    {
-        StringTokenizer tokens(value);
-        std::string     token;
-
-        bool first = true;
-
-        while(tokens.hasNext() == true)
-        {
-                        token       = tokens.getNext();
-            UInt32      tokenLength = token.length();
-
-            if(_lineLength + tokenLength > _width)
-            {
-                outStr.append("\n");
-                _lineLength = 0;
-                outStr.append(_indent.str());
-                first = true; 
-            }
-
-            if(first == true)
-            {
-                first = false;
-            }
-            else
-            {
-                outStr.append(" ");
-            }
-
-            outStr.append(token);
-
-            _lineLength += tokenLength+1;
-        }
-     }
-    
-    if(_multiFieldHint == true)
-    {
-        _lastMFSepStart = outStr.length();
-        outStr.append(_mfSeparator);
-        _lineLength += _mfSepLength;
+  if (_noLineBreakHint) {
+    if (_lineLength + valLength > _width) {
+      outStr.append("\n");
+      _lineLength = 0;
+      outStr.append(_indent.str());
     }
 
-    return outStr;
+    outStr.append(value);
+    _lineLength += valLength;
+  } else {
+    StringTokenizer tokens(value);
+    std::string     token;
+
+    bool first = true;
+
+    while (tokens.hasNext() == true) {
+      token              = tokens.getNext();
+      UInt32 tokenLength = token.length();
+
+      if (_lineLength + tokenLength > _width) {
+        outStr.append("\n");
+        _lineLength = 0;
+        outStr.append(_indent.str());
+        first = true;
+      }
+
+      if (first == true) {
+        first = false;
+      } else {
+        outStr.append(" ");
+      }
+
+      outStr.append(token);
+
+      _lineLength += tokenLength + 1;
+    }
+  }
+
+  if (_multiFieldHint == true) {
+    _lastMFSepStart = outStr.length();
+    outStr.append(_mfSeparator);
+    _lineLength += _mfSepLength;
+  }
+
+  return outStr;
 }
-
 
 /*! endField. StandardStringConversionState removes the last MultiField-
     Separator-String appended to outStr.
 */
 
-std::string &StandardStringConversionState::endField(
-    const      Field  *OSG_CHECK_ARG(pF),
-          std::string &outStr)
-{
-    if(_multiFieldHint == true)
-    {
-        outStr = outStr.erase(_lastMFSepStart, _mfSepLength);
-    }
+std::string& StandardStringConversionState::endField(
+    const Field* OSG_CHECK_ARG(pF), std::string& outStr) {
+  if (_multiFieldHint == true) {
+    outStr = outStr.erase(_lastMFSepStart, _mfSepLength);
+  }
 
-    return outStr;
+  return outStr;
 }
-
-
-

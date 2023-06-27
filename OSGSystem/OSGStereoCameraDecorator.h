@@ -52,66 +52,59 @@ OSG_BEGIN_NAMESPACE
     PageSystemWindowCameraDecoratorsStereo for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING StereoCameraDecorator : public StereoCameraDecoratorBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING StereoCameraDecorator : public StereoCameraDecoratorBase {
+ private:
+  typedef StereoCameraDecoratorBase Inherited;
 
-    typedef StereoCameraDecoratorBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector whichField, 
-                         UInt32    origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in StereoCameraDecoratorBase.
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  StereoCameraDecorator(void);
+  StereoCameraDecorator(const StereoCameraDecorator& source);
 
-    // Variables should all be in StereoCameraDecoratorBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~StereoCameraDecorator(void);
 
-    StereoCameraDecorator(void);
-    StereoCameraDecorator(const StereoCameraDecorator &source);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class StereoCameraDecoratorBase;
 
-    virtual ~StereoCameraDecorator(void); 
+  static void initMethod(void);
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  // prohibit default functions (move to 'public' if you need one)
 
-    friend class FieldContainer;
-    friend class StereoCameraDecoratorBase;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const StereoCameraDecorator &source);
+  void operator=(const StereoCameraDecorator& source);
 };
 
-typedef StereoCameraDecorator *StereoCameraDecoratorP;
+typedef StereoCameraDecorator* StereoCameraDecoratorP;
 
 OSG_END_NAMESPACE
 

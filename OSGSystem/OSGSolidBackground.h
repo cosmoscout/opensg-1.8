@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGSOLIDBACKGROUND_H_
 #define _OSGSOLIDBACKGROUND_H_
 #ifdef __sgi
@@ -52,88 +51,84 @@ OSG_BEGIN_NAMESPACE
 class DrawActionBase;
 class Viewport;
 
-/*! \brief Single color background clearing class. See \ref 
+/*! \brief Single color background clearing class. See \ref
     PageSystemWindowBackgroundSolid for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING SolidBackground : public SolidBackgroundBase
-{
-    /*==========================  PUBLIC  =================================*/
+class OSG_SYSTEMLIB_DLLMAPPING SolidBackground : public SolidBackgroundBase {
+  /*==========================  PUBLIC  =================================*/
  public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
-    
-    static const char *getClassname(void) { return "SolidBackground"; };
+  static const char* getClassname(void) {
+    return "SolidBackground";
+  };
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     your_category                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     your_category                            */
+  /*! \{                                                                 */
 
-    void clear(DrawActionBase *, Viewport *);
+  void clear(DrawActionBase*, Viewport*);
 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     transformation                           */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     transformation                           */
-    /*! \{                                                                 */
+  virtual void changed(BitVector whichField, UInt32 origin);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   dump                                       */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector whichField, 
-                         UInt32    origin    );
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   dump                                       */
-    /*! \{                                                                 */
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    virtual void dump(      UInt32    uiIndent = 0, 
-                      const BitVector bvFlags  = 0) const;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
-    
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  SolidBackground(void);
 
-    SolidBackground(void);
-    
-    SolidBackground(const SolidBackground &source);
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  SolidBackground(const SolidBackground& source);
 
-    virtual ~SolidBackground(void); 
-    
-    /*! \}                                                                 */
-    /*=========================  PRIVATE  =================================*/
-  private:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    typedef SolidBackgroundBase Inherited;
+  virtual ~SolidBackground(void);
 
-    friend class FieldContainer;
-    friend class SolidBackgroundBase;
+  /*! \}                                                                 */
+  /*=========================  PRIVATE  =================================*/
+ private:
+  typedef SolidBackgroundBase Inherited;
 
-    static void initMethod( void );
+  friend class FieldContainer;
+  friend class SolidBackgroundBase;
 
-    void operator =(const SolidBackground &source);
+  static void initMethod(void);
+
+  void operator=(const SolidBackground& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
-typedef SolidBackground *SolidBackgroundP;
+typedef SolidBackground* SolidBackgroundP;
 
 OSG_END_NAMESPACE
 
 #include <OSGSolidBackgroundBase.inl>
 #include <OSGSolidBackground.inl>
 
-#define OSGSOLIDBACKGROUND_HEADER_CVSID "@(#)$Id: FCTemplate_h.h,v 1.15 2002/06/01 10:37:25 vossg Exp $"
+#define OSGSOLIDBACKGROUND_HEADER_CVSID                                                            \
+  "@(#)$Id: FCTemplate_h.h,v 1.15 2002/06/01 10:37:25 vossg Exp $"
 
 #endif /* _OSGSOLIDBACKGROUND_H_ */

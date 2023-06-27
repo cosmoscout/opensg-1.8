@@ -53,75 +53,69 @@ OSG_BEGIN_NAMESPACE
     \ingroup GrpSystemNodeCoresMisc
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING Group : public GroupBase
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING Group : public GroupBase {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    virtual void changed(BitVector whichField,
-                         UInt32    origin    );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                        Dump                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                        Dump                                  */
-    /*! \{                                                                 */
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    virtual void dump   (      UInt32    uiIndent = 0,
-                         const BitVector bvFlags  = 0) const;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  typedef GroupBase Inherited;
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    typedef GroupBase Inherited;
+  Group(void);
+  Group(const Group& source);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    Group(void);
-    Group(const Group &source);
+  virtual ~Group(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Action Callbacks                       */
+  /*! \{                                                                 */
 
-    virtual ~Group(void);
+  Action::ResultE drawEnter(Action* action);
+  Action::ResultE drawLeave(Action* action);
+  Action::ResultE renderEnter(Action* action);
+  Action::ResultE renderLeave(Action* action);
+  Action::ResultE intersect(Action* action);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Action Callbacks                       */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class GroupBase;
 
-    Action::ResultE drawEnter(Action *action);
-    Action::ResultE drawLeave(Action *action);
-    Action::ResultE renderEnter(Action *action);
-    Action::ResultE renderLeave(Action *action);
-    Action::ResultE intersect(Action *action);
+  /*---------------------------------------------------------------------*/
+  /*! \name                        Init                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  static void initMethod(void);
 
-    friend class FieldContainer;
-    friend class GroupBase;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                        Init                                  */
-    /*! \{                                                                 */
-
-    static void initMethod(void);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const Group &source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const Group& source);
 };
 
 OSG_END_NAMESPACE

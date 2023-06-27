@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEROTATEMANIPULATORINST
 
 #include <stdlib.h>
@@ -61,169 +60,119 @@
 #include "OSGRotateManipulatorBase.h"
 #include "OSGRotateManipulator.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector RotateManipulatorBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
+const OSG::BitVector RotateManipulatorBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
+FieldContainerType RotateManipulatorBase::_type("RotateManipulator", "Manipulator", NULL,
+    (PrototypeCreateF)&RotateManipulatorBase::createEmpty, RotateManipulator::initMethod, NULL, 0);
 
-
-FieldContainerType RotateManipulatorBase::_type(
-    "RotateManipulator",
-    "Manipulator",
-    NULL,
-    (PrototypeCreateF) &RotateManipulatorBase::createEmpty,
-    RotateManipulator::initMethod,
-    NULL,
-    0);
-
-//OSG_FIELD_CONTAINER_DEF(RotateManipulatorBase, RotateManipulatorPtr)
+// OSG_FIELD_CONTAINER_DEF(RotateManipulatorBase, RotateManipulatorPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &RotateManipulatorBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &RotateManipulatorBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr RotateManipulatorBase::shallowCopy(void) const 
-{ 
-    RotateManipulatorPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const RotateManipulator *>(this)); 
-
-    return returnValue; 
+FieldContainerType& RotateManipulatorBase::getType(void) {
+  return _type;
 }
 
-UInt32 RotateManipulatorBase::getContainerSize(void) const 
-{ 
-    return sizeof(RotateManipulator); 
+const FieldContainerType& RotateManipulatorBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr RotateManipulatorBase::shallowCopy(void) const {
+  RotateManipulatorPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const RotateManipulator*>(this));
+
+  return returnValue;
+}
+
+UInt32 RotateManipulatorBase::getContainerSize(void) const {
+  return sizeof(RotateManipulator);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void RotateManipulatorBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((RotateManipulatorBase *) &other, whichField);
+void RotateManipulatorBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((RotateManipulatorBase*)&other, whichField);
 }
 #else
-void RotateManipulatorBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((RotateManipulatorBase *) &other, whichField, sInfo);
+void RotateManipulatorBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((RotateManipulatorBase*)&other, whichField, sInfo);
 }
-void RotateManipulatorBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void RotateManipulatorBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void RotateManipulatorBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void RotateManipulatorBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-RotateManipulatorBase::RotateManipulatorBase(void) :
-    Inherited() 
-{
+RotateManipulatorBase::RotateManipulatorBase(void)
+    : Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-RotateManipulatorBase::RotateManipulatorBase(const RotateManipulatorBase &source) :
-    Inherited                 (source)
-{
+RotateManipulatorBase::RotateManipulatorBase(const RotateManipulatorBase& source)
+    : Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-RotateManipulatorBase::~RotateManipulatorBase(void)
-{
+RotateManipulatorBase::~RotateManipulatorBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 RotateManipulatorBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 RotateManipulatorBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void RotateManipulatorBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
-
-
+void RotateManipulatorBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 }
 
-void RotateManipulatorBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
-
-
+void RotateManipulatorBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void RotateManipulatorBase::executeSyncImpl(      RotateManipulatorBase *pOther,
-                                        const BitVector         &whichField)
-{
+void RotateManipulatorBase::executeSyncImpl(
+    RotateManipulatorBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
-
-
+  Inherited::executeSyncImpl(pOther, whichField);
 }
 #else
-void RotateManipulatorBase::executeSyncImpl(      RotateManipulatorBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void RotateManipulatorBase::executeSyncImpl(
+    RotateManipulatorBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
-
-
-
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 }
 
-void RotateManipulatorBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void RotateManipulatorBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 OSG_BEGIN_NAMESPACE
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_DEV)
 DataType FieldDataTraits<RotateManipulatorPtr>::_type("RotateManipulatorPtr", "ManipulatorPtr");
 #endif
-
 
 OSG_END_NAMESPACE

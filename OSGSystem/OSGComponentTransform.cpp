@@ -51,133 +51,85 @@
 OSG_USING_NAMESPACE
 
 /*! \class osg::ComponentTransform
-*/
-
+ */
 
 /*-------------------------------------------------------------------------*/
 /*                               Changed                                   */
 
-void ComponentTransform::changed(BitVector whichField, UInt32 origin)
-{
-    ComponentTransformPtr ptr(*this);
+void ComponentTransform::changed(BitVector whichField, UInt32 origin) {
+  ComponentTransformPtr ptr(*this);
 
-    if((whichField & CenterFieldMask          ) ||
-       (whichField & RotationFieldMask        ) ||
-       (whichField & ScaleFieldMask           ) ||
-       (whichField & ScaleOrientationFieldMask) ||
-       (whichField & TranslationFieldMask     )  )
+  if ((whichField & CenterFieldMask) || (whichField & RotationFieldMask) ||
+      (whichField & ScaleFieldMask) || (whichField & ScaleOrientationFieldMask) ||
+      (whichField & TranslationFieldMask)) {
+    beginEditCP(ptr, MatrixFieldMask);
     {
-        beginEditCP(ptr, MatrixFieldMask);
-        {
-            getMatrix().setTransform(getTranslation     (),
-                                     getRotation        (),
-                                     getScale           (),
-                                     getScaleOrientation(),
-                                     getCenter          ());
-        }
-        endEditCP  (ptr, MatrixFieldMask);
+      getMatrix().setTransform(
+          getTranslation(), getRotation(), getScale(), getScaleOrientation(), getCenter());
     }
+    endEditCP(ptr, MatrixFieldMask);
+  }
 
-    Inherited::changed(whichField, origin);
+  Inherited::changed(whichField, origin);
 }
 
-void ComponentTransform::dump(      UInt32    uiIndent,
-                              const BitVector bvFlags) const
-{
-    Inherited::dump(uiIndent, bvFlags);
+void ComponentTransform::dump(UInt32 uiIndent, const BitVector bvFlags) const {
+  Inherited::dump(uiIndent, bvFlags);
 }
 
 /*-------------------------------------------------------------------------*/
 /*                            Constructors                                 */
 
-ComponentTransform::ComponentTransform(void) :
-    Inherited()
-{
-    _sfScale.getValue().setValues(1.f, 1.f, 1.f);
+ComponentTransform::ComponentTransform(void)
+    : Inherited() {
+  _sfScale.getValue().setValues(1.f, 1.f, 1.f);
 }
 
-ComponentTransform::ComponentTransform(const ComponentTransform &source) :
-    Inherited(source)
-{
+ComponentTransform::ComponentTransform(const ComponentTransform& source)
+    : Inherited(source) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Destructor                                  */
 
-ComponentTransform::~ComponentTransform(void)
-{
+ComponentTransform::~ComponentTransform(void) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                               Init                                      */
 
-void ComponentTransform::initMethod (void)
-{
-    DrawAction::registerEnterDefault(
-        getClassType(),
-        osgTypedMethodFunctor2BaseCPtrRef<
-            Action::ResultE,
-            ComponentTransformPtr  ,
-            CNodePtr               ,
-            Action                *>(&ComponentTransform::drawEnter));
+void ComponentTransform::initMethod(void) {
+  DrawAction::registerEnterDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, ComponentTransformPtr, CNodePtr, Action*>(
+          &ComponentTransform::drawEnter));
 
-    DrawAction::registerLeaveDefault(
-        getClassType(),
-        osgTypedMethodFunctor2BaseCPtrRef<
-            Action::ResultE,
-            ComponentTransformPtr  ,
-            CNodePtr               ,
-            Action                *>(&ComponentTransform::drawLeave));
+  DrawAction::registerLeaveDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, ComponentTransformPtr, CNodePtr, Action*>(
+          &ComponentTransform::drawLeave));
 
+  RenderAction::registerEnterDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, ComponentTransformPtr, CNodePtr, Action*>(
+          &ComponentTransform::renderEnter));
 
-    RenderAction::registerEnterDefault(
-        getClassType(),
-        osgTypedMethodFunctor2BaseCPtrRef<
-            Action::ResultE,
-            ComponentTransformPtr  ,
-            CNodePtr               ,
-            Action                *>(&ComponentTransform::renderEnter));
+  RenderAction::registerLeaveDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, ComponentTransformPtr, CNodePtr, Action*>(
+          &ComponentTransform::renderLeave));
 
-    RenderAction::registerLeaveDefault(
-        getClassType(),
-        osgTypedMethodFunctor2BaseCPtrRef<
-            Action::ResultE,
-            ComponentTransformPtr  ,
-            CNodePtr               ,
-            Action                *>(&ComponentTransform::renderLeave));
+  IntersectAction::registerEnterDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, ComponentTransformPtr, CNodePtr, Action*>(
+          &ComponentTransform::intersectEnter));
 
-    IntersectAction::registerEnterDefault(
-        getClassType(),
-        osgTypedMethodFunctor2BaseCPtrRef<
-            Action::ResultE,
-            ComponentTransformPtr  ,
-            CNodePtr               ,
-            Action                *>(&ComponentTransform::intersectEnter));
+  IntersectAction::registerLeaveDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, ComponentTransformPtr, CNodePtr, Action*>(
+          &ComponentTransform::intersectLeave));
 
-    IntersectAction::registerLeaveDefault(
-        getClassType(),
-        osgTypedMethodFunctor2BaseCPtrRef<
-            Action::ResultE,
-            ComponentTransformPtr  ,
-            CNodePtr               ,
-            Action                *>(&ComponentTransform::intersectLeave));
+  IntersectActor::regClassEnter(
+      osgTypedMethodFunctor2BaseCPtr<NewActionTypes::ResultE, ComponentTransformPtr, NodeCorePtr,
+          ActorBase::FunctorArgumentType&>(&ComponentTransform::intersectActorEnter),
+      getClassType());
 
-    IntersectActor::regClassEnter(
-        osgTypedMethodFunctor2BaseCPtr<
-            NewActionTypes::ResultE,
-            ComponentTransformPtr  ,
-            NodeCorePtr            ,
-            ActorBase::FunctorArgumentType &>(&ComponentTransform::intersectActorEnter),
-        getClassType());
-
-    IntersectActor::regClassLeave(
-        osgTypedMethodFunctor2BaseCPtr<
-            NewActionTypes::ResultE,
-            ComponentTransformPtr  ,
-            NodeCorePtr            ,
-            ActorBase::FunctorArgumentType &>(&ComponentTransform::intersectActorLeave),
-        getClassType());
+  IntersectActor::regClassLeave(
+      osgTypedMethodFunctor2BaseCPtr<NewActionTypes::ResultE, ComponentTransformPtr, NodeCorePtr,
+          ActorBase::FunctorArgumentType&>(&ComponentTransform::intersectActorLeave),
+      getClassType());
 }
-
-
-

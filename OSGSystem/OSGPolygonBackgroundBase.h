@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGPOLYGONBACKGROUNDBASE_H_
 #define _OSGPOLYGONBACKGROUNDBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -68,16 +66,16 @@
 #include <OSGBackground.h> // Parent
 
 #include <OSGMaterialFields.h> // Material type
-#include <OSGVec3fFields.h> // TexCoords type
-#include <OSGPnt2fFields.h> // Positions type
-#include <OSGBoolFields.h> // NormalizedX type
-#include <OSGBoolFields.h> // NormalizedY type
-#include <OSGUInt16Fields.h> // AspectHeight type
-#include <OSGUInt16Fields.h> // AspectWidth type
-#include <OSGReal32Fields.h> // Scale type
-#include <OSGInt32Fields.h> // ClearStencilBit type
-#include <OSGBoolFields.h> // Cleanup type
-#include <OSGBoolFields.h> // Tile type
+#include <OSGVec3fFields.h>    // TexCoords type
+#include <OSGPnt2fFields.h>    // Positions type
+#include <OSGBoolFields.h>     // NormalizedX type
+#include <OSGBoolFields.h>     // NormalizedY type
+#include <OSGUInt16Fields.h>   // AspectHeight type
+#include <OSGUInt16Fields.h>   // AspectWidth type
+#include <OSGReal32Fields.h>   // Scale type
+#include <OSGInt32Fields.h>    // ClearStencilBit type
+#include <OSGBoolFields.h>     // Cleanup type
+#include <OSGBoolFields.h>     // Tile type
 
 #include <OSGPolygonBackgroundFields.h>
 
@@ -88,251 +86,231 @@ class BinaryDataHandler;
 
 //! \brief PolygonBackground Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING PolygonBackgroundBase : public Background
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING PolygonBackgroundBase : public Background {
+ private:
+  typedef Background Inherited;
 
-    typedef Background    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef PolygonBackgroundPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    MaterialFieldId        = Inherited::NextFieldId,
+    TexCoordsFieldId       = MaterialFieldId + 1,
+    PositionsFieldId       = TexCoordsFieldId + 1,
+    NormalizedXFieldId     = PositionsFieldId + 1,
+    NormalizedYFieldId     = NormalizedXFieldId + 1,
+    AspectHeightFieldId    = NormalizedYFieldId + 1,
+    AspectWidthFieldId     = AspectHeightFieldId + 1,
+    ScaleFieldId           = AspectWidthFieldId + 1,
+    ClearStencilBitFieldId = ScaleFieldId + 1,
+    CleanupFieldId         = ClearStencilBitFieldId + 1,
+    TileFieldId            = CleanupFieldId + 1,
+    NextFieldId            = TileFieldId + 1
+  };
 
-    typedef PolygonBackgroundPtr  Ptr;
+  static const OSG::BitVector MaterialFieldMask;
+  static const OSG::BitVector TexCoordsFieldMask;
+  static const OSG::BitVector PositionsFieldMask;
+  static const OSG::BitVector NormalizedXFieldMask;
+  static const OSG::BitVector NormalizedYFieldMask;
+  static const OSG::BitVector AspectHeightFieldMask;
+  static const OSG::BitVector AspectWidthFieldMask;
+  static const OSG::BitVector ScaleFieldMask;
+  static const OSG::BitVector ClearStencilBitFieldMask;
+  static const OSG::BitVector CleanupFieldMask;
+  static const OSG::BitVector TileFieldMask;
 
-    enum
-    {
-        MaterialFieldId        = Inherited::NextFieldId,
-        TexCoordsFieldId       = MaterialFieldId        + 1,
-        PositionsFieldId       = TexCoordsFieldId       + 1,
-        NormalizedXFieldId     = PositionsFieldId       + 1,
-        NormalizedYFieldId     = NormalizedXFieldId     + 1,
-        AspectHeightFieldId    = NormalizedYFieldId     + 1,
-        AspectWidthFieldId     = AspectHeightFieldId    + 1,
-        ScaleFieldId           = AspectWidthFieldId     + 1,
-        ClearStencilBitFieldId = ScaleFieldId           + 1,
-        CleanupFieldId         = ClearStencilBitFieldId + 1,
-        TileFieldId            = CleanupFieldId         + 1,
-        NextFieldId            = TileFieldId            + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector MaterialFieldMask;
-    static const OSG::BitVector TexCoordsFieldMask;
-    static const OSG::BitVector PositionsFieldMask;
-    static const OSG::BitVector NormalizedXFieldMask;
-    static const OSG::BitVector NormalizedYFieldMask;
-    static const OSG::BitVector AspectHeightFieldMask;
-    static const OSG::BitVector AspectWidthFieldMask;
-    static const OSG::BitVector ScaleFieldMask;
-    static const OSG::BitVector ClearStencilBitFieldMask;
-    static const OSG::BitVector CleanupFieldMask;
-    static const OSG::BitVector TileFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFMaterialPtr* getSFMaterial(void);
+  MFVec3f*       getMFTexCoords(void);
+  MFPnt2f*       getMFPositions(void);
+  SFBool*        getSFNormalizedX(void);
+  SFBool*        getSFNormalizedY(void);
+  SFUInt16*      getSFAspectHeight(void);
+  SFUInt16*      getSFAspectWidth(void);
+  SFReal32*      getSFScale(void);
+  SFInt32*       getSFClearStencilBit(void);
+  SFBool*        getSFCleanup(void);
+  SFBool*        getSFTile(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  MaterialPtr&       getMaterial(void);
+  const MaterialPtr& getMaterial(void) const;
+  bool&              getNormalizedX(void);
+  const bool&        getNormalizedX(void) const;
+  bool&              getNormalizedY(void);
+  const bool&        getNormalizedY(void) const;
+  UInt16&            getAspectHeight(void);
+  const UInt16&      getAspectHeight(void) const;
+  UInt16&            getAspectWidth(void);
+  const UInt16&      getAspectWidth(void) const;
+  Real32&            getScale(void);
+  const Real32&      getScale(void) const;
+  Int32&             getClearStencilBit(void);
+  const Int32&       getClearStencilBit(void) const;
+  bool&              getCleanup(void);
+  const bool&        getCleanup(void) const;
+  bool&              getTile(void);
+  const bool&        getTile(void) const;
+  Vec3f&             getTexCoords(const UInt32 index);
+  MFVec3f&           getTexCoords(void);
+  const MFVec3f&     getTexCoords(void) const;
+  Pnt2f&             getPositions(const UInt32 index);
+  MFPnt2f&           getPositions(void);
+  const MFPnt2f&     getPositions(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFMaterialPtr       *getSFMaterial       (void);
-           MFVec3f             *getMFTexCoords      (void);
-           MFPnt2f             *getMFPositions      (void);
-           SFBool              *getSFNormalizedX    (void);
-           SFBool              *getSFNormalizedY    (void);
-           SFUInt16            *getSFAspectHeight   (void);
-           SFUInt16            *getSFAspectWidth    (void);
-           SFReal32            *getSFScale          (void);
-           SFInt32             *getSFClearStencilBit(void);
-           SFBool              *getSFCleanup        (void);
-           SFBool              *getSFTile           (void);
+  void setMaterial(const MaterialPtr& value);
+  void setNormalizedX(const bool& value);
+  void setNormalizedY(const bool& value);
+  void setAspectHeight(const UInt16& value);
+  void setAspectWidth(const UInt16& value);
+  void setScale(const Real32& value);
+  void setClearStencilBit(const Int32& value);
+  void setCleanup(const bool& value);
+  void setTile(const bool& value);
 
-           MaterialPtr         &getMaterial       (void);
-     const MaterialPtr         &getMaterial       (void) const;
-           bool                &getNormalizedX    (void);
-     const bool                &getNormalizedX    (void) const;
-           bool                &getNormalizedY    (void);
-     const bool                &getNormalizedY    (void) const;
-           UInt16              &getAspectHeight   (void);
-     const UInt16              &getAspectHeight   (void) const;
-           UInt16              &getAspectWidth    (void);
-     const UInt16              &getAspectWidth    (void) const;
-           Real32              &getScale          (void);
-     const Real32              &getScale          (void) const;
-           Int32               &getClearStencilBit(void);
-     const Int32               &getClearStencilBit(void) const;
-           bool                &getCleanup        (void);
-     const bool                &getCleanup        (void) const;
-           bool                &getTile           (void);
-     const bool                &getTile           (void) const;
-           Vec3f               &getTexCoords      (const UInt32 index);
-           MFVec3f             &getTexCoords      (void);
-     const MFVec3f             &getTexCoords      (void) const;
-           Pnt2f               &getPositions      (const UInt32 index);
-           MFPnt2f             &getPositions      (void);
-     const MFPnt2f             &getPositions      (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setMaterial       ( const MaterialPtr &value );
-     void setNormalizedX    ( const bool &value );
-     void setNormalizedY    ( const bool &value );
-     void setAspectHeight   ( const UInt16 &value );
-     void setAspectWidth    ( const UInt16 &value );
-     void setScale          ( const Real32 &value );
-     void setClearStencilBit( const Int32 &value );
-     void setCleanup        ( const bool &value );
-     void setTile           ( const bool &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static PolygonBackgroundPtr create(void);
+  static PolygonBackgroundPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  PolygonBackgroundPtr      create          (void); 
-    static  PolygonBackgroundPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFMaterialPtr _sfMaterial;
+  MFVec3f       _mfTexCoords;
+  MFPnt2f       _mfPositions;
+  SFBool        _sfNormalizedX;
+  SFBool        _sfNormalizedY;
+  SFUInt16      _sfAspectHeight;
+  SFUInt16      _sfAspectWidth;
+  SFReal32      _sfScale;
+  SFInt32       _sfClearStencilBit;
+  SFBool        _sfCleanup;
+  SFBool        _sfTile;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  PolygonBackgroundBase(void);
+  PolygonBackgroundBase(const PolygonBackgroundBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~PolygonBackgroundBase(void);
 
-    SFMaterialPtr       _sfMaterial;
-    MFVec3f             _mfTexCoords;
-    MFPnt2f             _mfPositions;
-    SFBool              _sfNormalizedX;
-    SFBool              _sfNormalizedY;
-    SFUInt16            _sfAspectHeight;
-    SFUInt16            _sfAspectWidth;
-    SFReal32            _sfScale;
-    SFInt32             _sfClearStencilBit;
-    SFBool              _sfCleanup;
-    SFBool              _sfTile;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    PolygonBackgroundBase(void);
-    PolygonBackgroundBase(const PolygonBackgroundBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~PolygonBackgroundBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      PolygonBackgroundBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(PolygonBackgroundBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      PolygonBackgroundBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      PolygonBackgroundBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const PolygonBackgroundBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const PolygonBackgroundBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef PolygonBackgroundBase* PolygonBackgroundBaseP;
 
-typedef PolygonBackgroundBase *PolygonBackgroundBaseP;
-
-typedef osgIF<PolygonBackgroundBase::isNodeCore,
-              CoredNodePtr<PolygonBackground>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet PolygonBackgroundNodePtr;
+typedef osgIF<PolygonBackgroundBase::isNodeCore, CoredNodePtr<PolygonBackground>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet
+    PolygonBackgroundNodePtr;
 
 typedef RefPtr<PolygonBackgroundPtr> PolygonBackgroundRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGPOLYGONBACKGROUNDBASE_HEADER_CVSID "@(#)$Id: OSGPolygonBackgroundBase.h,v 1.9 2007/03/09 16:59:50 yjung Exp $"
+#define OSGPOLYGONBACKGROUNDBASE_HEADER_CVSID                                                      \
+  "@(#)$Id: OSGPolygonBackgroundBase.h,v 1.9 2007/03/09 16:59:50 yjung Exp $"
 
 #endif /* _OSGPOLYGONBACKGROUNDBASE_H_ */

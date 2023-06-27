@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGBILLBOARDBASE_H_
 #define _OSGBILLBOARDBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -67,9 +65,9 @@
 
 #include <OSGGroup.h> // Parent
 
-#include <OSGVec3fFields.h> // AxisOfRotation type
-#include <OSGBoolFields.h> // FocusOnCamera type
-#include <OSGBoolFields.h> // AlignToScreen type
+#include <OSGVec3fFields.h>  // AxisOfRotation type
+#include <OSGBoolFields.h>   // FocusOnCamera type
+#include <OSGBoolFields.h>   // AlignToScreen type
 #include <OSGReal32Fields.h> // MinAngle type
 #include <OSGReal32Fields.h> // MaxAngle type
 
@@ -82,209 +80,187 @@ class BinaryDataHandler;
 
 //! \brief Billboard Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING BillboardBase : public Group
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING BillboardBase : public Group {
+ private:
+  typedef Group Inherited;
 
-    typedef Group    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef BillboardPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    AxisOfRotationFieldId = Inherited::NextFieldId,
+    FocusOnCameraFieldId  = AxisOfRotationFieldId + 1,
+    AlignToScreenFieldId  = FocusOnCameraFieldId + 1,
+    MinAngleFieldId       = AlignToScreenFieldId + 1,
+    MaxAngleFieldId       = MinAngleFieldId + 1,
+    NextFieldId           = MaxAngleFieldId + 1
+  };
 
-    typedef BillboardPtr  Ptr;
+  static const OSG::BitVector AxisOfRotationFieldMask;
+  static const OSG::BitVector FocusOnCameraFieldMask;
+  static const OSG::BitVector AlignToScreenFieldMask;
+  static const OSG::BitVector MinAngleFieldMask;
+  static const OSG::BitVector MaxAngleFieldMask;
 
-    enum
-    {
-        AxisOfRotationFieldId = Inherited::NextFieldId,
-        FocusOnCameraFieldId  = AxisOfRotationFieldId + 1,
-        AlignToScreenFieldId  = FocusOnCameraFieldId  + 1,
-        MinAngleFieldId       = AlignToScreenFieldId  + 1,
-        MaxAngleFieldId       = MinAngleFieldId       + 1,
-        NextFieldId           = MaxAngleFieldId       + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector AxisOfRotationFieldMask;
-    static const OSG::BitVector FocusOnCameraFieldMask;
-    static const OSG::BitVector AlignToScreenFieldMask;
-    static const OSG::BitVector MinAngleFieldMask;
-    static const OSG::BitVector MaxAngleFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFVec3f*  getSFAxisOfRotation(void);
+  SFBool*   getSFFocusOnCamera(void);
+  SFBool*   getSFAlignToScreen(void);
+  SFReal32* getSFMinAngle(void);
+  SFReal32* getSFMaxAngle(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  Vec3f&        getAxisOfRotation(void);
+  const Vec3f&  getAxisOfRotation(void) const;
+  bool&         getFocusOnCamera(void);
+  const bool&   getFocusOnCamera(void) const;
+  bool&         getAlignToScreen(void);
+  const bool&   getAlignToScreen(void) const;
+  Real32&       getMinAngle(void);
+  const Real32& getMinAngle(void) const;
+  Real32&       getMaxAngle(void);
+  const Real32& getMaxAngle(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFVec3f             *getSFAxisOfRotation (void);
-           SFBool              *getSFFocusOnCamera  (void);
-           SFBool              *getSFAlignToScreen  (void);
-           SFReal32            *getSFMinAngle       (void);
-           SFReal32            *getSFMaxAngle       (void);
+  void setAxisOfRotation(const Vec3f& value);
+  void setFocusOnCamera(const bool& value);
+  void setAlignToScreen(const bool& value);
+  void setMinAngle(const Real32& value);
+  void setMaxAngle(const Real32& value);
 
-           Vec3f               &getAxisOfRotation (void);
-     const Vec3f               &getAxisOfRotation (void) const;
-           bool                &getFocusOnCamera  (void);
-     const bool                &getFocusOnCamera  (void) const;
-           bool                &getAlignToScreen  (void);
-     const bool                &getAlignToScreen  (void) const;
-           Real32              &getMinAngle       (void);
-     const Real32              &getMinAngle       (void) const;
-           Real32              &getMaxAngle       (void);
-     const Real32              &getMaxAngle       (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setAxisOfRotation ( const Vec3f &value );
-     void setFocusOnCamera  ( const bool &value );
-     void setAlignToScreen  ( const bool &value );
-     void setMinAngle       ( const Real32 &value );
-     void setMaxAngle       ( const Real32 &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static BillboardPtr create(void);
+  static BillboardPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  BillboardPtr      create          (void); 
-    static  BillboardPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFVec3f  _sfAxisOfRotation;
+  SFBool   _sfFocusOnCamera;
+  SFBool   _sfAlignToScreen;
+  SFReal32 _sfMinAngle;
+  SFReal32 _sfMaxAngle;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  BillboardBase(void);
+  BillboardBase(const BillboardBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~BillboardBase(void);
 
-    SFVec3f             _sfAxisOfRotation;
-    SFBool              _sfFocusOnCamera;
-    SFBool              _sfAlignToScreen;
-    SFReal32            _sfMinAngle;
-    SFReal32            _sfMaxAngle;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    BillboardBase(void);
-    BillboardBase(const BillboardBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~BillboardBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      BillboardBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(BillboardBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      BillboardBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(BillboardBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const BillboardBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const BillboardBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef BillboardBase* BillboardBaseP;
 
-typedef BillboardBase *BillboardBaseP;
-
-typedef osgIF<BillboardBase::isNodeCore,
-              CoredNodePtr<Billboard>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet BillboardNodePtr;
+typedef osgIF<BillboardBase::isNodeCore, CoredNodePtr<Billboard>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet BillboardNodePtr;
 
 typedef RefPtr<BillboardPtr> BillboardRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGBILLBOARDBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGBILLBOARDBASE_HEADER_CVSID                                                              \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGBILLBOARDBASE_H_ */

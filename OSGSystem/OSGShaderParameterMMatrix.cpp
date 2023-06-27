@@ -65,10 +65,8 @@ OSG_BEGIN_NAMESPACE
  *                           Class methods                                 *
 \***************************************************************************/
 
-void ShaderParameterMMatrix::initMethod (void)
-{
+void ShaderParameterMMatrix::initMethod(void) {
 }
-
 
 /***************************************************************************\
  *                           Instance methods                              *
@@ -80,37 +78,29 @@ void ShaderParameterMMatrix::initMethod (void)
 
 /*----------------------- constructors & destructors ----------------------*/
 
-ShaderParameterMMatrix::ShaderParameterMMatrix(void) :
-    Inherited()
-{
-    setTypeId(ShaderParameter::SHPTypeMMatrix);
+ShaderParameterMMatrix::ShaderParameterMMatrix(void)
+    : Inherited() {
+  setTypeId(ShaderParameter::SHPTypeMMatrix);
 }
 
-ShaderParameterMMatrix::ShaderParameterMMatrix(const ShaderParameterMMatrix &source) :
-    Inherited(source)
-{
+ShaderParameterMMatrix::ShaderParameterMMatrix(const ShaderParameterMMatrix& source)
+    : Inherited(source) {
 }
 
-ShaderParameterMMatrix::~ShaderParameterMMatrix(void)
-{
+ShaderParameterMMatrix::~ShaderParameterMMatrix(void) {
 }
 
 /*----------------------------- class specific ----------------------------*/
 
-void ShaderParameterMMatrix::changed(BitVector whichField, UInt32 origin)
-{
-    if(whichField & ShaderParameterMMatrix::ValueFieldMask)
-        setChanged();
+void ShaderParameterMMatrix::changed(BitVector whichField, UInt32 origin) {
+  if (whichField & ShaderParameterMMatrix::ValueFieldMask)
+    setChanged();
 
-    Inherited::changed(whichField, origin);
+  Inherited::changed(whichField, origin);
 }
 
-void ShaderParameterMMatrix::dump(      UInt32    , 
-                         const BitVector ) const
-{
-    SLOG << "Dump ShaderParameterMMatrix NI" << std::endl;
+void ShaderParameterMMatrix::dump(UInt32, const BitVector) const {
+  SLOG << "Dump ShaderParameterMMatrix NI" << std::endl;
 }
-
 
 OSG_END_NAMESPACE
-

@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGCHUNKMATERIAL_H_
 #define _OSGCHUNKMATERIAL_H_
 #ifdef __sgi
@@ -48,123 +47,117 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief Material using chunk set.  See \ref 
+/*! \brief Material using chunk set.  See \ref
     PageSystemMaterialChunkMaterial for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING ChunkMaterial : public ChunkMaterialBase
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING ChunkMaterial : public ChunkMaterialBase {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  static const char* getClassname(void) {
+    return "ChunkMaterial";
+  };
 
-    static const char *getClassname(void) { return "ChunkMaterial"; };
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Constants                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Constants                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    virtual void changed(BitVector whichField,
-                         UInt32    origin    );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Output                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Output                                  */
-    /*! \{                                                                 */
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    virtual void dump(      UInt32    uiIndent = 0,
-                      const BitVector bvFlags  = 0) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Rendering                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Rendering                                  */
-    /*! \{                                                                 */
+  virtual void draw(DrawFunctor& func, DrawActionBase* action);
 
-    virtual void       draw              (DrawFunctor& func,
-                                          DrawActionBase * action );
+  virtual void draw(Geometry* geo, DrawActionBase* action);
 
-    virtual void       draw              (Geometry* geo,
-                                          DrawActionBase * action);
+  virtual StatePtr makeState(void);
 
-    virtual StatePtr   makeState         (void);
+  virtual void rebuildState(void);
 
-    virtual void       rebuildState      (void);
+  virtual bool isTransparent(void) const;
 
-    virtual bool       isTransparent     (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Access                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Access                                    */
-    /*! \{                                                                 */
+  bool addChunk(StateChunkPtr chunk, Int32 slot = State::AutoSlotReplace);
+  bool subChunk(StateChunkPtr chunk, Int32 slot = State::AutoSlotReplace);
 
-    bool addChunk(StateChunkPtr chunk, Int32 slot = State::AutoSlotReplace);
-    bool subChunk(StateChunkPtr chunk, Int32 slot = State::AutoSlotReplace);
+  Int32         find(StateChunkPtr chunk);
+  StateChunkPtr find(const FieldContainerType& type, Int32 slot = State::AutoSlotReplace);
+  void          clearChunks(void);
 
-    Int32         find(StateChunkPtr chunk);
-    StateChunkPtr find(const FieldContainerType &type, 
-                       Int32 slot = State::AutoSlotReplace);
-    void          clearChunks(void);
+  virtual bool operator==(const Material& other);
 
-    virtual bool operator == (const Material &other);
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  ChunkMaterial(void);
+  ChunkMaterial(const ChunkMaterial& source);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    ChunkMaterial(void);
-    ChunkMaterial(const ChunkMaterial &source);
+  virtual ~ChunkMaterial(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    virtual ~ChunkMaterial(void);
+  void addChunks(StatePtr state);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  typedef ChunkMaterialBase Inherited;
 
-    void addChunks(StatePtr state);
-    
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  friend class FieldContainer;
+  friend class ChunkMaterialBase;
 
-    typedef ChunkMaterialBase Inherited;
+  static char cvsid[];
 
-    friend class FieldContainer;
-    friend class ChunkMaterialBase;
+  static void initMethod(void);
 
-    static char cvsid[];
-
-    static void initMethod( void );
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const ChunkMaterial &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const ChunkMaterial& source);
 };
 
-typedef ChunkMaterial *ChunkMaterialP;
+typedef ChunkMaterial* ChunkMaterialP;
 
 OSG_END_NAMESPACE
 
 #include <OSGChunkMaterialBase.inl>
 #include <OSGChunkMaterial.inl>
 
-#define OSGCHUNKMATERIAL_HEADER_CVSID "@(#)$Id: FCTemplate_h.h,v 1.15 2002/06/01 10:37:25 vossg Exp $"
+#define OSGCHUNKMATERIAL_HEADER_CVSID                                                              \
+  "@(#)$Id: FCTemplate_h.h,v 1.15 2002/06/01 10:37:25 vossg Exp $"
 
 #endif /* _OSGCHUNKMATERIAL_H_ */

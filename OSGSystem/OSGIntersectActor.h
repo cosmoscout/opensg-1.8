@@ -52,55 +52,53 @@
 
 OSG_BEGIN_NAMESPACE
 
-class OSG_SYSTEMLIB_DLLMAPPING IntersectActor : public IntersectActorBase
-{
-    /*====  PUBLIC  =========================================================*/
-  public:
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Types                                                       */
-    /*! \{                                                                   */
+class OSG_SYSTEMLIB_DLLMAPPING IntersectActor : public IntersectActorBase {
+  /*====  PUBLIC  =========================================================*/
+ public:
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Types                                                       */
+  /*! \{                                                                   */
 
-    typedef BasicActorBase::ResultE ResultE;
-    typedef BasicActorBase::Functor Functor;
+  typedef BasicActorBase::ResultE ResultE;
+  typedef BasicActorBase::Functor Functor;
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Create                                                      */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Create                                                      */
+  /*! \{                                                                   */
 
-    static IntersectActor *create(void);
+  static IntersectActor* create(void);
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Destructor                                                  */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Destructor                                                  */
+  /*! \{                                                                   */
 
-    virtual ~IntersectActor(void);
+  virtual ~IntersectActor(void);
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Misc                                                        */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Misc                                                        */
+  /*! \{                                                                   */
 
-    void reset                  (void                              );
-    void setHit                 (Real32 hitDist,  NodePtr pHitObj,
-                                 Int32  triIndex, Vec3f   hitNormal);
+  void reset(void);
+  void setHit(Real32 hitDist, NodePtr pHitObj, Int32 triIndex, Vec3f hitNormal);
 
-    void setupChildrenPriorities(void                              );
+  void setupChildrenPriorities(void);
 
-    /*! \}                                                                   */
-    /*==== PROTECTED ========================================================*/
-  protected:
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Constructor                                                 */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*==== PROTECTED ========================================================*/
+ protected:
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Constructor                                                 */
+  /*! \{                                                                   */
 
-    IntersectActor(void);
+  IntersectActor(void);
 
-    /*! \}                                                                   */
-    /*==== PRIVATE ==========================================================*/
-  private:
-    typedef IntersectActorBase Inherited;
+  /*! \}                                                                   */
+  /*==== PRIVATE ==========================================================*/
+ private:
+  typedef IntersectActorBase Inherited;
 };
 
 OSG_END_NAMESPACE

@@ -36,18 +36,19 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 OSG_BEGIN_NAMESPACE
 
+inline UInt32 TextPixmapGlyph::getPixmapWidth() const {
+  return _width;
+}
 
-inline UInt32 TextPixmapGlyph::getPixmapWidth() const { return _width; }
+inline UInt32 TextPixmapGlyph::getPixmapPitch() const {
+  return _pitch;
+}
 
-
-inline UInt32 TextPixmapGlyph::getPixmapPitch() const { return _pitch; }
-
-
-inline UInt32 TextPixmapGlyph::getPixmapHeight() const { return _height; }
-
+inline UInt32 TextPixmapGlyph::getPixmapHeight() const {
+  return _height;
+}
 
 #if 0
 inline Int32 TextPixmapGlyph::getPixmapHoriBearingX() const { return _horiBearingX; }
@@ -62,15 +63,23 @@ inline Int32 TextPixmapGlyph::getPixmapVertBearingX() const { return _vertBearin
 inline Int32 TextPixmapGlyph::getPixmapVertBearingY() const { return _vertBearingY; }
 #endif
 
-inline const UInt8 *TextPixmapGlyph::getPixmap() const { return _pixmap; }
-
+inline const UInt8* TextPixmapGlyph::getPixmap() const {
+  return _pixmap;
+}
 
 inline TextPixmapGlyph::TextPixmapGlyph()
-: TextGlyph(), _width(0), _pitch(0), _height(0), _horiBearingX(0), _horiBearingY(0), _vertBearingX(0), _vertBearingY(0), _pixmap(0)
-{}
-
+    : TextGlyph()
+    , _width(0)
+    , _pitch(0)
+    , _height(0)
+    , _horiBearingX(0)
+    , _horiBearingY(0)
+    , _vertBearingX(0)
+    , _vertBearingY(0)
+    , _pixmap(0) {
+}
 
 OSG_END_NAMESPACE
 
-
-#define OSGTEXTPIXMAPGLYPH_INLINE_CVSID "@(#)$Id: OSGTextPixmapGlyph.inl,v 1.1 2005/03/03 13:43:07 a-m-z Exp $"
+#define OSGTEXTPIXMAPGLYPH_INLINE_CVSID                                                            \
+  "@(#)$Id: OSGTextPixmapGlyph.inl,v 1.1 2005/03/03 13:43:07 a-m-z Exp $"

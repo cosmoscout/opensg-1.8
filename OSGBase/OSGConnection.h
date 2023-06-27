@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _CONNECTION_H_
 #define _CONNECTION_H_
 #ifdef __sgi
@@ -57,97 +56,93 @@ OSG_BEGIN_NAMESPACE
 
 class ConnectionType;
 
-class OSG_BASE_DLLMAPPING Connection : public BinaryDataHandler
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_BASE_DLLMAPPING Connection : public BinaryDataHandler {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name        public types                                          */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name        public types                                          */
-    /*! \{                                                                 */
+  typedef Int32 Channel;
 
-    typedef Int32 Channel;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  Connection(int zeroCopyThreshold);
+  virtual ~Connection(void);
 
-             Connection ( int zeroCopyThreshold );
-    virtual ~Connection ( void                  ); 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   type info                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   type info                                  */
-    /*! \{                                                                 */
+  virtual const ConnectionType* getType(void) = 0;
 
-    virtual const ConnectionType *getType (void) = 0;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   connection                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   connection                                 */
-    /*! \{                                                                 */
+  virtual Channel connectPoint(const std::string& address, Time timeout = -1) = 0;
+  virtual Channel acceptPoint(Time timeout = -1)                              = 0;
 
-    virtual Channel connectPoint(const std::string &address,
-                                       Time        timeout=-1) = 0;
-    virtual Channel acceptPoint (      Time        timeout=-1) = 0;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   synchronisation                            */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   synchronisation                            */
-    /*! \{                                                                 */
+  virtual bool wait(Time timeout = -1) = 0;
+  virtual void signal(void)            = 0;
 
-    virtual bool wait  (Time timeout = -1) = 0;
-    virtual void signal(void             ) = 0;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   channel handling                           */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   channel handling                           */
-    /*! \{                                                                 */
+  virtual Channel selectChannel(Time timeout = -1) = 0;
 
-    virtual Channel selectChannel(Time timeout=-1) = 0;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   bind to interface                          */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   bind to interface                          */
-    /*! \{                                                                 */
-    
-    virtual std::string bind (const std::string &address="") = 0;
+  virtual std::string bind(const std::string& address = "") = 0;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   params                                     */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   params                                     */
+  /*! \{                                                                 */
 
-    virtual void setParams(const std::string &params);
+  virtual void setParams(const std::string& params);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   interface                                  */
-    /*! \{                                                                 */
-    
-    const std::string &getInterface(void                     );
-               void    setInterface(const std::string &interf);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   interface                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
-    /*---------------------------------------------------------------------*/
-    /*! \name                   protected members                          */
-    /*! \{                                                                 */
+  const std::string& getInterface(void);
+  void               setInterface(const std::string& interf);
 
-    std::string _interface;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   protected members                          */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  std::string _interface;
 
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
 
-    typedef BinaryDataHandler Inherited;
+  /*==========================  PRIVATE  ================================*/
+ private:
+  typedef BinaryDataHandler Inherited;
 
-	// prohibit default functions (move to 'public' if you need one)
-    Connection(const Connection &source);
-    Connection& operator =(const Connection &source);
+  // prohibit default functions (move to 'public' if you need one)
+  Connection(const Connection& source);
+  Connection& operator=(const Connection& source);
 };
 
 //---------------------------------------------------------------------------
@@ -156,7 +151,7 @@ class OSG_BASE_DLLMAPPING Connection : public BinaryDataHandler
 
 // class pointer
 
-typedef Connection *ConnectionP;
+typedef Connection* ConnectionP;
 
 OSG_END_NAMESPACE
 

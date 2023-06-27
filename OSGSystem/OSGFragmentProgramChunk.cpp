@@ -76,10 +76,8 @@ UInt32 FragmentProgramChunk::_arbFragmentProgram;
  *                           Class methods                                 *
 \***************************************************************************/
 
-void FragmentProgramChunk::initMethod (void)
-{
+void FragmentProgramChunk::initMethod(void) {
 }
-
 
 /***************************************************************************\
  *                           Instance methods                              *
@@ -91,66 +89,53 @@ void FragmentProgramChunk::initMethod (void)
 
 /*----------------------- constructors & destructors ----------------------*/
 
-FragmentProgramChunk::FragmentProgramChunk(void) :
-    Inherited()
-{
-    _arbFragmentProgram = Window::registerExtension("GL_ARB_fragment_program");
+FragmentProgramChunk::FragmentProgramChunk(void)
+    : Inherited() {
+  _arbFragmentProgram = Window::registerExtension("GL_ARB_fragment_program");
 }
 
-FragmentProgramChunk::FragmentProgramChunk(const FragmentProgramChunk &source) :
-    Inherited(source)
-{
+FragmentProgramChunk::FragmentProgramChunk(const FragmentProgramChunk& source)
+    : Inherited(source) {
 }
 
-FragmentProgramChunk::~FragmentProgramChunk(void)
-{
+FragmentProgramChunk::~FragmentProgramChunk(void) {
 }
 
 /*----------------------------- onCreate --------------------------------*/
 
-void FragmentProgramChunk::onCreate(const FragmentProgramChunk *)
-{
-    if(GlobalSystemState == Startup)
-        return;
+void FragmentProgramChunk::onCreate(const FragmentProgramChunk*) {
+  if (GlobalSystemState == Startup)
+    return;
 
-    // !!! this temporary is needed to work around compiler problems (sgi)
-    // CHECK CHECK
-    //  FragmentProgramChunkPtr tmpPtr = FieldContainer::getPtr<ProgramChunkPtr>(*this);
-    FragmentProgramChunkPtr tmpPtr(*this);
+  // !!! this temporary is needed to work around compiler problems (sgi)
+  // CHECK CHECK
+  //  FragmentProgramChunkPtr tmpPtr = FieldContainer::getPtr<ProgramChunkPtr>(*this);
+  FragmentProgramChunkPtr tmpPtr(*this);
 
-    beginEditCP(tmpPtr, FragmentProgramChunk::GLIdFieldMask);
+  beginEditCP(tmpPtr, FragmentProgramChunk::GLIdFieldMask);
 
-    setGLId(
-        Window::registerGLObject(
-            osgTypedMethodVoidFunctor2ObjCPtrPtr<FragmentProgramChunkPtr, 
-                                                 Window , 
-                                                 UInt32>(
-                                                     tmpPtr, 
-                                                     &FragmentProgramChunk::handleGL),
-            1));
+  setGLId(Window::registerGLObject(
+      osgTypedMethodVoidFunctor2ObjCPtrPtr<FragmentProgramChunkPtr, Window, UInt32>(
+          tmpPtr, &FragmentProgramChunk::handleGL),
+      1));
 
-    endEditCP(tmpPtr, FragmentProgramChunk::GLIdFieldMask);
+  endEditCP(tmpPtr, FragmentProgramChunk::GLIdFieldMask);
 }
-
 
 /*------------------------- Chunk Class Access ---------------------------*/
 
-const StateChunkClass *FragmentProgramChunk::getClass(void) const
-{
-    return &_class;
+const StateChunkClass* FragmentProgramChunk::getClass(void) const {
+  return &_class;
 }
 
 /*----------------------------- class specific ----------------------------*/
 
-void FragmentProgramChunk::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void FragmentProgramChunk::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
-void FragmentProgramChunk::dump(      UInt32    , 
-                         const BitVector ) const
-{
-    SLOG << "Dump FragmentProgramChunk NI" << std::endl;
+void FragmentProgramChunk::dump(UInt32, const BitVector) const {
+  SLOG << "Dump FragmentProgramChunk NI" << std::endl;
 }
 
 /*------------------------------ State ------------------------------------*/
@@ -158,22 +143,18 @@ void FragmentProgramChunk::dump(      UInt32    ,
 /*! GL object handler
     create the program and destroy it
 */
-void FragmentProgramChunk::handleGL(Window *win, UInt32 idstatus)
-{
-    Inherited::handleGL(win, idstatus, GL_FRAGMENT_PROGRAM_ARB, _arbFragmentProgram);
+void FragmentProgramChunk::handleGL(Window* win, UInt32 idstatus) {
+  Inherited::handleGL(win, idstatus, GL_FRAGMENT_PROGRAM_ARB, _arbFragmentProgram);
 }
 
-UInt32 FragmentProgramChunk::getExtension(void) const
-{
-    return _arbFragmentProgram;
+UInt32 FragmentProgramChunk::getExtension(void) const {
+  return _arbFragmentProgram;
 }
 
-GLenum FragmentProgramChunk::getTarget(void) const
-{
-    return GL_FRAGMENT_PROGRAM_ARB;
+GLenum FragmentProgramChunk::getTarget(void) const {
+  return GL_FRAGMENT_PROGRAM_ARB;
 }
 
-const char *FragmentProgramChunk::getTargetName(void) const
-{
-    return "Fragment Program";
+const char* FragmentProgramChunk::getTargetName(void) const {
+  return "Fragment Program";
 }

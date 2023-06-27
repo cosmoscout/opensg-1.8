@@ -52,221 +52,159 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &MatrixCameraDecoratorBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& MatrixCameraDecoratorBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 MatrixCameraDecoratorBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 MatrixCameraDecoratorBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-MatrixCameraDecoratorPtr MatrixCameraDecoratorBase::create(void) 
-{
-    MatrixCameraDecoratorPtr fc; 
+inline MatrixCameraDecoratorPtr MatrixCameraDecoratorBase::create(void) {
+  MatrixCameraDecoratorPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = MatrixCameraDecoratorPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = MatrixCameraDecoratorPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-MatrixCameraDecoratorPtr MatrixCameraDecoratorBase::createEmpty(void) 
-{ 
-    MatrixCameraDecoratorPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline MatrixCameraDecoratorPtr MatrixCameraDecoratorBase::createEmpty(void) {
+  MatrixCameraDecoratorPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the MatrixCameraDecorator::_sfPreViewing field.
-inline
-SFMatrix *MatrixCameraDecoratorBase::getSFPreViewing(void)
-{
-    return &_sfPreViewing;
+inline SFMatrix* MatrixCameraDecoratorBase::getSFPreViewing(void) {
+  return &_sfPreViewing;
 }
 
 //! Get the MatrixCameraDecorator::_sfPostViewing field.
-inline
-SFMatrix *MatrixCameraDecoratorBase::getSFPostViewing(void)
-{
-    return &_sfPostViewing;
+inline SFMatrix* MatrixCameraDecoratorBase::getSFPostViewing(void) {
+  return &_sfPostViewing;
 }
 
 //! Get the MatrixCameraDecorator::_sfPreProjectionTranslation field.
-inline
-SFMatrix *MatrixCameraDecoratorBase::getSFPreProjectionTranslation(void)
-{
-    return &_sfPreProjectionTranslation;
+inline SFMatrix* MatrixCameraDecoratorBase::getSFPreProjectionTranslation(void) {
+  return &_sfPreProjectionTranslation;
 }
 
 //! Get the MatrixCameraDecorator::_sfPostProjectionTranslation field.
-inline
-SFMatrix *MatrixCameraDecoratorBase::getSFPostProjectionTranslation(void)
-{
-    return &_sfPostProjectionTranslation;
+inline SFMatrix* MatrixCameraDecoratorBase::getSFPostProjectionTranslation(void) {
+  return &_sfPostProjectionTranslation;
 }
 
 //! Get the MatrixCameraDecorator::_sfPreProjection field.
-inline
-SFMatrix *MatrixCameraDecoratorBase::getSFPreProjection(void)
-{
-    return &_sfPreProjection;
+inline SFMatrix* MatrixCameraDecoratorBase::getSFPreProjection(void) {
+  return &_sfPreProjection;
 }
 
 //! Get the MatrixCameraDecorator::_sfPostProjection field.
-inline
-SFMatrix *MatrixCameraDecoratorBase::getSFPostProjection(void)
-{
-    return &_sfPostProjection;
-}
-
-
-//! Get the value of the MatrixCameraDecorator::_sfPreViewing field.
-inline
-Matrix &MatrixCameraDecoratorBase::getPreViewing(void)
-{
-    return _sfPreViewing.getValue();
+inline SFMatrix* MatrixCameraDecoratorBase::getSFPostProjection(void) {
+  return &_sfPostProjection;
 }
 
 //! Get the value of the MatrixCameraDecorator::_sfPreViewing field.
-inline
-const Matrix &MatrixCameraDecoratorBase::getPreViewing(void) const
-{
-    return _sfPreViewing.getValue();
+inline Matrix& MatrixCameraDecoratorBase::getPreViewing(void) {
+  return _sfPreViewing.getValue();
+}
+
+//! Get the value of the MatrixCameraDecorator::_sfPreViewing field.
+inline const Matrix& MatrixCameraDecoratorBase::getPreViewing(void) const {
+  return _sfPreViewing.getValue();
 }
 
 //! Set the value of the MatrixCameraDecorator::_sfPreViewing field.
-inline
-void MatrixCameraDecoratorBase::setPreViewing(const Matrix &value)
-{
-    _sfPreViewing.setValue(value);
+inline void MatrixCameraDecoratorBase::setPreViewing(const Matrix& value) {
+  _sfPreViewing.setValue(value);
 }
 
 //! Get the value of the MatrixCameraDecorator::_sfPostViewing field.
-inline
-Matrix &MatrixCameraDecoratorBase::getPostViewing(void)
-{
-    return _sfPostViewing.getValue();
+inline Matrix& MatrixCameraDecoratorBase::getPostViewing(void) {
+  return _sfPostViewing.getValue();
 }
 
 //! Get the value of the MatrixCameraDecorator::_sfPostViewing field.
-inline
-const Matrix &MatrixCameraDecoratorBase::getPostViewing(void) const
-{
-    return _sfPostViewing.getValue();
+inline const Matrix& MatrixCameraDecoratorBase::getPostViewing(void) const {
+  return _sfPostViewing.getValue();
 }
 
 //! Set the value of the MatrixCameraDecorator::_sfPostViewing field.
-inline
-void MatrixCameraDecoratorBase::setPostViewing(const Matrix &value)
-{
-    _sfPostViewing.setValue(value);
+inline void MatrixCameraDecoratorBase::setPostViewing(const Matrix& value) {
+  _sfPostViewing.setValue(value);
 }
 
 //! Get the value of the MatrixCameraDecorator::_sfPreProjectionTranslation field.
-inline
-Matrix &MatrixCameraDecoratorBase::getPreProjectionTranslation(void)
-{
-    return _sfPreProjectionTranslation.getValue();
+inline Matrix& MatrixCameraDecoratorBase::getPreProjectionTranslation(void) {
+  return _sfPreProjectionTranslation.getValue();
 }
 
 //! Get the value of the MatrixCameraDecorator::_sfPreProjectionTranslation field.
-inline
-const Matrix &MatrixCameraDecoratorBase::getPreProjectionTranslation(void) const
-{
-    return _sfPreProjectionTranslation.getValue();
+inline const Matrix& MatrixCameraDecoratorBase::getPreProjectionTranslation(void) const {
+  return _sfPreProjectionTranslation.getValue();
 }
 
 //! Set the value of the MatrixCameraDecorator::_sfPreProjectionTranslation field.
-inline
-void MatrixCameraDecoratorBase::setPreProjectionTranslation(const Matrix &value)
-{
-    _sfPreProjectionTranslation.setValue(value);
+inline void MatrixCameraDecoratorBase::setPreProjectionTranslation(const Matrix& value) {
+  _sfPreProjectionTranslation.setValue(value);
 }
 
 //! Get the value of the MatrixCameraDecorator::_sfPostProjectionTranslation field.
-inline
-Matrix &MatrixCameraDecoratorBase::getPostProjectionTranslation(void)
-{
-    return _sfPostProjectionTranslation.getValue();
+inline Matrix& MatrixCameraDecoratorBase::getPostProjectionTranslation(void) {
+  return _sfPostProjectionTranslation.getValue();
 }
 
 //! Get the value of the MatrixCameraDecorator::_sfPostProjectionTranslation field.
-inline
-const Matrix &MatrixCameraDecoratorBase::getPostProjectionTranslation(void) const
-{
-    return _sfPostProjectionTranslation.getValue();
+inline const Matrix& MatrixCameraDecoratorBase::getPostProjectionTranslation(void) const {
+  return _sfPostProjectionTranslation.getValue();
 }
 
 //! Set the value of the MatrixCameraDecorator::_sfPostProjectionTranslation field.
-inline
-void MatrixCameraDecoratorBase::setPostProjectionTranslation(const Matrix &value)
-{
-    _sfPostProjectionTranslation.setValue(value);
+inline void MatrixCameraDecoratorBase::setPostProjectionTranslation(const Matrix& value) {
+  _sfPostProjectionTranslation.setValue(value);
 }
 
 //! Get the value of the MatrixCameraDecorator::_sfPreProjection field.
-inline
-Matrix &MatrixCameraDecoratorBase::getPreProjection(void)
-{
-    return _sfPreProjection.getValue();
+inline Matrix& MatrixCameraDecoratorBase::getPreProjection(void) {
+  return _sfPreProjection.getValue();
 }
 
 //! Get the value of the MatrixCameraDecorator::_sfPreProjection field.
-inline
-const Matrix &MatrixCameraDecoratorBase::getPreProjection(void) const
-{
-    return _sfPreProjection.getValue();
+inline const Matrix& MatrixCameraDecoratorBase::getPreProjection(void) const {
+  return _sfPreProjection.getValue();
 }
 
 //! Set the value of the MatrixCameraDecorator::_sfPreProjection field.
-inline
-void MatrixCameraDecoratorBase::setPreProjection(const Matrix &value)
-{
-    _sfPreProjection.setValue(value);
+inline void MatrixCameraDecoratorBase::setPreProjection(const Matrix& value) {
+  _sfPreProjection.setValue(value);
 }
 
 //! Get the value of the MatrixCameraDecorator::_sfPostProjection field.
-inline
-Matrix &MatrixCameraDecoratorBase::getPostProjection(void)
-{
-    return _sfPostProjection.getValue();
+inline Matrix& MatrixCameraDecoratorBase::getPostProjection(void) {
+  return _sfPostProjection.getValue();
 }
 
 //! Get the value of the MatrixCameraDecorator::_sfPostProjection field.
-inline
-const Matrix &MatrixCameraDecoratorBase::getPostProjection(void) const
-{
-    return _sfPostProjection.getValue();
+inline const Matrix& MatrixCameraDecoratorBase::getPostProjection(void) const {
+  return _sfPostProjection.getValue();
 }
 
 //! Set the value of the MatrixCameraDecorator::_sfPostProjection field.
-inline
-void MatrixCameraDecoratorBase::setPostProjection(const Matrix &value)
-{
-    _sfPostProjection.setValue(value);
+inline void MatrixCameraDecoratorBase::setPostProjection(const Matrix& value) {
+  _sfPostProjection.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGMATRIXCAMERADECORATORBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGMATRIXCAMERADECORATORBASE_INLINE_CVSID                                                  \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

@@ -48,23 +48,17 @@ OSG_BEGIN_NAMESPACE
 /*! Accessors for position
  */
 
-inline
-const Pnt3f &Line::getPosition(void) const
-{
-    return _pos;
+inline const Pnt3f& Line::getPosition(void) const {
+  return _pos;
 }
 
 /*! Accessors for direction
  */
 
-inline
-const Vec3f &Line::getDirection(void) const
-{
-    return _dir;
+inline const Vec3f& Line::getDirection(void) const {
+  return _dir;
 }
-
 
 OSG_END_NAMESPACE
 
 #endif // LINE_CLASS_DECLARATION
-

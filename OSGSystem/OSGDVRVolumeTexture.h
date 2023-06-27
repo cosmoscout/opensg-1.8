@@ -48,79 +48,72 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief *put brief class description here* 
+/*! \brief *put brief class description here*
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING DVRVolumeTexture : public DVRVolumeTextureBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING DVRVolumeTexture : public DVRVolumeTextureBase {
+ private:
+  typedef DVRVolumeTextureBase Inherited;
 
-    typedef DVRVolumeTextureBase Inherited;
+  /*==========================  PUBLIC  =================================*/
 
-    /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-  public:
-    
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  void setImage(const ImagePtr& value);
 
-    void setImage(const ImagePtr &value);
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     from);
+  virtual void changed(BitVector whichField, UInt32 from);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-  protected:
+ protected:
+  // Variables should all be in DVRVolumeTextureBase.
 
-    // Variables should all be in DVRVolumeTextureBase.
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  DVRVolumeTexture(void);
+  DVRVolumeTexture(const DVRVolumeTexture& source);
 
-    DVRVolumeTexture(void);
-    DVRVolumeTexture(const DVRVolumeTexture &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  virtual ~DVRVolumeTexture(void);
 
-    virtual ~DVRVolumeTexture(void); 
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
+  /*==========================  PRIVATE  ================================*/
 
-  private:
+ private:
+  friend class FieldContainer;
+  friend class DVRVolumeTextureBase;
 
-    friend class FieldContainer;
-    friend class DVRVolumeTextureBase;
+  static void initMethod(void);
 
-    static void initMethod(void);
+  // prohibit default functions (move to 'public' if you need one)
 
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const DVRVolumeTexture &source);
+  void operator=(const DVRVolumeTexture& source);
 };
 
-typedef DVRVolumeTexture *DVRVolumeTextureP;
+typedef DVRVolumeTexture* DVRVolumeTextureP;
 
 OSG_END_NAMESPACE
 

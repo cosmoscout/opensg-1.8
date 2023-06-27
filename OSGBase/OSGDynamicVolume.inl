@@ -49,41 +49,25 @@
 
 OSG_BEGIN_NAMESPACE
 
-
-inline
-DynamicVolume::~DynamicVolume(void)
-{
+inline DynamicVolume::~DynamicVolume(void) {
 }
 
-
-inline
-const Volume &DynamicVolume::getInstance(void) const
-{ 
-    return *(reinterpret_cast<const OSG::Volume *>(_volumeMem)); 
+inline const Volume& DynamicVolume::getInstance(void) const {
+  return *(reinterpret_cast<const OSG::Volume*>(_volumeMem));
 }
 
-
-inline
-Volume &DynamicVolume::getInstance(void)
-{ 
-    return *(reinterpret_cast<OSG::Volume *>(_volumeMem)); 
+inline Volume& DynamicVolume::getInstance(void) {
+  return *(reinterpret_cast<OSG::Volume*>(_volumeMem));
 }
 
-
-inline
-DynamicVolume::Type DynamicVolume::getType(void) const 
-{
-    return static_cast<Type>(_type); 
+inline DynamicVolume::Type DynamicVolume::getType(void) const {
+  return static_cast<Type>(_type);
 }
 
-inline
-void DynamicVolume::instanceChanged(void) 
-{
-    _state = getInstance().getState(); 
+inline void DynamicVolume::instanceChanged(void) {
+  _state = getInstance().getState();
 }
-
 
 OSG_END_NAMESPACE
 
 #endif // _OSGDYNAMICVOLUME_H_
-

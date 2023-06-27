@@ -75,33 +75,26 @@ from the osg::TransformChunk and uses its matrix.
  *                           Class variables                               *
 \***************************************************************************/
 
-StateChunkClass TextureTransformChunk::_class("TextureTransform",
-                                              osgMaxTexCoords);
+StateChunkClass TextureTransformChunk::_class("TextureTransform", osgMaxTexCoords);
 
 /***************************************************************************\
  *                           Class methods                                 *
 \***************************************************************************/
 
-void TextureTransformChunk::initMethod (void)
-{
-    addInitFunction(&TextureTransformChunk::checkTexChunkOrder);
+void TextureTransformChunk::initMethod(void) {
+  addInitFunction(&TextureTransformChunk::checkTexChunkOrder);
 }
 
-bool TextureTransformChunk::checkTexChunkOrder(void)
-{
-    FINFO(("Check order %d %d\n",
-           TextureTransformChunk::getStaticClassId(),
-           TextureChunk         ::getStaticClassId()));
+bool TextureTransformChunk::checkTexChunkOrder(void) {
+  FINFO(("Check order %d %d\n", TextureTransformChunk::getStaticClassId(),
+      TextureChunk ::getStaticClassId()));
 
-    if(TextureTransformChunk::getStaticClassId() < 
-       TextureChunk         ::getStaticClassId()  )
-    {
-  
-        _class.swap(
-            *(const_cast<StateChunkClass *>(TextureChunk::getStaticClass())));
-    }
+  if (TextureTransformChunk::getStaticClassId() < TextureChunk ::getStaticClassId()) {
 
-    return true;
+    _class.swap(*(const_cast<StateChunkClass*>(TextureChunk::getStaticClass())));
+  }
+
+  return true;
 }
 
 /***************************************************************************\
@@ -112,223 +105,182 @@ bool TextureTransformChunk::checkTexChunkOrder(void)
  -  private                                                                 -
 \*-------------------------------------------------------------------------*/
 
-TextureTransformChunk::TextureTransformChunk(void) :
-    Inherited()
-{
+TextureTransformChunk::TextureTransformChunk(void)
+    : Inherited() {
 }
 
-TextureTransformChunk::TextureTransformChunk(const TextureTransformChunk &source) :
-    Inherited(source)
-{
+TextureTransformChunk::TextureTransformChunk(const TextureTransformChunk& source)
+    : Inherited(source) {
 }
 
-TextureTransformChunk::~TextureTransformChunk(void)
-{
+TextureTransformChunk::~TextureTransformChunk(void) {
 }
 
 /*------------------------- Chunk Class Access ---------------------------*/
 
-const StateChunkClass *TextureTransformChunk::getClass(void) const
-{
-    return &_class;
+const StateChunkClass* TextureTransformChunk::getClass(void) const {
+  return &_class;
 }
 
 /*------------------------------- Sync -----------------------------------*/
 
-void TextureTransformChunk::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void TextureTransformChunk::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
 /*------------------------------ Output ----------------------------------*/
 
-void TextureTransformChunk::dump(      UInt32    , 
-                         const BitVector ) const
-{
-    SLOG << "Dump TextureTransformChunk NI" << std::endl;
+void TextureTransformChunk::dump(UInt32, const BitVector) const {
+  SLOG << "Dump TextureTransformChunk NI" << std::endl;
 }
 
 /*------------------------------ State ------------------------------------*/
 
-void TextureTransformChunk::activate ( DrawActionBase * action, UInt32 idx )
-{
-    Window *win = action->getWindow();
-    
-    Real32 ntexcoords;
-    if((ntexcoords = win->getConstantValue(GL_MAX_TEXTURE_COORDS_ARB)) ==
-       Window::unknownConstant
-      )
-    {
-        ntexcoords = win->getConstantValue(GL_MAX_TEXTURE_UNITS_ARB);
-        // sgi doesn't support GL_MAX_TEXTURE_UNITS_ARB!
-        if(ntexcoords == Window::unknownConstant)
-            ntexcoords = 1.0f;
-    }
+void TextureTransformChunk::activate(DrawActionBase* action, UInt32 idx) {
+  Window* win = action->getWindow();
 
-    if(idx >= static_cast<UInt32>(ntexcoords))
-    {
+  Real32 ntexcoords;
+  if ((ntexcoords = win->getConstantValue(GL_MAX_TEXTURE_COORDS_ARB)) == Window::unknownConstant) {
+    ntexcoords = win->getConstantValue(GL_MAX_TEXTURE_UNITS_ARB);
+    // sgi doesn't support GL_MAX_TEXTURE_UNITS_ARB!
+    if (ntexcoords == Window::unknownConstant)
+      ntexcoords = 1.0f;
+  }
+
+  if (idx >= static_cast<UInt32>(ntexcoords)) {
 #ifdef OSG_DEBUG
-        FWARNING(("TextureTransformChunk::deactivate: Trying to bind texcoord unit %d,"
-                  " but Window %p only supports %d!\n",
-                  idx, win, ntexcoords));
+    FWARNING(("TextureTransformChunk::deactivate: Trying to bind texcoord unit %d,"
+              " but Window %p only supports %d!\n",
+        idx, win, ntexcoords));
 #endif
-        return;        
-    }
+    return;
+  }
 
-    TextureChunk::activateTexture(win, idx);
-  
-    glMatrixMode(GL_TEXTURE);
-    //glPushMatrix();
-    
-    if(getUseCameraBeacon())
-    {
-        if(action->getCamera() != NULL && action->getViewport() != NULL)
-        {
-            Matrix m;
-            action->getCamera()->getViewing(m,
-                                        action->getViewport()->getPixelWidth(),
-                                        action->getViewport()->getPixelHeight());
-            m.invert();
-            m[3].setValues(0, 0, 0, 1);
-            
-            glMultMatrixf(m.getValues());
-            //glLoadMatrixf(m.getValues());
-        }
+  TextureChunk::activateTexture(win, idx);
+
+  glMatrixMode(GL_TEXTURE);
+  // glPushMatrix();
+
+  if (getUseCameraBeacon()) {
+    if (action->getCamera() != NULL && action->getViewport() != NULL) {
+      Matrix m;
+      action->getCamera()->getViewing(
+          m, action->getViewport()->getPixelWidth(), action->getViewport()->getPixelHeight());
+      m.invert();
+      m[3].setValues(0, 0, 0, 1);
+
+      glMultMatrixf(m.getValues());
+      // glLoadMatrixf(m.getValues());
     }
-    else
-    {
-        glMultMatrixf(getMatrix().getValues());
-        //glLoadMatrixf(getMatrix().getValues());
-    }
-    glMatrixMode(GL_MODELVIEW);
+  } else {
+    glMultMatrixf(getMatrix().getValues());
+    // glLoadMatrixf(getMatrix().getValues());
+  }
+  glMatrixMode(GL_MODELVIEW);
 }
 
-void TextureTransformChunk::changeFrom( DrawActionBase * action, StateChunk * old, UInt32 idx )
-{
-    // change from me to me?
-    // this assumes I haven't changed in the meantime. is that a valid assumption?
-    if ( old == this )
-        return;
+void TextureTransformChunk::changeFrom(DrawActionBase* action, StateChunk* old, UInt32 idx) {
+  // change from me to me?
+  // this assumes I haven't changed in the meantime. is that a valid assumption?
+  if (old == this)
+    return;
 
-    Window *win = action->getWindow();
-    
-    Real32 ntexcoords;
-    if((ntexcoords = win->getConstantValue(GL_MAX_TEXTURE_COORDS_ARB)) ==
-       Window::unknownConstant
-      )
-    {
-        ntexcoords = win->getConstantValue(GL_MAX_TEXTURE_UNITS_ARB);
-        // sgi doesn't support GL_MAX_TEXTURE_UNITS_ARB!
-        if(ntexcoords == Window::unknownConstant)
-            ntexcoords = 1.0f;
-    }
+  Window* win = action->getWindow();
 
-    if(idx >= static_cast<UInt32>(ntexcoords))
-    {
+  Real32 ntexcoords;
+  if ((ntexcoords = win->getConstantValue(GL_MAX_TEXTURE_COORDS_ARB)) == Window::unknownConstant) {
+    ntexcoords = win->getConstantValue(GL_MAX_TEXTURE_UNITS_ARB);
+    // sgi doesn't support GL_MAX_TEXTURE_UNITS_ARB!
+    if (ntexcoords == Window::unknownConstant)
+      ntexcoords = 1.0f;
+  }
+
+  if (idx >= static_cast<UInt32>(ntexcoords)) {
 #ifdef OSG_DEBUG
-        FWARNING(("TextureTransformChunk::deactivate: Trying to bind texcoord unit %d,"
-                  " but Window %p only supports %d!\n",
-                  idx, win, ntexcoords));
+    FWARNING(("TextureTransformChunk::deactivate: Trying to bind texcoord unit %d,"
+              " but Window %p only supports %d!\n",
+        idx, win, ntexcoords));
 #endif
-        return;        
-    }
+    return;
+  }
 
-    TextureChunk::activateTexture(win, idx);
+  TextureChunk::activateTexture(win, idx);
 
-    glMatrixMode(GL_TEXTURE);
-    //glPopMatrix();
-    //glPushMatrix();
-    
-    if(getUseCameraBeacon())
-    {
-        if(action->getCamera() != NULL && action->getViewport() != NULL)
-        {
-            Matrix m;
-            action->getCamera()->getViewing(m,
-                                        action->getViewport()->getPixelWidth(),
-                                        action->getViewport()->getPixelHeight());
-            m.invert();
-            m[3].setValues(0, 0, 0, 1);
-            
-            glMultMatrixf(m.getValues());
-            //glLoadMatrixf(m.getValues());
-        }
+  glMatrixMode(GL_TEXTURE);
+  // glPopMatrix();
+  // glPushMatrix();
+
+  if (getUseCameraBeacon()) {
+    if (action->getCamera() != NULL && action->getViewport() != NULL) {
+      Matrix m;
+      action->getCamera()->getViewing(
+          m, action->getViewport()->getPixelWidth(), action->getViewport()->getPixelHeight());
+      m.invert();
+      m[3].setValues(0, 0, 0, 1);
+
+      glMultMatrixf(m.getValues());
+      // glLoadMatrixf(m.getValues());
     }
-    else
-    {
-        glMultMatrixf(getMatrix().getValues());
-        //glLoadMatrixf(getMatrix().getValues());
-    }
-    glMatrixMode(GL_MODELVIEW);
+  } else {
+    glMultMatrixf(getMatrix().getValues());
+    // glLoadMatrixf(getMatrix().getValues());
+  }
+  glMatrixMode(GL_MODELVIEW);
 }
 
-void TextureTransformChunk::deactivate ( DrawActionBase * action, UInt32 idx )
-{
-    Window *win = action->getWindow();   
+void TextureTransformChunk::deactivate(DrawActionBase* action, UInt32 idx) {
+  Window* win = action->getWindow();
 
-    Real32 ntexcoords;
-    if((ntexcoords = win->getConstantValue(GL_MAX_TEXTURE_COORDS_ARB)) ==
-       Window::unknownConstant
-      )
-    {
-        ntexcoords = win->getConstantValue(GL_MAX_TEXTURE_UNITS_ARB);
-        // sgi doesn't support GL_MAX_TEXTURE_UNITS_ARB!
-        if(ntexcoords == Window::unknownConstant)
-            ntexcoords = 1.0f;
-    }
+  Real32 ntexcoords;
+  if ((ntexcoords = win->getConstantValue(GL_MAX_TEXTURE_COORDS_ARB)) == Window::unknownConstant) {
+    ntexcoords = win->getConstantValue(GL_MAX_TEXTURE_UNITS_ARB);
+    // sgi doesn't support GL_MAX_TEXTURE_UNITS_ARB!
+    if (ntexcoords == Window::unknownConstant)
+      ntexcoords = 1.0f;
+  }
 
-    if(idx >= static_cast<UInt32>(ntexcoords))
-    {
+  if (idx >= static_cast<UInt32>(ntexcoords)) {
 #ifdef OSG_DEBUG
-        FWARNING(("TextureTransformChunk::deactivate: Trying to bind texcoord unit %d,"
-                  " but Window %p only supports %d!\n",
-                  idx, win, ntexcoords));
+    FWARNING(("TextureTransformChunk::deactivate: Trying to bind texcoord unit %d,"
+              " but Window %p only supports %d!\n",
+        idx, win, ntexcoords));
 #endif
-        return;        
-    }
+    return;
+  }
 
-    TextureChunk::activateTexture(win, idx);
+  TextureChunk::activateTexture(win, idx);
 
-    glMatrixMode(GL_TEXTURE);
-    //glPopMatrix();
-    glLoadIdentity();
-    glMatrixMode(GL_MODELVIEW);
+  glMatrixMode(GL_TEXTURE);
+  // glPopMatrix();
+  glLoadIdentity();
+  glMatrixMode(GL_MODELVIEW);
 }
-
 
 /*-------------------------- Comparison -----------------------------------*/
 
-Real32 TextureTransformChunk::switchCost(StateChunk *OSG_CHECK_ARG(chunk))
-{
-    return 0;
+Real32 TextureTransformChunk::switchCost(StateChunk* OSG_CHECK_ARG(chunk)) {
+  return 0;
 }
 
-bool TextureTransformChunk::operator <(const StateChunk &other) const
-{
-    return this < &other;
+bool TextureTransformChunk::operator<(const StateChunk& other) const {
+  return this < &other;
 }
 
-bool TextureTransformChunk::operator ==(const StateChunk &other) const
-{
-    TextureTransformChunk const *tother = 
-                dynamic_cast<TextureTransformChunk const*>(&other);
+bool TextureTransformChunk::operator==(const StateChunk& other) const {
+  TextureTransformChunk const* tother = dynamic_cast<TextureTransformChunk const*>(&other);
 
-    if(!tother)
-        return false;
+  if (!tother)
+    return false;
 
-    if(tother == this)
-        return true;
-
-    if(getMatrix() != tother->getMatrix())
-        return false;
-
+  if (tother == this)
     return true;
+
+  if (getMatrix() != tother->getMatrix())
+    return false;
+
+  return true;
 }
 
-bool TextureTransformChunk::operator !=(const StateChunk &other) const
-{
-    return !(*this == other);
+bool TextureTransformChunk::operator!=(const StateChunk& other) const {
+  return !(*this == other);
 }
-
-
-

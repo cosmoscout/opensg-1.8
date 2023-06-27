@@ -51,208 +51,169 @@ OSG_USING_NAMESPACE
 
 /*! \class osg::Light
     \ingroup GrpSystemNodeCoresLights
-    
+
     Light is the base class for all the light source nodes.
-    It contains the field for the general light source attributes 
-    (AmbientColor, DiffuseColor, SpecularColor, Beacon). The Beacon 
-    defines the reference coordinate system for the lightsource, while 
+    It contains the field for the general light source attributes
+    (AmbientColor, DiffuseColor, SpecularColor, Beacon). The Beacon
+    defines the reference coordinate system for the lightsource, while
     the position in the graph defines the objects that are lit.
 */
-
 
 /*-------------------------------------------------------------------------*/
 /*                                Set                                      */
 
-void Light::setAmbient(Real32 rRed, 
-                       Real32 rGreen, 
-                       Real32 rBlue, 
-                       Real32 rAlpha)
-{
-    _sfAmbient.getValue().setValuesRGBA(rRed, rGreen, rBlue, rAlpha);
+void Light::setAmbient(Real32 rRed, Real32 rGreen, Real32 rBlue, Real32 rAlpha) {
+  _sfAmbient.getValue().setValuesRGBA(rRed, rGreen, rBlue, rAlpha);
 }
 
-void Light::setDiffuse(Real32 rRed, 
-                       Real32 rGreen, 
-                       Real32 rBlue, 
-                       Real32 rAlpha)
-{
-    _sfDiffuse.getValue().setValuesRGBA(rRed, rGreen, rBlue, rAlpha);
+void Light::setDiffuse(Real32 rRed, Real32 rGreen, Real32 rBlue, Real32 rAlpha) {
+  _sfDiffuse.getValue().setValuesRGBA(rRed, rGreen, rBlue, rAlpha);
 }
 
-void Light::setSpecular(Real32 rRed, 
-                        Real32 rGreen, 
-                        Real32 rBlue, 
-                        Real32 rAlpha)
-{
-    _sfSpecular.getValue().setValuesRGBA(rRed, rGreen, rBlue, rAlpha);
+void Light::setSpecular(Real32 rRed, Real32 rGreen, Real32 rBlue, Real32 rAlpha) {
+  _sfSpecular.getValue().setValuesRGBA(rRed, rGreen, rBlue, rAlpha);
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Chunk                                       */
 
-LightChunkPtr Light::getChunk(void)
-{
-    return _pChunk;
+LightChunkPtr Light::getChunk(void) {
+  return _pChunk;
 }
 
-void Light::makeChunk(void)
-{
-    if(_pChunk == NullFC)
-    {
-        _pChunk = LightChunk::create();
-    }
+void Light::makeChunk(void) {
+  if (_pChunk == NullFC) {
+    _pChunk = LightChunk::create();
+  }
 
-    _pChunk->setAmbient (getAmbient ());
-    _pChunk->setDiffuse (getDiffuse ());
-    _pChunk->setSpecular(getSpecular());
+  _pChunk->setAmbient(getAmbient());
+  _pChunk->setDiffuse(getDiffuse());
+  _pChunk->setSpecular(getSpecular());
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Sync                                     */
 
-void Light::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void Light::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
-
 
 /*-------------------------------------------------------------------------*/
 /*                                Dump                                     */
 
-void Light::dump(      UInt32    uiIndent, 
-                     const BitVector bvFlags) const
-{
-   Inherited::dump(uiIndent, bvFlags);
+void Light::dump(UInt32 uiIndent, const BitVector bvFlags) const {
+  Inherited::dump(uiIndent, bvFlags);
 }
 
 /*-------------------------------------------------------------------------*/
 /*                            Constructors                                 */
 
-Light::Light(void) :
-     Inherited(),
-    _pChunk   (NullFC)
-{
+Light::Light(void)
+    : Inherited()
+    , _pChunk(NullFC) {
 }
 
-Light::Light(const Light &source) :
-     Inherited(source),
-    _pChunk   (source._pChunk)
-{
+Light::Light(const Light& source)
+    : Inherited(source)
+    , _pChunk(source._pChunk) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Destructor                                  */
 
-Light::~Light(void)
-{
-    if(_pChunk != NullFC)
-        subRefCP(_pChunk);
+Light::~Light(void) {
+  if (_pChunk != NullFC)
+    subRefCP(_pChunk);
 }
 
 /*-------------------------------------------------------------------------*/
 /*                               Drawing                                   */
-    
-Action::ResultE Light::drawEnter(Action *action)
-{
-    DrawAction *da    = dynamic_cast<DrawAction *>(action);
-    GLenum      light = GL_LIGHT0 + da->getLightCount();
-    
-    da->incLightCount();
-    
-    glEnable (light);
-    
-    glLightfv(light, GL_DIFFUSE , _sfDiffuse. getValue().getValuesRGBA());
-    glLightfv(light, GL_AMBIENT , _sfAmbient. getValue().getValuesRGBA());
-    glLightfv(light, GL_SPECULAR, _sfSpecular.getValue().getValuesRGBA());
 
-    glLightf( light, 
-              GL_CONSTANT_ATTENUATION, 
-             _sfConstantAttenuation.getValue() );
-    glLightf( light,
-              GL_LINEAR_ATTENUATION,   
-             _sfLinearAttenuation.getValue()   );
-    glLightf( light,
-              GL_QUADRATIC_ATTENUATION,   
-             _sfQuadraticAttenuation.getValue());
+Action::ResultE Light::drawEnter(Action* action) {
+  DrawAction* da    = dynamic_cast<DrawAction*>(action);
+  GLenum      light = GL_LIGHT0 + da->getLightCount();
 
-    // add the matrix to get into the beacon's coordinate system onto the stack
+  da->incLightCount();
 
-    Matrix fromworld;
-    Matrix tobeacon;
+  glEnable(light);
 
-    action->getActNode()->getToWorld(fromworld);
-    fromworld.invert();
+  glLightfv(light, GL_DIFFUSE, _sfDiffuse.getValue().getValuesRGBA());
+  glLightfv(light, GL_AMBIENT, _sfAmbient.getValue().getValuesRGBA());
+  glLightfv(light, GL_SPECULAR, _sfSpecular.getValue().getValuesRGBA());
 
-    NodePtr beacon = getBeacon();
+  glLightf(light, GL_CONSTANT_ATTENUATION, _sfConstantAttenuation.getValue());
+  glLightf(light, GL_LINEAR_ATTENUATION, _sfLinearAttenuation.getValue());
+  glLightf(light, GL_QUADRATIC_ATTENUATION, _sfQuadraticAttenuation.getValue());
 
-    if(beacon == NullFC)
-    {
-        SINFO << "draw: no beacon set!" << std::endl;
+  // add the matrix to get into the beacon's coordinate system onto the stack
 
-        glPushMatrix();
-    }
-    else
-    {
-        getBeacon()->getToWorld(tobeacon);
-    
-        tobeacon.mult(fromworld);
-    
-        glPushMatrix();
-        glMultMatrixf(tobeacon.getValues());
-    }
-    
-    da->selectVisibles();
-    
-    return Action::Continue;
+  Matrix fromworld;
+  Matrix tobeacon;
+
+  action->getActNode()->getToWorld(fromworld);
+  fromworld.invert();
+
+  NodePtr beacon = getBeacon();
+
+  if (beacon == NullFC) {
+    SINFO << "draw: no beacon set!" << std::endl;
+
+    glPushMatrix();
+  } else {
+    getBeacon()->getToWorld(tobeacon);
+
+    tobeacon.mult(fromworld);
+
+    glPushMatrix();
+    glMultMatrixf(tobeacon.getValues());
+  }
+
+  da->selectVisibles();
+
+  return Action::Continue;
 }
-    
-Action::ResultE Light::drawLeave(Action *action)
-{
-    DrawAction *da = dynamic_cast<DrawAction *>(action);
-     
-    da->decLightCount();
 
-    GLenum light = GL_LIGHT0 + da->getLightCount();
-   
-    glDisable(light);
-   
-    return Action::Continue;
+Action::ResultE Light::drawLeave(Action* action) {
+  DrawAction* da = dynamic_cast<DrawAction*>(action);
+
+  da->decLightCount();
+
+  GLenum light = GL_LIGHT0 + da->getLightCount();
+
+  glDisable(light);
+
+  return Action::Continue;
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Rendering                                   */
 
-Action::ResultE Light::renderEnter(Action *action)
-{
-    RenderAction *pAction = dynamic_cast<RenderAction *>(action);
+Action::ResultE Light::renderEnter(Action* action) {
+  RenderAction* pAction = dynamic_cast<RenderAction*>(action);
 
-    // ok we can cull the light only when it is invisible and has
-    // no LightEnv parent and local lights are enabled!
-    if (pAction->pushVisibility())
-    {
-        if(pAction->getLightEnvsLightsState().empty() &&
-           pAction->selectVisibles() == 0 &&
-           pAction->getLocalLights())
-        {
-            pAction->popVisibility();
-            return Action::Skip;
-        }
+  // ok we can cull the light only when it is invisible and has
+  // no LightEnv parent and local lights are enabled!
+  if (pAction->pushVisibility()) {
+    if (pAction->getLightEnvsLightsState().empty() && pAction->selectVisibles() == 0 &&
+        pAction->getLocalLights()) {
+      pAction->popVisibility();
+      return Action::Skip;
     }
+  }
 
-    pAction->dropLight(this);
+  pAction->dropLight(this);
 
-    return Action::Continue;
+  return Action::Continue;
 }
 
-Action::ResultE Light::renderLeave(Action *action)
-{
-    RenderAction *pAction = dynamic_cast<RenderAction *>(action);
+Action::ResultE Light::renderLeave(Action* action) {
+  RenderAction* pAction = dynamic_cast<RenderAction*>(action);
 
-    pAction->undropLight(this);
+  pAction->undropLight(this);
 
-    pAction->popVisibility();
+  pAction->popVisibility();
 
-    return Action::Continue;
+  return Action::Continue;
 }
 
 /*-------------------------------------------------------------------------*/
@@ -260,9 +221,5 @@ Action::ResultE Light::renderLeave(Action *action)
 
 //! initialize the static features of the class, e.g. action callbacks
 
-void Light::initMethod(void)
-{
+void Light::initMethod(void) {
 }
-
-
-

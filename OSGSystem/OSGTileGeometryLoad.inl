@@ -38,30 +38,22 @@
 
 OSG_BEGIN_NAMESPACE
 
-inline Real32 TileGeometryLoad::getFaceDistribution(UInt32 dir,Real32 cut)
-{
-    if(cut<=0)
-    {
-        return 0.0;
-    }
-    if(cut >=1.0)
-    {
-        return 1.0;
-    }
-    cut*=FACE_DISTRIBUTION_SAMPLING_COUNT-1;
-    
-    UInt32 a=(UInt32)(floor(cut));
-    Real32 f=cut-a;
+inline Real32 TileGeometryLoad::getFaceDistribution(UInt32 dir, Real32 cut) {
+  if (cut <= 0) {
+    return 0.0;
+  }
+  if (cut >= 1.0) {
+    return 1.0;
+  }
+  cut *= FACE_DISTRIBUTION_SAMPLING_COUNT - 1;
 
-    return _faceDistribution[dir][a] +
-        (_faceDistribution[dir][a+1] - _faceDistribution[dir][a]) * f;
+  UInt32 a = (UInt32)(floor(cut));
+  Real32 f = cut - a;
+
+  return _faceDistribution[dir][a] +
+         (_faceDistribution[dir][a + 1] - _faceDistribution[dir][a]) * f;
 }
 
 OSG_END_NAMESPACE
 
 #define OSGTILEGEOMETRYLOAD_INLINE_CVSID "@(#)$Id:$"
-
-
-
-
-

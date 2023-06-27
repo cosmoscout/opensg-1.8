@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGDEPTHCLEARBACKGROUNDBASE_H_
 #define _OSGDEPTHCLEARBACKGROUNDBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -67,9 +65,9 @@
 
 #include <OSGBackground.h> // Parent
 
-#include <OSGBoolFields.h> // ClearDepth type
+#include <OSGBoolFields.h>   // ClearDepth type
 #include <OSGReal32Fields.h> // Depth type
-#include <OSGInt32Fields.h> // ClearStencilBit type
+#include <OSGInt32Fields.h>  // ClearStencilBit type
 
 #include <OSGDepthClearBackgroundFields.h>
 
@@ -80,195 +78,175 @@ class BinaryDataHandler;
 
 //! \brief DepthClearBackground Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING DepthClearBackgroundBase : public Background
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING DepthClearBackgroundBase : public Background {
+ private:
+  typedef Background Inherited;
 
-    typedef Background    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef DepthClearBackgroundPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    ClearDepthFieldId      = Inherited::NextFieldId,
+    DepthFieldId           = ClearDepthFieldId + 1,
+    ClearStencilBitFieldId = DepthFieldId + 1,
+    NextFieldId            = ClearStencilBitFieldId + 1
+  };
 
-    typedef DepthClearBackgroundPtr  Ptr;
+  static const OSG::BitVector ClearDepthFieldMask;
+  static const OSG::BitVector DepthFieldMask;
+  static const OSG::BitVector ClearStencilBitFieldMask;
 
-    enum
-    {
-        ClearDepthFieldId      = Inherited::NextFieldId,
-        DepthFieldId           = ClearDepthFieldId      + 1,
-        ClearStencilBitFieldId = DepthFieldId           + 1,
-        NextFieldId            = ClearStencilBitFieldId + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector ClearDepthFieldMask;
-    static const OSG::BitVector DepthFieldMask;
-    static const OSG::BitVector ClearStencilBitFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFBool*   getSFClearDepth(void);
+  SFReal32* getSFDepth(void);
+  SFInt32*  getSFClearStencilBit(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  bool&         getClearDepth(void);
+  const bool&   getClearDepth(void) const;
+  Real32&       getDepth(void);
+  const Real32& getDepth(void) const;
+  Int32&        getClearStencilBit(void);
+  const Int32&  getClearStencilBit(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFBool              *getSFClearDepth     (void);
-           SFReal32            *getSFDepth          (void);
-           SFInt32             *getSFClearStencilBit(void);
+  void setClearDepth(const bool& value);
+  void setDepth(const Real32& value);
+  void setClearStencilBit(const Int32& value);
 
-           bool                &getClearDepth     (void);
-     const bool                &getClearDepth     (void) const;
-           Real32              &getDepth          (void);
-     const Real32              &getDepth          (void) const;
-           Int32               &getClearStencilBit(void);
-     const Int32               &getClearStencilBit(void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setClearDepth     ( const bool &value );
-     void setDepth          ( const Real32 &value );
-     void setClearStencilBit( const Int32 &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static DepthClearBackgroundPtr create(void);
+  static DepthClearBackgroundPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  DepthClearBackgroundPtr      create          (void); 
-    static  DepthClearBackgroundPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFBool   _sfClearDepth;
+  SFReal32 _sfDepth;
+  SFInt32  _sfClearStencilBit;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  DepthClearBackgroundBase(void);
+  DepthClearBackgroundBase(const DepthClearBackgroundBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~DepthClearBackgroundBase(void);
 
-    SFBool              _sfClearDepth;
-    SFReal32            _sfDepth;
-    SFInt32             _sfClearStencilBit;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    DepthClearBackgroundBase(void);
-    DepthClearBackgroundBase(const DepthClearBackgroundBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~DepthClearBackgroundBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      DepthClearBackgroundBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(DepthClearBackgroundBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      DepthClearBackgroundBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      DepthClearBackgroundBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const DepthClearBackgroundBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const DepthClearBackgroundBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef DepthClearBackgroundBase* DepthClearBackgroundBaseP;
 
-typedef DepthClearBackgroundBase *DepthClearBackgroundBaseP;
-
-typedef osgIF<DepthClearBackgroundBase::isNodeCore,
-              CoredNodePtr<DepthClearBackground>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet DepthClearBackgroundNodePtr;
+typedef osgIF<DepthClearBackgroundBase::isNodeCore, CoredNodePtr<DepthClearBackground>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet
+    DepthClearBackgroundNodePtr;
 
 typedef RefPtr<DepthClearBackgroundPtr> DepthClearBackgroundRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGDEPTHCLEARBACKGROUNDBASE_HEADER_CVSID "@(#)$Id: OSGDepthClearBackgroundBase.h,v 1.9 2007/05/10 15:57:23 yjung Exp $"
+#define OSGDEPTHCLEARBACKGROUNDBASE_HEADER_CVSID                                                   \
+  "@(#)$Id: OSGDepthClearBackgroundBase.h,v 1.9 2007/05/10 15:57:23 yjung Exp $"
 
 #endif /* _OSGDEPTHCLEARBACKGROUNDBASE_H_ */

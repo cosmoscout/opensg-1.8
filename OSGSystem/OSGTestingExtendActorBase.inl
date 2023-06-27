@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 OSG_BEGIN_NAMESPACE
 
 //----------------------------------------------------------------------------
@@ -61,20 +60,18 @@ OSG_BEGIN_NAMESPACE
  *  TestingExtendActorBaseState
  */
 
-inline const TestingExtendActorBase::TestingExtendActorBaseState *
-TestingExtendActorBase::getCastState(void) const
-{
-    return reinterpret_cast<const TestingExtendActorBaseState *>(getState());
+inline const TestingExtendActorBase::TestingExtendActorBaseState*
+TestingExtendActorBase::getCastState(void) const {
+  return reinterpret_cast<const TestingExtendActorBaseState*>(getState());
 }
 
 /*! Return the StatePtr, cast to this actor's state class
  *  TestingExtendActorBaseState
  */
 
-inline TestingExtendActorBase::TestingExtendActorBaseState *
-TestingExtendActorBase::getCastState(void)
-{
-    return reinterpret_cast<TestingExtendActorBaseState *>(getState());
+inline TestingExtendActorBase::TestingExtendActorBaseState* TestingExtendActorBase::getCastState(
+    void) {
+  return reinterpret_cast<TestingExtendActorBaseState*>(getState());
 }
 
 //----------------------------------------------------------------------------
@@ -84,59 +81,48 @@ TestingExtendActorBase::getCastState(void)
 /*! Default constructor.
  */
 
-inline
-TestingExtendActorBase::TestingExtendActorBaseState::TestingExtendActorBaseState(void) :
-      _stateTreeLevel(0),
-      _stateWorldMatrix(),
-      ParentStateType()
-{
+inline TestingExtendActorBase::TestingExtendActorBaseState::TestingExtendActorBaseState(void)
+    : _stateTreeLevel(0)
+    , _stateWorldMatrix()
+    , ParentStateType() {
 }
 
 /*! Copy constructor.
  */
 
-inline
-TestingExtendActorBase::TestingExtendActorBaseState::TestingExtendActorBaseState(
-    const TestingExtendActorBaseState &source) :
-      _stateTreeLevel(source._stateTreeLevel),
-      _stateWorldMatrix(source._stateWorldMatrix),
-      ParentStateType(source)
-{
+inline TestingExtendActorBase::TestingExtendActorBaseState::TestingExtendActorBaseState(
+    const TestingExtendActorBaseState& source)
+    : _stateTreeLevel(source._stateTreeLevel)
+    , _stateWorldMatrix(source._stateWorldMatrix)
+    , ParentStateType(source) {
 }
 
 /*! Return the state element TreeLevel. For internal use only.
  */
 
-inline const UInt32 &
-TestingExtendActorBase::TestingExtendActorBaseState::getTreeLevel(void) const
-{
-    return _stateTreeLevel;
+inline const UInt32& TestingExtendActorBase::TestingExtendActorBaseState::getTreeLevel(void) const {
+  return _stateTreeLevel;
 }
 
 /*! Return the state element TreeLevel. For internal use only.
  */
 
-inline UInt32 &
-TestingExtendActorBase::TestingExtendActorBaseState::getTreeLevel(void)
-{
-    return _stateTreeLevel;
+inline UInt32& TestingExtendActorBase::TestingExtendActorBaseState::getTreeLevel(void) {
+  return _stateTreeLevel;
 }
 /*! Return the state element WorldMatrix. For internal use only.
  */
 
-inline const Matrix &
-TestingExtendActorBase::TestingExtendActorBaseState::getWorldMatrix(void) const
-{
-    return _stateWorldMatrix;
+inline const Matrix& TestingExtendActorBase::TestingExtendActorBaseState::getWorldMatrix(
+    void) const {
+  return _stateWorldMatrix;
 }
 
 /*! Return the state element WorldMatrix. For internal use only.
  */
 
-inline Matrix &
-TestingExtendActorBase::TestingExtendActorBaseState::getWorldMatrix(void)
-{
-    return _stateWorldMatrix;
+inline Matrix& TestingExtendActorBase::TestingExtendActorBaseState::getWorldMatrix(void) {
+  return _stateWorldMatrix;
 }
 
 //----------------------------------------------------------------------------
@@ -148,10 +134,8 @@ TestingExtendActorBase::TestingExtendActorBaseState::getWorldMatrix(void)
  *  attached to an action.
  */
 
-inline const UInt32 &
-TestingExtendActorBase::getTreeLevel(void) const
-{
-    return getCastState()->getTreeLevel();
+inline const UInt32& TestingExtendActorBase::getTreeLevel(void) const {
+  return getCastState()->getTreeLevel();
 }
 
 /*! Return the state element TreeLevel.
@@ -159,10 +143,8 @@ TestingExtendActorBase::getTreeLevel(void) const
  *  attached to an action.
  */
 
-inline UInt32 &
-TestingExtendActorBase::getTreeLevel(void)
-{
-    return getCastState()->getTreeLevel();
+inline UInt32& TestingExtendActorBase::getTreeLevel(void) {
+  return getCastState()->getTreeLevel();
 }
 
 /*! Set the state element TreeLevel.
@@ -170,20 +152,16 @@ TestingExtendActorBase::getTreeLevel(void)
  *  attached to an action.
  */
 
-inline void
-TestingExtendActorBase::setTreeLevel(const UInt32 &stateVal)
-{
-    getCastState()->getTreeLevel() = stateVal;
+inline void TestingExtendActorBase::setTreeLevel(const UInt32& stateVal) {
+  getCastState()->getTreeLevel() = stateVal;
 }
 /*! Return the state element WorldMatrix.
  *  \warning This state element can only be accessed after the actor was
  *  attached to an action.
  */
 
-inline const Matrix &
-TestingExtendActorBase::getWorldMatrix(void) const
-{
-    return getCastState()->getWorldMatrix();
+inline const Matrix& TestingExtendActorBase::getWorldMatrix(void) const {
+  return getCastState()->getWorldMatrix();
 }
 
 /*! Return the state element WorldMatrix.
@@ -191,10 +169,8 @@ TestingExtendActorBase::getWorldMatrix(void) const
  *  attached to an action.
  */
 
-inline Matrix &
-TestingExtendActorBase::getWorldMatrix(void)
-{
-    return getCastState()->getWorldMatrix();
+inline Matrix& TestingExtendActorBase::getWorldMatrix(void) {
+  return getCastState()->getWorldMatrix();
 }
 
 /*! Set the state element WorldMatrix.
@@ -202,17 +178,15 @@ TestingExtendActorBase::getWorldMatrix(void)
  *  attached to an action.
  */
 
-inline void
-TestingExtendActorBase::setWorldMatrix(const Matrix &stateVal)
-{
-    getCastState()->getWorldMatrix() = stateVal;
+inline void TestingExtendActorBase::setWorldMatrix(const Matrix& stateVal) {
+  getCastState()->getWorldMatrix() = stateVal;
 }
 
 //----------------------------------------------------------------------------
 //    Protected State Access
 //----------------------------------------------------------------------------
 
-
 OSG_END_NAMESPACE
 
-#define OSGTESTINGEXTENDACTORBASE_INLINE_CVSID "@(#)$Id: OSGTestingExtendActorBase.inl,v 1.1 2004/09/17 14:09:47 neumannc Exp $"
+#define OSGTESTINGEXTENDACTORBASE_INLINE_CVSID                                                     \
+  "@(#)$Id: OSGTestingExtendActorBase.inl,v 1.1 2004/09/17 14:09:47 neumannc Exp $"

@@ -34,7 +34,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -42,19 +41,15 @@
 
 OSG_BEGIN_NAMESPACE
 
-
-inline
-UInt32 PolygonChunk::getStaticClassId(void)
-{
-    return getStaticClass()->getId();
+inline UInt32 PolygonChunk::getStaticClassId(void) {
+  return getStaticClass()->getId();
 }
 
-inline
-const StateChunkClass *PolygonChunk::getStaticClass(void)
-{
-    return &PolygonChunk::_class;
+inline const StateChunkClass* PolygonChunk::getStaticClass(void) {
+  return &PolygonChunk::_class;
 }
 
 OSG_END_NAMESPACE
 
-#define OSGPOLYGONCHUNK_INLINE_CVSID "@(#)$Id: FCTemplate_inl.h,v 1.7 2001/09/17 14:15:07 vossg Exp $"
+#define OSGPOLYGONCHUNK_INLINE_CVSID                                                               \
+  "@(#)$Id: FCTemplate_inl.h,v 1.7 2001/09/17 14:15:07 vossg Exp $"

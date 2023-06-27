@@ -36,8 +36,8 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-/* 
-   This is a dummy header to allow automatic inference from the type to the 
+/*
+   This is a dummy header to allow automatic inference from the type to the
    field type header.
 */
 

@@ -70,59 +70,31 @@ OSG_BEGIN_NAMESPACE
  *                           Class methods                                 *
 \***************************************************************************/
 
-void ScreenGroup::initMethod (void)
-{
-    DrawAction::registerEnterDefault( 
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<
-            Action::ResultE,
-            ScreenGroupPtr  , 
-            CNodePtr        ,  
-            Action         *>(&ScreenGroup::drawEnter));
-    
-    DrawAction::registerLeaveDefault( 
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<
-            Action::ResultE,
-            ScreenGroupPtr  , 
-            CNodePtr        ,  
-            Action         *>(&ScreenGroup::drawLeave));
+void ScreenGroup::initMethod(void) {
+  DrawAction::registerEnterDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, ScreenGroupPtr, CNodePtr, Action*>(
+          &ScreenGroup::drawEnter));
 
+  DrawAction::registerLeaveDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, ScreenGroupPtr, CNodePtr, Action*>(
+          &ScreenGroup::drawLeave));
 
-    IntersectAction::registerEnterDefault( 
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<
-            Action::ResultE,
-            ScreenGroupPtr  , 
-            CNodePtr        ,  
-            Action         *>(&ScreenGroup::intersectEnter));
+  IntersectAction::registerEnterDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, ScreenGroupPtr, CNodePtr, Action*>(
+          &ScreenGroup::intersectEnter));
 
-    IntersectAction::registerLeaveDefault( 
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<
-            Action::ResultE,
-            ScreenGroupPtr  , 
-            CNodePtr        ,   
-            Action         *>(&ScreenGroup::intersectLeave));
+  IntersectAction::registerLeaveDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, ScreenGroupPtr, CNodePtr, Action*>(
+          &ScreenGroup::intersectLeave));
 
+  RenderAction::registerEnterDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, ScreenGroupPtr, CNodePtr, Action*>(
+          &ScreenGroup::renderEnter));
 
-    RenderAction::registerEnterDefault(
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<
-            Action::ResultE,
-            ScreenGroupPtr  , 
-            CNodePtr        ,  
-            Action         *>(&ScreenGroup::renderEnter));
-
-    RenderAction::registerLeaveDefault(
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<
-            Action::ResultE,
-            ScreenGroupPtr  , 
-            CNodePtr        ,  
-            Action         *>(&ScreenGroup::renderLeave));
+  RenderAction::registerLeaveDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, ScreenGroupPtr, CNodePtr, Action*>(
+          &ScreenGroup::renderLeave));
 }
-
 
 /***************************************************************************\
  *                           Instance methods                              *
@@ -134,169 +106,148 @@ void ScreenGroup::initMethod (void)
 
 /*----------------------- constructors & destructors ----------------------*/
 
-ScreenGroup::ScreenGroup(void) :
-    Inherited()
-{
+ScreenGroup::ScreenGroup(void)
+    : Inherited() {
 }
 
-ScreenGroup::ScreenGroup(const ScreenGroup &source) :
-    Inherited(source)
-{
+ScreenGroup::ScreenGroup(const ScreenGroup& source)
+    : Inherited(source) {
 }
 
-ScreenGroup::~ScreenGroup(void)
-{
+ScreenGroup::~ScreenGroup(void) {
 }
 
 /*----------------------------- class specific ----------------------------*/
 
-void ScreenGroup::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void ScreenGroup::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
-void ScreenGroup::dump(      UInt32    , 
-                         const BitVector ) const
-{
-    SLOG << "Dump ScreenGroup NI" << std::endl;
+void ScreenGroup::dump(UInt32, const BitVector) const {
+  SLOG << "Dump ScreenGroup NI" << std::endl;
 }
-
 
 /*------------------------- volume update -------------------------------*/
 
-void ScreenGroup::adjustVolume( Volume & volume )
-{
-    Matrix m;
-    m.setScale(0, 0, 1);
-    volume.transform(m);
+void ScreenGroup::adjustVolume(Volume& volume) {
+  Matrix m;
+  m.setScale(0, 0, 1);
+  volume.transform(m);
 }
 
-void ScreenGroup::accumulateMatrix(Matrix &result)
-{
-    result.mult(_camTransform);
+void ScreenGroup::accumulateMatrix(Matrix& result) {
+  result.mult(_camTransform);
 }
 
-void ScreenGroup::calcMatrix(      DrawActionBase *pAction,
-                           const Matrix         &mToWorld,
-                                 Matrix         &mResult)
-{
-    Viewport *viewport = pAction->getViewport();
-    Matrix mToScreen;
-    pAction->getCamera()->getWorldToScreen(mToScreen, *viewport);
-    mToScreen.mult(mToWorld);
+void ScreenGroup::calcMatrix(DrawActionBase* pAction, const Matrix& mToWorld, Matrix& mResult) {
+  Viewport* viewport = pAction->getViewport();
+  Matrix    mToScreen;
+  pAction->getCamera()->getWorldToScreen(mToScreen, *viewport);
+  mToScreen.mult(mToWorld);
 
-    Pnt3f origin(0.f, 0.f, 0.f);
-    mToScreen.multFullMatrixPnt(origin);
+  Pnt3f origin(0.f, 0.f, 0.f);
+  mToScreen.multFullMatrixPnt(origin);
 
-    Pnt3f xAxis(1.f, 0.f, 0.f);
-    mToScreen.multFullMatrixPnt(xAxis);
-    Real32 scaleX =  2.f / viewport->getPixelWidth() / (xAxis - origin).length();
+  Pnt3f xAxis(1.f, 0.f, 0.f);
+  mToScreen.multFullMatrixPnt(xAxis);
+  Real32 scaleX = 2.f / viewport->getPixelWidth() / (xAxis - origin).length();
 
-    Pnt3f yAxis(0.f, 1.f, 0.f);
-    mToScreen.multFullMatrixPnt(yAxis);
-    Real32 scaleY = 2.f / viewport->getPixelHeight() / (yAxis - origin).length();
+  Pnt3f yAxis(0.f, 1.f, 0.f);
+  mToScreen.multFullMatrixPnt(yAxis);
+  Real32 scaleY = 2.f / viewport->getPixelHeight() / (yAxis - origin).length();
 
-    mResult.setScale(scaleX, scaleY, 1.f);
-    mResult.setTranslate(0.375 * scaleX, 0.375 * scaleY, 0.f);
-    _camTransform = mResult;
+  mResult.setScale(scaleX, scaleY, 1.f);
+  mResult.setTranslate(0.375 * scaleX, 0.375 * scaleY, 0.f);
+  _camTransform = mResult;
 }
 
 /*-------------------------------------------------------------------------*/
 /*                               Draw                                      */
 
-Action::ResultE ScreenGroup::drawEnter(Action *action)
-{
-    DrawAction *da = dynamic_cast<DrawAction *>(action);
+Action::ResultE ScreenGroup::drawEnter(Action* action) {
+  DrawAction* da = dynamic_cast<DrawAction*>(action);
 
-    Matrix mMat;
+  Matrix mMat;
 
-    calcMatrix(da,     
-               da->getActNode()->getToWorld(),
-               mMat);
+  calcMatrix(da, da->getActNode()->getToWorld(), mMat);
 
-    // should use the chunk, but it's not updated yet
-    glPushMatrix ();
-    glMultMatrixf(mMat.getValues());
+  // should use the chunk, but it's not updated yet
+  glPushMatrix();
+  glMultMatrixf(mMat.getValues());
 
-// !!! can't use visibles, as ToWorld gives garbage leading to wrong culling
-//    da->selectVisibles();
+  // !!! can't use visibles, as ToWorld gives garbage leading to wrong culling
+  //    da->selectVisibles();
 
-    return Action::Continue;
+  return Action::Continue;
 }
 
-Action::ResultE ScreenGroup::drawLeave(Action *)
-{
-    glPopMatrix();
+Action::ResultE ScreenGroup::drawLeave(Action*) {
+  glPopMatrix();
 
-    return Action::Continue;
+  return Action::Continue;
 }
 
 /*-------------------------------------------------------------------------*/
 /*                            Intersect                                    */
 
-Action::ResultE ScreenGroup::intersectEnter(Action *action)
-{
-    IntersectAction *ia = dynamic_cast<IntersectAction *>(action);
-    Matrix           m(_camTransform);
+Action::ResultE ScreenGroup::intersectEnter(Action* action) {
+  IntersectAction* ia = dynamic_cast<IntersectAction*>(action);
+  Matrix           m(_camTransform);
 
-    m.invert();
+  m.invert();
 
-    Pnt3f pos;
-    Vec3f dir;
+  Pnt3f pos;
+  Vec3f dir;
 
-    m.multFullMatrixPnt(ia->getLine().getPosition (), pos);
-    m.multMatrixVec    (ia->getLine().getDirection(), dir);
+  m.multFullMatrixPnt(ia->getLine().getPosition(), pos);
+  m.multMatrixVec(ia->getLine().getDirection(), dir);
 
-    ia->setLine(Line(pos, dir), ia->getMaxDist());
-    ia->scale(dir.length());
+  ia->setLine(Line(pos, dir), ia->getMaxDist());
+  ia->scale(dir.length());
 
-    return Action::Continue;
+  return Action::Continue;
 }
 
-Action::ResultE ScreenGroup::intersectLeave(Action *action)
-{
-    IntersectAction *ia = dynamic_cast<IntersectAction *>(action);
-    Matrix           m(_camTransform);
+Action::ResultE ScreenGroup::intersectLeave(Action* action) {
+  IntersectAction* ia = dynamic_cast<IntersectAction*>(action);
+  Matrix           m(_camTransform);
 
-    Pnt3f pos;
-    Vec3f dir;
+  Pnt3f pos;
+  Vec3f dir;
 
-    m.multFullMatrixPnt(ia->getLine().getPosition (), pos);
-    m.multMatrixVec    (ia->getLine().getDirection(), dir);
+  m.multFullMatrixPnt(ia->getLine().getPosition(), pos);
+  m.multMatrixVec(ia->getLine().getDirection(), dir);
 
-    ia->setLine(Line(pos, dir), ia->getMaxDist());
-    ia->scale(dir.length());
+  ia->setLine(Line(pos, dir), ia->getMaxDist());
+  ia->scale(dir.length());
 
-    return Action::Continue;
+  return Action::Continue;
 }
 
 /*-------------------------------------------------------------------------*/
 /*                                Render                                   */
 
-Action::ResultE ScreenGroup::renderEnter(Action *action)
-{
-    RenderAction *pAction = dynamic_cast<RenderAction *>(action);
+Action::ResultE ScreenGroup::renderEnter(Action* action) {
+  RenderAction* pAction = dynamic_cast<RenderAction*>(action);
 
-    Matrix mMat;
+  Matrix mMat;
 
-    calcMatrix(pAction, pAction->top_matrix(), mMat);
+  calcMatrix(pAction, pAction->top_matrix(), mMat);
 
-    pAction->push_matrix(mMat);
+  pAction->push_matrix(mMat);
 
-// !!! can't use visibles, as ToWorld gives garbage leading to wrong culling
-//    pAction->selectVisibles();
+  // !!! can't use visibles, as ToWorld gives garbage leading to wrong culling
+  //    pAction->selectVisibles();
 
-    return Action::Continue;
+  return Action::Continue;
 }
 
-Action::ResultE ScreenGroup::renderLeave(Action *action)
-{
-    RenderAction *pAction = dynamic_cast<RenderAction *>(action);
+Action::ResultE ScreenGroup::renderLeave(Action* action) {
+  RenderAction* pAction = dynamic_cast<RenderAction*>(action);
 
-    pAction->pop_matrix();
+  pAction->pop_matrix();
 
-    return Action::Continue;
+  return Action::Continue;
 }
 
 OSG_END_NAMESPACE
-

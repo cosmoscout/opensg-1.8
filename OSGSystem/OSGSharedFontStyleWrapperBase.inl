@@ -52,81 +52,59 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &SharedFontStyleWrapperBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& SharedFontStyleWrapperBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 SharedFontStyleWrapperBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 SharedFontStyleWrapperBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-SharedFontStyleWrapperPtr SharedFontStyleWrapperBase::create(void) 
-{
-    SharedFontStyleWrapperPtr fc; 
+inline SharedFontStyleWrapperPtr SharedFontStyleWrapperBase::create(void) {
+  SharedFontStyleWrapperPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = SharedFontStyleWrapperPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = SharedFontStyleWrapperPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-SharedFontStyleWrapperPtr SharedFontStyleWrapperBase::createEmpty(void) 
-{ 
-    SharedFontStyleWrapperPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline SharedFontStyleWrapperPtr SharedFontStyleWrapperBase::createEmpty(void) {
+  SharedFontStyleWrapperPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the SharedFontStyleWrapper::_sfFStyleContainer field.
-inline
-SFSharedFontStylePtr *SharedFontStyleWrapperBase::getSFFStyleContainer(void)
-{
-    return &_sfFStyleContainer;
-}
-
-
-//! Get the value of the SharedFontStyleWrapper::_sfFStyleContainer field.
-inline
-SharedFontStylePtr &SharedFontStyleWrapperBase::getFStyleContainer(void)
-{
-    return _sfFStyleContainer.getValue();
+inline SFSharedFontStylePtr* SharedFontStyleWrapperBase::getSFFStyleContainer(void) {
+  return &_sfFStyleContainer;
 }
 
 //! Get the value of the SharedFontStyleWrapper::_sfFStyleContainer field.
-inline
-const SharedFontStylePtr &SharedFontStyleWrapperBase::getFStyleContainer(void) const
-{
-    return _sfFStyleContainer.getValue();
+inline SharedFontStylePtr& SharedFontStyleWrapperBase::getFStyleContainer(void) {
+  return _sfFStyleContainer.getValue();
+}
+
+//! Get the value of the SharedFontStyleWrapper::_sfFStyleContainer field.
+inline const SharedFontStylePtr& SharedFontStyleWrapperBase::getFStyleContainer(void) const {
+  return _sfFStyleContainer.getValue();
 }
 
 //! Set the value of the SharedFontStyleWrapper::_sfFStyleContainer field.
-inline
-void SharedFontStyleWrapperBase::setFStyleContainer(const SharedFontStylePtr &value)
-{
-    _sfFStyleContainer.setValue(value);
+inline void SharedFontStyleWrapperBase::setFStyleContainer(const SharedFontStylePtr& value) {
+  _sfFStyleContainer.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGSHAREDFONTSTYLEWRAPPERBASE_INLINE_CVSID "@(#)$Id: OSGSharedFontStyleWrapperBase.inl,v 1.7 2006/02/20 17:04:42 dirk Exp $"
-
+#define OSGSHAREDFONTSTYLEWRAPPERBASE_INLINE_CVSID                                                 \
+  "@(#)$Id: OSGSharedFontStyleWrapperBase.inl,v 1.7 2006/02/20 17:04:42 dirk Exp $"

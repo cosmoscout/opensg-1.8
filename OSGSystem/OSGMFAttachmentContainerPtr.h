@@ -55,16 +55,14 @@
 
 OSG_BEGIN_NAMESPACE
 
-#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS) 
+#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldMulti */
 
 typedef MField<AttachmentContainerPtr> MFAttachmentContainerPtr;
 #endif
 
 #ifndef OSG_COMPILECONTAINERFIELDINST
-OSG_DLLEXPORT_DECL1(MField, 
-                    AttachmentContainerPtr,
-                    OSG_SYSTEMLIB_DLLTMPLMAPPING)
+OSG_DLLEXPORT_DECL1(MField, AttachmentContainerPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 #endif
 
 OSG_END_NAMESPACE
@@ -72,7 +70,3 @@ OSG_END_NAMESPACE
 #define OSGMFATTACHMENTCONTAINERPTR_HEADER_CVSID "@(#)$Id: $"
 
 #endif /* _OSGMFATTACHMENTCONTAINERPTR_H_ */
-
-
-
-

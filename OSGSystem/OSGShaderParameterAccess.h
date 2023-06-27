@@ -51,60 +51,57 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief ShaderParameterAccess class. See \ref 
+/*! \brief ShaderParameterAccess class. See \ref
            PageSystemShaderParameterAccess for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING ShaderParameterAccess 
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING ShaderParameterAccess {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
-    
-    ShaderParameterAccess(MFShaderParameterPtr &parameters);
-    ~ShaderParameterAccess(void);
-  
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Access                                     */
-    /*! \{                                                                 */
-  
-    template<class ParameterType, class ValueType> 
-    bool    setParameter(const char *name, const ValueType &value);
-    template<class ParameterType, class ValueType> 
-    bool    setMParameter(const char *name, const ValueType &value);
+  ShaderParameterAccess(MFShaderParameterPtr& parameters);
+  ~ShaderParameterAccess(void);
 
-    template<class ParameterType, class ValueType> 
-    bool    getParameter(const char *name, ValueType &value);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Access                                     */
+  /*! \{                                                                 */
 
-    bool    subParameter(const char *name);
-    
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  template <class ParameterType, class ValueType>
+  bool setParameter(const char* name, const ValueType& value);
+  template <class ParameterType, class ValueType>
+  bool setMParameter(const char* name, const ValueType& value);
 
-    /*==========================  PRIVATE  ================================*/
-  private:
+  template <class ParameterType, class ValueType>
+  bool getParameter(const char* name, ValueType& value);
 
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const ShaderParameterAccess &source);
-    void updateMap(void);
+  bool subParameter(const char* name);
 
-    MFShaderParameterPtr &_parameters;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*==========================  PRIVATE  ================================*/
+ private:
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const ShaderParameterAccess& source);
+  void updateMap(void);
 
-    typedef std::map<std::string, UInt32> parameterMap;
-    typedef parameterMap::iterator parameterIt;
-    parameterMap _parametermap;
-    UInt32       _mapsize;
+  MFShaderParameterPtr& _parameters;
+
+  typedef std::map<std::string, UInt32> parameterMap;
+  typedef parameterMap::iterator        parameterIt;
+  parameterMap                          _parametermap;
+  UInt32                                _mapsize;
 };
 
 OSG_END_NAMESPACE
 
 #include <OSGShaderParameterAccess.inl>
 
-#define OSGSHADERPARAMETERACCESS_HEADER_CVSID "@(#)$Id: OSGShaderParameterAccess.h,v 1.5 2007/03/09 18:11:48 a-m-z Exp $"
+#define OSGSHADERPARAMETERACCESS_HEADER_CVSID                                                      \
+  "@(#)$Id: OSGShaderParameterAccess.h,v 1.5 2007/03/09 18:11:48 a-m-z Exp $"
 
 #endif /* _OSGSHADERPARAMETERACCESS_H_ */

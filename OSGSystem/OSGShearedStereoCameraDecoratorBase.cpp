@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILESHEAREDSTEREOCAMERADECORATORINST
 
 #include <stdlib.h>
@@ -61,19 +60,16 @@
 #include "OSGShearedStereoCameraDecoratorBase.h"
 #include "OSGShearedStereoCameraDecorator.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  ShearedStereoCameraDecoratorBase::ZeroParallaxDistanceFieldMask = 
+const OSG::BitVector ShearedStereoCameraDecoratorBase::ZeroParallaxDistanceFieldMask =
     (TypeTraits<BitVector>::One << ShearedStereoCameraDecoratorBase::ZeroParallaxDistanceFieldId);
 
-const OSG::BitVector  ShearedStereoCameraDecoratorBase::OverlapFieldMask = 
+const OSG::BitVector ShearedStereoCameraDecoratorBase::OverlapFieldMask =
     (TypeTraits<BitVector>::One << ShearedStereoCameraDecoratorBase::OverlapFieldId);
 
-const OSG::BitVector ShearedStereoCameraDecoratorBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector ShearedStereoCameraDecoratorBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
@@ -86,215 +82,161 @@ const OSG::BitVector ShearedStereoCameraDecoratorBase::MTInfluenceMask =
 
 //! ShearedStereoCameraDecorator description
 
-FieldDescription *ShearedStereoCameraDecoratorBase::_desc[] = 
-{
-    new FieldDescription(SFReal32::getClassType(), 
-                     "zeroParallaxDistance", 
-                     ZeroParallaxDistanceFieldId, ZeroParallaxDistanceFieldMask,
-                     false,
-                     (FieldAccessMethod) &ShearedStereoCameraDecoratorBase::getSFZeroParallaxDistance),
-    new FieldDescription(SFReal32::getClassType(), 
-                     "overlap", 
-                     OverlapFieldId, OverlapFieldMask,
-                     false,
-                     (FieldAccessMethod) &ShearedStereoCameraDecoratorBase::getSFOverlap)
-};
+FieldDescription* ShearedStereoCameraDecoratorBase::_desc[] = {
+    new FieldDescription(SFReal32::getClassType(), "zeroParallaxDistance",
+        ZeroParallaxDistanceFieldId, ZeroParallaxDistanceFieldMask, false,
+        (FieldAccessMethod)&ShearedStereoCameraDecoratorBase::getSFZeroParallaxDistance),
+    new FieldDescription(SFReal32::getClassType(), "overlap", OverlapFieldId, OverlapFieldMask,
+        false, (FieldAccessMethod)&ShearedStereoCameraDecoratorBase::getSFOverlap)};
 
+FieldContainerType ShearedStereoCameraDecoratorBase::_type("ShearedStereoCameraDecorator",
+    "StereoCameraDecorator", NULL, (PrototypeCreateF)&ShearedStereoCameraDecoratorBase::createEmpty,
+    ShearedStereoCameraDecorator::initMethod, _desc, sizeof(_desc));
 
-FieldContainerType ShearedStereoCameraDecoratorBase::_type(
-    "ShearedStereoCameraDecorator",
-    "StereoCameraDecorator",
-    NULL,
-    (PrototypeCreateF) &ShearedStereoCameraDecoratorBase::createEmpty,
-    ShearedStereoCameraDecorator::initMethod,
-    _desc,
-    sizeof(_desc));
-
-//OSG_FIELD_CONTAINER_DEF(ShearedStereoCameraDecoratorBase, ShearedStereoCameraDecoratorPtr)
+// OSG_FIELD_CONTAINER_DEF(ShearedStereoCameraDecoratorBase, ShearedStereoCameraDecoratorPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &ShearedStereoCameraDecoratorBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &ShearedStereoCameraDecoratorBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr ShearedStereoCameraDecoratorBase::shallowCopy(void) const 
-{ 
-    ShearedStereoCameraDecoratorPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const ShearedStereoCameraDecorator *>(this)); 
-
-    return returnValue; 
+FieldContainerType& ShearedStereoCameraDecoratorBase::getType(void) {
+  return _type;
 }
 
-UInt32 ShearedStereoCameraDecoratorBase::getContainerSize(void) const 
-{ 
-    return sizeof(ShearedStereoCameraDecorator); 
+const FieldContainerType& ShearedStereoCameraDecoratorBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr ShearedStereoCameraDecoratorBase::shallowCopy(void) const {
+  ShearedStereoCameraDecoratorPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const ShearedStereoCameraDecorator*>(this));
+
+  return returnValue;
+}
+
+UInt32 ShearedStereoCameraDecoratorBase::getContainerSize(void) const {
+  return sizeof(ShearedStereoCameraDecorator);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ShearedStereoCameraDecoratorBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((ShearedStereoCameraDecoratorBase *) &other, whichField);
+void ShearedStereoCameraDecoratorBase::executeSync(
+    FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((ShearedStereoCameraDecoratorBase*)&other, whichField);
 }
 #else
-void ShearedStereoCameraDecoratorBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((ShearedStereoCameraDecoratorBase *) &other, whichField, sInfo);
+void ShearedStereoCameraDecoratorBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((ShearedStereoCameraDecoratorBase*)&other, whichField, sInfo);
 }
-void ShearedStereoCameraDecoratorBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void ShearedStereoCameraDecoratorBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void ShearedStereoCameraDecoratorBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void ShearedStereoCameraDecoratorBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-ShearedStereoCameraDecoratorBase::ShearedStereoCameraDecoratorBase(void) :
-    _sfZeroParallaxDistance   (Real32(1)), 
-    _sfOverlap                (Real32(1)), 
-    Inherited() 
-{
+ShearedStereoCameraDecoratorBase::ShearedStereoCameraDecoratorBase(void)
+    : _sfZeroParallaxDistance(Real32(1))
+    , _sfOverlap(Real32(1))
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-ShearedStereoCameraDecoratorBase::ShearedStereoCameraDecoratorBase(const ShearedStereoCameraDecoratorBase &source) :
-    _sfZeroParallaxDistance   (source._sfZeroParallaxDistance   ), 
-    _sfOverlap                (source._sfOverlap                ), 
-    Inherited                 (source)
-{
+ShearedStereoCameraDecoratorBase::ShearedStereoCameraDecoratorBase(
+    const ShearedStereoCameraDecoratorBase& source)
+    : _sfZeroParallaxDistance(source._sfZeroParallaxDistance)
+    , _sfOverlap(source._sfOverlap)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-ShearedStereoCameraDecoratorBase::~ShearedStereoCameraDecoratorBase(void)
-{
+ShearedStereoCameraDecoratorBase::~ShearedStereoCameraDecoratorBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 ShearedStereoCameraDecoratorBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 ShearedStereoCameraDecoratorBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (ZeroParallaxDistanceFieldMask & whichField))
-    {
-        returnValue += _sfZeroParallaxDistance.getBinSize();
-    }
+  if (FieldBits::NoField != (ZeroParallaxDistanceFieldMask & whichField)) {
+    returnValue += _sfZeroParallaxDistance.getBinSize();
+  }
 
-    if(FieldBits::NoField != (OverlapFieldMask & whichField))
-    {
-        returnValue += _sfOverlap.getBinSize();
-    }
+  if (FieldBits::NoField != (OverlapFieldMask & whichField)) {
+    returnValue += _sfOverlap.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void ShearedStereoCameraDecoratorBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void ShearedStereoCameraDecoratorBase::copyToBin(
+    BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ZeroParallaxDistanceFieldMask & whichField))
-    {
-        _sfZeroParallaxDistance.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (ZeroParallaxDistanceFieldMask & whichField)) {
+    _sfZeroParallaxDistance.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (OverlapFieldMask & whichField))
-    {
-        _sfOverlap.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (OverlapFieldMask & whichField)) {
+    _sfOverlap.copyToBin(pMem);
+  }
 }
 
-void ShearedStereoCameraDecoratorBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void ShearedStereoCameraDecoratorBase::copyFromBin(
+    BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ZeroParallaxDistanceFieldMask & whichField))
-    {
-        _sfZeroParallaxDistance.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (ZeroParallaxDistanceFieldMask & whichField)) {
+    _sfZeroParallaxDistance.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (OverlapFieldMask & whichField))
-    {
-        _sfOverlap.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (OverlapFieldMask & whichField)) {
+    _sfOverlap.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ShearedStereoCameraDecoratorBase::executeSyncImpl(      ShearedStereoCameraDecoratorBase *pOther,
-                                        const BitVector         &whichField)
-{
+void ShearedStereoCameraDecoratorBase::executeSyncImpl(
+    ShearedStereoCameraDecoratorBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (ZeroParallaxDistanceFieldMask & whichField))
-        _sfZeroParallaxDistance.syncWith(pOther->_sfZeroParallaxDistance);
+  if (FieldBits::NoField != (ZeroParallaxDistanceFieldMask & whichField))
+    _sfZeroParallaxDistance.syncWith(pOther->_sfZeroParallaxDistance);
 
-    if(FieldBits::NoField != (OverlapFieldMask & whichField))
-        _sfOverlap.syncWith(pOther->_sfOverlap);
-
-
+  if (FieldBits::NoField != (OverlapFieldMask & whichField))
+    _sfOverlap.syncWith(pOther->_sfOverlap);
 }
 #else
-void ShearedStereoCameraDecoratorBase::executeSyncImpl(      ShearedStereoCameraDecoratorBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void ShearedStereoCameraDecoratorBase::executeSyncImpl(
+    ShearedStereoCameraDecoratorBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (ZeroParallaxDistanceFieldMask & whichField))
-        _sfZeroParallaxDistance.syncWith(pOther->_sfZeroParallaxDistance);
+  if (FieldBits::NoField != (ZeroParallaxDistanceFieldMask & whichField))
+    _sfZeroParallaxDistance.syncWith(pOther->_sfZeroParallaxDistance);
 
-    if(FieldBits::NoField != (OverlapFieldMask & whichField))
-        _sfOverlap.syncWith(pOther->_sfOverlap);
-
-
-
+  if (FieldBits::NoField != (OverlapFieldMask & whichField))
+    _sfOverlap.syncWith(pOther->_sfOverlap);
 }
 
-void ShearedStereoCameraDecoratorBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void ShearedStereoCameraDecoratorBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>
@@ -302,7 +244,8 @@ void ShearedStereoCameraDecoratorBase::execBeginEditImpl (const BitVector &which
 OSG_BEGIN_NAMESPACE
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_DEV)
-DataType FieldDataTraits<ShearedStereoCameraDecoratorPtr>::_type("ShearedStereoCameraDecoratorPtr", "StereoCameraDecoratorPtr");
+DataType FieldDataTraits<ShearedStereoCameraDecoratorPtr>::_type(
+    "ShearedStereoCameraDecoratorPtr", "StereoCameraDecoratorPtr");
 #endif
 
 OSG_DLLEXPORT_SFIELD_DEF1(ShearedStereoCameraDecoratorPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);

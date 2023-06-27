@@ -52,12 +52,12 @@
 OSG_BEGIN_NAMESPACE
 
 #ifdef WIN32
-typedef HMODULE  SharedHandle;
+typedef HMODULE SharedHandle;
 #else
-typedef void    *SharedHandle;
+typedef void* SharedHandle;
 #endif
 
-typedef void *AnonSymbolHandle;
+typedef void* AnonSymbolHandle;
 
 //---------------------------------------------------------------------------
 //  Class
@@ -66,77 +66,68 @@ typedef void *AnonSymbolHandle;
 /*! \ingroup GrpBaseBase
  */
 
-class OSG_BASE_DLLMAPPING SharedLibrary 
-{
-  public:
+class OSG_BASE_DLLMAPPING SharedLibrary {
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Type                                      */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Type                                      */
-    /*! \{                                                                 */
+  enum SharedLibraryType { Invalid = 0x0000, Application = 0x0001, SharedLib = 0x0002 };
 
-    enum SharedLibraryType
-    {
-        Invalid       = 0x0000,
-        Application   = 0x0001,
-        SharedLib     = 0x0002
-    };
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  SharedLibrary(void);
+  SharedLibrary(const Char8* szName);
 
-    SharedLibrary(void);
-    SharedLibrary(const Char8 *szName);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  virtual ~SharedLibrary(void);
 
-    virtual ~SharedLibrary(void); 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Specific                            */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Specific                            */
-    /*! \{                                                                 */
+  bool open(const Char8* szName);
+  bool close(void);
 
-          bool              open     (const Char8 *szName      );
-          bool              close    (      void               );
+  AnonSymbolHandle getSymbol(const Char8* szSymbolName);
 
-          AnonSymbolHandle  getSymbol(const Char8 *szSymbolName);
+  bool isOpen(void);
 
-          bool              isOpen   (      void               );
+  const Char8* getName(void);
 
-    const Char8            *getName  (      void               );
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+ protected:
+  static Char8 _szApplicationName[];
 
-  protected:
+  Char8*       _szName;
+  SharedHandle _pHandle;
 
-    static Char8 _szApplicationName[];
+  SharedLibraryType _type;
 
-           Char8            *_szName;
-           SharedHandle      _pHandle;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Helper                                    */
+  /*! \{                                                                 */
 
-           SharedLibraryType _type;    
+  bool open(void);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Helper                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-    bool open(void);
-
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-
-  private:
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    SharedLibrary(const SharedLibrary &source);
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const SharedLibrary &source);
+ private:
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  SharedLibrary(const SharedLibrary& source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const SharedLibrary& source);
 };
 
 OSG_END_NAMESPACE

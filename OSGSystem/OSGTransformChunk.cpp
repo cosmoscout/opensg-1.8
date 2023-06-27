@@ -51,7 +51,6 @@
 
 OSG_USING_NAMESPACE
 
-
 /***************************************************************************\
  *                            Description                                  *
 \***************************************************************************/
@@ -75,9 +74,7 @@ StateChunkClass TransformChunk::_class("Transform");
  *                           Class methods                                 *
 \***************************************************************************/
 
-void TransformChunk::initMethod (void)
-{
-
+void TransformChunk::initMethod(void) {
 }
 
 /***************************************************************************\
@@ -88,96 +85,80 @@ void TransformChunk::initMethod (void)
  -  private                                                                 -
 \*-------------------------------------------------------------------------*/
 
-TransformChunk::TransformChunk(void) :
-    Inherited()
-{
+TransformChunk::TransformChunk(void)
+    : Inherited() {
 }
 
-TransformChunk::TransformChunk(const TransformChunk &source) :
-    Inherited(source)
-{
+TransformChunk::TransformChunk(const TransformChunk& source)
+    : Inherited(source) {
 }
 
-TransformChunk::~TransformChunk(void)
-{
+TransformChunk::~TransformChunk(void) {
 }
 
 /*------------------------- Chunk Class Access ---------------------------*/
 
-const StateChunkClass *TransformChunk::getClass(void) const
-{
-    return &_class;
+const StateChunkClass* TransformChunk::getClass(void) const {
+  return &_class;
 }
 
 /*------------------------------- Sync -----------------------------------*/
 
-void TransformChunk::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void TransformChunk::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
 /*------------------------------ Output ----------------------------------*/
 
-void TransformChunk::dump(      UInt32    OSG_CHECK_ARG(uiIndent),
-                          const BitVector OSG_CHECK_ARG(bvFlags )) const
-{
-    SLOG << "Dump TransformChunk NI" << std::endl;
+void TransformChunk::dump(
+    UInt32 OSG_CHECK_ARG(uiIndent), const BitVector OSG_CHECK_ARG(bvFlags)) const {
+  SLOG << "Dump TransformChunk NI" << std::endl;
 }
-
 
 /*------------------------------ State ------------------------------------*/
 
-void TransformChunk::activate ( DrawActionBase *,  UInt32 )
-{
-    glPushMatrix();
-    glMultMatrixf( getMatrix().getValues() );
+void TransformChunk::activate(DrawActionBase*, UInt32) {
+  glPushMatrix();
+  glMultMatrixf(getMatrix().getValues());
 }
 
-void TransformChunk::changeFrom( DrawActionBase *,  StateChunk * old, UInt32 )
-{
-    // change from me to me?
-    // this assumes I haven't changed in the meantime. is that a valid assumption?
-    if ( old == this )
-        return;
+void TransformChunk::changeFrom(DrawActionBase*, StateChunk* old, UInt32) {
+  // change from me to me?
+  // this assumes I haven't changed in the meantime. is that a valid assumption?
+  if (old == this)
+    return;
 
-    glPopMatrix();
-    glPushMatrix();
-    glMultMatrixf( getMatrix().getValues() );
+  glPopMatrix();
+  glPushMatrix();
+  glMultMatrixf(getMatrix().getValues());
 }
 
-void TransformChunk::deactivate ( DrawActionBase *,  UInt32 )
-{
-    glPopMatrix();
+void TransformChunk::deactivate(DrawActionBase*, UInt32) {
+  glPopMatrix();
 }
 
 /*-------------------------- Comparison -----------------------------------*/
 
-Real32 TransformChunk::switchCost(StateChunk *OSG_CHECK_ARG(chunk))
-{
-    return 0;
+Real32 TransformChunk::switchCost(StateChunk* OSG_CHECK_ARG(chunk)) {
+  return 0;
 }
 
-bool TransformChunk::operator < (const StateChunk &other) const
-{
-    return this < &other;
+bool TransformChunk::operator<(const StateChunk& other) const {
+  return this < &other;
 }
 
-bool TransformChunk::operator == (const StateChunk &other) const
-{
-    TransformChunk const *tother = dynamic_cast<TransformChunk const*>(&other);
+bool TransformChunk::operator==(const StateChunk& other) const {
+  TransformChunk const* tother = dynamic_cast<TransformChunk const*>(&other);
 
-    if ( !tother )
-        return false;
+  if (!tother)
+    return false;
 
-    if(tother == this)
-        return true;
+  if (tother == this)
+    return true;
 
-    return getMatrix().equals( tother->getMatrix(), Eps );
+  return getMatrix().equals(tother->getMatrix(), Eps);
 }
 
-bool TransformChunk::operator != (const StateChunk &other) const
-{
-    return ! (*this == other);
+bool TransformChunk::operator!=(const StateChunk& other) const {
+  return !(*this == other);
 }
-
-

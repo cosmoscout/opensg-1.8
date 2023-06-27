@@ -42,24 +42,18 @@
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
 
-
 #ifdef _MSC_VER
-# pragma once
+#pragma once
 #endif
 
-
 #ifdef _WIN32
-
 
 #include "OSGTextBackend.h"
 #include <windows.h>
 
-
 OSG_BEGIN_NAMESPACE
 
-
 class EnumData;
-
 
 /**
  * Backend that uses WIN32 system calls.
@@ -68,8 +62,7 @@ class EnumData;
  * create new fonts.
  * @author Patrick D&auml;hne
  */
-class OSG_SYSTEMLIB_DLLMAPPING TextWIN32Backend: public TextBackend
-{
+class OSG_SYSTEMLIB_DLLMAPPING TextWIN32Backend : public TextBackend {
   /** Needs access to hDC_ */
   friend class TextWIN32VectorFace;
 
@@ -79,83 +72,78 @@ class OSG_SYSTEMLIB_DLLMAPPING TextWIN32Backend: public TextBackend
   /** Needs access to hDC_ */
   friend class TextWIN32TXFFace;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /**
+   * Creates a new %TextWIN32Backend object.
+   */
+  TextWIN32Backend();
 
-    /**
-     * Creates a new %TextWIN32Backend object.
-     */
-    TextWIN32Backend();
+  /** Destroys the %TextWIN32Backend object. */
+  virtual ~TextWIN32Backend();
 
-    /** Destroys the %TextWIN32Backend object. */
-    virtual ~TextWIN32Backend();
+  /**
+   * Creates a new vector face.
+   * @param family The font family of the face (Arial, Courier etc.)
+   * @param style The style of the face (bold, italic etc.)
+   * @return The vector face object or 0 in case of an error.
+   */
+  virtual TextVectorFace* createVectorFace(const std::string& family, TextFace::Style style);
 
-    /**
-     * Creates a new vector face.
-     * @param family The font family of the face (Arial, Courier etc.)
-     * @param style The style of the face (bold, italic etc.)
-     * @return The vector face object or 0 in case of an error.
-     */
-    virtual TextVectorFace*
-    createVectorFace(const std::string &family, TextFace::Style style);
+  /**
+   * Creates a new pixmap face.
+   * @param family The font family of the face (Arial, Courier etc.)
+   * @param style The style of the face (bold, italic etc.)
+   * @param size The size of the pixmap font in pixels.
+   * @return The pixmap face object or 0 in case of an error.
+   */
+  virtual TextPixmapFace* createPixmapFace(
+      const std::string& family, TextFace::Style style, UInt32 size);
 
-    /**
-     * Creates a new pixmap face.
-     * @param family The font family of the face (Arial, Courier etc.)
-     * @param style The style of the face (bold, italic etc.)
-     * @param size The size of the pixmap font in pixels.
-     * @return The pixmap face object or 0 in case of an error.
-     */
-    virtual TextPixmapFace*
-    createPixmapFace(const std::string &family, TextFace::Style style, UInt32 size);
+  /**
+   * Creates a new TXF face.
+   * @param family The font family of the face (Arial, Courier etc.)
+   * @param style The style of the face (bold, italic etc.)
+   * @param param Some parameters that affect the creation of the
+   * TXF face.
+   * @return The TXF face object or 0 in case of an error.
+   */
+  virtual TextTXFFace* createTXFFace(
+      const std::string& family, TextFace::Style style, const TextTXFParam& param);
 
-    /**
-     * Creates a new TXF face.
-     * @param family The font family of the face (Arial, Courier etc.)
-     * @param style The style of the face (bold, italic etc.)
-     * @param param Some parameters that affect the creation of the
-     * TXF face.
-     * @return The TXF face object or 0 in case of an error.
-     */
-    virtual TextTXFFace*
-    createTXFFace(const std::string &family, TextFace::Style style, const TextTXFParam &param);
+  /**
+   * Returns the names of all font families available.
+   * @param families A vector that gets filled with the names
+   * of all font families.
+   */
+  virtual void getFontFamilies(std::vector<std::string>& families);
 
-    /**
-     * Returns the names of all font families available.
-     * @param families A vector that gets filled with the names
-     * of all font families.
-     */
-    virtual void getFontFamilies(std::vector<std::string> &families);
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /** Copy constructor (not implemented!) */
+  TextWIN32Backend(const TextWIN32Backend&);
 
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /** Copy operator (not implemented!) */
+  const TextWIN32Backend& operator=(const TextWIN32Backend&);
 
-    /** Copy constructor (not implemented!) */
-    TextWIN32Backend(const TextWIN32Backend &);
+  /** Enumerates fonts */
+  void enumerateFonts(const std::string& family, EnumData& enumData);
 
-    /** Copy operator (not implemented!) */
-    const TextWIN32Backend &operator=(const TextWIN32Backend &);
+  /** Creates horizontal and vertical fonts */
+  void createFonts(const std::string& family, UInt32 size, TextFace::Style style, HFONT& hHoriFont,
+      HFONT& hVertFont);
 
-    /** Enumerates fonts */
-    void enumerateFonts(const std::string &family, EnumData &enumData);
-
-    /** Creates horizontal and vertical fonts */
-    void createFonts(const std::string &family, UInt32 size, TextFace::Style style,
-                     HFONT &hHoriFont, HFONT &hVertFont);
-
-    /** Device context */
-    HDC _hDC;
+  /** Device context */
+  HDC _hDC;
 };
-
 
 OSG_END_NAMESPACE
 
-
 #endif // _WIN32
-
 
 #include <OSGTextWIN32Backend.inl>
 
-#define OSGTEXTWIN32BACKEND_HEADER_CVSID "@(#)$Id: OSGTextWIN32Backend.h,v 1.1 2005/03/03 13:43:07 a-m-z Exp $"
+#define OSGTEXTWIN32BACKEND_HEADER_CVSID                                                           \
+  "@(#)$Id: OSGTextWIN32Backend.h,v 1.1 2005/03/03 13:43:07 a-m-z Exp $"
 
 #endif /* _OSGTEXTWIN32BACKEND_H_ */

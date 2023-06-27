@@ -61,158 +61,148 @@ class DCTPFace;
 #define OSG_ARBITRARY_SPLIT
 
 #ifdef OSG_ARBITRARY_SPLIT
- #ifndef OSG_USE_KD_TREE
-  #define OSG_USE_KD_TREE
- #endif
+#ifndef OSG_USE_KD_TREE
+#define OSG_USE_KD_TREE
+#endif
 #endif
 
-struct SErrorTreeCell
-{
-	float				fError;
+struct SErrorTreeCell {
+  float fError;
 #ifdef OSG_ONE_CHILD_PTR
-	SErrorTreeCell		*ptChildren; // nw, ne, sw, se
+  SErrorTreeCell* ptChildren; // nw, ne, sw, se
 #else
- #ifdef OSG_USE_KD_TREE
-	SErrorTreeCell		*aptChildren[ 2 ]; // n/w, s/e
- #else
-	SErrorTreeCell		*aptChildren[ 4 ]; // nw, ne, sw, se
- #endif
+#ifdef OSG_USE_KD_TREE
+  SErrorTreeCell*      aptChildren[2]; // n/w, s/e
+#else
+  SErrorTreeCell* aptChildren[4]; // nw, ne, sw, se
+#endif
 #endif
 #ifdef OSG_USE_KD_TREE
- #ifdef OSG_ARBITRARY_SPLIT
-	float				fSplitValue;	// <0 => horizontal; >0 => vertikal
- #else
-	bool				bSplitHoriz;
- #endif
+#ifdef OSG_ARBITRARY_SPLIT
+  float fSplitValue; // <0 => horizontal; >0 => vertikal
+#else
+  bool bSplitHoriz;
+#endif
 #endif
 };
 
 #ifndef OSG_USE_NURBS_PATCH
-struct SBPETreeCell
-{
-	float				fError;
-	float				fPrevError;
-	SBPETreeCell		*aptChildren[ 4 ]; // nw, ne, sw, se / n, -, s, - / w, e, -, -
-	unsigned int		uiTop;
-	unsigned int		uiBottom;
-	unsigned int		uiLeft;
-	unsigned int		uiRight;
+struct SBPETreeCell {
+  float         fError;
+  float         fPrevError;
+  SBPETreeCell* aptChildren[4]; // nw, ne, sw, se / n, -, s, - / w, e, -, -
+  unsigned int  uiTop;
+  unsigned int  uiBottom;
+  unsigned int  uiLeft;
+  unsigned int  uiRight;
 };
 #endif
 
-struct SFaceTreeCell
-{
+struct SFaceTreeCell {
 #ifdef OSG_USE_NURBS_PATCH
-	BSplineTensorSurface	*pclBSplineSurface;
-	SErrorTreeCell			*ptErrorCell;
+  BSplineTensorSurface* pclBSplineSurface;
+  SErrorTreeCell*       ptErrorCell;
 #else
-	BezierTensorSurface		*pclBezierSurface;
-	SErrorTreeCell			*ptErrorCell;
-	SBPETreeCell			*ptBPCell;
+  BezierTensorSurface* pclBezierSurface;
+  SErrorTreeCell*      ptErrorCell;
+  SBPETreeCell*        ptBPCell;
 #endif
-	bool					bOwnSurface;
-/*#ifdef OSG_ARBITRARY_SPLIT
-	Vec2d					clMin;
-	Vec2d					clMax;
-#endif*/
+  bool bOwnSurface;
+  /*#ifdef OSG_ARBITRARY_SPLIT
+          Vec2d					clMin;
+          Vec2d					clMax;
+  #endif*/
 };
 
-class OSG_SYSTEMLIB_DLLMAPPING CErrorQuadTree
-{
+class OSG_SYSTEMLIB_DLLMAPPING CErrorQuadTree {
 
-public:
+ public:
+  CErrorQuadTree();
+  ~CErrorQuadTree();
 
-	CErrorQuadTree( );
-	~CErrorQuadTree( );
-
-/*#ifdef OSG_ARBITRARY_SPLIT
-	void CalculatePoints( std::vector< Vec2d > *pvclInsert, std::vector< Vec2d > *pvclDelete,
-						  BSplineTensorSurface *pclPatch,
-						  float fError, float &rfMinError, float &rfMaxError );
-#else*/
-	void BuildMesh( DCTPMesh *pclMesh,
- #ifdef OSG_USE_NURBS_PATCH
-					BSplineTensorSurface *pclPatch,
-  #ifdef OSG_ARBITRARY_SPLIT
-					const Vec2d cclMinParam, const Vec2d cclMaxParam,
-  #endif
- #else
-					std::vector< std::vector< BezierTensorSurface > > *pvvclPatches,
-					const std::vector< double > *cpvdIntervalsU,
-					const std::vector< double > *cpvdIntervalsV,
- #endif
-					float fError, float &rfMinError, float &rfMaxError );
-
-	void WriteTree( std::ostream &rclFile );
-
-	void ReadTree( std::istream &rclFile );
-
-private:
-
-#ifdef OSG_ONE_CHILD_PTR
-	void DeleteNode( SErrorTreeCell *pclNode );
+  /*#ifdef OSG_ARBITRARY_SPLIT
+          void CalculatePoints( std::vector< Vec2d > *pvclInsert, std::vector< Vec2d > *pvclDelete,
+                                                    BSplineTensorSurface *pclPatch,
+                                                    float fError, float &rfMinError, float
+  &rfMaxError ); #else*/
+  void BuildMesh(DCTPMesh* pclMesh,
+#ifdef OSG_USE_NURBS_PATCH
+      BSplineTensorSurface* pclPatch,
+#ifdef OSG_ARBITRARY_SPLIT
+      const Vec2d cclMinParam, const Vec2d cclMaxParam,
+#endif
 #else
-	void DeleteNode( SErrorTreeCell *&rpclNode );
+      std::vector<std::vector<BezierTensorSurface>>* pvvclPatches,
+      const std::vector<double>* cpvdIntervalsU, const std::vector<double>* cpvdIntervalsV,
+#endif
+      float fError, float& rfMinError, float& rfMaxError);
+
+  void WriteTree(std::ostream& rclFile);
+
+  void ReadTree(std::istream& rclFile);
+
+ private:
+#ifdef OSG_ONE_CHILD_PTR
+  void DeleteNode(SErrorTreeCell* pclNode);
+#else
+  void DeleteNode(SErrorTreeCell*& rpclNode);
 #endif
 
-	void SetInitialCells( DCTPMesh *pclMesh, float fError,
- #ifdef OSG_USE_NURBS_PATCH
-  #ifdef OSG_ARBITRARY_SPLIT
-						  BSplineTensorSurface *pclPatch,
-						  const Vec2d cclMinParam, const Vec2d cclMaxParam );
-  #else
-						  BSplineTensorSurface *pclPatch );
-  #endif
- #else
-						  std::vector< std::vector< BezierTensorSurface > > *pvvclPatches,
-						  const std::vector< double > *cpvdIntervalsU,
-						  const std::vector< double > *cpvdIntervalsV );
- #endif
+  void SetInitialCells(DCTPMesh* pclMesh, float fError,
+#ifdef OSG_USE_NURBS_PATCH
+#ifdef OSG_ARBITRARY_SPLIT
+      BSplineTensorSurface* pclPatch, const Vec2d cclMinParam, const Vec2d cclMaxParam);
+#else
+      BSplineTensorSurface* pclPatch);
+#endif
+#else
+      std::vector<std::vector<BezierTensorSurface>>* pvvclPatches,
+      const std::vector<double>* cpvdIntervalsU, const std::vector<double>* cpvdIntervalsV);
+#endif
 
-	void SubdivideNode( DCTPMesh *pclMesh, DCTPFace *pclFace );
+  void SubdivideNode(DCTPMesh* pclMesh, DCTPFace* pclFace);
 
-	void SubdivideBuild( DCTPMesh *pclMesh, DCTPFace *pclFace );
+  void SubdivideBuild(DCTPMesh* pclMesh, DCTPFace* pclFace);
 
-	void ComputeError( DCTPFace *pclFace );
+  void ComputeError(DCTPFace* pclFace);
 
 #ifndef OSG_USE_NURBS_PATCH
-	void ComputeBPTree( std::vector< std::vector< BezierTensorSurface > > *pvvclPatches,
-						const std::vector< double > *cpvdIntervalsU,
-						const std::vector< double > *cpvdIntervalsV );
+  void ComputeBPTree(std::vector<std::vector<BezierTensorSurface>>* pvvclPatches,
+      const std::vector<double>* cpvdIntervalsU, const std::vector<double>* cpvdIntervalsV);
 
-	void ComputeBPError( SBPETreeCell *pclBPNode,
-						 std::vector< std::vector< BezierTensorSurface > > *pvvclPatches,
-						 const std::vector< double > *cpvdIntervalsU,
-						 const std::vector< double > *cpvdIntervalsV );
+  void ComputeBPError(SBPETreeCell*                  pclBPNode,
+      std::vector<std::vector<BezierTensorSurface>>* pvvclPatches,
+      const std::vector<double>* cpvdIntervalsU, const std::vector<double>* cpvdIntervalsV);
 
-	void SubdivideBPTree( SBPETreeCell *pclBPNode,
-						  std::vector< std::vector< BezierTensorSurface > > *pvvclPatches,
-						  const std::vector< double > *cpvdIntervalsU,
-						  const std::vector< double > *cpvdIntervalsV );
+  void SubdivideBPTree(SBPETreeCell*                 pclBPNode,
+      std::vector<std::vector<BezierTensorSurface>>* pvvclPatches,
+      const std::vector<double>* cpvdIntervalsU, const std::vector<double>* cpvdIntervalsV);
 
-	void DeleteBPNode( SBPETreeCell *&rpclNode );
+  void DeleteBPNode(SBPETreeCell*& rpclNode);
 #endif
 
 #ifndef OSG_DIFF_TO_BILIN
-	double computeDistToPlane( const Vec3d cclP, const Vec3d cclV1, const Vec3d cclV2, const Vec3d cclV3 );
+  double computeDistToPlane(
+      const Vec3d cclP, const Vec3d cclV1, const Vec3d cclV2, const Vec3d cclV3);
 
-	double computeDistToTriangle( const Vec3d cclP, const Vec3d cclV1, const Vec3d cclV2, const Vec3d cclV3 );
+  double computeDistToTriangle(
+      const Vec3d cclP, const Vec3d cclV1, const Vec3d cclV2, const Vec3d cclV3);
 #endif
 
-	double computeDistToLine( const Vec3d cclP, const Vec3d cclV1, const Vec3d cclV2 );
+  double computeDistToLine(const Vec3d cclP, const Vec3d cclV1, const Vec3d cclV2);
 
-	float								m_fMaxError;
+  float m_fMaxError;
 #ifdef OSG_USE_NURBS_PATCH
-	SErrorTreeCell*						m_ptRoot;
+  SErrorTreeCell* m_ptRoot;
 #else
-	std::vector< std::vector< SErrorTreeCell* > >	m_vvptRoot;
-	SBPETreeCell						*m_ptBPRoot;
+  std::vector<std::vector<SErrorTreeCell*>> m_vvptRoot;
+  SBPETreeCell*                             m_ptBPRoot;
 #endif
 
-	float								m_fErrorCutoff;
+  float m_fErrorCutoff;
 
-public:
-	static bool							m_sbNormalApproximation;
+ public:
+  static bool m_sbNormalApproximation;
 };
 
 OSG_END_NAMESPACE

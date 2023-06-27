@@ -57,47 +57,45 @@ OSG_BEGIN_NAMESPACE
     \hideinhierarchy
  */
 
-struct NameAttachmentDesc
-{
-    static  FieldDescription *_desc[];
+struct NameAttachmentDesc {
+  static FieldDescription* _desc[];
 
-    typedef SFString           FieldTypeT;
+  typedef SFString FieldTypeT;
 
-    static const Char8         *getTypeName  (void) 
-    {
-        return "Name";          
-    }
+  static const Char8* getTypeName(void) {
+    return "Name";
+  }
 
-    static const Char8         *getFieldName (void) 
-    {
-        return "name";          
-    }
+  static const Char8* getFieldName(void) {
+    return "name";
+  }
 
-    static const Char8         *getGroupName (void) 
-    { 
-        return "name";          
-    }
+  static const Char8* getGroupName(void) {
+    return "name";
+  }
 
-    static const Char8         *getParentTypeName(void) 
-    {
-        return "Attachment";    
-    }
+  static const Char8* getParentTypeName(void) {
+    return "Attachment";
+  }
 
-    static InitContainerF     getInitMethod(void) { return NULL;  }
+  static InitContainerF getInitMethod(void) {
+    return NULL;
+  }
 
-    static FieldDescription **getDesc      (void) { return _desc; }
+  static FieldDescription** getDesc(void) {
+    return _desc;
+  }
 };
 
 /*! \ingroup GrpSystemFieldContainer
  */
 
-typedef SimpleAttachment<NameAttachmentDesc  > Name;
+typedef SimpleAttachment<NameAttachmentDesc> Name;
 
 /*! \ingroup GrpSystemFieldContainer
  */
 
-typedef FCPtr           <AttachmentPtr,  Name> NamePtr;
-
+typedef FCPtr<AttachmentPtr, Name> NamePtr;
 
 class AttachmentContainerPtr;
 
@@ -105,99 +103,88 @@ class AttachmentContainerPtr;
  */
 
 OSG_SYSTEMLIB_DLLMAPPING
-const Char8 *getName(      AttachmentContainerPtr  container);
+const Char8* getName(AttachmentContainerPtr container);
 
 /*! \ingroup GrpSystemFieldContainerFuncs
  */
 
 OSG_SYSTEMLIB_DLLMAPPING
-      void   setName(      AttachmentContainerPtr  container, 
-                     const std::string            &name     );
+void setName(AttachmentContainerPtr container, const std::string& name);
 
 /*! \ingroup GrpSystemFieldContainerFuncs
  */
 
 OSG_SYSTEMLIB_DLLMAPPING
-      void   setName(      AttachmentContainerPtr  container, 
-                     const Char8                  *name     );
- 
+void setName(AttachmentContainerPtr container, const Char8* name);
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 #ifndef OSG_COMPILESIMPLEATTACHMENTSINST
-OSG_FC_DLLEXPORT_DECL(SimpleAttachment, 
-                      NameAttachmentDesc,
-                      OSG_SYSTEMLIB_DLLTMPLMAPPING)
+OSG_FC_DLLEXPORT_DECL(SimpleAttachment, NameAttachmentDesc, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 #endif
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
-
 
 /*! \ingroup GrpSystemFieldContainer
     \hideinhierarchy
  */
 
-struct VoidPAttachmentDesc
-{
-    static  FieldDescription *_desc[];
+struct VoidPAttachmentDesc {
+  static FieldDescription* _desc[];
 
-    typedef SFVoidP            FieldTypeT;
+  typedef SFVoidP FieldTypeT;
 
-    static const Char8         *getTypeName  (void) 
-    {
-        return "VoidPAttachment";          
-    }
+  static const Char8* getTypeName(void) {
+    return "VoidPAttachment";
+  }
 
-    static const Char8         *getFieldName (void) 
-    {
-        return "data";          
-    }
+  static const Char8* getFieldName(void) {
+    return "data";
+  }
 
-    static const Char8         *getGroupName (void) 
-    { 
-        return "voidp";          
-    }
+  static const Char8* getGroupName(void) {
+    return "voidp";
+  }
 
-    static const Char8         *getParentTypeName(void) 
-    {
-        return "Attachment";    
-    }
+  static const Char8* getParentTypeName(void) {
+    return "Attachment";
+  }
 
-    static InitContainerF     getInitMethod(void) { return NULL;  }
+  static InitContainerF getInitMethod(void) {
+    return NULL;
+  }
 
-    static FieldDescription **getDesc      (void) { return _desc; }
+  static FieldDescription** getDesc(void) {
+    return _desc;
+  }
 };
 
 /*! \ingroup GrpSystemFieldContainer
  */
 
-typedef SimpleAttachment<VoidPAttachmentDesc            > VoidPAttachment;
+typedef SimpleAttachment<VoidPAttachmentDesc> VoidPAttachment;
 
 /*! \ingroup GrpSystemFieldContainer
  */
 
-typedef FCPtr           <AttachmentPtr,  VoidPAttachment> VoidPAttachmentPtr;
+typedef FCPtr<AttachmentPtr, VoidPAttachment> VoidPAttachmentPtr;
 
 /*! \ingroup GrpSystemFieldContainerFuncs
  */
 
 OSG_SYSTEMLIB_DLLMAPPING
-void *getVoidP(AttachmentContainerPtr  container);
+void* getVoidP(AttachmentContainerPtr container);
 
 /*! \ingroup GrpSystemFieldContainerFuncs
  */
 
 OSG_SYSTEMLIB_DLLMAPPING
-void  setVoidP(AttachmentContainerPtr  container, 
-               void                   *pData,
-               bool                   internal = false );
+void setVoidP(AttachmentContainerPtr container, void* pData, bool internal = false);
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 #ifndef OSG_COMPILESIMPLEATTACHMENTSINST
-OSG_FC_DLLEXPORT_DECL(SimpleAttachment, 
-                      VoidPAttachmentDesc,
-                      OSG_SYSTEMLIB_DLLTMPLMAPPING)
+OSG_FC_DLLEXPORT_DECL(SimpleAttachment, VoidPAttachmentDesc, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 #endif
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

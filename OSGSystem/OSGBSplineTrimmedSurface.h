@@ -44,7 +44,6 @@
 #include <OSGSystemDef.h>
 #include <OSGConfig.h>
 
-
 #include "OSGdctptypes.h"
 #include "OSGBSplineTensorSurface.h"
 #include "OSGBSplineCurve2D.h"
@@ -54,39 +53,49 @@
 
 OSG_BEGIN_NAMESPACE
 
-typedef std::vector< BSplineCurve2D > bscvector;
-typedef std::vector< bscvector > trimmingloop;
-
+typedef std::vector<BSplineCurve2D> bscvector;
+typedef std::vector<bscvector>      trimmingloop;
 
 class OSG_SYSTEMLIB_DLLMAPPING BSplineTrimmedSurface {
 
-// FIXME: proper support for getting/setting stuph
-public:
-  BSplineTrimmedSurface() {}
-  ~BSplineTrimmedSurface() {} 
+  // FIXME: proper support for getting/setting stuph
+ public:
+  BSplineTrimmedSurface() {
+  }
+  ~BSplineTrimmedSurface() {
+  }
 
   // I/O support - FIXME: read( char *fname ) outta be supported , etc
-  int read( std::istream &infile );
-  int write( std::ostream &outfile );
-  void normalize( void );
-   
-  BSplineTensorSurface& getSurface( void ) { return surf; }
-  trimmingloop& getTrimmingLoops( void ) { return trimming; }
-  int setSurface( BSplineTensorSurface &ts ) { surf = ts; return 0; }
-  int setTrimmingLoops( trimmingloop &t ) { trimming = t; return 0; }
+  int  read(std::istream& infile);
+  int  write(std::ostream& outfile);
+  void normalize(void);
+
+  BSplineTensorSurface& getSurface(void) {
+    return surf;
+  }
+  trimmingloop& getTrimmingLoops(void) {
+    return trimming;
+  }
+  int setSurface(BSplineTensorSurface& ts) {
+    surf = ts;
+    return 0;
+  }
+  int setTrimmingLoops(trimmingloop& t) {
+    trimming = t;
+    return 0;
+  }
 
   //! flips the surface
-  void flip( void );
- 
-protected:
-// file format constants  
+  void flip(void);
+
+ protected:
+  // file format constants
   static const char ff_const_1[];
   static const char ff_const_2[];
   static const char ff_const_3[];
-  
-  BSplineTensorSurface surf;  // the surface itself
-  trimmingloop trimming;         // the trimming loops. each bscvector contains one trimming loop.
 
+  BSplineTensorSurface surf;     // the surface itself
+  trimmingloop         trimming; // the trimming loops. each bscvector contains one trimming loop.
 };
 
 OSG_END_NAMESPACE

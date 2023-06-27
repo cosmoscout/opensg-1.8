@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGMULTIDISPLAYWINDOWBASE_H_
 #define _OSGMULTIDISPLAYWINDOWBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -69,9 +67,9 @@
 
 #include <OSGUInt32Fields.h> // HServers type
 #include <OSGUInt32Fields.h> // VServers type
-#include <OSGBoolFields.h> // ManageClientViewports type
-#include <OSGInt32Fields.h> // XOverlap type
-#include <OSGInt32Fields.h> // YOverlap type
+#include <OSGBoolFields.h>   // ManageClientViewports type
+#include <OSGInt32Fields.h>  // XOverlap type
+#include <OSGInt32Fields.h>  // YOverlap type
 
 #include <OSGMultiDisplayWindowFields.h>
 
@@ -82,209 +80,189 @@ class BinaryDataHandler;
 
 //! \brief MultiDisplayWindow Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING MultiDisplayWindowBase : public ClusterWindow
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING MultiDisplayWindowBase : public ClusterWindow {
+ private:
+  typedef ClusterWindow Inherited;
 
-    typedef ClusterWindow    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef MultiDisplayWindowPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    HServersFieldId              = Inherited::NextFieldId,
+    VServersFieldId              = HServersFieldId + 1,
+    ManageClientViewportsFieldId = VServersFieldId + 1,
+    XOverlapFieldId              = ManageClientViewportsFieldId + 1,
+    YOverlapFieldId              = XOverlapFieldId + 1,
+    NextFieldId                  = YOverlapFieldId + 1
+  };
 
-    typedef MultiDisplayWindowPtr  Ptr;
+  static const OSG::BitVector HServersFieldMask;
+  static const OSG::BitVector VServersFieldMask;
+  static const OSG::BitVector ManageClientViewportsFieldMask;
+  static const OSG::BitVector XOverlapFieldMask;
+  static const OSG::BitVector YOverlapFieldMask;
 
-    enum
-    {
-        HServersFieldId              = Inherited::NextFieldId,
-        VServersFieldId              = HServersFieldId              + 1,
-        ManageClientViewportsFieldId = VServersFieldId              + 1,
-        XOverlapFieldId              = ManageClientViewportsFieldId + 1,
-        YOverlapFieldId              = XOverlapFieldId              + 1,
-        NextFieldId                  = YOverlapFieldId              + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector HServersFieldMask;
-    static const OSG::BitVector VServersFieldMask;
-    static const OSG::BitVector ManageClientViewportsFieldMask;
-    static const OSG::BitVector XOverlapFieldMask;
-    static const OSG::BitVector YOverlapFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFUInt32* getSFHServers(void);
+  SFUInt32* getSFVServers(void);
+  SFBool*   getSFManageClientViewports(void);
+  SFInt32*  getSFXOverlap(void);
+  SFInt32*  getSFYOverlap(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  UInt32&       getHServers(void);
+  const UInt32& getHServers(void) const;
+  UInt32&       getVServers(void);
+  const UInt32& getVServers(void) const;
+  bool&         getManageClientViewports(void);
+  const bool&   getManageClientViewports(void) const;
+  Int32&        getXOverlap(void);
+  const Int32&  getXOverlap(void) const;
+  Int32&        getYOverlap(void);
+  const Int32&  getYOverlap(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFUInt32            *getSFHServers       (void);
-           SFUInt32            *getSFVServers       (void);
-           SFBool              *getSFManageClientViewports(void);
-           SFInt32             *getSFXOverlap       (void);
-           SFInt32             *getSFYOverlap       (void);
+  void setHServers(const UInt32& value);
+  void setVServers(const UInt32& value);
+  void setManageClientViewports(const bool& value);
+  void setXOverlap(const Int32& value);
+  void setYOverlap(const Int32& value);
 
-           UInt32              &getHServers       (void);
-     const UInt32              &getHServers       (void) const;
-           UInt32              &getVServers       (void);
-     const UInt32              &getVServers       (void) const;
-           bool                &getManageClientViewports(void);
-     const bool                &getManageClientViewports(void) const;
-           Int32               &getXOverlap       (void);
-     const Int32               &getXOverlap       (void) const;
-           Int32               &getYOverlap       (void);
-     const Int32               &getYOverlap       (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setHServers       ( const UInt32 &value );
-     void setVServers       ( const UInt32 &value );
-     void setManageClientViewports( const bool &value );
-     void setXOverlap       ( const Int32 &value );
-     void setYOverlap       ( const Int32 &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static MultiDisplayWindowPtr create(void);
+  static MultiDisplayWindowPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  MultiDisplayWindowPtr      create          (void); 
-    static  MultiDisplayWindowPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFUInt32 _sfHServers;
+  SFUInt32 _sfVServers;
+  SFBool   _sfManageClientViewports;
+  SFInt32  _sfXOverlap;
+  SFInt32  _sfYOverlap;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  MultiDisplayWindowBase(void);
+  MultiDisplayWindowBase(const MultiDisplayWindowBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~MultiDisplayWindowBase(void);
 
-    SFUInt32            _sfHServers;
-    SFUInt32            _sfVServers;
-    SFBool              _sfManageClientViewports;
-    SFInt32             _sfXOverlap;
-    SFInt32             _sfYOverlap;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    MultiDisplayWindowBase(void);
-    MultiDisplayWindowBase(const MultiDisplayWindowBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~MultiDisplayWindowBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      MultiDisplayWindowBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(MultiDisplayWindowBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      MultiDisplayWindowBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      MultiDisplayWindowBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const MultiDisplayWindowBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const MultiDisplayWindowBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef MultiDisplayWindowBase* MultiDisplayWindowBaseP;
 
-typedef MultiDisplayWindowBase *MultiDisplayWindowBaseP;
-
-typedef osgIF<MultiDisplayWindowBase::isNodeCore,
-              CoredNodePtr<MultiDisplayWindow>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet MultiDisplayWindowNodePtr;
+typedef osgIF<MultiDisplayWindowBase::isNodeCore, CoredNodePtr<MultiDisplayWindow>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet
+    MultiDisplayWindowNodePtr;
 
 typedef RefPtr<MultiDisplayWindowPtr> MultiDisplayWindowRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGMULTIDISPLAYWINDOWBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGMULTIDISPLAYWINDOWBASE_HEADER_CVSID                                                     \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGMULTIDISPLAYWINDOWBASE_H_ */

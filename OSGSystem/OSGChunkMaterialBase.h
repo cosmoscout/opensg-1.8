@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGCHUNKMATERIALBASE_H_
 #define _OSGCHUNKMATERIALBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -68,7 +66,7 @@
 #include <OSGMaterial.h> // Parent
 
 #include <OSGStateChunkFields.h> // Chunks type
-#include <OSGInt32Fields.h> // Slots type
+#include <OSGInt32Fields.h>      // Slots type
 
 #include <OSGChunkMaterialFields.h>
 
@@ -79,188 +77,166 @@ class BinaryDataHandler;
 
 //! \brief ChunkMaterial Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING ChunkMaterialBase : public Material
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING ChunkMaterialBase : public Material {
+ private:
+  typedef Material Inherited;
 
-    typedef Material    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef ChunkMaterialPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    ChunksFieldId = Inherited::NextFieldId,
+    SlotsFieldId  = ChunksFieldId + 1,
+    NextFieldId   = SlotsFieldId + 1
+  };
 
-    typedef ChunkMaterialPtr  Ptr;
+  static const OSG::BitVector ChunksFieldMask;
+  static const OSG::BitVector SlotsFieldMask;
 
-    enum
-    {
-        ChunksFieldId = Inherited::NextFieldId,
-        SlotsFieldId  = ChunksFieldId + 1,
-        NextFieldId   = SlotsFieldId  + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector ChunksFieldMask;
-    static const OSG::BitVector SlotsFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  MFStateChunkPtr* getMFChunks(void);
+  MFInt32*         getMFSlots(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  StateChunkPtr&         getChunks(const UInt32 index);
+  MFStateChunkPtr&       getChunks(void);
+  const MFStateChunkPtr& getChunks(void) const;
+  Int32&                 getSlots(const UInt32 index);
+  MFInt32&               getSlots(void);
+  const MFInt32&         getSlots(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           MFStateChunkPtr     *getMFChunks         (void);
-           MFInt32             *getMFSlots          (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-           StateChunkPtr       &getChunks         (const UInt32 index);
-           MFStateChunkPtr     &getChunks         (void);
-     const MFStateChunkPtr     &getChunks         (void) const;
-           Int32               &getSlots          (const UInt32 index);
-           MFInt32             &getSlots          (void);
-     const MFInt32             &getSlots          (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  static ChunkMaterialPtr create(void);
+  static ChunkMaterialPtr createEmpty(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    static  ChunkMaterialPtr      create          (void); 
-    static  ChunkMaterialPtr      createEmpty     (void); 
+  MFStateChunkPtr _mfChunks;
+  MFInt32         _mfSlots;
 
-    /*! \}                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  ChunkMaterialBase(void);
+  ChunkMaterialBase(const ChunkMaterialBase& source);
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  virtual ~ChunkMaterialBase(void);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
-
-    MFStateChunkPtr     _mfChunks;
-    MFInt32             _mfSlots;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    ChunkMaterialBase(void);
-    ChunkMaterialBase(const ChunkMaterialBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~ChunkMaterialBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      ChunkMaterialBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(ChunkMaterialBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      ChunkMaterialBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      ChunkMaterialBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const ChunkMaterialBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const ChunkMaterialBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef ChunkMaterialBase* ChunkMaterialBaseP;
 
-typedef ChunkMaterialBase *ChunkMaterialBaseP;
-
-typedef osgIF<ChunkMaterialBase::isNodeCore,
-              CoredNodePtr<ChunkMaterial>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet ChunkMaterialNodePtr;
+typedef osgIF<ChunkMaterialBase::isNodeCore, CoredNodePtr<ChunkMaterial>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet ChunkMaterialNodePtr;
 
 typedef RefPtr<ChunkMaterialPtr> ChunkMaterialRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGCHUNKMATERIALBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGCHUNKMATERIALBASE_HEADER_CVSID                                                          \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGCHUNKMATERIALBASE_H_ */

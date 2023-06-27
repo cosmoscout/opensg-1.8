@@ -57,50 +57,43 @@ OSG_BEGIN_NAMESPACE
 /*! \ingroup GrpBaseStringConversion
  */
 
-class OSG_BASE_DLLMAPPING StringConversionStateBase
-{
-    /*==========================  PUBLIC  =================================*/
+class OSG_BASE_DLLMAPPING StringConversionStateBase {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  StringConversionStateBase(void);
 
-    StringConversionStateBase(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  virtual ~StringConversionStateBase(void);
 
-    virtual ~StringConversionStateBase(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Handle Fields                             */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Handle Fields                             */
-    /*! \{                                                                 */
+  virtual std::string& beginField(const Field* pF, std::string& outStr)     = 0;
+  virtual std::string& addValueStr(std::string& value, std::string& outStr) = 0;
+  virtual std::string& endField(const Field* pF, std::string& outStr)       = 0;
 
-    virtual std::string &beginField (const Field       *pF,    
-                                           std::string &outStr) = 0;
-    virtual std::string &addValueStr(      std::string &value, 
-                                           std::string &outStr) = 0;
-    virtual std::string &endField   (const Field  *pF,    
-                                           std::string &outStr) = 0;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*==========================  PRIVATE  ================================*/
 
-  protected:
-
-    /*==========================  PRIVATE  ================================*/
-
-  private:
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    StringConversionStateBase(const StringConversionStateBase &source);
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const StringConversionStateBase &source);
+ private:
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  StringConversionStateBase(const StringConversionStateBase& source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const StringConversionStateBase& source);
 };
 
 OSG_END_NAMESPACE

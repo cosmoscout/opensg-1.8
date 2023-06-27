@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGPOLYGONFOREGROUNDFIELDS_H_
 #define _OSGPOLYGONFOREGROUNDFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class PolygonForeground;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! PolygonForegroundPtr
 
 typedef FCPtr<ForegroundPtr, PolygonForeground> PolygonForegroundPtr;
@@ -81,18 +80,23 @@ typedef FCPtr<ForegroundPtr, PolygonForeground> PolygonForegroundPtr;
 #endif
 
 template <>
-struct FieldDataTraits<PolygonForegroundPtr> : 
-    public FieldTraitsRecurseMapper<PolygonForegroundPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<PolygonForegroundPtr>
+    : public FieldTraitsRecurseMapper<PolygonForegroundPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getSName(void) { return "SFPolygonForegroundPtr"; }
-    static const char *getMName(void) { return "MFPolygonForegroundPtr"; }
+  static const char* getSName(void) {
+    return "SFPolygonForegroundPtr";
+  }
+  static const char* getMName(void) {
+    return "MFPolygonForegroundPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -102,7 +106,6 @@ struct FieldDataTraits<PolygonForegroundPtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
@@ -126,6 +129,7 @@ OSG_DLLEXPORT_DECL1(MField, PolygonForegroundPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 
 OSG_END_NAMESPACE
 
-#define OSGPOLYGONFOREGROUNDFIELDS_HEADER_CVSID "@(#)$Id: FCFieldsTemplate_h.h,v 1.26 2006/02/20 16:55:35 dirk Exp $"
+#define OSGPOLYGONFOREGROUNDFIELDS_HEADER_CVSID                                                    \
+  "@(#)$Id: FCFieldsTemplate_h.h,v 1.26 2006/02/20 16:55:35 dirk Exp $"
 
 #endif /* _OSGPOLYGONFOREGROUNDFIELDS_H_ */

@@ -42,19 +42,14 @@
 
 OSG_BEGIN_NAMESPACE
 
-inline
-UInt32 VertexProgramChunk::getStaticClassId(void)
-{
-    return getStaticClass()->getId();
+inline UInt32 VertexProgramChunk::getStaticClassId(void) {
+  return getStaticClass()->getId();
 }
 
-inline
-const StateChunkClass *VertexProgramChunk::getStaticClass(void)
-{
-    return &VertexProgramChunk::_class;
+inline const StateChunkClass* VertexProgramChunk::getStaticClass(void) {
+  return &VertexProgramChunk::_class;
 }
 
 OSG_END_NAMESPACE
 
 #define OSGVERTEXPROGRAMCHUNK_INLINE_CVSID "@(#)$Id: $"
-

@@ -67,10 +67,8 @@ StateChunkClass ColorMaskChunk::_class("Color");
  *                           Class methods                                 *
 \***************************************************************************/
 
-void ColorMaskChunk::initMethod (void)
-{
+void ColorMaskChunk::initMethod(void) {
 }
-
 
 /***************************************************************************\
  *                           Instance methods                              *
@@ -82,99 +80,83 @@ void ColorMaskChunk::initMethod (void)
 
 /*----------------------- constructors & destructors ----------------------*/
 
-ColorMaskChunk::ColorMaskChunk(void) :
-    Inherited()
-{
+ColorMaskChunk::ColorMaskChunk(void)
+    : Inherited() {
 }
 
-ColorMaskChunk::ColorMaskChunk(const ColorMaskChunk &source) :
-    Inherited(source)
-{
+ColorMaskChunk::ColorMaskChunk(const ColorMaskChunk& source)
+    : Inherited(source) {
 }
 
-ColorMaskChunk::~ColorMaskChunk(void)
-{
+ColorMaskChunk::~ColorMaskChunk(void) {
 }
 
 /*------------------------- Chunk Class Access ---------------------------*/
 
-const StateChunkClass *ColorMaskChunk::getClass(void) const
-{
-    return &_class;
+const StateChunkClass* ColorMaskChunk::getClass(void) const {
+  return &_class;
 }
 
 /*----------------------------- class specific ----------------------------*/
 
-void ColorMaskChunk::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void ColorMaskChunk::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
-void ColorMaskChunk::dump(      UInt32    ,
-                         const BitVector ) const
-{
-    SLOG << "Dump ColorMaskChunk NI" << std::endl;
+void ColorMaskChunk::dump(UInt32, const BitVector) const {
+  SLOG << "Dump ColorMaskChunk NI" << std::endl;
 }
 
 /*------------------------------ State ------------------------------------*/
 
-void ColorMaskChunk::activate(DrawActionBase *, UInt32)
-{
-    glColorMask(getMaskR(), getMaskG(), getMaskB(), getMaskA());
+void ColorMaskChunk::activate(DrawActionBase*, UInt32) {
+  glColorMask(getMaskR(), getMaskG(), getMaskB(), getMaskA());
 }
 
-void ColorMaskChunk::changeFrom( DrawActionBase *act, StateChunk * old_chunk, UInt32 index )
-{
-    old_chunk->deactivate( act, index );
-    activate( act, index );
+void ColorMaskChunk::changeFrom(DrawActionBase* act, StateChunk* old_chunk, UInt32 index) {
+  old_chunk->deactivate(act, index);
+  activate(act, index);
 }
 
-void ColorMaskChunk::deactivate ( DrawActionBase *, UInt32 )
-{
-    glColorMask(true, true, true, true);
+void ColorMaskChunk::deactivate(DrawActionBase*, UInt32) {
+  glColorMask(true, true, true, true);
 }
 
 /*-------------------------- Comparison -----------------------------------*/
 
-Real32 ColorMaskChunk::switchCost(StateChunk *)
-{
-    return 0;
+Real32 ColorMaskChunk::switchCost(StateChunk*) {
+  return 0;
 }
 
 /** \brief assignment
  */
 
-bool ColorMaskChunk::operator < (const StateChunk &other) const
-{
-    return this < &other;
+bool ColorMaskChunk::operator<(const StateChunk& other) const {
+  return this < &other;
 }
 
 /** \brief equal
  */
 
-bool ColorMaskChunk::operator == (const StateChunk &other) const
-{
-    ColorMaskChunk const *tother = dynamic_cast<ColorMaskChunk const*>(&other);
+bool ColorMaskChunk::operator==(const StateChunk& other) const {
+  ColorMaskChunk const* tother = dynamic_cast<ColorMaskChunk const*>(&other);
 
-    if(!tother)
-        return false;
+  if (!tother)
+    return false;
 
-    if(tother == this)
-        return true;
-
-    if(getMaskR()          != tother->getMaskR()  ||
-       getMaskG()          != tother->getMaskG()  ||
-       getMaskB()          != tother->getMaskB()  ||
-       getMaskA()          != tother->getMaskA()    )
-        return false;
-
+  if (tother == this)
     return true;
+
+  if (getMaskR() != tother->getMaskR() || getMaskG() != tother->getMaskG() ||
+      getMaskB() != tother->getMaskB() || getMaskA() != tother->getMaskA())
+    return false;
+
+  return true;
 }
 
 /** \brief unequal
  */
 
-bool ColorMaskChunk::operator != (const StateChunk &other) const
-{
-    return ! (*this == other);
+bool ColorMaskChunk::operator!=(const StateChunk& other) const {
+  return !(*this == other);
 }

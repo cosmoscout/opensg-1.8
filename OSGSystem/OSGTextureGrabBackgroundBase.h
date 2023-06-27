@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGTEXTUREGRABBACKGROUNDBASE_H_
 #define _OSGTEXTUREGRABBACKGROUNDBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -68,9 +66,9 @@
 #include <OSGSolidBackground.h> // Parent
 
 #include <OSGTextureChunkFields.h> // Texture type
-#include <OSGBoolFields.h> // AutoResize type
-#include <OSGGLenumFields.h> // BindTarget type
-#include <OSGGLenumFields.h> // CopyTarget type
+#include <OSGBoolFields.h>         // AutoResize type
+#include <OSGGLenumFields.h>       // BindTarget type
+#include <OSGGLenumFields.h>       // CopyTarget type
 
 #include <OSGTextureGrabBackgroundFields.h>
 
@@ -81,202 +79,182 @@ class BinaryDataHandler;
 
 //! \brief TextureGrabBackground Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING TextureGrabBackgroundBase : public SolidBackground
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING TextureGrabBackgroundBase : public SolidBackground {
+ private:
+  typedef SolidBackground Inherited;
 
-    typedef SolidBackground    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef TextureGrabBackgroundPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    TextureFieldId    = Inherited::NextFieldId,
+    AutoResizeFieldId = TextureFieldId + 1,
+    BindTargetFieldId = AutoResizeFieldId + 1,
+    CopyTargetFieldId = BindTargetFieldId + 1,
+    NextFieldId       = CopyTargetFieldId + 1
+  };
 
-    typedef TextureGrabBackgroundPtr  Ptr;
+  static const OSG::BitVector TextureFieldMask;
+  static const OSG::BitVector AutoResizeFieldMask;
+  static const OSG::BitVector BindTargetFieldMask;
+  static const OSG::BitVector CopyTargetFieldMask;
 
-    enum
-    {
-        TextureFieldId    = Inherited::NextFieldId,
-        AutoResizeFieldId = TextureFieldId    + 1,
-        BindTargetFieldId = AutoResizeFieldId + 1,
-        CopyTargetFieldId = BindTargetFieldId + 1,
-        NextFieldId       = CopyTargetFieldId + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector TextureFieldMask;
-    static const OSG::BitVector AutoResizeFieldMask;
-    static const OSG::BitVector BindTargetFieldMask;
-    static const OSG::BitVector CopyTargetFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFTextureChunkPtr* getSFTexture(void);
+  SFBool*            getSFAutoResize(void);
+  SFGLenum*          getSFBindTarget(void);
+  SFGLenum*          getSFCopyTarget(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  TextureChunkPtr&       getTexture(void);
+  const TextureChunkPtr& getTexture(void) const;
+  bool&                  getAutoResize(void);
+  const bool&            getAutoResize(void) const;
+  GLenum&                getBindTarget(void);
+  const GLenum&          getBindTarget(void) const;
+  GLenum&                getCopyTarget(void);
+  const GLenum&          getCopyTarget(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFTextureChunkPtr   *getSFTexture        (void);
-           SFBool              *getSFAutoResize     (void);
-           SFGLenum            *getSFBindTarget     (void);
-           SFGLenum            *getSFCopyTarget     (void);
+  void setTexture(const TextureChunkPtr& value);
+  void setAutoResize(const bool& value);
+  void setBindTarget(const GLenum& value);
+  void setCopyTarget(const GLenum& value);
 
-           TextureChunkPtr     &getTexture        (void);
-     const TextureChunkPtr     &getTexture        (void) const;
-           bool                &getAutoResize     (void);
-     const bool                &getAutoResize     (void) const;
-           GLenum              &getBindTarget     (void);
-     const GLenum              &getBindTarget     (void) const;
-           GLenum              &getCopyTarget     (void);
-     const GLenum              &getCopyTarget     (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setTexture        ( const TextureChunkPtr &value );
-     void setAutoResize     ( const bool &value );
-     void setBindTarget     ( const GLenum &value );
-     void setCopyTarget     ( const GLenum &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static TextureGrabBackgroundPtr create(void);
+  static TextureGrabBackgroundPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  TextureGrabBackgroundPtr      create          (void); 
-    static  TextureGrabBackgroundPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFTextureChunkPtr _sfTexture;
+  SFBool            _sfAutoResize;
+  SFGLenum          _sfBindTarget;
+  SFGLenum          _sfCopyTarget;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  TextureGrabBackgroundBase(void);
+  TextureGrabBackgroundBase(const TextureGrabBackgroundBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~TextureGrabBackgroundBase(void);
 
-    SFTextureChunkPtr   _sfTexture;
-    SFBool              _sfAutoResize;
-    SFGLenum            _sfBindTarget;
-    SFGLenum            _sfCopyTarget;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    TextureGrabBackgroundBase(void);
-    TextureGrabBackgroundBase(const TextureGrabBackgroundBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~TextureGrabBackgroundBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      TextureGrabBackgroundBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(TextureGrabBackgroundBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      TextureGrabBackgroundBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      TextureGrabBackgroundBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const TextureGrabBackgroundBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const TextureGrabBackgroundBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef TextureGrabBackgroundBase* TextureGrabBackgroundBaseP;
 
-typedef TextureGrabBackgroundBase *TextureGrabBackgroundBaseP;
-
-typedef osgIF<TextureGrabBackgroundBase::isNodeCore,
-              CoredNodePtr<TextureGrabBackground>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet TextureGrabBackgroundNodePtr;
+typedef osgIF<TextureGrabBackgroundBase::isNodeCore, CoredNodePtr<TextureGrabBackground>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet
+    TextureGrabBackgroundNodePtr;
 
 typedef RefPtr<TextureGrabBackgroundPtr> TextureGrabBackgroundRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGTEXTUREGRABBACKGROUNDBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGTEXTUREGRABBACKGROUNDBASE_HEADER_CVSID                                                  \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGTEXTUREGRABBACKGROUNDBASE_H_ */

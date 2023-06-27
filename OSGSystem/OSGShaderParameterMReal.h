@@ -48,76 +48,70 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief ShaderParameterMReal class. See \ref 
+/*! \brief ShaderParameterMReal class. See \ref
            PageSystemShaderParameterMReal for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING ShaderParameterMReal : public ShaderParameterMRealBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING ShaderParameterMReal : public ShaderParameterMRealBase {
+ private:
+  typedef ShaderParameterMRealBase Inherited;
 
-    typedef ShaderParameterMRealBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in ShaderParameterMRealBase.
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  ShaderParameterMReal(void);
+  ShaderParameterMReal(const ShaderParameterMReal& source);
 
-    // Variables should all be in ShaderParameterMRealBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~ShaderParameterMReal(void);
 
-    ShaderParameterMReal(void);
-    ShaderParameterMReal(const ShaderParameterMReal &source);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class ShaderParameterMRealBase;
 
-    virtual ~ShaderParameterMReal(void); 
+  static void initMethod(void);
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  // prohibit default functions (move to 'public' if you need one)
 
-    friend class FieldContainer;
-    friend class ShaderParameterMRealBase;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const ShaderParameterMReal &source);
+  void operator=(const ShaderParameterMReal& source);
 };
 
-typedef ShaderParameterMReal *ShaderParameterMRealP;
+typedef ShaderParameterMReal* ShaderParameterMRealP;
 
 OSG_END_NAMESPACE
 
 #include <OSGShaderParameterMRealBase.inl>
 #include <OSGShaderParameterMReal.inl>
 
-#define OSGSHADERPARAMETERMREAL_HEADER_CVSID "@(#)$Id: OSGShaderParameterMReal.h,v 1.1 2007/03/09 18:11:48 a-m-z Exp $"
+#define OSGSHADERPARAMETERMREAL_HEADER_CVSID                                                       \
+  "@(#)$Id: OSGShaderParameterMReal.h,v 1.1 2007/03/09 18:11:48 a-m-z Exp $"
 
 #endif /* _OSGSHADERPARAMETERMREAL_H_ */

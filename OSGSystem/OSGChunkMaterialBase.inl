@@ -52,109 +52,79 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &ChunkMaterialBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& ChunkMaterialBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 ChunkMaterialBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 ChunkMaterialBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-ChunkMaterialPtr ChunkMaterialBase::create(void) 
-{
-    ChunkMaterialPtr fc; 
+inline ChunkMaterialPtr ChunkMaterialBase::create(void) {
+  ChunkMaterialPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = ChunkMaterialPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = ChunkMaterialPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-ChunkMaterialPtr ChunkMaterialBase::createEmpty(void) 
-{ 
-    ChunkMaterialPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline ChunkMaterialPtr ChunkMaterialBase::createEmpty(void) {
+  ChunkMaterialPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the ChunkMaterial::_mfChunks field.
-inline
-MFStateChunkPtr *ChunkMaterialBase::getMFChunks(void)
-{
-    return &_mfChunks;
+inline MFStateChunkPtr* ChunkMaterialBase::getMFChunks(void) {
+  return &_mfChunks;
 }
 
 //! Get the ChunkMaterial::_mfSlots field.
-inline
-MFInt32 *ChunkMaterialBase::getMFSlots(void)
-{
-    return &_mfSlots;
+inline MFInt32* ChunkMaterialBase::getMFSlots(void) {
+  return &_mfSlots;
 }
-
-
 
 //! Get the value of the \a index element the ChunkMaterial::_mfChunks field.
-inline
-StateChunkPtr &ChunkMaterialBase::getChunks(const UInt32 index)
-{
-    return _mfChunks[index];
+inline StateChunkPtr& ChunkMaterialBase::getChunks(const UInt32 index) {
+  return _mfChunks[index];
 }
 
 //! Get the ChunkMaterial::_mfChunks field.
-inline
-MFStateChunkPtr &ChunkMaterialBase::getChunks(void)
-{
-    return _mfChunks;
+inline MFStateChunkPtr& ChunkMaterialBase::getChunks(void) {
+  return _mfChunks;
 }
 
 //! Get the ChunkMaterial::_mfChunks field.
-inline
-const MFStateChunkPtr &ChunkMaterialBase::getChunks(void) const
-{
-    return _mfChunks;
+inline const MFStateChunkPtr& ChunkMaterialBase::getChunks(void) const {
+  return _mfChunks;
 }
 
 //! Get the value of the \a index element the ChunkMaterial::_mfSlots field.
-inline
-Int32 &ChunkMaterialBase::getSlots(const UInt32 index)
-{
-    return _mfSlots[index];
+inline Int32& ChunkMaterialBase::getSlots(const UInt32 index) {
+  return _mfSlots[index];
 }
 
 //! Get the ChunkMaterial::_mfSlots field.
-inline
-MFInt32 &ChunkMaterialBase::getSlots(void)
-{
-    return _mfSlots;
+inline MFInt32& ChunkMaterialBase::getSlots(void) {
+  return _mfSlots;
 }
 
 //! Get the ChunkMaterial::_mfSlots field.
-inline
-const MFInt32 &ChunkMaterialBase::getSlots(void) const
-{
-    return _mfSlots;
+inline const MFInt32& ChunkMaterialBase::getSlots(void) const {
+  return _mfSlots;
 }
 
 OSG_END_NAMESPACE
 
-#define OSGCHUNKMATERIALBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGCHUNKMATERIALBASE_INLINE_CVSID                                                          \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

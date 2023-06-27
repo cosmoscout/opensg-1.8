@@ -51,101 +51,93 @@ OSG_BEGIN_NAMESPACE
     \ingroup GrpSystemNodeCoresLights
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING SpotLight : public SpotLightBase
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING SpotLight : public SpotLightBase {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                  static stat elem                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  static stat elem                            */
-    /*! \{                                                                 */
+  static StatElemDesc<StatIntElem> statNSpotLights;
 
-    static StatElemDesc<StatIntElem>  statNSpotLights;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                        Set                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                        Set                                   */
-    /*! \{                                                                 */
+  void setSpotDirection(Real32 rX, Real32 rY, Real32 rZ);
+  void setSpotCutOffDeg(Real32 angle);
 
-    void setSpotDirection(Real32 rX, 
-                          Real32 rY, 
-                          Real32 rZ   );
-    void setSpotCutOffDeg(Real32 angle);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                        Get                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                        Get                                   */
-    /*! \{                                                                 */
+  Real32 getSpotCutOffDeg(void);
 
-    Real32 getSpotCutOffDeg(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    virtual void changed(BitVector whichField,
-                         UInt32    origin    );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Chunk                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Chunk                                   */
-    /*! \{                                                                 */
+  virtual void makeChunk(void);
 
-    virtual void makeChunk(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Dump                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Dump                                    */
-    /*! \{                                                                 */
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    virtual void dump(      UInt32    uiIndent = 0,
-                      const BitVector bvFlags  = 0) const;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  typedef SpotLightBase Inherited;
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    typedef SpotLightBase Inherited;
+  SpotLight(void);
+  SpotLight(const SpotLight& source);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    SpotLight(void);
-    SpotLight(const SpotLight &source);
+  virtual ~SpotLight(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Actions                                  */
+  /*! \{                                                                 */
 
-    virtual ~SpotLight(void);
+  // execute the OpenGL commands to draw the light
+  Action::ResultE drawEnter(Action* action);
+  Action::ResultE drawLeave(Action* action);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Actions                                  */
-    /*! \{                                                                 */
+  // generate drawtree
+  Action::ResultE renderEnter(Action* action);
+  Action::ResultE renderLeave(Action* action);
 
-    // execute the OpenGL commands to draw the light
-    Action::ResultE drawEnter(Action * action );
-    Action::ResultE drawLeave(Action * action );
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class SpotLightBase;
 
-    // generate drawtree
-    Action::ResultE renderEnter(Action * action );
-    Action::ResultE renderLeave(Action * action );
+  static void initMethod(void);
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
-
-    friend class FieldContainer;
-    friend class SpotLightBase;
-
-    static void initMethod( void );
-
-    /*! \brief prohibit default function (move to 'public' if needed) */
-    void operator =(const SpotLight &source);
+  /*! \brief prohibit default function (move to 'public' if needed) */
+  void operator=(const SpotLight& source);
 };
 
 OSG_END_NAMESPACE

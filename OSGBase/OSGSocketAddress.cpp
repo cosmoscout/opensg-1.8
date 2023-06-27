@@ -45,7 +45,7 @@
 #include <sys/types.h>
 #ifdef WIN32
 #ifdef WIN32_LEAN_AND_MEAN
-#include <winsock2.h>  
+#include <winsock2.h>
 #endif
 #else
 #include <sys/socket.h>
@@ -71,7 +71,7 @@ OSG_USING_NAMESPACE
  *
  * The class SocketAddress holds an ip-address and a socket port number.
  * It is used to connect, and sendTo Sockets.
- * 
+ *
  * Usage:
  * <PRE>
  * SocketAddress a("colossus.world.com",3334);
@@ -86,61 +86,59 @@ OSG_USING_NAMESPACE
 
 /*! Constructor. Create a socket address for the given port and host.
  */
-SocketAddress::SocketAddress(const char *host,int port) :
-    _sockaddr(NULL)
-{
-    _sockaddr = new sockaddr_in;
+SocketAddress::SocketAddress(const char* host, int port)
+    : _sockaddr(NULL) {
+  _sockaddr = new sockaddr_in;
 
-    memset(_sockaddr,0,sizeof(sockaddr_in));
+  memset(_sockaddr, 0, sizeof(sockaddr_in));
 
-    _sockaddr->sin_family = AF_INET;
+  _sockaddr->sin_family = AF_INET;
 
-    if(host)
-        setHost(std::string(host));
+  if (host)
+    setHost(std::string(host));
 
-    setPort(port);
+  setPort(port);
 }
 
-/*! Constructor. Create a socket with predefined type. E.g. ANY is 
+/*! Constructor. Create a socket with predefined type. E.g. ANY is
     used to bind a socket to all interfaces. BROADCAST chreates a broadcast
     address
  */
-SocketAddress::SocketAddress(SocketAddress::Type type,int port) :
-    _sockaddr(NULL)
-{
-    _sockaddr = new sockaddr_in;
+SocketAddress::SocketAddress(SocketAddress::Type type, int port)
+    : _sockaddr(NULL) {
+  _sockaddr = new sockaddr_in;
 
-    memset(_sockaddr,0,sizeof(sockaddr_in));
+  memset(_sockaddr, 0, sizeof(sockaddr_in));
 
-    _sockaddr->sin_family = AF_INET;
+  _sockaddr->sin_family = AF_INET;
 
-    switch(type)
-    {
-        case ANY:       _sockaddr->sin_addr.s_addr = osghtonl(INADDR_ANY);
-                        break;
-        case BROADCAST: _sockaddr->sin_addr.s_addr = osghtonl(INADDR_BROADCAST);
-//            setHost(std::string("192.168.0.255"));
-                        break;
-        default:        _sockaddr->sin_addr.s_addr = osghtonl(INADDR_ANY);
-    }
-    setPort(port);
+  switch (type) {
+  case ANY:
+    _sockaddr->sin_addr.s_addr = osghtonl(INADDR_ANY);
+    break;
+  case BROADCAST:
+    _sockaddr->sin_addr.s_addr = osghtonl(INADDR_BROADCAST);
+    //            setHost(std::string("192.168.0.255"));
+    break;
+  default:
+    _sockaddr->sin_addr.s_addr = osghtonl(INADDR_ANY);
+  }
+  setPort(port);
 }
 
 /*! copy Constructor
  */
-SocketAddress::SocketAddress(const SocketAddress &source) :
-    _sockaddr(NULL)
-{
-    _sockaddr = new sockaddr_in;
+SocketAddress::SocketAddress(const SocketAddress& source)
+    : _sockaddr(NULL) {
+  _sockaddr = new sockaddr_in;
 
-    *_sockaddr = *(source._sockaddr);
+  *_sockaddr = *(source._sockaddr);
 }
 
 /*! Destructor
  */
-SocketAddress::~SocketAddress()
-{
-    delete _sockaddr;
+SocketAddress::~SocketAddress() {
+  delete _sockaddr;
 }
 
 /*-------------------------------------------------------------------------*/
@@ -148,136 +146,109 @@ SocketAddress::~SocketAddress()
 
 /*! Set the port number
  */
-void SocketAddress::setPort(int port)
-{
-    _sockaddr->sin_port = osghtons( port );
+void SocketAddress::setPort(int port) {
+  _sockaddr->sin_port = osghtons(port);
 }
 
 /*! Set host name
  */
-void SocketAddress::setHost(const std::string &host)
-{
-    struct hostent *hent;
-    char const *c;
+void SocketAddress::setHost(const std::string& host) {
+  struct hostent* hent;
+  char const*     c;
 
-    // number or name ?
-    for(c=host.c_str();
-        *c!='\0' && (isdigit(*c) || *c == '.');
-        c++);
-    if(! *c )
-    {
-        // inet_aton(const char *cp, struct in_addr *pin);
+  // number or name ?
+  for (c = host.c_str(); *c != '\0' && (isdigit(*c) || *c == '.'); c++)
+    ;
+  if (!*c) {
+    // inet_aton(const char *cp, struct in_addr *pin);
 
-        // ip number was given
-        _sockaddr->sin_addr.s_addr = inet_addr(host.c_str());
+    // ip number was given
+    _sockaddr->sin_addr.s_addr = inet_addr(host.c_str());
+  } else {
+    // get address of host by name
+    hent = gethostbyname(host.c_str());
+    if (hent == NULL) {
+      throw SocketHostError("gethostbyname()");
     }
-    else
-    {
-        // get address of host by name
-        hent = gethostbyname(host.c_str());
-        if(hent == NULL)
-        {
-            throw SocketHostError("gethostbyname()");
-        }
-        // set address
-        _sockaddr->sin_addr = *(struct in_addr *) hent->h_addr;
-    }
+    // set address
+    _sockaddr->sin_addr = *(struct in_addr*)hent->h_addr;
+  }
 }
 
 /*! Get host as number std::string
  */
-std::string SocketAddress::getHost(void) const
-{
-    return std::string(inet_ntoa(_sockaddr->sin_addr));
+std::string SocketAddress::getHost(void) const {
+  return std::string(inet_ntoa(_sockaddr->sin_addr));
 }
 
 /*! Get host as name. If not found, return as number
  */
-std::string SocketAddress::getHostByName() const
-{
-    struct hostent *hent;
-    std::string result;
+std::string SocketAddress::getHostByName() const {
+  struct hostent* hent;
+  std::string     result;
 
-    hent=gethostbyaddr((SocketAddrT*)getSockAddr(),
-                       getSockAddrSize(),AF_INET);
-    if(hent == NULL)
-    {
-        // if no host assigned or host unknown
-        // then return ip address
-        result=inet_ntoa(_sockaddr->sin_addr);
-    }
-    else
-    {
-        result=hent->h_name;
-    }
-    return result;
+  hent = gethostbyaddr((SocketAddrT*)getSockAddr(), getSockAddrSize(), AF_INET);
+  if (hent == NULL) {
+    // if no host assigned or host unknown
+    // then return ip address
+    result = inet_ntoa(_sockaddr->sin_addr);
+  } else {
+    result = hent->h_name;
+  }
+  return result;
 }
 
 /*! Returns true, if this is a multicast address
- */ 
-bool SocketAddress::isMulticast(void)
-{
-    UInt32 addr = osgntohl(_sockaddr->sin_addr.s_addr);
-    return addr & 0xC0000;
+ */
+bool SocketAddress::isMulticast(void) {
+  UInt32 addr = osgntohl(_sockaddr->sin_addr.s_addr);
+  return addr & 0xC0000;
 }
 
 /*! Get a pointer to the sockaddr struct
  */
-sockaddr *SocketAddress::getSockAddr(void) const
-{
-    return const_cast<struct sockaddr *>(
-        reinterpret_cast<const struct sockaddr *>(_sockaddr));
+sockaddr* SocketAddress::getSockAddr(void) const {
+  return const_cast<struct sockaddr*>(reinterpret_cast<const struct sockaddr*>(_sockaddr));
 }
 
 /*! Get the size of the sockaddr struct
  */
-int SocketAddress::getSockAddrSize(void) const
-{
-    return sizeof(sockaddr_in);
+int SocketAddress::getSockAddrSize(void) const {
+  return sizeof(sockaddr_in);
 }
 
 /*! Get port number
  */
-int SocketAddress::getPort(void) const
-{
-    return osgntohs(_sockaddr->sin_port);
+int SocketAddress::getPort(void) const {
+  return osgntohs(_sockaddr->sin_port);
 }
 
 /*-------------------------------------------------------------------------*/
 /*                              Comparision                                */
 
-void SocketAddress::operator = (const SocketAddress &other) const
-{
-    if(this != &other)
-    {
-        *_sockaddr = *(other._sockaddr);
-    }
+void SocketAddress::operator=(const SocketAddress& other) const {
+  if (this != &other) {
+    *_sockaddr = *(other._sockaddr);
+  }
 }
 
 /*! compare equal
  */
-bool SocketAddress::operator == (const SocketAddress &other) const
-{
-    return _sockaddr->sin_addr.s_addr == other._sockaddr->sin_addr.s_addr &&
-           _sockaddr->sin_port        == other._sockaddr->sin_port;
+bool SocketAddress::operator==(const SocketAddress& other) const {
+  return _sockaddr->sin_addr.s_addr == other._sockaddr->sin_addr.s_addr &&
+         _sockaddr->sin_port == other._sockaddr->sin_port;
 }
 
 /*! compare not equal
  */
-bool SocketAddress::operator != (const SocketAddress &other) const
-{
-    return ! (*this == other);
+bool SocketAddress::operator!=(const SocketAddress& other) const {
+  return !(*this == other);
 }
 
 /*! compare less
  */
-bool SocketAddress::operator < (const SocketAddress &other) const
-{
-    return _sockaddr->sin_addr.s_addr < other._sockaddr->sin_addr.s_addr ||
-    (
-        _sockaddr->sin_addr.s_addr == other._sockaddr->sin_addr.s_addr &&
-        _sockaddr->sin_port        <  other._sockaddr->sin_port
-    );
+bool SocketAddress::operator<(const SocketAddress& other) const {
+  return _sockaddr->sin_addr.s_addr < other._sockaddr->sin_addr.s_addr ||
+         (_sockaddr->sin_addr.s_addr == other._sockaddr->sin_addr.s_addr &&
+             _sockaddr->sin_port < other._sockaddr->sin_port);
 }
-
-

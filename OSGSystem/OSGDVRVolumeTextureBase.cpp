@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEDVRVOLUMETEXTUREINST
 
 #include <stdlib.h>
@@ -61,384 +60,300 @@
 #include "OSGDVRVolumeTextureBase.h"
 #include "OSGDVRVolumeTexture.h"
 
-
 OSG_BEGIN_NAMESPACE
 
-const OSG::BitVector  DVRVolumeTextureBase::ImageFieldMask = 
+const OSG::BitVector DVRVolumeTextureBase::ImageFieldMask =
     (TypeTraits<BitVector>::One << DVRVolumeTextureBase::ImageFieldId);
 
-const OSG::BitVector  DVRVolumeTextureBase::HistogramFieldMask = 
+const OSG::BitVector DVRVolumeTextureBase::HistogramFieldMask =
     (TypeTraits<BitVector>::One << DVRVolumeTextureBase::HistogramFieldId);
 
-const OSG::BitVector  DVRVolumeTextureBase::MaxValFieldMask = 
+const OSG::BitVector DVRVolumeTextureBase::MaxValFieldMask =
     (TypeTraits<BitVector>::One << DVRVolumeTextureBase::MaxValFieldId);
 
-const OSG::BitVector  DVRVolumeTextureBase::SliceThicknessFieldMask = 
+const OSG::BitVector DVRVolumeTextureBase::SliceThicknessFieldMask =
     (TypeTraits<BitVector>::One << DVRVolumeTextureBase::SliceThicknessFieldId);
 
-const OSG::BitVector  DVRVolumeTextureBase::ResolutionFieldMask = 
+const OSG::BitVector DVRVolumeTextureBase::ResolutionFieldMask =
     (TypeTraits<BitVector>::One << DVRVolumeTextureBase::ResolutionFieldId);
 
-const OSG::BitVector  DVRVolumeTextureBase::FileNameFieldMask = 
+const OSG::BitVector DVRVolumeTextureBase::FileNameFieldMask =
     (TypeTraits<BitVector>::One << DVRVolumeTextureBase::FileNameFieldId);
 
-const OSG::BitVector DVRVolumeTextureBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector DVRVolumeTextureBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
 /*! \var ImagePtr        DVRVolumeTextureBase::_sfImage
-    
+
 */
 /*! \var Real32          DVRVolumeTextureBase::_mfHistogram
-    
+
 */
 /*! \var Real32          DVRVolumeTextureBase::_sfMaxVal
     the number of occurances of the most common histogram value
 */
 /*! \var Vec3f           DVRVolumeTextureBase::_sfSliceThickness
-    
+
 */
 /*! \var Vec3f           DVRVolumeTextureBase::_sfResolution
-    
+
 */
 /*! \var std::string     DVRVolumeTextureBase::_sfFileName
-    // FIXME: Since there are several clumps in OpenSG Image handling this node will do the filehandling itself.
+    // FIXME: Since there are several clumps in OpenSG Image handling this node will do the
+   filehandling itself.
 */
 
 //! DVRVolumeTexture description
 
-FieldDescription *DVRVolumeTextureBase::_desc[] = 
-{
-    new FieldDescription(SFImagePtr::getClassType(), 
-                     "image", 
-                     ImageFieldId, ImageFieldMask,
-                     false,
-                     (FieldAccessMethod) &DVRVolumeTextureBase::getSFImage),
-    new FieldDescription(MFReal32::getClassType(), 
-                     "histogram", 
-                     HistogramFieldId, HistogramFieldMask,
-                     true,
-                     (FieldAccessMethod) &DVRVolumeTextureBase::getMFHistogram),
-    new FieldDescription(SFReal32::getClassType(), 
-                     "maxVal", 
-                     MaxValFieldId, MaxValFieldMask,
-                     false,
-                     (FieldAccessMethod) &DVRVolumeTextureBase::getSFMaxVal),
-    new FieldDescription(SFVec3f::getClassType(), 
-                     "sliceThickness", 
-                     SliceThicknessFieldId, SliceThicknessFieldMask,
-                     false,
-                     (FieldAccessMethod) &DVRVolumeTextureBase::getSFSliceThickness),
-    new FieldDescription(SFVec3f::getClassType(), 
-                     "resolution", 
-                     ResolutionFieldId, ResolutionFieldMask,
-                     false,
-                     (FieldAccessMethod) &DVRVolumeTextureBase::getSFResolution),
-    new FieldDescription(SFString::getClassType(), 
-                     "fileName", 
-                     FileNameFieldId, FileNameFieldMask,
-                     false,
-                     (FieldAccessMethod) &DVRVolumeTextureBase::getSFFileName)
-};
+FieldDescription* DVRVolumeTextureBase::_desc[] = {
+    new FieldDescription(SFImagePtr::getClassType(), "image", ImageFieldId, ImageFieldMask, false,
+        (FieldAccessMethod)&DVRVolumeTextureBase::getSFImage),
+    new FieldDescription(MFReal32::getClassType(), "histogram", HistogramFieldId,
+        HistogramFieldMask, true, (FieldAccessMethod)&DVRVolumeTextureBase::getMFHistogram),
+    new FieldDescription(SFReal32::getClassType(), "maxVal", MaxValFieldId, MaxValFieldMask, false,
+        (FieldAccessMethod)&DVRVolumeTextureBase::getSFMaxVal),
+    new FieldDescription(SFVec3f::getClassType(), "sliceThickness", SliceThicknessFieldId,
+        SliceThicknessFieldMask, false,
+        (FieldAccessMethod)&DVRVolumeTextureBase::getSFSliceThickness),
+    new FieldDescription(SFVec3f::getClassType(), "resolution", ResolutionFieldId,
+        ResolutionFieldMask, false, (FieldAccessMethod)&DVRVolumeTextureBase::getSFResolution),
+    new FieldDescription(SFString::getClassType(), "fileName", FileNameFieldId, FileNameFieldMask,
+        false, (FieldAccessMethod)&DVRVolumeTextureBase::getSFFileName)};
 
-
-FieldContainerType DVRVolumeTextureBase::_type(
-    "DVRVolumeTexture",
-    "Attachment",
-    NULL,
-    (PrototypeCreateF) &DVRVolumeTextureBase::createEmpty,
-    DVRVolumeTexture::initMethod,
-    _desc,
+FieldContainerType DVRVolumeTextureBase::_type("DVRVolumeTexture", "Attachment", NULL,
+    (PrototypeCreateF)&DVRVolumeTextureBase::createEmpty, DVRVolumeTexture::initMethod, _desc,
     sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(DVRVolumeTextureBase, DVRVolumeTexturePtr)
+// OSG_FIELD_CONTAINER_DEF(DVRVolumeTextureBase, DVRVolumeTexturePtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &DVRVolumeTextureBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &DVRVolumeTextureBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr DVRVolumeTextureBase::shallowCopy(void) const 
-{ 
-    DVRVolumeTexturePtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const DVRVolumeTexture *>(this)); 
-
-    return returnValue; 
+FieldContainerType& DVRVolumeTextureBase::getType(void) {
+  return _type;
 }
 
-UInt32 DVRVolumeTextureBase::getContainerSize(void) const 
-{ 
-    return sizeof(DVRVolumeTexture); 
+const FieldContainerType& DVRVolumeTextureBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr DVRVolumeTextureBase::shallowCopy(void) const {
+  DVRVolumeTexturePtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const DVRVolumeTexture*>(this));
+
+  return returnValue;
+}
+
+UInt32 DVRVolumeTextureBase::getContainerSize(void) const {
+  return sizeof(DVRVolumeTexture);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void DVRVolumeTextureBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((DVRVolumeTextureBase *) &other, whichField);
+void DVRVolumeTextureBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((DVRVolumeTextureBase*)&other, whichField);
 }
 #else
-void DVRVolumeTextureBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((DVRVolumeTextureBase *) &other, whichField, sInfo);
+void DVRVolumeTextureBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((DVRVolumeTextureBase*)&other, whichField, sInfo);
 }
-void DVRVolumeTextureBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void DVRVolumeTextureBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void DVRVolumeTextureBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
+void DVRVolumeTextureBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 
-    _mfHistogram.terminateShare(uiAspect, this->getContainerSize());
+  _mfHistogram.terminateShare(uiAspect, this->getContainerSize());
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-DVRVolumeTextureBase::DVRVolumeTextureBase(void) :
-    _sfImage                  (ImagePtr(NullFC)), 
-    _mfHistogram              (), 
-    _sfMaxVal                 (), 
-    _sfSliceThickness         (Vec3f(1,1,1)), 
-    _sfResolution             (Vec3f(64, 64, 64)), 
-    _sfFileName               (), 
-    Inherited() 
-{
+DVRVolumeTextureBase::DVRVolumeTextureBase(void)
+    : _sfImage(ImagePtr(NullFC))
+    , _mfHistogram()
+    , _sfMaxVal()
+    , _sfSliceThickness(Vec3f(1, 1, 1))
+    , _sfResolution(Vec3f(64, 64, 64))
+    , _sfFileName()
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-DVRVolumeTextureBase::DVRVolumeTextureBase(const DVRVolumeTextureBase &source) :
-    _sfImage                  (source._sfImage                  ), 
-    _mfHistogram              (source._mfHistogram              ), 
-    _sfMaxVal                 (source._sfMaxVal                 ), 
-    _sfSliceThickness         (source._sfSliceThickness         ), 
-    _sfResolution             (source._sfResolution             ), 
-    _sfFileName               (source._sfFileName               ), 
-    Inherited                 (source)
-{
+DVRVolumeTextureBase::DVRVolumeTextureBase(const DVRVolumeTextureBase& source)
+    : _sfImage(source._sfImage)
+    , _mfHistogram(source._mfHistogram)
+    , _sfMaxVal(source._sfMaxVal)
+    , _sfSliceThickness(source._sfSliceThickness)
+    , _sfResolution(source._sfResolution)
+    , _sfFileName(source._sfFileName)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-DVRVolumeTextureBase::~DVRVolumeTextureBase(void)
-{
+DVRVolumeTextureBase::~DVRVolumeTextureBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 DVRVolumeTextureBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 DVRVolumeTextureBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (ImageFieldMask & whichField))
-    {
-        returnValue += _sfImage.getBinSize();
-    }
+  if (FieldBits::NoField != (ImageFieldMask & whichField)) {
+    returnValue += _sfImage.getBinSize();
+  }
 
-    if(FieldBits::NoField != (HistogramFieldMask & whichField))
-    {
-        returnValue += _mfHistogram.getBinSize();
-    }
+  if (FieldBits::NoField != (HistogramFieldMask & whichField)) {
+    returnValue += _mfHistogram.getBinSize();
+  }
 
-    if(FieldBits::NoField != (MaxValFieldMask & whichField))
-    {
-        returnValue += _sfMaxVal.getBinSize();
-    }
+  if (FieldBits::NoField != (MaxValFieldMask & whichField)) {
+    returnValue += _sfMaxVal.getBinSize();
+  }
 
-    if(FieldBits::NoField != (SliceThicknessFieldMask & whichField))
-    {
-        returnValue += _sfSliceThickness.getBinSize();
-    }
+  if (FieldBits::NoField != (SliceThicknessFieldMask & whichField)) {
+    returnValue += _sfSliceThickness.getBinSize();
+  }
 
-    if(FieldBits::NoField != (ResolutionFieldMask & whichField))
-    {
-        returnValue += _sfResolution.getBinSize();
-    }
+  if (FieldBits::NoField != (ResolutionFieldMask & whichField)) {
+    returnValue += _sfResolution.getBinSize();
+  }
 
-    if(FieldBits::NoField != (FileNameFieldMask & whichField))
-    {
-        returnValue += _sfFileName.getBinSize();
-    }
+  if (FieldBits::NoField != (FileNameFieldMask & whichField)) {
+    returnValue += _sfFileName.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void DVRVolumeTextureBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void DVRVolumeTextureBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ImageFieldMask & whichField))
-    {
-        _sfImage.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (ImageFieldMask & whichField)) {
+    _sfImage.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (HistogramFieldMask & whichField))
-    {
-        _mfHistogram.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (HistogramFieldMask & whichField)) {
+    _mfHistogram.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (MaxValFieldMask & whichField))
-    {
-        _sfMaxVal.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (MaxValFieldMask & whichField)) {
+    _sfMaxVal.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (SliceThicknessFieldMask & whichField))
-    {
-        _sfSliceThickness.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (SliceThicknessFieldMask & whichField)) {
+    _sfSliceThickness.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ResolutionFieldMask & whichField))
-    {
-        _sfResolution.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (ResolutionFieldMask & whichField)) {
+    _sfResolution.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (FileNameFieldMask & whichField))
-    {
-        _sfFileName.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (FileNameFieldMask & whichField)) {
+    _sfFileName.copyToBin(pMem);
+  }
 }
 
-void DVRVolumeTextureBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void DVRVolumeTextureBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ImageFieldMask & whichField))
-    {
-        _sfImage.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (ImageFieldMask & whichField)) {
+    _sfImage.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (HistogramFieldMask & whichField))
-    {
-        _mfHistogram.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (HistogramFieldMask & whichField)) {
+    _mfHistogram.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (MaxValFieldMask & whichField))
-    {
-        _sfMaxVal.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (MaxValFieldMask & whichField)) {
+    _sfMaxVal.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (SliceThicknessFieldMask & whichField))
-    {
-        _sfSliceThickness.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (SliceThicknessFieldMask & whichField)) {
+    _sfSliceThickness.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ResolutionFieldMask & whichField))
-    {
-        _sfResolution.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (ResolutionFieldMask & whichField)) {
+    _sfResolution.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (FileNameFieldMask & whichField))
-    {
-        _sfFileName.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (FileNameFieldMask & whichField)) {
+    _sfFileName.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void DVRVolumeTextureBase::executeSyncImpl(      DVRVolumeTextureBase *pOther,
-                                        const BitVector         &whichField)
-{
+void DVRVolumeTextureBase::executeSyncImpl(
+    DVRVolumeTextureBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (ImageFieldMask & whichField))
-        _sfImage.syncWith(pOther->_sfImage);
+  if (FieldBits::NoField != (ImageFieldMask & whichField))
+    _sfImage.syncWith(pOther->_sfImage);
 
-    if(FieldBits::NoField != (HistogramFieldMask & whichField))
-        _mfHistogram.syncWith(pOther->_mfHistogram);
+  if (FieldBits::NoField != (HistogramFieldMask & whichField))
+    _mfHistogram.syncWith(pOther->_mfHistogram);
 
-    if(FieldBits::NoField != (MaxValFieldMask & whichField))
-        _sfMaxVal.syncWith(pOther->_sfMaxVal);
+  if (FieldBits::NoField != (MaxValFieldMask & whichField))
+    _sfMaxVal.syncWith(pOther->_sfMaxVal);
 
-    if(FieldBits::NoField != (SliceThicknessFieldMask & whichField))
-        _sfSliceThickness.syncWith(pOther->_sfSliceThickness);
+  if (FieldBits::NoField != (SliceThicknessFieldMask & whichField))
+    _sfSliceThickness.syncWith(pOther->_sfSliceThickness);
 
-    if(FieldBits::NoField != (ResolutionFieldMask & whichField))
-        _sfResolution.syncWith(pOther->_sfResolution);
+  if (FieldBits::NoField != (ResolutionFieldMask & whichField))
+    _sfResolution.syncWith(pOther->_sfResolution);
 
-    if(FieldBits::NoField != (FileNameFieldMask & whichField))
-        _sfFileName.syncWith(pOther->_sfFileName);
-
-
+  if (FieldBits::NoField != (FileNameFieldMask & whichField))
+    _sfFileName.syncWith(pOther->_sfFileName);
 }
 #else
-void DVRVolumeTextureBase::executeSyncImpl(      DVRVolumeTextureBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void DVRVolumeTextureBase::executeSyncImpl(
+    DVRVolumeTextureBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (ImageFieldMask & whichField))
-        _sfImage.syncWith(pOther->_sfImage);
+  if (FieldBits::NoField != (ImageFieldMask & whichField))
+    _sfImage.syncWith(pOther->_sfImage);
 
-    if(FieldBits::NoField != (MaxValFieldMask & whichField))
-        _sfMaxVal.syncWith(pOther->_sfMaxVal);
+  if (FieldBits::NoField != (MaxValFieldMask & whichField))
+    _sfMaxVal.syncWith(pOther->_sfMaxVal);
 
-    if(FieldBits::NoField != (SliceThicknessFieldMask & whichField))
-        _sfSliceThickness.syncWith(pOther->_sfSliceThickness);
+  if (FieldBits::NoField != (SliceThicknessFieldMask & whichField))
+    _sfSliceThickness.syncWith(pOther->_sfSliceThickness);
 
-    if(FieldBits::NoField != (ResolutionFieldMask & whichField))
-        _sfResolution.syncWith(pOther->_sfResolution);
+  if (FieldBits::NoField != (ResolutionFieldMask & whichField))
+    _sfResolution.syncWith(pOther->_sfResolution);
 
-    if(FieldBits::NoField != (FileNameFieldMask & whichField))
-        _sfFileName.syncWith(pOther->_sfFileName);
+  if (FieldBits::NoField != (FileNameFieldMask & whichField))
+    _sfFileName.syncWith(pOther->_sfFileName);
 
-
-    if(FieldBits::NoField != (HistogramFieldMask & whichField))
-        _mfHistogram.syncWith(pOther->_mfHistogram, sInfo);
-
-
+  if (FieldBits::NoField != (HistogramFieldMask & whichField))
+    _mfHistogram.syncWith(pOther->_mfHistogram, sInfo);
 }
 
-void DVRVolumeTextureBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void DVRVolumeTextureBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (HistogramFieldMask & whichField))
-        _mfHistogram.beginEdit(uiAspect, uiContainerSize);
-
+  if (FieldBits::NoField != (HistogramFieldMask & whichField))
+    _mfHistogram.beginEdit(uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_DEV)
 DataType FieldDataTraits<DVRVolumeTexturePtr>::_type("DVRVolumeTexturePtr", "AttachmentPtr");
 #endif
 
 OSG_END_NAMESPACE
-

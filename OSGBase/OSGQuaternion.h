@@ -54,215 +54,170 @@ OSG_BEGIN_NAMESPACE
  */
 
 template <class ValueTypeT>
-class QuaternionBase
-{
-    /*==========================  PUBLIC  =================================*/
+class QuaternionBase {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Types                                     */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Types                                     */
-    /*! \{                                                                 */
+  typedef VectorInterface<ValueTypeT, VecStorage3<ValueTypeT>> VectorType;
+  typedef TransformationMatrix<ValueTypeT>                     MatrixType;
 
-    typedef VectorInterface     <ValueTypeT,
-                                 VecStorage3<ValueTypeT> > VectorType;
-    typedef TransformationMatrix<ValueTypeT>               MatrixType;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static const QuaternionBase& identity(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  static QuaternionBase slerp(
+      const QuaternionBase& rot0, const QuaternionBase& rot1, const ValueTypeT t);
 
-    static const QuaternionBase &identity(void                          );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    static       QuaternionBase slerp    (const QuaternionBase &rot0,
-                                          const QuaternionBase &rot1,
-                                          const ValueTypeT      t       );
+  QuaternionBase(void);
+  QuaternionBase(const QuaternionBase& source);
+  explicit QuaternionBase(const MatrixType& matrix);
+  QuaternionBase(const VectorType& axis, const ValueTypeT angle);
+  QuaternionBase(const VectorType& rotateFrom, const VectorType& rotateTo);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-                QuaternionBase(      void                               );
-                QuaternionBase(const QuaternionBase &source             );
-    explicit    QuaternionBase(const MatrixType     &matrix             );
-                QuaternionBase(const VectorType     &axis,
-                               const ValueTypeT      angle              );
-                QuaternionBase(const VectorType     &rotateFrom,
-                               const VectorType     &rotateTo           );
+  virtual ~QuaternionBase(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Set                                        */
+  /*! \{                                                                 */
 
-    virtual ~QuaternionBase(void);
+  void setIdentity(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Set                                        */
-    /*! \{                                                                 */
+  void setValueAsAxisRad(const ValueTypeT* valsP);
+  void setValueAsAxisDeg(const ValueTypeT* valsP);
+  void setValueAsQuat(const ValueTypeT* valsP);
 
-    void setIdentity      (       void                  );
+  void setValueAsAxisRad(
+      const ValueTypeT x, const ValueTypeT y, const ValueTypeT z, const ValueTypeT w);
+  void setValueAsAxisDeg(
+      const ValueTypeT x, const ValueTypeT y, const ValueTypeT z, const ValueTypeT w);
+  void setValueAsQuat(
+      const ValueTypeT x, const ValueTypeT y, const ValueTypeT z, const ValueTypeT w);
 
-    void setValueAsAxisRad(const  ValueTypeT *valsP     );
-    void setValueAsAxisDeg(const  ValueTypeT *valsP     );
-    void setValueAsQuat   (const  ValueTypeT *valsP     );
+  void setValue(const MatrixType& matrix);
 
-    void setValueAsAxisRad(const  ValueTypeT  x,
-                           const  ValueTypeT  y,
-                           const  ValueTypeT  z,
-                           const  ValueTypeT  w         );
-    void setValueAsAxisDeg(const  ValueTypeT  x,
-                           const  ValueTypeT  y,
-                           const  ValueTypeT  z,
-                           const  ValueTypeT  w         );
-    void setValueAsQuat   (const  ValueTypeT  x,
-                           const  ValueTypeT  y,
-                           const  ValueTypeT  z,
-                           const  ValueTypeT  w         );
+  void setValueAsAxisRad(const VectorType& axis, ValueTypeT angle);
+  void setValueAsAxisDeg(const VectorType& axis, ValueTypeT angle);
 
-    void setValue         (const  MatrixType &matrix    );
+  void setValue(const VectorType& rotateFrom, const VectorType& rotateTo);
 
-    void setValueAsAxisRad(const  VectorType &axis,    
-                                  ValueTypeT  angle     );
-    void setValueAsAxisDeg(const  VectorType &axis,
-                                  ValueTypeT  angle     );
+  void setValueAsAxisRad(const Char8* str);
+  void setValueAsAxisDeg(const Char8* str);
+  void setValueAsQuat(const Char8* str);
 
-    void setValue         (const  VectorType &rotateFrom,
-                           const  VectorType &rotateTo  );
+  void setValue(const ValueTypeT alpha, const ValueTypeT beta, const ValueTypeT gamma);
 
-    void setValueAsAxisRad(const  Char8       *str      );
-    void setValueAsAxisDeg(const  Char8       *str      );
-    void setValueAsQuat   (const  Char8       *str      );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Get                                        */
+  /*! \{                                                                 */
 
-    void setValue         (const  ValueTypeT alpha,
-                           const  ValueTypeT beta,
-                           const  ValueTypeT gamma      );
+  const ValueTypeT* getValues(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Get                                        */
-    /*! \{                                                                 */
+  void getValueAsAxisDeg(ValueTypeT& x, ValueTypeT& y, ValueTypeT& z, ValueTypeT& w) const;
+  void getValueAsAxisRad(ValueTypeT& x, ValueTypeT& y, ValueTypeT& z, ValueTypeT& w) const;
+  void getValueAsQuat(ValueTypeT& x, ValueTypeT& y, ValueTypeT& z, ValueTypeT& w) const;
 
-    const ValueTypeT *getValues        (void               ) const;
+  void getValueAsAxisRad(VectorType& axis, ValueTypeT& radians) const;
+  void getValueAsAxisDeg(VectorType& axis, ValueTypeT& degrees) const;
+  void getValue(MatrixType& matrix) const;
+  void getValuesOnly(MatrixType& matrix) const;
 
-          void        getValueAsAxisDeg(ValueTypeT &x,
-                                        ValueTypeT &y,
-                                        ValueTypeT &z,
-                                        ValueTypeT &w      ) const;
-          void        getValueAsAxisRad(ValueTypeT &x,
-                                        ValueTypeT &y,
-                                        ValueTypeT &z,
-                                        ValueTypeT &w      ) const;
-          void        getValueAsQuat   (ValueTypeT &x,
-                                        ValueTypeT &y,
-                                        ValueTypeT &z,
-                                        ValueTypeT &w      ) const;
+  ValueTypeT x(void) const;
+  ValueTypeT y(void) const;
+  ValueTypeT z(void) const;
+  ValueTypeT w(void) const;
 
-          void       getValueAsAxisRad (VectorType &axis, 
-                                        ValueTypeT &radians) const;
-          void       getValueAsAxisDeg (VectorType &axis, 
-                                        ValueTypeT &degrees) const;
-          void       getValue          (MatrixType &matrix ) const;
-          void       getValuesOnly     (MatrixType &matrix ) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Simple Math                               */
+  /*! \{                                                                 */
 
-          ValueTypeT x                 (void               ) const;
-          ValueTypeT y                 (void               ) const;
-          ValueTypeT z                 (void               ) const;
-          ValueTypeT w                 (void               ) const;
+  ValueTypeT length(void) const;
+  void       normalize(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Simple Math                               */
-    /*! \{                                                                 */
+  void                 invert(void);
+  const QuaternionBase inverse(void) const;
 
-          ValueTypeT      length    (void                        ) const;
-          void            normalize (void                        );
+  void multVec(const VectorType& src, VectorType& dst) const;
 
-          void            invert    (void                        );
-    const QuaternionBase  inverse   (void                        ) const;
+  void scaleAngle(ValueTypeT scaleFactor);
 
-          void            multVec   (const VectorType &src,
-                                           VectorType &dst       ) const;
+  void slerpThis(const QuaternionBase& rot0, const QuaternionBase& rot1, const ValueTypeT t);
 
-          void            scaleAngle(      ValueTypeT scaleFactor);
+  void mult(const QuaternionBase& other);
+  void multLeft(const QuaternionBase& other);
 
-          void            slerpThis (const QuaternionBase &rot0,
-                                     const QuaternionBase &rot1,
-                                     const ValueTypeT      t     );
+  bool equals(const QuaternionBase& rot, const ValueTypeT tolerance) const;
 
-          void            mult      (const QuaternionBase &other );
-          void            multLeft  (const QuaternionBase &other );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Element Access                              */
+  /*! \{                                                                 */
 
-          bool            equals    (const QuaternionBase &rot,
-                                     const ValueTypeT tolerance  ) const;
+  ValueTypeT&       operator[](const UInt32 index);
+  const ValueTypeT& operator[](const UInt32 index) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Element Access                              */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Math Operators                             */
+  /*! \{                                                                 */
 
-          ValueTypeT &operator [](const UInt32 index);
-    const ValueTypeT &operator [](const UInt32 index) const;
+  void operator*=(const QuaternionBase& other);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Math Operators                             */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Assignment                                 */
+  /*! \{                                                                 */
 
-    void operator *=(const QuaternionBase &other);
+  const QuaternionBase& operator=(const QuaternionBase& source);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Assignment                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Comparison                                 */
+  /*! \{                                                                 */
 
-    const QuaternionBase& operator = (const QuaternionBase &source);
+  bool operator==(const QuaternionBase& other) const;
+  bool operator!=(const QuaternionBase& other) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Comparison                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    bool operator == (const QuaternionBase &other) const;
-    bool operator != (const QuaternionBase &other) const;
+ protected:
+  static void slerp(const QuaternionBase& rot0, const QuaternionBase& rot1, QuaternionBase& result,
+      const ValueTypeT t);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  void mult(const ValueTypeT rVal1[4], const ValueTypeT rVal2[4]);
 
-  protected:
+  /*==========================  PRIVATE  ================================*/
 
-    static void slerp(const QuaternionBase &rot0,
-                      const QuaternionBase &rot1,
-                            QuaternionBase &result,
-                      const ValueTypeT      t);
+ private:
+  enum ElementIndices { Q_X = 0, Q_Y = 1, Q_Z = 2, Q_W = 3 };
 
-           void mult (const ValueTypeT rVal1[4],
-                      const ValueTypeT rVal2[4]);
+  static QuaternionBase _identity;
 
-    /*==========================  PRIVATE  ================================*/
-
-  private:
-
-    enum ElementIndices
-    {
-        Q_X = 0,
-        Q_Y = 1,
-        Q_Z = 2,
-        Q_W = 3
-    };
-
-    static QuaternionBase _identity;
-
-           ValueTypeT     _quat[4];
+  ValueTypeT _quat[4];
 };
 
-template <class ValueTypeT> 
-std::ostream &operator <<(      std::ostream               &os, 
-                          const QuaternionBase<ValueTypeT> &obj);
+template <class ValueTypeT>
+std::ostream& operator<<(std::ostream& os, const QuaternionBase<ValueTypeT>& obj);
 
 /*! \var typedef QuaternionBase<Real32> Quaternion;
     \brief Quaternion

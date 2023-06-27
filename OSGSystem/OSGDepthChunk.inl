@@ -42,19 +42,14 @@
 
 OSG_BEGIN_NAMESPACE
 
-inline
-UInt32 DepthChunk::getStaticClassId(void)
-{
-    return getStaticClass()->getId();
+inline UInt32 DepthChunk::getStaticClassId(void) {
+  return getStaticClass()->getId();
 }
 
-inline
-const StateChunkClass *DepthChunk::getStaticClass(void)
-{
-    return &DepthChunk::_class;
+inline const StateChunkClass* DepthChunk::getStaticClass(void) {
+  return &DepthChunk::_class;
 }
 
 OSG_END_NAMESPACE
 
 #define OSGDEPTHCHUNK_INLINE_CVSID "@(#)$Id: OSGDepthChunk.inl,v 1.1 2005/05/11 23:03:49 dirk Exp $"
-

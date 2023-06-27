@@ -42,19 +42,14 @@
 
 OSG_BEGIN_NAMESPACE
 
-inline
-UInt32 TexGenChunk::getStaticClassId(void)
-{
-    return getStaticClass()->getId();
+inline UInt32 TexGenChunk::getStaticClassId(void) {
+  return getStaticClass()->getId();
 }
 
-inline
-const StateChunkClass *TexGenChunk::getStaticClass(void)
-{
-    return &TexGenChunk::_class;
+inline const StateChunkClass* TexGenChunk::getStaticClass(void) {
+  return &TexGenChunk::_class;
 }
 
 OSG_END_NAMESPACE
 
 #define OSGTEXGENCHUNK_INLINE_CVSID "@(#)$Id: $"
-

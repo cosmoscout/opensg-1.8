@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGSHAREDFONTSTYLEWRAPPERFIELDS_H_
 #define _OSGSHAREDFONTSTYLEWRAPPERFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class SharedFontStyleWrapper;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! SharedFontStyleWrapperPtr
 
 typedef FCPtr<FieldContainerPtr, SharedFontStyleWrapper> SharedFontStyleWrapperPtr;
@@ -81,18 +80,23 @@ typedef FCPtr<FieldContainerPtr, SharedFontStyleWrapper> SharedFontStyleWrapperP
 #endif
 
 template <>
-struct FieldDataTraits<SharedFontStyleWrapperPtr> : 
-    public FieldTraitsRecurseMapper<SharedFontStyleWrapperPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<SharedFontStyleWrapperPtr>
+    : public FieldTraitsRecurseMapper<SharedFontStyleWrapperPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getSName(void) { return "SFSharedFontStyleWrapperPtr"; }
-    static const char *getMName(void) { return "MFSharedFontStyleWrapperPtr"; }
+  static const char* getSName(void) {
+    return "SFSharedFontStyleWrapperPtr";
+  }
+  static const char* getMName(void) {
+    return "MFSharedFontStyleWrapperPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -102,7 +106,6 @@ struct FieldDataTraits<SharedFontStyleWrapperPtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
@@ -126,6 +129,7 @@ OSG_DLLEXPORT_DECL1(MField, SharedFontStyleWrapperPtr, OSG_SYSTEMLIB_DLLTMPLMAPP
 
 OSG_END_NAMESPACE
 
-#define OSGSHAREDFONTSTYLEWRAPPERFIELDS_HEADER_CVSID "@(#)$Id: OSGSharedFontStyleWrapperFields.h,v 1.7 2006/02/20 17:04:42 dirk Exp $"
+#define OSGSHAREDFONTSTYLEWRAPPERFIELDS_HEADER_CVSID                                               \
+  "@(#)$Id: OSGSharedFontStyleWrapperFields.h,v 1.7 2006/02/20 17:04:42 dirk Exp $"
 
 #endif /* _OSGSHAREDFONTSTYLEWRAPPERFIELDS_H_ */

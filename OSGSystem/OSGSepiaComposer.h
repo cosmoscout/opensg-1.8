@@ -51,101 +51,93 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief SepiaComposer class. See \ref 
+/*! \brief SepiaComposer class. See \ref
            PageSystemSepiaComposer for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING SepiaComposer : public SepiaComposerBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING SepiaComposer : public SepiaComposerBase {
+ private:
+  typedef SepiaComposerBase Inherited;
 
-    typedef SepiaComposerBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name      features                                                */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  virtual bool getClientRendering(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name      features                                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name      composition                                             */
+  /*! \{                                                                 */
 
-    virtual bool getClientRendering (void);
+  virtual void open(void);
+  virtual void composeWindow(void);
+  virtual void close(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name      composition                                             */
-    /*! \{                                                                 */
-
-    virtual void open           ( void );
-    virtual void composeWindow  ( void );
-    virtual void close          ( void );
-    
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
-
-    unsigned int _descphysaddr;   /* descriptor for physical addresses */
-    void*        _descvirtaddr;   /* descriptor for virtual addresses */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  unsigned int _descphysaddr; /* descriptor for physical addresses */
+  void*        _descvirtaddr; /* descriptor for virtual addresses */
 #ifdef OSG_WITH_SEPIA
-    Pam          _pam;            /* board description structure */
+  Pam _pam; /* board description structure */
 #endif
-    int          _frame;          /* number of the current frame */
-    void*        _pbuffer;        /* pointer to the pixel buffer */
-    void*        _zbuffer;        /* pointer to the z-buffer */
-    int          _fromNode;
-    int          _toNode;
-    unsigned int _dmaBufferHandle;
+  int          _frame;   /* number of the current frame */
+  void*        _pbuffer; /* pointer to the pixel buffer */
+  void*        _zbuffer; /* pointer to the z-buffer */
+  int          _fromNode;
+  int          _toNode;
+  unsigned int _dmaBufferHandle;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    SepiaComposer(void);
-    SepiaComposer(const SepiaComposer &source);
+  SepiaComposer(void);
+  SepiaComposer(const SepiaComposer& source);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    virtual ~SepiaComposer(void); 
+  virtual ~SepiaComposer(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      helper function                         */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      helper function                         */
+  /*! \{                                                                 */
 
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class SepiaComposerBase;
 
-    friend class FieldContainer;
-    friend class SepiaComposerBase;
+  static void initMethod(void);
 
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const SepiaComposer &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const SepiaComposer& source);
 };
 
-typedef SepiaComposer *SepiaComposerP;
+typedef SepiaComposer* SepiaComposerP;
 
 OSG_END_NAMESPACE
 

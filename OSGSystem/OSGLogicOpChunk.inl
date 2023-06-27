@@ -42,19 +42,15 @@
 
 OSG_BEGIN_NAMESPACE
 
-inline
-UInt32 LogicOpChunk::getStaticClassId(void)
-{
-    return getStaticClass()->getId();
+inline UInt32 LogicOpChunk::getStaticClassId(void) {
+  return getStaticClass()->getId();
 }
 
-inline
-const StateChunkClass *LogicOpChunk::getStaticClass(void)
-{
-    return &LogicOpChunk::_class;
+inline const StateChunkClass* LogicOpChunk::getStaticClass(void) {
+  return &LogicOpChunk::_class;
 }
 
 OSG_END_NAMESPACE
 
-#define OSGLOGICOPCHUNK_INLINE_CVSID "@(#)$Id: OSGLogicOpChunk.inl,v 1.1 2007/06/25 14:32:45 neumannc Exp $"
-
+#define OSGLOGICOPCHUNK_INLINE_CVSID                                                               \
+  "@(#)$Id: OSGLogicOpChunk.inl,v 1.1 2007/06/25 14:32:45 neumannc Exp $"

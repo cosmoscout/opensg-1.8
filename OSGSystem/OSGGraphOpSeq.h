@@ -36,7 +36,6 @@
 *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGGRAPHOPSEQ_H_
 #define _OSGGRAPHOPSEQ_H_
 #ifdef __sgi
@@ -55,64 +54,63 @@ OSG_BEGIN_NAMESPACE
 //! \ingroup GrpSystemRenderingBackend
 //! GraphOpSeq class
 
-class OSG_SYSTEMLIB_DLLMAPPING GraphOpSeq
-{
-    /*==========================  PUBLIC  =================================*/
-public:
+class OSG_SYSTEMLIB_DLLMAPPING GraphOpSeq {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  static const char* getClassname(void) {
+    return "GraphOpSeq";
+  };
 
-    static const char *getClassname(void) { return "GraphOpSeq"; };
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-    
-    GraphOpSeq(void);
-    GraphOpSeq(const std::string params);
+  GraphOpSeq(void);
+  GraphOpSeq(const std::string params);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    ~GraphOpSeq(void);
+  ~GraphOpSeq(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Main methods                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Main methods                               */
+  /*! \{                                                                 */
 
-    bool run(NodePtr &root);
+  bool run(NodePtr& root);
 
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 
-    void setGraphOps(const std::string params);     
+  void setGraphOps(const std::string params);
 
-    void addGraphOp            (GraphOp *op                 );
-    void removeGraphOp         (GraphOp *op                 );    
-    void clearGraphOps         (void                        );
+  void addGraphOp(GraphOp* op);
+  void removeGraphOp(GraphOp* op);
+  void clearGraphOps(void);
 
-    UInt16      getSize        (void                        );
-    GraphOp*    getGraphOp     (UInt16 index                );
-    bool        setGraphOp     (UInt16 index, GraphOp *op   );
-    bool        removeGraphOp  (UInt16 index                );
+  UInt16   getSize(void);
+  GraphOp* getGraphOp(UInt16 index);
+  bool     setGraphOp(UInt16 index, GraphOp* op);
+  bool     removeGraphOp(UInt16 index);
 
-    /*=========================  PROTECTED  ===============================*/
-protected:    
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*==========================  PRIVATE  ================================*/
+ private:
+  std::vector<GraphOp*>  _GraphOperators;
+  std::list<std::string> _excludeNames;
 
-    /*==========================  PRIVATE  ================================*/
-private:
-    std::vector<GraphOp *> _GraphOperators;
-    std::list<std::string> _excludeNames;
-
-    UInt16 extractStr(const std::string param, UInt16 spos, char* delim, std::string& result);
+  UInt16 extractStr(const std::string param, UInt16 spos, char* delim, std::string& result);
 };
 
-typedef GraphOpSeq *GraphOpSeqP;
+typedef GraphOpSeq* GraphOpSeqP;
 
 OSG_END_NAMESPACE
 

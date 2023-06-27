@@ -53,149 +53,129 @@ OSG_BEGIN_NAMESPACE
 
 class Action;
 
-class OSG_SYSTEMLIB_DLLMAPPING TileLoadBalancer
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
-    struct Region {
-        Int32  x1,y1,x2,y2;
-        Real32 culledFaces;
-        Real32 culledNodes;
-        Real32 faces;
-        Real32 pixel;
-    };
-    typedef std::vector<TileGeometryLoad>                   TileGeometryLoadLstT;
-    typedef std::map<UInt32,TileGeometryLoadLstT::iterator> TileGeometryLoadMapT;
-    typedef std::vector<Region>                    ResultT;
-    typedef std::vector<RenderNode>                RenderNodeLstT;
+class OSG_SYSTEMLIB_DLLMAPPING TileLoadBalancer {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  struct Region {
+    Int32  x1, y1, x2, y2;
+    Real32 culledFaces;
+    Real32 culledNodes;
+    Real32 faces;
+    Real32 pixel;
+  };
+  typedef std::vector<TileGeometryLoad>                    TileGeometryLoadLstT;
+  typedef std::map<UInt32, TileGeometryLoadLstT::iterator> TileGeometryLoadMapT;
+  typedef std::vector<Region>                              ResultT;
+  typedef std::vector<RenderNode>                          RenderNodeLstT;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      dcast                                   */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      dcast                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name        General Fieldcontainer Declaration                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name        General Fieldcontainer Declaration                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    TileLoadBalancer(bool useFaceDistribution=false,
-                     bool cutBestDirection=true);
-    TileLoadBalancer(const TileLoadBalancer &source);
+  TileLoadBalancer(bool useFaceDistribution = false, bool cutBestDirection = true);
+  TileLoadBalancer(const TileLoadBalancer& source);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Assignment                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Assignment                                 */
+  /*! \{                                                                 */
 
-    TileLoadBalancer& operator =(const TileLoadBalancer &source);
+  TileLoadBalancer& operator=(const TileLoadBalancer& source);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    virtual ~TileLoadBalancer(void);
+  virtual ~TileLoadBalancer(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                 Load balancing functions                     */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                 Load balancing functions                     */
+  /*! \{                                                                 */
 
-    void update             (NodePtr           node   );
-    void balance            (ViewportPtr       vp,
-                             bool              shrink,
-                             ResultT          &result );
-    void addRenderNode      (const RenderNode &rn,UInt32 id);
-    void drawVolumes        (WindowPtr win);
-    void setRegionStatistics(ViewportPtr           vp,
-                             ResultT              &result);
+  void update(NodePtr node);
+  void balance(ViewportPtr vp, bool shrink, ResultT& result);
+  void addRenderNode(const RenderNode& rn, UInt32 id);
+  void drawVolumes(WindowPtr win);
+  void setRegionStatistics(ViewportPtr vp, ResultT& result);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Get                                     */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Get                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Set                                     */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Set                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                        Dump                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                        Dump                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Types                                   */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Types                                   */
-    /*! \{                                                                 */
+  class RegionLoad {
+   public:
+    RegionLoad(TileGeometryLoad* load = NULL);
+    Real32 getCost(const RenderNode& renderNode);
+    Real32 getCost(const RenderNode& renderNode, const Int32 wmin[2], const Int32 wmax[2]) const;
+    TileGeometryLoad* getLoad(void);
+    void              updateCost(const Int32 wmin[2], const Int32 wmax[2]);
 
-    class RegionLoad 
-    {
-      public:
-        RegionLoad         ( TileGeometryLoad *load=NULL           );
-        Real32   getCost   ( const RenderNode &renderNode );
-        Real32   getCost   ( const RenderNode &renderNode,
-                             const Int32 wmin[2],
-                             const Int32 wmax[2]          ) const;
-        TileGeometryLoad *getLoad   ( void                         );
-        void     updateCost( const Int32 wmin[2],
-                             const Int32 wmax[2]          );
-      private:
-        Real32   _visibleFaces;
-        Real32   _invisibleFaces;
-        Real32   _pixel;
-        TileGeometryLoad *_load;
-    };
-    typedef std::vector<RegionLoad>   RegionLoadVecT;
+   private:
+    Real32            _visibleFaces;
+    Real32            _invisibleFaces;
+    Real32            _pixel;
+    TileGeometryLoad* _load;
+  };
+  typedef std::vector<RegionLoad> RegionLoadVecT;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    TileGeometryLoadLstT  _tileGeometryLoad;
-    RenderNodeLstT        _renderNode;
-    bool                  _useFaceDistribution;
-    bool                  _cutBestDirection;
+  TileGeometryLoadLstT _tileGeometryLoad;
+  RenderNodeLstT       _renderNode;
+  bool                 _useFaceDistribution;
+  bool                 _cutBestDirection;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Member                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Member                                  */
+  /*! \{                                                                 */
 
-    double runFaceBench(GLuint dlist,UInt32 size,Real32 visible);
-    void updateSubtree (NodePtr &node,TileGeometryLoadMapT &loadMap);
-    void splitRegion   (UInt32          rnFrom,
-                        UInt32          rnTo,
-                        RegionLoadVecT &visible,
-                        Int32           amin[2],
-                        Int32           amax[2],
-                        UInt32          depth,
-                        ResultT        &result);
-    Real32 findBestCut (const RenderNode &renderNodeA,
-                        const RenderNode &renderNodeB,
-                        RegionLoadVecT &visible,
-                        Int32           amin[2],
-                        Int32           amax[2],
-                        Int32          &bestAxis,
-                        Int32          &bestCut);
-    double calcFaceRenderingCost(TileGeometryLoad *load,
-                                 Int32 amin[2],Int32 amax[2]);
+  double runFaceBench(GLuint dlist, UInt32 size, Real32 visible);
+  void   updateSubtree(NodePtr& node, TileGeometryLoadMapT& loadMap);
+  void   splitRegion(UInt32 rnFrom, UInt32 rnTo, RegionLoadVecT& visible, Int32 amin[2],
+        Int32 amax[2], UInt32 depth, ResultT& result);
+  Real32 findBestCut(const RenderNode& renderNodeA, const RenderNode& renderNodeB,
+      RegionLoadVecT& visible, Int32 amin[2], Int32 amax[2], Int32& bestAxis, Int32& bestCut);
+  double calcFaceRenderingCost(TileGeometryLoad* load, Int32 amin[2], Int32 amax[2]);
 
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 
-    /*==========================  PRIVATE  ================================*/
-  private:
-    friend class RegionLoad;
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class RegionLoad;
 };
 
 OSG_END_NAMESPACE
@@ -205,7 +185,3 @@ OSG_END_NAMESPACE
 #define OSG_TILE_LOAD_BALANCER_HEADER_CVSID "@(#)$Id:$"
 
 #endif /* _TILE_GEOMETRY_LOADMANAGER_H_ */
-
-
-
-

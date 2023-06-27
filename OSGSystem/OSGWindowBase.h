@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGWINDOWBASE_H_
 #define _OSGWINDOWBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -67,13 +65,13 @@
 
 #include <OSGAttachmentContainer.h> // Parent
 
-#include <OSGUInt16Fields.h> // Width type
-#include <OSGUInt16Fields.h> // Height type
+#include <OSGUInt16Fields.h>   // Width type
+#include <OSGUInt16Fields.h>   // Height type
 #include <OSGViewportFields.h> // Port type
-#include <OSGBoolFields.h> // ResizePending type
-#include <OSGUInt32Fields.h> // GlObjectEventCounter type
-#include <OSGUInt32Fields.h> // GlObjectLastRefresh type
-#include <OSGUInt32Fields.h> // GlObjectLastReinitialize type
+#include <OSGBoolFields.h>     // ResizePending type
+#include <OSGUInt32Fields.h>   // GlObjectEventCounter type
+#include <OSGUInt32Fields.h>   // GlObjectLastRefresh type
+#include <OSGUInt32Fields.h>   // GlObjectLastReinitialize type
 
 #include <OSGWindowFields.h>
 
@@ -84,220 +82,198 @@ class BinaryDataHandler;
 
 //! \brief Window Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING WindowBase : public AttachmentContainer
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING WindowBase : public AttachmentContainer {
+ private:
+  typedef AttachmentContainer Inherited;
 
-    typedef AttachmentContainer    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef WindowPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    WidthFieldId                    = Inherited::NextFieldId,
+    HeightFieldId                   = WidthFieldId + 1,
+    PortFieldId                     = HeightFieldId + 1,
+    ResizePendingFieldId            = PortFieldId + 1,
+    GlObjectEventCounterFieldId     = ResizePendingFieldId + 1,
+    GlObjectLastRefreshFieldId      = GlObjectEventCounterFieldId + 1,
+    GlObjectLastReinitializeFieldId = GlObjectLastRefreshFieldId + 1,
+    NextFieldId                     = GlObjectLastReinitializeFieldId + 1
+  };
 
-    typedef WindowPtr  Ptr;
+  static const OSG::BitVector WidthFieldMask;
+  static const OSG::BitVector HeightFieldMask;
+  static const OSG::BitVector PortFieldMask;
+  static const OSG::BitVector ResizePendingFieldMask;
+  static const OSG::BitVector GlObjectEventCounterFieldMask;
+  static const OSG::BitVector GlObjectLastRefreshFieldMask;
+  static const OSG::BitVector GlObjectLastReinitializeFieldMask;
 
-    enum
-    {
-        WidthFieldId                    = Inherited::NextFieldId,
-        HeightFieldId                   = WidthFieldId                    + 1,
-        PortFieldId                     = HeightFieldId                   + 1,
-        ResizePendingFieldId            = PortFieldId                     + 1,
-        GlObjectEventCounterFieldId     = ResizePendingFieldId            + 1,
-        GlObjectLastRefreshFieldId      = GlObjectEventCounterFieldId     + 1,
-        GlObjectLastReinitializeFieldId = GlObjectLastRefreshFieldId      + 1,
-        NextFieldId                     = GlObjectLastReinitializeFieldId + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector WidthFieldMask;
-    static const OSG::BitVector HeightFieldMask;
-    static const OSG::BitVector PortFieldMask;
-    static const OSG::BitVector ResizePendingFieldMask;
-    static const OSG::BitVector GlObjectEventCounterFieldMask;
-    static const OSG::BitVector GlObjectLastRefreshFieldMask;
-    static const OSG::BitVector GlObjectLastReinitializeFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFUInt16*      getSFWidth(void);
+  SFUInt16*      getSFHeight(void);
+  MFViewportPtr* getMFPort(void);
+  SFBool*        getSFResizePending(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  UInt16&              getWidth(void);
+  const UInt16&        getWidth(void) const;
+  UInt16&              getHeight(void);
+  const UInt16&        getHeight(void) const;
+  bool&                getResizePending(void);
+  const bool&          getResizePending(void) const;
+  ViewportPtr&         getPort(const UInt32 index);
+  MFViewportPtr&       getPort(void);
+  const MFViewportPtr& getPort(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFUInt16            *getSFWidth          (void);
-           SFUInt16            *getSFHeight         (void);
-           MFViewportPtr       *getMFPort           (void);
-           SFBool              *getSFResizePending  (void);
+  void setWidth(const UInt16& value);
+  void setHeight(const UInt16& value);
+  void setResizePending(const bool& value);
 
-           UInt16              &getWidth          (void);
-     const UInt16              &getWidth          (void) const;
-           UInt16              &getHeight         (void);
-     const UInt16              &getHeight         (void) const;
-           bool                &getResizePending  (void);
-     const bool                &getResizePending  (void) const;
-           ViewportPtr         &getPort           (const UInt32 index);
-           MFViewportPtr       &getPort           (void);
-     const MFViewportPtr       &getPort           (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setWidth          ( const UInt16 &value );
-     void setHeight         ( const UInt16 &value );
-     void setResizePending  ( const bool &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  SFUInt16      _sfWidth;
+  SFUInt16      _sfHeight;
+  MFViewportPtr _mfPort;
+  SFBool        _sfResizePending;
+  SFUInt32      _sfGlObjectEventCounter;
+  MFUInt32      _mfGlObjectLastRefresh;
+  MFUInt32      _mfGlObjectLastReinitialize;
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
+  WindowBase(void);
+  WindowBase(const WindowBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~WindowBase(void);
 
-    SFUInt16            _sfWidth;
-    SFUInt16            _sfHeight;
-    MFViewportPtr       _mfPort;
-    SFBool              _sfResizePending;
-    SFUInt32            _sfGlObjectEventCounter;
-    MFUInt32            _mfGlObjectLastRefresh;
-    MFUInt32            _mfGlObjectLastReinitialize;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  SFUInt32* getSFGlObjectEventCounter(void);
+  MFUInt32* getMFGlObjectLastRefresh(void);
+  MFUInt32* getMFGlObjectLastReinitialize(void);
 
-    WindowBase(void);
-    WindowBase(const WindowBase &source);
+  UInt32&         getGlObjectEventCounter(void);
+  const UInt32&   getGlObjectEventCounter(void) const;
+  UInt32&         getGlObjectLastRefresh(UInt32 index);
+  MFUInt32&       getGlObjectLastRefresh(void);
+  const MFUInt32& getGlObjectLastRefresh(void) const;
+  UInt32&         getGlObjectLastReinitialize(UInt32 index);
+  MFUInt32&       getGlObjectLastReinitialize(void);
+  const MFUInt32& getGlObjectLastReinitialize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-    virtual ~WindowBase(void); 
+  void setGlObjectEventCounter(const UInt32& value);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
-
-           SFUInt32            *getSFGlObjectEventCounter(void);
-           MFUInt32            *getMFGlObjectLastRefresh(void);
-           MFUInt32            *getMFGlObjectLastReinitialize(void);
-
-           UInt32              &getGlObjectEventCounter(void);
-     const UInt32              &getGlObjectEventCounter(void) const;
-           UInt32              &getGlObjectLastRefresh(UInt32 index);
-           MFUInt32            &getGlObjectLastRefresh(void);
-     const MFUInt32            &getGlObjectLastRefresh(void) const;
-           UInt32              &getGlObjectLastReinitialize(UInt32 index);
-           MFUInt32            &getGlObjectLastReinitialize(void);
-     const MFUInt32            &getGlObjectLastReinitialize(void) const;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
-
-     void setGlObjectEventCounter(const UInt32 &value);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      WindowBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(WindowBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      WindowBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(WindowBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const WindowBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const WindowBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef WindowBase* WindowBaseP;
 
-typedef WindowBase *WindowBaseP;
-
-typedef osgIF<WindowBase::isNodeCore,
-              CoredNodePtr<Window>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet WindowNodePtr;
+typedef osgIF<WindowBase::isNodeCore, CoredNodePtr<Window>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet WindowNodePtr;
 
 typedef RefPtr<WindowPtr> WindowRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGWINDOWBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGWINDOWBASE_HEADER_CVSID                                                                 \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGWINDOWBASE_H_ */

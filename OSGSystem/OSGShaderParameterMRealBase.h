@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGSHADERPARAMETERMREALBASE_H_
 #define _OSGSHADERPARAMETERMREALBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -78,181 +76,157 @@ class BinaryDataHandler;
 
 //! \brief ShaderParameterMReal Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING ShaderParameterMRealBase : public ShaderParameter
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING ShaderParameterMRealBase : public ShaderParameter {
+ private:
+  typedef ShaderParameter Inherited;
 
-    typedef ShaderParameter    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef ShaderParameterMRealPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum { ValueFieldId = Inherited::NextFieldId, NextFieldId = ValueFieldId + 1 };
 
-    typedef ShaderParameterMRealPtr  Ptr;
+  static const OSG::BitVector ValueFieldMask;
 
-    enum
-    {
-        ValueFieldId = Inherited::NextFieldId,
-        NextFieldId  = ValueFieldId + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector ValueFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  MFReal32* getMFValue(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  Real32&         getValue(const UInt32 index);
+  MFReal32&       getValue(void);
+  const MFReal32& getValue(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           MFReal32            *getMFValue          (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-           Real32              &getValue          (const UInt32 index);
-           MFReal32            &getValue          (void);
-     const MFReal32            &getValue          (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  static ShaderParameterMRealPtr create(void);
+  static ShaderParameterMRealPtr createEmpty(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    static  ShaderParameterMRealPtr      create          (void); 
-    static  ShaderParameterMRealPtr      createEmpty     (void); 
+  MFReal32 _mfValue;
 
-    /*! \}                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  ShaderParameterMRealBase(void);
+  ShaderParameterMRealBase(const ShaderParameterMRealBase& source);
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  virtual ~ShaderParameterMRealBase(void);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
-
-    MFReal32            _mfValue;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    ShaderParameterMRealBase(void);
-    ShaderParameterMRealBase(const ShaderParameterMRealBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~ShaderParameterMRealBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      ShaderParameterMRealBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(ShaderParameterMRealBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      ShaderParameterMRealBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      ShaderParameterMRealBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const ShaderParameterMRealBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const ShaderParameterMRealBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef ShaderParameterMRealBase* ShaderParameterMRealBaseP;
 
-typedef ShaderParameterMRealBase *ShaderParameterMRealBaseP;
-
-typedef osgIF<ShaderParameterMRealBase::isNodeCore,
-              CoredNodePtr<ShaderParameterMReal>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet ShaderParameterMRealNodePtr;
+typedef osgIF<ShaderParameterMRealBase::isNodeCore, CoredNodePtr<ShaderParameterMReal>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet
+    ShaderParameterMRealNodePtr;
 
 typedef RefPtr<ShaderParameterMRealPtr> ShaderParameterMRealRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGSHADERPARAMETERMREALBASE_HEADER_CVSID "@(#)$Id: OSGShaderParameterMRealBase.h,v 1.1 2007/03/09 18:11:48 a-m-z Exp $"
+#define OSGSHADERPARAMETERMREALBASE_HEADER_CVSID                                                   \
+  "@(#)$Id: OSGShaderParameterMRealBase.h,v 1.1 2007/03/09 18:11:48 a-m-z Exp $"
 
 #endif /* _OSGSHADERPARAMETERMREALBASE_H_ */

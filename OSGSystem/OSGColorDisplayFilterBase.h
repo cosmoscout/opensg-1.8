@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGCOLORDISPLAYFILTERBASE_H_
 #define _OSGCOLORDISPLAYFILTERBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -67,11 +65,11 @@
 
 #include <OSGDisplayFilter.h> // Parent
 
-#include <OSGReal32Fields.h> // Gamma type
-#include <OSGMatrixFields.h> // Matrix type
-#include <OSGUInt32Fields.h> // Width type
-#include <OSGUInt32Fields.h> // Height type
-#include <OSGUInt32Fields.h> // Depth type
+#include <OSGReal32Fields.h>  // Gamma type
+#include <OSGMatrixFields.h>  // Matrix type
+#include <OSGUInt32Fields.h>  // Width type
+#include <OSGUInt32Fields.h>  // Height type
+#include <OSGUInt32Fields.h>  // Depth type
 #include <OSGColor3fFields.h> // Table type
 
 #include <OSGColorDisplayFilterFields.h>
@@ -83,216 +81,196 @@ class BinaryDataHandler;
 
 //! \brief ColorDisplayFilter Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING ColorDisplayFilterBase : public DisplayFilter
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING ColorDisplayFilterBase : public DisplayFilter {
+ private:
+  typedef DisplayFilter Inherited;
 
-    typedef DisplayFilter    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef ColorDisplayFilterPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    GammaFieldId  = Inherited::NextFieldId,
+    MatrixFieldId = GammaFieldId + 1,
+    WidthFieldId  = MatrixFieldId + 1,
+    HeightFieldId = WidthFieldId + 1,
+    DepthFieldId  = HeightFieldId + 1,
+    TableFieldId  = DepthFieldId + 1,
+    NextFieldId   = TableFieldId + 1
+  };
 
-    typedef ColorDisplayFilterPtr  Ptr;
+  static const OSG::BitVector GammaFieldMask;
+  static const OSG::BitVector MatrixFieldMask;
+  static const OSG::BitVector WidthFieldMask;
+  static const OSG::BitVector HeightFieldMask;
+  static const OSG::BitVector DepthFieldMask;
+  static const OSG::BitVector TableFieldMask;
 
-    enum
-    {
-        GammaFieldId  = Inherited::NextFieldId,
-        MatrixFieldId = GammaFieldId  + 1,
-        WidthFieldId  = MatrixFieldId + 1,
-        HeightFieldId = WidthFieldId  + 1,
-        DepthFieldId  = HeightFieldId + 1,
-        TableFieldId  = DepthFieldId  + 1,
-        NextFieldId   = TableFieldId  + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector GammaFieldMask;
-    static const OSG::BitVector MatrixFieldMask;
-    static const OSG::BitVector WidthFieldMask;
-    static const OSG::BitVector HeightFieldMask;
-    static const OSG::BitVector DepthFieldMask;
-    static const OSG::BitVector TableFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFReal32*  getSFGamma(void);
+  SFMatrix*  getSFMatrix(void);
+  SFUInt32*  getSFWidth(void);
+  SFUInt32*  getSFHeight(void);
+  SFUInt32*  getSFDepth(void);
+  MFColor3f* getMFTable(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  Real32&          getGamma(void);
+  const Real32&    getGamma(void) const;
+  Matrix&          getMatrix(void);
+  const Matrix&    getMatrix(void) const;
+  UInt32&          getWidth(void);
+  const UInt32&    getWidth(void) const;
+  UInt32&          getHeight(void);
+  const UInt32&    getHeight(void) const;
+  UInt32&          getDepth(void);
+  const UInt32&    getDepth(void) const;
+  Color3f&         getTable(const UInt32 index);
+  MFColor3f&       getTable(void);
+  const MFColor3f& getTable(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFReal32            *getSFGamma          (void);
-           SFMatrix            *getSFMatrix         (void);
-           SFUInt32            *getSFWidth          (void);
-           SFUInt32            *getSFHeight         (void);
-           SFUInt32            *getSFDepth          (void);
-           MFColor3f           *getMFTable          (void);
+  void setGamma(const Real32& value);
+  void setMatrix(const Matrix& value);
+  void setWidth(const UInt32& value);
+  void setHeight(const UInt32& value);
+  void setDepth(const UInt32& value);
 
-           Real32              &getGamma          (void);
-     const Real32              &getGamma          (void) const;
-           Matrix              &getMatrix         (void);
-     const Matrix              &getMatrix         (void) const;
-           UInt32              &getWidth          (void);
-     const UInt32              &getWidth          (void) const;
-           UInt32              &getHeight         (void);
-     const UInt32              &getHeight         (void) const;
-           UInt32              &getDepth          (void);
-     const UInt32              &getDepth          (void) const;
-           Color3f             &getTable          (const UInt32 index);
-           MFColor3f           &getTable          (void);
-     const MFColor3f           &getTable          (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setGamma          ( const Real32 &value );
-     void setMatrix         ( const Matrix &value );
-     void setWidth          ( const UInt32 &value );
-     void setHeight         ( const UInt32 &value );
-     void setDepth          ( const UInt32 &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static ColorDisplayFilterPtr create(void);
+  static ColorDisplayFilterPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  ColorDisplayFilterPtr      create          (void); 
-    static  ColorDisplayFilterPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFReal32  _sfGamma;
+  SFMatrix  _sfMatrix;
+  SFUInt32  _sfWidth;
+  SFUInt32  _sfHeight;
+  SFUInt32  _sfDepth;
+  MFColor3f _mfTable;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  ColorDisplayFilterBase(void);
+  ColorDisplayFilterBase(const ColorDisplayFilterBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~ColorDisplayFilterBase(void);
 
-    SFReal32            _sfGamma;
-    SFMatrix            _sfMatrix;
-    SFUInt32            _sfWidth;
-    SFUInt32            _sfHeight;
-    SFUInt32            _sfDepth;
-    MFColor3f           _mfTable;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    ColorDisplayFilterBase(void);
-    ColorDisplayFilterBase(const ColorDisplayFilterBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~ColorDisplayFilterBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      ColorDisplayFilterBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(ColorDisplayFilterBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      ColorDisplayFilterBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      ColorDisplayFilterBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const ColorDisplayFilterBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const ColorDisplayFilterBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef ColorDisplayFilterBase* ColorDisplayFilterBaseP;
 
-typedef ColorDisplayFilterBase *ColorDisplayFilterBaseP;
-
-typedef osgIF<ColorDisplayFilterBase::isNodeCore,
-              CoredNodePtr<ColorDisplayFilter>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet ColorDisplayFilterNodePtr;
+typedef osgIF<ColorDisplayFilterBase::isNodeCore, CoredNodePtr<ColorDisplayFilter>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet
+    ColorDisplayFilterNodePtr;
 
 typedef RefPtr<ColorDisplayFilterPtr> ColorDisplayFilterRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGCOLORDISPLAYFILTERBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.38 2005/07/08 06:37:35 vossg Exp $"
+#define OSGCOLORDISPLAYFILTERBASE_HEADER_CVSID                                                     \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.38 2005/07/08 06:37:35 vossg Exp $"
 
 #endif /* _OSGCOLORDISPLAYFILTERBASE_H_ */

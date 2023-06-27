@@ -49,84 +49,77 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief DistortionDisplayFilter class. See \ref 
+/*! \brief DistortionDisplayFilter class. See \ref
            PageSystemDistortionDisplayFilter for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING DistortionDisplayFilter : public DistortionDisplayFilterBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING DistortionDisplayFilter : public DistortionDisplayFilterBase {
+ private:
+  typedef DistortionDisplayFilterBase Inherited;
 
-    typedef DistortionDisplayFilterBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in DistortionDisplayFilterBase.
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  DistortionDisplayFilter(void);
+  DistortionDisplayFilter(const DistortionDisplayFilter& source);
 
-    // Variables should all be in DistortionDisplayFilterBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~DistortionDisplayFilter(void);
 
-    DistortionDisplayFilter(void);
-    DistortionDisplayFilter(const DistortionDisplayFilter &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   filter handling                            */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  virtual void createFilter(DisplayFilterForeground* fg, Viewport* port);
 
-    virtual ~DistortionDisplayFilter(void); 
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   filter handling                            */
-    /*! \{                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class DistortionDisplayFilterBase;
 
-    virtual void createFilter(DisplayFilterForeground *fg,
-                              Viewport *port);
+  static void initMethod(void);
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  // prohibit default functions (move to 'public' if you need one)
 
-    friend class FieldContainer;
-    friend class DistortionDisplayFilterBase;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const DistortionDisplayFilter &source);
+  void operator=(const DistortionDisplayFilter& source);
 };
 
-typedef DistortionDisplayFilter *DistortionDisplayFilterP;
+typedef DistortionDisplayFilter* DistortionDisplayFilterP;
 
 OSG_END_NAMESPACE
 
 #include "OSGDistortionDisplayFilterBase.inl"
 #include "OSGDistortionDisplayFilter.inl"
 
-#define OSGDISTORTIONDISPLAYFILTER_HEADER_CVSID "@(#)$Id: FCTemplate_h.h,v 1.22 2004/08/03 05:53:03 dirk Exp $"
+#define OSGDISTORTIONDISPLAYFILTER_HEADER_CVSID                                                    \
+  "@(#)$Id: FCTemplate_h.h,v 1.22 2004/08/03 05:53:03 dirk Exp $"
 
 #endif /* _OSGDISTORTIONDISPLAYFILTER_H_ */

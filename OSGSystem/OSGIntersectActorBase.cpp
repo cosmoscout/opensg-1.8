@@ -65,8 +65,8 @@ OSG_USING_NAMESPACE
 //    Static Member Init
 //----------------------------------------------------------------------------
 
-IntersectActorBase::EnterStoreType *IntersectActorBase::_pClassEnterStore = NULL;
-IntersectActorBase::LeaveStoreType *IntersectActorBase::_pClassLeaveStore = NULL;
+IntersectActorBase::EnterStoreType* IntersectActorBase::_pClassEnterStore = NULL;
+IntersectActorBase::LeaveStoreType* IntersectActorBase::_pClassLeaveStore = NULL;
 
 //----------------------------------------------------------------------------
 //    Destructor
@@ -75,8 +75,7 @@ IntersectActorBase::LeaveStoreType *IntersectActorBase::_pClassLeaveStore = NULL
 /*! Destructor.
  */
 
-IntersectActorBase::~IntersectActorBase(void)
-{
+IntersectActorBase::~IntersectActorBase(void) {
 }
 
 //----------------------------------------------------------------------------
@@ -87,20 +86,16 @@ IntersectActorBase::~IntersectActorBase(void)
  *  classes, but the inherited version must be called.
  */
 
-IntersectActorBase::ResultE
-IntersectActorBase::start(void)
-{
-    return BasicActorBase::start();
+IntersectActorBase::ResultE IntersectActorBase::start(void) {
+  return BasicActorBase::start();
 }
 
 /*! Called after a traversal ends. This method can be overridden in derived
  *  classes, but the inherited version must be called.
  */
 
-IntersectActorBase::ResultE
-IntersectActorBase::stop(void)
-{
-    return BasicActorBase::stop();
+IntersectActorBase::ResultE IntersectActorBase::stop(void) {
+  return BasicActorBase::stop();
 }
 
 //----------------------------------------------------------------------------
@@ -112,27 +107,20 @@ IntersectActorBase::stop(void)
  *  nothing to do for the node.
  */
 
-IntersectActorBase::ResultE
-IntersectActorBase::enterNode(FunctorArgumentType &funcArg)
-{
-    ResultE      result    = NewActionTypes::Continue;
-    NodeCorePtr  pNodeCore = funcArg.getNode()->getCore();
-    Functor     *pFunc     = NULL;
+IntersectActorBase::ResultE IntersectActorBase::enterNode(FunctorArgumentType& funcArg) {
+  ResultE     result    = NewActionTypes::Continue;
+  NodeCorePtr pNodeCore = funcArg.getNode()->getCore();
+  Functor*    pFunc     = NULL;
 
-    if((pFunc = _instanceEnterStore.getFunctor(pNodeCore->getType())) != NULL)
-    {
-        result = pFunc->call(pNodeCore, funcArg);
-    }
-    else if((pFunc = _pClassEnterStore->getFunctor(pNodeCore->getType())) != NULL)
-    {
-        result = pFunc->call(pNodeCore, funcArg);
-    }
-    else
-    {
-        result = BasicActorBase::enterNode(funcArg);
-    }
+  if ((pFunc = _instanceEnterStore.getFunctor(pNodeCore->getType())) != NULL) {
+    result = pFunc->call(pNodeCore, funcArg);
+  } else if ((pFunc = _pClassEnterStore->getFunctor(pNodeCore->getType())) != NULL) {
+    result = pFunc->call(pNodeCore, funcArg);
+  } else {
+    result = BasicActorBase::enterNode(funcArg);
+  }
 
-    return result;
+  return result;
 }
 
 /*! This method is called when a node is left. This method can be overridden
@@ -140,47 +128,36 @@ IntersectActorBase::enterNode(FunctorArgumentType &funcArg)
  *  nothing to do for the node.
  */
 
-IntersectActorBase::ResultE
-IntersectActorBase::leaveNode(FunctorArgumentType &funcArg)
-{
-    ResultE      result    = NewActionTypes::Continue;
-    NodeCorePtr  pNodeCore = funcArg.getNode()->getCore();
-    Functor     *pFunc     = NULL;
+IntersectActorBase::ResultE IntersectActorBase::leaveNode(FunctorArgumentType& funcArg) {
+  ResultE     result    = NewActionTypes::Continue;
+  NodeCorePtr pNodeCore = funcArg.getNode()->getCore();
+  Functor*    pFunc     = NULL;
 
-    if((pFunc = _instanceLeaveStore.getFunctor(pNodeCore->getType())) != NULL)
-    {
-        result = pFunc->call(pNodeCore, funcArg);
-    }
-    else if((pFunc = _pClassLeaveStore->getFunctor(pNodeCore->getType())) != NULL)
-    {
-        result = pFunc->call(pNodeCore, funcArg);
-    }
-    else
-    {
-        result = BasicActorBase::leaveNode(funcArg);
-    }
+  if ((pFunc = _instanceLeaveStore.getFunctor(pNodeCore->getType())) != NULL) {
+    result = pFunc->call(pNodeCore, funcArg);
+  } else if ((pFunc = _pClassLeaveStore->getFunctor(pNodeCore->getType())) != NULL) {
+    result = pFunc->call(pNodeCore, funcArg);
+  } else {
+    result = BasicActorBase::leaveNode(funcArg);
+  }
 
-    return result;
+  return result;
 }
 
 //----------------------------------------------------------------------------
 //    Enter Registration
 //----------------------------------------------------------------------------
 
-
 /*! Register a functor that is used by all instances of this class, when
  *  entering a node with a core of the specified type.
  *  For every type of NodeCore a different functor can be registerd.
  */
 
-void
-IntersectActorBase::regClassEnter(const Functor            &refFunc,
-                                  const FieldContainerType &refType )
-{
-    if(_pClassEnterStore == NULL)
-        _pClassEnterStore = new EnterStoreType();
+void IntersectActorBase::regClassEnter(const Functor& refFunc, const FieldContainerType& refType) {
+  if (_pClassEnterStore == NULL)
+    _pClassEnterStore = new EnterStoreType();
 
-    _pClassEnterStore->regFunctor(refFunc, refType);
+  _pClassEnterStore->regFunctor(refFunc, refType);
 }
 
 /*! Register a functor that is used by the instance of this class, when
@@ -189,24 +166,19 @@ IntersectActorBase::regClassEnter(const Functor            &refFunc,
  *  Instance functors take priority over class functors.
  */
 
-void
-IntersectActorBase::regEnter(const Functor            &refFunc,
-                             const FieldContainerType &refType )
-{
-    _instanceEnterStore.regFunctor(refFunc, refType);
+void IntersectActorBase::regEnter(const Functor& refFunc, const FieldContainerType& refType) {
+  _instanceEnterStore.regFunctor(refFunc, refType);
 }
 
 /*! Register a functor that is used by all instances of this class, when
  *  entering a node with a core for which no specific functor was registerd.
  */
 
-void
-IntersectActorBase::regDefaultClassEnter(const Functor &refFunc)
-{
-    if(_pClassEnterStore == NULL)
-        _pClassEnterStore = new EnterStoreType();
+void IntersectActorBase::regDefaultClassEnter(const Functor& refFunc) {
+  if (_pClassEnterStore == NULL)
+    _pClassEnterStore = new EnterStoreType();
 
-    _pClassEnterStore->regDefaultFunctor(refFunc);
+  _pClassEnterStore->regDefaultFunctor(refFunc);
 }
 
 /*! Register a functor that is used by the instance of this class, when
@@ -214,52 +186,42 @@ IntersectActorBase::regDefaultClassEnter(const Functor &refFunc)
  *  Instance functors take priority over class functors.
  */
 
-void
-IntersectActorBase::regDefaultEnter(const Functor &refFunc)
-{
-    _instanceEnterStore.regDefaultFunctor(refFunc);
+void IntersectActorBase::regDefaultEnter(const Functor& refFunc) {
+  _instanceEnterStore.regDefaultFunctor(refFunc);
 }
 
 /*! Remove a functor registered with regClassEnter.
  */
 
-void
-IntersectActorBase::unregClassEnter(const FieldContainerType &refType)
-{
-    if(_pClassEnterStore == NULL)
-        _pClassEnterStore = new EnterStoreType();
+void IntersectActorBase::unregClassEnter(const FieldContainerType& refType) {
+  if (_pClassEnterStore == NULL)
+    _pClassEnterStore = new EnterStoreType();
 
-    _pClassEnterStore->unregFunctor(refType);
+  _pClassEnterStore->unregFunctor(refType);
 }
 
 /*! Remove a functor registered with regEnter.
  */
 
-void
-IntersectActorBase::unregEnter(const FieldContainerType &refType)
-{
-    _instanceEnterStore.unregFunctor(refType);
+void IntersectActorBase::unregEnter(const FieldContainerType& refType) {
+  _instanceEnterStore.unregFunctor(refType);
 }
 
 /*! Remove the functor registered with regDefaultClassEnter.
  */
 
-void
-IntersectActorBase::unregDefaultClassEnter(void)
-{
-    if(_pClassEnterStore == NULL)
-        _pClassEnterStore = new EnterStoreType();
+void IntersectActorBase::unregDefaultClassEnter(void) {
+  if (_pClassEnterStore == NULL)
+    _pClassEnterStore = new EnterStoreType();
 
-    _pClassEnterStore->unregDefaultFunctor();
+  _pClassEnterStore->unregDefaultFunctor();
 }
 
 /*! Remove the functor registered with regDefaultEnter.
  */
 
-void
-IntersectActorBase::unregDefaultEnter(void)
-{
-    _instanceEnterStore.unregDefaultFunctor();
+void IntersectActorBase::unregDefaultEnter(void) {
+  _instanceEnterStore.unregDefaultFunctor();
 }
 
 //----------------------------------------------------------------------------
@@ -271,14 +233,11 @@ IntersectActorBase::unregDefaultEnter(void)
  *  For every type of NodeCore a different functor can be registerd.
  */
 
-void
-IntersectActorBase::regClassLeave(const Functor            &refFunc,
-                                 const FieldContainerType &refType )
-{
-    if(_pClassLeaveStore == NULL)
-        _pClassLeaveStore = new LeaveStoreType();
+void IntersectActorBase::regClassLeave(const Functor& refFunc, const FieldContainerType& refType) {
+  if (_pClassLeaveStore == NULL)
+    _pClassLeaveStore = new LeaveStoreType();
 
-    _pClassLeaveStore->regFunctor(refFunc, refType);
+  _pClassLeaveStore->regFunctor(refFunc, refType);
 }
 
 /*! Register a functor that is used by the instance of this class, when
@@ -287,24 +246,19 @@ IntersectActorBase::regClassLeave(const Functor            &refFunc,
  *  Instance functors take priority over class functors.
  */
 
-void
-IntersectActorBase::regLeave(const Functor            &refFunc,
-                            const FieldContainerType &refType )
-{
-    _instanceLeaveStore.regFunctor(refFunc, refType);
+void IntersectActorBase::regLeave(const Functor& refFunc, const FieldContainerType& refType) {
+  _instanceLeaveStore.regFunctor(refFunc, refType);
 }
 
 /*! Register a functor that is used by all instances of this class, when
  *  leaveing a node with a core for which no specific functor was registerd.
  */
 
-void
-IntersectActorBase::regDefaultClassLeave(const Functor &refFunc)
-{
-    if(_pClassLeaveStore == NULL)
-        _pClassLeaveStore = new LeaveStoreType();
+void IntersectActorBase::regDefaultClassLeave(const Functor& refFunc) {
+  if (_pClassLeaveStore == NULL)
+    _pClassLeaveStore = new LeaveStoreType();
 
-    _pClassLeaveStore->regDefaultFunctor(refFunc);
+  _pClassLeaveStore->regDefaultFunctor(refFunc);
 }
 
 /*! Register a functor that is used by the instance of this class, when
@@ -312,52 +266,42 @@ IntersectActorBase::regDefaultClassLeave(const Functor &refFunc)
  *  Instance functors take priority over class functors.
  */
 
-void
-IntersectActorBase::regDefaultLeave(const Functor &refFunc)
-{
-    _instanceLeaveStore.regDefaultFunctor(refFunc);
+void IntersectActorBase::regDefaultLeave(const Functor& refFunc) {
+  _instanceLeaveStore.regDefaultFunctor(refFunc);
 }
 
 /*! Remove a functor registered with regClassLeave.
  */
 
-void
-IntersectActorBase::unregClassLeave(const FieldContainerType &refType)
-{
-    if(_pClassLeaveStore == NULL)
-        _pClassLeaveStore = new LeaveStoreType();
+void IntersectActorBase::unregClassLeave(const FieldContainerType& refType) {
+  if (_pClassLeaveStore == NULL)
+    _pClassLeaveStore = new LeaveStoreType();
 
-    _pClassLeaveStore->unregFunctor(refType);
+  _pClassLeaveStore->unregFunctor(refType);
 }
 
 /*! Remove a functor registered with regLeave.
  */
 
-void
-IntersectActorBase::unregLeave(const FieldContainerType &refType)
-{
-    _instanceLeaveStore.unregFunctor(refType);
+void IntersectActorBase::unregLeave(const FieldContainerType& refType) {
+  _instanceLeaveStore.unregFunctor(refType);
 }
 
 /*! Remove the functor registered with regDefaultClassLeave.
  */
 
-void
-IntersectActorBase::unregDefaultClassLeave(void)
-{
-    if(_pClassLeaveStore == NULL)
-        _pClassLeaveStore = new LeaveStoreType();
+void IntersectActorBase::unregDefaultClassLeave(void) {
+  if (_pClassLeaveStore == NULL)
+    _pClassLeaveStore = new LeaveStoreType();
 
-    _pClassLeaveStore->unregDefaultFunctor();
+  _pClassLeaveStore->unregDefaultFunctor();
 }
 
 /*! Remove the functor registered with regDefaultLeave.
  */
 
-void
-IntersectActorBase::unregDefaultLeave(void)
-{
-    _instanceLeaveStore.unregDefaultFunctor();
+void IntersectActorBase::unregDefaultLeave(void) {
+  _instanceLeaveStore.unregDefaultFunctor();
 }
 
 //----------------------------------------------------------------------------
@@ -366,77 +310,60 @@ IntersectActorBase::unregDefaultLeave(void)
 
 #ifdef OSG_NEWACTION_STATESLOTINTERFACE
 
-UInt32
-IntersectActorBase::createStateClone(void)
-{
-    UInt32     stateSlot = getSlotMap   (               ).size();
-    StateType *pClone    = new StateType(*getCastState());
+UInt32 IntersectActorBase::createStateClone(void) {
+  UInt32     stateSlot = getSlotMap().size();
+  StateType* pClone    = new StateType(*getCastState());
 
-    getSlotMap().push_back(pClone);
+  getSlotMap().push_back(pClone);
 
-    setState(pClone);
+  setState(pClone);
 
-    return stateSlot;
+  return stateSlot;
 }
 
 #else /* OSG_NEWACTION_STATESLOTINTERFACE */
 
-IntersectActorBase::ActorBaseState *
-IntersectActorBase::createStateClone(void)
-{
-    StateType *pClone = new StateType(*getCastState());
+IntersectActorBase::ActorBaseState* IntersectActorBase::createStateClone(void) {
+  StateType* pClone = new StateType(*getCastState());
 
-    setState(pClone);
+  setState(pClone);
 
-    return pClone;
+  return pClone;
 }
 
 #endif /* OSG_NEWACTION_STATESLOTINTERFACE */
 
 #ifdef OSG_NEWACTION_STATESLOTINTERFACE
 
-void
-IntersectActorBase::destroyStateClone(UInt32 slotId)
-{
-    delete getSlotMap()[slotId];
+void IntersectActorBase::destroyStateClone(UInt32 slotId) {
+  delete getSlotMap()[slotId];
 }
 
 #else /* OSG_NEWACTION_STATESLOTINTERFACE */
 
-void
-IntersectActorBase::destroyStateClone(ActorBaseState *pState)
-{
-    delete pState;
+void IntersectActorBase::destroyStateClone(ActorBaseState* pState) {
+  delete pState;
 }
 
 #endif /* OSG_NEWACTION_STATESLOTINTERFACE */
 
-void
-IntersectActorBase::createInitialState(void)
-{
-    if(getState() != NULL)
-    {
-        SWARNING << "IntersectActorBase::createInitialState: State is not NULL."
-                 << endLog;
-    }
+void IntersectActorBase::createInitialState(void) {
+  if (getState() != NULL) {
+    SWARNING << "IntersectActorBase::createInitialState: State is not NULL." << endLog;
+  }
 
-    setState(new StateType());
+  setState(new StateType());
 }
 
-void
-IntersectActorBase::deleteInitialState(void)
-{
-    if(getState() == NULL)
-    {
-        SWARNING << "IntersectActorBase::deleteInitalState: State is NULL."
-                 << endLog;
-    }
+void IntersectActorBase::deleteInitialState(void) {
+  if (getState() == NULL) {
+    SWARNING << "IntersectActorBase::deleteInitalState: State is NULL." << endLog;
+  }
 
-    delete getState();
+  delete getState();
 
-    setState(NULL);
+  setState(NULL);
 }
-
 
 //----------------------------------------------------------------------------
 //    State Class
@@ -445,8 +372,7 @@ IntersectActorBase::deleteInitialState(void)
 /*! Destructor.
  */
 
-IntersectActorBase::IntersectActorBaseState::~IntersectActorBaseState(void)
-{
+IntersectActorBase::IntersectActorBaseState::~IntersectActorBaseState(void) {
 }
 
 //----------------------------------------------------------------------------
@@ -457,24 +383,23 @@ IntersectActorBase::IntersectActorBaseState::~IntersectActorBaseState(void)
  */
 
 IntersectActorBase::IntersectActorBase(void)
-    : Inherited(),
-      _stateHitDistance(0.0),
-      _stateHit(false),
-      _stateHitObject(NullFC),
-      _stateHitTriangleIndex(0),
-      _stateHitNormal(),
-      _stateMaxDistance(),
-      _instanceEnterStore(),
-      _instanceLeaveStore()
-{
-    if(_pClassEnterStore == NULL)
-        _pClassEnterStore = new EnterStoreType();
+    : Inherited()
+    , _stateHitDistance(0.0)
+    , _stateHit(false)
+    , _stateHitObject(NullFC)
+    , _stateHitTriangleIndex(0)
+    , _stateHitNormal()
+    , _stateMaxDistance()
+    , _instanceEnterStore()
+    , _instanceLeaveStore() {
+  if (_pClassEnterStore == NULL)
+    _pClassEnterStore = new EnterStoreType();
 
-    if(_pClassLeaveStore == NULL)
-        _pClassLeaveStore = new LeaveStoreType();
+  if (_pClassLeaveStore == NULL)
+    _pClassLeaveStore = new LeaveStoreType();
 
-    setEnterNodeFlag(true);
-    setLeaveNodeFlag(true);
+  setEnterNodeFlag(true);
+  setLeaveNodeFlag(true);
 }
 
 //----------------------------------------------------------------------------
@@ -485,19 +410,14 @@ IntersectActorBase::IntersectActorBase(void)
  *  be overridden in derived classes, but the inherited version must be called.
  */
 
-void
-IntersectActorBase::addEvent(NewActionBase *pAction, UInt32 uiActorId)
-{
-    Inherited::addEvent(pAction, uiActorId);
+void IntersectActorBase::addEvent(NewActionBase* pAction, UInt32 uiActorId) {
+  Inherited::addEvent(pAction, uiActorId);
 }
 
 /*! Called when the actor is detached from an action. This method can
  *  be overridden in derived classes, but the inherited version must be called.
  */
 
-void
-IntersectActorBase::subEvent(NewActionBase *pAction, UInt32 uiActorId)
-{
-    Inherited::subEvent(pAction, uiActorId);
+void IntersectActorBase::subEvent(NewActionBase* pAction, UInt32 uiActorId) {
+  Inherited::subEvent(pAction, uiActorId);
 }
-

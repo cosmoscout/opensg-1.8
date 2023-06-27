@@ -37,22 +37,20 @@
 \*---------------------------------------------------------------------------*/
 
 OSG_BEGIN_NAMESPACE
-  
-inline const TimeStamp &StatTimeStampElem::start(void) 
-{ 
-    return (_time = getTimeStamp()); 
+
+inline const TimeStamp& StatTimeStampElem::start(void) {
+  return (_time = getTimeStamp());
 }
-    
-inline const TimeStamp &StatTimeStampElem::stop(void)
-{ 
-    return (_time = (getTimeStamp() - _time)); 
+
+inline const TimeStamp& StatTimeStampElem::stop(void) {
+  return (_time = (getTimeStamp() - _time));
 }
- 
-inline const TimeStamp & StatTimeStampElem::getTime(void) const
-{ 
-    return _time; 
+
+inline const TimeStamp& StatTimeStampElem::getTime(void) const {
+  return _time;
 }
 
 OSG_END_NAMESPACE
 
-#define OSGSTATTIMESTAMPELEM_INLINE_CVSID "@(#)$Id: OSGStatTimeStampElem.inl,v 1.1 2005/10/02 15:16:45 dirk Exp $"
+#define OSGSTATTIMESTAMPELEM_INLINE_CVSID                                                          \
+  "@(#)$Id: OSGStatTimeStampElem.inl,v 1.1 2005/10/02 15:16:45 dirk Exp $"

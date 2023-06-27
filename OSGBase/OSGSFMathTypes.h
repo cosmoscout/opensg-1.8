@@ -55,30 +55,27 @@
 
 OSG_BEGIN_NAMESPACE
 
-
-#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS) 
+#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpBaseFieldSingle */
 
-typedef SField<Matrix>     SFMatrix;
+typedef SField<Matrix> SFMatrix;
 #endif
 
 #ifndef OSG_COMPILEFIELDINST
 OSG_DLLEXPORT_DECL1(SField, Matrix, OSG_BASE_DLLTMPLMAPPING)
 #endif
 
-
-#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS) 
+#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpBaseFieldSingle */
 
-typedef SField<Matrix4d>     SFMatrix4d;
+typedef SField<Matrix4d> SFMatrix4d;
 #endif
 
 #ifndef OSG_COMPILEFIELDINST
 OSG_DLLEXPORT_DECL1(SField, Matrix4d, OSG_BASE_DLLTMPLMAPPING)
 #endif
 
-
-#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS) 
+#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpBaseFieldSingle */
 
 typedef SField<Quaternion> SFQuaternion;
@@ -93,8 +90,3 @@ OSG_END_NAMESPACE
 #define OSGSFMATHTYPES_HEADER_CVSID "@(#)$Id: $"
 
 #endif /* _OSGSFMATHTYPES_H_ */
-
-
-
-
-

@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILESHADOWVIEWPORTINST
 
 #include <stdlib.h>
@@ -61,71 +60,69 @@
 #include "OSGShadowViewportBase.h"
 #include "OSGShadowViewport.h"
 
-#include <OSGGL.h>                        // Red default header
-#include <OSGGL.h>                        // Blue default header
-#include <OSGGL.h>                        // Green default header
-#include <OSGGL.h>                        // Alpha default header
+#include <OSGGL.h> // Red default header
+#include <OSGGL.h> // Blue default header
+#include <OSGGL.h> // Green default header
+#include <OSGGL.h> // Alpha default header
 
 OSG_BEGIN_NAMESPACE
 
-const OSG::BitVector  ShadowViewportBase::OffBiasFieldMask = 
+const OSG::BitVector ShadowViewportBase::OffBiasFieldMask =
     (TypeTraits<BitVector>::One << ShadowViewportBase::OffBiasFieldId);
 
-const OSG::BitVector  ShadowViewportBase::OffFactorFieldMask = 
+const OSG::BitVector ShadowViewportBase::OffFactorFieldMask =
     (TypeTraits<BitVector>::One << ShadowViewportBase::OffFactorFieldId);
 
-const OSG::BitVector  ShadowViewportBase::SceneRootFieldMask = 
+const OSG::BitVector ShadowViewportBase::SceneRootFieldMask =
     (TypeTraits<BitVector>::One << ShadowViewportBase::SceneRootFieldId);
 
-const OSG::BitVector  ShadowViewportBase::MapSizeFieldMask = 
+const OSG::BitVector ShadowViewportBase::MapSizeFieldMask =
     (TypeTraits<BitVector>::One << ShadowViewportBase::MapSizeFieldId);
 
-const OSG::BitVector  ShadowViewportBase::LightNodesFieldMask = 
+const OSG::BitVector ShadowViewportBase::LightNodesFieldMask =
     (TypeTraits<BitVector>::One << ShadowViewportBase::LightNodesFieldId);
 
-const OSG::BitVector  ShadowViewportBase::ExcludeNodesFieldMask = 
+const OSG::BitVector ShadowViewportBase::ExcludeNodesFieldMask =
     (TypeTraits<BitVector>::One << ShadowViewportBase::ExcludeNodesFieldId);
 
-const OSG::BitVector  ShadowViewportBase::MapAutoUpdateFieldMask = 
+const OSG::BitVector ShadowViewportBase::MapAutoUpdateFieldMask =
     (TypeTraits<BitVector>::One << ShadowViewportBase::MapAutoUpdateFieldId);
 
-const OSG::BitVector  ShadowViewportBase::ShadowModeFieldMask = 
+const OSG::BitVector ShadowViewportBase::ShadowModeFieldMask =
     (TypeTraits<BitVector>::One << ShadowViewportBase::ShadowModeFieldId);
 
-const OSG::BitVector  ShadowViewportBase::ShadowSmoothnessFieldMask = 
+const OSG::BitVector ShadowViewportBase::ShadowSmoothnessFieldMask =
     (TypeTraits<BitVector>::One << ShadowViewportBase::ShadowSmoothnessFieldId);
 
-const OSG::BitVector  ShadowViewportBase::ShadowOnFieldMask = 
+const OSG::BitVector ShadowViewportBase::ShadowOnFieldMask =
     (TypeTraits<BitVector>::One << ShadowViewportBase::ShadowOnFieldId);
 
-const OSG::BitVector  ShadowViewportBase::AutoSearchForLightsFieldMask = 
+const OSG::BitVector ShadowViewportBase::AutoSearchForLightsFieldMask =
     (TypeTraits<BitVector>::One << ShadowViewportBase::AutoSearchForLightsFieldId);
 
-const OSG::BitVector  ShadowViewportBase::GlobalShadowIntensityFieldMask = 
+const OSG::BitVector ShadowViewportBase::GlobalShadowIntensityFieldMask =
     (TypeTraits<BitVector>::One << ShadowViewportBase::GlobalShadowIntensityFieldId);
 
-const OSG::BitVector  ShadowViewportBase::FboOnFieldMask = 
+const OSG::BitVector ShadowViewportBase::FboOnFieldMask =
     (TypeTraits<BitVector>::One << ShadowViewportBase::FboOnFieldId);
 
-const OSG::BitVector  ShadowViewportBase::AutoExcludeTransparentNodesFieldMask = 
+const OSG::BitVector ShadowViewportBase::AutoExcludeTransparentNodesFieldMask =
     (TypeTraits<BitVector>::One << ShadowViewportBase::AutoExcludeTransparentNodesFieldId);
 
-const OSG::BitVector  ShadowViewportBase::RedFieldMask = 
+const OSG::BitVector ShadowViewportBase::RedFieldMask =
     (TypeTraits<BitVector>::One << ShadowViewportBase::RedFieldId);
 
-const OSG::BitVector  ShadowViewportBase::BlueFieldMask = 
+const OSG::BitVector ShadowViewportBase::BlueFieldMask =
     (TypeTraits<BitVector>::One << ShadowViewportBase::BlueFieldId);
 
-const OSG::BitVector  ShadowViewportBase::GreenFieldMask = 
+const OSG::BitVector ShadowViewportBase::GreenFieldMask =
     (TypeTraits<BitVector>::One << ShadowViewportBase::GreenFieldId);
 
-const OSG::BitVector  ShadowViewportBase::AlphaFieldMask = 
+const OSG::BitVector ShadowViewportBase::AlphaFieldMask =
     (TypeTraits<BitVector>::One << ShadowViewportBase::AlphaFieldId);
 
-const OSG::BitVector ShadowViewportBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector ShadowViewportBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
@@ -139,25 +136,25 @@ const OSG::BitVector ShadowViewportBase::MTInfluenceMask =
     Scene root node.
 */
 /*! \var UInt32          ShadowViewportBase::_sfMapSize
-    
+
 */
 /*! \var NodePtr         ShadowViewportBase::_mfLightNodes
-    
+
 */
 /*! \var NodePtr         ShadowViewportBase::_mfExcludeNodes
-    
+
 */
 /*! \var bool            ShadowViewportBase::_sfMapAutoUpdate
-    
+
 */
 /*! \var UInt32          ShadowViewportBase::_sfShadowMode
-    
+
 */
 /*! \var Real32          ShadowViewportBase::_sfShadowSmoothness
-    
+
 */
 /*! \var bool            ShadowViewportBase::_sfShadowOn
-    
+
 */
 /*! \var bool            ShadowViewportBase::_sfAutoSearchForLights
     if enabled, all lights in the scenegraph are added to the ShadowViewport
@@ -186,671 +183,520 @@ const OSG::BitVector ShadowViewportBase::MTInfluenceMask =
 
 //! ShadowViewport description
 
-FieldDescription *ShadowViewportBase::_desc[] = 
-{
-    new FieldDescription(SFReal32::getClassType(), 
-                     "offBias", 
-                     OffBiasFieldId, OffBiasFieldMask,
-                     false,
-                     (FieldAccessMethod) &ShadowViewportBase::getSFOffBias),
-    new FieldDescription(SFReal32::getClassType(), 
-                     "offFactor", 
-                     OffFactorFieldId, OffFactorFieldMask,
-                     false,
-                     (FieldAccessMethod) &ShadowViewportBase::getSFOffFactor),
-    new FieldDescription(SFNodePtr::getClassType(), 
-                     "sceneRoot", 
-                     SceneRootFieldId, SceneRootFieldMask,
-                     false,
-                     (FieldAccessMethod) &ShadowViewportBase::getSFSceneRoot),
-    new FieldDescription(SFUInt32::getClassType(), 
-                     "mapSize", 
-                     MapSizeFieldId, MapSizeFieldMask,
-                     false,
-                     (FieldAccessMethod) &ShadowViewportBase::getSFMapSize),
-    new FieldDescription(MFNodePtr::getClassType(), 
-                     "lightNodes", 
-                     LightNodesFieldId, LightNodesFieldMask,
-                     false,
-                     (FieldAccessMethod) &ShadowViewportBase::getMFLightNodes),
-    new FieldDescription(MFNodePtr::getClassType(), 
-                     "excludeNodes", 
-                     ExcludeNodesFieldId, ExcludeNodesFieldMask,
-                     false,
-                     (FieldAccessMethod) &ShadowViewportBase::getMFExcludeNodes),
-    new FieldDescription(SFBool::getClassType(), 
-                     "mapAutoUpdate", 
-                     MapAutoUpdateFieldId, MapAutoUpdateFieldMask,
-                     false,
-                     (FieldAccessMethod) &ShadowViewportBase::getSFMapAutoUpdate),
-    new FieldDescription(SFUInt32::getClassType(), 
-                     "shadowMode", 
-                     ShadowModeFieldId, ShadowModeFieldMask,
-                     false,
-                     (FieldAccessMethod) &ShadowViewportBase::getSFShadowMode),
-    new FieldDescription(SFReal32::getClassType(), 
-                     "shadowSmoothness", 
-                     ShadowSmoothnessFieldId, ShadowSmoothnessFieldMask,
-                     false,
-                     (FieldAccessMethod) &ShadowViewportBase::getSFShadowSmoothness),
-    new FieldDescription(SFBool::getClassType(), 
-                     "shadowOn", 
-                     ShadowOnFieldId, ShadowOnFieldMask,
-                     false,
-                     (FieldAccessMethod) &ShadowViewportBase::getSFShadowOn),
-    new FieldDescription(SFBool::getClassType(), 
-                     "autoSearchForLights", 
-                     AutoSearchForLightsFieldId, AutoSearchForLightsFieldMask,
-                     false,
-                     (FieldAccessMethod) &ShadowViewportBase::getSFAutoSearchForLights),
-    new FieldDescription(SFReal32::getClassType(), 
-                     "globalShadowIntensity", 
-                     GlobalShadowIntensityFieldId, GlobalShadowIntensityFieldMask,
-                     false,
-                     (FieldAccessMethod) &ShadowViewportBase::getSFGlobalShadowIntensity),
-    new FieldDescription(SFBool::getClassType(), 
-                     "fboOn", 
-                     FboOnFieldId, FboOnFieldMask,
-                     false,
-                     (FieldAccessMethod) &ShadowViewportBase::getSFFboOn),
-    new FieldDescription(SFBool::getClassType(), 
-                     "autoExcludeTransparentNodes", 
-                     AutoExcludeTransparentNodesFieldId, AutoExcludeTransparentNodesFieldMask,
-                     false,
-                     (FieldAccessMethod) &ShadowViewportBase::getSFAutoExcludeTransparentNodes),
-    new FieldDescription(SFBool::getClassType(), 
-                     "red", 
-                     RedFieldId, RedFieldMask,
-                     false,
-                     (FieldAccessMethod) &ShadowViewportBase::getSFRed),
-    new FieldDescription(SFBool::getClassType(), 
-                     "blue", 
-                     BlueFieldId, BlueFieldMask,
-                     false,
-                     (FieldAccessMethod) &ShadowViewportBase::getSFBlue),
-    new FieldDescription(SFBool::getClassType(), 
-                     "green", 
-                     GreenFieldId, GreenFieldMask,
-                     false,
-                     (FieldAccessMethod) &ShadowViewportBase::getSFGreen),
-    new FieldDescription(SFBool::getClassType(), 
-                     "alpha", 
-                     AlphaFieldId, AlphaFieldMask,
-                     false,
-                     (FieldAccessMethod) &ShadowViewportBase::getSFAlpha)
-};
+FieldDescription* ShadowViewportBase::_desc[] = {
+    new FieldDescription(SFReal32::getClassType(), "offBias", OffBiasFieldId, OffBiasFieldMask,
+        false, (FieldAccessMethod)&ShadowViewportBase::getSFOffBias),
+    new FieldDescription(SFReal32::getClassType(), "offFactor", OffFactorFieldId,
+        OffFactorFieldMask, false, (FieldAccessMethod)&ShadowViewportBase::getSFOffFactor),
+    new FieldDescription(SFNodePtr::getClassType(), "sceneRoot", SceneRootFieldId,
+        SceneRootFieldMask, false, (FieldAccessMethod)&ShadowViewportBase::getSFSceneRoot),
+    new FieldDescription(SFUInt32::getClassType(), "mapSize", MapSizeFieldId, MapSizeFieldMask,
+        false, (FieldAccessMethod)&ShadowViewportBase::getSFMapSize),
+    new FieldDescription(MFNodePtr::getClassType(), "lightNodes", LightNodesFieldId,
+        LightNodesFieldMask, false, (FieldAccessMethod)&ShadowViewportBase::getMFLightNodes),
+    new FieldDescription(MFNodePtr::getClassType(), "excludeNodes", ExcludeNodesFieldId,
+        ExcludeNodesFieldMask, false, (FieldAccessMethod)&ShadowViewportBase::getMFExcludeNodes),
+    new FieldDescription(SFBool::getClassType(), "mapAutoUpdate", MapAutoUpdateFieldId,
+        MapAutoUpdateFieldMask, false, (FieldAccessMethod)&ShadowViewportBase::getSFMapAutoUpdate),
+    new FieldDescription(SFUInt32::getClassType(), "shadowMode", ShadowModeFieldId,
+        ShadowModeFieldMask, false, (FieldAccessMethod)&ShadowViewportBase::getSFShadowMode),
+    new FieldDescription(SFReal32::getClassType(), "shadowSmoothness", ShadowSmoothnessFieldId,
+        ShadowSmoothnessFieldMask, false,
+        (FieldAccessMethod)&ShadowViewportBase::getSFShadowSmoothness),
+    new FieldDescription(SFBool::getClassType(), "shadowOn", ShadowOnFieldId, ShadowOnFieldMask,
+        false, (FieldAccessMethod)&ShadowViewportBase::getSFShadowOn),
+    new FieldDescription(SFBool::getClassType(), "autoSearchForLights", AutoSearchForLightsFieldId,
+        AutoSearchForLightsFieldMask, false,
+        (FieldAccessMethod)&ShadowViewportBase::getSFAutoSearchForLights),
+    new FieldDescription(SFReal32::getClassType(), "globalShadowIntensity",
+        GlobalShadowIntensityFieldId, GlobalShadowIntensityFieldMask, false,
+        (FieldAccessMethod)&ShadowViewportBase::getSFGlobalShadowIntensity),
+    new FieldDescription(SFBool::getClassType(), "fboOn", FboOnFieldId, FboOnFieldMask, false,
+        (FieldAccessMethod)&ShadowViewportBase::getSFFboOn),
+    new FieldDescription(SFBool::getClassType(), "autoExcludeTransparentNodes",
+        AutoExcludeTransparentNodesFieldId, AutoExcludeTransparentNodesFieldMask, false,
+        (FieldAccessMethod)&ShadowViewportBase::getSFAutoExcludeTransparentNodes),
+    new FieldDescription(SFBool::getClassType(), "red", RedFieldId, RedFieldMask, false,
+        (FieldAccessMethod)&ShadowViewportBase::getSFRed),
+    new FieldDescription(SFBool::getClassType(), "blue", BlueFieldId, BlueFieldMask, false,
+        (FieldAccessMethod)&ShadowViewportBase::getSFBlue),
+    new FieldDescription(SFBool::getClassType(), "green", GreenFieldId, GreenFieldMask, false,
+        (FieldAccessMethod)&ShadowViewportBase::getSFGreen),
+    new FieldDescription(SFBool::getClassType(), "alpha", AlphaFieldId, AlphaFieldMask, false,
+        (FieldAccessMethod)&ShadowViewportBase::getSFAlpha)};
 
-
-FieldContainerType ShadowViewportBase::_type(
-    "ShadowViewport",
-    "StereoBufferViewport",
-    NULL,
-    (PrototypeCreateF) &ShadowViewportBase::createEmpty,
-    ShadowViewport::initMethod,
-    _desc,
+FieldContainerType ShadowViewportBase::_type("ShadowViewport", "StereoBufferViewport", NULL,
+    (PrototypeCreateF)&ShadowViewportBase::createEmpty, ShadowViewport::initMethod, _desc,
     sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(ShadowViewportBase, ShadowViewportPtr)
+// OSG_FIELD_CONTAINER_DEF(ShadowViewportBase, ShadowViewportPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &ShadowViewportBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &ShadowViewportBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr ShadowViewportBase::shallowCopy(void) const 
-{ 
-    ShadowViewportPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const ShadowViewport *>(this)); 
-
-    return returnValue; 
+FieldContainerType& ShadowViewportBase::getType(void) {
+  return _type;
 }
 
-UInt32 ShadowViewportBase::getContainerSize(void) const 
-{ 
-    return sizeof(ShadowViewport); 
+const FieldContainerType& ShadowViewportBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr ShadowViewportBase::shallowCopy(void) const {
+  ShadowViewportPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const ShadowViewport*>(this));
+
+  return returnValue;
+}
+
+UInt32 ShadowViewportBase::getContainerSize(void) const {
+  return sizeof(ShadowViewport);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ShadowViewportBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((ShadowViewportBase *) &other, whichField);
+void ShadowViewportBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((ShadowViewportBase*)&other, whichField);
 }
 #else
-void ShadowViewportBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((ShadowViewportBase *) &other, whichField, sInfo);
+void ShadowViewportBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((ShadowViewportBase*)&other, whichField, sInfo);
 }
-void ShadowViewportBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void ShadowViewportBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void ShadowViewportBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
+void ShadowViewportBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 
-    _mfLightNodes.terminateShare(uiAspect, this->getContainerSize());
-    _mfExcludeNodes.terminateShare(uiAspect, this->getContainerSize());
+  _mfLightNodes.terminateShare(uiAspect, this->getContainerSize());
+  _mfExcludeNodes.terminateShare(uiAspect, this->getContainerSize());
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-ShadowViewportBase::ShadowViewportBase(void) :
-    _sfOffBias                (Real32(6)), 
-    _sfOffFactor              (Real32(4)), 
-    _sfSceneRoot              (), 
-    _sfMapSize                (UInt32(512)), 
-    _mfLightNodes             (), 
-    _mfExcludeNodes           (), 
-    _sfMapAutoUpdate          (bool(true)), 
-    _sfShadowMode             (UInt32(0)), 
-    _sfShadowSmoothness       (Real32(0.5)), 
-    _sfShadowOn               (bool(true)), 
-    _sfAutoSearchForLights    (bool(false)), 
-    _sfGlobalShadowIntensity  (Real32(0.0)), 
-    _sfFboOn                  (bool(true)), 
-    _sfAutoExcludeTransparentNodes(bool(true)), 
-    _sfRed                    (bool(GL_TRUE)), 
-    _sfBlue                   (bool(GL_TRUE)), 
-    _sfGreen                  (bool(GL_TRUE)), 
-    _sfAlpha                  (bool(GL_TRUE)), 
-    Inherited() 
-{
+ShadowViewportBase::ShadowViewportBase(void)
+    : _sfOffBias(Real32(6))
+    , _sfOffFactor(Real32(4))
+    , _sfSceneRoot()
+    , _sfMapSize(UInt32(512))
+    , _mfLightNodes()
+    , _mfExcludeNodes()
+    , _sfMapAutoUpdate(bool(true))
+    , _sfShadowMode(UInt32(0))
+    , _sfShadowSmoothness(Real32(0.5))
+    , _sfShadowOn(bool(true))
+    , _sfAutoSearchForLights(bool(false))
+    , _sfGlobalShadowIntensity(Real32(0.0))
+    , _sfFboOn(bool(true))
+    , _sfAutoExcludeTransparentNodes(bool(true))
+    , _sfRed(bool(GL_TRUE))
+    , _sfBlue(bool(GL_TRUE))
+    , _sfGreen(bool(GL_TRUE))
+    , _sfAlpha(bool(GL_TRUE))
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-ShadowViewportBase::ShadowViewportBase(const ShadowViewportBase &source) :
-    _sfOffBias                (source._sfOffBias                ), 
-    _sfOffFactor              (source._sfOffFactor              ), 
-    _sfSceneRoot              (source._sfSceneRoot              ), 
-    _sfMapSize                (source._sfMapSize                ), 
-    _mfLightNodes             (source._mfLightNodes             ), 
-    _mfExcludeNodes           (source._mfExcludeNodes           ), 
-    _sfMapAutoUpdate          (source._sfMapAutoUpdate          ), 
-    _sfShadowMode             (source._sfShadowMode             ), 
-    _sfShadowSmoothness       (source._sfShadowSmoothness       ), 
-    _sfShadowOn               (source._sfShadowOn               ), 
-    _sfAutoSearchForLights    (source._sfAutoSearchForLights    ), 
-    _sfGlobalShadowIntensity  (source._sfGlobalShadowIntensity  ), 
-    _sfFboOn                  (source._sfFboOn                  ), 
-    _sfAutoExcludeTransparentNodes(source._sfAutoExcludeTransparentNodes), 
-    _sfRed                    (source._sfRed                    ), 
-    _sfBlue                   (source._sfBlue                   ), 
-    _sfGreen                  (source._sfGreen                  ), 
-    _sfAlpha                  (source._sfAlpha                  ), 
-    Inherited                 (source)
-{
+ShadowViewportBase::ShadowViewportBase(const ShadowViewportBase& source)
+    : _sfOffBias(source._sfOffBias)
+    , _sfOffFactor(source._sfOffFactor)
+    , _sfSceneRoot(source._sfSceneRoot)
+    , _sfMapSize(source._sfMapSize)
+    , _mfLightNodes(source._mfLightNodes)
+    , _mfExcludeNodes(source._mfExcludeNodes)
+    , _sfMapAutoUpdate(source._sfMapAutoUpdate)
+    , _sfShadowMode(source._sfShadowMode)
+    , _sfShadowSmoothness(source._sfShadowSmoothness)
+    , _sfShadowOn(source._sfShadowOn)
+    , _sfAutoSearchForLights(source._sfAutoSearchForLights)
+    , _sfGlobalShadowIntensity(source._sfGlobalShadowIntensity)
+    , _sfFboOn(source._sfFboOn)
+    , _sfAutoExcludeTransparentNodes(source._sfAutoExcludeTransparentNodes)
+    , _sfRed(source._sfRed)
+    , _sfBlue(source._sfBlue)
+    , _sfGreen(source._sfGreen)
+    , _sfAlpha(source._sfAlpha)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-ShadowViewportBase::~ShadowViewportBase(void)
-{
+ShadowViewportBase::~ShadowViewportBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 ShadowViewportBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 ShadowViewportBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (OffBiasFieldMask & whichField))
-    {
-        returnValue += _sfOffBias.getBinSize();
-    }
+  if (FieldBits::NoField != (OffBiasFieldMask & whichField)) {
+    returnValue += _sfOffBias.getBinSize();
+  }
 
-    if(FieldBits::NoField != (OffFactorFieldMask & whichField))
-    {
-        returnValue += _sfOffFactor.getBinSize();
-    }
+  if (FieldBits::NoField != (OffFactorFieldMask & whichField)) {
+    returnValue += _sfOffFactor.getBinSize();
+  }
 
-    if(FieldBits::NoField != (SceneRootFieldMask & whichField))
-    {
-        returnValue += _sfSceneRoot.getBinSize();
-    }
+  if (FieldBits::NoField != (SceneRootFieldMask & whichField)) {
+    returnValue += _sfSceneRoot.getBinSize();
+  }
 
-    if(FieldBits::NoField != (MapSizeFieldMask & whichField))
-    {
-        returnValue += _sfMapSize.getBinSize();
-    }
+  if (FieldBits::NoField != (MapSizeFieldMask & whichField)) {
+    returnValue += _sfMapSize.getBinSize();
+  }
 
-    if(FieldBits::NoField != (LightNodesFieldMask & whichField))
-    {
-        returnValue += _mfLightNodes.getBinSize();
-    }
+  if (FieldBits::NoField != (LightNodesFieldMask & whichField)) {
+    returnValue += _mfLightNodes.getBinSize();
+  }
 
-    if(FieldBits::NoField != (ExcludeNodesFieldMask & whichField))
-    {
-        returnValue += _mfExcludeNodes.getBinSize();
-    }
+  if (FieldBits::NoField != (ExcludeNodesFieldMask & whichField)) {
+    returnValue += _mfExcludeNodes.getBinSize();
+  }
 
-    if(FieldBits::NoField != (MapAutoUpdateFieldMask & whichField))
-    {
-        returnValue += _sfMapAutoUpdate.getBinSize();
-    }
+  if (FieldBits::NoField != (MapAutoUpdateFieldMask & whichField)) {
+    returnValue += _sfMapAutoUpdate.getBinSize();
+  }
 
-    if(FieldBits::NoField != (ShadowModeFieldMask & whichField))
-    {
-        returnValue += _sfShadowMode.getBinSize();
-    }
+  if (FieldBits::NoField != (ShadowModeFieldMask & whichField)) {
+    returnValue += _sfShadowMode.getBinSize();
+  }
 
-    if(FieldBits::NoField != (ShadowSmoothnessFieldMask & whichField))
-    {
-        returnValue += _sfShadowSmoothness.getBinSize();
-    }
+  if (FieldBits::NoField != (ShadowSmoothnessFieldMask & whichField)) {
+    returnValue += _sfShadowSmoothness.getBinSize();
+  }
 
-    if(FieldBits::NoField != (ShadowOnFieldMask & whichField))
-    {
-        returnValue += _sfShadowOn.getBinSize();
-    }
+  if (FieldBits::NoField != (ShadowOnFieldMask & whichField)) {
+    returnValue += _sfShadowOn.getBinSize();
+  }
 
-    if(FieldBits::NoField != (AutoSearchForLightsFieldMask & whichField))
-    {
-        returnValue += _sfAutoSearchForLights.getBinSize();
-    }
+  if (FieldBits::NoField != (AutoSearchForLightsFieldMask & whichField)) {
+    returnValue += _sfAutoSearchForLights.getBinSize();
+  }
 
-    if(FieldBits::NoField != (GlobalShadowIntensityFieldMask & whichField))
-    {
-        returnValue += _sfGlobalShadowIntensity.getBinSize();
-    }
+  if (FieldBits::NoField != (GlobalShadowIntensityFieldMask & whichField)) {
+    returnValue += _sfGlobalShadowIntensity.getBinSize();
+  }
 
-    if(FieldBits::NoField != (FboOnFieldMask & whichField))
-    {
-        returnValue += _sfFboOn.getBinSize();
-    }
+  if (FieldBits::NoField != (FboOnFieldMask & whichField)) {
+    returnValue += _sfFboOn.getBinSize();
+  }
 
-    if(FieldBits::NoField != (AutoExcludeTransparentNodesFieldMask & whichField))
-    {
-        returnValue += _sfAutoExcludeTransparentNodes.getBinSize();
-    }
+  if (FieldBits::NoField != (AutoExcludeTransparentNodesFieldMask & whichField)) {
+    returnValue += _sfAutoExcludeTransparentNodes.getBinSize();
+  }
 
-    if(FieldBits::NoField != (RedFieldMask & whichField))
-    {
-        returnValue += _sfRed.getBinSize();
-    }
+  if (FieldBits::NoField != (RedFieldMask & whichField)) {
+    returnValue += _sfRed.getBinSize();
+  }
 
-    if(FieldBits::NoField != (BlueFieldMask & whichField))
-    {
-        returnValue += _sfBlue.getBinSize();
-    }
+  if (FieldBits::NoField != (BlueFieldMask & whichField)) {
+    returnValue += _sfBlue.getBinSize();
+  }
 
-    if(FieldBits::NoField != (GreenFieldMask & whichField))
-    {
-        returnValue += _sfGreen.getBinSize();
-    }
+  if (FieldBits::NoField != (GreenFieldMask & whichField)) {
+    returnValue += _sfGreen.getBinSize();
+  }
 
-    if(FieldBits::NoField != (AlphaFieldMask & whichField))
-    {
-        returnValue += _sfAlpha.getBinSize();
-    }
+  if (FieldBits::NoField != (AlphaFieldMask & whichField)) {
+    returnValue += _sfAlpha.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void ShadowViewportBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void ShadowViewportBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (OffBiasFieldMask & whichField))
-    {
-        _sfOffBias.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (OffBiasFieldMask & whichField)) {
+    _sfOffBias.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (OffFactorFieldMask & whichField))
-    {
-        _sfOffFactor.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (OffFactorFieldMask & whichField)) {
+    _sfOffFactor.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (SceneRootFieldMask & whichField))
-    {
-        _sfSceneRoot.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (SceneRootFieldMask & whichField)) {
+    _sfSceneRoot.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (MapSizeFieldMask & whichField))
-    {
-        _sfMapSize.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (MapSizeFieldMask & whichField)) {
+    _sfMapSize.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (LightNodesFieldMask & whichField))
-    {
-        _mfLightNodes.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (LightNodesFieldMask & whichField)) {
+    _mfLightNodes.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ExcludeNodesFieldMask & whichField))
-    {
-        _mfExcludeNodes.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (ExcludeNodesFieldMask & whichField)) {
+    _mfExcludeNodes.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (MapAutoUpdateFieldMask & whichField))
-    {
-        _sfMapAutoUpdate.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (MapAutoUpdateFieldMask & whichField)) {
+    _sfMapAutoUpdate.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ShadowModeFieldMask & whichField))
-    {
-        _sfShadowMode.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (ShadowModeFieldMask & whichField)) {
+    _sfShadowMode.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ShadowSmoothnessFieldMask & whichField))
-    {
-        _sfShadowSmoothness.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (ShadowSmoothnessFieldMask & whichField)) {
+    _sfShadowSmoothness.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ShadowOnFieldMask & whichField))
-    {
-        _sfShadowOn.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (ShadowOnFieldMask & whichField)) {
+    _sfShadowOn.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (AutoSearchForLightsFieldMask & whichField))
-    {
-        _sfAutoSearchForLights.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (AutoSearchForLightsFieldMask & whichField)) {
+    _sfAutoSearchForLights.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GlobalShadowIntensityFieldMask & whichField))
-    {
-        _sfGlobalShadowIntensity.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (GlobalShadowIntensityFieldMask & whichField)) {
+    _sfGlobalShadowIntensity.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (FboOnFieldMask & whichField))
-    {
-        _sfFboOn.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (FboOnFieldMask & whichField)) {
+    _sfFboOn.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (AutoExcludeTransparentNodesFieldMask & whichField))
-    {
-        _sfAutoExcludeTransparentNodes.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (AutoExcludeTransparentNodesFieldMask & whichField)) {
+    _sfAutoExcludeTransparentNodes.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (RedFieldMask & whichField))
-    {
-        _sfRed.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (RedFieldMask & whichField)) {
+    _sfRed.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BlueFieldMask & whichField))
-    {
-        _sfBlue.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (BlueFieldMask & whichField)) {
+    _sfBlue.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GreenFieldMask & whichField))
-    {
-        _sfGreen.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (GreenFieldMask & whichField)) {
+    _sfGreen.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (AlphaFieldMask & whichField))
-    {
-        _sfAlpha.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (AlphaFieldMask & whichField)) {
+    _sfAlpha.copyToBin(pMem);
+  }
 }
 
-void ShadowViewportBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void ShadowViewportBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (OffBiasFieldMask & whichField))
-    {
-        _sfOffBias.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (OffBiasFieldMask & whichField)) {
+    _sfOffBias.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (OffFactorFieldMask & whichField))
-    {
-        _sfOffFactor.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (OffFactorFieldMask & whichField)) {
+    _sfOffFactor.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (SceneRootFieldMask & whichField))
-    {
-        _sfSceneRoot.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (SceneRootFieldMask & whichField)) {
+    _sfSceneRoot.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (MapSizeFieldMask & whichField))
-    {
-        _sfMapSize.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (MapSizeFieldMask & whichField)) {
+    _sfMapSize.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (LightNodesFieldMask & whichField))
-    {
-        _mfLightNodes.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (LightNodesFieldMask & whichField)) {
+    _mfLightNodes.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ExcludeNodesFieldMask & whichField))
-    {
-        _mfExcludeNodes.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (ExcludeNodesFieldMask & whichField)) {
+    _mfExcludeNodes.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (MapAutoUpdateFieldMask & whichField))
-    {
-        _sfMapAutoUpdate.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (MapAutoUpdateFieldMask & whichField)) {
+    _sfMapAutoUpdate.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ShadowModeFieldMask & whichField))
-    {
-        _sfShadowMode.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (ShadowModeFieldMask & whichField)) {
+    _sfShadowMode.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ShadowSmoothnessFieldMask & whichField))
-    {
-        _sfShadowSmoothness.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (ShadowSmoothnessFieldMask & whichField)) {
+    _sfShadowSmoothness.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ShadowOnFieldMask & whichField))
-    {
-        _sfShadowOn.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (ShadowOnFieldMask & whichField)) {
+    _sfShadowOn.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (AutoSearchForLightsFieldMask & whichField))
-    {
-        _sfAutoSearchForLights.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (AutoSearchForLightsFieldMask & whichField)) {
+    _sfAutoSearchForLights.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GlobalShadowIntensityFieldMask & whichField))
-    {
-        _sfGlobalShadowIntensity.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (GlobalShadowIntensityFieldMask & whichField)) {
+    _sfGlobalShadowIntensity.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (FboOnFieldMask & whichField))
-    {
-        _sfFboOn.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (FboOnFieldMask & whichField)) {
+    _sfFboOn.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (AutoExcludeTransparentNodesFieldMask & whichField))
-    {
-        _sfAutoExcludeTransparentNodes.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (AutoExcludeTransparentNodesFieldMask & whichField)) {
+    _sfAutoExcludeTransparentNodes.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (RedFieldMask & whichField))
-    {
-        _sfRed.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (RedFieldMask & whichField)) {
+    _sfRed.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BlueFieldMask & whichField))
-    {
-        _sfBlue.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (BlueFieldMask & whichField)) {
+    _sfBlue.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GreenFieldMask & whichField))
-    {
-        _sfGreen.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (GreenFieldMask & whichField)) {
+    _sfGreen.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (AlphaFieldMask & whichField))
-    {
-        _sfAlpha.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (AlphaFieldMask & whichField)) {
+    _sfAlpha.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ShadowViewportBase::executeSyncImpl(      ShadowViewportBase *pOther,
-                                        const BitVector         &whichField)
-{
+void ShadowViewportBase::executeSyncImpl(ShadowViewportBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (OffBiasFieldMask & whichField))
-        _sfOffBias.syncWith(pOther->_sfOffBias);
+  if (FieldBits::NoField != (OffBiasFieldMask & whichField))
+    _sfOffBias.syncWith(pOther->_sfOffBias);
 
-    if(FieldBits::NoField != (OffFactorFieldMask & whichField))
-        _sfOffFactor.syncWith(pOther->_sfOffFactor);
+  if (FieldBits::NoField != (OffFactorFieldMask & whichField))
+    _sfOffFactor.syncWith(pOther->_sfOffFactor);
 
-    if(FieldBits::NoField != (SceneRootFieldMask & whichField))
-        _sfSceneRoot.syncWith(pOther->_sfSceneRoot);
+  if (FieldBits::NoField != (SceneRootFieldMask & whichField))
+    _sfSceneRoot.syncWith(pOther->_sfSceneRoot);
 
-    if(FieldBits::NoField != (MapSizeFieldMask & whichField))
-        _sfMapSize.syncWith(pOther->_sfMapSize);
+  if (FieldBits::NoField != (MapSizeFieldMask & whichField))
+    _sfMapSize.syncWith(pOther->_sfMapSize);
 
-    if(FieldBits::NoField != (LightNodesFieldMask & whichField))
-        _mfLightNodes.syncWith(pOther->_mfLightNodes);
+  if (FieldBits::NoField != (LightNodesFieldMask & whichField))
+    _mfLightNodes.syncWith(pOther->_mfLightNodes);
 
-    if(FieldBits::NoField != (ExcludeNodesFieldMask & whichField))
-        _mfExcludeNodes.syncWith(pOther->_mfExcludeNodes);
+  if (FieldBits::NoField != (ExcludeNodesFieldMask & whichField))
+    _mfExcludeNodes.syncWith(pOther->_mfExcludeNodes);
 
-    if(FieldBits::NoField != (MapAutoUpdateFieldMask & whichField))
-        _sfMapAutoUpdate.syncWith(pOther->_sfMapAutoUpdate);
+  if (FieldBits::NoField != (MapAutoUpdateFieldMask & whichField))
+    _sfMapAutoUpdate.syncWith(pOther->_sfMapAutoUpdate);
 
-    if(FieldBits::NoField != (ShadowModeFieldMask & whichField))
-        _sfShadowMode.syncWith(pOther->_sfShadowMode);
+  if (FieldBits::NoField != (ShadowModeFieldMask & whichField))
+    _sfShadowMode.syncWith(pOther->_sfShadowMode);
 
-    if(FieldBits::NoField != (ShadowSmoothnessFieldMask & whichField))
-        _sfShadowSmoothness.syncWith(pOther->_sfShadowSmoothness);
+  if (FieldBits::NoField != (ShadowSmoothnessFieldMask & whichField))
+    _sfShadowSmoothness.syncWith(pOther->_sfShadowSmoothness);
 
-    if(FieldBits::NoField != (ShadowOnFieldMask & whichField))
-        _sfShadowOn.syncWith(pOther->_sfShadowOn);
+  if (FieldBits::NoField != (ShadowOnFieldMask & whichField))
+    _sfShadowOn.syncWith(pOther->_sfShadowOn);
 
-    if(FieldBits::NoField != (AutoSearchForLightsFieldMask & whichField))
-        _sfAutoSearchForLights.syncWith(pOther->_sfAutoSearchForLights);
+  if (FieldBits::NoField != (AutoSearchForLightsFieldMask & whichField))
+    _sfAutoSearchForLights.syncWith(pOther->_sfAutoSearchForLights);
 
-    if(FieldBits::NoField != (GlobalShadowIntensityFieldMask & whichField))
-        _sfGlobalShadowIntensity.syncWith(pOther->_sfGlobalShadowIntensity);
+  if (FieldBits::NoField != (GlobalShadowIntensityFieldMask & whichField))
+    _sfGlobalShadowIntensity.syncWith(pOther->_sfGlobalShadowIntensity);
 
-    if(FieldBits::NoField != (FboOnFieldMask & whichField))
-        _sfFboOn.syncWith(pOther->_sfFboOn);
+  if (FieldBits::NoField != (FboOnFieldMask & whichField))
+    _sfFboOn.syncWith(pOther->_sfFboOn);
 
-    if(FieldBits::NoField != (AutoExcludeTransparentNodesFieldMask & whichField))
-        _sfAutoExcludeTransparentNodes.syncWith(pOther->_sfAutoExcludeTransparentNodes);
+  if (FieldBits::NoField != (AutoExcludeTransparentNodesFieldMask & whichField))
+    _sfAutoExcludeTransparentNodes.syncWith(pOther->_sfAutoExcludeTransparentNodes);
 
-    if(FieldBits::NoField != (RedFieldMask & whichField))
-        _sfRed.syncWith(pOther->_sfRed);
+  if (FieldBits::NoField != (RedFieldMask & whichField))
+    _sfRed.syncWith(pOther->_sfRed);
 
-    if(FieldBits::NoField != (BlueFieldMask & whichField))
-        _sfBlue.syncWith(pOther->_sfBlue);
+  if (FieldBits::NoField != (BlueFieldMask & whichField))
+    _sfBlue.syncWith(pOther->_sfBlue);
 
-    if(FieldBits::NoField != (GreenFieldMask & whichField))
-        _sfGreen.syncWith(pOther->_sfGreen);
+  if (FieldBits::NoField != (GreenFieldMask & whichField))
+    _sfGreen.syncWith(pOther->_sfGreen);
 
-    if(FieldBits::NoField != (AlphaFieldMask & whichField))
-        _sfAlpha.syncWith(pOther->_sfAlpha);
-
-
+  if (FieldBits::NoField != (AlphaFieldMask & whichField))
+    _sfAlpha.syncWith(pOther->_sfAlpha);
 }
 #else
-void ShadowViewportBase::executeSyncImpl(      ShadowViewportBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void ShadowViewportBase::executeSyncImpl(
+    ShadowViewportBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (OffBiasFieldMask & whichField))
-        _sfOffBias.syncWith(pOther->_sfOffBias);
+  if (FieldBits::NoField != (OffBiasFieldMask & whichField))
+    _sfOffBias.syncWith(pOther->_sfOffBias);
 
-    if(FieldBits::NoField != (OffFactorFieldMask & whichField))
-        _sfOffFactor.syncWith(pOther->_sfOffFactor);
+  if (FieldBits::NoField != (OffFactorFieldMask & whichField))
+    _sfOffFactor.syncWith(pOther->_sfOffFactor);
 
-    if(FieldBits::NoField != (SceneRootFieldMask & whichField))
-        _sfSceneRoot.syncWith(pOther->_sfSceneRoot);
+  if (FieldBits::NoField != (SceneRootFieldMask & whichField))
+    _sfSceneRoot.syncWith(pOther->_sfSceneRoot);
 
-    if(FieldBits::NoField != (MapSizeFieldMask & whichField))
-        _sfMapSize.syncWith(pOther->_sfMapSize);
+  if (FieldBits::NoField != (MapSizeFieldMask & whichField))
+    _sfMapSize.syncWith(pOther->_sfMapSize);
 
-    if(FieldBits::NoField != (MapAutoUpdateFieldMask & whichField))
-        _sfMapAutoUpdate.syncWith(pOther->_sfMapAutoUpdate);
+  if (FieldBits::NoField != (MapAutoUpdateFieldMask & whichField))
+    _sfMapAutoUpdate.syncWith(pOther->_sfMapAutoUpdate);
 
-    if(FieldBits::NoField != (ShadowModeFieldMask & whichField))
-        _sfShadowMode.syncWith(pOther->_sfShadowMode);
+  if (FieldBits::NoField != (ShadowModeFieldMask & whichField))
+    _sfShadowMode.syncWith(pOther->_sfShadowMode);
 
-    if(FieldBits::NoField != (ShadowSmoothnessFieldMask & whichField))
-        _sfShadowSmoothness.syncWith(pOther->_sfShadowSmoothness);
+  if (FieldBits::NoField != (ShadowSmoothnessFieldMask & whichField))
+    _sfShadowSmoothness.syncWith(pOther->_sfShadowSmoothness);
 
-    if(FieldBits::NoField != (ShadowOnFieldMask & whichField))
-        _sfShadowOn.syncWith(pOther->_sfShadowOn);
+  if (FieldBits::NoField != (ShadowOnFieldMask & whichField))
+    _sfShadowOn.syncWith(pOther->_sfShadowOn);
 
-    if(FieldBits::NoField != (AutoSearchForLightsFieldMask & whichField))
-        _sfAutoSearchForLights.syncWith(pOther->_sfAutoSearchForLights);
+  if (FieldBits::NoField != (AutoSearchForLightsFieldMask & whichField))
+    _sfAutoSearchForLights.syncWith(pOther->_sfAutoSearchForLights);
 
-    if(FieldBits::NoField != (GlobalShadowIntensityFieldMask & whichField))
-        _sfGlobalShadowIntensity.syncWith(pOther->_sfGlobalShadowIntensity);
+  if (FieldBits::NoField != (GlobalShadowIntensityFieldMask & whichField))
+    _sfGlobalShadowIntensity.syncWith(pOther->_sfGlobalShadowIntensity);
 
-    if(FieldBits::NoField != (FboOnFieldMask & whichField))
-        _sfFboOn.syncWith(pOther->_sfFboOn);
+  if (FieldBits::NoField != (FboOnFieldMask & whichField))
+    _sfFboOn.syncWith(pOther->_sfFboOn);
 
-    if(FieldBits::NoField != (AutoExcludeTransparentNodesFieldMask & whichField))
-        _sfAutoExcludeTransparentNodes.syncWith(pOther->_sfAutoExcludeTransparentNodes);
+  if (FieldBits::NoField != (AutoExcludeTransparentNodesFieldMask & whichField))
+    _sfAutoExcludeTransparentNodes.syncWith(pOther->_sfAutoExcludeTransparentNodes);
 
-    if(FieldBits::NoField != (RedFieldMask & whichField))
-        _sfRed.syncWith(pOther->_sfRed);
+  if (FieldBits::NoField != (RedFieldMask & whichField))
+    _sfRed.syncWith(pOther->_sfRed);
 
-    if(FieldBits::NoField != (BlueFieldMask & whichField))
-        _sfBlue.syncWith(pOther->_sfBlue);
+  if (FieldBits::NoField != (BlueFieldMask & whichField))
+    _sfBlue.syncWith(pOther->_sfBlue);
 
-    if(FieldBits::NoField != (GreenFieldMask & whichField))
-        _sfGreen.syncWith(pOther->_sfGreen);
+  if (FieldBits::NoField != (GreenFieldMask & whichField))
+    _sfGreen.syncWith(pOther->_sfGreen);
 
-    if(FieldBits::NoField != (AlphaFieldMask & whichField))
-        _sfAlpha.syncWith(pOther->_sfAlpha);
+  if (FieldBits::NoField != (AlphaFieldMask & whichField))
+    _sfAlpha.syncWith(pOther->_sfAlpha);
 
+  if (FieldBits::NoField != (LightNodesFieldMask & whichField))
+    _mfLightNodes.syncWith(pOther->_mfLightNodes, sInfo);
 
-    if(FieldBits::NoField != (LightNodesFieldMask & whichField))
-        _mfLightNodes.syncWith(pOther->_mfLightNodes, sInfo);
-
-    if(FieldBits::NoField != (ExcludeNodesFieldMask & whichField))
-        _mfExcludeNodes.syncWith(pOther->_mfExcludeNodes, sInfo);
-
-
+  if (FieldBits::NoField != (ExcludeNodesFieldMask & whichField))
+    _mfExcludeNodes.syncWith(pOther->_mfExcludeNodes, sInfo);
 }
 
-void ShadowViewportBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void ShadowViewportBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (LightNodesFieldMask & whichField))
-        _mfLightNodes.beginEdit(uiAspect, uiContainerSize);
+  if (FieldBits::NoField != (LightNodesFieldMask & whichField))
+    _mfLightNodes.beginEdit(uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (ExcludeNodesFieldMask & whichField))
-        _mfExcludeNodes.beginEdit(uiAspect, uiContainerSize);
-
+  if (FieldBits::NoField != (ExcludeNodesFieldMask & whichField))
+    _mfExcludeNodes.beginEdit(uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 OSG_END_NAMESPACE
 
@@ -867,4 +713,3 @@ OSG_DLLEXPORT_SFIELD_DEF1(ShadowViewportPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 OSG_DLLEXPORT_MFIELD_DEF1(ShadowViewportPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
-

@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILECHUNKMATERIALINST
 
 #include <stdlib.h>
@@ -61,248 +60,186 @@
 #include "OSGChunkMaterialBase.h"
 #include "OSGChunkMaterial.h"
 
-
 OSG_BEGIN_NAMESPACE
 
-const OSG::BitVector  ChunkMaterialBase::ChunksFieldMask = 
+const OSG::BitVector ChunkMaterialBase::ChunksFieldMask =
     (TypeTraits<BitVector>::One << ChunkMaterialBase::ChunksFieldId);
 
-const OSG::BitVector  ChunkMaterialBase::SlotsFieldMask = 
+const OSG::BitVector ChunkMaterialBase::SlotsFieldMask =
     (TypeTraits<BitVector>::One << ChunkMaterialBase::SlotsFieldId);
 
-const OSG::BitVector ChunkMaterialBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector ChunkMaterialBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
 /*! \var StateChunkPtr   ChunkMaterialBase::_mfChunks
-    
+
 */
 /*! \var Int32           ChunkMaterialBase::_mfSlots
-    
+
 */
 
 //! ChunkMaterial description
 
-FieldDescription *ChunkMaterialBase::_desc[] = 
-{
-    new FieldDescription(MFStateChunkPtr::getClassType(), 
-                     "chunks", 
-                     ChunksFieldId, ChunksFieldMask,
-                     false,
-                     (FieldAccessMethod) &ChunkMaterialBase::getMFChunks),
-    new FieldDescription(MFInt32::getClassType(), 
-                     "slots", 
-                     SlotsFieldId, SlotsFieldMask,
-                     false,
-                     (FieldAccessMethod) &ChunkMaterialBase::getMFSlots)
-};
+FieldDescription* ChunkMaterialBase::_desc[] = {
+    new FieldDescription(MFStateChunkPtr::getClassType(), "chunks", ChunksFieldId, ChunksFieldMask,
+        false, (FieldAccessMethod)&ChunkMaterialBase::getMFChunks),
+    new FieldDescription(MFInt32::getClassType(), "slots", SlotsFieldId, SlotsFieldMask, false,
+        (FieldAccessMethod)&ChunkMaterialBase::getMFSlots)};
 
-
-FieldContainerType ChunkMaterialBase::_type(
-    "ChunkMaterial",
-    "Material",
-    NULL,
-    (PrototypeCreateF) &ChunkMaterialBase::createEmpty,
-    ChunkMaterial::initMethod,
-    _desc,
+FieldContainerType ChunkMaterialBase::_type("ChunkMaterial", "Material", NULL,
+    (PrototypeCreateF)&ChunkMaterialBase::createEmpty, ChunkMaterial::initMethod, _desc,
     sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(ChunkMaterialBase, ChunkMaterialPtr)
+// OSG_FIELD_CONTAINER_DEF(ChunkMaterialBase, ChunkMaterialPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &ChunkMaterialBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &ChunkMaterialBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr ChunkMaterialBase::shallowCopy(void) const 
-{ 
-    ChunkMaterialPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const ChunkMaterial *>(this)); 
-
-    return returnValue; 
+FieldContainerType& ChunkMaterialBase::getType(void) {
+  return _type;
 }
 
-UInt32 ChunkMaterialBase::getContainerSize(void) const 
-{ 
-    return sizeof(ChunkMaterial); 
+const FieldContainerType& ChunkMaterialBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr ChunkMaterialBase::shallowCopy(void) const {
+  ChunkMaterialPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const ChunkMaterial*>(this));
+
+  return returnValue;
+}
+
+UInt32 ChunkMaterialBase::getContainerSize(void) const {
+  return sizeof(ChunkMaterial);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ChunkMaterialBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((ChunkMaterialBase *) &other, whichField);
+void ChunkMaterialBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((ChunkMaterialBase*)&other, whichField);
 }
 #else
-void ChunkMaterialBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((ChunkMaterialBase *) &other, whichField, sInfo);
+void ChunkMaterialBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((ChunkMaterialBase*)&other, whichField, sInfo);
 }
-void ChunkMaterialBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void ChunkMaterialBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void ChunkMaterialBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
+void ChunkMaterialBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 
-    _mfChunks.terminateShare(uiAspect, this->getContainerSize());
-    _mfSlots.terminateShare(uiAspect, this->getContainerSize());
+  _mfChunks.terminateShare(uiAspect, this->getContainerSize());
+  _mfSlots.terminateShare(uiAspect, this->getContainerSize());
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-ChunkMaterialBase::ChunkMaterialBase(void) :
-    _mfChunks                 (), 
-    _mfSlots                  (), 
-    Inherited() 
-{
+ChunkMaterialBase::ChunkMaterialBase(void)
+    : _mfChunks()
+    , _mfSlots()
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-ChunkMaterialBase::ChunkMaterialBase(const ChunkMaterialBase &source) :
-    _mfChunks                 (source._mfChunks                 ), 
-    _mfSlots                  (source._mfSlots                  ), 
-    Inherited                 (source)
-{
+ChunkMaterialBase::ChunkMaterialBase(const ChunkMaterialBase& source)
+    : _mfChunks(source._mfChunks)
+    , _mfSlots(source._mfSlots)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-ChunkMaterialBase::~ChunkMaterialBase(void)
-{
+ChunkMaterialBase::~ChunkMaterialBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 ChunkMaterialBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 ChunkMaterialBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (ChunksFieldMask & whichField))
-    {
-        returnValue += _mfChunks.getBinSize();
-    }
+  if (FieldBits::NoField != (ChunksFieldMask & whichField)) {
+    returnValue += _mfChunks.getBinSize();
+  }
 
-    if(FieldBits::NoField != (SlotsFieldMask & whichField))
-    {
-        returnValue += _mfSlots.getBinSize();
-    }
+  if (FieldBits::NoField != (SlotsFieldMask & whichField)) {
+    returnValue += _mfSlots.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void ChunkMaterialBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void ChunkMaterialBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ChunksFieldMask & whichField))
-    {
-        _mfChunks.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (ChunksFieldMask & whichField)) {
+    _mfChunks.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (SlotsFieldMask & whichField))
-    {
-        _mfSlots.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (SlotsFieldMask & whichField)) {
+    _mfSlots.copyToBin(pMem);
+  }
 }
 
-void ChunkMaterialBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void ChunkMaterialBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ChunksFieldMask & whichField))
-    {
-        _mfChunks.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (ChunksFieldMask & whichField)) {
+    _mfChunks.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (SlotsFieldMask & whichField))
-    {
-        _mfSlots.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (SlotsFieldMask & whichField)) {
+    _mfSlots.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ChunkMaterialBase::executeSyncImpl(      ChunkMaterialBase *pOther,
-                                        const BitVector         &whichField)
-{
+void ChunkMaterialBase::executeSyncImpl(ChunkMaterialBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (ChunksFieldMask & whichField))
-        _mfChunks.syncWith(pOther->_mfChunks);
+  if (FieldBits::NoField != (ChunksFieldMask & whichField))
+    _mfChunks.syncWith(pOther->_mfChunks);
 
-    if(FieldBits::NoField != (SlotsFieldMask & whichField))
-        _mfSlots.syncWith(pOther->_mfSlots);
-
-
+  if (FieldBits::NoField != (SlotsFieldMask & whichField))
+    _mfSlots.syncWith(pOther->_mfSlots);
 }
 #else
-void ChunkMaterialBase::executeSyncImpl(      ChunkMaterialBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void ChunkMaterialBase::executeSyncImpl(
+    ChunkMaterialBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
+  if (FieldBits::NoField != (ChunksFieldMask & whichField))
+    _mfChunks.syncWith(pOther->_mfChunks, sInfo);
 
-    if(FieldBits::NoField != (ChunksFieldMask & whichField))
-        _mfChunks.syncWith(pOther->_mfChunks, sInfo);
-
-    if(FieldBits::NoField != (SlotsFieldMask & whichField))
-        _mfSlots.syncWith(pOther->_mfSlots, sInfo);
-
-
+  if (FieldBits::NoField != (SlotsFieldMask & whichField))
+    _mfSlots.syncWith(pOther->_mfSlots, sInfo);
 }
 
-void ChunkMaterialBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void ChunkMaterialBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (ChunksFieldMask & whichField))
-        _mfChunks.beginEdit(uiAspect, uiContainerSize);
+  if (FieldBits::NoField != (ChunksFieldMask & whichField))
+    _mfChunks.beginEdit(uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (SlotsFieldMask & whichField))
-        _mfSlots.beginEdit(uiAspect, uiContainerSize);
-
+  if (FieldBits::NoField != (SlotsFieldMask & whichField))
+    _mfSlots.beginEdit(uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 OSG_END_NAMESPACE
 
@@ -319,4 +256,3 @@ OSG_DLLEXPORT_SFIELD_DEF1(ChunkMaterialPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 OSG_DLLEXPORT_MFIELD_DEF1(ChunkMaterialPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
-

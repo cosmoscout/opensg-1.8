@@ -52,167 +52,119 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &AbstractTextBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& AbstractTextBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 AbstractTextBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
-
+inline OSG::UInt32 AbstractTextBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the AbstractText::_sfPosition field.
-inline
-SFVec3f *AbstractTextBase::getSFPosition(void)
-{
-    return &_sfPosition;
+inline SFVec3f* AbstractTextBase::getSFPosition(void) {
+  return &_sfPosition;
 }
 
 //! Get the AbstractText::_sfFont field.
-inline
-SFSharedFontStyleWrapperPtr *AbstractTextBase::getSFFont(void)
-{
-    return &_sfFont;
+inline SFSharedFontStyleWrapperPtr* AbstractTextBase::getSFFont(void) {
+  return &_sfFont;
 }
 
 //! Get the AbstractText::_mfText field.
-inline
-MFString *AbstractTextBase::getMFText(void)
-{
-    return &_mfText;
+inline MFString* AbstractTextBase::getMFText(void) {
+  return &_mfText;
 }
 
 //! Get the AbstractText::_sfVerticalLineDistance field.
-inline
-SFReal32 *AbstractTextBase::getSFVerticalLineDistance(void)
-{
-    return &_sfVerticalLineDistance;
+inline SFReal32* AbstractTextBase::getSFVerticalLineDistance(void) {
+  return &_sfVerticalLineDistance;
 }
 
 //! Get the AbstractText::_sfAlignment field.
-inline
-SFUInt8 *AbstractTextBase::getSFAlignment(void)
-{
-    return &_sfAlignment;
-}
-
-
-//! Get the value of the AbstractText::_sfPosition field.
-inline
-Vec3f &AbstractTextBase::getPosition(void)
-{
-    return _sfPosition.getValue();
+inline SFUInt8* AbstractTextBase::getSFAlignment(void) {
+  return &_sfAlignment;
 }
 
 //! Get the value of the AbstractText::_sfPosition field.
-inline
-const Vec3f &AbstractTextBase::getPosition(void) const
-{
-    return _sfPosition.getValue();
+inline Vec3f& AbstractTextBase::getPosition(void) {
+  return _sfPosition.getValue();
+}
+
+//! Get the value of the AbstractText::_sfPosition field.
+inline const Vec3f& AbstractTextBase::getPosition(void) const {
+  return _sfPosition.getValue();
 }
 
 //! Set the value of the AbstractText::_sfPosition field.
-inline
-void AbstractTextBase::setPosition(const Vec3f &value)
-{
-    _sfPosition.setValue(value);
+inline void AbstractTextBase::setPosition(const Vec3f& value) {
+  _sfPosition.setValue(value);
 }
 
 //! Get the value of the AbstractText::_sfFont field.
-inline
-SharedFontStyleWrapperPtr &AbstractTextBase::getFont(void)
-{
-    return _sfFont.getValue();
+inline SharedFontStyleWrapperPtr& AbstractTextBase::getFont(void) {
+  return _sfFont.getValue();
 }
 
 //! Get the value of the AbstractText::_sfFont field.
-inline
-const SharedFontStyleWrapperPtr &AbstractTextBase::getFont(void) const
-{
-    return _sfFont.getValue();
+inline const SharedFontStyleWrapperPtr& AbstractTextBase::getFont(void) const {
+  return _sfFont.getValue();
 }
 
 //! Set the value of the AbstractText::_sfFont field.
-inline
-void AbstractTextBase::setFont(const SharedFontStyleWrapperPtr &value)
-{
-    _sfFont.setValue(value);
+inline void AbstractTextBase::setFont(const SharedFontStyleWrapperPtr& value) {
+  _sfFont.setValue(value);
 }
 
 //! Get the value of the AbstractText::_sfVerticalLineDistance field.
-inline
-Real32 &AbstractTextBase::getVerticalLineDistance(void)
-{
-    return _sfVerticalLineDistance.getValue();
+inline Real32& AbstractTextBase::getVerticalLineDistance(void) {
+  return _sfVerticalLineDistance.getValue();
 }
 
 //! Get the value of the AbstractText::_sfVerticalLineDistance field.
-inline
-const Real32 &AbstractTextBase::getVerticalLineDistance(void) const
-{
-    return _sfVerticalLineDistance.getValue();
+inline const Real32& AbstractTextBase::getVerticalLineDistance(void) const {
+  return _sfVerticalLineDistance.getValue();
 }
 
 //! Set the value of the AbstractText::_sfVerticalLineDistance field.
-inline
-void AbstractTextBase::setVerticalLineDistance(const Real32 &value)
-{
-    _sfVerticalLineDistance.setValue(value);
+inline void AbstractTextBase::setVerticalLineDistance(const Real32& value) {
+  _sfVerticalLineDistance.setValue(value);
 }
 
 //! Get the value of the AbstractText::_sfAlignment field.
-inline
-UInt8 &AbstractTextBase::getAlignment(void)
-{
-    return _sfAlignment.getValue();
+inline UInt8& AbstractTextBase::getAlignment(void) {
+  return _sfAlignment.getValue();
 }
 
 //! Get the value of the AbstractText::_sfAlignment field.
-inline
-const UInt8 &AbstractTextBase::getAlignment(void) const
-{
-    return _sfAlignment.getValue();
+inline const UInt8& AbstractTextBase::getAlignment(void) const {
+  return _sfAlignment.getValue();
 }
 
 //! Set the value of the AbstractText::_sfAlignment field.
-inline
-void AbstractTextBase::setAlignment(const UInt8 &value)
-{
-    _sfAlignment.setValue(value);
+inline void AbstractTextBase::setAlignment(const UInt8& value) {
+  _sfAlignment.setValue(value);
 }
-
 
 //! Get the value of the \a index element the AbstractText::_mfText field.
-inline
-std::string &AbstractTextBase::getText(const UInt32 index)
-{
-    return _mfText[index];
+inline std::string& AbstractTextBase::getText(const UInt32 index) {
+  return _mfText[index];
 }
 
 //! Get the AbstractText::_mfText field.
-inline
-MFString &AbstractTextBase::getText(void)
-{
-    return _mfText;
+inline MFString& AbstractTextBase::getText(void) {
+  return _mfText;
 }
 
 //! Get the AbstractText::_mfText field.
-inline
-const MFString &AbstractTextBase::getText(void) const
-{
-    return _mfText;
+inline const MFString& AbstractTextBase::getText(void) const {
+  return _mfText;
 }
 
 OSG_END_NAMESPACE
 
-#define OSGABSTRACTTEXTBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGABSTRACTTEXTBASE_INLINE_CVSID                                                           \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

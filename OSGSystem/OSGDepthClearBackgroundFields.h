@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGDEPTHCLEARBACKGROUNDFIELDS_H_
 #define _OSGDEPTHCLEARBACKGROUNDFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class DepthClearBackground;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! DepthClearBackgroundPtr
 
 typedef FCPtr<BackgroundPtr, DepthClearBackground> DepthClearBackgroundPtr;
@@ -81,17 +80,20 @@ typedef FCPtr<BackgroundPtr, DepthClearBackground> DepthClearBackgroundPtr;
 #endif
 
 template <>
-struct FieldDataTraits<DepthClearBackgroundPtr> : 
-    public FieldTraitsRecurseMapper<DepthClearBackgroundPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<DepthClearBackgroundPtr>
+    : public FieldTraitsRecurseMapper<DepthClearBackgroundPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getSName(void) { return "SFDepthClearBackgroundPtr"; }
+  static const char* getSName(void) {
+    return "SFDepthClearBackgroundPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -101,7 +103,6 @@ struct FieldDataTraits<DepthClearBackgroundPtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
@@ -115,6 +116,7 @@ OSG_DLLEXPORT_DECL1(SField, DepthClearBackgroundPtr, OSG_SYSTEMLIB_DLLTMPLMAPPIN
 
 OSG_END_NAMESPACE
 
-#define OSGDEPTHCLEARBACKGROUNDFIELDS_HEADER_CVSID "@(#)$Id: OSGDepthClearBackgroundFields.h,v 1.8 2007/05/10 15:57:23 yjung Exp $"
+#define OSGDEPTHCLEARBACKGROUNDFIELDS_HEADER_CVSID                                                 \
+  "@(#)$Id: OSGDepthClearBackgroundFields.h,v 1.8 2007/05/10 15:57:23 yjung Exp $"
 
 #endif /* _OSGDEPTHCLEARBACKGROUNDFIELDS_H_ */

@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGCUBETEXTURECHUNKBASE_H_
 #define _OSGCUBETEXTURECHUNKBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -72,7 +70,7 @@
 #include <OSGImageFields.h> // NegXImage type
 #include <OSGImageFields.h> // PosYImage type
 #include <OSGImageFields.h> // NegYImage type
-#include <OSGBoolFields.h> // IsReflectionMap type
+#include <OSGBoolFields.h>  // IsReflectionMap type
 
 #include <OSGCubeTextureChunkFields.h>
 
@@ -83,216 +81,196 @@ class BinaryDataHandler;
 
 //! \brief CubeTextureChunk Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING CubeTextureChunkBase : public TextureChunk
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING CubeTextureChunkBase : public TextureChunk {
+ private:
+  typedef TextureChunk Inherited;
 
-    typedef TextureChunk    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef CubeTextureChunkPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    PosZImageFieldId       = Inherited::NextFieldId,
+    PosXImageFieldId       = PosZImageFieldId + 1,
+    NegXImageFieldId       = PosXImageFieldId + 1,
+    PosYImageFieldId       = NegXImageFieldId + 1,
+    NegYImageFieldId       = PosYImageFieldId + 1,
+    IsReflectionMapFieldId = NegYImageFieldId + 1,
+    NextFieldId            = IsReflectionMapFieldId + 1
+  };
 
-    typedef CubeTextureChunkPtr  Ptr;
+  static const OSG::BitVector PosZImageFieldMask;
+  static const OSG::BitVector PosXImageFieldMask;
+  static const OSG::BitVector NegXImageFieldMask;
+  static const OSG::BitVector PosYImageFieldMask;
+  static const OSG::BitVector NegYImageFieldMask;
+  static const OSG::BitVector IsReflectionMapFieldMask;
 
-    enum
-    {
-        PosZImageFieldId       = Inherited::NextFieldId,
-        PosXImageFieldId       = PosZImageFieldId       + 1,
-        NegXImageFieldId       = PosXImageFieldId       + 1,
-        PosYImageFieldId       = NegXImageFieldId       + 1,
-        NegYImageFieldId       = PosYImageFieldId       + 1,
-        IsReflectionMapFieldId = NegYImageFieldId       + 1,
-        NextFieldId            = IsReflectionMapFieldId + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector PosZImageFieldMask;
-    static const OSG::BitVector PosXImageFieldMask;
-    static const OSG::BitVector NegXImageFieldMask;
-    static const OSG::BitVector PosYImageFieldMask;
-    static const OSG::BitVector NegYImageFieldMask;
-    static const OSG::BitVector IsReflectionMapFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFImagePtr* getSFPosZImage(void);
+  SFImagePtr* getSFPosXImage(void);
+  SFImagePtr* getSFNegXImage(void);
+  SFImagePtr* getSFPosYImage(void);
+  SFImagePtr* getSFNegYImage(void);
+  SFBool*     getSFIsReflectionMap(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  ImagePtr&       getPosZImage(void);
+  const ImagePtr& getPosZImage(void) const;
+  ImagePtr&       getPosXImage(void);
+  const ImagePtr& getPosXImage(void) const;
+  ImagePtr&       getNegXImage(void);
+  const ImagePtr& getNegXImage(void) const;
+  ImagePtr&       getPosYImage(void);
+  const ImagePtr& getPosYImage(void) const;
+  ImagePtr&       getNegYImage(void);
+  const ImagePtr& getNegYImage(void) const;
+  bool&           getIsReflectionMap(void);
+  const bool&     getIsReflectionMap(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFImagePtr          *getSFPosZImage      (void);
-           SFImagePtr          *getSFPosXImage      (void);
-           SFImagePtr          *getSFNegXImage      (void);
-           SFImagePtr          *getSFPosYImage      (void);
-           SFImagePtr          *getSFNegYImage      (void);
-           SFBool              *getSFIsReflectionMap(void);
+  void setPosZImage(const ImagePtr& value);
+  void setPosXImage(const ImagePtr& value);
+  void setNegXImage(const ImagePtr& value);
+  void setPosYImage(const ImagePtr& value);
+  void setNegYImage(const ImagePtr& value);
+  void setIsReflectionMap(const bool& value);
 
-           ImagePtr            &getPosZImage      (void);
-     const ImagePtr            &getPosZImage      (void) const;
-           ImagePtr            &getPosXImage      (void);
-     const ImagePtr            &getPosXImage      (void) const;
-           ImagePtr            &getNegXImage      (void);
-     const ImagePtr            &getNegXImage      (void) const;
-           ImagePtr            &getPosYImage      (void);
-     const ImagePtr            &getPosYImage      (void) const;
-           ImagePtr            &getNegYImage      (void);
-     const ImagePtr            &getNegYImage      (void) const;
-           bool                &getIsReflectionMap(void);
-     const bool                &getIsReflectionMap(void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setPosZImage      ( const ImagePtr &value );
-     void setPosXImage      ( const ImagePtr &value );
-     void setNegXImage      ( const ImagePtr &value );
-     void setPosYImage      ( const ImagePtr &value );
-     void setNegYImage      ( const ImagePtr &value );
-     void setIsReflectionMap( const bool &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static CubeTextureChunkPtr create(void);
+  static CubeTextureChunkPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  CubeTextureChunkPtr      create          (void); 
-    static  CubeTextureChunkPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFImagePtr _sfPosZImage;
+  SFImagePtr _sfPosXImage;
+  SFImagePtr _sfNegXImage;
+  SFImagePtr _sfPosYImage;
+  SFImagePtr _sfNegYImage;
+  SFBool     _sfIsReflectionMap;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  CubeTextureChunkBase(void);
+  CubeTextureChunkBase(const CubeTextureChunkBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~CubeTextureChunkBase(void);
 
-    SFImagePtr          _sfPosZImage;
-    SFImagePtr          _sfPosXImage;
-    SFImagePtr          _sfNegXImage;
-    SFImagePtr          _sfPosYImage;
-    SFImagePtr          _sfNegYImage;
-    SFBool              _sfIsReflectionMap;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    CubeTextureChunkBase(void);
-    CubeTextureChunkBase(const CubeTextureChunkBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~CubeTextureChunkBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      CubeTextureChunkBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(CubeTextureChunkBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      CubeTextureChunkBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      CubeTextureChunkBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const CubeTextureChunkBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const CubeTextureChunkBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef CubeTextureChunkBase* CubeTextureChunkBaseP;
 
-typedef CubeTextureChunkBase *CubeTextureChunkBaseP;
-
-typedef osgIF<CubeTextureChunkBase::isNodeCore,
-              CoredNodePtr<CubeTextureChunk>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet CubeTextureChunkNodePtr;
+typedef osgIF<CubeTextureChunkBase::isNodeCore, CoredNodePtr<CubeTextureChunk>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet
+    CubeTextureChunkNodePtr;
 
 typedef RefPtr<CubeTextureChunkPtr> CubeTextureChunkRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGCUBETEXTURECHUNKBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGCUBETEXTURECHUNKBASE_HEADER_CVSID                                                       \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGCUBETEXTURECHUNKBASE_H_ */

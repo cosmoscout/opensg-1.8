@@ -52,53 +52,39 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &LightEnvBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& LightEnvBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 LightEnvBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 LightEnvBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-LightEnvPtr LightEnvBase::create(void) 
-{
-    LightEnvPtr fc; 
+inline LightEnvPtr LightEnvBase::create(void) {
+  LightEnvPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = LightEnvPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = LightEnvPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-LightEnvPtr LightEnvBase::createEmpty(void) 
-{ 
-    LightEnvPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline LightEnvPtr LightEnvBase::createEmpty(void) {
+  LightEnvPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
-
-
 OSG_END_NAMESPACE
 
-#define OSGLIGHTENVBASE_INLINE_CVSID "@(#)$Id: OSGLightEnvBase.inl,v 1.5 2006/02/20 16:54:23 dirk Exp $"
-
+#define OSGLIGHTENVBASE_INLINE_CVSID                                                               \
+  "@(#)$Id: OSGLightEnvBase.inl,v 1.5 2006/02/20 16:54:23 dirk Exp $"

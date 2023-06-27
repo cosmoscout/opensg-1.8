@@ -42,94 +42,64 @@
 
 OSG_BEGIN_NAMESPACE
 
-inline
-UInt32 SHLChunk::getStaticClassId(void)
-{
-    return getStaticClass()->getId();
+inline UInt32 SHLChunk::getStaticClassId(void) {
+  return getStaticClass()->getId();
 }
 
-inline
-const StateChunkClass *SHLChunk::getStaticClass(void)
-{
-    return &SHLChunk::_class;
+inline const StateChunkClass* SHLChunk::getStaticClass(void) {
+  return &SHLChunk::_class;
 }
 
-inline
-UInt32 SHLChunk::getFuncUniform1i(void)
-{
-    return _funcUniform1i;
+inline UInt32 SHLChunk::getFuncUniform1i(void) {
+  return _funcUniform1i;
 }
 
-inline
-UInt32 SHLChunk::getFuncUniform1iv(void)
-{
-    return _funcUniform1iv;
+inline UInt32 SHLChunk::getFuncUniform1iv(void) {
+  return _funcUniform1iv;
 }
 
-inline
-UInt32 SHLChunk::getFuncUniform2iv(void)
-{
-    return _funcUniform2iv;
+inline UInt32 SHLChunk::getFuncUniform2iv(void) {
+  return _funcUniform2iv;
 }
 
-inline
-UInt32 SHLChunk::getFuncUniform3iv(void)
-{
-    return _funcUniform3iv;
+inline UInt32 SHLChunk::getFuncUniform3iv(void) {
+  return _funcUniform3iv;
 }
 
-inline
-UInt32 SHLChunk::getFuncUniform4iv(void)
-{
-    return _funcUniform4iv;
+inline UInt32 SHLChunk::getFuncUniform4iv(void) {
+  return _funcUniform4iv;
 }
 
-inline
-UInt32 SHLChunk::getFuncUniform1f(void)
-{
-    return _funcUniform1f;
+inline UInt32 SHLChunk::getFuncUniform1f(void) {
+  return _funcUniform1f;
 }
 
-inline
-UInt32 SHLChunk::getFuncUniform1fv(void)
-{
-    return _funcUniform1fv;
+inline UInt32 SHLChunk::getFuncUniform1fv(void) {
+  return _funcUniform1fv;
 }
 
-inline
-UInt32 SHLChunk::getFuncUniform2fv(void)
-{
-    return _funcUniform2fv;
+inline UInt32 SHLChunk::getFuncUniform2fv(void) {
+  return _funcUniform2fv;
 }
 
-inline
-UInt32 SHLChunk::getFuncUniform3fv(void)
-{
-    return _funcUniform3fv;
+inline UInt32 SHLChunk::getFuncUniform3fv(void) {
+  return _funcUniform3fv;
 }
 
-inline
-UInt32 SHLChunk::getFuncUniform4fv(void)
-{
-    return _funcUniform4fv;
+inline UInt32 SHLChunk::getFuncUniform4fv(void) {
+  return _funcUniform4fv;
 }
 
-inline
-UInt32 SHLChunk::getFuncUniformMatrix4fv(void)
-{
-    return _funcUniformMatrix4fv;
+inline UInt32 SHLChunk::getFuncUniformMatrix4fv(void) {
+  return _funcUniformMatrix4fv;
 }
 
-inline
-UInt32 SHLChunk::getFuncGetUniformiv(void)
-{
-    return _funcGetUniformiv;
+inline UInt32 SHLChunk::getFuncGetUniformiv(void) {
+  return _funcGetUniformiv;
 }
 
-inline
-UInt32 SHLChunk::getFuncGetUniformfv(void)
-{
-    return _funcGetUniformfv;
+inline UInt32 SHLChunk::getFuncGetUniformfv(void) {
+  return _funcGetUniformfv;
 }
 
 OSG_END_NAMESPACE

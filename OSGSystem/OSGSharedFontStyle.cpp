@@ -55,34 +55,26 @@ OSG_USING_NAMESPACE
 
 /*----------------------- constructors & destructors ----------------------*/
 
-SharedFontStyle::SharedFontStyle(void) :
-    Inherited()
-{
+SharedFontStyle::SharedFontStyle(void)
+    : Inherited() {
 }
 
-SharedFontStyle::SharedFontStyle(const SharedFontStyle &source) :
-    Inherited(source)
-{
+SharedFontStyle::SharedFontStyle(const SharedFontStyle& source)
+    : Inherited(source) {
 }
 
-SharedFontStyle::~SharedFontStyle(void)
-{
+SharedFontStyle::~SharedFontStyle(void) {
 }
 
 /*----------------------------- class specific ----------------------------*/
 
-void SharedFontStyle::initMethod (void)
-{
+void SharedFontStyle::initMethod(void) {
 }
 
-void SharedFontStyle::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void SharedFontStyle::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
-void SharedFontStyle::dump(      UInt32    , 
-                         const BitVector ) const
-{
-    SLOG << "Dump SharedFontStyle NI" << std::endl;
+void SharedFontStyle::dump(UInt32, const BitVector) const {
+  SLOG << "Dump SharedFontStyle NI" << std::endl;
 }
-

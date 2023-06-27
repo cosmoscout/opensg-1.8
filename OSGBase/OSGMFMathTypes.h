@@ -59,19 +59,17 @@
 
 OSG_BEGIN_NAMESPACE
 
-
-#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS) 
+#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpBaseFieldMulti */
 
-typedef MField<Matrix>     MFMatrix;
+typedef MField<Matrix> MFMatrix;
 #endif
 
 #ifndef OSG_COMPILEFIELDINST
 OSG_DLLEXPORT_DECL1(MField, Matrix, OSG_BASE_DLLTMPLMAPPING)
 #endif
 
-
-#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS) 
+#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpBaseFieldMulti */
 
 typedef MField<Quaternion> MFQuaternion;

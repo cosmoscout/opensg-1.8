@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGLIGHT_H_
 #define _OSGLIGHT_H_
 #ifdef __sgi
@@ -55,109 +54,89 @@ OSG_BEGIN_NAMESPACE
     \ingroup GrpSystemNodeCoresLights
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING Light : public LightBase
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING Light : public LightBase {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Set                                    */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Set                                    */
-    /*! \{                                                                 */
+  void setAmbient(Real32 rRed, Real32 rGreen, Real32 rBlue, Real32 rAlpha);
+  void setDiffuse(Real32 rRed, Real32 rGreen, Real32 rBlue, Real32 rAlpha);
+  void setSpecular(Real32 rRed, Real32 rGreen, Real32 rBlue, Real32 rAlpha);
 
-    void setAmbient (      Real32   rRed, 
-                           Real32   rGreen, 
-                           Real32   rBlue, 
-                           Real32   rAlpha);
-    void setDiffuse (      Real32   rRed, 
-                           Real32   rGreen, 
-                           Real32   rBlue, 
-                           Real32   rAlpha);
-    void setSpecular(      Real32   rRed, 
-                           Real32   rGreen, 
-                           Real32   rBlue, 
-                           Real32   rAlpha);
-    
-    void setAmbient (const Color4f &col);
-    void setDiffuse (const Color4f &col);
-    void setSpecular(const Color4f &col);
+  void setAmbient(const Color4f& col);
+  void setDiffuse(const Color4f& col);
+  void setSpecular(const Color4f& col);
 
-    enum
-    {
-        CAST_SHADOW_AUTO    = 0,
-        CAST_SHADOW_ON      = 1,
-        CAST_SHADOW_OFF     = 2
-    };
+  enum { CAST_SHADOW_AUTO = 0, CAST_SHADOW_ON = 1, CAST_SHADOW_OFF = 2 };
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Chunk                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Chunk                                   */
+  /*! \{                                                                 */
 
-            LightChunkPtr getChunk (void);
-    virtual void          makeChunk(void);
+  LightChunkPtr getChunk(void);
+  virtual void  makeChunk(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector whichField,
-                         UInt32    origin   );
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Dump                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Dump                                    */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32    uiIndent = 0,
-                      const BitVector bvFlags  = 0) const;
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  typedef LightBase Inherited;
 
-    typedef LightBase      Inherited;
+  LightChunkPtr _pChunk;
 
-            LightChunkPtr _pChunk;
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  Light(void);
+  Light(const Light& source);
 
-    Light(void);
-    Light(const Light &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  virtual ~Light(void);
 
-    virtual ~Light(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Actions                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Actions                                  */
-    /*! \{                                                                 */
-   
-    // Draw action: execute the OpenGL commands to set the light's parameters.
-    Action::ResultE drawEnter  (Action *action);
-    Action::ResultE drawLeave  (Action *action);
+  // Draw action: execute the OpenGL commands to set the light's parameters.
+  Action::ResultE drawEnter(Action* action);
+  Action::ResultE drawLeave(Action* action);
 
-    // generate draw tree
-    Action::ResultE renderEnter(Action *action);
-    Action::ResultE renderLeave(Action *action);
+  // generate draw tree
+  Action::ResultE renderEnter(Action* action);
+  Action::ResultE renderLeave(Action* action);
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class LightBase;
 
-    friend class FieldContainer;
-    friend class LightBase;
+  static void initMethod(void);
 
-    static void initMethod( void );
-
-    /*! \brief prohibit default function (move to 'public' if needed) */
-    void operator =(const Light &source);
+  /*! \brief prohibit default function (move to 'public' if needed) */
+  void operator=(const Light& source);
 };
 
 OSG_END_NAMESPACE

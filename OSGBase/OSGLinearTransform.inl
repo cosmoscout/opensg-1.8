@@ -40,7 +40,6 @@
 //  Includes
 //---------------------------------------------------------------------------
 
-
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -56,7 +55,7 @@ OSG_BEGIN_NAMESPACE
 //---------------------------------------------------------------------------
 
 /** \typedef LinearTransform::ValueType
- *  \brief Value type, eg Real32 
+ *  \brief Value type, eg Real32
  */
 
 /** \typedef TransformationMatrix<ValueTypeT>\
@@ -80,9 +79,8 @@ OSG_BEGIN_NAMESPACE
  *                           Class variables                               *
 \***************************************************************************/
 
-//template<class ValueTypeT>
-//char LinearTransform<ValueTypeT>::cvsid[] = "@(#)$Id: $";
-
+// template<class ValueTypeT>
+// char LinearTransform<ValueTypeT>::cvsid[] = "@(#)$Id: $";
 
 /***************************************************************************\
  *                           Class methods                                 *
@@ -116,48 +114,40 @@ OSG_BEGIN_NAMESPACE
 /** \brief Constructor
  */
 
-template<class ValueTypeT> 
-LinearTransform<ValueTypeT>::LinearTransform(void)
-{
-    UInt32 i;
+template <class ValueTypeT>
+LinearTransform<ValueTypeT>::LinearTransform(void) {
+  UInt32 i;
 
-    for(i = 0; i < 4; i++)
-    {
-        _logMatrix[i][i] = TypeTraits<ValueType>::getOneElement();
-    }
+  for (i = 0; i < 4; i++) {
+    _logMatrix[i][i] = TypeTraits<ValueType>::getOneElement();
+  }
 }
 
 /** \brief Copy Constructor
  */
 
-template<class ValueTypeT> inline
-LinearTransform<ValueTypeT>::LinearTransform(
-    const LinearTransform &source)
-{
-    UInt32 i;
+template <class ValueTypeT>
+inline LinearTransform<ValueTypeT>::LinearTransform(const LinearTransform& source) {
+  UInt32 i;
 
-    for(i = 0; i < 4; i++)
-    {
-        _logMatrix[i] = source._logMatrix[i];
-    }
+  for (i = 0; i < 4; i++) {
+    _logMatrix[i] = source._logMatrix[i];
+  }
 }
 
 /** \brief Constrution from regular transform
  */
 
-template<class ValueTypeT> inline
-LinearTransform<ValueTypeT>::LinearTransform(
-	const MatrixType &mat)
-{
-	_logMatrix.logOf(mat);
+template <class ValueTypeT>
+inline LinearTransform<ValueTypeT>::LinearTransform(const MatrixType& mat) {
+  _logMatrix.logOf(mat);
 }
 
 /** \brief Destructor
  */
 
-template<class ValueTypeT> inline
-LinearTransform<ValueTypeT>::~LinearTransform(void)
-{
+template <class ValueTypeT>
+inline LinearTransform<ValueTypeT>::~LinearTransform(void) {
 }
 
 //@}
@@ -170,67 +160,56 @@ LinearTransform<ValueTypeT>::~LinearTransform(void)
 /** \brief Resets the matrix to identity
  */
 
-template<class ValueTypeT> inline
-void LinearTransform<ValueTypeT>::setIdentity(void)
-{
-    UInt32 i;
+template <class ValueTypeT>
+inline void LinearTransform<ValueTypeT>::setIdentity(void) {
+  UInt32 i;
 
-    for(i = 0; i < 4; i++)
-    {
-        _logMatrix[i].setNull();
-        _logMatrix[i][i] = TypeTraits<ValueType>::getOneElement();
-    }
+  for (i = 0; i < 4; i++) {
+    _logMatrix[i].setNull();
+    _logMatrix[i][i] = TypeTraits<ValueType>::getOneElement();
+  }
 }
-
 
 /** \brief Set values from a given linear transform
  */
 
-template<class ValueTypeT> inline
-void LinearTransform<ValueTypeT>::setValue(
-    const LinearTransform &mat)
-{
-    for(UInt32 i = 0; i < 4; i++)
-    {
-        _logMatrix[i] = mat._logMatrix[i];
-    }
+template <class ValueTypeT>
+inline void LinearTransform<ValueTypeT>::setValue(const LinearTransform& mat) {
+  for (UInt32 i = 0; i < 4; i++) {
+    _logMatrix[i] = mat._logMatrix[i];
+  }
 }
 
 /** \brief Set values from a transformation matrix
  */
 
-template<class ValueTypeT> inline
-void LinearTransform<ValueTypeT>::setValue(
-    const MatrixType &mat)
-{	
-	_logMatrix.logOf(mat);
+template <class ValueTypeT>
+inline void LinearTransform<ValueTypeT>::setValue(const MatrixType& mat) {
+  _logMatrix.logOf(mat);
 }
 
-//Set the LogMatrix direct
+// Set the LogMatrix direct
 
-template<class ValueTypeT> inline
-void LinearTransform<ValueTypeT>::setLogMatrix( 
-	MatrixType &mat )
-{
-	_logMatrix = mat;
+template <class ValueTypeT>
+inline void LinearTransform<ValueTypeT>::setLogMatrix(MatrixType& mat) {
+  _logMatrix = mat;
 }
 
-//Get the LogMatrix direct
+// Get the LogMatrix direct
 
-template<class ValueTypeT> inline
-TransformationMatrix<ValueTypeT> LinearTransform<ValueTypeT>::getLogMatrix()
-{
-	return _logMatrix;
+template <class ValueTypeT>
+inline TransformationMatrix<ValueTypeT> LinearTransform<ValueTypeT>::getLogMatrix() {
+  return _logMatrix;
 }
 
 //@}
 
-//Get the LogMatrix direct as const
+// Get the LogMatrix direct as const
 
-template<class ValueTypeT> inline
-const TransformationMatrix<ValueTypeT> LinearTransform<ValueTypeT>::getLogMatrixConst() const
-{
-	return _logMatrix;
+template <class ValueTypeT>
+inline const TransformationMatrix<ValueTypeT>
+LinearTransform<ValueTypeT>::getLogMatrixConst() const {
+  return _logMatrix;
 }
 
 //@}
@@ -242,24 +221,20 @@ const TransformationMatrix<ValueTypeT> LinearTransform<ValueTypeT>::getLogMatrix
 
 /** \brief Returns the transformation matrix
  */
-template<class ValueTypeT> inline
-TransformationMatrix<ValueTypeT> LinearTransform<ValueTypeT>::getTransform()
-{
-	MatrixType mat;
-	mat.expOf(_logMatrix);
-	return mat;
+template <class ValueTypeT>
+inline TransformationMatrix<ValueTypeT> LinearTransform<ValueTypeT>::getTransform() {
+  MatrixType mat;
+  mat.expOf(_logMatrix);
+  return mat;
 }
 
-template<class ValueTypeT> inline
-  LinearTransform<ValueTypeT>::operator
-		TransformationMatrix<ValueTypeT>()
-{
-	MatrixType mat;
-	mat.expOf(_logMatrix);
-	return mat;
+template <class ValueTypeT>
+inline LinearTransform<ValueTypeT>::operator TransformationMatrix<ValueTypeT>() {
+  MatrixType mat;
+  mat.expOf(_logMatrix);
+  return mat;
 }
 //@}
-
 
 /*-------------------------- assignment -----------------------------------*/
 
@@ -269,20 +244,18 @@ template<class ValueTypeT> inline
 /** \brief assignment
  */
 
-template<class ValueTypeT> inline
-LinearTransform<ValueTypeT> & 
-    LinearTransform<ValueTypeT>::operator = (
-        const LinearTransform &source)
-{
-    UInt32 i;
+template <class ValueTypeT>
+inline LinearTransform<ValueTypeT>& LinearTransform<ValueTypeT>::operator=(
+    const LinearTransform& source) {
+  UInt32 i;
 
-	if (this == &source)
-		return *this;
-
-    for(i = 0; i < 4; i++)
-        _logMatrix[i] = source._logMatrix[i];
-
+  if (this == &source)
     return *this;
+
+  for (i = 0; i < 4; i++)
+    _logMatrix[i] = source._logMatrix[i];
+
+  return *this;
 }
 
 //@}
@@ -295,22 +268,18 @@ LinearTransform<ValueTypeT> &
 /** \brief equal
  */
 
-template<class ValueTypeT> inline
-bool LinearTransform<ValueTypeT>::operator == (
-    const LinearTransform &other) const
-{
-    return (_logMatrix == other._logMatrix);
+template <class ValueTypeT>
+inline bool LinearTransform<ValueTypeT>::operator==(const LinearTransform& other) const {
+  return (_logMatrix == other._logMatrix);
 }
 
 /** \brief not equal, returns true if all matrix elements are equal with
  *  the tolerance of Eps
  */
 
-template<class ValueTypeT> inline
-bool LinearTransform<ValueTypeT>::operator != (
-    const LinearTransform &other) const
-{
-	return ! (*this == other);
+template <class ValueTypeT>
+inline bool LinearTransform<ValueTypeT>::operator!=(const LinearTransform& other) const {
+  return !(*this == other);
 }
 
 //@}
@@ -323,79 +292,68 @@ bool LinearTransform<ValueTypeT>::operator != (
 /** \brief sum of linear transforms
  */
 
-template<class ValueTypeT> inline
-LinearTransform<ValueTypeT>
- LinearTransform<ValueTypeT>::operator + (
-  const LinearTransform &lt) const
-{
+template <class ValueTypeT>
+inline LinearTransform<ValueTypeT> LinearTransform<ValueTypeT>::operator+(
+    const LinearTransform& lt) const {
   LinearTransform sum;
-	for (int i=0; i < 4; i++)
-		for (int j=0; j < 4; j++)
-			sum._logMatrix[i][j] = _logMatrix[i][j] + 
-														 lt._logMatrix[i][j];
+  for (int i = 0; i < 4; i++)
+    for (int j = 0; j < 4; j++)
+      sum._logMatrix[i][j] = _logMatrix[i][j] + lt._logMatrix[i][j];
   return sum;
 }
 
 /** \brief scalar multiple of linear transform
  */
 
-template<class ValueTypeT> inline
-LinearTransform<ValueTypeT>
-  LinearTransform<ValueTypeT>::operator * (
-  	 const ValueTypeT s) const
-{
+template <class ValueTypeT>
+inline LinearTransform<ValueTypeT> LinearTransform<ValueTypeT>::operator*(
+    const ValueTypeT s) const {
   LinearTransform pro;
-	for (int i=0; i < 4; i++)
-		for (int j=0; j < 4; j++)
-			pro._logMatrix[i][j] = s * _logMatrix[i][j];
+  for (int i = 0; i < 4; i++)
+    for (int j = 0; j < 4; j++)
+      pro._logMatrix[i][j] = s * _logMatrix[i][j];
   return pro;
 }
 
 /** \brief add to linear transforms
  */
 
-template<class ValueTypeT> inline
-LinearTransform<ValueTypeT> &
- LinearTransform<ValueTypeT>::operator += (
-  const LinearTransform &lt)
-{
-	for (int i=0; i < 4; i++)
-		for (int j=0; j < 4; j++)
-			_logMatrix[i][j] += lt._logMatrix[i][j];
+template <class ValueTypeT>
+inline LinearTransform<ValueTypeT>& LinearTransform<ValueTypeT>::operator+=(
+    const LinearTransform& lt) {
+  for (int i = 0; i < 4; i++)
+    for (int j = 0; j < 4; j++)
+      _logMatrix[i][j] += lt._logMatrix[i][j];
   return *this;
 }
 
 /** \brief scalar multiple of linear transform
  */
 
-template<class ValueTypeT> inline
-LinearTransform<ValueTypeT> &
- LinearTransform<ValueTypeT>::operator *= (
-  const ValueTypeT s)
-{
-	for (int i=0; i < 4; i++)
-		for (int j=0; j < 4; j++)
-			_logMatrix[i][j] *= s;
+template <class ValueTypeT>
+inline LinearTransform<ValueTypeT>& LinearTransform<ValueTypeT>::operator*=(const ValueTypeT s) {
+  for (int i = 0; i < 4; i++)
+    for (int j = 0; j < 4; j++)
+      _logMatrix[i][j] *= s;
   return *this;
 }
 
 /** \NEW LeftSide Operators
  */
 
-template<class ValueTypeT> inline
-LinearTransform<ValueTypeT>
-  operator * ( const ValueTypeT s, const LinearTransform<ValueTypeT> &lt)
-{
-	TransformationMatrix<ValueTypeT> ltMat, proMat;
-	LinearTransform<ValueTypeT> pro(lt);
-	ltMat = pro.getLogMatrix();
+template <class ValueTypeT>
+inline LinearTransform<ValueTypeT> operator*(
+    const ValueTypeT s, const LinearTransform<ValueTypeT>& lt) {
+  TransformationMatrix<ValueTypeT> ltMat, proMat;
+  LinearTransform<ValueTypeT>      pro(lt);
+  ltMat = pro.getLogMatrix();
 
-	for (int i=0; i < 4; i++)
-		for (int j=0; j < 4; j++)
-			proMat[i][j] = s * ltMat[i][j];
+  for (int i = 0; i < 4; i++)
+    for (int j = 0; j < 4; j++)
+      proMat[i][j] = s * ltMat[i][j];
 
-	pro.setLogMatrix( proMat );
-	return pro;
+  pro.setLogMatrix(proMat);
+  return pro;
 }
 
 //@}

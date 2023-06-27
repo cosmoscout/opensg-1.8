@@ -46,90 +46,63 @@
 
 OSG_BEGIN_NAMESPACE
 
-
-OSG_SYSTEMLIB_DLLMAPPING 
-void                    calcVertexNormals   (GeometryPtr geo);
-
-OSG_SYSTEMLIB_DLLMAPPING 
-void                    calcVertexNormals   (GeometryPtr geo,
-                                             Real32 creaseAngle);
-OSG_SYSTEMLIB_DLLMAPPING 
-void                    calcFaceNormals     (GeometryPtr geo);
-
-OSG_SYSTEMLIB_DLLMAPPING 
-void                    calcVertexTangents  (GeometryPtr geo,
-                                             Int32 srcTexIndex = 0,
-                                             Int32 dstAttribTan = Geometry::TexCoords1FieldId,
-                                             Int32 dstAttribBin = Geometry::TexCoords2FieldId);
+OSG_SYSTEMLIB_DLLMAPPING
+void calcVertexNormals(GeometryPtr geo);
 
 OSG_SYSTEMLIB_DLLMAPPING
-void                    calcVertexTexCoords (GeometryPtr geo,
-                                             Int32 texIndex = 0);
+void calcVertexNormals(GeometryPtr geo, Real32 creaseAngle);
+OSG_SYSTEMLIB_DLLMAPPING
+void calcFaceNormals(GeometryPtr geo);
 
-OSG_SYSTEMLIB_DLLMAPPING 
-Int32                   setIndexFromVRMLData(GeometryPtr geo,
-                                             std::vector<Int32> &coordIndex,
-                                             std::vector<Int32> &normalIndex,
-                                             std::vector<Int32> &colorIndex,
-                                             std::vector<Int32> &texCoordIndex,
-                                             bool convex          = true,
-                                             bool ccw             = true,
-                                             bool normalPerVertex = true,
-                                             bool colorPerVertex  = true,
-                                             bool createNormal    = true,
-                                             bool faceSet         = true);
+OSG_SYSTEMLIB_DLLMAPPING
+void calcVertexTangents(GeometryPtr geo, Int32 srcTexIndex = 0,
+    Int32 dstAttribTan = Geometry::TexCoords1FieldId,
+    Int32 dstAttribBin = Geometry::TexCoords2FieldId);
 
-OSG_SYSTEMLIB_DLLMAPPING 
-Int32                   setIndexFromIndexedX3DData ( GeometryPtr geo,
-                                                     std::vector<Int32> &coordIndex,
-                                                     std::vector<Int32> &normalIndex,
-                                                     std::vector<Int32> &colorIndex,
-                                                     std::vector<Int32> &texCoordIndex,
-                                                     Int32 primitiveType  = GL_POLYGON,
-                                                     bool  convex          = true,
-                                                     bool  ccw             = true,
-                                                     bool  normalPerVertex = true,
-                                                     bool  colorPerVertex  = true,
-                                                     bool  createNormal    = true );
+OSG_SYSTEMLIB_DLLMAPPING
+void calcVertexTexCoords(GeometryPtr geo, Int32 texIndex = 0);
 
+OSG_SYSTEMLIB_DLLMAPPING
+Int32 setIndexFromVRMLData(GeometryPtr geo, std::vector<Int32>& coordIndex,
+    std::vector<Int32>& normalIndex, std::vector<Int32>& colorIndex,
+    std::vector<Int32>& texCoordIndex, bool convex = true, bool ccw = true,
+    bool normalPerVertex = true, bool colorPerVertex = true, bool createNormal = true,
+    bool faceSet = true);
 
-OSG_SYSTEMLIB_DLLMAPPING 
-Int32              createOptimizedPrimitives(GeometryPtr geo,
-                                             UInt32 iteration       = 1,
-                                             bool createStrips      = true,
-                                             bool createFans        = true,
-                                             UInt32 minFanEdgeCount = 16,
-                                             bool colorCode         = false,
-                                             bool stitchStrips      = false);
+OSG_SYSTEMLIB_DLLMAPPING
+Int32 setIndexFromIndexedX3DData(GeometryPtr geo, std::vector<Int32>& coordIndex,
+    std::vector<Int32>& normalIndex, std::vector<Int32>& colorIndex,
+    std::vector<Int32>& texCoordIndex, Int32 primitiveType = GL_POLYGON, bool convex = true,
+    bool ccw = true, bool normalPerVertex = true, bool colorPerVertex = true,
+    bool createNormal = true);
 
-OSG_SYSTEMLIB_DLLMAPPING 
-void                  createConvexPrimitives(GeometryPtr geo);
+OSG_SYSTEMLIB_DLLMAPPING
+Int32 createOptimizedPrimitives(GeometryPtr geo, UInt32 iteration = 1, bool createStrips = true,
+    bool createFans = true, UInt32 minFanEdgeCount = 16, bool colorCode = false,
+    bool stitchStrips = false);
 
-OSG_SYSTEMLIB_DLLMAPPING 
-Int32                      createSharedIndex(GeometryPtr geo);
+OSG_SYSTEMLIB_DLLMAPPING
+void createConvexPrimitives(GeometryPtr geo);
 
-OSG_SYSTEMLIB_DLLMAPPING 
-Int32                      createSingleIndex(GeometryPtr geo);
+OSG_SYSTEMLIB_DLLMAPPING
+Int32 createSharedIndex(GeometryPtr geo);
 
-OSG_SYSTEMLIB_DLLMAPPING 
-UInt32                    calcPrimitiveCount(GeometryPtr geo,
-                                             UInt32 &triangle,
-                                             UInt32 &line,
-                                             UInt32 &point);
+OSG_SYSTEMLIB_DLLMAPPING
+Int32 createSingleIndex(GeometryPtr geo);
 
-OSG_SYSTEMLIB_DLLMAPPING 
-NodePtr                 calcVertexNormalsGeo(GeometryPtr geo, 
-                                             Real32 length);
+OSG_SYSTEMLIB_DLLMAPPING
+UInt32 calcPrimitiveCount(GeometryPtr geo, UInt32& triangle, UInt32& line, UInt32& point);
 
-OSG_SYSTEMLIB_DLLMAPPING 
-NodePtr                   calcFaceNormalsGeo(GeometryPtr geo, 
-                                             Real32 length);
-OSG_SYSTEMLIB_DLLMAPPING 
-void                         mergeGeometries(std::vector<NodePtr> &nodes,
-                                             std::vector<NodePtr> &results);
+OSG_SYSTEMLIB_DLLMAPPING
+NodePtr calcVertexNormalsGeo(GeometryPtr geo, Real32 length);
 
-OSG_SYSTEMLIB_DLLMAPPING 
-void                        separateProperties(GeometryPtr geo);
+OSG_SYSTEMLIB_DLLMAPPING
+NodePtr calcFaceNormalsGeo(GeometryPtr geo, Real32 length);
+OSG_SYSTEMLIB_DLLMAPPING
+void mergeGeometries(std::vector<NodePtr>& nodes, std::vector<NodePtr>& results);
+
+OSG_SYSTEMLIB_DLLMAPPING
+void separateProperties(GeometryPtr geo);
 
 OSG_END_NAMESPACE
 

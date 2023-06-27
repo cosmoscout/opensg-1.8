@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILESTATECHUNKINST
 
 #include <stdlib.h>
@@ -61,16 +60,13 @@
 #include "OSGStateChunkBase.h"
 #include "OSGStateChunk.h"
 
-
 OSG_BEGIN_NAMESPACE
 
-const OSG::BitVector  StateChunkBase::IgnoreFieldMask = 
+const OSG::BitVector StateChunkBase::IgnoreFieldMask =
     (TypeTraits<BitVector>::One << StateChunkBase::IgnoreFieldId);
 
-const OSG::BitVector StateChunkBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector StateChunkBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
@@ -80,178 +76,123 @@ const OSG::BitVector StateChunkBase::MTInfluenceMask =
 
 //! StateChunk description
 
-FieldDescription *StateChunkBase::_desc[] = 
-{
-    new FieldDescription(SFBool::getClassType(), 
-                     "ignore", 
-                     IgnoreFieldId, IgnoreFieldMask,
-                     false,
-                     (FieldAccessMethod) &StateChunkBase::getSFIgnore)
-};
-
+FieldDescription* StateChunkBase::_desc[] = {new FieldDescription(SFBool::getClassType(), "ignore",
+    IgnoreFieldId, IgnoreFieldMask, false, (FieldAccessMethod)&StateChunkBase::getSFIgnore)};
 
 FieldContainerType StateChunkBase::_type(
-    "StateChunk",
-    "Attachment",
-    NULL,
-    NULL, 
-    StateChunk::initMethod,
-    _desc,
-    sizeof(_desc));
+    "StateChunk", "Attachment", NULL, NULL, StateChunk::initMethod, _desc, sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(StateChunkBase, StateChunkPtr)
+// OSG_FIELD_CONTAINER_DEF(StateChunkBase, StateChunkPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &StateChunkBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &StateChunkBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-UInt32 StateChunkBase::getContainerSize(void) const 
-{ 
-    return sizeof(StateChunk); 
+FieldContainerType& StateChunkBase::getType(void) {
+  return _type;
 }
 
+const FieldContainerType& StateChunkBase::getType(void) const {
+  return _type;
+}
+
+UInt32 StateChunkBase::getContainerSize(void) const {
+  return sizeof(StateChunk);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void StateChunkBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((StateChunkBase *) &other, whichField);
+void StateChunkBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((StateChunkBase*)&other, whichField);
 }
 #else
-void StateChunkBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((StateChunkBase *) &other, whichField, sInfo);
+void StateChunkBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((StateChunkBase*)&other, whichField, sInfo);
 }
-void StateChunkBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void StateChunkBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void StateChunkBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void StateChunkBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-StateChunkBase::StateChunkBase(void) :
-    _sfIgnore                 (bool(false)), 
-    Inherited() 
-{
+StateChunkBase::StateChunkBase(void)
+    : _sfIgnore(bool(false))
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-StateChunkBase::StateChunkBase(const StateChunkBase &source) :
-    _sfIgnore                 (source._sfIgnore                 ), 
-    Inherited                 (source)
-{
+StateChunkBase::StateChunkBase(const StateChunkBase& source)
+    : _sfIgnore(source._sfIgnore)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-StateChunkBase::~StateChunkBase(void)
-{
+StateChunkBase::~StateChunkBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 StateChunkBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 StateChunkBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (IgnoreFieldMask & whichField))
-    {
-        returnValue += _sfIgnore.getBinSize();
-    }
+  if (FieldBits::NoField != (IgnoreFieldMask & whichField)) {
+    returnValue += _sfIgnore.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void StateChunkBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void StateChunkBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (IgnoreFieldMask & whichField))
-    {
-        _sfIgnore.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (IgnoreFieldMask & whichField)) {
+    _sfIgnore.copyToBin(pMem);
+  }
 }
 
-void StateChunkBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void StateChunkBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (IgnoreFieldMask & whichField))
-    {
-        _sfIgnore.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (IgnoreFieldMask & whichField)) {
+    _sfIgnore.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void StateChunkBase::executeSyncImpl(      StateChunkBase *pOther,
-                                        const BitVector         &whichField)
-{
+void StateChunkBase::executeSyncImpl(StateChunkBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (IgnoreFieldMask & whichField))
-        _sfIgnore.syncWith(pOther->_sfIgnore);
-
-
+  if (FieldBits::NoField != (IgnoreFieldMask & whichField))
+    _sfIgnore.syncWith(pOther->_sfIgnore);
 }
 #else
-void StateChunkBase::executeSyncImpl(      StateChunkBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void StateChunkBase::executeSyncImpl(
+    StateChunkBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (IgnoreFieldMask & whichField))
-        _sfIgnore.syncWith(pOther->_sfIgnore);
-
-
-
+  if (FieldBits::NoField != (IgnoreFieldMask & whichField))
+    _sfIgnore.syncWith(pOther->_sfIgnore);
 }
 
-void StateChunkBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void StateChunkBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 OSG_END_NAMESPACE
 
@@ -268,4 +209,3 @@ OSG_DLLEXPORT_SFIELD_DEF1(StateChunkPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 OSG_DLLEXPORT_MFIELD_DEF1(StateChunkPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
-

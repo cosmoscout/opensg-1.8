@@ -65,10 +65,8 @@ OSG_BEGIN_NAMESPACE
  *                           Class methods                                 *
 \***************************************************************************/
 
-void DistortionDisplayFilter::initMethod (void)
-{
+void DistortionDisplayFilter::initMethod(void) {
 }
-
 
 /***************************************************************************\
  *                           Instance methods                              *
@@ -80,66 +78,50 @@ void DistortionDisplayFilter::initMethod (void)
 
 /*----------------------- constructors & destructors ----------------------*/
 
-DistortionDisplayFilter::DistortionDisplayFilter(void) :
-    Inherited()
-{
+DistortionDisplayFilter::DistortionDisplayFilter(void)
+    : Inherited() {
 }
 
-DistortionDisplayFilter::DistortionDisplayFilter(const DistortionDisplayFilter &source) :
-    Inherited(source)
-{
+DistortionDisplayFilter::DistortionDisplayFilter(const DistortionDisplayFilter& source)
+    : Inherited(source) {
 }
 
-DistortionDisplayFilter::~DistortionDisplayFilter(void)
-{
+DistortionDisplayFilter::~DistortionDisplayFilter(void) {
 }
 
 /*----------------------------- class specific ----------------------------*/
 
-void DistortionDisplayFilter::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void DistortionDisplayFilter::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
-void DistortionDisplayFilter::dump(      UInt32    , 
-                         const BitVector ) const
-{
-    SLOG << "Dump DistortionDisplayFilter NI" << std::endl;
+void DistortionDisplayFilter::dump(UInt32, const BitVector) const {
+  SLOG << "Dump DistortionDisplayFilter NI" << std::endl;
 }
 
-void DistortionDisplayFilter::createFilter(DisplayFilterForeground *fg,
-                                           Viewport *port)
-{
-    DisplayFilterForeground::DisplayFilterGroup *group = fg->findReadbackGroup("ColorDisplayFilter");
+void DistortionDisplayFilter::createFilter(DisplayFilterForeground* fg, Viewport* port) {
+  DisplayFilterForeground::DisplayFilterGroup* group = fg->findReadbackGroup("ColorDisplayFilter");
 
-    if(getColumns() < 2 ||
-       getRows() < 2)
-    {
-        SWARNING << "DistortionDisplayFilter columns or rows < 2" << std::endl;
-        return;
-    }
-    
-    if(!getPositions().empty() &&
-       getColumns() * getRows() != getPositions().size())
-    {
-        SWARNING << "DistortionDisplayFilter wrong number of positions" << std::endl;
-        return;
-    }
-       
-    // prepare grid
-    group->createGrid(getColumns(),getRows());
+  if (getColumns() < 2 || getRows() < 2) {
+    SWARNING << "DistortionDisplayFilter columns or rows < 2" << std::endl;
+    return;
+  }
 
-    GeoPositionsPtr pos = group->getGeometry()->getPositions();
+  if (!getPositions().empty() && getColumns() * getRows() != getPositions().size()) {
+    SWARNING << "DistortionDisplayFilter wrong number of positions" << std::endl;
+    return;
+  }
 
-    beginEditCP(pos,Geometry::PositionsFieldMask);
-    for(UInt32 p = 0 ; p < getPositions().size() ; ++p)
-    {
-        pos->setValue(Pnt3f(getPositions()[p][0],
-                            getPositions()[p][1],
-                            0),p);
-    }
-    endEditCP(pos,Geometry::PositionsFieldMask);
+  // prepare grid
+  group->createGrid(getColumns(), getRows());
+
+  GeoPositionsPtr pos = group->getGeometry()->getPositions();
+
+  beginEditCP(pos, Geometry::PositionsFieldMask);
+  for (UInt32 p = 0; p < getPositions().size(); ++p) {
+    pos->setValue(Pnt3f(getPositions()[p][0], getPositions()[p][1], 0), p);
+  }
+  endEditCP(pos, Geometry::PositionsFieldMask);
 }
 
 OSG_END_NAMESPACE
-

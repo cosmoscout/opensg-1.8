@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGCLIPPLANECHUNKBASE_H_
 #define _OSGCLIPPLANECHUNKBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -68,8 +66,8 @@
 #include <OSGStateChunk.h> // Parent
 
 #include <OSGVec4fFields.h> // Equation type
-#include <OSGBoolFields.h> // Enable type
-#include <OSGNodeFields.h> // Beacon type
+#include <OSGBoolFields.h>  // Enable type
+#include <OSGNodeFields.h>  // Beacon type
 
 #include <OSGClipPlaneChunkFields.h>
 
@@ -80,195 +78,174 @@ class BinaryDataHandler;
 
 //! \brief ClipPlaneChunk Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING ClipPlaneChunkBase : public StateChunk
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING ClipPlaneChunkBase : public StateChunk {
+ private:
+  typedef StateChunk Inherited;
 
-    typedef StateChunk    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef ClipPlaneChunkPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    EquationFieldId = Inherited::NextFieldId,
+    EnableFieldId   = EquationFieldId + 1,
+    BeaconFieldId   = EnableFieldId + 1,
+    NextFieldId     = BeaconFieldId + 1
+  };
 
-    typedef ClipPlaneChunkPtr  Ptr;
+  static const OSG::BitVector EquationFieldMask;
+  static const OSG::BitVector EnableFieldMask;
+  static const OSG::BitVector BeaconFieldMask;
 
-    enum
-    {
-        EquationFieldId = Inherited::NextFieldId,
-        EnableFieldId   = EquationFieldId + 1,
-        BeaconFieldId   = EnableFieldId   + 1,
-        NextFieldId     = BeaconFieldId   + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector EquationFieldMask;
-    static const OSG::BitVector EnableFieldMask;
-    static const OSG::BitVector BeaconFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFVec4f*   getSFEquation(void);
+  SFBool*    getSFEnable(void);
+  SFNodePtr* getSFBeacon(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  Vec4f&         getEquation(void);
+  const Vec4f&   getEquation(void) const;
+  bool&          getEnable(void);
+  const bool&    getEnable(void) const;
+  NodePtr&       getBeacon(void);
+  const NodePtr& getBeacon(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFVec4f             *getSFEquation       (void);
-           SFBool              *getSFEnable         (void);
-           SFNodePtr           *getSFBeacon         (void);
+  void setEquation(const Vec4f& value);
+  void setEnable(const bool& value);
+  void setBeacon(const NodePtr& value);
 
-           Vec4f               &getEquation       (void);
-     const Vec4f               &getEquation       (void) const;
-           bool                &getEnable         (void);
-     const bool                &getEnable         (void) const;
-           NodePtr             &getBeacon         (void);
-     const NodePtr             &getBeacon         (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setEquation       ( const Vec4f &value );
-     void setEnable         ( const bool &value );
-     void setBeacon         ( const NodePtr &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static ClipPlaneChunkPtr create(void);
+  static ClipPlaneChunkPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  ClipPlaneChunkPtr      create          (void); 
-    static  ClipPlaneChunkPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFVec4f   _sfEquation;
+  SFBool    _sfEnable;
+  SFNodePtr _sfBeacon;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  ClipPlaneChunkBase(void);
+  ClipPlaneChunkBase(const ClipPlaneChunkBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~ClipPlaneChunkBase(void);
 
-    SFVec4f             _sfEquation;
-    SFBool              _sfEnable;
-    SFNodePtr           _sfBeacon;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    ClipPlaneChunkBase(void);
-    ClipPlaneChunkBase(const ClipPlaneChunkBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~ClipPlaneChunkBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      ClipPlaneChunkBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(ClipPlaneChunkBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      ClipPlaneChunkBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      ClipPlaneChunkBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const ClipPlaneChunkBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const ClipPlaneChunkBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef ClipPlaneChunkBase* ClipPlaneChunkBaseP;
 
-typedef ClipPlaneChunkBase *ClipPlaneChunkBaseP;
-
-typedef osgIF<ClipPlaneChunkBase::isNodeCore,
-              CoredNodePtr<ClipPlaneChunk>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet ClipPlaneChunkNodePtr;
+typedef osgIF<ClipPlaneChunkBase::isNodeCore, CoredNodePtr<ClipPlaneChunk>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet ClipPlaneChunkNodePtr;
 
 typedef RefPtr<ClipPlaneChunkPtr> ClipPlaneChunkRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGCLIPPLANECHUNKBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGCLIPPLANECHUNKBASE_HEADER_CVSID                                                         \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGCLIPPLANECHUNKBASE_H_ */

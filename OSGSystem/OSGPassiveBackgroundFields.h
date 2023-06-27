@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGPASSIVEBACKGROUNDFIELDS_H_
 #define _OSGPASSIVEBACKGROUNDFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class PassiveBackground;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! PassiveBackgroundPtr
 
 typedef FCPtr<BackgroundPtr, PassiveBackground> PassiveBackgroundPtr;
@@ -81,17 +80,20 @@ typedef FCPtr<BackgroundPtr, PassiveBackground> PassiveBackgroundPtr;
 #endif
 
 template <>
-struct FieldDataTraits<PassiveBackgroundPtr> : 
-    public FieldTraitsRecurseMapper<PassiveBackgroundPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<PassiveBackgroundPtr>
+    : public FieldTraitsRecurseMapper<PassiveBackgroundPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getSName(void) { return "SFPassiveBackgroundPtr"; }
+  static const char* getSName(void) {
+    return "SFPassiveBackgroundPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -101,7 +103,6 @@ struct FieldDataTraits<PassiveBackgroundPtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
@@ -115,6 +116,7 @@ OSG_DLLEXPORT_DECL1(SField, PassiveBackgroundPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 
 OSG_END_NAMESPACE
 
-#define OSGPASSIVEBACKGROUNDFIELDS_HEADER_CVSID "@(#)$Id: FCFieldsTemplate_h.h,v 1.25 2005/04/04 14:51:48 dirk Exp $"
+#define OSGPASSIVEBACKGROUNDFIELDS_HEADER_CVSID                                                    \
+  "@(#)$Id: FCFieldsTemplate_h.h,v 1.25 2005/04/04 14:51:48 dirk Exp $"
 
 #endif /* _OSGPASSIVEBACKGROUNDFIELDS_H_ */

@@ -50,7 +50,6 @@
 
 OSG_USING_NAMESPACE
 
-
 /***************************************************************************\
  *                            Description                                  *
 \***************************************************************************/
@@ -58,8 +57,8 @@ OSG_USING_NAMESPACE
 /*! \class osg::StatTimeElem
     \ingroup GrpSystemStatistics
 
-    The StatIntElem keeps a osg::Time value for time measurements, 
-    see \ref PageSystemStatistics for details. 
+    The StatIntElem keeps a osg::Time value for time measurements,
+    see \ref PageSystemStatistics for details.
 */
 
 /***************************************************************************\
@@ -68,119 +67,94 @@ OSG_USING_NAMESPACE
 
 /*------------- constructors & destructors --------------------------------*/
 
-StatTimeElem::StatTimeElem(StatElemDescBase *desc)
-  : StatElem(desc), _time(0)
-{
+StatTimeElem::StatTimeElem(StatElemDescBase* desc)
+    : StatElem(desc)
+    , _time(0) {
 }
 
-StatElem *StatTimeElem::create ( StatElemDescBase *desc)
-{
-    return new StatTimeElem(desc);
+StatElem* StatTimeElem::create(StatElemDescBase* desc) {
+  return new StatTimeElem(desc);
 }
 
-
-StatTimeElem::~StatTimeElem(void)
-{
+StatTimeElem::~StatTimeElem(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-void StatTimeElem::putToString(std::string &str, const char *format) const
-{
-    if(!format)
-    {
-        FieldDataTraits1<Time>::putToString(_time, str);
+void StatTimeElem::putToString(std::string& str, const char* format) const {
+  if (!format) {
+    FieldDataTraits1<Time>::putToString(_time, str);
+  } else {
+    const char* proc = strchr(format, '%');
+    char*       temp = new char[strlen(format) + 60];
+
+    if (proc) {
+      if (!strncmp(proc, "%ms", 3)) {
+        std::string fcopy(format);
+        fcopy.insert((proc - format) + 1, ".2f ");
+        sprintf(temp, fcopy.c_str(), ((double)_time) * 1000.);
+      } else if (!strncmp(proc, "%r", 2)) {
+        std::string fcopy(format);
+        fcopy.erase((proc - format) + 1, 1);
+        sprintf(temp, fcopy.c_str(), 1. / (double)_time);
+      } else {
+        sprintf(temp, format, (double)_time);
+      }
+
+    } else {
+      sprintf(temp, format, (double)_time);
     }
-    else
-    {
-        const char *proc = strchr(format,'%');        
-              char *temp = new char [strlen(format) + 60];
 
-        if(proc)
-        {
-            if(! strncmp(proc, "%ms", 3))
-            {
-                std::string fcopy(format);
-                fcopy.insert((proc - format) + 1,".2f ");
-                sprintf(temp, fcopy.c_str(), ((double)_time)*1000.);
-            }
-            else if(! strncmp(proc, "%r", 2))
-            {
-                std::string fcopy(format);
-                fcopy.erase((proc - format) + 1, 1);
-                sprintf(temp, fcopy.c_str(), 1./(double)_time);
-            }
-            else
-            {
-                sprintf(temp, format, (double)_time);
-            }
-           
-        }
-        else
-        {
-            sprintf(temp, format, (double)_time);
-        }
-        
-        str = temp;
-        delete [] temp;
-    }
+    str = temp;
+    delete[] temp;
+  }
 }
 
-bool StatTimeElem::getFromString(const Char8 *&inVal)
-{
-    return FieldDataTraits1<Time>::getFromString(_time, inVal);
+bool StatTimeElem::getFromString(const Char8*& inVal) {
+  return FieldDataTraits1<Time>::getFromString(_time, inVal);
 }
 
-Real64 StatTimeElem::getValue(void) const
-{
-    return static_cast<Real64>(getTime());
+Real64 StatTimeElem::getValue(void) const {
+  return static_cast<Real64>(getTime());
 }
 
-void StatTimeElem::reset(void) 
-{ 
-    // Time elements need to be started and stopped and can't be reset
+void StatTimeElem::reset(void) {
+  // Time elements need to be started and stopped and can't be reset
 }
 
 /*-------------------------- assignment -----------------------------------*/
 
-StatTimeElem& StatTimeElem::operator = (const StatTimeElem &source)
-{
-    if (this == &source)
-        return *this;
-
-    _time = source._time;
-    
+StatTimeElem& StatTimeElem::operator=(const StatTimeElem& source) {
+  if (this == &source)
     return *this;
+
+  _time = source._time;
+
+  return *this;
 }
 
 /*-------------------------- comparison -----------------------------------*/
 
-bool StatTimeElem::operator < (const StatTimeElem &other) const
-{
-    return _time < other._time;
+bool StatTimeElem::operator<(const StatTimeElem& other) const {
+  return _time < other._time;
 }
 
 /*--------------------------- creation ------------------------------------*/
 
-StatElem *StatTimeElem::clone(void) const
-{
-    StatTimeElem *e = new StatTimeElem(getDesc());
-    
-    *e = *this;
-    
-    return e;
+StatElem* StatTimeElem::clone(void) const {
+  StatTimeElem* e = new StatTimeElem(getDesc());
+
+  *e = *this;
+
+  return e;
 }
 
 /*--------------------------- operators ------------------------------------*/
 
-StatElem &StatTimeElem::operator += (const StatElem &other)
-{
-    const StatTimeElem *o = dynamic_cast<const StatTimeElem *>(&other);
-    
-    _time += o->_time;
-    
-    return *this;
+StatElem& StatTimeElem::operator+=(const StatElem& other) {
+  const StatTimeElem* o = dynamic_cast<const StatTimeElem*>(&other);
+
+  _time += o->_time;
+
+  return *this;
 }
-
-
-

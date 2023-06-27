@@ -48,45 +48,45 @@
 
 OSG_BEGIN_NAMESPACE
 
-class OSG_SYSTEMLIB_DLLMAPPING EmptyFunctorStore
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
-    /*---------------------------------------------------------------------*/
-    /*! \name    Types                                                     */
-    /*! \{                                                                 */
+class OSG_SYSTEMLIB_DLLMAPPING EmptyFunctorStore {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name    Types                                                     */
+  /*! \{                                                                 */
 
-    typedef NewActionTypes::Functor Functor;
+  typedef NewActionTypes::Functor Functor;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name    Constructors                                              */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name    Constructors                                              */
+  /*! \{                                                                 */
 
-    inline  EmptyFunctorStore(void);
+  inline EmptyFunctorStore(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name    Destructor                                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name    Destructor                                                */
+  /*! \{                                                                 */
 
-    inline ~EmptyFunctorStore(void);
+  inline ~EmptyFunctorStore(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name    Empty                                                     */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name    Empty                                                     */
+  /*! \{                                                                 */
 
-    inline bool empty(void) const;
+  inline bool empty(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
 };
 
 OSG_END_NAMESPACE
 
 #include "OSGEmptyFunctorStore.inl"
 
-#define OSGEMPTYFUNCTORSTORE_HEADER_CVSID "@(#)$Id: OSGEmptyFunctorStore.h,v 1.3 2004/04/20 13:47:08 neumannc Exp $"
+#define OSGEMPTYFUNCTORSTORE_HEADER_CVSID                                                          \
+  "@(#)$Id: OSGEmptyFunctorStore.h,v 1.3 2004/04/20 13:47:08 neumannc Exp $"
 
 #endif /* _OSGEMPTYFUNCTORSTORE_H_ */

@@ -47,82 +47,64 @@
 OSG_USING_NAMESPACE
 
 /*! \class osg::Inline
-*/
+ */
 
 /*-------------------------------------------------------------------------*/
 /*                               Sync                                      */
 
-void Inline::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void Inline::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
 /*-------------------------------------------------------------------------*/
 /*                               Dump                                      */
 
-void Inline::dump(      UInt32    OSG_CHECK_ARG(uiIndent), 
-                  const BitVector OSG_CHECK_ARG(bvFlags )) const
-{
-    SLOG << "Dump Inline NI" << std::endl;
+void Inline::dump(UInt32 OSG_CHECK_ARG(uiIndent), const BitVector OSG_CHECK_ARG(bvFlags)) const {
+  SLOG << "Dump Inline NI" << std::endl;
 }
 
 /*-------------------------------------------------------------------------*/
 /*                            Constructors                                 */
 
-Inline::Inline(void) :
-    Inherited()
-{
+Inline::Inline(void)
+    : Inherited() {
 }
 
-Inline::Inline(const Inline &source) :
-    Inherited(source)
-{
+Inline::Inline(const Inline& source)
+    : Inherited(source) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Destructor                                  */
 
-Inline::~Inline(void)
-{
+Inline::~Inline(void) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                                Draw                                     */
 
-Action::ResultE Inline::drawEnter(Action *action)
-{
-    DrawAction *da = dynamic_cast<DrawAction *>(action);
+Action::ResultE Inline::drawEnter(Action* action) {
+  DrawAction* da = dynamic_cast<DrawAction*>(action);
 
-    if(da->selectVisibles() == 0)
-        return Action::Skip;
-    
-    return Action::Continue;
+  if (da->selectVisibles() == 0)
+    return Action::Skip;
+
+  return Action::Continue;
 }
 
-Action::ResultE Inline::drawLeave(Action *)
-{
-    return Action::Continue;
+Action::ResultE Inline::drawLeave(Action*) {
+  return Action::Continue;
 }
 
 /*-------------------------------------------------------------------------*/
 /*                                Init                                     */
 
-void Inline::initMethod(void)
-{
-    DrawAction::registerEnterDefault( 
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE,
-                                          InlinePtr  , 
-                                          CNodePtr   ,  
-                                          Action    *>(&Inline::drawEnter));
+void Inline::initMethod(void) {
+  DrawAction::registerEnterDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, InlinePtr, CNodePtr, Action*>(
+          &Inline::drawEnter));
 
-    DrawAction::registerLeaveDefault( 
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE,
-                                          InlinePtr  , 
-                                          CNodePtr   ,  
-                                          Action    *>(&Inline::drawLeave));
+  DrawAction::registerLeaveDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, InlinePtr, CNodePtr, Action*>(
+          &Inline::drawLeave));
 }
-
-
-

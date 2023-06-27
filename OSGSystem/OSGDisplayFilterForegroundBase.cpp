@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEDISPLAYFILTERFOREGROUNDINST
 
 #include <stdlib.h>
@@ -61,24 +60,21 @@
 #include "OSGDisplayFilterForegroundBase.h"
 #include "OSGDisplayFilterForeground.h"
 
-
 OSG_BEGIN_NAMESPACE
 
-const OSG::BitVector  DisplayFilterForegroundBase::FilterFieldMask = 
+const OSG::BitVector DisplayFilterForegroundBase::FilterFieldMask =
     (TypeTraits<BitVector>::One << DisplayFilterForegroundBase::FilterFieldId);
 
-const OSG::BitVector  DisplayFilterForegroundBase::ServerFieldMask = 
+const OSG::BitVector DisplayFilterForegroundBase::ServerFieldMask =
     (TypeTraits<BitVector>::One << DisplayFilterForegroundBase::ServerFieldId);
 
-const OSG::BitVector DisplayFilterForegroundBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector DisplayFilterForegroundBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
 /*! \var DisplayFilterPtr DisplayFilterForegroundBase::_mfFilter
-    
+
 */
 /*! \var std::string     DisplayFilterForegroundBase::_sfServer
     Server to be calibrated (if any)
@@ -86,219 +82,162 @@ const OSG::BitVector DisplayFilterForegroundBase::MTInfluenceMask =
 
 //! DisplayFilterForeground description
 
-FieldDescription *DisplayFilterForegroundBase::_desc[] = 
-{
-    new FieldDescription(MFDisplayFilterPtr::getClassType(), 
-                     "filter", 
-                     FilterFieldId, FilterFieldMask,
-                     false,
-                     (FieldAccessMethod) &DisplayFilterForegroundBase::getMFFilter),
-    new FieldDescription(SFString::getClassType(), 
-                     "server", 
-                     ServerFieldId, ServerFieldMask,
-                     false,
-                     (FieldAccessMethod) &DisplayFilterForegroundBase::getSFServer)
-};
+FieldDescription* DisplayFilterForegroundBase::_desc[] = {
+    new FieldDescription(MFDisplayFilterPtr::getClassType(), "filter", FilterFieldId,
+        FilterFieldMask, false, (FieldAccessMethod)&DisplayFilterForegroundBase::getMFFilter),
+    new FieldDescription(SFString::getClassType(), "server", ServerFieldId, ServerFieldMask, false,
+        (FieldAccessMethod)&DisplayFilterForegroundBase::getSFServer)};
 
+FieldContainerType DisplayFilterForegroundBase::_type("DisplayFilterForeground", "Foreground", NULL,
+    (PrototypeCreateF)&DisplayFilterForegroundBase::createEmpty,
+    DisplayFilterForeground::initMethod, _desc, sizeof(_desc));
 
-FieldContainerType DisplayFilterForegroundBase::_type(
-    "DisplayFilterForeground",
-    "Foreground",
-    NULL,
-    (PrototypeCreateF) &DisplayFilterForegroundBase::createEmpty,
-    DisplayFilterForeground::initMethod,
-    _desc,
-    sizeof(_desc));
-
-//OSG_FIELD_CONTAINER_DEF(DisplayFilterForegroundBase, DisplayFilterForegroundPtr)
+// OSG_FIELD_CONTAINER_DEF(DisplayFilterForegroundBase, DisplayFilterForegroundPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &DisplayFilterForegroundBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &DisplayFilterForegroundBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr DisplayFilterForegroundBase::shallowCopy(void) const 
-{ 
-    DisplayFilterForegroundPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const DisplayFilterForeground *>(this)); 
-
-    return returnValue; 
+FieldContainerType& DisplayFilterForegroundBase::getType(void) {
+  return _type;
 }
 
-UInt32 DisplayFilterForegroundBase::getContainerSize(void) const 
-{ 
-    return sizeof(DisplayFilterForeground); 
+const FieldContainerType& DisplayFilterForegroundBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr DisplayFilterForegroundBase::shallowCopy(void) const {
+  DisplayFilterForegroundPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const DisplayFilterForeground*>(this));
+
+  return returnValue;
+}
+
+UInt32 DisplayFilterForegroundBase::getContainerSize(void) const {
+  return sizeof(DisplayFilterForeground);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void DisplayFilterForegroundBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((DisplayFilterForegroundBase *) &other, whichField);
+void DisplayFilterForegroundBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((DisplayFilterForegroundBase*)&other, whichField);
 }
 #else
-void DisplayFilterForegroundBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((DisplayFilterForegroundBase *) &other, whichField, sInfo);
+void DisplayFilterForegroundBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((DisplayFilterForegroundBase*)&other, whichField, sInfo);
 }
-void DisplayFilterForegroundBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void DisplayFilterForegroundBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void DisplayFilterForegroundBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
+void DisplayFilterForegroundBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 
-    _mfFilter.terminateShare(uiAspect, this->getContainerSize());
+  _mfFilter.terminateShare(uiAspect, this->getContainerSize());
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-DisplayFilterForegroundBase::DisplayFilterForegroundBase(void) :
-    _mfFilter                 (), 
-    _sfServer                 (), 
-    Inherited() 
-{
+DisplayFilterForegroundBase::DisplayFilterForegroundBase(void)
+    : _mfFilter()
+    , _sfServer()
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-DisplayFilterForegroundBase::DisplayFilterForegroundBase(const DisplayFilterForegroundBase &source) :
-    _mfFilter                 (source._mfFilter                 ), 
-    _sfServer                 (source._sfServer                 ), 
-    Inherited                 (source)
-{
+DisplayFilterForegroundBase::DisplayFilterForegroundBase(const DisplayFilterForegroundBase& source)
+    : _mfFilter(source._mfFilter)
+    , _sfServer(source._sfServer)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-DisplayFilterForegroundBase::~DisplayFilterForegroundBase(void)
-{
+DisplayFilterForegroundBase::~DisplayFilterForegroundBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 DisplayFilterForegroundBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 DisplayFilterForegroundBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (FilterFieldMask & whichField))
-    {
-        returnValue += _mfFilter.getBinSize();
-    }
+  if (FieldBits::NoField != (FilterFieldMask & whichField)) {
+    returnValue += _mfFilter.getBinSize();
+  }
 
-    if(FieldBits::NoField != (ServerFieldMask & whichField))
-    {
-        returnValue += _sfServer.getBinSize();
-    }
+  if (FieldBits::NoField != (ServerFieldMask & whichField)) {
+    returnValue += _sfServer.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void DisplayFilterForegroundBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void DisplayFilterForegroundBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (FilterFieldMask & whichField))
-    {
-        _mfFilter.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (FilterFieldMask & whichField)) {
+    _mfFilter.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ServerFieldMask & whichField))
-    {
-        _sfServer.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (ServerFieldMask & whichField)) {
+    _sfServer.copyToBin(pMem);
+  }
 }
 
-void DisplayFilterForegroundBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void DisplayFilterForegroundBase::copyFromBin(
+    BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (FilterFieldMask & whichField))
-    {
-        _mfFilter.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (FilterFieldMask & whichField)) {
+    _mfFilter.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ServerFieldMask & whichField))
-    {
-        _sfServer.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (ServerFieldMask & whichField)) {
+    _sfServer.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void DisplayFilterForegroundBase::executeSyncImpl(      DisplayFilterForegroundBase *pOther,
-                                        const BitVector         &whichField)
-{
+void DisplayFilterForegroundBase::executeSyncImpl(
+    DisplayFilterForegroundBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (FilterFieldMask & whichField))
-        _mfFilter.syncWith(pOther->_mfFilter);
+  if (FieldBits::NoField != (FilterFieldMask & whichField))
+    _mfFilter.syncWith(pOther->_mfFilter);
 
-    if(FieldBits::NoField != (ServerFieldMask & whichField))
-        _sfServer.syncWith(pOther->_sfServer);
-
-
+  if (FieldBits::NoField != (ServerFieldMask & whichField))
+    _sfServer.syncWith(pOther->_sfServer);
 }
 #else
-void DisplayFilterForegroundBase::executeSyncImpl(      DisplayFilterForegroundBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void DisplayFilterForegroundBase::executeSyncImpl(
+    DisplayFilterForegroundBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (ServerFieldMask & whichField))
-        _sfServer.syncWith(pOther->_sfServer);
+  if (FieldBits::NoField != (ServerFieldMask & whichField))
+    _sfServer.syncWith(pOther->_sfServer);
 
-
-    if(FieldBits::NoField != (FilterFieldMask & whichField))
-        _mfFilter.syncWith(pOther->_mfFilter, sInfo);
-
-
+  if (FieldBits::NoField != (FilterFieldMask & whichField))
+    _mfFilter.syncWith(pOther->_mfFilter, sInfo);
 }
 
-void DisplayFilterForegroundBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void DisplayFilterForegroundBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (FilterFieldMask & whichField))
-        _mfFilter.beginEdit(uiAspect, uiContainerSize);
-
+  if (FieldBits::NoField != (FilterFieldMask & whichField))
+    _mfFilter.beginEdit(uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 OSG_END_NAMESPACE
 
@@ -308,11 +247,11 @@ OSG_END_NAMESPACE
 OSG_BEGIN_NAMESPACE
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_DEV)
-DataType FieldDataTraits<DisplayFilterForegroundPtr>::_type("DisplayFilterForegroundPtr", "ForegroundPtr");
+DataType FieldDataTraits<DisplayFilterForegroundPtr>::_type(
+    "DisplayFilterForegroundPtr", "ForegroundPtr");
 #endif
 
 OSG_DLLEXPORT_SFIELD_DEF1(DisplayFilterForegroundPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 OSG_DLLEXPORT_MFIELD_DEF1(DisplayFilterForegroundPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
-

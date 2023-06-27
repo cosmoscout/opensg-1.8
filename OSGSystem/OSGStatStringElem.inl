@@ -38,22 +38,19 @@
 
 OSG_BEGIN_NAMESPACE
 
-inline const std::string & StatStringElem::get(void) const 
-{ 
-    return _value; 
+inline const std::string& StatStringElem::get(void) const {
+  return _value;
 }
 
-inline void StatStringElem::set(const std::string & value) 
-{ 
-    _value = value; 
+inline void StatStringElem::set(const std::string& value) {
+  _value = value;
 }
 
-inline void StatStringElem::set(const Char8 * value)
-{ 
-    _value = (value ? value : ""); 
+inline void StatStringElem::set(const Char8* value) {
+  _value = (value ? value : "");
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGSTATSTRINGELEM_INLINE_CVSID "@(#)$Id: OSGStatStringElem.inl,v 1.1 2002/03/19 17:46:17 dirk Exp $"
+#define OSGSTATSTRINGELEM_INLINE_CVSID                                                             \
+  "@(#)$Id: OSGStatStringElem.inl,v 1.1 2002/03/19 17:46:17 dirk Exp $"

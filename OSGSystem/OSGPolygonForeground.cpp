@@ -60,10 +60,10 @@ OSG_USING_NAMESPACE
 
 /*! \class osg::PolygonForeground
     \ingroup GrpSystemWindowForegrounds
-    
-A foreground that renders a single polygon used the specified material, 
+
+A foreground that renders a single polygon used the specified material,
 see \ref PageSystemPolygonForeground for a
-description. 
+description.
 
 The polygon material is defined by _sfMaterial, the positions by _mfPositions,
 the texture coordinates by _mfTexCoords. The interpretation of the positions is
@@ -79,10 +79,8 @@ controlled by _sfNormalizedX and _sfNormalizedY.
  *                           Class methods                                 *
 \***************************************************************************/
 
-void PolygonForeground::initMethod (void)
-{
+void PolygonForeground::initMethod(void) {
 }
-
 
 /***************************************************************************\
  *                           Instance methods                              *
@@ -94,175 +92,147 @@ void PolygonForeground::initMethod (void)
 
 /*----------------------- constructors & destructors ----------------------*/
 
-PolygonForeground::PolygonForeground(void) :
-    Inherited()
-{
+PolygonForeground::PolygonForeground(void)
+    : Inherited() {
 }
 
-PolygonForeground::PolygonForeground(const PolygonForeground &source) :
-    Inherited(source)
-{
+PolygonForeground::PolygonForeground(const PolygonForeground& source)
+    : Inherited(source) {
 }
 
-PolygonForeground::~PolygonForeground(void)
-{
+PolygonForeground::~PolygonForeground(void) {
 }
 
 /*----------------------------- class specific ----------------------------*/
 
-void PolygonForeground::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void PolygonForeground::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
-void PolygonForeground::dump(      UInt32    , 
-                         const BitVector ) const
-{
-    SLOG << "Dump PolygonForeground NI" << std::endl;
+void PolygonForeground::dump(UInt32, const BitVector) const {
+  SLOG << "Dump PolygonForeground NI" << std::endl;
 }
 
-Real32 PolygonForeground::mapCoordinate(Real32 val, Real32 max, bool norm)
-{
-    if(val >= 0)
-    {
-        if (norm)
-            val *= max;
-    }
-    else
-    {
-        val += 1;
-        
-        if (norm)
-            val *= max;
-        
-        val = max + val;
-    }
-   
-    return val;
+Real32 PolygonForeground::mapCoordinate(Real32 val, Real32 max, bool norm) {
+  if (val >= 0) {
+    if (norm)
+      val *= max;
+  } else {
+    val += 1;
+
+    if (norm)
+      val *= max;
+
+    val = max + val;
+  }
+
+  return val;
 }
-    
-void PolygonForeground::draw(DrawActionBase *act, Viewport *port)
-{
-    if(getActive() == false)
-        return;
-	
-    if(getPositions().getSize() == 0) // nothing to render
-        return;
 
-    if(port->getPixelWidth()  == 0 ||
-       port->getPixelHeight() == 0   ) // nothing to render to
-        return;
-        
-    if(getPositions().getSize() != getTexCoords().getSize())
-    {
-        FWARNING(("PolygonForeground::draw: positions and texcoords have "
-                  "different sizes (%d vs. %d)!\n", 
-                  getPositions().getSize(), getTexCoords().getSize()));
-        return;
-    }
-       
-    glPushAttrib(GL_ALL_ATTRIB_BITS);
+void PolygonForeground::draw(DrawActionBase* act, Viewport* port) {
+  if (getActive() == false)
+    return;
 
-    Real32 aspectX = 1.0f, aspectY = 1.0f;
-    
-    if (getAspectHeight() && getAspectWidth())
-    {
-        aspectX = ((Real32)port->getPixelHeight()/getAspectHeight()) /
-                  ((Real32)port->getPixelWidth() / getAspectWidth());
-    }
- 
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glLoadIdentity();
-    
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-	
-	Real32 sFac = getScale() > 0 ? getScale() : 1.0f;
-	
-	UInt32 width  = port->getPixelWidth(),
-		   height = port->getPixelHeight();
-    
-    Camera *cP = act->getCamera();
-    TileCameraDecorator *cdP = dynamic_cast<TileCameraDecorator*>(cP);
-	
-	while (cdP != NULL)
-	{
-		width  = cdP->getFullWidth()  ? cdP->getFullWidth()  : width;
-		height = cdP->getFullHeight() ? cdP->getFullHeight() : height;
-		
-		cP  = cdP->getDecoratee().getCPtr();
-		cdP = dynamic_cast<TileCameraDecorator*>(cP);
-	}
-	
-	cP = act->getCamera();
-	cdP = dynamic_cast<TileCameraDecorator*>(cP);
-    
-    if (cdP && !getTile())
-    {
-        Real32 t = 0,
-               left   = cdP->getLeft(),
-               right  = cdP->getRight(),
-               top    = cdP->getTop(),
-               bottom = cdP->getBottom();
-        
-        if (getAspectHeight() && getAspectWidth() &&
-            height != 0 && width != 0)
-        {
-            aspectX = ((Real32)height/getAspectHeight()) /
-                      ((Real32)width / getAspectWidth());
-            t  = (Real32)width * (1 - aspectX) * 0.5f;
-            t *= (Real32)port->getPixelWidth() / width;
-        }
-		
-		Matrix sm;
-		cP->getDecoration(sm, width, height);
-        
-        glLoadMatrixf(sm.getValues());
-        glOrtho(0, port->getPixelWidth(), 0, port->getPixelHeight(), 0, 1);
+  if (getPositions().getSize() == 0) // nothing to render
+    return;
 
-        glTranslatef(t, 0, 0);
-        glScalef(aspectX, aspectY, 1);
+  if (port->getPixelWidth() == 0 || port->getPixelHeight() == 0) // nothing to render to
+    return;
 
-        float t1 = (1 - sFac) * 0.5f * (Real32)port->getPixelWidth();
-        float t2 = (1 - sFac) * 0.5f * (Real32)port->getPixelHeight();
-        glTranslatef(t1, t2, 0);
-        glScalef(sFac,sFac,1);
-    }
-    else
-    {
-        glScalef(sFac,sFac,1);
-        
-        glScalef(aspectX, aspectY, 1);
-        glOrtho(0, port->getPixelWidth(), 0, port->getPixelHeight(), 0, 1);    
-    }
-    
-    getMaterial()->getState()->activate(act);
-    
-    Vec3f *tc  = &getTexCoords()[0];
-    Pnt2f *pos = &getPositions()[0];
-    
-    glBegin(GL_POLYGON);
-    
-    for (UInt16 i = 0; i < getPositions().size(); i++)
-    {
-        glTexCoord3fv( tc[i].getValues() );
-        glVertex2f( mapCoordinate(pos[i][0], Real32(port->getPixelWidth()),
-                                             getNormalizedX()),
-                    mapCoordinate(pos[i][1], Real32(port->getPixelHeight()),
-                                             getNormalizedY()) );
+  if (getPositions().getSize() != getTexCoords().getSize()) {
+    FWARNING(("PolygonForeground::draw: positions and texcoords have "
+              "different sizes (%d vs. %d)!\n",
+        getPositions().getSize(), getTexCoords().getSize()));
+    return;
+  }
+
+  glPushAttrib(GL_ALL_ATTRIB_BITS);
+
+  Real32 aspectX = 1.0f, aspectY = 1.0f;
+
+  if (getAspectHeight() && getAspectWidth()) {
+    aspectX = ((Real32)port->getPixelHeight() / getAspectHeight()) /
+              ((Real32)port->getPixelWidth() / getAspectWidth());
+  }
+
+  glMatrixMode(GL_MODELVIEW);
+  glPushMatrix();
+  glLoadIdentity();
+
+  glMatrixMode(GL_PROJECTION);
+  glPushMatrix();
+  glLoadIdentity();
+
+  Real32 sFac = getScale() > 0 ? getScale() : 1.0f;
+
+  UInt32 width = port->getPixelWidth(), height = port->getPixelHeight();
+
+  Camera*              cP  = act->getCamera();
+  TileCameraDecorator* cdP = dynamic_cast<TileCameraDecorator*>(cP);
+
+  while (cdP != NULL) {
+    width  = cdP->getFullWidth() ? cdP->getFullWidth() : width;
+    height = cdP->getFullHeight() ? cdP->getFullHeight() : height;
+
+    cP  = cdP->getDecoratee().getCPtr();
+    cdP = dynamic_cast<TileCameraDecorator*>(cP);
+  }
+
+  cP  = act->getCamera();
+  cdP = dynamic_cast<TileCameraDecorator*>(cP);
+
+  if (cdP && !getTile()) {
+    Real32 t = 0, left = cdP->getLeft(), right = cdP->getRight(), top = cdP->getTop(),
+           bottom = cdP->getBottom();
+
+    if (getAspectHeight() && getAspectWidth() && height != 0 && width != 0) {
+      aspectX = ((Real32)height / getAspectHeight()) / ((Real32)width / getAspectWidth());
+      t       = (Real32)width * (1 - aspectX) * 0.5f;
+      t *= (Real32)port->getPixelWidth() / width;
     }
 
-    glEnd();
-    
-    getMaterial()->getState()->deactivate(act);
+    Matrix sm;
+    cP->getDecoration(sm, width, height);
 
-    glScalef(1, 1, 1);
-    
-    glPopMatrix();
-    glMatrixMode(GL_MODELVIEW);
-    glPopMatrix();
+    glLoadMatrixf(sm.getValues());
+    glOrtho(0, port->getPixelWidth(), 0, port->getPixelHeight(), 0, 1);
 
-    glPopAttrib();
+    glTranslatef(t, 0, 0);
+    glScalef(aspectX, aspectY, 1);
+
+    float t1 = (1 - sFac) * 0.5f * (Real32)port->getPixelWidth();
+    float t2 = (1 - sFac) * 0.5f * (Real32)port->getPixelHeight();
+    glTranslatef(t1, t2, 0);
+    glScalef(sFac, sFac, 1);
+  } else {
+    glScalef(sFac, sFac, 1);
+
+    glScalef(aspectX, aspectY, 1);
+    glOrtho(0, port->getPixelWidth(), 0, port->getPixelHeight(), 0, 1);
+  }
+
+  getMaterial()->getState()->activate(act);
+
+  Vec3f* tc  = &getTexCoords()[0];
+  Pnt2f* pos = &getPositions()[0];
+
+  glBegin(GL_POLYGON);
+
+  for (UInt16 i = 0; i < getPositions().size(); i++) {
+    glTexCoord3fv(tc[i].getValues());
+    glVertex2f(mapCoordinate(pos[i][0], Real32(port->getPixelWidth()), getNormalizedX()),
+        mapCoordinate(pos[i][1], Real32(port->getPixelHeight()), getNormalizedY()));
+  }
+
+  glEnd();
+
+  getMaterial()->getState()->deactivate(act);
+
+  glScalef(1, 1, 1);
+
+  glPopMatrix();
+  glMatrixMode(GL_MODELVIEW);
+  glPopMatrix();
+
+  glPopAttrib();
 }

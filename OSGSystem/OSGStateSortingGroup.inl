@@ -34,7 +34,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -44,4 +43,5 @@ OSG_BEGIN_NAMESPACE
 
 OSG_END_NAMESPACE
 
-#define OSGSTATESORTINGGROUP_INLINE_CVSID "@(#)$Id: OSGStateSortingGroup.inl,v 1.1 2005/04/06 09:35:00 a-m-z Exp $"
+#define OSGSTATESORTINGGROUP_INLINE_CVSID                                                          \
+  "@(#)$Id: OSGStateSortingGroup.inl,v 1.1 2005/04/06 09:35:00 a-m-z Exp $"

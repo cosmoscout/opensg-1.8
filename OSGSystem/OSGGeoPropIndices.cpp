@@ -37,7 +37,7 @@
 \*---------------------------------------------------------------------------*/
 
 //---------------------------------------------------------------------------
- //  Includes
+//  Includes
 //---------------------------------------------------------------------------
 
 #define OSG_COMPILEGEOPROPINDEXINST
@@ -51,35 +51,23 @@
 
 OSG_USING_NAMESPACE
 
-FieldDescription *GeoIndicesUI32PropertyDesc::_desc[] =
-{
-    new FieldDescription(
-        StoredFieldType::getClassType(), 
-        getFieldName(), 
-        OSG_FC_FIELD_IDM_DESC(GeoProperty<
-                                GeoIndicesUI32PropertyDesc>::GeoPropDataField),
-        false,
+FieldDescription* GeoIndicesUI32PropertyDesc::_desc[] = {
+    new FieldDescription(StoredFieldType::getClassType(), getFieldName(),
+        OSG_FC_FIELD_IDM_DESC(GeoProperty<GeoIndicesUI32PropertyDesc>::GeoPropDataField), false,
 #ifdef OSG_MICROSOFT_COMPILER_HACKS
         GeoProperty<GeoIndicesUI32PropertyDesc>::getFPtrAccessMethod())
 #else
-        (FieldAccessMethod) &GeoProperty<
-                                GeoIndicesUI32PropertyDesc>::getFieldPtr)
+        (FieldAccessMethod)&GeoProperty<GeoIndicesUI32PropertyDesc>::getFieldPtr)
 #endif
 };
 
-FieldDescription *GeoIndicesUI16PropertyDesc::_desc[] =
-{
-    new FieldDescription(
-        StoredFieldType::getClassType(), 
-        getFieldName(), 
-        OSG_FC_FIELD_IDM_DESC(GeoProperty<
-                                GeoIndicesUI16PropertyDesc>::GeoPropDataField),
-        false,
+FieldDescription* GeoIndicesUI16PropertyDesc::_desc[] = {
+    new FieldDescription(StoredFieldType::getClassType(), getFieldName(),
+        OSG_FC_FIELD_IDM_DESC(GeoProperty<GeoIndicesUI16PropertyDesc>::GeoPropDataField), false,
 #ifdef OSG_MICROSOFT_COMPILER_HACKS
         GeoProperty<GeoIndicesUI16PropertyDesc>::getFPtrAccessMethod())
 #else
-        (FieldAccessMethod) &GeoProperty<
-                                GeoIndicesUI16PropertyDesc>::getFieldPtr)
+        (FieldAccessMethod)&GeoProperty<GeoIndicesUI16PropertyDesc>::getFieldPtr)
 #endif
 };
 
@@ -87,12 +75,8 @@ OSG_GEO_PROP_TYPE_TMPL_DEF(GeoProperty, GeoPropertyDesc, PtrType)
 
 OSG_BEGIN_NAMESPACE
 
-OSG_GEOPROP_DLLEXPORT_DEF (GeoProperty        ,
-                           GeoIndicesUI32PropertyDesc, 
-                           OSG_SYSTEMLIB_DLLTMPLMAPPING);
+OSG_GEOPROP_DLLEXPORT_DEF(GeoProperty, GeoIndicesUI32PropertyDesc, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
-OSG_GEOPROP_DLLEXPORT_DEF (GeoProperty        ,
-                           GeoIndicesUI16PropertyDesc, 
-                           OSG_SYSTEMLIB_DLLTMPLMAPPING);
+OSG_GEOPROP_DLLEXPORT_DEF(GeoProperty, GeoIndicesUI16PropertyDesc, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE

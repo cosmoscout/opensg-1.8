@@ -52,81 +52,59 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &ShaderParameterBoolBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& ShaderParameterBoolBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 ShaderParameterBoolBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 ShaderParameterBoolBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-ShaderParameterBoolPtr ShaderParameterBoolBase::create(void) 
-{
-    ShaderParameterBoolPtr fc; 
+inline ShaderParameterBoolPtr ShaderParameterBoolBase::create(void) {
+  ShaderParameterBoolPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = ShaderParameterBoolPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = ShaderParameterBoolPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-ShaderParameterBoolPtr ShaderParameterBoolBase::createEmpty(void) 
-{ 
-    ShaderParameterBoolPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline ShaderParameterBoolPtr ShaderParameterBoolBase::createEmpty(void) {
+  ShaderParameterBoolPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the ShaderParameterBool::_sfValue field.
-inline
-SFBool *ShaderParameterBoolBase::getSFValue(void)
-{
-    return &_sfValue;
-}
-
-
-//! Get the value of the ShaderParameterBool::_sfValue field.
-inline
-bool &ShaderParameterBoolBase::getValue(void)
-{
-    return _sfValue.getValue();
+inline SFBool* ShaderParameterBoolBase::getSFValue(void) {
+  return &_sfValue;
 }
 
 //! Get the value of the ShaderParameterBool::_sfValue field.
-inline
-const bool &ShaderParameterBoolBase::getValue(void) const
-{
-    return _sfValue.getValue();
+inline bool& ShaderParameterBoolBase::getValue(void) {
+  return _sfValue.getValue();
+}
+
+//! Get the value of the ShaderParameterBool::_sfValue field.
+inline const bool& ShaderParameterBoolBase::getValue(void) const {
+  return _sfValue.getValue();
 }
 
 //! Set the value of the ShaderParameterBool::_sfValue field.
-inline
-void ShaderParameterBoolBase::setValue(const bool &value)
-{
-    _sfValue.setValue(value);
+inline void ShaderParameterBoolBase::setValue(const bool& value) {
+  _sfValue.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGSHADERPARAMETERBOOLBASE_INLINE_CVSID "@(#)$Id: OSGShaderParameterBoolBase.inl,v 1.5 2006/02/20 17:04:38 dirk Exp $"
-
+#define OSGSHADERPARAMETERBOOLBASE_INLINE_CVSID                                                    \
+  "@(#)$Id: OSGShaderParameterBoolBase.inl,v 1.5 2006/02/20 17:04:38 dirk Exp $"

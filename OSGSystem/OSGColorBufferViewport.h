@@ -50,81 +50,74 @@ OSG_BEGIN_NAMESPACE
 
 class RenderActionBase;
 
-/*! \brief Viewport class for color channel selection. See \ref 
+/*! \brief Viewport class for color channel selection. See \ref
     PageSystemWindowViewports for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING ColorBufferViewport : public ColorBufferViewportBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING ColorBufferViewport : public ColorBufferViewportBase {
+ private:
+  typedef ColorBufferViewportBase Inherited;
 
-    typedef ColorBufferViewportBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    your_category                             */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  virtual void activateSize(void);
+  virtual void activate(void);
+  virtual void deactivate(void);
+  virtual void draw(DrawAction* action);
+  virtual void render(RenderActionBase* action);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    your_category                             */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in ColorBufferViewportBase.
 
-    virtual void activateSize(void);
-    virtual void activate    (void);
-    virtual void deactivate  (void);
-    virtual void draw        (DrawAction       *action);
-    virtual void render      (RenderActionBase *action);
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  ColorBufferViewport(void);
+  ColorBufferViewport(const ColorBufferViewport& source);
 
-    // Variables should all be in ColorBufferViewportBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~ColorBufferViewport(void);
 
-    ColorBufferViewport(void);
-    ColorBufferViewport(const ColorBufferViewport &source);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class ColorBufferViewportBase;
 
-    virtual ~ColorBufferViewport(void); 
+  static void initMethod(void);
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  // prohibit default functions (move to 'public' if you need one)
 
-    friend class FieldContainer;
-    friend class ColorBufferViewportBase;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const ColorBufferViewport &source);
+  void operator=(const ColorBufferViewport& source);
 };
 
-typedef ColorBufferViewport *ColorBufferViewportP;
+typedef ColorBufferViewport* ColorBufferViewportP;
 
 OSG_END_NAMESPACE
 

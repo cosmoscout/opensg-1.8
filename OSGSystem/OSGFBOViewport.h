@@ -53,162 +53,153 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief FBOViewport class. See \ref 
+/*! \brief FBOViewport class. See \ref
            PageExtentionFBOViewport for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING FBOViewport : public FBOViewportBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING FBOViewport : public FBOViewportBase {
+ private:
+  typedef FBOViewportBase Inherited;
 
-    typedef FBOViewportBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  enum RenderBufferAttachmentType {
+    NONE           = 0,
+    FBO_DEPTH_16   = 1,
+    FBO_DEPTH_24   = 2,
+    FBO_DEPTH_32   = 4,
+    FBO_STENCIL_1  = 8,
+    FBO_STENCIL_4  = 16,
+    FBO_STENCIL_8  = 32,
+    FBO_STENCIL_16 = 64
+  };
 
-    /*==========================  PUBLIC  =================================*/
-  public:
-  
-     enum RenderBufferAttachmentType
-     {
-        NONE            = 0,
-        FBO_DEPTH_16    = 1,
-        FBO_DEPTH_24    = 2,
-        FBO_DEPTH_32    = 4,
-        FBO_STENCIL_1   = 8,
-        FBO_STENCIL_4   = 16,
-        FBO_STENCIL_8   = 32,
-        FBO_STENCIL_16  = 64
-     };
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
-    
-    static const char *getClassname(void) { return "FBOViewport"; }
+  static const char* getClassname(void) {
+    return "FBOViewport";
+  }
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Render                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Render                                    */
+  /*! \{                                                                 */
 
-    virtual void render(RenderActionBase *action);
+  virtual void render(RenderActionBase* action);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Access                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Access                                    */
+  /*! \{                                                                 */
 
-     bool initialize(Window *win, Int32 format = NONE);
-     void setTarget(Window *win, UInt32 id, GLenum attachment, GLenum target);
-     void bind(Window *win);
-     void stop(Window *win);
-     bool checkFrameBufferStatus(Window *win);
-     Int32 getMaxBuffers(void);
+  bool  initialize(Window* win, Int32 format = NONE);
+  void  setTarget(Window* win, UInt32 id, GLenum attachment, GLenum target);
+  void  bind(Window* win);
+  void  stop(Window* win);
+  bool  checkFrameBufferStatus(Window* win);
+  Int32 getMaxBuffers(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Callbacks                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Callbacks                                */
+  /*! \{                                                                 */
 
-    enum
-    {
-        FBO_RP_NONE = 0,
-        FBO_RP_EFFECTS = 1
-    };
+  enum { FBO_RP_NONE = 0, FBO_RP_EFFECTS = 1 };
 
-    typedef void (*renderparamscbfp) (UInt32 params);
-    static void setRenderParamsCB(renderparamscbfp fp);
+  typedef void (*renderparamscbfp)(UInt32 params);
+  static void setRenderParamsCB(renderparamscbfp fp);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in FBOViewportBase.
 
-    // Variables should all be in FBOViewportBase.
+  bool extensionCheck(void);
 
-    bool extensionCheck(void);
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  FBOViewport(void);
+  FBOViewport(const FBOViewport& source);
 
-    FBOViewport(void);
-    FBOViewport(const FBOViewport &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  virtual ~FBOViewport(void);
 
-    virtual ~FBOViewport(void); 
+  void onCreate(const FBOViewport* source = NULL);
+  void onDestroy(void);
 
-    void onCreate(const FBOViewport *source = NULL);
-    void onDestroy(void);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class FBOViewportBase;
 
-    friend class FieldContainer;
-    friend class FBOViewportBase;
-    
-    /*---------------------------------------------------------------------*/
-    /*! \name            OpenGL Extension Handling                         */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name            OpenGL Extension Handling                         */
+  /*! \{                                                                 */
 
-    static UInt32 _framebuffer_object_extension;
-    static UInt32 _draw_buffers_extension;
+  static UInt32 _framebuffer_object_extension;
+  static UInt32 _draw_buffers_extension;
 
-    static UInt32 _funcDrawBuffers;
-    static UInt32 _funcBindFramebuffer;
-    static UInt32 _funcBindRenderbuffer;
-    static UInt32 _funcCheckFramebufferStatus;
-    static UInt32 _funcDeleteFramebuffers;
-    static UInt32 _funcDeleteRenderbuffers;
-    static UInt32 _funcFramebufferRenderbuffer;
-    static UInt32 _funcFramebufferTexture1D;
-    static UInt32 _funcFramebufferTexture2D;
-    static UInt32 _funcFramebufferTexture3D;
-    static UInt32 _funcGenFramebuffers;
-    static UInt32 _funcGenRenderbuffers;
-    static UInt32 _funcGenerateMipmap;
-    static UInt32 _funcGetFramebufferAttachmentParameteriv;
-    static UInt32 _funcGetRenderbufferParameteriv;
-    static UInt32 _funcIsFramebuffer;
-    static UInt32 _funcIsRenderbuffer;
-    static UInt32 _funcRenderbufferStorage;
+  static UInt32 _funcDrawBuffers;
+  static UInt32 _funcBindFramebuffer;
+  static UInt32 _funcBindRenderbuffer;
+  static UInt32 _funcCheckFramebufferStatus;
+  static UInt32 _funcDeleteFramebuffers;
+  static UInt32 _funcDeleteRenderbuffers;
+  static UInt32 _funcFramebufferRenderbuffer;
+  static UInt32 _funcFramebufferTexture1D;
+  static UInt32 _funcFramebufferTexture2D;
+  static UInt32 _funcFramebufferTexture3D;
+  static UInt32 _funcGenFramebuffers;
+  static UInt32 _funcGenRenderbuffers;
+  static UInt32 _funcGenerateMipmap;
+  static UInt32 _funcGetFramebufferAttachmentParameteriv;
+  static UInt32 _funcGetRenderbufferParameteriv;
+  static UInt32 _funcIsFramebuffer;
+  static UInt32 _funcIsRenderbuffer;
+  static UInt32 _funcRenderbufferStorage;
 
-    static renderparamscbfp _renderParamsFP;
-    /*! \}                                                                 */
-    
-    static void initMethod(void);
+  static renderparamscbfp _renderParamsFP;
+  /*! \}                                                                 */
 
-    // prohibit default functions (move to 'public' if you need one)
+  static void initMethod(void);
 
-    void operator =(const FBOViewport &source);
+  // prohibit default functions (move to 'public' if you need one)
+
+  void operator=(const FBOViewport& source);
 };
 
-typedef FBOViewport *FBOViewportP;
+typedef FBOViewport* FBOViewportP;
 
 OSG_END_NAMESPACE
 
 #include "OSGFBOViewportBase.inl"
 #include "OSGFBOViewport.inl"
 
-#define OSGFBOVIEWPORT_HEADER_CVSID "@(#)$Id: OSGFBOViewport.h,v 1.1 2007/03/12 15:03:01 a-m-z Exp $"
+#define OSGFBOVIEWPORT_HEADER_CVSID                                                                \
+  "@(#)$Id: OSGFBOViewport.h,v 1.1 2007/03/12 15:03:01 a-m-z Exp $"
 
 #endif /* _OSGFBOVIEWPORT_H_ */

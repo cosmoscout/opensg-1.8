@@ -55,15 +55,14 @@
 
 OSG_USING_NAMESPACE
 
-
 /***************************************************************************\
  *                            Description                                  *
 \***************************************************************************/
 
 /*! \class osg::GrabForeground
     \ingroup GrpSystemWindowForegrounds
-    
-The GrabForeground is used for grabbing a rendered viewport into an Image. 
+
+The GrabForeground is used for grabbing a rendered viewport into an Image.
 See \ref PageSystemWindowForegroundGrab for a description.
 
 
@@ -71,84 +70,68 @@ See \ref PageSystemWindowForegroundGrab for a description.
 
 /*----------------------- constructors & destructors ----------------------*/
 
-GrabForeground::GrabForeground(void) :
-    Inherited()
-{
-    Inherited::setActive(false);
+GrabForeground::GrabForeground(void)
+    : Inherited() {
+  Inherited::setActive(false);
 }
 
-GrabForeground::GrabForeground(const GrabForeground &source) :
-    Inherited(source)
-{
+GrabForeground::GrabForeground(const GrabForeground& source)
+    : Inherited(source) {
 }
 
-GrabForeground::~GrabForeground(void)
-{
+GrabForeground::~GrabForeground(void) {
 }
 
 /*----------------------------- class specific ----------------------------*/
 
-void GrabForeground::initMethod (void)
-{
+void GrabForeground::initMethod(void) {
 }
 
-void GrabForeground::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void GrabForeground::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
-void GrabForeground::dump(      UInt32    , 
-                         const BitVector ) const
-{
-    SLOG << "Dump GrabForeground NI" << std::endl;
+void GrabForeground::dump(UInt32, const BitVector) const {
+  SLOG << "Dump GrabForeground NI" << std::endl;
 }
-
 
 /*! Grab the image, if it is actually set.
-*/   
-void GrabForeground::draw(DrawActionBase *, Viewport *port)
-{
-    if(getActive() == false)
-        return;
-    
-    ImagePtr i = getImage();
-    
-    if(i == NullFC)       // No image, no grab.
-        return;
+ */
+void GrabForeground::draw(DrawActionBase*, Viewport* port) {
+  if (getActive() == false)
+    return;
 
-    UInt32 w = osgMax(2, port->getPixelWidth());
-    UInt32 h = osgMax(2, port->getPixelHeight());
-    
-    // If image is smaller than 2x2, resize it to vp size
-    // the 2x2 is because you can't create 0x0 images
-    // If autoResize then update img size if vp changed
-    if ( (i->getWidth() <= 1 || i->getHeight() <= 1) ||
-         (getAutoResize() && (w != i->getWidth() || h != i->getHeight())) )
-    {
-        i->set(i->getPixelFormat(), w, h);
+  ImagePtr i = getImage();
+
+  if (i == NullFC) // No image, no grab.
+    return;
+
+  UInt32 w = osgMax(2, port->getPixelWidth());
+  UInt32 h = osgMax(2, port->getPixelHeight());
+
+  // If image is smaller than 2x2, resize it to vp size
+  // the 2x2 is because you can't create 0x0 images
+  // If autoResize then update img size if vp changed
+  if ((i->getWidth() <= 1 || i->getHeight() <= 1) ||
+      (getAutoResize() && (w != i->getWidth() || h != i->getHeight()))) {
+    i->set(i->getPixelFormat(), w, h);
+  }
+
+  bool storeChanged = false;
+
+  if (!getAutoResize()) {
+    w = osgMin(i->getWidth(), port->getPixelWidth());
+    h = osgMin(i->getHeight(), port->getPixelHeight());
+
+    if (i->getWidth() != port->getPixelWidth()) {
+      glPixelStorei(GL_PACK_ROW_LENGTH, i->getWidth());
+      storeChanged = true;
     }
-    
-    bool storeChanged = false;
+  }
 
-    if ( !getAutoResize() )
-    {
-        w = osgMin(i->getWidth(),  port->getPixelWidth());
-        h = osgMin(i->getHeight(), port->getPixelHeight());
-        
-        if (i->getWidth() != port->getPixelWidth())
-        {
-            glPixelStorei(GL_PACK_ROW_LENGTH, i->getWidth());
-            storeChanged = true;
-        }
-    }
-    
-    glReadPixels(port->getPixelLeft(), port->getPixelBottom(), 
-                 w, h, i->getPixelFormat(),
-                 i->getDataType(), i->getData());
+  glReadPixels(port->getPixelLeft(), port->getPixelBottom(), w, h, i->getPixelFormat(),
+      i->getDataType(), i->getData());
 
-    if(storeChanged)
-        glPixelStorei(GL_PACK_ROW_LENGTH, 0);
+  if (storeChanged)
+    glPixelStorei(GL_PACK_ROW_LENGTH, 0);
 }
-
-
-

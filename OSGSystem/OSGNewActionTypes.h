@@ -53,28 +53,25 @@ OSG_BEGIN_NAMESPACE
 
 class ActorBase;
 
-namespace NewActionTypes
-{
-    enum ResultE
-    {
-        Continue = 0x00,  // ok
-        Skip     = 0x01,  // skip all child nodes
-        Break    = 0x02,  // skip all child nodes and remaining actors
-        Quit     = 0x04   // end traversal
-    };
+namespace NewActionTypes {
+enum ResultE {
+  Continue = 0x00, // ok
+  Skip     = 0x01, // skip all child nodes
+  Break    = 0x02, // skip all child nodes and remaining actors
+  Quit     = 0x04  // end traversal
+};
 
-    typedef Real32                                        PriorityType;
-    typedef TypeTraits<PriorityType>                      PriorityTypeTraits;
+typedef Real32                   PriorityType;
+typedef TypeTraits<PriorityType> PriorityTypeTraits;
 
-    //typedef ArgsCollector2   <ActorBase *, NodePtr>     FunctorArguments;
-    typedef ArgsCollector    <FunctorArgumentType &  >    FunctorArguments;
-    typedef TypedFunctor2Base<ResultE,
-                              CPtrCallArg<NodeCorePtr>,
-                              FunctorArguments          > Functor;
-}
+// typedef ArgsCollector2   <ActorBase *, NodePtr>     FunctorArguments;
+typedef ArgsCollector<FunctorArgumentType&>                                    FunctorArguments;
+typedef TypedFunctor2Base<ResultE, CPtrCallArg<NodeCorePtr>, FunctorArguments> Functor;
+} // namespace NewActionTypes
 
 OSG_END_NAMESPACE
 
-#define OSGNEWACTIONTYPES_HEADER_CVSID "@(#)$Id: OSGNewActionTypes.h,v 1.3 2004/09/17 14:09:43 neumannc Exp $"
+#define OSGNEWACTIONTYPES_HEADER_CVSID                                                             \
+  "@(#)$Id: OSGNewActionTypes.h,v 1.3 2004/09/17 14:09:43 neumannc Exp $"
 
 #endif /* _OSGNEWACTIONTYPES_H_ */

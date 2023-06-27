@@ -65,10 +65,8 @@ OSG_USING_NAMESPACE
  *                           Class methods                                 *
 \***************************************************************************/
 
-void ShaderParameterReal::initMethod (void)
-{
+void ShaderParameterReal::initMethod(void) {
 }
-
 
 /***************************************************************************\
  *                           Instance methods                              *
@@ -80,33 +78,27 @@ void ShaderParameterReal::initMethod (void)
 
 /*----------------------- constructors & destructors ----------------------*/
 
-ShaderParameterReal::ShaderParameterReal(void) :
-    Inherited()
-{
-    setTypeId(ShaderParameter::SHPTypeReal);
+ShaderParameterReal::ShaderParameterReal(void)
+    : Inherited() {
+  setTypeId(ShaderParameter::SHPTypeReal);
 }
 
-ShaderParameterReal::ShaderParameterReal(const ShaderParameterReal &source) :
-    Inherited(source)
-{
+ShaderParameterReal::ShaderParameterReal(const ShaderParameterReal& source)
+    : Inherited(source) {
 }
 
-ShaderParameterReal::~ShaderParameterReal(void)
-{
+ShaderParameterReal::~ShaderParameterReal(void) {
 }
 
 /*----------------------------- class specific ----------------------------*/
 
-void ShaderParameterReal::changed(BitVector whichField, UInt32 origin)
-{
-    if(whichField & ShaderParameterReal::ValueFieldMask)
-        setChanged();
+void ShaderParameterReal::changed(BitVector whichField, UInt32 origin) {
+  if (whichField & ShaderParameterReal::ValueFieldMask)
+    setChanged();
 
-    Inherited::changed(whichField, origin);
+  Inherited::changed(whichField, origin);
 }
 
-void ShaderParameterReal::dump(      UInt32    , 
-                         const BitVector ) const
-{
-    SLOG << "Dump ShaderParameterReal NI" << std::endl;
+void ShaderParameterReal::dump(UInt32, const BitVector) const {
+  SLOG << "Dump ShaderParameterReal NI" << std::endl;
 }

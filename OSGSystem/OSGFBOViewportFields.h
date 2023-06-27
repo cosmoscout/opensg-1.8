@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGFBOVIEWPORTFIELDS_H_
 #define _OSGFBOVIEWPORTFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class FBOViewport;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! FBOViewportPtr
 
 typedef FCPtr<ViewportPtr, FBOViewport> FBOViewportPtr;
@@ -81,18 +80,22 @@ typedef FCPtr<ViewportPtr, FBOViewport> FBOViewportPtr;
 #endif
 
 template <>
-struct FieldDataTraits<FBOViewportPtr> : 
-    public FieldTraitsRecurseMapper<FBOViewportPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<FBOViewportPtr> : public FieldTraitsRecurseMapper<FBOViewportPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getSName(void) { return "SFFBOViewportPtr"; }
-    static const char *getMName(void) { return "MFFBOViewportPtr"; }
+  static const char* getSName(void) {
+    return "SFFBOViewportPtr";
+  }
+  static const char* getMName(void) {
+    return "MFFBOViewportPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -102,7 +105,6 @@ struct FieldDataTraits<FBOViewportPtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
@@ -126,6 +128,7 @@ OSG_DLLEXPORT_DECL1(MField, FBOViewportPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 
 OSG_END_NAMESPACE
 
-#define OSGFBOVIEWPORTFIELDS_HEADER_CVSID "@(#)$Id: OSGFBOViewportFields.h,v 1.1 2007/03/12 15:03:02 a-m-z Exp $"
+#define OSGFBOVIEWPORTFIELDS_HEADER_CVSID                                                          \
+  "@(#)$Id: OSGFBOViewportFields.h,v 1.1 2007/03/12 15:03:02 a-m-z Exp $"
 
 #endif /* _OSGFBOVIEWPORTFIELDS_H_ */

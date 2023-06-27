@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _GROUPSOCKCONNECTION_H_
 #define _GROUPSOCKCONNECTION_H_
 #ifdef __sgi
@@ -58,134 +57,125 @@ OSG_BEGIN_NAMESPACE
 
 class PointSockConnection;
 
-class OSG_BASE_DLLMAPPING GroupSockConnection : public GroupConnection
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_BASE_DLLMAPPING GroupSockConnection : public GroupConnection {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  GroupSockConnection(void);
+  virtual ~GroupSockConnection(void);
 
-             GroupSockConnection ( void );
-    virtual ~GroupSockConnection ( void ); 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   type info                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   type info                                  */
-    /*! \{                                                                 */
+  virtual const ConnectionType* getType(void);
 
-    virtual const ConnectionType *getType (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   connection                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   connection                                 */
-    /*! \{                                                                 */
+  virtual Channel     connectPoint(const std::string& address, Time timeout = -1);
+  virtual void        disconnect(Channel channel);
+  virtual Channel     acceptPoint(Time timeout = -1);
+  virtual std::string bind(const std::string& interf);
 
-    virtual Channel     connectPoint(const std::string &address,
-                                           Time        timeout=-1 );
-    virtual void        disconnect  (      Channel     channel    );
-    virtual Channel     acceptPoint (      Time        timeout=-1 );
-    virtual std::string bind        (const std::string &interf    );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   params                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   params                                     */
-    /*! \{                                                                 */
+  virtual void setParams(const std::string& params);
 
-    virtual void setParams(const std::string &params);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   channel handling                           */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   channel handling                           */
-    /*! \{                                                                 */
+  virtual Channel selectChannel(Time timeout = -1);
 
-    virtual Channel selectChannel   (Time timeout=-1);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   create                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   create                                     */
-    /*! \{                                                                 */
+  static GroupConnection* create(void);
 
-    static GroupConnection *create(void);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Types                                      */
+  /*! \{                                                                 */
 
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  struct SocketBufferHeader {
+    UInt32 size;
+  };
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Types                                      */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   IO Implementation                          */
+  /*! \{                                                                 */
 
-    struct SocketBufferHeader {
-        UInt32 size;
-    };
+  virtual void read(MemoryHandle mem, UInt32 size);
+  virtual void readBuffer(void);
+  virtual void write(MemoryHandle mem, UInt32 size);
+  virtual void writeBuffer(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   IO Implementation                          */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   members                                    */
+  /*! \{                                                                 */
 
-    virtual void read             (MemoryHandle mem, UInt32 size);
-    virtual void readBuffer       (void);
-    virtual void write            (MemoryHandle mem, UInt32 size);
-    virtual void writeBuffer      (void);
+  StreamSocket               _acceptSocket;
+  std::vector<StreamSocket>  _sockets;
+  std::vector<SocketAddress> _remoteAddresses;
+  ChannelIndex               _readIndex;
+  std::vector<UInt8>         _socketReadBuffer;
+  std::vector<UInt8>         _socketWriteBuffer;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   members                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   synchronisation                            */
+  /*! \{                                                                 */
 
-    StreamSocket               _acceptSocket;
-    std::vector<StreamSocket>  _sockets;
-    std::vector<SocketAddress> _remoteAddresses;
-    ChannelIndex               _readIndex;
-    std::vector<UInt8>         _socketReadBuffer;
-    std::vector<UInt8>         _socketWriteBuffer;
+  virtual bool wait(Time timeout);
+  virtual void signal(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   synchronisation                            */
-    /*! \{                                                                 */
-    
-    virtual bool wait  (Time timeout);
-    virtual void signal(void        );
-    
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class PointSockConnection;
 
-    friend class PointSockConnection;
-    
-    /*---------------------------------------------------------------------*/
-    /*! \name                   static type                                */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   static type                                */
+  /*! \{                                                                 */
 
-    static ConnectionType _type;
+  static ConnectionType _type;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   internal methods                           */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   internal methods                           */
+  /*! \{                                                                 */
 
-    static bool connectSocket(StreamSocket  &socket,
-                              std::string   address,
-                              SocketAddress &destination,
-                              Time           timeout);
-    static bool acceptSocket (StreamSocket  &accept,
-                              StreamSocket  &from,
-                              SocketAddress &destination,
-                              Time           timeout);
+  static bool connectSocket(
+      StreamSocket& socket, std::string address, SocketAddress& destination, Time timeout);
+  static bool acceptSocket(
+      StreamSocket& accept, StreamSocket& from, SocketAddress& destination, Time timeout);
 
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 
-    typedef GroupConnection Inherited;
+  typedef GroupConnection Inherited;
 
-	// prohibit default functions (move to 'public' if you need one)
-    GroupSockConnection(const GroupSockConnection &source);
-    GroupSockConnection& operator =(const GroupSockConnection &source);
+  // prohibit default functions (move to 'public' if you need one)
+  GroupSockConnection(const GroupSockConnection& source);
+  GroupSockConnection& operator=(const GroupSockConnection& source);
 };
 
 //---------------------------------------------------------------------------
@@ -194,7 +184,7 @@ class OSG_BASE_DLLMAPPING GroupSockConnection : public GroupConnection
 
 // class pointer
 
-typedef GroupSockConnection *GroupSockConnectionP;
+typedef GroupSockConnection* GroupSockConnectionP;
 
 OSG_END_NAMESPACE
 

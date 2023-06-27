@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILESHADERCHUNKINST
 
 #include <stdlib.h>
@@ -61,22 +60,19 @@
 #include "OSGShaderChunkBase.h"
 #include "OSGShaderChunk.h"
 
-
 OSG_BEGIN_NAMESPACE
 
-const OSG::BitVector  ShaderChunkBase::VertexProgramFieldMask = 
+const OSG::BitVector ShaderChunkBase::VertexProgramFieldMask =
     (TypeTraits<BitVector>::One << ShaderChunkBase::VertexProgramFieldId);
 
-const OSG::BitVector  ShaderChunkBase::FragmentProgramFieldMask = 
+const OSG::BitVector ShaderChunkBase::FragmentProgramFieldMask =
     (TypeTraits<BitVector>::One << ShaderChunkBase::FragmentProgramFieldId);
 
-const OSG::BitVector  ShaderChunkBase::GeometryProgramFieldMask = 
+const OSG::BitVector ShaderChunkBase::GeometryProgramFieldMask =
     (TypeTraits<BitVector>::One << ShaderChunkBase::GeometryProgramFieldId);
 
-const OSG::BitVector ShaderChunkBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector ShaderChunkBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
@@ -92,234 +88,169 @@ const OSG::BitVector ShaderChunkBase::MTInfluenceMask =
 
 //! ShaderChunk description
 
-FieldDescription *ShaderChunkBase::_desc[] = 
-{
-    new FieldDescription(SFString::getClassType(), 
-                     "vertexProgram", 
-                     VertexProgramFieldId, VertexProgramFieldMask,
-                     false,
-                     (FieldAccessMethod) &ShaderChunkBase::getSFVertexProgram),
-    new FieldDescription(SFString::getClassType(), 
-                     "fragmentProgram", 
-                     FragmentProgramFieldId, FragmentProgramFieldMask,
-                     false,
-                     (FieldAccessMethod) &ShaderChunkBase::getSFFragmentProgram),
-    new FieldDescription(SFString::getClassType(), 
-                     "geometryProgram", 
-                     GeometryProgramFieldId, GeometryProgramFieldMask,
-                     false,
-                     (FieldAccessMethod) &ShaderChunkBase::getSFGeometryProgram)
-};
+FieldDescription* ShaderChunkBase::_desc[] = {
+    new FieldDescription(SFString::getClassType(), "vertexProgram", VertexProgramFieldId,
+        VertexProgramFieldMask, false, (FieldAccessMethod)&ShaderChunkBase::getSFVertexProgram),
+    new FieldDescription(SFString::getClassType(), "fragmentProgram", FragmentProgramFieldId,
+        FragmentProgramFieldMask, false, (FieldAccessMethod)&ShaderChunkBase::getSFFragmentProgram),
+    new FieldDescription(SFString::getClassType(), "geometryProgram", GeometryProgramFieldId,
+        GeometryProgramFieldMask, false,
+        (FieldAccessMethod)&ShaderChunkBase::getSFGeometryProgram)};
 
+FieldContainerType ShaderChunkBase::_type("ShaderChunk", "ShaderParameterChunk", NULL, NULL,
+    ShaderChunk::initMethod, _desc, sizeof(_desc));
 
-FieldContainerType ShaderChunkBase::_type(
-    "ShaderChunk",
-    "ShaderParameterChunk",
-    NULL,
-    NULL, 
-    ShaderChunk::initMethod,
-    _desc,
-    sizeof(_desc));
-
-//OSG_FIELD_CONTAINER_DEF(ShaderChunkBase, ShaderChunkPtr)
+// OSG_FIELD_CONTAINER_DEF(ShaderChunkBase, ShaderChunkPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &ShaderChunkBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &ShaderChunkBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-UInt32 ShaderChunkBase::getContainerSize(void) const 
-{ 
-    return sizeof(ShaderChunk); 
+FieldContainerType& ShaderChunkBase::getType(void) {
+  return _type;
 }
 
+const FieldContainerType& ShaderChunkBase::getType(void) const {
+  return _type;
+}
+
+UInt32 ShaderChunkBase::getContainerSize(void) const {
+  return sizeof(ShaderChunk);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ShaderChunkBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((ShaderChunkBase *) &other, whichField);
+void ShaderChunkBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((ShaderChunkBase*)&other, whichField);
 }
 #else
-void ShaderChunkBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((ShaderChunkBase *) &other, whichField, sInfo);
+void ShaderChunkBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((ShaderChunkBase*)&other, whichField, sInfo);
 }
-void ShaderChunkBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void ShaderChunkBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void ShaderChunkBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void ShaderChunkBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-ShaderChunkBase::ShaderChunkBase(void) :
-    _sfVertexProgram          (), 
-    _sfFragmentProgram        (), 
-    _sfGeometryProgram        (), 
-    Inherited() 
-{
+ShaderChunkBase::ShaderChunkBase(void)
+    : _sfVertexProgram()
+    , _sfFragmentProgram()
+    , _sfGeometryProgram()
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-ShaderChunkBase::ShaderChunkBase(const ShaderChunkBase &source) :
-    _sfVertexProgram          (source._sfVertexProgram          ), 
-    _sfFragmentProgram        (source._sfFragmentProgram        ), 
-    _sfGeometryProgram        (source._sfGeometryProgram        ), 
-    Inherited                 (source)
-{
+ShaderChunkBase::ShaderChunkBase(const ShaderChunkBase& source)
+    : _sfVertexProgram(source._sfVertexProgram)
+    , _sfFragmentProgram(source._sfFragmentProgram)
+    , _sfGeometryProgram(source._sfGeometryProgram)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-ShaderChunkBase::~ShaderChunkBase(void)
-{
+ShaderChunkBase::~ShaderChunkBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 ShaderChunkBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 ShaderChunkBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (VertexProgramFieldMask & whichField))
-    {
-        returnValue += _sfVertexProgram.getBinSize();
-    }
+  if (FieldBits::NoField != (VertexProgramFieldMask & whichField)) {
+    returnValue += _sfVertexProgram.getBinSize();
+  }
 
-    if(FieldBits::NoField != (FragmentProgramFieldMask & whichField))
-    {
-        returnValue += _sfFragmentProgram.getBinSize();
-    }
+  if (FieldBits::NoField != (FragmentProgramFieldMask & whichField)) {
+    returnValue += _sfFragmentProgram.getBinSize();
+  }
 
-    if(FieldBits::NoField != (GeometryProgramFieldMask & whichField))
-    {
-        returnValue += _sfGeometryProgram.getBinSize();
-    }
+  if (FieldBits::NoField != (GeometryProgramFieldMask & whichField)) {
+    returnValue += _sfGeometryProgram.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void ShaderChunkBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void ShaderChunkBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (VertexProgramFieldMask & whichField))
-    {
-        _sfVertexProgram.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (VertexProgramFieldMask & whichField)) {
+    _sfVertexProgram.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (FragmentProgramFieldMask & whichField))
-    {
-        _sfFragmentProgram.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (FragmentProgramFieldMask & whichField)) {
+    _sfFragmentProgram.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GeometryProgramFieldMask & whichField))
-    {
-        _sfGeometryProgram.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (GeometryProgramFieldMask & whichField)) {
+    _sfGeometryProgram.copyToBin(pMem);
+  }
 }
 
-void ShaderChunkBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void ShaderChunkBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (VertexProgramFieldMask & whichField))
-    {
-        _sfVertexProgram.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (VertexProgramFieldMask & whichField)) {
+    _sfVertexProgram.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (FragmentProgramFieldMask & whichField))
-    {
-        _sfFragmentProgram.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (FragmentProgramFieldMask & whichField)) {
+    _sfFragmentProgram.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GeometryProgramFieldMask & whichField))
-    {
-        _sfGeometryProgram.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (GeometryProgramFieldMask & whichField)) {
+    _sfGeometryProgram.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ShaderChunkBase::executeSyncImpl(      ShaderChunkBase *pOther,
-                                        const BitVector         &whichField)
-{
+void ShaderChunkBase::executeSyncImpl(ShaderChunkBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (VertexProgramFieldMask & whichField))
-        _sfVertexProgram.syncWith(pOther->_sfVertexProgram);
+  if (FieldBits::NoField != (VertexProgramFieldMask & whichField))
+    _sfVertexProgram.syncWith(pOther->_sfVertexProgram);
 
-    if(FieldBits::NoField != (FragmentProgramFieldMask & whichField))
-        _sfFragmentProgram.syncWith(pOther->_sfFragmentProgram);
+  if (FieldBits::NoField != (FragmentProgramFieldMask & whichField))
+    _sfFragmentProgram.syncWith(pOther->_sfFragmentProgram);
 
-    if(FieldBits::NoField != (GeometryProgramFieldMask & whichField))
-        _sfGeometryProgram.syncWith(pOther->_sfGeometryProgram);
-
-
+  if (FieldBits::NoField != (GeometryProgramFieldMask & whichField))
+    _sfGeometryProgram.syncWith(pOther->_sfGeometryProgram);
 }
 #else
-void ShaderChunkBase::executeSyncImpl(      ShaderChunkBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void ShaderChunkBase::executeSyncImpl(
+    ShaderChunkBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (VertexProgramFieldMask & whichField))
-        _sfVertexProgram.syncWith(pOther->_sfVertexProgram);
+  if (FieldBits::NoField != (VertexProgramFieldMask & whichField))
+    _sfVertexProgram.syncWith(pOther->_sfVertexProgram);
 
-    if(FieldBits::NoField != (FragmentProgramFieldMask & whichField))
-        _sfFragmentProgram.syncWith(pOther->_sfFragmentProgram);
+  if (FieldBits::NoField != (FragmentProgramFieldMask & whichField))
+    _sfFragmentProgram.syncWith(pOther->_sfFragmentProgram);
 
-    if(FieldBits::NoField != (GeometryProgramFieldMask & whichField))
-        _sfGeometryProgram.syncWith(pOther->_sfGeometryProgram);
-
-
-
+  if (FieldBits::NoField != (GeometryProgramFieldMask & whichField))
+    _sfGeometryProgram.syncWith(pOther->_sfGeometryProgram);
 }
 
-void ShaderChunkBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void ShaderChunkBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 OSG_END_NAMESPACE
 
@@ -336,4 +267,3 @@ OSG_DLLEXPORT_SFIELD_DEF1(ShaderChunkPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 OSG_DLLEXPORT_MFIELD_DEF1(ShaderChunkPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
-

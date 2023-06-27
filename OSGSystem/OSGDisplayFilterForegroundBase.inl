@@ -52,109 +52,79 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &DisplayFilterForegroundBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& DisplayFilterForegroundBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 DisplayFilterForegroundBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 DisplayFilterForegroundBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-DisplayFilterForegroundPtr DisplayFilterForegroundBase::create(void) 
-{
-    DisplayFilterForegroundPtr fc; 
+inline DisplayFilterForegroundPtr DisplayFilterForegroundBase::create(void) {
+  DisplayFilterForegroundPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = DisplayFilterForegroundPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = DisplayFilterForegroundPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-DisplayFilterForegroundPtr DisplayFilterForegroundBase::createEmpty(void) 
-{ 
-    DisplayFilterForegroundPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline DisplayFilterForegroundPtr DisplayFilterForegroundBase::createEmpty(void) {
+  DisplayFilterForegroundPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the DisplayFilterForeground::_mfFilter field.
-inline
-MFDisplayFilterPtr *DisplayFilterForegroundBase::getMFFilter(void)
-{
-    return &_mfFilter;
+inline MFDisplayFilterPtr* DisplayFilterForegroundBase::getMFFilter(void) {
+  return &_mfFilter;
 }
 
 //! Get the DisplayFilterForeground::_sfServer field.
-inline
-SFString *DisplayFilterForegroundBase::getSFServer(void)
-{
-    return &_sfServer;
-}
-
-
-//! Get the value of the DisplayFilterForeground::_sfServer field.
-inline
-std::string &DisplayFilterForegroundBase::getServer(void)
-{
-    return _sfServer.getValue();
+inline SFString* DisplayFilterForegroundBase::getSFServer(void) {
+  return &_sfServer;
 }
 
 //! Get the value of the DisplayFilterForeground::_sfServer field.
-inline
-const std::string &DisplayFilterForegroundBase::getServer(void) const
-{
-    return _sfServer.getValue();
+inline std::string& DisplayFilterForegroundBase::getServer(void) {
+  return _sfServer.getValue();
+}
+
+//! Get the value of the DisplayFilterForeground::_sfServer field.
+inline const std::string& DisplayFilterForegroundBase::getServer(void) const {
+  return _sfServer.getValue();
 }
 
 //! Set the value of the DisplayFilterForeground::_sfServer field.
-inline
-void DisplayFilterForegroundBase::setServer(const std::string &value)
-{
-    _sfServer.setValue(value);
+inline void DisplayFilterForegroundBase::setServer(const std::string& value) {
+  _sfServer.setValue(value);
 }
-
 
 //! Get the value of the \a index element the DisplayFilterForeground::_mfFilter field.
-inline
-DisplayFilterPtr &DisplayFilterForegroundBase::getFilter(const UInt32 index)
-{
-    return _mfFilter[index];
+inline DisplayFilterPtr& DisplayFilterForegroundBase::getFilter(const UInt32 index) {
+  return _mfFilter[index];
 }
 
 //! Get the DisplayFilterForeground::_mfFilter field.
-inline
-MFDisplayFilterPtr &DisplayFilterForegroundBase::getFilter(void)
-{
-    return _mfFilter;
+inline MFDisplayFilterPtr& DisplayFilterForegroundBase::getFilter(void) {
+  return _mfFilter;
 }
 
 //! Get the DisplayFilterForeground::_mfFilter field.
-inline
-const MFDisplayFilterPtr &DisplayFilterForegroundBase::getFilter(void) const
-{
-    return _mfFilter;
+inline const MFDisplayFilterPtr& DisplayFilterForegroundBase::getFilter(void) const {
+  return _mfFilter;
 }
 
 OSG_END_NAMESPACE
 
-#define OSGDISPLAYFILTERFOREGROUNDBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGDISPLAYFILTERFOREGROUNDBASE_INLINE_CVSID                                                \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

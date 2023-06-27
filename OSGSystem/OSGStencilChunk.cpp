@@ -59,7 +59,7 @@ OSG_USING_NAMESPACE
 \***************************************************************************/
 
 /*! \class osg::StencilChunk
-The stencil chunk handles OpenGL stencil tests by wrapping 
+The stencil chunk handles OpenGL stencil tests by wrapping
 glStencilFunc() and glStencilOp().
 */
 
@@ -72,11 +72,9 @@ StateChunkClass StencilChunk::_class("Stencil");
  *                           Class methods                                 *
 \***************************************************************************/
 
-void StencilChunk::initMethod (void)
-{
-    Inherited::initMethod();
+void StencilChunk::initMethod(void) {
+  Inherited::initMethod();
 }
-
 
 /***************************************************************************\
  *                           Instance methods                              *
@@ -88,120 +86,97 @@ void StencilChunk::initMethod (void)
 
 /*----------------------- constructors & destructors ----------------------*/
 
-StencilChunk::StencilChunk(void) :
-    Inherited()
-{
+StencilChunk::StencilChunk(void)
+    : Inherited() {
 }
 
-StencilChunk::StencilChunk(const StencilChunk &source) :
-    Inherited(source)
-{
+StencilChunk::StencilChunk(const StencilChunk& source)
+    : Inherited(source) {
 }
 
-StencilChunk::~StencilChunk(void)
-{
+StencilChunk::~StencilChunk(void) {
 }
 
 /*----------------------------- class specific ----------------------------*/
-const StateChunkClass *StencilChunk::getClass(void) const
-{
-    return &_class;
+const StateChunkClass* StencilChunk::getClass(void) const {
+  return &_class;
 }
 
-void StencilChunk::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void StencilChunk::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
-void StencilChunk::dump(      UInt32    OSG_CHECK_ARG(uiIndent),
-                        const BitVector OSG_CHECK_ARG(bvFlags ) ) const
-{
-    SLOG << "Dump StencilChunk NI" << std::endl;
+void StencilChunk::dump(
+    UInt32 OSG_CHECK_ARG(uiIndent), const BitVector OSG_CHECK_ARG(bvFlags)) const {
+  SLOG << "Dump StencilChunk NI" << std::endl;
 }
 
 /*------------------------------ State ------------------------------------*/
 
-void StencilChunk::activate(DrawActionBase *action, UInt32)
-{
-    if (_sfStencilFunc.getValue() != GL_NONE)
-    {
-        glEnable(GL_STENCIL_TEST);
-        
-        if (_sfClearBuffer.getValue() == 1)
-        {
-            glClearStencil(0x0);
-            glClear(GL_STENCIL_BUFFER_BIT);
-        }
+void StencilChunk::activate(DrawActionBase* action, UInt32) {
+  if (_sfStencilFunc.getValue() != GL_NONE) {
+    glEnable(GL_STENCIL_TEST);
 
-        glStencilMask(  _sfBitMask.getValue() );
-        
-        glStencilFunc(  _sfStencilFunc.getValue(), 
-                        _sfStencilValue.getValue(), 
-                        _sfStencilMask.getValue() );
-        glStencilOp(    _sfStencilOpFail.getValue(), 
-                        _sfStencilOpZFail.getValue(), 
-                        _sfStencilOpZPass.getValue() );
+    if (_sfClearBuffer.getValue() == 1) {
+      glClearStencil(0x0);
+      glClear(GL_STENCIL_BUFFER_BIT);
     }
+
+    glStencilMask(_sfBitMask.getValue());
+
+    glStencilFunc(_sfStencilFunc.getValue(), _sfStencilValue.getValue(), _sfStencilMask.getValue());
+    glStencilOp(
+        _sfStencilOpFail.getValue(), _sfStencilOpZFail.getValue(), _sfStencilOpZPass.getValue());
+  }
 }
 
-void StencilChunk::changeFrom( DrawActionBase *action,
-                               StateChunk *old,
-                               UInt32 index )
-{
-    old->deactivate( action, index );
-    activate( action, index );
+void StencilChunk::changeFrom(DrawActionBase* action, StateChunk* old, UInt32 index) {
+  old->deactivate(action, index);
+  activate(action, index);
 }
 
-void StencilChunk::deactivate(DrawActionBase *action, UInt32 )
-{
-    if (_sfStencilFunc.getValue() != GL_NONE)
-    {
-        if (_sfClearBuffer.getValue() == 2)
-        {
-            glClearStencil(0x0);
-            glClear(GL_STENCIL_BUFFER_BIT);
-        }
-                
-        glDisable(GL_STENCIL_TEST);
+void StencilChunk::deactivate(DrawActionBase* action, UInt32) {
+  if (_sfStencilFunc.getValue() != GL_NONE) {
+    if (_sfClearBuffer.getValue() == 2) {
+      glClearStencil(0x0);
+      glClear(GL_STENCIL_BUFFER_BIT);
     }
+
+    glDisable(GL_STENCIL_TEST);
+  }
 }
 
 /*-------------------------- Comparison -----------------------------------*/
 
-Real32 StencilChunk::switchCost(StateChunk *)
-{
-    return 0;
+Real32 StencilChunk::switchCost(StateChunk*) {
+  return 0;
 }
 
-bool StencilChunk::operator < (const StateChunk &other) const
-{
-    return this < &other;
+bool StencilChunk::operator<(const StateChunk& other) const {
+  return this < &other;
 }
 
-bool StencilChunk::operator == (const StateChunk &other) const
-{
-    StencilChunk const *tother = dynamic_cast<StencilChunk const*>(&other);
+bool StencilChunk::operator==(const StateChunk& other) const {
+  StencilChunk const* tother = dynamic_cast<StencilChunk const*>(&other);
 
-    if (!tother)
-        return false;
+  if (!tother)
+    return false;
 
-    if (tother == this)
-        return true;
-
-    if (getStencilFunc()    != tother->getStencilFunc()    ||
-        getStencilValue()   != tother->getStencilValue()   ||
-        getStencilMask()    != tother->getStencilMask()    ||
-        getStencilOpFail()  != tother->getStencilOpFail()  ||
-        getStencilOpZFail() != tother->getStencilOpZFail() ||
-        getStencilOpZPass() != tother->getStencilOpZPass() ||
-        getClearBuffer()    != tother->getClearBuffer())
-        return false;
-
+  if (tother == this)
     return true;
+
+  if (getStencilFunc() != tother->getStencilFunc() ||
+      getStencilValue() != tother->getStencilValue() ||
+      getStencilMask() != tother->getStencilMask() ||
+      getStencilOpFail() != tother->getStencilOpFail() ||
+      getStencilOpZFail() != tother->getStencilOpZFail() ||
+      getStencilOpZPass() != tother->getStencilOpZPass() ||
+      getClearBuffer() != tother->getClearBuffer())
+    return false;
+
+  return true;
 }
 
-bool StencilChunk::operator != (const StateChunk &other) const
-{
-    return ! (*this == other);
+bool StencilChunk::operator!=(const StateChunk& other) const {
+  return !(*this == other);
 }
-

@@ -36,14 +36,12 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 OSG_BEGIN_NAMESPACE
 
-
-inline TextBackend::TextBackend() {}
-
+inline TextBackend::TextBackend() {
+}
 
 OSG_END_NAMESPACE
 
-
-#define OSGTEXTBACKEND_INLINE_CVSID "@(#)$Id: OSGTextBackend.inl,v 1.1 2005/03/03 13:43:06 a-m-z Exp $"
+#define OSGTEXTBACKEND_INLINE_CVSID                                                                \
+  "@(#)$Id: OSGTextBackend.inl,v 1.1 2005/03/03 13:43:06 a-m-z Exp $"

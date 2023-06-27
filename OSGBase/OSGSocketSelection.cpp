@@ -116,129 +116,110 @@ OSG_USING_NAMESPACE
 /** \brief Constructor
  */
 
-SocketSelection::SocketSelection() :
-    _fdSetRead (NULL),
-    _fdSetWrite(NULL)
-{
-    _fdSetRead  = new fd_set;
-    _fdSetWrite = new fd_set;
+SocketSelection::SocketSelection()
+    : _fdSetRead(NULL)
+    , _fdSetWrite(NULL) {
+  _fdSetRead  = new fd_set;
+  _fdSetWrite = new fd_set;
 
-    clear();
+  clear();
 }
 
 /** \brief Copy constructor
  */
 
-SocketSelection::SocketSelection(const SocketSelection &source) :
-    _fdSetRead (NULL),
-    _fdSetWrite(NULL)
-{
-    _fdSetRead  = new fd_set;
-    _fdSetWrite = new fd_set;
+SocketSelection::SocketSelection(const SocketSelection& source)
+    : _fdSetRead(NULL)
+    , _fdSetWrite(NULL) {
+  _fdSetRead  = new fd_set;
+  _fdSetWrite = new fd_set;
 
-    *_fdSetRead  = *(source._fdSetRead);
-    *_fdSetWrite = *(source._fdSetWrite);
+  *_fdSetRead  = *(source._fdSetRead);
+  *_fdSetWrite = *(source._fdSetWrite);
 }
 
 /** \brief Destructor
  */
 
-SocketSelection::~SocketSelection()
-{
-    delete _fdSetRead;
-    delete _fdSetWrite;
+SocketSelection::~SocketSelection() {
+  delete _fdSetRead;
+  delete _fdSetWrite;
 }
 
 /** \brief Clear all settings
  */
 
-void SocketSelection::clear()
-{
-    FD_ZERO(_fdSetRead);
-    FD_ZERO(_fdSetWrite);
+void SocketSelection::clear() {
+  FD_ZERO(_fdSetRead);
+  FD_ZERO(_fdSetWrite);
 }
 
 /** \brief Clear read settings for the given socket
  *
  * \param sock    For this socket the read flag is cleared
  */
-void SocketSelection::clearRead(const Socket &sock)
-{
-    FD_CLR(sock._sd,_fdSetRead);
+void SocketSelection::clearRead(const Socket& sock) {
+  FD_CLR(sock._sd, _fdSetRead);
 }
 
 /** \brief Clear write settings for the given socket
  *
  * \param sock    For this socket the write flag is cleared
  */
-void SocketSelection::clearWrite(const Socket &sock)
-{
-    FD_CLR(sock._sd,_fdSetWrite);
+void SocketSelection::clearWrite(const Socket& sock) {
+  FD_CLR(sock._sd, _fdSetWrite);
 }
 
 /** \brief Set read flag for the given socket
  *
  * \param sock    For this socket the read flag is set
  */
-void SocketSelection::setRead(const Socket &sock)
-{
-    FD_SET(sock._sd,_fdSetRead);
+void SocketSelection::setRead(const Socket& sock) {
+  FD_SET(sock._sd, _fdSetRead);
 }
 
 /** \brief Set write flag for the given socket
  *
  * \param sock    For this socket the write flag is set
  */
-void SocketSelection::setWrite(const Socket &sock)
-{
-    FD_SET(sock._sd,_fdSetWrite);
+void SocketSelection::setWrite(const Socket& sock) {
+  FD_SET(sock._sd, _fdSetWrite);
 }
 
 /** \brief Start selection
  *
- * Wait for the first read or write flag to be true. All other 
+ * Wait for the first read or write flag to be true. All other
  * flags are cleared.
  *
  * \param duration   Maximum wait time in seconds
  *
  * \return Number of set flags
  */
-int SocketSelection::select(double duration)
-{
-    timeval tVal,*tValP;
-    int count;
-    
-    if(duration<0)
-    {
-        tValP=NULL;
-    }
-    else
-    {       
-        tVal.tv_sec  = int( duration );
-        tVal.tv_usec = int( (duration-tVal.tv_sec)*1000000 );
-        tValP=&tVal;
-    }
-    do
-    {
-        count=::select(FD_SETSIZE, 
-                       _fdSetRead, 
-                       _fdSetWrite,
-                       NULL,
-                       tValP);
-        if(count < 0)
-        {
+int SocketSelection::select(double duration) {
+  timeval tVal, *tValP;
+  int     count;
+
+  if (duration < 0) {
+    tValP = NULL;
+  } else {
+    tVal.tv_sec  = int(duration);
+    tVal.tv_usec = int((duration - tVal.tv_sec) * 1000000);
+    tValP        = &tVal;
+  }
+  do {
+    count = ::select(FD_SETSIZE, _fdSetRead, _fdSetWrite, NULL, tValP);
+    if (count < 0) {
 #ifndef WIN32
-            // select was interrupted by a signal. Ignore this
-            // and retry to select
-            if(errno != EINTR)
-                throw SocketError("select()");
+      // select was interrupted by a signal. Ignore this
+      // and retry to select
+      if (errno != EINTR)
+        throw SocketError("select()");
 #else
-            throw SocketError("select()");
+      throw SocketError("select()");
 #endif
-        }
     }
-    while(count < 0);
-    return count;
+  } while (count < 0);
+  return count;
 }
 
 /** \brief Start selection
@@ -251,34 +232,31 @@ int SocketSelection::select(double duration)
  *
  * \return Number of set flags
  */
-int SocketSelection::select(double duration,SocketSelection &result) const
-{
-    result=*this;
-    return result.select(duration);
+int SocketSelection::select(double duration, SocketSelection& result) const {
+  result = *this;
+  return result.select(duration);
 }
 
 /** \brief Check if read flag is set for a socket
  *
  * \param sock    For this socket the read flag is tested
  */
-bool SocketSelection::isSetRead(const Socket &sock)
-{
-    if(FD_ISSET(sock._sd, _fdSetRead))
-        return true;
-    else
-        return false;
+bool SocketSelection::isSetRead(const Socket& sock) {
+  if (FD_ISSET(sock._sd, _fdSetRead))
+    return true;
+  else
+    return false;
 }
 
 /** \brief Check if write flag is set for a socket
  *
  * \param sock    For this socket the write flag is tested
  */
-bool SocketSelection::isSetWrite(const Socket &sock)
-{
-    if(FD_ISSET(sock._sd, _fdSetWrite))
-        return true;
-    else
-        return false;
+bool SocketSelection::isSetWrite(const Socket& sock) {
+  if (FD_ISSET(sock._sd, _fdSetWrite))
+    return true;
+  else
+    return false;
 }
 
 /*-------------------------- assignment -----------------------------------*/
@@ -286,12 +264,9 @@ bool SocketSelection::isSetWrite(const Socket &sock)
 /** \brief assignment
  */
 
-const SocketSelection & SocketSelection::operator =(const SocketSelection &source)
-{
-    *_fdSetRead  = *(source._fdSetRead);
-    *_fdSetWrite = *(source._fdSetWrite);
+const SocketSelection& SocketSelection::operator=(const SocketSelection& source) {
+  *_fdSetRead  = *(source._fdSetRead);
+  *_fdSetWrite = *(source._fdSetWrite);
 
-    return *this;
+  return *this;
 }
-
-

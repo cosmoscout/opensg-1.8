@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGLIGHTBASE_H_
 #define _OSGLIGHTBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -70,13 +68,13 @@
 #include <OSGColor4fFields.h> // Ambient type
 #include <OSGColor4fFields.h> // Diffuse type
 #include <OSGColor4fFields.h> // Specular type
-#include <OSGNodeFields.h> // Beacon type
-#include <OSGBoolFields.h> // On type
-#include <OSGReal32Fields.h> // ConstantAttenuation type
-#include <OSGReal32Fields.h> // LinearAttenuation type
-#include <OSGReal32Fields.h> // QuadraticAttenuation type
-#include <OSGReal32Fields.h> // ShadowIntensity type
-#include <OSGUInt32Fields.h> // ShadowMode type
+#include <OSGNodeFields.h>    // Beacon type
+#include <OSGBoolFields.h>    // On type
+#include <OSGReal32Fields.h>  // ConstantAttenuation type
+#include <OSGReal32Fields.h>  // LinearAttenuation type
+#include <OSGReal32Fields.h>  // QuadraticAttenuation type
+#include <OSGReal32Fields.h>  // ShadowIntensity type
+#include <OSGUInt32Fields.h>  // ShadowMode type
 
 #include <OSGLightFields.h>
 
@@ -87,228 +85,206 @@ class BinaryDataHandler;
 
 //! \brief Light Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING LightBase : public Group
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING LightBase : public Group {
+ private:
+  typedef Group Inherited;
 
-    typedef Group    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef LightPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    AmbientFieldId              = Inherited::NextFieldId,
+    DiffuseFieldId              = AmbientFieldId + 1,
+    SpecularFieldId             = DiffuseFieldId + 1,
+    BeaconFieldId               = SpecularFieldId + 1,
+    OnFieldId                   = BeaconFieldId + 1,
+    ConstantAttenuationFieldId  = OnFieldId + 1,
+    LinearAttenuationFieldId    = ConstantAttenuationFieldId + 1,
+    QuadraticAttenuationFieldId = LinearAttenuationFieldId + 1,
+    ShadowIntensityFieldId      = QuadraticAttenuationFieldId + 1,
+    ShadowModeFieldId           = ShadowIntensityFieldId + 1,
+    NextFieldId                 = ShadowModeFieldId + 1
+  };
 
-    typedef LightPtr  Ptr;
+  static const OSG::BitVector AmbientFieldMask;
+  static const OSG::BitVector DiffuseFieldMask;
+  static const OSG::BitVector SpecularFieldMask;
+  static const OSG::BitVector BeaconFieldMask;
+  static const OSG::BitVector OnFieldMask;
+  static const OSG::BitVector ConstantAttenuationFieldMask;
+  static const OSG::BitVector LinearAttenuationFieldMask;
+  static const OSG::BitVector QuadraticAttenuationFieldMask;
+  static const OSG::BitVector ShadowIntensityFieldMask;
+  static const OSG::BitVector ShadowModeFieldMask;
 
-    enum
-    {
-        AmbientFieldId              = Inherited::NextFieldId,
-        DiffuseFieldId              = AmbientFieldId              + 1,
-        SpecularFieldId             = DiffuseFieldId              + 1,
-        BeaconFieldId               = SpecularFieldId             + 1,
-        OnFieldId                   = BeaconFieldId               + 1,
-        ConstantAttenuationFieldId  = OnFieldId                   + 1,
-        LinearAttenuationFieldId    = ConstantAttenuationFieldId  + 1,
-        QuadraticAttenuationFieldId = LinearAttenuationFieldId    + 1,
-        ShadowIntensityFieldId      = QuadraticAttenuationFieldId + 1,
-        ShadowModeFieldId           = ShadowIntensityFieldId      + 1,
-        NextFieldId                 = ShadowModeFieldId           + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector AmbientFieldMask;
-    static const OSG::BitVector DiffuseFieldMask;
-    static const OSG::BitVector SpecularFieldMask;
-    static const OSG::BitVector BeaconFieldMask;
-    static const OSG::BitVector OnFieldMask;
-    static const OSG::BitVector ConstantAttenuationFieldMask;
-    static const OSG::BitVector LinearAttenuationFieldMask;
-    static const OSG::BitVector QuadraticAttenuationFieldMask;
-    static const OSG::BitVector ShadowIntensityFieldMask;
-    static const OSG::BitVector ShadowModeFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFColor4f* getSFAmbient(void);
+  SFColor4f* getSFDiffuse(void);
+  SFColor4f* getSFSpecular(void);
+  SFNodePtr* getSFBeacon(void);
+  SFBool*    getSFOn(void);
+  SFReal32*  getSFConstantAttenuation(void);
+  SFReal32*  getSFLinearAttenuation(void);
+  SFReal32*  getSFQuadraticAttenuation(void);
+  SFReal32*  getSFShadowIntensity(void);
+  SFUInt32*  getSFShadowMode(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  Color4f&       getAmbient(void);
+  const Color4f& getAmbient(void) const;
+  Color4f&       getDiffuse(void);
+  const Color4f& getDiffuse(void) const;
+  Color4f&       getSpecular(void);
+  const Color4f& getSpecular(void) const;
+  NodePtr&       getBeacon(void);
+  const NodePtr& getBeacon(void) const;
+  bool&          getOn(void);
+  const bool&    getOn(void) const;
+  Real32&        getConstantAttenuation(void);
+  const Real32&  getConstantAttenuation(void) const;
+  Real32&        getLinearAttenuation(void);
+  const Real32&  getLinearAttenuation(void) const;
+  Real32&        getQuadraticAttenuation(void);
+  const Real32&  getQuadraticAttenuation(void) const;
+  Real32&        getShadowIntensity(void);
+  const Real32&  getShadowIntensity(void) const;
+  UInt32&        getShadowMode(void);
+  const UInt32&  getShadowMode(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFColor4f           *getSFAmbient        (void);
-           SFColor4f           *getSFDiffuse        (void);
-           SFColor4f           *getSFSpecular       (void);
-           SFNodePtr           *getSFBeacon         (void);
-           SFBool              *getSFOn             (void);
-           SFReal32            *getSFConstantAttenuation(void);
-           SFReal32            *getSFLinearAttenuation(void);
-           SFReal32            *getSFQuadraticAttenuation(void);
-           SFReal32            *getSFShadowIntensity(void);
-           SFUInt32            *getSFShadowMode     (void);
+  void setAmbient(const Color4f& value);
+  void setDiffuse(const Color4f& value);
+  void setSpecular(const Color4f& value);
+  void setBeacon(const NodePtr& value);
+  void setOn(const bool& value);
+  void setConstantAttenuation(const Real32& value);
+  void setLinearAttenuation(const Real32& value);
+  void setQuadraticAttenuation(const Real32& value);
+  void setShadowIntensity(const Real32& value);
+  void setShadowMode(const UInt32& value);
 
-           Color4f             &getAmbient        (void);
-     const Color4f             &getAmbient        (void) const;
-           Color4f             &getDiffuse        (void);
-     const Color4f             &getDiffuse        (void) const;
-           Color4f             &getSpecular       (void);
-     const Color4f             &getSpecular       (void) const;
-           NodePtr             &getBeacon         (void);
-     const NodePtr             &getBeacon         (void) const;
-           bool                &getOn             (void);
-     const bool                &getOn             (void) const;
-           Real32              &getConstantAttenuation(void);
-     const Real32              &getConstantAttenuation(void) const;
-           Real32              &getLinearAttenuation(void);
-     const Real32              &getLinearAttenuation(void) const;
-           Real32              &getQuadraticAttenuation(void);
-     const Real32              &getQuadraticAttenuation(void) const;
-           Real32              &getShadowIntensity(void);
-     const Real32              &getShadowIntensity(void) const;
-           UInt32              &getShadowMode     (void);
-     const UInt32              &getShadowMode     (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setAmbient        ( const Color4f &value );
-     void setDiffuse        ( const Color4f &value );
-     void setSpecular       ( const Color4f &value );
-     void setBeacon         ( const NodePtr &value );
-     void setOn             ( const bool &value );
-     void setConstantAttenuation( const Real32 &value );
-     void setLinearAttenuation( const Real32 &value );
-     void setQuadraticAttenuation( const Real32 &value );
-     void setShadowIntensity( const Real32 &value );
-     void setShadowMode     ( const UInt32 &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  SFColor4f _sfAmbient;
+  SFColor4f _sfDiffuse;
+  SFColor4f _sfSpecular;
+  SFNodePtr _sfBeacon;
+  SFBool    _sfOn;
+  SFReal32  _sfConstantAttenuation;
+  SFReal32  _sfLinearAttenuation;
+  SFReal32  _sfQuadraticAttenuation;
+  SFReal32  _sfShadowIntensity;
+  SFUInt32  _sfShadowMode;
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
+  LightBase(void);
+  LightBase(const LightBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~LightBase(void);
 
-    SFColor4f           _sfAmbient;
-    SFColor4f           _sfDiffuse;
-    SFColor4f           _sfSpecular;
-    SFNodePtr           _sfBeacon;
-    SFBool              _sfOn;
-    SFReal32            _sfConstantAttenuation;
-    SFReal32            _sfLinearAttenuation;
-    SFReal32            _sfQuadraticAttenuation;
-    SFReal32            _sfShadowIntensity;
-    SFUInt32            _sfShadowMode;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    LightBase(void);
-    LightBase(const LightBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~LightBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      LightBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(LightBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      LightBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(LightBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const LightBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const LightBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef LightBase* LightBaseP;
 
-typedef LightBase *LightBaseP;
-
-typedef osgIF<LightBase::isNodeCore,
-              CoredNodePtr<Light>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet LightNodePtr;
+typedef osgIF<LightBase::isNodeCore, CoredNodePtr<Light>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet LightNodePtr;
 
 typedef RefPtr<LightPtr> LightRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGLIGHTBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGLIGHTBASE_HEADER_CVSID                                                                  \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGLIGHTBASE_H_ */

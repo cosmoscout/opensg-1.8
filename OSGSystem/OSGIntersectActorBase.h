@@ -61,212 +61,205 @@
 #include <OSGSystemDef.h>
 
 #include <OSGNewActionTypes.h>
-#include <OSGBasicActorBase.h>               // Parent
-#include <OSGMultiFunctorStore.h>      // EnterStore
-#include <OSGMultiFunctorStore.h>      // LeaveStore
+#include <OSGBasicActorBase.h>    // Parent
+#include <OSGMultiFunctorStore.h> // EnterStore
+#include <OSGMultiFunctorStore.h> // LeaveStore
 
-#include <OSGBaseTypes.h>   // HitDistance type
+#include <OSGBaseTypes.h> // HitDistance type
 #include <OSGNodePtr.h>   // HitObject type
-#include <OSGBaseTypes.h>   // HitTriangleIndex type
-#include <OSGVector.h>   // HitNormal type
-#include <OSGBaseTypes.h>   // MaxDistance type
-#include <OSGBaseTypes.h>   // ScaleFactor type
-#include <OSGLine.h>   // Ray type
+#include <OSGBaseTypes.h> // HitTriangleIndex type
+#include <OSGVector.h>    // HitNormal type
+#include <OSGBaseTypes.h> // MaxDistance type
+#include <OSGBaseTypes.h> // ScaleFactor type
+#include <OSGLine.h>      // Ray type
 
 OSG_BEGIN_NAMESPACE
 
-class OSG_SYSTEMLIB_DLLMAPPING IntersectActorBase : public BasicActorBase
-{
-    /*====  PUBLIC  =========================================================*/
-  public:
-    /*---------------------------------------- ------------------------------*/
-    /*! \name    Types                                                       */
-    /*! \{                                                                   */
+class OSG_SYSTEMLIB_DLLMAPPING IntersectActorBase : public BasicActorBase {
+  /*====  PUBLIC  =========================================================*/
+ public:
+  /*---------------------------------------- ------------------------------*/
+  /*! \name    Types                                                       */
+  /*! \{                                                                   */
 
-    typedef BasicActorBase::ResultE ResultE;
-    typedef BasicActorBase::Functor Functor;
+  typedef BasicActorBase::ResultE ResultE;
+  typedef BasicActorBase::Functor Functor;
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Destructor                                                  */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Destructor                                                  */
+  /*! \{                                                                   */
 
-    virtual ~IntersectActorBase(void);
+  virtual ~IntersectActorBase(void);
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Start/Stop                                                  */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Start/Stop                                                  */
+  /*! \{                                                                   */
 
-    virtual ResultE start(void);
-    virtual ResultE stop (void);
+  virtual ResultE start(void);
+  virtual ResultE stop(void);
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Enter/Leave                                                 */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Enter/Leave                                                 */
+  /*! \{                                                                   */
 
-    virtual ResultE enterNode(FunctorArgumentType &funcArg);
-    virtual ResultE leaveNode(FunctorArgumentType &funcArg);
+  virtual ResultE enterNode(FunctorArgumentType& funcArg);
+  virtual ResultE leaveNode(FunctorArgumentType& funcArg);
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Enter Registration                                          */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Enter Registration                                          */
+  /*! \{                                                                   */
 
-    static void regClassEnter         (const Functor            &refFunc,
-                                       const FieldContainerType &refType );
-           void regEnter              (const Functor            &refFunc,
-                                       const FieldContainerType &refType );
-    static void regDefaultClassEnter  (const Functor            &refFunc );
-           void regDefaultEnter       (const Functor            &refFunc );
+  static void regClassEnter(const Functor& refFunc, const FieldContainerType& refType);
+  void        regEnter(const Functor& refFunc, const FieldContainerType& refType);
+  static void regDefaultClassEnter(const Functor& refFunc);
+  void        regDefaultEnter(const Functor& refFunc);
 
-    static void unregClassEnter       (const FieldContainerType &refType );
-           void unregEnter            (const FieldContainerType &refType );
-    static void unregDefaultClassEnter(      void                        );
-           void unregDefaultEnter     (      void                        );
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Leave Registration                                          */
-    /*! \{                                                                   */
+  static void unregClassEnter(const FieldContainerType& refType);
+  void        unregEnter(const FieldContainerType& refType);
+  static void unregDefaultClassEnter(void);
+  void        unregDefaultEnter(void);
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Leave Registration                                          */
+  /*! \{                                                                   */
 
-    static void regClassLeave         (const Functor            &refFunc,
-                                       const FieldContainerType &refType );
-           void regLeave              (const Functor            &refFunc,
-                                       const FieldContainerType &refType );
-    static void regDefaultClassLeave  (const Functor            &refFunc );
-           void regDefaultLeave       (const Functor            &refFunc );
+  static void regClassLeave(const Functor& refFunc, const FieldContainerType& refType);
+  void        regLeave(const Functor& refFunc, const FieldContainerType& refType);
+  static void regDefaultClassLeave(const Functor& refFunc);
+  void        regDefaultLeave(const Functor& refFunc);
 
-    static void unregClassLeave       (const FieldContainerType &refType );
-           void unregLeave            (const FieldContainerType &refType );
-    static void unregDefaultClassLeave(      void                        );
-           void unregDefaultLeave     (      void                        );
+  static void unregClassLeave(const FieldContainerType& refType);
+  void        unregLeave(const FieldContainerType& refType);
+  static void unregDefaultClassLeave(void);
+  void        unregDefaultLeave(void);
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Public State Access                                         */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Public State Access                                         */
+  /*! \{                                                                   */
 
-    inline const Real32 &getHitDistance(void                             ) const;
-    inline       Real32 &getHitDistance(void                             );
-    inline       void               setHitDistance(const Real32 &stateVal);
-    inline const bool &getHit(void                             ) const;
-    inline       bool &getHit(void                             );
-    inline       void               setHit(const bool &stateVal);
-    inline const NodePtr &getHitObject(void                             ) const;
-    inline       NodePtr &getHitObject(void                             );
-    inline       void               setHitObject(const NodePtr &stateVal);
-    inline const Int32 &getHitTriangleIndex(void                             ) const;
-    inline       Int32 &getHitTriangleIndex(void                             );
-    inline       void               setHitTriangleIndex(const Int32 &stateVal);
-    inline const Vec3f &getHitNormal(void                             ) const;
-    inline       Vec3f &getHitNormal(void                             );
-    inline       void               setHitNormal(const Vec3f &stateVal);
-    inline const Real32 &getMaxDistance(void                             ) const;
-    inline       Real32 &getMaxDistance(void                             );
-    inline       void               setMaxDistance(const Real32 &stateVal);
-    inline const Real32 &getScaleFactor(void                             ) const;
-    inline       Real32 &getScaleFactor(void                             );
-    inline       void               setScaleFactor(const Real32 &stateVal);
-    inline const Line &getRay(void                             ) const;
-    inline       Line &getRay(void                             );
-    inline       void               setRay(const Line &stateVal);
+  inline const Real32&  getHitDistance(void) const;
+  inline Real32&        getHitDistance(void);
+  inline void           setHitDistance(const Real32& stateVal);
+  inline const bool&    getHit(void) const;
+  inline bool&          getHit(void);
+  inline void           setHit(const bool& stateVal);
+  inline const NodePtr& getHitObject(void) const;
+  inline NodePtr&       getHitObject(void);
+  inline void           setHitObject(const NodePtr& stateVal);
+  inline const Int32&   getHitTriangleIndex(void) const;
+  inline Int32&         getHitTriangleIndex(void);
+  inline void           setHitTriangleIndex(const Int32& stateVal);
+  inline const Vec3f&   getHitNormal(void) const;
+  inline Vec3f&         getHitNormal(void);
+  inline void           setHitNormal(const Vec3f& stateVal);
+  inline const Real32&  getMaxDistance(void) const;
+  inline Real32&        getMaxDistance(void);
+  inline void           setMaxDistance(const Real32& stateVal);
+  inline const Real32&  getScaleFactor(void) const;
+  inline Real32&        getScaleFactor(void);
+  inline void           setScaleFactor(const Real32& stateVal);
+  inline const Line&    getRay(void) const;
+  inline Line&          getRay(void);
+  inline void           setRay(const Line& stateVal);
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    State Management                                            */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    State Management                                            */
+  /*! \{                                                                   */
 
 #ifdef OSG_NEWACTION_STATESLOTINTERFACE
-    virtual UInt32          createStateClone  (void                       );
-    virtual void            destroyStateClone (UInt32          slotId     );
+  virtual UInt32 createStateClone(void);
+  virtual void   destroyStateClone(UInt32 slotId);
 #else
-    virtual ActorBaseState *createStateClone  (void                       );
-    virtual void            destroyStateClone (ActorBaseState *pStateClone);
+  virtual ActorBaseState* createStateClone(void);
+  virtual void            destroyStateClone(ActorBaseState* pStateClone);
 #endif
 
-    virtual void            createInitialState(void                       );
-    virtual void            deleteInitialState(void                       );
+  virtual void createInitialState(void);
+  virtual void deleteInitialState(void);
 
-    /*! \}                                                                   */
-    /*====  PROTECTED  ======================================================*/
-  protected:
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Types & Friends                                             */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*====  PROTECTED  ======================================================*/
+ protected:
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Types & Friends                                             */
+  /*! \{                                                                   */
 
-    class   IntersectActorBaseState;
-    friend  class OSG::IntersectActorBase::IntersectActorBaseState;
+  class IntersectActorBaseState;
+  friend class OSG::IntersectActorBase::IntersectActorBaseState;
 
-    typedef IntersectActorBaseState     StateType;
-    typedef BasicActorBase::StateType  ParentStateType;
-    typedef MultiFunctorStore EnterStoreType;
-    typedef MultiFunctorStore LeaveStoreType;
+  typedef IntersectActorBaseState   StateType;
+  typedef BasicActorBase::StateType ParentStateType;
+  typedef MultiFunctorStore         EnterStoreType;
+  typedef MultiFunctorStore         LeaveStoreType;
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    State Class                                                 */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    State Class                                                 */
+  /*! \{                                                                   */
 
-    class OSG_SYSTEMLIB_DLLMAPPING IntersectActorBaseState : public ParentStateType
-    {
-      public:
-        inline   IntersectActorBaseState(void                                );
-        inline   IntersectActorBaseState(const IntersectActorBaseState &source);
+  class OSG_SYSTEMLIB_DLLMAPPING IntersectActorBaseState : public ParentStateType {
+   public:
+    inline IntersectActorBaseState(void);
+    inline IntersectActorBaseState(const IntersectActorBaseState& source);
 
-        virtual ~IntersectActorBaseState(void                                );
+    virtual ~IntersectActorBaseState(void);
 
-        inline const Real32 &getScaleFactor(void) const;
-        inline       Real32 &getScaleFactor(void);
-        inline const Line &getRay(void) const;
-        inline       Line &getRay(void);
+    inline const Real32& getScaleFactor(void) const;
+    inline Real32&       getScaleFactor(void);
+    inline const Line&   getRay(void) const;
+    inline Line&         getRay(void);
 
-      private:
-        Real32 _stateScaleFactor;
-        Line _stateRay;
-    };
+   private:
+    Real32 _stateScaleFactor;
+    Line   _stateRay;
+  };
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Constructor                                                 */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Constructor                                                 */
+  /*! \{                                                                   */
 
-    IntersectActorBase(void);
+  IntersectActorBase(void);
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Event Notification                                          */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Event Notification                                          */
+  /*! \{                                                                   */
 
-    virtual void addEvent(NewActionBase *pAction, UInt32 actorId);
-    virtual void subEvent(NewActionBase *pAction, UInt32 actorId);
+  virtual void addEvent(NewActionBase* pAction, UInt32 actorId);
+  virtual void subEvent(NewActionBase* pAction, UInt32 actorId);
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    State Access                                                */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    State Access                                                */
+  /*! \{                                                                   */
 
-    inline const IntersectActorBaseState *getCastState(void) const;
-    inline       IntersectActorBaseState *getCastState(void);
+  inline const IntersectActorBaseState* getCastState(void) const;
+  inline IntersectActorBaseState*       getCastState(void);
 
+  /*! \}                                                                   */
+  /*====  PRIVATE  ========================================================*/
+ private:
+  typedef BasicActorBase Inherited;
 
-    /*! \}                                                                   */
-    /*====  PRIVATE  ========================================================*/
-  private:
-    typedef BasicActorBase Inherited;
+  static EnterStoreType* _pClassEnterStore;
+  static LeaveStoreType* _pClassLeaveStore;
 
-    static EnterStoreType *_pClassEnterStore;
-    static LeaveStoreType *_pClassLeaveStore;
+  Real32  _stateHitDistance;
+  bool    _stateHit;
+  NodePtr _stateHitObject;
+  Int32   _stateHitTriangleIndex;
+  Vec3f   _stateHitNormal;
+  Real32  _stateMaxDistance;
 
-    Real32 _stateHitDistance;
-    bool _stateHit;
-    NodePtr _stateHitObject;
-    Int32 _stateHitTriangleIndex;
-    Vec3f _stateHitNormal;
-    Real32 _stateMaxDistance;
-
-    EnterStoreType         _instanceEnterStore;
-    LeaveStoreType         _instanceLeaveStore;
+  EnterStoreType _instanceEnterStore;
+  LeaveStoreType _instanceLeaveStore;
 };
 
 OSG_END_NAMESPACE

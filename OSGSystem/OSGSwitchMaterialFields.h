@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGSWITCHMATERIALFIELDS_H_
 #define _OSGSWITCHMATERIALFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class SwitchMaterial;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! SwitchMaterialPtr
 
 typedef FCPtr<MaterialPtr, SwitchMaterial> SwitchMaterialPtr;
@@ -81,18 +80,23 @@ typedef FCPtr<MaterialPtr, SwitchMaterial> SwitchMaterialPtr;
 #endif
 
 template <>
-struct FieldDataTraits<SwitchMaterialPtr> : 
-    public FieldTraitsRecurseMapper<SwitchMaterialPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<SwitchMaterialPtr>
+    : public FieldTraitsRecurseMapper<SwitchMaterialPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getSName(void) { return "SFSwitchMaterialPtr"; }
-    static const char *getMName(void) { return "MFSwitchMaterialPtr"; }
+  static const char* getSName(void) {
+    return "SFSwitchMaterialPtr";
+  }
+  static const char* getMName(void) {
+    return "MFSwitchMaterialPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -102,7 +106,6 @@ struct FieldDataTraits<SwitchMaterialPtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
@@ -126,6 +129,7 @@ OSG_DLLEXPORT_DECL1(MField, SwitchMaterialPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 
 OSG_END_NAMESPACE
 
-#define OSGSWITCHMATERIALFIELDS_HEADER_CVSID "@(#)$Id: OSGSwitchMaterialFields.h,v 1.2 2006/02/20 17:04:44 dirk Exp $"
+#define OSGSWITCHMATERIALFIELDS_HEADER_CVSID                                                       \
+  "@(#)$Id: OSGSwitchMaterialFields.h,v 1.2 2006/02/20 17:04:44 dirk Exp $"
 
 #endif /* _OSGSWITCHMATERIALFIELDS_H_ */

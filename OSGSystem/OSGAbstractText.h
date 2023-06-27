@@ -48,70 +48,63 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! rief AbstractText class. See ef 
+/*! rief AbstractText class. See ef
            PageSYSTEMAbstractText for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING AbstractText : public AbstractTextBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING AbstractText : public AbstractTextBase {
+ private:
+  typedef AbstractTextBase Inherited;
 
-    typedef AbstractTextBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in AbstractTextBase.
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  AbstractText(void);
+  AbstractText(const AbstractText& source);
 
-    // Variables should all be in AbstractTextBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~AbstractText(void);
 
-    AbstractText(void);
-    AbstractText(const AbstractText &source);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class AbstractTextBase;
 
-    virtual ~AbstractText(void); 
+  static void initMethod(void);
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  // prohibit default functions (move to 'public' if you need one)
 
-    friend class FieldContainer;
-    friend class AbstractTextBase;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const AbstractText &source);
+  void operator=(const AbstractText& source);
 };
 
-typedef AbstractText *AbstractTextP;
+typedef AbstractText* AbstractTextP;
 
 OSG_END_NAMESPACE
 

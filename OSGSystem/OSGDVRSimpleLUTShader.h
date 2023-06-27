@@ -51,167 +51,146 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief *put brief class description here* 
+/*! \brief *put brief class description here*
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING DVRSimpleLUTShader : 
-    public DVRSimpleLUTShaderBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING DVRSimpleLUTShader : public DVRSimpleLUTShaderBase {
+ private:
+  typedef DVRSimpleLUTShaderBase Inherited;
 
-    typedef DVRSimpleLUTShaderBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 from);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     from);
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                 Volume Rendering                             */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  // Callback to set up shader - register textures here
+  virtual bool initialize(DVRVolume* volume, DrawActionBase* action);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                 Volume Rendering                             */
-    /*! \{                                                                 */
+  // Callback before any slice is rendered - setup per volume
+  virtual void activate(DVRVolume* volume, DrawActionBase* action);
 
-    // Callback to set up shader - register textures here
-    virtual bool initialize   (DVRVolume      *volume, 
-                               DrawActionBase *action);
-    
-    // Callback before any slice is rendered - setup per volume
-    virtual void activate     (DVRVolume      *volume, 
-                               DrawActionBase *action);
+  // Callback before any brick - state setup per brick
+  virtual void brickActivate(DVRVolume* volume, DrawActionBase* action, Brick* brick);
 
-    // Callback before any brick - state setup per brick
-    virtual void brickActivate(DVRVolume      *volume, 
-                               DrawActionBase *action, 
-                               Brick          *brick );
+  // Callback after all rendering of the volume is done
+  virtual void deactivate(DVRVolume* volume, DrawActionBase* action);
 
-    // Callback after all rendering of the volume is done
-    virtual void deactivate   (DVRVolume      *volume, 
-                               DrawActionBase *action);
+  // Callback to clean up shader resources
+  virtual void cleanup(DVRVolume* volume, DrawActionBase* action);
 
-    // Callback to clean up shader resources
-    virtual void cleanup      (DVRVolume      *volume, 
-                               DrawActionBase *action);
-    
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-  protected:
+ protected:
+  // Variables should all be in DVRSimpleLUTShaderBase.
 
-    // Variables should all be in DVRSimpleLUTShaderBase.
+  UInt8                   m_nTexturePaletteMode;
+  Int8                    m_nTextureMode;
+  FragmentProgramChunkPtr m_pFragProg;
+  TextureChunkPtr         m_pDepTexture;
 
-    UInt8                   m_nTexturePaletteMode;
-    Int8                    m_nTextureMode; 
-    FragmentProgramChunkPtr m_pFragProg;
-    TextureChunkPtr         m_pDepTexture;
+  enum LutMode {
+    LM_AUTO = 0,
+    LM_TABLE_SGI,
+    LM_PALETTE_EXT,
+    LM_DEPENDENT,
+    LM_FRAGPROG,
+    LM_RELOAD,
+    LM_NO
+  };
 
-    enum LutMode 
-    {
-        LM_AUTO = 0,
-        LM_TABLE_SGI,
-        LM_PALETTE_EXT,
-        LM_DEPENDENT,
-        LM_FRAGPROG,
-        LM_RELOAD,
-        LM_NO
-    };
-    
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    DVRSimpleLUTShader(void);
-    DVRSimpleLUTShader(const DVRSimpleLUTShader &source);
+  DVRSimpleLUTShader(void);
+  DVRSimpleLUTShader(const DVRSimpleLUTShader& source);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    virtual ~DVRSimpleLUTShader(void); 
+  virtual ~DVRSimpleLUTShader(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                 Volume Rendering                             */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                 Volume Rendering                             */
+  /*! \{                                                                 */
 
-    // Returns suitable lookup table mode and texture formate for 
-    // graphics adapter
-    void getPaletteFormat(DrawActionBase *action, 
-                          UInt8           lutMode,
-                          GLenum         &internalFormat, 
-                          GLenum         &externalFormat);
+  // Returns suitable lookup table mode and texture formate for
+  // graphics adapter
+  void getPaletteFormat(
+      DrawActionBase* action, UInt8 lutMode, GLenum& internalFormat, GLenum& externalFormat);
 
-    // Checks whether the selected mode is supported
-    bool isModeSupported (DrawActionBase *action, 
-                          UInt8           mode, 
-                          Int8            textureMode);
-    // Automatically select a lookup table mode
-    UInt8 selectMode     (DrawActionBase *action, 
-                          Int8            textureMode);
-    
-    // Enable/disable palette
-    void enablePalette (void);
-    void disablePalette(void);
+  // Checks whether the selected mode is supported
+  bool isModeSupported(DrawActionBase* action, UInt8 mode, Int8 textureMode);
+  // Automatically select a lookup table mode
+  UInt8 selectMode(DrawActionBase* action, Int8 textureMode);
 
-    // Handle dependent texture
-    void initDependentTexture   (      Int32  size);
-    void updateDependentTexture (      Int32  size, 
-                                 const UInt8 *data);
-    void destroyDependentTexture(      void       );
+  // Enable/disable palette
+  void enablePalette(void);
+  void disablePalette(void);
 
-    // Register combiners
-    void setupAlphaCorrectionRegisterCombiners(DrawActionBase *action);
+  // Handle dependent texture
+  void initDependentTexture(Int32 size);
+  void updateDependentTexture(Int32 size, const UInt8* data);
+  void destroyDependentTexture(void);
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
+  // Register combiners
+  void setupAlphaCorrectionRegisterCombiners(DrawActionBase* action);
 
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-    // fragment programs used by fragment shader mode
-    static char _fragProg2D[];	 
-    static char _fragProg3D[];
-    static char _fragProg2DMulti[];
-    
-    // extension indices for used extensions;
-    static UInt32 _sgiTexColorTable;
-    static UInt32 _extPalettedTexture;
-    static UInt32 _extSharedPalettedTexture;
-    static UInt32 _arbMultitexture;
-    static UInt32 _nvTextureShader2;
-    static UInt32 _arbFragmentProgram;
-    static UInt32 _nvRegisterCombiners;
+ private:
+  // fragment programs used by fragment shader mode
+  static char _fragProg2D[];
+  static char _fragProg3D[];
+  static char _fragProg2DMulti[];
 
-    // extension indices for used fucntions;
-    static UInt32 _funcColorTableSGI;
-    static UInt32 _funcColorTableEXT;
-    static UInt32 _funcActiveTextureARB;
-    static UInt32 _funcFinalCombinerInputNV;
-    static UInt32 _funcCombinerInputNV;
-    static UInt32 _funcCombinerOutputNV;
-    
-    friend class FieldContainer;
-    friend class DVRSimpleLUTShaderBase;
+  // extension indices for used extensions;
+  static UInt32 _sgiTexColorTable;
+  static UInt32 _extPalettedTexture;
+  static UInt32 _extSharedPalettedTexture;
+  static UInt32 _arbMultitexture;
+  static UInt32 _nvTextureShader2;
+  static UInt32 _arbFragmentProgram;
+  static UInt32 _nvRegisterCombiners;
 
-    static void initMethod(void);
+  // extension indices for used fucntions;
+  static UInt32 _funcColorTableSGI;
+  static UInt32 _funcColorTableEXT;
+  static UInt32 _funcActiveTextureARB;
+  static UInt32 _funcFinalCombinerInputNV;
+  static UInt32 _funcCombinerInputNV;
+  static UInt32 _funcCombinerOutputNV;
 
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const DVRSimpleLUTShader &source);
+  friend class FieldContainer;
+  friend class DVRSimpleLUTShaderBase;
+
+  static void initMethod(void);
+
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const DVRSimpleLUTShader& source);
 };
 
-typedef DVRSimpleLUTShader *DVRSimpleLUTShaderP;
+typedef DVRSimpleLUTShader* DVRSimpleLUTShaderP;
 
 OSG_END_NAMESPACE
 

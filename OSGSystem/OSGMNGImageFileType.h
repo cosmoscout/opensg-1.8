@@ -38,8 +38,8 @@
 
 #ifndef OSGMNGIMAGEFILETYPE_CLASS_DECLARATION
 #define OSGMNGIMAGEFILETYPE_CLASS_DECLARATION
-#ifdef  __sgi
-#pragma  once
+#ifdef __sgi
+#pragma once
 #endif
 
 #include <OSGSystemDef.h>
@@ -50,68 +50,62 @@
 OSG_BEGIN_NAMESPACE
 
 /*! \brief MNG File Handler. See \ref PageSystemImage for a detailed description.
-*/
+ */
 
-class OSG_SYSTEMLIB_DLLMAPPING MNGImageFileType : public ImageFileType
-{
+class OSG_SYSTEMLIB_DLLMAPPING MNGImageFileType : public ImageFileType {
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  virtual ~MNGImageFileType(void);
 
-    virtual ~MNGImageFileType (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Get Method                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Get Method                                  */
-    /*! \{                                                                 */
+  static MNGImageFileType& the(void);
 
-    static MNGImageFileType & the (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Read/Write                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Read/Write                                 */
-    /*! \{                                                                 */
+  virtual std::string determineMimetypeFromStream(std::istream& is);
 
-    virtual std::string determineMimetypeFromStream(std::istream &is);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name               Default Constructor                            */
+  /*! \{                                                                 */
 
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  MNGImageFileType(const Char8* mimeType, const Char8* suffixArray[], UInt16 suffixByteCount);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name               Default Constructor                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    MNGImageFileType ( const Char8 *mimeType,
-                       const Char8 *suffixArray[], UInt16 suffixByteCount );
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /*---------------------------------------------------------------------*/
+  /*! \name                Copy Constructor                              */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  MNGImageFileType(const MNGImageFileType& obj);
 
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                Copy Operator                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                Copy Constructor                              */
-    /*! \{                                                                 */
+  const MNGImageFileType& operator=(const MNGImageFileType& obj);
 
-    MNGImageFileType (const MNGImageFileType &obj);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                Copy Operator                                 */
-    /*! \{                                                                 */
-
-    const MNGImageFileType &operator= (const MNGImageFileType &obj);
-
-    /*! \}                                                                 */
-
-    static MNGImageFileType _the;
-
+  static MNGImageFileType _the;
 };
 
 typedef MNGImageFileType* MNGImageFileTypeP;

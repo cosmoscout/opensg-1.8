@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEMATERIALGROUPINST
 
 #include <stdlib.h>
@@ -61,206 +60,149 @@
 #include "OSGMaterialGroupBase.h"
 #include "OSGMaterialGroup.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  MaterialGroupBase::MaterialFieldMask = 
+const OSG::BitVector MaterialGroupBase::MaterialFieldMask =
     (TypeTraits<BitVector>::One << MaterialGroupBase::MaterialFieldId);
 
-const OSG::BitVector MaterialGroupBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector MaterialGroupBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
 /*! \var MaterialPtr     MaterialGroupBase::_sfMaterial
-    
+
 */
 
 //! MaterialGroup description
 
-FieldDescription *MaterialGroupBase::_desc[] = 
-{
-    new FieldDescription(SFMaterialPtr::getClassType(), 
-                     "material", 
-                     MaterialFieldId, MaterialFieldMask,
-                     false,
-                     (FieldAccessMethod) &MaterialGroupBase::getSFMaterial)
-};
+FieldDescription* MaterialGroupBase::_desc[] = {
+    new FieldDescription(SFMaterialPtr::getClassType(), "material", MaterialFieldId,
+        MaterialFieldMask, false, (FieldAccessMethod)&MaterialGroupBase::getSFMaterial)};
 
-
-FieldContainerType MaterialGroupBase::_type(
-    "MaterialGroup",
-    "Group",
-    NULL,
-    (PrototypeCreateF) &MaterialGroupBase::createEmpty,
-    MaterialGroup::initMethod,
-    _desc,
+FieldContainerType MaterialGroupBase::_type("MaterialGroup", "Group", NULL,
+    (PrototypeCreateF)&MaterialGroupBase::createEmpty, MaterialGroup::initMethod, _desc,
     sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(MaterialGroupBase, MaterialGroupPtr)
+// OSG_FIELD_CONTAINER_DEF(MaterialGroupBase, MaterialGroupPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &MaterialGroupBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &MaterialGroupBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr MaterialGroupBase::shallowCopy(void) const 
-{ 
-    MaterialGroupPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const MaterialGroup *>(this)); 
-
-    return returnValue; 
+FieldContainerType& MaterialGroupBase::getType(void) {
+  return _type;
 }
 
-UInt32 MaterialGroupBase::getContainerSize(void) const 
-{ 
-    return sizeof(MaterialGroup); 
+const FieldContainerType& MaterialGroupBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr MaterialGroupBase::shallowCopy(void) const {
+  MaterialGroupPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const MaterialGroup*>(this));
+
+  return returnValue;
+}
+
+UInt32 MaterialGroupBase::getContainerSize(void) const {
+  return sizeof(MaterialGroup);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void MaterialGroupBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((MaterialGroupBase *) &other, whichField);
+void MaterialGroupBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((MaterialGroupBase*)&other, whichField);
 }
 #else
-void MaterialGroupBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((MaterialGroupBase *) &other, whichField, sInfo);
+void MaterialGroupBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((MaterialGroupBase*)&other, whichField, sInfo);
 }
-void MaterialGroupBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void MaterialGroupBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void MaterialGroupBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void MaterialGroupBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-MaterialGroupBase::MaterialGroupBase(void) :
-    _sfMaterial               (), 
-    Inherited() 
-{
+MaterialGroupBase::MaterialGroupBase(void)
+    : _sfMaterial()
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-MaterialGroupBase::MaterialGroupBase(const MaterialGroupBase &source) :
-    _sfMaterial               (source._sfMaterial               ), 
-    Inherited                 (source)
-{
+MaterialGroupBase::MaterialGroupBase(const MaterialGroupBase& source)
+    : _sfMaterial(source._sfMaterial)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-MaterialGroupBase::~MaterialGroupBase(void)
-{
+MaterialGroupBase::~MaterialGroupBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 MaterialGroupBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 MaterialGroupBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (MaterialFieldMask & whichField))
-    {
-        returnValue += _sfMaterial.getBinSize();
-    }
+  if (FieldBits::NoField != (MaterialFieldMask & whichField)) {
+    returnValue += _sfMaterial.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void MaterialGroupBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void MaterialGroupBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (MaterialFieldMask & whichField))
-    {
-        _sfMaterial.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (MaterialFieldMask & whichField)) {
+    _sfMaterial.copyToBin(pMem);
+  }
 }
 
-void MaterialGroupBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void MaterialGroupBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (MaterialFieldMask & whichField))
-    {
-        _sfMaterial.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (MaterialFieldMask & whichField)) {
+    _sfMaterial.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void MaterialGroupBase::executeSyncImpl(      MaterialGroupBase *pOther,
-                                        const BitVector         &whichField)
-{
+void MaterialGroupBase::executeSyncImpl(MaterialGroupBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (MaterialFieldMask & whichField))
-        _sfMaterial.syncWith(pOther->_sfMaterial);
-
-
+  if (FieldBits::NoField != (MaterialFieldMask & whichField))
+    _sfMaterial.syncWith(pOther->_sfMaterial);
 }
 #else
-void MaterialGroupBase::executeSyncImpl(      MaterialGroupBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void MaterialGroupBase::executeSyncImpl(
+    MaterialGroupBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (MaterialFieldMask & whichField))
-        _sfMaterial.syncWith(pOther->_sfMaterial);
-
-
-
+  if (FieldBits::NoField != (MaterialFieldMask & whichField))
+    _sfMaterial.syncWith(pOther->_sfMaterial);
 }
 
-void MaterialGroupBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void MaterialGroupBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>

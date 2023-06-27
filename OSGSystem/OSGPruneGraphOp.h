@@ -36,7 +36,6 @@
 *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGPRUNEGRAPHOP_H_
 #define _OSGPRUNEGRAPHOP_H_
 #ifdef __sgi
@@ -51,36 +50,34 @@
 
 OSG_BEGIN_NAMESPACE
 
-class OSG_SYSTEMLIB_DLLMAPPING PruneGraphOp : public GraphOp
-{
-public:
-    enum Method {
-        VOLUME,
-        SUM_OF_DIMENSIONS,
-    };
+class OSG_SYSTEMLIB_DLLMAPPING PruneGraphOp : public GraphOp {
+ public:
+  enum Method {
+    VOLUME,
+    SUM_OF_DIMENSIONS,
+  };
 
-    static const char *getClassname(void) { return "PruneGraphOp"; };
+  static const char* getClassname(void) {
+    return "PruneGraphOp";
+  };
 
-    PruneGraphOp(
-        float size = 1.0f,
-        Method method = SUM_OF_DIMENSIONS,
-        const char* name = "Prune");
+  PruneGraphOp(float size = 1.0f, Method method = SUM_OF_DIMENSIONS, const char* name = "Prune");
 
-    GraphOp* create();
+  GraphOp* create();
 
-    void setParams(const std::string params);
-    
-    std::string usage(void);
+  void setParams(const std::string params);
 
-private:
-    Action::ResultE traverseEnter(NodePtr& node);
-    Action::ResultE traverseLeave(NodePtr& node, Action::ResultE res);
+  std::string usage(void);
 
-    bool isTooSmall(const NodePtr& node);
-    float getSize(const NodePtr& node);
+ private:
+  Action::ResultE traverseEnter(NodePtr& node);
+  Action::ResultE traverseLeave(NodePtr& node, Action::ResultE res);
 
-    float _size;
-    Method _method;
+  bool  isTooSmall(const NodePtr& node);
+  float getSize(const NodePtr& node);
+
+  float  _size;
+  Method _method;
 };
 
 OSG_END_NAMESPACE

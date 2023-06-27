@@ -44,33 +44,22 @@
 
 OSG_BEGIN_NAMESPACE
 
-inline 
-UInt32 StandardStringConversionState::getIndent(void) const
-{
-    return _indent.getIndent();
+inline UInt32 StandardStringConversionState::getIndent(void) const {
+  return _indent.getIndent();
 }
 
-inline 
-UInt32 StandardStringConversionState::getWidth(void) const
-{
-    return _width;
+inline UInt32 StandardStringConversionState::getWidth(void) const {
+  return _width;
 }
 
-inline 
-void StandardStringConversionState::setIndent(UInt32 newIndent)
-{
-    _indent.setIndent(newIndent);
+inline void StandardStringConversionState::setIndent(UInt32 newIndent) {
+  _indent.setIndent(newIndent);
 }
 
-inline 
-void StandardStringConversionState::setWidth(UInt32 newWidth)
-{
-    _width = newWidth;
+inline void StandardStringConversionState::setWidth(UInt32 newWidth) {
+  _width = newWidth;
 }
-
-
 
 OSG_END_NAMESPACE
 
 #define OSGSTANDARDSTRINGCONVERSIONSTATE_INLINE_CVSID "@(#)$Id: $"
-

@@ -55,7 +55,7 @@
 
 OSG_BEGIN_NAMESPACE
 
-#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS) 
+#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldMulti */
 
 typedef MField<NodePtr> MFNodePtr;
@@ -66,4 +66,3 @@ OSG_END_NAMESPACE
 #define OSGMFNODEPTR_HEADER_CVSID "@(#)$Id: $"
 
 #endif /* _OSGMFNODEPTRIMPL_H_ */
-

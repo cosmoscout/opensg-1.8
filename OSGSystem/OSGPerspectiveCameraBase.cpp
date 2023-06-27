@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEPERSPECTIVECAMERAINST
 
 #include <stdlib.h>
@@ -61,19 +60,16 @@
 #include "OSGPerspectiveCameraBase.h"
 #include "OSGPerspectiveCamera.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  PerspectiveCameraBase::FovFieldMask = 
+const OSG::BitVector PerspectiveCameraBase::FovFieldMask =
     (TypeTraits<BitVector>::One << PerspectiveCameraBase::FovFieldId);
 
-const OSG::BitVector  PerspectiveCameraBase::AspectFieldMask = 
+const OSG::BitVector PerspectiveCameraBase::AspectFieldMask =
     (TypeTraits<BitVector>::One << PerspectiveCameraBase::AspectFieldId);
 
-const OSG::BitVector PerspectiveCameraBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector PerspectiveCameraBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
@@ -86,215 +82,156 @@ const OSG::BitVector PerspectiveCameraBase::MTInfluenceMask =
 
 //! PerspectiveCamera description
 
-FieldDescription *PerspectiveCameraBase::_desc[] = 
-{
-    new FieldDescription(SFReal32::getClassType(), 
-                     "fov", 
-                     FovFieldId, FovFieldMask,
-                     false,
-                     (FieldAccessMethod) &PerspectiveCameraBase::getSFFov),
-    new FieldDescription(SFReal32::getClassType(), 
-                     "aspect", 
-                     AspectFieldId, AspectFieldMask,
-                     false,
-                     (FieldAccessMethod) &PerspectiveCameraBase::getSFAspect)
-};
+FieldDescription* PerspectiveCameraBase::_desc[] = {
+    new FieldDescription(SFReal32::getClassType(), "fov", FovFieldId, FovFieldMask, false,
+        (FieldAccessMethod)&PerspectiveCameraBase::getSFFov),
+    new FieldDescription(SFReal32::getClassType(), "aspect", AspectFieldId, AspectFieldMask, false,
+        (FieldAccessMethod)&PerspectiveCameraBase::getSFAspect)};
 
-
-FieldContainerType PerspectiveCameraBase::_type(
-    "PerspectiveCamera",
-    "Camera",
-    NULL,
-    (PrototypeCreateF) &PerspectiveCameraBase::createEmpty,
-    PerspectiveCamera::initMethod,
-    _desc,
+FieldContainerType PerspectiveCameraBase::_type("PerspectiveCamera", "Camera", NULL,
+    (PrototypeCreateF)&PerspectiveCameraBase::createEmpty, PerspectiveCamera::initMethod, _desc,
     sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(PerspectiveCameraBase, PerspectiveCameraPtr)
+// OSG_FIELD_CONTAINER_DEF(PerspectiveCameraBase, PerspectiveCameraPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &PerspectiveCameraBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &PerspectiveCameraBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr PerspectiveCameraBase::shallowCopy(void) const 
-{ 
-    PerspectiveCameraPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const PerspectiveCamera *>(this)); 
-
-    return returnValue; 
+FieldContainerType& PerspectiveCameraBase::getType(void) {
+  return _type;
 }
 
-UInt32 PerspectiveCameraBase::getContainerSize(void) const 
-{ 
-    return sizeof(PerspectiveCamera); 
+const FieldContainerType& PerspectiveCameraBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr PerspectiveCameraBase::shallowCopy(void) const {
+  PerspectiveCameraPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const PerspectiveCamera*>(this));
+
+  return returnValue;
+}
+
+UInt32 PerspectiveCameraBase::getContainerSize(void) const {
+  return sizeof(PerspectiveCamera);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void PerspectiveCameraBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((PerspectiveCameraBase *) &other, whichField);
+void PerspectiveCameraBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((PerspectiveCameraBase*)&other, whichField);
 }
 #else
-void PerspectiveCameraBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((PerspectiveCameraBase *) &other, whichField, sInfo);
+void PerspectiveCameraBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((PerspectiveCameraBase*)&other, whichField, sInfo);
 }
-void PerspectiveCameraBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void PerspectiveCameraBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void PerspectiveCameraBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void PerspectiveCameraBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-PerspectiveCameraBase::PerspectiveCameraBase(void) :
-    _sfFov                    (), 
-    _sfAspect                 (Real32(1)), 
-    Inherited() 
-{
+PerspectiveCameraBase::PerspectiveCameraBase(void)
+    : _sfFov()
+    , _sfAspect(Real32(1))
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-PerspectiveCameraBase::PerspectiveCameraBase(const PerspectiveCameraBase &source) :
-    _sfFov                    (source._sfFov                    ), 
-    _sfAspect                 (source._sfAspect                 ), 
-    Inherited                 (source)
-{
+PerspectiveCameraBase::PerspectiveCameraBase(const PerspectiveCameraBase& source)
+    : _sfFov(source._sfFov)
+    , _sfAspect(source._sfAspect)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-PerspectiveCameraBase::~PerspectiveCameraBase(void)
-{
+PerspectiveCameraBase::~PerspectiveCameraBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 PerspectiveCameraBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 PerspectiveCameraBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (FovFieldMask & whichField))
-    {
-        returnValue += _sfFov.getBinSize();
-    }
+  if (FieldBits::NoField != (FovFieldMask & whichField)) {
+    returnValue += _sfFov.getBinSize();
+  }
 
-    if(FieldBits::NoField != (AspectFieldMask & whichField))
-    {
-        returnValue += _sfAspect.getBinSize();
-    }
+  if (FieldBits::NoField != (AspectFieldMask & whichField)) {
+    returnValue += _sfAspect.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void PerspectiveCameraBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void PerspectiveCameraBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (FovFieldMask & whichField))
-    {
-        _sfFov.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (FovFieldMask & whichField)) {
+    _sfFov.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (AspectFieldMask & whichField))
-    {
-        _sfAspect.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (AspectFieldMask & whichField)) {
+    _sfAspect.copyToBin(pMem);
+  }
 }
 
-void PerspectiveCameraBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void PerspectiveCameraBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (FovFieldMask & whichField))
-    {
-        _sfFov.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (FovFieldMask & whichField)) {
+    _sfFov.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (AspectFieldMask & whichField))
-    {
-        _sfAspect.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (AspectFieldMask & whichField)) {
+    _sfAspect.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void PerspectiveCameraBase::executeSyncImpl(      PerspectiveCameraBase *pOther,
-                                        const BitVector         &whichField)
-{
+void PerspectiveCameraBase::executeSyncImpl(
+    PerspectiveCameraBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (FovFieldMask & whichField))
-        _sfFov.syncWith(pOther->_sfFov);
+  if (FieldBits::NoField != (FovFieldMask & whichField))
+    _sfFov.syncWith(pOther->_sfFov);
 
-    if(FieldBits::NoField != (AspectFieldMask & whichField))
-        _sfAspect.syncWith(pOther->_sfAspect);
-
-
+  if (FieldBits::NoField != (AspectFieldMask & whichField))
+    _sfAspect.syncWith(pOther->_sfAspect);
 }
 #else
-void PerspectiveCameraBase::executeSyncImpl(      PerspectiveCameraBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void PerspectiveCameraBase::executeSyncImpl(
+    PerspectiveCameraBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (FovFieldMask & whichField))
-        _sfFov.syncWith(pOther->_sfFov);
+  if (FieldBits::NoField != (FovFieldMask & whichField))
+    _sfFov.syncWith(pOther->_sfFov);
 
-    if(FieldBits::NoField != (AspectFieldMask & whichField))
-        _sfAspect.syncWith(pOther->_sfAspect);
-
-
-
+  if (FieldBits::NoField != (AspectFieldMask & whichField))
+    _sfAspect.syncWith(pOther->_sfAspect);
 }
 
-void PerspectiveCameraBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void PerspectiveCameraBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>

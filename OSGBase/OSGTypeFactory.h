@@ -55,106 +55,96 @@ class TypeBase;
 /*! \ingroup GrpBaseBaseTypeSystem
  */
 
-class OSG_BASE_DLLMAPPING TypeFactory
-{
-    /*==========================  PUBLIC  =================================*/
+class OSG_BASE_DLLMAPPING TypeFactory {
+  /*==========================  PUBLIC  =================================*/
 
-  public :
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Get                                     */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Get                                     */
-    /*! \{                                                                 */
+  static TypeFactory* the(void);
 
-    static TypeFactory *the(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Type Info                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Type Info                                   */
-    /*! \{                                                                 */
+  UInt32 registerType(TypeBase* pType);
 
-    UInt32    registerType  (      TypeBase *pType          );
+  UInt32 findTypeId(const Char8* szName, const UInt32 uiNameSpace = 0);
 
-    UInt32    findTypeId    (const Char8    *szName,
-                             const UInt32    uiNameSpace = 0);
+  TypeBase* findType(UInt32 uiTypeId);
+  TypeBase* findType(const Char8* szName, const UInt32 uiNameSpace = 0);
 
-    TypeBase *findType      (      UInt32    uiTypeId       );
-    TypeBase *findType      (const Char8    *szName  ,
-                             const UInt32    uiNameSpace = 0);
+  UInt32 getNumTypes(void);
 
+  void writeTypeGraph(const Char8* szFilename);
 
-    UInt32    getNumTypes   (      void                     );
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    void      writeTypeGraph(const Char8    *szFilename     );
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Types                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  typedef std::map<IDStringLink, UInt32> TypeNameMap;
 
-  protected:
+  typedef TypeNameMap::iterator       TypeNameMapIt;
+  typedef TypeNameMap::const_iterator TypeNameMapConstIt;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Types                                   */
-    /*! \{                                                                 */
+  typedef std::vector<TypeBase*> TypeStore;
 
-    typedef std::map   <IDStringLink, UInt32>  TypeNameMap;
+  typedef TypeStore::iterator       TypeStoreIt;
+  typedef TypeStore::const_iterator TypeStoreConstIt;
 
-    typedef TypeNameMap::iterator              TypeNameMapIt;
-    typedef TypeNameMap::const_iterator        TypeNameMapConstIt;
+  typedef std::vector<TypeNameMap*> TypeMapsStore;
 
+  /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                 Static Variables                             */
+  /*! \{                                                                 */
 
-    typedef std::vector<TypeBase           *>  TypeStore;
+  static TypeFactory* _the;
 
-    typedef TypeStore::iterator                TypeStoreIt;
-    typedef TypeStore::const_iterator          TypeStoreConstIt;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Members                                 */
+  /*! \{                                                                 */
 
+  TypeMapsStore _vTypeNameMaps;
+  TypeStore     _vTypeStore;
 
-    typedef std::vector<TypeNameMap        *>  TypeMapsStore;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \{                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                 Static Variables                             */
-    /*! \{                                                                 */
+  TypeFactory(void);
 
-    static TypeFactory   *_the;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Members                                 */
-    /*! \{                                                                 */
+  virtual ~TypeFactory(void);
 
-           TypeMapsStore  _vTypeNameMaps;
-           TypeStore      _vTypeStore;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Helper                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  static void writeTypeDot(FILE* pOut, TypeBase* pTypeBase);
 
-    TypeFactory(void);
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
-
-    virtual ~TypeFactory(void);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Helper                                   */
-    /*! \{                                                                 */
-
-    static void writeTypeDot(FILE     *pOut,
-                             TypeBase *pTypeBase);
-
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-
-  private:
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    TypeFactory(const TypeFactory &source);
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const TypeFactory &source);
+ private:
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  TypeFactory(const TypeFactory& source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const TypeFactory& source);
 };
 
 OSG_END_NAMESPACE

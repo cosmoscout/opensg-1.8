@@ -51,93 +51,87 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief *put brief class description here* 
+/*! \brief *put brief class description here*
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING MaterialDrawable : public MaterialDrawableBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING MaterialDrawable : public MaterialDrawableBase {
+ private:
+  typedef MaterialDrawableBase Inherited;
 
-    typedef MaterialDrawableBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   action handler                             */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  // draw the OpenGL primitives
+  virtual Action::ResultE drawPrimitives(DrawActionBase* action);
+  Action::ResultE         drawActionHandler(Action* action);
+  Action::ResultE         renderActionHandler(Action* action);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   action handler                             */
-    /*! \{                                                                 */
+  // Action::ResultE intersect            (Action * action );
 
-    // draw the OpenGL primitives
-    virtual Action::ResultE drawPrimitives (DrawActionBase *action);
-    Action::ResultE drawActionHandler      (Action * action );
-    Action::ResultE renderActionHandler    (Action * action );
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    //Action::ResultE intersect            (Action * action );
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  void setMaterial(const MaterialPtr& value);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in MaterialDrawableBase.
 
-    void setMaterial       (const MaterialPtr     &value);
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  MaterialDrawable(void);
+  MaterialDrawable(const MaterialDrawable& source);
 
-    // Variables should all be in MaterialDrawableBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~MaterialDrawable(void);
 
-    MaterialDrawable(void);
-    MaterialDrawable(const MaterialDrawable &source);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class MaterialDrawableBase;
 
-    virtual ~MaterialDrawable(void); 
+  static void initMethod(void);
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  // prohibit default functions (move to 'public' if you need one)
 
-    friend class FieldContainer;
-    friend class MaterialDrawableBase;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const MaterialDrawable &source);
+  void operator=(const MaterialDrawable& source);
 };
 
-typedef MaterialDrawable *MaterialDrawableP;
+typedef MaterialDrawable* MaterialDrawableP;
 
 OSG_END_NAMESPACE
 
 #include <OSGMaterialDrawableBase.inl>
 #include <OSGMaterialDrawable.inl>
 
-#define OSGMATERIALDRAWABLE_HEADER_CVSID "@(#)$Id: OSGMaterialDrawable.h,v 1.4 2005/06/30 17:17:47 a-m-z Exp $"
+#define OSGMATERIALDRAWABLE_HEADER_CVSID                                                           \
+  "@(#)$Id: OSGMaterialDrawable.h,v 1.4 2005/06/30 17:17:47 a-m-z Exp $"
 
 #endif /* _OSGMATERIALDRAWABLE_H_ */

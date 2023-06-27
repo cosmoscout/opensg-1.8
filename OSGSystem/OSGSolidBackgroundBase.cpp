@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILESOLIDBACKGROUNDINST
 
 #include <stdlib.h>
@@ -61,25 +60,22 @@
 #include "OSGSolidBackgroundBase.h"
 #include "OSGSolidBackground.h"
 
-
 OSG_BEGIN_NAMESPACE
 
-const OSG::BitVector  SolidBackgroundBase::ColorFieldMask = 
+const OSG::BitVector SolidBackgroundBase::ColorFieldMask =
     (TypeTraits<BitVector>::One << SolidBackgroundBase::ColorFieldId);
 
-const OSG::BitVector  SolidBackgroundBase::ClearStencilBitFieldMask = 
+const OSG::BitVector SolidBackgroundBase::ClearStencilBitFieldMask =
     (TypeTraits<BitVector>::One << SolidBackgroundBase::ClearStencilBitFieldId);
 
-const OSG::BitVector  SolidBackgroundBase::AlphaFieldMask = 
+const OSG::BitVector SolidBackgroundBase::AlphaFieldMask =
     (TypeTraits<BitVector>::One << SolidBackgroundBase::AlphaFieldId);
 
-const OSG::BitVector  SolidBackgroundBase::DepthFieldMask = 
+const OSG::BitVector SolidBackgroundBase::DepthFieldMask =
     (TypeTraits<BitVector>::One << SolidBackgroundBase::DepthFieldId);
 
-const OSG::BitVector SolidBackgroundBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector SolidBackgroundBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
@@ -98,275 +94,208 @@ const OSG::BitVector SolidBackgroundBase::MTInfluenceMask =
 
 //! SolidBackground description
 
-FieldDescription *SolidBackgroundBase::_desc[] = 
-{
-    new FieldDescription(SFColor3f::getClassType(), 
-                     "color", 
-                     ColorFieldId, ColorFieldMask,
-                     false,
-                     (FieldAccessMethod) &SolidBackgroundBase::getSFColor),
-    new FieldDescription(SFInt32::getClassType(), 
-                     "clearStencilBit", 
-                     ClearStencilBitFieldId, ClearStencilBitFieldMask,
-                     false,
-                     (FieldAccessMethod) &SolidBackgroundBase::getSFClearStencilBit),
-    new FieldDescription(SFReal32::getClassType(), 
-                     "alpha", 
-                     AlphaFieldId, AlphaFieldMask,
-                     false,
-                     (FieldAccessMethod) &SolidBackgroundBase::getSFAlpha),
-    new FieldDescription(SFReal32::getClassType(), 
-                     "depth", 
-                     DepthFieldId, DepthFieldMask,
-                     false,
-                     (FieldAccessMethod) &SolidBackgroundBase::getSFDepth)
-};
+FieldDescription* SolidBackgroundBase::_desc[] = {
+    new FieldDescription(SFColor3f::getClassType(), "color", ColorFieldId, ColorFieldMask, false,
+        (FieldAccessMethod)&SolidBackgroundBase::getSFColor),
+    new FieldDescription(SFInt32::getClassType(), "clearStencilBit", ClearStencilBitFieldId,
+        ClearStencilBitFieldMask, false,
+        (FieldAccessMethod)&SolidBackgroundBase::getSFClearStencilBit),
+    new FieldDescription(SFReal32::getClassType(), "alpha", AlphaFieldId, AlphaFieldMask, false,
+        (FieldAccessMethod)&SolidBackgroundBase::getSFAlpha),
+    new FieldDescription(SFReal32::getClassType(), "depth", DepthFieldId, DepthFieldMask, false,
+        (FieldAccessMethod)&SolidBackgroundBase::getSFDepth)};
 
-
-FieldContainerType SolidBackgroundBase::_type(
-    "SolidBackground",
-    "Background",
-    NULL,
-    (PrototypeCreateF) &SolidBackgroundBase::createEmpty,
-    SolidBackground::initMethod,
-    _desc,
+FieldContainerType SolidBackgroundBase::_type("SolidBackground", "Background", NULL,
+    (PrototypeCreateF)&SolidBackgroundBase::createEmpty, SolidBackground::initMethod, _desc,
     sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(SolidBackgroundBase, SolidBackgroundPtr)
+// OSG_FIELD_CONTAINER_DEF(SolidBackgroundBase, SolidBackgroundPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &SolidBackgroundBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &SolidBackgroundBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr SolidBackgroundBase::shallowCopy(void) const 
-{ 
-    SolidBackgroundPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const SolidBackground *>(this)); 
-
-    return returnValue; 
+FieldContainerType& SolidBackgroundBase::getType(void) {
+  return _type;
 }
 
-UInt32 SolidBackgroundBase::getContainerSize(void) const 
-{ 
-    return sizeof(SolidBackground); 
+const FieldContainerType& SolidBackgroundBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr SolidBackgroundBase::shallowCopy(void) const {
+  SolidBackgroundPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const SolidBackground*>(this));
+
+  return returnValue;
+}
+
+UInt32 SolidBackgroundBase::getContainerSize(void) const {
+  return sizeof(SolidBackground);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void SolidBackgroundBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((SolidBackgroundBase *) &other, whichField);
+void SolidBackgroundBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((SolidBackgroundBase*)&other, whichField);
 }
 #else
-void SolidBackgroundBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((SolidBackgroundBase *) &other, whichField, sInfo);
+void SolidBackgroundBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((SolidBackgroundBase*)&other, whichField, sInfo);
 }
-void SolidBackgroundBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void SolidBackgroundBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void SolidBackgroundBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void SolidBackgroundBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-SolidBackgroundBase::SolidBackgroundBase(void) :
-    _sfColor                  (Color3f(0,0,0)), 
-    _sfClearStencilBit        (Int32(-1)), 
-    _sfAlpha                  (Real32(1.f)), 
+SolidBackgroundBase::SolidBackgroundBase(void)
+    : _sfColor(Color3f(0, 0, 0))
+    , _sfClearStencilBit(Int32(-1))
+    , _sfAlpha(Real32(1.f))
+    ,
 #ifdef OSG_INFINITE_REVERSE_PROJECTION
-    _sfDepth                  (Real32(0.f)), 
+    _sfDepth(Real32(0.f))
+    ,
 #else
-    _sfDepth                  (Real32(1.f)), 
+    _sfDepth(Real32(1.f))
+    ,
 #endif
-    Inherited() 
-{
+    Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-SolidBackgroundBase::SolidBackgroundBase(const SolidBackgroundBase &source) :
-    _sfColor                  (source._sfColor                  ), 
-    _sfClearStencilBit        (source._sfClearStencilBit        ), 
-    _sfAlpha                  (source._sfAlpha                  ), 
-    _sfDepth                  (source._sfDepth                  ), 
-    Inherited                 (source)
-{
+SolidBackgroundBase::SolidBackgroundBase(const SolidBackgroundBase& source)
+    : _sfColor(source._sfColor)
+    , _sfClearStencilBit(source._sfClearStencilBit)
+    , _sfAlpha(source._sfAlpha)
+    , _sfDepth(source._sfDepth)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-SolidBackgroundBase::~SolidBackgroundBase(void)
-{
+SolidBackgroundBase::~SolidBackgroundBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 SolidBackgroundBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 SolidBackgroundBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (ColorFieldMask & whichField))
-    {
-        returnValue += _sfColor.getBinSize();
-    }
+  if (FieldBits::NoField != (ColorFieldMask & whichField)) {
+    returnValue += _sfColor.getBinSize();
+  }
 
-    if(FieldBits::NoField != (ClearStencilBitFieldMask & whichField))
-    {
-        returnValue += _sfClearStencilBit.getBinSize();
-    }
+  if (FieldBits::NoField != (ClearStencilBitFieldMask & whichField)) {
+    returnValue += _sfClearStencilBit.getBinSize();
+  }
 
-    if(FieldBits::NoField != (AlphaFieldMask & whichField))
-    {
-        returnValue += _sfAlpha.getBinSize();
-    }
+  if (FieldBits::NoField != (AlphaFieldMask & whichField)) {
+    returnValue += _sfAlpha.getBinSize();
+  }
 
-    if(FieldBits::NoField != (DepthFieldMask & whichField))
-    {
-        returnValue += _sfDepth.getBinSize();
-    }
+  if (FieldBits::NoField != (DepthFieldMask & whichField)) {
+    returnValue += _sfDepth.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void SolidBackgroundBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void SolidBackgroundBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ColorFieldMask & whichField))
-    {
-        _sfColor.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (ColorFieldMask & whichField)) {
+    _sfColor.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ClearStencilBitFieldMask & whichField))
-    {
-        _sfClearStencilBit.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (ClearStencilBitFieldMask & whichField)) {
+    _sfClearStencilBit.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (AlphaFieldMask & whichField))
-    {
-        _sfAlpha.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (AlphaFieldMask & whichField)) {
+    _sfAlpha.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (DepthFieldMask & whichField))
-    {
-        _sfDepth.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (DepthFieldMask & whichField)) {
+    _sfDepth.copyToBin(pMem);
+  }
 }
 
-void SolidBackgroundBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void SolidBackgroundBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ColorFieldMask & whichField))
-    {
-        _sfColor.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (ColorFieldMask & whichField)) {
+    _sfColor.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ClearStencilBitFieldMask & whichField))
-    {
-        _sfClearStencilBit.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (ClearStencilBitFieldMask & whichField)) {
+    _sfClearStencilBit.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (AlphaFieldMask & whichField))
-    {
-        _sfAlpha.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (AlphaFieldMask & whichField)) {
+    _sfAlpha.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (DepthFieldMask & whichField))
-    {
-        _sfDepth.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (DepthFieldMask & whichField)) {
+    _sfDepth.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void SolidBackgroundBase::executeSyncImpl(      SolidBackgroundBase *pOther,
-                                        const BitVector         &whichField)
-{
+void SolidBackgroundBase::executeSyncImpl(
+    SolidBackgroundBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (ColorFieldMask & whichField))
-        _sfColor.syncWith(pOther->_sfColor);
+  if (FieldBits::NoField != (ColorFieldMask & whichField))
+    _sfColor.syncWith(pOther->_sfColor);
 
-    if(FieldBits::NoField != (ClearStencilBitFieldMask & whichField))
-        _sfClearStencilBit.syncWith(pOther->_sfClearStencilBit);
+  if (FieldBits::NoField != (ClearStencilBitFieldMask & whichField))
+    _sfClearStencilBit.syncWith(pOther->_sfClearStencilBit);
 
-    if(FieldBits::NoField != (AlphaFieldMask & whichField))
-        _sfAlpha.syncWith(pOther->_sfAlpha);
+  if (FieldBits::NoField != (AlphaFieldMask & whichField))
+    _sfAlpha.syncWith(pOther->_sfAlpha);
 
-    if(FieldBits::NoField != (DepthFieldMask & whichField))
-        _sfDepth.syncWith(pOther->_sfDepth);
-
-
+  if (FieldBits::NoField != (DepthFieldMask & whichField))
+    _sfDepth.syncWith(pOther->_sfDepth);
 }
 #else
-void SolidBackgroundBase::executeSyncImpl(      SolidBackgroundBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void SolidBackgroundBase::executeSyncImpl(
+    SolidBackgroundBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (ColorFieldMask & whichField))
-        _sfColor.syncWith(pOther->_sfColor);
+  if (FieldBits::NoField != (ColorFieldMask & whichField))
+    _sfColor.syncWith(pOther->_sfColor);
 
-    if(FieldBits::NoField != (ClearStencilBitFieldMask & whichField))
-        _sfClearStencilBit.syncWith(pOther->_sfClearStencilBit);
+  if (FieldBits::NoField != (ClearStencilBitFieldMask & whichField))
+    _sfClearStencilBit.syncWith(pOther->_sfClearStencilBit);
 
-    if(FieldBits::NoField != (AlphaFieldMask & whichField))
-        _sfAlpha.syncWith(pOther->_sfAlpha);
+  if (FieldBits::NoField != (AlphaFieldMask & whichField))
+    _sfAlpha.syncWith(pOther->_sfAlpha);
 
-    if(FieldBits::NoField != (DepthFieldMask & whichField))
-        _sfDepth.syncWith(pOther->_sfDepth);
-
-
-
+  if (FieldBits::NoField != (DepthFieldMask & whichField))
+    _sfDepth.syncWith(pOther->_sfDepth);
 }
 
-void SolidBackgroundBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void SolidBackgroundBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 OSG_END_NAMESPACE
 
@@ -381,4 +310,3 @@ DataType FieldDataTraits<SolidBackgroundPtr>::_type("SolidBackgroundPtr", "Backg
 OSG_DLLEXPORT_SFIELD_DEF1(SolidBackgroundPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
-

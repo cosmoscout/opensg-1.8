@@ -6,48 +6,39 @@
 
 #include "OSGFontGlyph.h"
 
-enum IGlyphType
-{
-    IGLYPH_NONE   = 0x0000,
-    IGLYPH_BIAP   = 0x0001,
-    IGLYPH_PIXMAP = 0x0002
-};
+enum IGlyphType { IGLYPH_NONE = 0x0000, IGLYPH_BIAP = 0x0001, IGLYPH_PIXMAP = 0x0002 };
 
-OSG_BEGIN_NAMESPACE 
+OSG_BEGIN_NAMESPACE
 
-class OSG_SYSTEMLIB_DLLMAPPING ImageFontGlyph : public virtual FontGlyph
-{
-    typedef FontGlyph Inherited;
+class OSG_SYSTEMLIB_DLLMAPPING ImageFontGlyph : public virtual FontGlyph {
+  typedef FontGlyph Inherited;
 
-  private:
+ private:
+  ImageFontGlyph(const ImageFontGlyph& obj);
+  void operator=(const ImageFontGlyph& obj);
 
-    ImageFontGlyph(const ImageFontGlyph &obj);
-    void operator =(const ImageFontGlyph &obj);
-    
-  protected:
-    
-    IGlyphType  _type;
-    Int32       _boundingBox[4];
-    Int32       _imageSize[3];
-    Int32       _advance;
-    UChar8     *_bitmapBuffer;
-    UChar8     *_pixmapBuffer;
+ protected:
+  IGlyphType _type;
+  Int32      _boundingBox[4];
+  Int32      _imageSize[3];
+  Int32      _advance;
+  UChar8*    _bitmapBuffer;
+  UChar8*    _pixmapBuffer;
 
-  public:
+ public:
+  ImageFontGlyph(void);
+  ImageFontGlyph(IGlyphType type);
 
-    ImageFontGlyph(void);
-    ImageFontGlyph(IGlyphType type);
+  virtual ~ImageFontGlyph(void);
 
-    virtual ~ImageFontGlyph(void);
+  virtual bool clear(void);
 
-    virtual bool        clear         (void           );
-
-    const   Int32      *getBoundingBox(void           );
-    const   Int32      *getImageSize  (void           );
-            Int32       getAdvance    (void           );
-            UChar8     *getImage      (void           );
-    virtual IGlyphType  getType       (void           );
-    virtual void        setType       (IGlyphType type);
+  const Int32*       getBoundingBox(void);
+  const Int32*       getImageSize(void);
+  Int32              getAdvance(void);
+  UChar8*            getImage(void);
+  virtual IGlyphType getType(void);
+  virtual void       setType(IGlyphType type);
 };
 
 OSG_END_NAMESPACE

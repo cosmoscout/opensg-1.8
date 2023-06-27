@@ -49,112 +49,104 @@
 OSG_BEGIN_NAMESPACE
 
 /*! \brief State chunk for line-specific attributes. See \ref
-    PageSystemLineChunk for a description. 
+    PageSystemLineChunk for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING LineChunk : public LineChunkBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING LineChunk : public LineChunkBase {
+ private:
+  typedef LineChunkBase Inherited;
 
-    typedef LineChunkBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                 Chunk Class Access                           */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual const StateChunkClass* getClass(void) const;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                 Chunk Class Access                           */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name              Static Chunk Class Access                       */
+  /*! \{                                                                 */
 
-           virtual const StateChunkClass * getClass         (void) const;
+  inline static UInt32                 getStaticClassId(void);
+  inline static const StateChunkClass* getStaticClass(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name              Static Chunk Class Access                       */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    inline static        UInt32            getStaticClassId (void);
-    inline static  const StateChunkClass * getStaticClass   (void);
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector whichField, 
-                         UInt32    origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    State Commands                            */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  virtual void activate(DrawActionBase* action, UInt32 index = 0);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    State Commands                            */
-    /*! \{                                                                 */
+  virtual void changeFrom(DrawActionBase* action, StateChunk* old, UInt32 index = 0);
 
-    virtual void activate   ( DrawActionBase * action, UInt32 index = 0 );
+  virtual void deactivate(DrawActionBase* action, UInt32 index = 0);
 
-    virtual void changeFrom ( DrawActionBase * action, StateChunk * old,
-                             UInt32 index = 0 );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Comparison                                 */
+  /*! \{                                                                 */
 
-    virtual void deactivate ( DrawActionBase * action, UInt32 index = 0 );
+  virtual Real32 switchCost(StateChunk* chunk);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Comparison                                 */
-    /*! \{                                                                 */
+  virtual bool operator<(const StateChunk& other) const;
 
-    virtual Real32 switchCost  ( StateChunk * chunk );
+  virtual bool operator==(const StateChunk& other) const;
+  virtual bool operator!=(const StateChunk& other) const;
 
-    virtual bool   operator <  (const StateChunk &other) const;
+  /*! \}                                                                 */
 
-    virtual bool   operator == (const StateChunk &other) const;
-    virtual bool   operator != (const StateChunk &other) const;
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in LineChunkBase.
 
-    /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  LineChunk(void);
+  LineChunk(const LineChunk& source);
 
-    // Variables should all be in LineChunkBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~LineChunk(void);
 
-    LineChunk(void);
-    LineChunk(const LineChunk &source);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class LineChunkBase;
 
-    virtual ~LineChunk(void); 
+  // class. Used for indexing in State
+  static StateChunkClass _class;
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  static void initMethod(void);
 
-    friend class FieldContainer;
-    friend class LineChunkBase;
+  // prohibit default functions (move to 'public' if you need one)
 
-    // class. Used for indexing in State
-    static StateChunkClass _class;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const LineChunk &source);
+  void operator=(const LineChunk& source);
 };
 
-typedef LineChunk *LineChunkP;
+typedef LineChunk* LineChunkP;
 
 OSG_END_NAMESPACE
 

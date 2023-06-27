@@ -51,102 +51,97 @@
 OSG_BEGIN_NAMESPACE
 
 /*! \brief Simple textured Material wrapping standard OpenGL lighting and a
-    single texture.  See \ref 
+    single texture.  See \ref
     PageSystemMaterialTexturedSimpleMaterial for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING SimpleTexturedMaterial : public SimpleTexturedMaterialBase
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING SimpleTexturedMaterial : public SimpleTexturedMaterialBase {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    virtual void changed(BitVector whichField, 
-                         UInt32    origin    );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    virtual void dump(      UInt32    uiIndent = 0, 
-                      const BitVector bvFlags  = 0) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Rendering                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Rendering                                  */
-    /*! \{                                                                 */
+  virtual StatePtr makeState(void);
 
-    virtual StatePtr   makeState         (void);
+  virtual void rebuildState(void);
 
-    virtual void       rebuildState      (void);
+  virtual bool isTransparent(void) const;
 
-    virtual bool       isTransparent     (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Updates                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Updates                                   */
-    /*! \{                                                                 */
+  inline void imageChanged(void);
 
-    inline void imageChanged(void);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // these chunks are used for rendering the material
 
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  TextureChunkPtr _textureChunk;
+  TexGenChunkPtr  _texGenChunk;
 
-    // these chunks are used for rendering the material
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    TextureChunkPtr    _textureChunk;
-    TexGenChunkPtr     _texGenChunk;
+  SimpleTexturedMaterial(void);
+  SimpleTexturedMaterial(const SimpleTexturedMaterial& source);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    SimpleTexturedMaterial(void);
-    SimpleTexturedMaterial(const SimpleTexturedMaterial &source);
+  virtual ~SimpleTexturedMaterial(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Helper                                   */
+  /*! \{                                                                 */
 
-    virtual ~SimpleTexturedMaterial(void); 
+  void prepareLocalChunks(void);
 
-    /*! \}                                                                 */ 
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Helper                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  typedef SimpleTexturedMaterialBase Inherited;
 
-    void prepareLocalChunks(void);
+  friend class FieldContainer;
+  friend class SimpleTexturedMaterialBase;
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  static void initMethod(void);
 
-    typedef SimpleTexturedMaterialBase Inherited;
+  // prohibit default functions (move to 'public' if you need one)
 
-    friend class FieldContainer;
-    friend class SimpleTexturedMaterialBase;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const SimpleTexturedMaterial &source);
+  void operator=(const SimpleTexturedMaterial& source);
 };
 
-typedef SimpleTexturedMaterial *SimpleTexturedMaterialP;
+typedef SimpleTexturedMaterial* SimpleTexturedMaterialP;
 
 OSG_END_NAMESPACE
 
 #include <OSGSimpleTexturedMaterialBase.inl>
 #include <OSGSimpleTexturedMaterial.inl>
 
-#define OSGSIMPLETEXTUREDMATERIAL_HEADER_CVSID "@(#)$Id: OSGSimpleTexturedMaterial.h,v 1.5 2001/11/01 09:03:28 vossg Exp $"
+#define OSGSIMPLETEXTUREDMATERIAL_HEADER_CVSID                                                     \
+  "@(#)$Id: OSGSimpleTexturedMaterial.h,v 1.5 2001/11/01 09:03:28 vossg Exp $"
 
 #endif /* _OSGTEXTUREDSIMPLEMATERIAL_H_ */

@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEFILEGRABFOREGROUNDINST
 
 #include <stdlib.h>
@@ -61,22 +60,19 @@
 #include "OSGFileGrabForegroundBase.h"
 #include "OSGFileGrabForeground.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  FileGrabForegroundBase::NameFieldMask = 
+const OSG::BitVector FileGrabForegroundBase::NameFieldMask =
     (TypeTraits<BitVector>::One << FileGrabForegroundBase::NameFieldId);
 
-const OSG::BitVector  FileGrabForegroundBase::FrameFieldMask = 
+const OSG::BitVector FileGrabForegroundBase::FrameFieldMask =
     (TypeTraits<BitVector>::One << FileGrabForegroundBase::FrameFieldId);
 
-const OSG::BitVector  FileGrabForegroundBase::IncrementFieldMask = 
+const OSG::BitVector FileGrabForegroundBase::IncrementFieldMask =
     (TypeTraits<BitVector>::One << FileGrabForegroundBase::IncrementFieldId);
 
-const OSG::BitVector FileGrabForegroundBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector FileGrabForegroundBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
@@ -92,243 +88,178 @@ const OSG::BitVector FileGrabForegroundBase::MTInfluenceMask =
 
 //! FileGrabForeground description
 
-FieldDescription *FileGrabForegroundBase::_desc[] = 
-{
-    new FieldDescription(SFString::getClassType(), 
-                     "name", 
-                     NameFieldId, NameFieldMask,
-                     false,
-                     (FieldAccessMethod) &FileGrabForegroundBase::getSFName),
-    new FieldDescription(SFUInt32::getClassType(), 
-                     "frame", 
-                     FrameFieldId, FrameFieldMask,
-                     false,
-                     (FieldAccessMethod) &FileGrabForegroundBase::getSFFrame),
-    new FieldDescription(SFBool::getClassType(), 
-                     "increment", 
-                     IncrementFieldId, IncrementFieldMask,
-                     false,
-                     (FieldAccessMethod) &FileGrabForegroundBase::getSFIncrement)
-};
+FieldDescription* FileGrabForegroundBase::_desc[] = {
+    new FieldDescription(SFString::getClassType(), "name", NameFieldId, NameFieldMask, false,
+        (FieldAccessMethod)&FileGrabForegroundBase::getSFName),
+    new FieldDescription(SFUInt32::getClassType(), "frame", FrameFieldId, FrameFieldMask, false,
+        (FieldAccessMethod)&FileGrabForegroundBase::getSFFrame),
+    new FieldDescription(SFBool::getClassType(), "increment", IncrementFieldId, IncrementFieldMask,
+        false, (FieldAccessMethod)&FileGrabForegroundBase::getSFIncrement)};
 
-
-FieldContainerType FileGrabForegroundBase::_type(
-    "FileGrabForeground",
-    "GrabForeground",
-    NULL,
-    (PrototypeCreateF) &FileGrabForegroundBase::createEmpty,
-    FileGrabForeground::initMethod,
-    _desc,
+FieldContainerType FileGrabForegroundBase::_type("FileGrabForeground", "GrabForeground", NULL,
+    (PrototypeCreateF)&FileGrabForegroundBase::createEmpty, FileGrabForeground::initMethod, _desc,
     sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(FileGrabForegroundBase, FileGrabForegroundPtr)
+// OSG_FIELD_CONTAINER_DEF(FileGrabForegroundBase, FileGrabForegroundPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &FileGrabForegroundBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &FileGrabForegroundBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr FileGrabForegroundBase::shallowCopy(void) const 
-{ 
-    FileGrabForegroundPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const FileGrabForeground *>(this)); 
-
-    return returnValue; 
+FieldContainerType& FileGrabForegroundBase::getType(void) {
+  return _type;
 }
 
-UInt32 FileGrabForegroundBase::getContainerSize(void) const 
-{ 
-    return sizeof(FileGrabForeground); 
+const FieldContainerType& FileGrabForegroundBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr FileGrabForegroundBase::shallowCopy(void) const {
+  FileGrabForegroundPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const FileGrabForeground*>(this));
+
+  return returnValue;
+}
+
+UInt32 FileGrabForegroundBase::getContainerSize(void) const {
+  return sizeof(FileGrabForeground);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void FileGrabForegroundBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((FileGrabForegroundBase *) &other, whichField);
+void FileGrabForegroundBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((FileGrabForegroundBase*)&other, whichField);
 }
 #else
-void FileGrabForegroundBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((FileGrabForegroundBase *) &other, whichField, sInfo);
+void FileGrabForegroundBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((FileGrabForegroundBase*)&other, whichField, sInfo);
 }
-void FileGrabForegroundBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void FileGrabForegroundBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void FileGrabForegroundBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void FileGrabForegroundBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-FileGrabForegroundBase::FileGrabForegroundBase(void) :
-    _sfName                   (), 
-    _sfFrame                  (UInt32(0)), 
-    _sfIncrement              (bool(true)), 
-    Inherited() 
-{
+FileGrabForegroundBase::FileGrabForegroundBase(void)
+    : _sfName()
+    , _sfFrame(UInt32(0))
+    , _sfIncrement(bool(true))
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-FileGrabForegroundBase::FileGrabForegroundBase(const FileGrabForegroundBase &source) :
-    _sfName                   (source._sfName                   ), 
-    _sfFrame                  (source._sfFrame                  ), 
-    _sfIncrement              (source._sfIncrement              ), 
-    Inherited                 (source)
-{
+FileGrabForegroundBase::FileGrabForegroundBase(const FileGrabForegroundBase& source)
+    : _sfName(source._sfName)
+    , _sfFrame(source._sfFrame)
+    , _sfIncrement(source._sfIncrement)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-FileGrabForegroundBase::~FileGrabForegroundBase(void)
-{
+FileGrabForegroundBase::~FileGrabForegroundBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 FileGrabForegroundBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 FileGrabForegroundBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (NameFieldMask & whichField))
-    {
-        returnValue += _sfName.getBinSize();
-    }
+  if (FieldBits::NoField != (NameFieldMask & whichField)) {
+    returnValue += _sfName.getBinSize();
+  }
 
-    if(FieldBits::NoField != (FrameFieldMask & whichField))
-    {
-        returnValue += _sfFrame.getBinSize();
-    }
+  if (FieldBits::NoField != (FrameFieldMask & whichField)) {
+    returnValue += _sfFrame.getBinSize();
+  }
 
-    if(FieldBits::NoField != (IncrementFieldMask & whichField))
-    {
-        returnValue += _sfIncrement.getBinSize();
-    }
+  if (FieldBits::NoField != (IncrementFieldMask & whichField)) {
+    returnValue += _sfIncrement.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void FileGrabForegroundBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void FileGrabForegroundBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (NameFieldMask & whichField))
-    {
-        _sfName.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (NameFieldMask & whichField)) {
+    _sfName.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (FrameFieldMask & whichField))
-    {
-        _sfFrame.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (FrameFieldMask & whichField)) {
+    _sfFrame.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (IncrementFieldMask & whichField))
-    {
-        _sfIncrement.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (IncrementFieldMask & whichField)) {
+    _sfIncrement.copyToBin(pMem);
+  }
 }
 
-void FileGrabForegroundBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void FileGrabForegroundBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (NameFieldMask & whichField))
-    {
-        _sfName.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (NameFieldMask & whichField)) {
+    _sfName.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (FrameFieldMask & whichField))
-    {
-        _sfFrame.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (FrameFieldMask & whichField)) {
+    _sfFrame.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (IncrementFieldMask & whichField))
-    {
-        _sfIncrement.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (IncrementFieldMask & whichField)) {
+    _sfIncrement.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void FileGrabForegroundBase::executeSyncImpl(      FileGrabForegroundBase *pOther,
-                                        const BitVector         &whichField)
-{
+void FileGrabForegroundBase::executeSyncImpl(
+    FileGrabForegroundBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (NameFieldMask & whichField))
-        _sfName.syncWith(pOther->_sfName);
+  if (FieldBits::NoField != (NameFieldMask & whichField))
+    _sfName.syncWith(pOther->_sfName);
 
-    if(FieldBits::NoField != (FrameFieldMask & whichField))
-        _sfFrame.syncWith(pOther->_sfFrame);
+  if (FieldBits::NoField != (FrameFieldMask & whichField))
+    _sfFrame.syncWith(pOther->_sfFrame);
 
-    if(FieldBits::NoField != (IncrementFieldMask & whichField))
-        _sfIncrement.syncWith(pOther->_sfIncrement);
-
-
+  if (FieldBits::NoField != (IncrementFieldMask & whichField))
+    _sfIncrement.syncWith(pOther->_sfIncrement);
 }
 #else
-void FileGrabForegroundBase::executeSyncImpl(      FileGrabForegroundBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void FileGrabForegroundBase::executeSyncImpl(
+    FileGrabForegroundBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (NameFieldMask & whichField))
-        _sfName.syncWith(pOther->_sfName);
+  if (FieldBits::NoField != (NameFieldMask & whichField))
+    _sfName.syncWith(pOther->_sfName);
 
-    if(FieldBits::NoField != (FrameFieldMask & whichField))
-        _sfFrame.syncWith(pOther->_sfFrame);
+  if (FieldBits::NoField != (FrameFieldMask & whichField))
+    _sfFrame.syncWith(pOther->_sfFrame);
 
-    if(FieldBits::NoField != (IncrementFieldMask & whichField))
-        _sfIncrement.syncWith(pOther->_sfIncrement);
-
-
-
+  if (FieldBits::NoField != (IncrementFieldMask & whichField))
+    _sfIncrement.syncWith(pOther->_sfIncrement);
 }
 
-void FileGrabForegroundBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void FileGrabForegroundBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>
@@ -336,7 +267,8 @@ void FileGrabForegroundBase::execBeginEditImpl (const BitVector &whichField,
 OSG_BEGIN_NAMESPACE
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_DEV)
-DataType FieldDataTraits<FileGrabForegroundPtr>::_type("FileGrabForegroundPtr", "GrabForegroundPtr");
+DataType FieldDataTraits<FileGrabForegroundPtr>::_type(
+    "FileGrabForegroundPtr", "GrabForegroundPtr");
 #endif
 
 OSG_DLLEXPORT_SFIELD_DEF1(FileGrabForegroundPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);

@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGSCREENALIGNEDTEXTBASE_H_
 #define _OSGSCREENALIGNEDTEXTBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -68,7 +66,7 @@
 #include <OSGAbstractText.h> // Parent
 
 #include <OSGColor4fFields.h> // Color type
-#include <OSGImageFields.h> // RenderImage type
+#include <OSGImageFields.h>   // RenderImage type
 
 #include <OSGScreenAlignedTextFields.h>
 
@@ -79,201 +77,181 @@ class BinaryDataHandler;
 
 //! \brief ScreenAlignedText Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING ScreenAlignedTextBase : public AbstractText
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING ScreenAlignedTextBase : public AbstractText {
+ private:
+  typedef AbstractText Inherited;
 
-    typedef AbstractText    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef ScreenAlignedTextPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    ColorFieldId       = Inherited::NextFieldId,
+    RenderImageFieldId = ColorFieldId + 1,
+    NextFieldId        = RenderImageFieldId + 1
+  };
 
-    typedef ScreenAlignedTextPtr  Ptr;
+  static const OSG::BitVector ColorFieldMask;
+  static const OSG::BitVector RenderImageFieldMask;
 
-    enum
-    {
-        ColorFieldId       = Inherited::NextFieldId,
-        RenderImageFieldId = ColorFieldId       + 1,
-        NextFieldId        = RenderImageFieldId + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector ColorFieldMask;
-    static const OSG::BitVector RenderImageFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFColor4f* getSFColor(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  Color4f&       getColor(void);
+  const Color4f& getColor(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFColor4f           *getSFColor          (void);
+  void setColor(const Color4f& value);
 
-           Color4f             &getColor          (void);
-     const Color4f             &getColor          (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setColor          ( const Color4f &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static ScreenAlignedTextPtr create(void);
+  static ScreenAlignedTextPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  ScreenAlignedTextPtr      create          (void); 
-    static  ScreenAlignedTextPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFColor4f  _sfColor;
+  SFImagePtr _sfRenderImage;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  ScreenAlignedTextBase(void);
+  ScreenAlignedTextBase(const ScreenAlignedTextBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~ScreenAlignedTextBase(void);
 
-    SFColor4f           _sfColor;
-    SFImagePtr          _sfRenderImage;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  SFImagePtr* getSFRenderImage(void);
 
-    ScreenAlignedTextBase(void);
-    ScreenAlignedTextBase(const ScreenAlignedTextBase &source);
+  ImagePtr&       getRenderImage(void);
+  const ImagePtr& getRenderImage(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-    virtual ~ScreenAlignedTextBase(void); 
+  void setRenderImage(const ImagePtr& value);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
-
-           SFImagePtr          *getSFRenderImage    (void);
-
-           ImagePtr            &getRenderImage    (void);
-     const ImagePtr            &getRenderImage    (void) const;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
-
-     void setRenderImage    (const ImagePtr &value);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      ScreenAlignedTextBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(ScreenAlignedTextBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      ScreenAlignedTextBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      ScreenAlignedTextBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const ScreenAlignedTextBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const ScreenAlignedTextBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef ScreenAlignedTextBase* ScreenAlignedTextBaseP;
 
-typedef ScreenAlignedTextBase *ScreenAlignedTextBaseP;
-
-typedef osgIF<ScreenAlignedTextBase::isNodeCore,
-              CoredNodePtr<ScreenAlignedText>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet ScreenAlignedTextNodePtr;
+typedef osgIF<ScreenAlignedTextBase::isNodeCore, CoredNodePtr<ScreenAlignedText>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet
+    ScreenAlignedTextNodePtr;
 
 typedef RefPtr<ScreenAlignedTextPtr> ScreenAlignedTextRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGSCREENALIGNEDTEXTBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGSCREENALIGNEDTEXTBASE_HEADER_CVSID                                                      \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGSCREENALIGNEDTEXTBASE_H_ */

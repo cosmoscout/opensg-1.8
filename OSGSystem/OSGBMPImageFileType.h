@@ -38,8 +38,8 @@
 
 #ifndef OSGBMPIMAGEFILETYPE_CLASS_DECLARATION
 #define OSGBMPIMAGEFILETYPE_CLASS_DECLARATION
-#ifdef  __sgi
-#pragma  once
+#ifdef __sgi
+#pragma once
 #endif
 
 #include <OSGSystemDef.h>
@@ -53,70 +53,63 @@ OSG_BEGIN_NAMESPACE
 See \ref PageSystemImage for a detailed description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING BMPImageFileType : public ImageFileType
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING BMPImageFileType : public ImageFileType {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  virtual ~BMPImageFileType(void);
 
-    virtual ~BMPImageFileType (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Read/Write                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Read/Write                                 */
-    /*! \{                                                                 */
+  virtual bool read(ImagePtr& image, std::istream& is, const std::string& mimetype);
+  virtual bool write(const ImagePtr& image, std::ostream& os, const std::string& mimetype);
 
-    virtual bool read (ImagePtr &image, std::istream &is, const std::string &mimetype);
-    virtual bool write(const ImagePtr &image, std::ostream &os, const std::string &mimetype);
+  virtual std::string determineMimetypeFromStream(std::istream& is);
 
-    virtual std::string determineMimetypeFromStream(std::istream &is);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Get Method                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Get Method                                  */
-    /*! \{                                                                 */
+  static BMPImageFileType& the(void);
 
-    static BMPImageFileType & the (void);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name               Default Constructor                            */
+  /*! \{                                                                 */
 
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  BMPImageFileType(
+      const Char8* mimeType, const Char8* suffixArray[], UInt16 suffixByteCount, UInt32 flags);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name               Default Constructor                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    BMPImageFileType (const Char8 *mimeType,
-                      const Char8 *suffixArray[],
-                      UInt16 suffixByteCount,
-                      UInt32 flags );
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /*---------------------------------------------------------------------*/
+  /*! \name                Copy Constructor                              */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  BMPImageFileType(const BMPImageFileType& obj);
 
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                Copy Operator                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                Copy Constructor                              */
-    /*! \{                                                                 */
+  const BMPImageFileType& operator=(const BMPImageFileType& obj);
 
-    BMPImageFileType (const BMPImageFileType &obj);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                Copy Operator                                 */
-    /*! \{                                                                 */
-
-    const BMPImageFileType & operator= (const BMPImageFileType &obj);
-
-    /*! \}                                                                 */
-
-    static BMPImageFileType _the;
-
+  static BMPImageFileType _the;
 };
 
 typedef BMPImageFileType* BMPImageFileTypeP;

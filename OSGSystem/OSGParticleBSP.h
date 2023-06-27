@@ -57,166 +57,148 @@ typedef GeoPositions::PtrType GeoPositionsPtr;
 
 class Particles;
 typedef FCPtr<MaterialDrawablePtr, Particles> ParticlesPtr;
- 
+
 class ParticleBSPTree;
 
 /*! \brief Particle BSP Tree Node
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING ParticleBSPNode
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING ParticleBSPNode {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  enum { X = 0, Y, Z, Leaf } Axis;
 
-    enum { X=0, Y, Z, Leaf } Axis;
-    
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    ParticleBSPNode(void);
-    ParticleBSPNode(const ParticleBSPNode &source);
+  ParticleBSPNode(void);
+  ParticleBSPNode(const ParticleBSPNode& source);
 
-    ParticleBSPNode(UInt32 value);
-    ParticleBSPNode(UInt8 axis, Real32 splitvalue);
+  ParticleBSPNode(UInt32 value);
+  ParticleBSPNode(UInt8 axis, Real32 splitvalue);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    ~ParticleBSPNode(void); 
+  ~ParticleBSPNode(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Access                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Access                                   */
+  /*! \{                                                                 */
 
-    inline bool   isLeaf       (void) const;
-    inline Int32  getValue     (void) const;
-    inline Real32 getSplitValue(void) const;
-    inline UInt8  getAxis      (void) const;
+  inline bool   isLeaf(void) const;
+  inline Int32  getValue(void) const;
+  inline Real32 getSplitValue(void) const;
+  inline UInt8  getAxis(void) const;
 
-    inline void   setValue     (Int32 value);
-    inline void   setSplit     (UInt8 axis, Real32 splitvalue);
+  inline void setValue(Int32 value);
+  inline void setSplit(UInt8 axis, Real32 splitvalue);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    void dump(      UInt32     uiIndent = 0, 
-              const BitVector  bvFlags  = 0) const;
+  void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*==========================  PRIVATE  ================================*/
+ private:
+  UInt8 _axis;
 
-    UInt8   _axis;
-
-    union
-    {
-        Int32   _value;   
-        Real32  _splitvalue;
-    };
+  union {
+    Int32  _value;
+    Real32 _splitvalue;
+  };
 };
 
-/*! \brief Particle BSP Tree 
+/*! \brief Particle BSP Tree
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING ParticleBSPTree
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING ParticleBSPTree {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  ParticleBSPTree(void);
 
-    ParticleBSPTree(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  virtual ~ParticleBSPTree(void);
 
-    virtual ~ParticleBSPTree(void); 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name               Creation / Deletion                            */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name               Creation / Deletion                            */
-    /*! \{                                                                 */
+  inline bool created(void);
 
-    inline bool created(void);
+  void build(Particles* core);
 
-           void build  (Particles *core);
+  void destroy(void);
 
-           void destroy(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Traversal                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Traversal                                 */
-    /*! \{                                                                 */
+  Int32* traverse(const Pnt3f& refPoint, UInt32& length, Int32* order = NULL) const;
 
-    Int32 *traverse(const Pnt3f &refPoint, UInt32 &length, 
-                    Int32 *order = NULL) const; 
+  Int32* traverse(const Vec3f& refVec, UInt32& length, Int32* order = NULL) const;
 
-    Int32 *traverse(const Vec3f &refVec, UInt32 &length, 
-                    Int32 *order = NULL) const; 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                 Input / Output                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                 Input / Output                               */
-    /*! \{                                                                 */
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
-    
-    void putToString(std::string &outVal) const;
-     
-    bool getFromString(const Char8 *&inVal);
-   
-    UInt32 getBinSize(void) const;
+  void putToString(std::string& outVal) const;
 
-    void copyToBin(BinaryDataHandler &pMem) const;
-    
-    void copyFromBin(BinaryDataHandler &pMem);
-    
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  bool getFromString(const Char8*& inVal);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                 Node Traversal                               */
-    /*! \{                                                                 */
+  UInt32 getBinSize(void) const;
 
-    UInt32 doTraverse(const Pnt3f &refPoint, UInt32 index, UInt32 length, 
-                      Int32 *order) const; 
+  void copyToBin(BinaryDataHandler& pMem) const;
 
-    UInt32 doTraverse(const Vec3f &refVec, UInt32 index, UInt32 length, 
-                      Int32 *order) const; 
+  void copyFromBin(BinaryDataHandler& pMem);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                 Creation Tools                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                 Node Traversal                               */
+  /*! \{                                                                 */
 
-    UInt32 doBuild(std::vector<Int32>::iterator begin, 
-                   std::vector<Int32>::iterator end,
-                        UInt32                  nodeindex,
-                        GeoPositionsPtr         pos      ); 
+  UInt32 doTraverse(const Pnt3f& refPoint, UInt32 index, UInt32 length, Int32* order) const;
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
-    
-    std::vector<ParticleBSPNode> _tree;
+  UInt32 doTraverse(const Vec3f& refVec, UInt32 index, UInt32 length, Int32* order) const;
+
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                 Creation Tools                               */
+  /*! \{                                                                 */
+
+  UInt32 doBuild(std::vector<Int32>::iterator begin, std::vector<Int32>::iterator end,
+      UInt32 nodeindex, GeoPositionsPtr pos);
+
+  /*! \}                                                                 */
+
+  /*==========================  PRIVATE  ================================*/
+ private:
+  std::vector<ParticleBSPNode> _tree;
 };
-
 
 #if !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
 
@@ -227,49 +209,45 @@ class OSG_SYSTEMLIB_DLLMAPPING ParticleBSPTree
 #endif
 
 template <>
-struct FieldDataTraits<ParticleBSPTree> : 
-    public FieldTraitsRecurseBase<ParticleBSPTree>
-{
-    static DataType       _type;
+struct FieldDataTraits<ParticleBSPTree> : public FieldTraitsRecurseBase<ParticleBSPTree> {
+  static DataType _type;
 
-    enum                  { StringConvertable = ToStringConvertable | 
-                                                FromStringConvertable    };
+  enum { StringConvertable = ToStringConvertable | FromStringConvertable };
 
-    static DataType       &getType      (void) { return _type;          }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static Char8          *getSName     (void) { return "SFParticleBSPTree"; }
-    static Char8          *getMName     (void) { return "MFParticleBSPTree"; }
+  static Char8* getSName(void) {
+    return "SFParticleBSPTree";
+  }
+  static Char8* getMName(void) {
+    return "MFParticleBSPTree";
+  }
 
-    static ParticleBSPTree getDefault   (void) { return ParticleBSPTree();   }
+  static ParticleBSPTree getDefault(void) {
+    return ParticleBSPTree();
+  }
 
-    static bool            getFromString(      ParticleBSPTree  &outVal,
-                                         const Char8           *&inVal)
-    {
-        return outVal.getFromString(inVal);
-    }
+  static bool getFromString(ParticleBSPTree& outVal, const Char8*& inVal) {
+    return outVal.getFromString(inVal);
+  }
 
-    static void           putToString   (const      ParticleBSPTree &inVal,
-                                               std::string          &outVal)
-    {
-        inVal.putToString(outVal);
-    }
-    
-    static UInt32 getBinSize(const ParticleBSPTree &oObject)
-    {
-        return oObject.getBinSize();
-    }
+  static void putToString(const ParticleBSPTree& inVal, std::string& outVal) {
+    inVal.putToString(outVal);
+  }
 
-    static void copyToBin(      BinaryDataHandler   &pMem, 
-                          const ParticleBSPTree     &oObject)
-    {
-       oObject.copyToBin(pMem);
-    }
+  static UInt32 getBinSize(const ParticleBSPTree& oObject) {
+    return oObject.getBinSize();
+  }
 
-    static void copyFromBin(BinaryDataHandler &pMem, 
-                            ParticleBSPTree     &oObject)
-    {
-        oObject.copyFromBin(pMem);
-    }
+  static void copyToBin(BinaryDataHandler& pMem, const ParticleBSPTree& oObject) {
+    oObject.copyToBin(pMem);
+  }
+
+  static void copyFromBin(BinaryDataHandler& pMem, ParticleBSPTree& oObject) {
+    oObject.copyFromBin(pMem);
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -280,9 +258,9 @@ struct FieldDataTraits<ParticleBSPTree> :
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
 
 /*! \brief ParticleBSPTree fields
-*/
+ */
 
-#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS) 
+#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpBaseFieldSingle */
 
 typedef SField<ParticleBSPTree> SFParticleBSPTree;
@@ -292,13 +270,12 @@ typedef SField<ParticleBSPTree> SFParticleBSPTree;
 OSG_DLLEXPORT_DECL1(SField, ParticleBSPTree, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 #endif
 
-
 OSG_END_NAMESPACE
 
 #include <OSGParticleBSP.inl>
 
 #define OSGPARTICLEBSP_HEADER_CVSID "@(#)$Id: $"
 
-#endif            // exclude from user doc
+#endif // exclude from user doc
 
 #endif /* _OSGPARTICLES_H_ */

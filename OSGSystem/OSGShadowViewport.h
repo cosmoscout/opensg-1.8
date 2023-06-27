@@ -67,144 +67,135 @@
 
 OSG_BEGIN_NAMESPACE
 
-class OSG_SYSTEMLIB_DLLMAPPING ShadowViewport : public ShadowViewportBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING ShadowViewport : public ShadowViewportBase {
+ private:
+  friend class FieldContainer;
+  friend class ShadowViewportBase;
 
-    friend class FieldContainer;
-    friend class ShadowViewportBase;
+  static void initMethod(void);
 
-    static void initMethod(void);
+  // prohibit default functions (move to 'public' if you need one)
 
-    // prohibit default functions (move to 'public' if you need one)
+  void operator=(const ShadowViewport& source);
 
-    void operator =(const ShadowViewport &source);
+  bool          _GLSLsupported;
+  bool          _initDone;
+  bool          _restart;
+  TreeRenderer* _treeRenderer;
 
-    bool            _GLSLsupported;
-    bool            _initDone;
-    bool            _restart;
-    TreeRenderer    *_treeRenderer;
+  typedef ShadowViewportBase Inherited;
 
-    typedef ShadowViewportBase Inherited;
+  void checkLights(RenderActionBase* action);
+  void updateLights(void);
+  void initializeLights(RenderActionBase* action);
+  void clearLights(UInt32 size);
 
-    void checkLights(RenderActionBase* action);
-    void updateLights(void);
-    void initializeLights(RenderActionBase *action);
-    void clearLights(UInt32 size);
+  Action::ResultE findLight(NodePtr& node);
+  Action::ResultE findTransparent(NodePtr& node);
 
-    Action::ResultE findLight(NodePtr& node);
-    Action::ResultE findTransparent(NodePtr& node);
+  /*==========================  PUBLIC  =================================*/
+ public:
+  enum Mode {
+    NO_SHADOW = 0,
+    STD_SHADOW_MAP,
+    PERSPECTIVE_SHADOW_MAP,
+    DITHER_SHADOW_MAP,
+    PCF_SHADOW_MAP,
+    PCSS_SHADOW_MAP,
+    VARIANCE_SHADOW_MAP
+  };
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  UInt32 _mapRenderSize;
+  bool   _mapSizeChanged;
 
-    enum Mode
-    {
-        NO_SHADOW=0,
-        STD_SHADOW_MAP,
-        PERSPECTIVE_SHADOW_MAP,
-        DITHER_SHADOW_MAP,
-        PCF_SHADOW_MAP,
-        PCSS_SHADOW_MAP,
-        VARIANCE_SHADOW_MAP
-    };
+  TexGenChunkPtr       _texGen;
+  PolygonChunkPtr      _poly;
+  PolygonChunkPtr      _offset;
+  NodePtr              _dummy;
+  PassiveBackgroundPtr _silentBack;
+  UInt32               _windowW;
+  UInt32               _windowH;
 
-    UInt32                  _mapRenderSize;
-    bool                    _mapSizeChanged;
+  std::vector<NodePtr>                      _transparent;
+  std::vector<std::pair<NodePtr, LightPtr>> _lights;
+  std::vector<std::pair<NodePtr, LightPtr>> _oldLights;
+  std::vector<CameraPtr>                    _lightCameras;
+  std::vector<TransformPtr>                 _lightCamTrans;
+  std::vector<NodePtr>                      _lightCamBeacons;
+  std::vector<UInt32>                       _lightStates;
+  std::vector<ImagePtr>                     _shadowImages;
+  std::vector<TextureChunkPtr>              _texChunks;
+  std::vector<bool>                         _excludeNodeActive;
+  std::vector<bool>                         _realPointLight;
+  std::vector<bool*>                        _renderSide;
 
-    TexGenChunkPtr          _texGen;
-    PolygonChunkPtr         _poly;
-    PolygonChunkPtr         _offset;
-    NodePtr                 _dummy;
-    PassiveBackgroundPtr    _silentBack;
-    UInt32                  _windowW;
-    UInt32                  _windowH;
+  bool   _trigger_update;
+  Matrix _transforms[6];
 
-    std::vector<NodePtr>                        _transparent;
-    std::vector<std::pair<NodePtr, LightPtr> >  _lights;
-    std::vector<std::pair<NodePtr, LightPtr> >  _oldLights;
-    std::vector<CameraPtr>                      _lightCameras;
-    std::vector<TransformPtr>                   _lightCamTrans;
-    std::vector<NodePtr>                        _lightCamBeacons;
-    std::vector<UInt32>                         _lightStates;
-    std::vector<ImagePtr>                       _shadowImages;
-    std::vector<TextureChunkPtr>                _texChunks;
-    std::vector<bool>                           _excludeNodeActive;
-    std::vector<bool>                           _realPointLight;
-    std::vector<bool*>                          _renderSide;
+  NodePtr _light_render_transform;
+  GLuint  _occlusionQuery;
 
-    bool                            _trigger_update;
-    Matrix                          _transforms[6];
+  virtual void setVPSize(Real32 a, Real32 b, Real32 c, Real32 d);
+  virtual void activateSize(void);
+  virtual void activate(void);
+  virtual void deactivate(void);
+  virtual void render(RenderActionBase* action);
 
-    NodePtr                         _light_render_transform;
-    GLuint                          _occlusionQuery;
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    virtual void setVPSize   (Real32 a,Real32 b, Real32 c, Real32 d);
-    virtual void activateSize(void);
-    virtual void activate    (void);
-    virtual void deactivate  (void);
-    virtual void render      (RenderActionBase* action);
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  void triggerMapUpdate(void);
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  void    renderLight(RenderActionBase* action, Material* mat, UInt32 index);
+  NodePtr getLightRoot(UInt32 index);
 
-    void triggerMapUpdate(void);
+  void checkLightsOcclusion(RenderActionBase* action);
+  void setReadBuffer(void);
 
-    void renderLight(RenderActionBase *action, Material *mat, UInt32 index);
-    NodePtr getLightRoot(UInt32 index);
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    void checkLightsOcclusion(RenderActionBase *action);
-    void setReadBuffer(void);
+ protected:
+  // Variables should all be in ShadowViewportBase.
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-  protected:
+  ShadowViewport(void);
+  ShadowViewport(const ShadowViewport& source);
 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    // Variables should all be in ShadowViewportBase.
+  virtual ~ShadowViewport(void);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  void onCreate(const ShadowViewport* source = NULL);
+  void onDestroy(void);
 
-    ShadowViewport(void);
-    ShadowViewport(const ShadowViewport &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~ShadowViewport(void); 
-
-    void onCreate(const ShadowViewport *source = NULL);
-    void onDestroy(void);
-
-
-    /*! \}                                                                 */
-    
+  /*! \}                                                                 */
 };
 
-typedef ShadowViewport *ShadowViewportP;
+typedef ShadowViewport* ShadowViewportP;
 
 OSG_END_NAMESPACE
 
 #include <OSGShadowViewportBase.inl>
 #include <OSGShadowViewport.inl>
 
-#define OSGSHADOWVIEWPORT_HEADER_CVSID "@(#)$Id: OSGShadowViewport.h,v 1.14 2007/04/03 03:16:54 dirk Exp $"
+#define OSGSHADOWVIEWPORT_HEADER_CVSID                                                             \
+  "@(#)$Id: OSGShadowViewport.h,v 1.14 2007/04/03 03:16:54 dirk Exp $"
 
 #endif /* _OSGSHADOWVIEWPORT_H_ */

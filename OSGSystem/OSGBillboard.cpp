@@ -66,385 +66,326 @@ OSG_USING_NAMESPACE
 
 //! Constructor
 
-Billboard::Billboard(void) :
-    Inherited(),
-    _camTransform()
-{
+Billboard::Billboard(void)
+    : Inherited()
+    , _camTransform() {
 }
 
 //! Copy Constructor
 
-Billboard::Billboard(const Billboard &source) :
-    Inherited(source),
-    _camTransform(source._camTransform)
-{
+Billboard::Billboard(const Billboard& source)
+    : Inherited(source)
+    , _camTransform(source._camTransform) {
 }
 
 //! Destructor
 
-Billboard::~Billboard(void)
-{
+Billboard::~Billboard(void) {
 }
 
 /*----------------------------- class specific ----------------------------*/
 
 //! initialize the static features of the class, e.g. action callbacks
 
-void Billboard::initMethod (void)
-{
-    DrawAction::registerEnterDefault( 
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<
-            Action::ResultE,
-            BillboardPtr    , 
-            CNodePtr        ,  
-            Action         *>(&Billboard::drawEnter));
-    
-    DrawAction::registerLeaveDefault( 
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<
-            Action::ResultE,
-            BillboardPtr    , 
-            CNodePtr        ,  
-            Action         *>(&Billboard::drawLeave));
+void Billboard::initMethod(void) {
+  DrawAction::registerEnterDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, BillboardPtr, CNodePtr, Action*>(
+          &Billboard::drawEnter));
 
+  DrawAction::registerLeaveDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, BillboardPtr, CNodePtr, Action*>(
+          &Billboard::drawLeave));
 
-    IntersectAction::registerEnterDefault( 
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<
-            Action::ResultE,
-            BillboardPtr    , 
-            CNodePtr        ,  
-            Action         *>(&Billboard::intersectEnter));
+  IntersectAction::registerEnterDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, BillboardPtr, CNodePtr, Action*>(
+          &Billboard::intersectEnter));
 
-    IntersectAction::registerLeaveDefault( 
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<
-            Action::ResultE,
-            BillboardPtr    , 
-            CNodePtr        ,   
-            Action         *>(&Billboard::intersectLeave));
+  IntersectAction::registerLeaveDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, BillboardPtr, CNodePtr, Action*>(
+          &Billboard::intersectLeave));
 
+  RenderAction::registerEnterDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, BillboardPtr, CNodePtr, Action*>(
+          &Billboard::renderEnter));
 
-    RenderAction::registerEnterDefault(
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<
-            Action::ResultE,
-            BillboardPtr    , 
-            CNodePtr        ,  
-            Action         *>(&Billboard::renderEnter));
-
-    RenderAction::registerLeaveDefault(
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<
-            Action::ResultE,
-            BillboardPtr    , 
-            CNodePtr        ,  
-            Action         *>(&Billboard::renderLeave));
+  RenderAction::registerLeaveDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, BillboardPtr, CNodePtr, Action*>(
+          &Billboard::renderLeave));
 }
 
 //! react to field changes
 
-void Billboard::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void Billboard::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
 //! output the instance for debug purposes
 
-void Billboard::dump(      UInt32    uiIndent,
-                     const BitVector bvFlags ) const
-{
-    Inherited::dump(uiIndent, bvFlags);
+void Billboard::dump(UInt32 uiIndent, const BitVector bvFlags) const {
+  Inherited::dump(uiIndent, bvFlags);
 }
-
 
 /*------------------------- volume update -------------------------------*/
 
-void Billboard::adjustVolume( Volume & volume )
-{
-    Inherited::adjustVolume(volume);
-    
-    // enlarge the volume to adjust for rotations
-    // keep the center, but make it a cube big enough to contain the 
-    // billboard in all orientations
-    
-    Pnt3f min, max;
-    
-    volume.getBounds(min, max);
-    
-    Vec3f  dia    = max - min;
-    Pnt3f  center = min + dia * .5;
-    Real32 extend = dia.maxValue();
-    
-    dia.setValues(extend * Sqrt2, extend * Sqrt2, extend * Sqrt2);
-    
-    volume.extendBy( center - dia );
-    volume.extendBy( center + dia );
+void Billboard::adjustVolume(Volume& volume) {
+  Inherited::adjustVolume(volume);
+
+  // enlarge the volume to adjust for rotations
+  // keep the center, but make it a cube big enough to contain the
+  // billboard in all orientations
+
+  Pnt3f min, max;
+
+  volume.getBounds(min, max);
+
+  Vec3f  dia    = max - min;
+  Pnt3f  center = min + dia * .5;
+  Real32 extend = dia.maxValue();
+
+  dia.setValues(extend * Sqrt2, extend * Sqrt2, extend * Sqrt2);
+
+  volume.extendBy(center - dia);
+  volume.extendBy(center + dia);
 }
 
-void Billboard::accumulateMatrix(Matrix &result)
-{
-    result.mult(_camTransform);
+void Billboard::accumulateMatrix(Matrix& result) {
+  result.mult(_camTransform);
 }
 
-void Billboard::calcMatrix(      DrawActionBase *pAction,
-                           const Matrix         &mToWorld,
-                                 Matrix         &mResult)
-{
-    Pnt3f eyepos(0.f, 0.f, 0.f);
-    Pnt3f objpos(0.f, 0.f, 0.f);
+void Billboard::calcMatrix(DrawActionBase* pAction, const Matrix& mToWorld, Matrix& mResult) {
+  Pnt3f eyepos(0.f, 0.f, 0.f);
+  Pnt3f objpos(0.f, 0.f, 0.f);
 
-    Vec3f vDir;
-    Vec3f n(0.f, 0.f, 1.f);
+  Vec3f vDir;
+  Vec3f n(0.f, 0.f, 1.f);
 
-    Quaternion q1;
+  Quaternion q1;
 
-    Matrix mCamToWorld = pAction->getCameraToWorld();
+  Matrix mCamToWorld = pAction->getCameraToWorld();
 
-    mResult.invertFrom(mToWorld);
-    
-    mToWorld.mult(n);
+  mResult.invertFrom(mToWorld);
 
-    if(getAxisOfRotation() == Vec3f::Null)
-    {
-        if(_sfFocusOnCamera.getValue() == true)
-        {
-            Vec3f vUp;
-            Vec3f uW;
-            Vec3f vX;
+  mToWorld.mult(n);
 
-            mCamToWorld.mult(eyepos);
-            mToWorld   .mult(objpos);
-            
-            vDir = eyepos - objpos;
-            
-            vUp.setValue (mCamToWorld[0]);
-            
-            vUp = vDir.cross(vUp);
+  if (getAxisOfRotation() == Vec3f::Null) {
+    if (_sfFocusOnCamera.getValue() == true) {
+      Vec3f vUp;
+      Vec3f uW;
+      Vec3f vX;
 
-            vUp.normalize();
-            vDir.normalize();
+      mCamToWorld.mult(eyepos);
+      mToWorld.mult(objpos);
 
-            Matrix mTr;
+      vDir = eyepos - objpos;
 
-            vX = vUp.cross(vDir);
-            vX.normalize();
+      vUp.setValue(mCamToWorld[0]);
 
-            mTr[0][0] = vX[0];
-            mTr[0][1] = vX[1];
-            mTr[0][2] = vX[2];
-            mTr[1][0] = vUp[0];
-            mTr[1][1] = vUp[1];
-            mTr[1][2] = vUp[2];
-            mTr[2][0] = vDir[0];
-            mTr[2][1] = vDir[1];
-            mTr[2][2] = vDir[2];
+      vUp = vDir.cross(vUp);
 
-            q1.setValue(mTr);
-        }
-        else
-        {
-            if(_sfAlignToScreen.getValue() == false)
-            {
-                Vec3f u  (0.f, 1.f, 0.f);
-                Vec3f vUp;
-                Vec3f uW;
-                
-                mCamToWorld.mult(eyepos);
-                mToWorld   .mult(objpos);
-                
-                vDir = eyepos - objpos;
-                
-//            vDir.setValue(mCamToWorld[2]);
-                
-                vUp.setValue (mCamToWorld[1]);
-                
-                Quaternion qN(n, vDir);
-                
-                mToWorld.mult(u);
-                
-                qN.multVec(u, uW);
-                
-                q1.setValue(uW, vUp);
-                
-                q1.mult(qN);
-            }
-            else
-            {
-                Vec3f u  (0.f, 1.f, 0.f);
-                Vec3f vUp;
-                Vec3f uW;
+      vUp.normalize();
+      vDir.normalize();
 
-                vDir.setValue(mCamToWorld[2]);
-                
-                vUp.setValue (mCamToWorld[1]);
-                
-                Quaternion qN(n, vDir);
-                
-                mToWorld.mult(u);
-                
-                qN.multVec(u, uW);
-            
-                q1.setValue(uW, vUp);
-                
-                q1.mult(qN);
-            }
-        }
-    }
-    else
-    {
-        Vec3f wUp;
-        Vec3f s;
-        Vec3f tDir;
+      Matrix mTr;
+
+      vX = vUp.cross(vDir);
+      vX.normalize();
+
+      mTr[0][0] = vX[0];
+      mTr[0][1] = vX[1];
+      mTr[0][2] = vX[2];
+      mTr[1][0] = vUp[0];
+      mTr[1][1] = vUp[1];
+      mTr[1][2] = vUp[2];
+      mTr[2][0] = vDir[0];
+      mTr[2][1] = vDir[1];
+      mTr[2][2] = vDir[2];
+
+      q1.setValue(mTr);
+    } else {
+      if (_sfAlignToScreen.getValue() == false) {
+        Vec3f u(0.f, 1.f, 0.f);
+        Vec3f vUp;
+        Vec3f uW;
 
         mCamToWorld.mult(eyepos);
-
         mToWorld.mult(objpos);
-
-        mToWorld.mult(getAxisOfRotation(), wUp);
 
         vDir = eyepos - objpos;
 
-        s    = vDir.cross(wUp);
-        tDir = wUp .cross(s  );
-        
-        q1.setValue(n, tDir);
+        //            vDir.setValue(mCamToWorld[2]);
 
-        // clamp angle to [min; max]
-        Vec3f axis;
-        Real32 angle;
+        vUp.setValue(mCamToWorld[1]);
 
-        if ( getMinAngle() <= getMaxAngle() ) {
-            q1.getValueAsAxisRad(axis, angle);
+        Quaternion qN(n, vDir);
 
-            if (angle < getMinAngle())
-                angle = getMinAngle();
-            if (angle > getMaxAngle())
-                angle = getMaxAngle();
+        mToWorld.mult(u);
 
-            q1.setValueAsAxisRad(axis, angle);
-        }
+        qN.multVec(u, uW);
+
+        q1.setValue(uW, vUp);
+
+        q1.mult(qN);
+      } else {
+        Vec3f u(0.f, 1.f, 0.f);
+        Vec3f vUp;
+        Vec3f uW;
+
+        vDir.setValue(mCamToWorld[2]);
+
+        vUp.setValue(mCamToWorld[1]);
+
+        Quaternion qN(n, vDir);
+
+        mToWorld.mult(u);
+
+        qN.multVec(u, uW);
+
+        q1.setValue(uW, vUp);
+
+        q1.mult(qN);
+      }
     }
+  } else {
+    Vec3f wUp;
+    Vec3f s;
+    Vec3f tDir;
 
-    Matrix mTrans;
-    Matrix mMat;
-    
-    mTrans[3][0] = mToWorld[3][0];
-    mTrans[3][1] = mToWorld[3][1];
-    mTrans[3][2] = mToWorld[3][2];
+    mCamToWorld.mult(eyepos);
 
-    mMat.setTransform(q1);
+    mToWorld.mult(objpos);
 
-    mResult.mult(mTrans);
-    mResult.mult(mMat  );
+    mToWorld.mult(getAxisOfRotation(), wUp);
 
-    mTrans[3][0] = -mToWorld[3][0];
-    mTrans[3][1] = -mToWorld[3][1];
-    mTrans[3][2] = -mToWorld[3][2];
+    vDir = eyepos - objpos;
 
-    mResult.mult(mTrans);
-    mResult.mult(mToWorld);
+    s    = vDir.cross(wUp);
+    tDir = wUp.cross(s);
 
-    _camTransform = mResult;
+    q1.setValue(n, tDir);
+
+    // clamp angle to [min; max]
+    Vec3f  axis;
+    Real32 angle;
+
+    if (getMinAngle() <= getMaxAngle()) {
+      q1.getValueAsAxisRad(axis, angle);
+
+      if (angle < getMinAngle())
+        angle = getMinAngle();
+      if (angle > getMaxAngle())
+        angle = getMaxAngle();
+
+      q1.setValueAsAxisRad(axis, angle);
+    }
+  }
+
+  Matrix mTrans;
+  Matrix mMat;
+
+  mTrans[3][0] = mToWorld[3][0];
+  mTrans[3][1] = mToWorld[3][1];
+  mTrans[3][2] = mToWorld[3][2];
+
+  mMat.setTransform(q1);
+
+  mResult.mult(mTrans);
+  mResult.mult(mMat);
+
+  mTrans[3][0] = -mToWorld[3][0];
+  mTrans[3][1] = -mToWorld[3][1];
+  mTrans[3][2] = -mToWorld[3][2];
+
+  mResult.mult(mTrans);
+  mResult.mult(mToWorld);
+
+  _camTransform = mResult;
 }
 
 /*-------------------------------------------------------------------------*/
 /*                               Draw                                      */
 
-Action::ResultE Billboard::drawEnter(Action *action)
-{
-    DrawAction *da = dynamic_cast<DrawAction *>(action);
+Action::ResultE Billboard::drawEnter(Action* action) {
+  DrawAction* da = dynamic_cast<DrawAction*>(action);
 
-    Matrix mMat;
+  Matrix mMat;
 
-    calcMatrix(da,     
-               da->getActNode()->getToWorld(),
-               mMat);
+  calcMatrix(da, da->getActNode()->getToWorld(), mMat);
 
-    // should use the chunk, but it's not updated yet
-    glPushMatrix ();
-    glMultMatrixf(mMat.getValues());
+  // should use the chunk, but it's not updated yet
+  glPushMatrix();
+  glMultMatrixf(mMat.getValues());
 
-// !!! can't use visibles, as ToWorld gives garbage leading to wrong culling
-//    da->selectVisibles();
+  // !!! can't use visibles, as ToWorld gives garbage leading to wrong culling
+  //    da->selectVisibles();
 
-    return Action::Continue;
+  return Action::Continue;
 }
 
-Action::ResultE Billboard::drawLeave(Action *)
-{
-    glPopMatrix();
+Action::ResultE Billboard::drawLeave(Action*) {
+  glPopMatrix();
 
-    return Action::Continue;
+  return Action::Continue;
 }
 
 /*-------------------------------------------------------------------------*/
 /*                            Intersect                                    */
 
-Action::ResultE Billboard::intersectEnter(Action *action)
-{
-    IntersectAction *ia = dynamic_cast<IntersectAction *>(action);
-    Matrix           m(_camTransform);
+Action::ResultE Billboard::intersectEnter(Action* action) {
+  IntersectAction* ia = dynamic_cast<IntersectAction*>(action);
+  Matrix           m(_camTransform);
 
-    m.invert();
+  m.invert();
 
-    Pnt3f pos;
-    Vec3f dir;
+  Pnt3f pos;
+  Vec3f dir;
 
-    m.multFullMatrixPnt(ia->getLine().getPosition (), pos);
-    m.multMatrixVec    (ia->getLine().getDirection(), dir);
+  m.multFullMatrixPnt(ia->getLine().getPosition(), pos);
+  m.multMatrixVec(ia->getLine().getDirection(), dir);
 
-    ia->setLine(Line(pos, dir), ia->getMaxDist());
-    ia->scale(dir.length());
+  ia->setLine(Line(pos, dir), ia->getMaxDist());
+  ia->scale(dir.length());
 
-    return Action::Continue;
+  return Action::Continue;
 }
 
-Action::ResultE Billboard::intersectLeave(Action *action)
-{
-    IntersectAction *ia = dynamic_cast<IntersectAction *>(action);
-    Matrix           m(_camTransform);
+Action::ResultE Billboard::intersectLeave(Action* action) {
+  IntersectAction* ia = dynamic_cast<IntersectAction*>(action);
+  Matrix           m(_camTransform);
 
-    Pnt3f pos;
-    Vec3f dir;
+  Pnt3f pos;
+  Vec3f dir;
 
-    m.multFullMatrixPnt(ia->getLine().getPosition (), pos);
-    m.multMatrixVec    (ia->getLine().getDirection(), dir);
+  m.multFullMatrixPnt(ia->getLine().getPosition(), pos);
+  m.multMatrixVec(ia->getLine().getDirection(), dir);
 
-    ia->setLine(Line(pos, dir), ia->getMaxDist());
-    ia->scale(dir.length());
+  ia->setLine(Line(pos, dir), ia->getMaxDist());
+  ia->scale(dir.length());
 
-    return Action::Continue;
+  return Action::Continue;
 }
 
 /*-------------------------------------------------------------------------*/
 /*                                Render                                   */
 
-Action::ResultE Billboard::renderEnter(Action *action)
-{
-    RenderAction *pAction = dynamic_cast<RenderAction *>(action);
+Action::ResultE Billboard::renderEnter(Action* action) {
+  RenderAction* pAction = dynamic_cast<RenderAction*>(action);
 
-    Matrix mMat;
+  Matrix mMat;
 
-    calcMatrix(pAction, pAction->top_matrix(), mMat);
+  calcMatrix(pAction, pAction->top_matrix(), mMat);
 
-    pAction->push_matrix(mMat);
+  pAction->push_matrix(mMat);
 
-// !!! can't use visibles, as ToWorld gives garbage leading to wrong culling
-//    pAction->selectVisibles();
+  // !!! can't use visibles, as ToWorld gives garbage leading to wrong culling
+  //    pAction->selectVisibles();
 
-    return Action::Continue;
+  return Action::Continue;
 }
 
-Action::ResultE Billboard::renderLeave(Action *action)
-{
-    RenderAction *pAction = dynamic_cast<RenderAction *>(action);
+Action::ResultE Billboard::renderLeave(Action* action) {
+  RenderAction* pAction = dynamic_cast<RenderAction*>(action);
 
-    pAction->pop_matrix();
+  pAction->pop_matrix();
 
-    return Action::Continue;
+  return Action::Continue;
 }
-
-
-

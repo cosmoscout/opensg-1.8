@@ -65,10 +65,8 @@ OSG_USING_NAMESPACE
  *                           Class methods                                 *
 \***************************************************************************/
 
-void ShaderParameterVec2f::initMethod (void)
-{
+void ShaderParameterVec2f::initMethod(void) {
 }
-
 
 /***************************************************************************\
  *                           Instance methods                              *
@@ -80,33 +78,27 @@ void ShaderParameterVec2f::initMethod (void)
 
 /*----------------------- constructors & destructors ----------------------*/
 
-ShaderParameterVec2f::ShaderParameterVec2f(void) :
-    Inherited()
-{
-    setTypeId(ShaderParameter::SHPTypeVec2f);
+ShaderParameterVec2f::ShaderParameterVec2f(void)
+    : Inherited() {
+  setTypeId(ShaderParameter::SHPTypeVec2f);
 }
 
-ShaderParameterVec2f::ShaderParameterVec2f(const ShaderParameterVec2f &source) :
-    Inherited(source)
-{
+ShaderParameterVec2f::ShaderParameterVec2f(const ShaderParameterVec2f& source)
+    : Inherited(source) {
 }
 
-ShaderParameterVec2f::~ShaderParameterVec2f(void)
-{
+ShaderParameterVec2f::~ShaderParameterVec2f(void) {
 }
 
 /*----------------------------- class specific ----------------------------*/
 
-void ShaderParameterVec2f::changed(BitVector whichField, UInt32 origin)
-{
-    if(whichField & ShaderParameterVec2f::ValueFieldMask)
-        setChanged();
+void ShaderParameterVec2f::changed(BitVector whichField, UInt32 origin) {
+  if (whichField & ShaderParameterVec2f::ValueFieldMask)
+    setChanged();
 
-    Inherited::changed(whichField, origin);
+  Inherited::changed(whichField, origin);
 }
 
-void ShaderParameterVec2f::dump(      UInt32    , 
-                         const BitVector ) const
-{
-    SLOG << "Dump ShaderParameterVec2f NI" << std::endl;
+void ShaderParameterVec2f::dump(UInt32, const BitVector) const {
+  SLOG << "Dump ShaderParameterVec2f NI" << std::endl;
 }

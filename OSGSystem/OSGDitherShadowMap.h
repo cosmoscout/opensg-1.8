@@ -41,59 +41,55 @@ OSG_BEGIN_NAMESPACE
 class ShadowViewport;
 class TreeRenderer;
 
-class OSG_SYSTEMLIB_DLLMAPPING DitherShadowMap : public TreeRenderer
-{
-public:
+class OSG_SYSTEMLIB_DLLMAPPING DitherShadowMap : public TreeRenderer {
+ public:
+  DitherShadowMap(ShadowViewport* source);
+  ~DitherShadowMap(void);
+  virtual void render(RenderActionBase* action);
 
-    DitherShadowMap(ShadowViewport *source);
-    ~DitherShadowMap(void);
-    virtual void render(RenderActionBase* action);
+ private:
+  void createShadowMaps(RenderActionBase* action);
+  void createColorMap(RenderActionBase* action);
+  void drawCombineMap(RenderActionBase* action);
+  void createShadowFactorMap(RenderActionBase* action);
+  void createColorMapFBO(RenderActionBase* action);
+  void createShadowFactorMapFBO(RenderActionBase* action);
+  void createShadowMapsFBO(RenderActionBase* action);
+  bool initFBO(Window* win);
+  void reInit(Window* win);
+  bool checkFrameBufferStatus(Window* win);
+  void initTextures(Window* win);
 
-  private:
-
-    void createShadowMaps(RenderActionBase* action);
-    void createColorMap(RenderActionBase* action);
-    void drawCombineMap(RenderActionBase* action);
-    void createShadowFactorMap(RenderActionBase* action);
-    void createColorMapFBO(RenderActionBase* action);
-    void createShadowFactorMapFBO(RenderActionBase* action);
-    void createShadowMapsFBO(RenderActionBase* action);
-    bool initFBO(Window *win);
-    void reInit(Window *win);
-    bool checkFrameBufferStatus(Window *win);
-    void initTextures(Window *win);
-
-    GLuint                  _fb;
-    GLuint                  _fb2;
-    GLuint                  _rb_depth;
-    Matrix                  _transforms[6];
-    TileCameraDecoratorPtr  _tiledeco;
-    BlendChunkPtr           _blender;
-    TextureChunkPtr         _colorMap;
-    TextureChunkPtr         _shadowFactorMap;
-    ImagePtr                _colorMapImage;
-    ImagePtr                _shadowFactorMapImage;
-    ChunkMaterialPtr        _shadowCmat;
-    ChunkMaterialPtr        _combineCmat;
-    SHLChunkPtr             _shadowSHL;
-    SHLChunkPtr             _shadowSHL2;
-    SHLChunkPtr             _shadowSHL3;
-    SHLChunkPtr             _shadowSHL4;
-    SHLChunkPtr             _shadowCubeSHL;
-    SHLChunkPtr             _combineSHL;
-    DepthChunkPtr           _combineDepth;
-    PolygonForegroundPtr    _pf;
-    Int32                   _firstRun;
-    UInt32                  _width;
-    UInt32                  _height;
-    UInt32                  _widthHeightPOT;
-    UInt32                  _activeFactorMap;
-    TextureChunkPtr         _shadowFactorMap2;
-    ImagePtr                _shadowFactorMapImage2;
-    bool                    _initTexturesDone;
+  GLuint                 _fb;
+  GLuint                 _fb2;
+  GLuint                 _rb_depth;
+  Matrix                 _transforms[6];
+  TileCameraDecoratorPtr _tiledeco;
+  BlendChunkPtr          _blender;
+  TextureChunkPtr        _colorMap;
+  TextureChunkPtr        _shadowFactorMap;
+  ImagePtr               _colorMapImage;
+  ImagePtr               _shadowFactorMapImage;
+  ChunkMaterialPtr       _shadowCmat;
+  ChunkMaterialPtr       _combineCmat;
+  SHLChunkPtr            _shadowSHL;
+  SHLChunkPtr            _shadowSHL2;
+  SHLChunkPtr            _shadowSHL3;
+  SHLChunkPtr            _shadowSHL4;
+  SHLChunkPtr            _shadowCubeSHL;
+  SHLChunkPtr            _combineSHL;
+  DepthChunkPtr          _combineDepth;
+  PolygonForegroundPtr   _pf;
+  Int32                  _firstRun;
+  UInt32                 _width;
+  UInt32                 _height;
+  UInt32                 _widthHeightPOT;
+  UInt32                 _activeFactorMap;
+  TextureChunkPtr        _shadowFactorMap2;
+  ImagePtr               _shadowFactorMapImage2;
+  bool                   _initTexturesDone;
 };
 
 OSG_END_NAMESPACE
 
 #endif /* _OSGDITHERSHADOWMAP_H_ */
-

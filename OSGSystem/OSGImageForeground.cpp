@@ -60,14 +60,13 @@
 
 OSG_USING_NAMESPACE
 
-
 /***************************************************************************\
  *                            Description                                  *
 \***************************************************************************/
 
 /*! \class osg::ImageForeground
     \ingroup GrpSystemWindowForegrounds
-    
+
 The ImageForeground is used to draw images on top of the viewport.  See \ref
 PageSystemWindowForegroundImage for a description.
 
@@ -84,8 +83,7 @@ the _mfPositions Field.
  -  private                                                                -
 \*-------------------------------------------------------------------------*/
 
-void ImageForeground::initMethod(void)
-{
+void ImageForeground::initMethod(void) {
 }
 
 /***************************************************************************\
@@ -94,106 +92,91 @@ void ImageForeground::initMethod(void)
 
 /*------------- constructors & destructors --------------------------------*/
 
-ImageForeground::ImageForeground(void) :
-    Inherited()
-{
+ImageForeground::ImageForeground(void)
+    : Inherited() {
 }
 
-ImageForeground::ImageForeground(const ImageForeground &source) :
-    Inherited(source)
-{
+ImageForeground::ImageForeground(const ImageForeground& source)
+    : Inherited(source) {
 }
 
-ImageForeground::~ImageForeground(void)
-{
+ImageForeground::~ImageForeground(void) {
 }
 
-void ImageForeground::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void ImageForeground::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
 /*------------------------------- dump ----------------------------------*/
 
-void ImageForeground::dump(     UInt32    OSG_CHECK_ARG(uiIndent), 
-                           const BitVector OSG_CHECK_ARG(bvFlags)) const
-{
-    SLOG << "Dump ImageForeground NI" << std::endl;
+void ImageForeground::dump(
+    UInt32 OSG_CHECK_ARG(uiIndent), const BitVector OSG_CHECK_ARG(bvFlags)) const {
+  SLOG << "Dump ImageForeground NI" << std::endl;
 }
 
-    
-void ImageForeground::draw(DrawActionBase *, Viewport *vp)
-{
-    if(getActive() == false)
-        return;
+void ImageForeground::draw(DrawActionBase*, Viewport* vp) {
+  if (getActive() == false)
+    return;
 
-    UInt16 i;
-    
-    for(i = 0; i < getPositions().size(); i++)
-    {
-        if(getImages(i) != NullFC)
-            break;
-    }
-    
-    if(i == getPositions().size())   // all images == NULL?
-        return; 
+  UInt16 i;
 
-    glPushAttrib(GL_POLYGON_BIT | GL_DEPTH_BUFFER_BIT | 
-                 GL_LIGHTING_BIT);
+  for (i = 0; i < getPositions().size(); i++) {
+    if (getImages(i) != NullFC)
+      break;
+  }
 
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+  if (i == getPositions().size()) // all images == NULL?
+    return;
 
-    glDisable(GL_DEPTH_TEST);
+  glPushAttrib(GL_POLYGON_BIT | GL_DEPTH_BUFFER_BIT | GL_LIGHTING_BIT);
 
-    glDisable(GL_COLOR_MATERIAL);
+  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-    glDisable(GL_TEXTURE_2D);
+  glDisable(GL_DEPTH_TEST);
 
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glLoadIdentity();
+  glDisable(GL_COLOR_MATERIAL);
 
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-    glOrtho(0, 1, 0, 1, 0, 1);
+  glDisable(GL_TEXTURE_2D);
 
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_BLEND);
+  glMatrixMode(GL_MODELVIEW);
+  glPushMatrix();
+  glLoadIdentity();
 
-    float vpWidth = 1.0, vpHeight = 1.0;
-    if(vp)
-    {
-        // for absolute pixel position
-        vpWidth  = 1.0/vp->getPixelWidth();
-        vpHeight = 1.0/vp->getPixelHeight();
-    }
+  glMatrixMode(GL_PROJECTION);
+  glPushMatrix();
+  glLoadIdentity();
+  glOrtho(0, 1, 0, 1, 0, 1);
 
-    for(i = 0; i < getPositions().size(); i++)
-    {
-        ImagePtr img = getImages(i);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  glEnable(GL_BLEND);
 
-        if(img == NullFC)
-            continue;
+  float vpWidth = 1.0, vpHeight = 1.0;
+  if (vp) {
+    // for absolute pixel position
+    vpWidth  = 1.0 / vp->getPixelWidth();
+    vpHeight = 1.0 / vp->getPixelHeight();
+  }
 
-        Pnt2f p = getPositions(i);
-        if( p[0] >= 1.0 || p[1] >= 1.0 )
-            glRasterPos2f(p[0]*vpWidth, p[1]*vpHeight); // absolute position
-        else
-            glRasterPos2f(p[0], p[1]); // relative position
+  for (i = 0; i < getPositions().size(); i++) {
+    ImagePtr img = getImages(i);
 
-        glDrawPixels(img->getWidth(), img->getHeight(),
-                     img->getPixelFormat(), GL_UNSIGNED_BYTE,
-                     img->getData());
-    }
-    glDisable(GL_BLEND);
-        
+    if (img == NullFC)
+      continue;
 
-    glPopMatrix();
-    glMatrixMode(GL_MODELVIEW);
-    glPopMatrix();
+    Pnt2f p = getPositions(i);
+    if (p[0] >= 1.0 || p[1] >= 1.0)
+      glRasterPos2f(p[0] * vpWidth, p[1] * vpHeight); // absolute position
+    else
+      glRasterPos2f(p[0], p[1]); // relative position
 
-    glPopAttrib();
+    glDrawPixels(
+        img->getWidth(), img->getHeight(), img->getPixelFormat(), GL_UNSIGNED_BYTE, img->getData());
+  }
+  glDisable(GL_BLEND);
+
+  glPopMatrix();
+  glMatrixMode(GL_MODELVIEW);
+  glPopMatrix();
+
+  glPopAttrib();
 }
-
-

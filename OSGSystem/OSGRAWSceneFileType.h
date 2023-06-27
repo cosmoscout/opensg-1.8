@@ -38,8 +38,8 @@
 
 #ifndef _OSGRAWSCENEFILETYPE_H_
 #define _OSGRAWSCENEFILETYPE_H_
-#ifdef  __sgi
-#pragma  once
+#ifdef __sgi
+#pragma once
 #endif
 
 #include <OSGBaseTypes.h>
@@ -49,79 +49,72 @@
 OSG_BEGIN_NAMESPACE
 
 /*!\brief OSGRAWSceneFileType
-*/
+ */
 
-class OSG_SYSTEMLIB_DLLMAPPING RAWSceneFileType : public SceneFileType
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING RAWSceneFileType : public SceneFileType {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Static Get                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Static Get                                 */
-    /*! \{                                                                 */
+  static RAWSceneFileType& the(void);
 
-    static RAWSceneFileType &the(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  virtual ~RAWSceneFileType(void);
 
-    virtual ~RAWSceneFileType(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Get                                        */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Get                                        */
-    /*! \{                                                                 */
+  virtual const Char8* getName(void) const;
 
-    virtual const Char8 *getName(void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Read                                       */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Read                                       */
-    /*! \{                                                                 */
+  virtual NodePtr read(std::istream& is, const Char8* fileNameOrExtension) const;
 
-    virtual NodePtr read(std::istream &is,
-                         const Char8 *fileNameOrExtension) const;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Member                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  static const Char8*     _suffixA[];
+  static RAWSceneFileType _the;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Member                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    static const Char8            *_suffixA[];
-    static       RAWSceneFileType  _the;
+  RAWSceneFileType(const Char8* suffixArray[], UInt16 suffixByteCount, bool override,
+      UInt32 overridePriority, UInt32 flags);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  RAWSceneFileType(const RAWSceneFileType& obj);
 
-    RAWSceneFileType(const Char8  *suffixArray[],
-                           UInt16  suffixByteCount,
-                           bool    override,
-                           UInt32  overridePriority,
-                           UInt32  flags);
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  typedef SceneFileType Inherited;
 
-    RAWSceneFileType(const RAWSceneFileType &obj);
-
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
-
-    typedef SceneFileType Inherited;
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const RAWSceneFileType &source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const RAWSceneFileType& source);
 };
 
 typedef RAWSceneFileType* RAWSceneFileTypeP;
 
 OSG_END_NAMESPACE
 
-#define OSGRAWSCENEFILETYPE_HEADER_CVSID "@(#)$Id: OSGRAWSceneFileType.h,v 1.4 2001/10/08 05:21:54 vossg Exp $"
+#define OSGRAWSCENEFILETYPE_HEADER_CVSID                                                           \
+  "@(#)$Id: OSGRAWSceneFileType.h,v 1.4 2001/10/08 05:21:54 vossg Exp $"
 
 #endif // _OSGRAWSCENEFILETYPE_H_

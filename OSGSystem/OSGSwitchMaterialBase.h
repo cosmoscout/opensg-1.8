@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGSWITCHMATERIALBASE_H_
 #define _OSGSWITCHMATERIALBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -68,7 +66,7 @@
 #include <OSGMaterial.h> // Parent
 
 #include <OSGMaterialFields.h> // Materials type
-#include <OSGUInt32Fields.h> // Choice type
+#include <OSGUInt32Fields.h>   // Choice type
 
 #include <OSGSwitchMaterialFields.h>
 
@@ -79,188 +77,167 @@ class BinaryDataHandler;
 
 //! \brief SwitchMaterial Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING SwitchMaterialBase : public Material
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING SwitchMaterialBase : public Material {
+ private:
+  typedef Material Inherited;
 
-    typedef Material    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef SwitchMaterialPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    MaterialsFieldId = Inherited::NextFieldId,
+    ChoiceFieldId    = MaterialsFieldId + 1,
+    NextFieldId      = ChoiceFieldId + 1
+  };
 
-    typedef SwitchMaterialPtr  Ptr;
+  static const OSG::BitVector MaterialsFieldMask;
+  static const OSG::BitVector ChoiceFieldMask;
 
-    enum
-    {
-        MaterialsFieldId = Inherited::NextFieldId,
-        ChoiceFieldId    = MaterialsFieldId + 1,
-        NextFieldId      = ChoiceFieldId    + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector MaterialsFieldMask;
-    static const OSG::BitVector ChoiceFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  MFMaterialPtr* getMFMaterials(void);
+  SFUInt32*      getSFChoice(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  UInt32&              getChoice(void);
+  const UInt32&        getChoice(void) const;
+  MaterialPtr&         getMaterials(const UInt32 index);
+  MFMaterialPtr&       getMaterials(void);
+  const MFMaterialPtr& getMaterials(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           MFMaterialPtr       *getMFMaterials      (void);
-           SFUInt32            *getSFChoice         (void);
+  void setChoice(const UInt32& value);
 
-           UInt32              &getChoice         (void);
-     const UInt32              &getChoice         (void) const;
-           MaterialPtr         &getMaterials      (const UInt32 index);
-           MFMaterialPtr       &getMaterials      (void);
-     const MFMaterialPtr       &getMaterials      (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setChoice         ( const UInt32 &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static SwitchMaterialPtr create(void);
+  static SwitchMaterialPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  SwitchMaterialPtr      create          (void); 
-    static  SwitchMaterialPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  MFMaterialPtr _mfMaterials;
+  SFUInt32      _sfChoice;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  SwitchMaterialBase(void);
+  SwitchMaterialBase(const SwitchMaterialBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~SwitchMaterialBase(void);
 
-    MFMaterialPtr       _mfMaterials;
-    SFUInt32            _sfChoice;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    SwitchMaterialBase(void);
-    SwitchMaterialBase(const SwitchMaterialBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~SwitchMaterialBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      SwitchMaterialBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(SwitchMaterialBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      SwitchMaterialBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      SwitchMaterialBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const SwitchMaterialBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const SwitchMaterialBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef SwitchMaterialBase* SwitchMaterialBaseP;
 
-typedef SwitchMaterialBase *SwitchMaterialBaseP;
-
-typedef osgIF<SwitchMaterialBase::isNodeCore,
-              CoredNodePtr<SwitchMaterial>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet SwitchMaterialNodePtr;
+typedef osgIF<SwitchMaterialBase::isNodeCore, CoredNodePtr<SwitchMaterial>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet SwitchMaterialNodePtr;
 
 typedef RefPtr<SwitchMaterialPtr> SwitchMaterialRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGSWITCHMATERIALBASE_HEADER_CVSID "@(#)$Id: OSGSwitchMaterialBase.h,v 1.2 2006/02/20 17:04:44 dirk Exp $"
+#define OSGSWITCHMATERIALBASE_HEADER_CVSID                                                         \
+  "@(#)$Id: OSGSwitchMaterialBase.h,v 1.2 2006/02/20 17:04:44 dirk Exp $"
 
 #endif /* _OSGSWITCHMATERIALBASE_H_ */

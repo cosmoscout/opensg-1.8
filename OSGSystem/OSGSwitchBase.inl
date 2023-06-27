@@ -52,81 +52,59 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &SwitchBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& SwitchBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 SwitchBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 SwitchBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-SwitchPtr SwitchBase::create(void) 
-{
-    SwitchPtr fc; 
+inline SwitchPtr SwitchBase::create(void) {
+  SwitchPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = SwitchPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = SwitchPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-SwitchPtr SwitchBase::createEmpty(void) 
-{ 
-    SwitchPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline SwitchPtr SwitchBase::createEmpty(void) {
+  SwitchPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the Switch::_sfChoice field.
-inline
-SFInt32 *SwitchBase::getSFChoice(void)
-{
-    return &_sfChoice;
-}
-
-
-//! Get the value of the Switch::_sfChoice field.
-inline
-Int32 &SwitchBase::getChoice(void)
-{
-    return _sfChoice.getValue();
+inline SFInt32* SwitchBase::getSFChoice(void) {
+  return &_sfChoice;
 }
 
 //! Get the value of the Switch::_sfChoice field.
-inline
-const Int32 &SwitchBase::getChoice(void) const
-{
-    return _sfChoice.getValue();
+inline Int32& SwitchBase::getChoice(void) {
+  return _sfChoice.getValue();
+}
+
+//! Get the value of the Switch::_sfChoice field.
+inline const Int32& SwitchBase::getChoice(void) const {
+  return _sfChoice.getValue();
 }
 
 //! Set the value of the Switch::_sfChoice field.
-inline
-void SwitchBase::setChoice(const Int32 &value)
-{
-    _sfChoice.setValue(value);
+inline void SwitchBase::setChoice(const Int32& value) {
+  _sfChoice.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGSWITCHBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGSWITCHBASE_INLINE_CVSID                                                                 \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

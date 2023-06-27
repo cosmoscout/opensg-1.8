@@ -51,104 +51,95 @@ OSG_BEGIN_NAMESPACE
 
 class DrawActionBase;
 
-/*! \brief *put brief class description here* 
+/*! \brief *put brief class description here*
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING Billboard : public BillboardBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING Billboard : public BillboardBase {
+ private:
+  typedef BillboardBase Inherited;
 
-    typedef BillboardBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name               calc the model matrix                          */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector whichField, 
-                         UInt32    origin    );
+  void calcMatrix(DrawActionBase* pAction, const Matrix& mToWorld, Matrix& mResult);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name               calc the model matrix                          */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    void calcMatrix(      DrawActionBase *pAction, 
-                    const Matrix         &mToWorld,
-                          Matrix         &mResult);
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in BillboardBase.
 
-    virtual void dump(      UInt32     uiIndent = 0,
-                      const BitVector  bvFlags  = 0) const;
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  Billboard(void);
+  Billboard(const Billboard& source);
 
-    // Variables should all be in BillboardBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~Billboard(void);
 
-    Billboard(void);
-    Billboard(const Billboard &source);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      NodeCore Specific                       */
+  /*! \{                                                                 */
 
-    virtual ~Billboard(void); 
+  virtual void accumulateMatrix(Matrix& result);
 
-    /*! \}                                                                 */
+  void adjustVolume(Volume& volume);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      NodeCore Specific                       */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name              Draw & Intersect & Render                       */
+  /*! \{                                                                 */
 
-    virtual void accumulateMatrix(Matrix &result);
+  Action::ResultE drawEnter(Action* action);
+  Action::ResultE drawLeave(Action* action);
 
-    void         adjustVolume   (Volume & volume);
+  Action::ResultE intersectEnter(Action* action);
+  Action::ResultE intersectLeave(Action* action);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name              Draw & Intersect & Render                       */
-    /*! \{                                                                 */
+  Action::ResultE renderEnter(Action* action);
+  Action::ResultE renderLeave(Action* action);
 
-    Action::ResultE drawEnter     (Action *action);
-    Action::ResultE drawLeave     (Action *action);
+  /*! \}                                                                 */
 
-    Action::ResultE intersectEnter(Action *action);
-    Action::ResultE intersectLeave(Action *action);
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class BillboardBase;
 
-    Action::ResultE renderEnter   (Action *action);
-    Action::ResultE renderLeave   (Action *action);
+  static void initMethod(void);
 
-    /*! \}                                                                 */
+  Matrix _camTransform;
 
-    /*==========================  PRIVATE  ================================*/
-  private:
+  // prohibit default functions (move to 'public' if you need one)
 
-    friend class FieldContainer;
-    friend class BillboardBase;
-
-    static void initMethod(void);
-
-    Matrix _camTransform;
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const Billboard &source);
+  void operator=(const Billboard& source);
 };
 
-typedef Billboard *BillboardP;
+typedef Billboard* BillboardP;
 
 OSG_END_NAMESPACE
 
@@ -158,4 +149,3 @@ OSG_END_NAMESPACE
 #define OSGBILLBOARD_HEADER_CVSID "@(#)$Id: $"
 
 #endif /* _OSGBILLBOARD_H_ */
-

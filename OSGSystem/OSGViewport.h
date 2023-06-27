@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGVIEWPORT_H_
 #define _OSGVIEWPORT_H_
 #ifdef __sgi
@@ -52,108 +51,103 @@ OSG_BEGIN_NAMESPACE
 class DrawAction;
 class RenderActionBase;
 
-/*! \brief Viewport base class. See \ref 
+/*! \brief Viewport base class. See \ref
     PageSystemWindowViewports for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING Viewport : public ViewportBase
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING Viewport : public ViewportBase {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
+  static const char* getClassname(void) {
+    return "Viewport";
+  };
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
-    static const char *getClassname(void) { return "Viewport"; };
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    access                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    access                                    */
-    /*! \{                                                                 */
+  void setSize(Real32 left, Real32 bottom, Real32 right, Real32 top);
 
-    void setSize(Real32 left,  Real32 bottom, 
-                 Real32 right, Real32 top);
-    
-    Int32 getPixelLeft  (void) const;
-    Int32 getPixelRight (void) const;
-    Int32 getPixelBottom(void) const;
-    Int32 getPixelTop   (void) const;
-    Int32 getPixelWidth (void) const;
-    Int32 getPixelHeight(void) const;
-    
-    bool isFullWindow( void ) const;
+  Int32 getPixelLeft(void) const;
+  Int32 getPixelRight(void) const;
+  Int32 getPixelBottom(void) const;
+  Int32 getPixelTop(void) const;
+  Int32 getPixelWidth(void) const;
+  Int32 getPixelHeight(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    access                                    */
-    /*! \{                                                                 */
+  bool isFullWindow(void) const;
 
-    void clearForegrounds(void                     );
-    void addForeground   (ForegroundPtr pForeground);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    access                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    your_category                             */
-    /*! \{                                                                 */
+  void clearForegrounds(void);
+  void addForeground(ForegroundPtr pForeground);
 
-    virtual void activateSize(void);
-    virtual void activate    (void);
-    virtual void deactivate  (void);
-    virtual void draw        (DrawAction       *action);
-    virtual void render      (RenderActionBase *action);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    your_category                             */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   change                                     */
-    /*! \{                                                                 */
+  virtual void activateSize(void);
+  virtual void activate(void);
+  virtual void deactivate(void);
+  virtual void draw(DrawAction* action);
+  virtual void render(RenderActionBase* action);
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   change                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   dump                                       */
-    /*! \{                                                                 */
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    virtual void dump(      UInt32    uiIndent = 0, 
-                      const BitVector bvFlags  = 0) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   dump                                       */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
+
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
  protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
+  Viewport(void);
+  Viewport(const Viewport& source);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-    Viewport(void);
-    Viewport(const Viewport &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  virtual ~Viewport(void);
 
-    virtual ~Viewport(void); 
-    
-    /*! \}                                                                 */
-    /*=========================  PRIVATE    ===============================*/
+  /*! \}                                                                 */
+  /*=========================  PRIVATE    ===============================*/
  private:
+  typedef ViewportBase Inherited;
 
-    typedef ViewportBase Inherited;
+  friend class FieldContainer;
+  friend class ViewportBase;
 
-    friend class FieldContainer;
-    friend class ViewportBase;
+  static void initMethod(void);
 
-    static void initMethod( void );
-
-    void operator =(const Viewport &source);
+  void operator=(const Viewport& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
-typedef Viewport *ViewportP;
+typedef Viewport* ViewportP;
 
 OSG_END_NAMESPACE
 

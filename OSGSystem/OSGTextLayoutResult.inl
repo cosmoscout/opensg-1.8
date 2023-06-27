@@ -36,20 +36,20 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 OSG_BEGIN_NAMESPACE
 
-
 inline TextLayoutResult::TextLayoutResult()
-: indices(), positions(), lineBounds(), textBounds()
-{}
+    : indices()
+    , positions()
+    , lineBounds()
+    , textBounds() {
+}
 
-
-inline UInt32 TextLayoutResult::getNumGlyphs() const
-{ return positions.size() < indices.size() ? positions.size() : indices.size(); }
-
+inline UInt32 TextLayoutResult::getNumGlyphs() const {
+  return positions.size() < indices.size() ? positions.size() : indices.size();
+}
 
 OSG_END_NAMESPACE
 
-
-#define OSGTEXTLAYOUTRESULT_INLINE_CVSID "@(#)$Id: OSGTextLayoutResult.inl,v 1.1 2005/03/03 13:43:07 a-m-z Exp $"
+#define OSGTEXTLAYOUTRESULT_INLINE_CVSID                                                           \
+  "@(#)$Id: OSGTextLayoutResult.inl,v 1.1 2005/03/03 13:43:07 a-m-z Exp $"

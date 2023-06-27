@@ -62,88 +62,74 @@ OSG_BEGIN_NAMESPACE
  *  \brief Brief OSGWriter
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING OSGWriter
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING OSGWriter {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  OSGWriter(std::ostream& stream, UInt32 indentStep = 4);
 
-    OSGWriter(std::ostream &stream, UInt32 indentStep=4);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  ~OSGWriter(void);
 
-    ~OSGWriter(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Write                                      */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Write                                      */
-    /*! \{                                                                 */
+  void write(FieldContainerPtr container);
+  void write(std::vector<FieldContainerPtr> containers);
 
-    void write(            FieldContainerPtr  container );
-    void write(std::vector<FieldContainerPtr> containers);
-    
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
-      
-    static const UInt32 DefaultSFWidth;
-    static const UInt32 DefaultMFWidth; 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  static const UInt32 DefaultSFWidth;
+  static const UInt32 DefaultMFWidth;
 
-    struct FCInfoHelper
-    {
-        bool        written;
-        bool        hasName;
-        std::string containerName;
-        
-        void        setName      (const FieldContainerPtr pFC);
-		             
-        FCInfoHelper(void);
-    };
-    
-    typedef std::map<FieldContainerPtr, FCInfoHelper> FCInfoHelperMap;
+  struct FCInfoHelper {
+    bool        written;
+    bool        hasName;
+    std::string containerName;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Member                                  */
-    /*! \{                                                                 */
+    void setName(const FieldContainerPtr pFC);
 
-    FCInfoHelperMap                _visitedFCMap;
-    StandardStringConversionState  _state;
-    Indenter                       _indent;
-    std::ostream                  &_outStream;
+    FCInfoHelper(void);
+  };
 
-    void visitContainer(const FieldContainerPtr pFC      );
-    void visitField    (const Field*            pF       );
+  typedef std::map<FieldContainerPtr, FCInfoHelper> FCInfoHelperMap;
 
-    void writeContainer(const FieldContainerPtr pFC      );
-    void writeField    (const Field*            pF,
-			const FieldDescription* fieldDesc);
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Member                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  FCInfoHelperMap               _visitedFCMap;
+  StandardStringConversionState _state;
+  Indenter                      _indent;
+  std::ostream&                 _outStream;
 
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    OSGWriter(const OSGWriter &source);
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const OSGWriter &source);
+  void visitContainer(const FieldContainerPtr pFC);
+  void visitField(const Field* pF);
+
+  void writeContainer(const FieldContainerPtr pFC);
+  void writeField(const Field* pF, const FieldDescription* fieldDesc);
+
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  OSGWriter(const OSGWriter& source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const OSGWriter& source);
 };
 
 OSG_END_NAMESPACE
 
 #define OSGOSGWRITER_HEADER_CVSID "@(#)$Id: OSGOSGWriter.h,v 1.6 2002/02/04 20:14:05 dirk Exp $"
-    
+
 #endif /* _OSGOSGWRITER_H_ */
-
-
-
-
-
-
-
-

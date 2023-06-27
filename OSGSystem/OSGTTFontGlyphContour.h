@@ -10,24 +10,20 @@
 
 OSG_BEGIN_NAMESPACE
 
-class OSG_SYSTEMLIB_DLLMAPPING TTFontGlyphContour : public FontGlyphContour
-{
-    typedef FontGlyphContour Inherited;
+class OSG_SYSTEMLIB_DLLMAPPING TTFontGlyphContour : public FontGlyphContour {
+  typedef FontGlyphContour Inherited;
 
-  private:
+ private:
+  TTFontGlyphContour(const TTFontGlyphContour& obj);
+  void operator=(const TTFontGlyphContour& obj);
 
-    TTFontGlyphContour(const TTFontGlyphContour &obj);
-    void operator =(const TTFontGlyphContour &obj);
+ protected:
+ public:
+  TTFontGlyphContour(void);
 
-  protected:
-  public:
+  virtual ~TTFontGlyphContour(void);
 
-    TTFontGlyphContour(void);
-
-    virtual ~TTFontGlyphContour(void);
-
-    virtual bool inside(FontGlyphContour *contour,
-                        TT_Outline        outline);
+  virtual bool inside(FontGlyphContour* contour, TT_Outline outline);
 };
 
 OSG_END_NAMESPACE

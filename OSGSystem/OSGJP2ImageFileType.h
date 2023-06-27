@@ -38,8 +38,8 @@
 
 #ifndef OSGJP2IMAGEFILETYPE_CLASS_DECLARATION
 #define OSGJP2IMAGEFILETYPE_CLASS_DECLARATION
-#ifdef  __sgi
-#pragma  once
+#ifdef __sgi
+#pragma once
 #endif
 
 #include <OSGSystemDef.h>
@@ -53,69 +53,62 @@ OSG_BEGIN_NAMESPACE
 See \ref PageSystemImage for a detailed description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING JP2ImageFileType : public ImageFileType
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING JP2ImageFileType : public ImageFileType {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  virtual ~JP2ImageFileType(void);
 
-    virtual ~JP2ImageFileType (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Read/Write                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Read/Write                                 */
-    /*! \{                                                                 */
+  virtual bool read(ImagePtr& image, std::istream& is, const std::string& mimetype);
 
-    virtual bool read (ImagePtr &image, std::istream &is, const std::string &mimetype);
+  virtual std::string determineMimetypeFromStream(std::istream& is);
 
-    virtual std::string determineMimetypeFromStream(std::istream &is);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Get Method                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Get Method                                  */
-    /*! \{                                                                 */
+  static JP2ImageFileType& the(void);
 
-    static JP2ImageFileType & the (void);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name               Default Constructor                            */
+  /*! \{                                                                 */
 
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  JP2ImageFileType(
+      const Char8* mimeType, const Char8* suffixArray[], UInt16 suffixByteCount, UInt32 flags);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name               Default Constructor                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    JP2ImageFileType ( const Char8 *mimeType,
-                       const Char8 *suffixArray[], 
-                             UInt16 suffixByteCount,
-                             UInt32 flags );
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /*---------------------------------------------------------------------*/
+  /*! \name                Copy Constructor                              */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  JP2ImageFileType(const JP2ImageFileType& obj);
 
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                Copy Operator                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                Copy Constructor                              */
-    /*! \{                                                                 */
+  const JP2ImageFileType& operator=(const JP2ImageFileType& obj);
 
-    JP2ImageFileType (const JP2ImageFileType &obj);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                Copy Operator                                 */
-    /*! \{                                                                 */
-
-    const JP2ImageFileType & operator= (const JP2ImageFileType &obj);
-
-    /*! \}                                                                 */
-
-    static JP2ImageFileType _the;
-
+  static JP2ImageFileType _the;
 };
 
 typedef JP2ImageFileType* JP2ImageFileTypeP;

@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGCLIPPLANEFIELDS_H_
 #define _OSGCLIPPLANEFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class ClipPlane;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! ClipPlanePtr
 
 typedef FCPtr<GroupPtr, ClipPlane> ClipPlanePtr;
@@ -81,17 +80,19 @@ typedef FCPtr<GroupPtr, ClipPlane> ClipPlanePtr;
 #endif
 
 template <>
-struct FieldDataTraits<ClipPlanePtr> : 
-    public FieldTraitsRecurseMapper<ClipPlanePtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<ClipPlanePtr> : public FieldTraitsRecurseMapper<ClipPlanePtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getSName(void) { return "SFClipPlanePtr"; }
+  static const char* getSName(void) {
+    return "SFClipPlanePtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -101,7 +102,6 @@ struct FieldDataTraits<ClipPlanePtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
@@ -115,6 +115,7 @@ OSG_DLLEXPORT_DECL1(SField, ClipPlanePtr, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 
 OSG_END_NAMESPACE
 
-#define OSGCLIPPLANEFIELDS_HEADER_CVSID "@(#)$Id: OSGClipPlaneFields.h,v 1.1 2007/04/26 15:22:01 a-m-z Exp $"
+#define OSGCLIPPLANEFIELDS_HEADER_CVSID                                                            \
+  "@(#)$Id: OSGClipPlaneFields.h,v 1.1 2007/04/26 15:22:01 a-m-z Exp $"
 
 #endif /* _OSGCLIPPLANEFIELDS_H_ */

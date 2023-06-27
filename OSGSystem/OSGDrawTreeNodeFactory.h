@@ -50,77 +50,72 @@
 OSG_BEGIN_NAMESPACE
 
 /*! \ingroup GrpSystemRenderingBackend
-*/
+ */
 
-class OSG_SYSTEMLIB_DLLMAPPING DrawTreeNodeFactory 
-{
-    /*==========================  PUBLIC  =================================*/
+class OSG_SYSTEMLIB_DLLMAPPING DrawTreeNodeFactory {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  DrawTreeNodeFactory(void);
 
-    DrawTreeNodeFactory(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  virtual ~DrawTreeNodeFactory(void);
 
-    virtual ~DrawTreeNodeFactory(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      create                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      create                                  */
-    /*! \{                                                                 */
+  DrawTreeNode* create(void);
 
-    DrawTreeNode *create(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       free                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       free                                   */
-    /*! \{                                                                 */
-    
-    void freeAll(void);
+  void freeAll(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       stat                                   */
-    /*! \{                                                                 */
-    
-    void printStat(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       stat                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  void printStat(void);
 
-  protected:
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    typedef std::vector<DrawTreeNode *>           DrawTreeNodeStore;
+ protected:
+  typedef std::vector<DrawTreeNode*> DrawTreeNodeStore;
 
-    typedef std::vector<DrawTreeNode *>::iterator DrawTreeNodeStoreIt;
+  typedef std::vector<DrawTreeNode*>::iterator DrawTreeNodeStoreIt;
 
-    
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Member                                  */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Member                                  */
+  /*! \{                                                                 */
 
-    DrawTreeNodeStore   _nodeStore;
-    DrawTreeNodeStoreIt _currentFreeNode;
+  DrawTreeNodeStore   _nodeStore;
+  DrawTreeNodeStoreIt _currentFreeNode;
 
-    UInt32              _uiAllocated;
-    UInt32              _uiReused;
+  UInt32 _uiAllocated;
+  UInt32 _uiReused;
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-  private:
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    DrawTreeNodeFactory(const DrawTreeNodeFactory &source);
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const DrawTreeNodeFactory &source);
+ private:
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  DrawTreeNodeFactory(const DrawTreeNodeFactory& source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const DrawTreeNodeFactory& source);
 };
 
 OSG_END_NAMESPACE

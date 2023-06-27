@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGDEPTHCHUNKBASE_H_
 #define _OSGDEPTHCHUNKBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -67,11 +65,11 @@
 
 #include <OSGStateChunk.h> // Parent
 
-#include <OSGBoolFields.h> // Enable type
+#include <OSGBoolFields.h>   // Enable type
 #include <OSGGLenumFields.h> // Func type
 #include <OSGReal32Fields.h> // Near type
 #include <OSGReal32Fields.h> // Far type
-#include <OSGBoolFields.h> // ReadOnly type
+#include <OSGBoolFields.h>   // ReadOnly type
 
 #include <OSGDepthChunkFields.h>
 
@@ -82,209 +80,187 @@ class BinaryDataHandler;
 
 //! \brief DepthChunk Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING DepthChunkBase : public StateChunk
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING DepthChunkBase : public StateChunk {
+ private:
+  typedef StateChunk Inherited;
 
-    typedef StateChunk    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef DepthChunkPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    EnableFieldId   = Inherited::NextFieldId,
+    FuncFieldId     = EnableFieldId + 1,
+    NearFieldId     = FuncFieldId + 1,
+    FarFieldId      = NearFieldId + 1,
+    ReadOnlyFieldId = FarFieldId + 1,
+    NextFieldId     = ReadOnlyFieldId + 1
+  };
 
-    typedef DepthChunkPtr  Ptr;
+  static const OSG::BitVector EnableFieldMask;
+  static const OSG::BitVector FuncFieldMask;
+  static const OSG::BitVector NearFieldMask;
+  static const OSG::BitVector FarFieldMask;
+  static const OSG::BitVector ReadOnlyFieldMask;
 
-    enum
-    {
-        EnableFieldId   = Inherited::NextFieldId,
-        FuncFieldId     = EnableFieldId   + 1,
-        NearFieldId     = FuncFieldId     + 1,
-        FarFieldId      = NearFieldId     + 1,
-        ReadOnlyFieldId = FarFieldId      + 1,
-        NextFieldId     = ReadOnlyFieldId + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector EnableFieldMask;
-    static const OSG::BitVector FuncFieldMask;
-    static const OSG::BitVector NearFieldMask;
-    static const OSG::BitVector FarFieldMask;
-    static const OSG::BitVector ReadOnlyFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFBool*   getSFEnable(void);
+  SFGLenum* getSFFunc(void);
+  SFReal32* getSFNear(void);
+  SFReal32* getSFFar(void);
+  SFBool*   getSFReadOnly(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  bool&         getEnable(void);
+  const bool&   getEnable(void) const;
+  GLenum&       getFunc(void);
+  const GLenum& getFunc(void) const;
+  Real32&       getNear(void);
+  const Real32& getNear(void) const;
+  Real32&       getFar(void);
+  const Real32& getFar(void) const;
+  bool&         getReadOnly(void);
+  const bool&   getReadOnly(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFBool              *getSFEnable         (void);
-           SFGLenum            *getSFFunc           (void);
-           SFReal32            *getSFNear           (void);
-           SFReal32            *getSFFar            (void);
-           SFBool              *getSFReadOnly       (void);
+  void setEnable(const bool& value);
+  void setFunc(const GLenum& value);
+  void setNear(const Real32& value);
+  void setFar(const Real32& value);
+  void setReadOnly(const bool& value);
 
-           bool                &getEnable         (void);
-     const bool                &getEnable         (void) const;
-           GLenum              &getFunc           (void);
-     const GLenum              &getFunc           (void) const;
-           Real32              &getNear           (void);
-     const Real32              &getNear           (void) const;
-           Real32              &getFar            (void);
-     const Real32              &getFar            (void) const;
-           bool                &getReadOnly       (void);
-     const bool                &getReadOnly       (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setEnable         ( const bool &value );
-     void setFunc           ( const GLenum &value );
-     void setNear           ( const Real32 &value );
-     void setFar            ( const Real32 &value );
-     void setReadOnly       ( const bool &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static DepthChunkPtr create(void);
+  static DepthChunkPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  DepthChunkPtr      create          (void); 
-    static  DepthChunkPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFBool   _sfEnable;
+  SFGLenum _sfFunc;
+  SFReal32 _sfNear;
+  SFReal32 _sfFar;
+  SFBool   _sfReadOnly;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  DepthChunkBase(void);
+  DepthChunkBase(const DepthChunkBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~DepthChunkBase(void);
 
-    SFBool              _sfEnable;
-    SFGLenum            _sfFunc;
-    SFReal32            _sfNear;
-    SFReal32            _sfFar;
-    SFBool              _sfReadOnly;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    DepthChunkBase(void);
-    DepthChunkBase(const DepthChunkBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~DepthChunkBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      DepthChunkBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(DepthChunkBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      DepthChunkBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(DepthChunkBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const DepthChunkBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const DepthChunkBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef DepthChunkBase* DepthChunkBaseP;
 
-typedef DepthChunkBase *DepthChunkBaseP;
-
-typedef osgIF<DepthChunkBase::isNodeCore,
-              CoredNodePtr<DepthChunk>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet DepthChunkNodePtr;
+typedef osgIF<DepthChunkBase::isNodeCore, CoredNodePtr<DepthChunk>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet DepthChunkNodePtr;
 
 typedef RefPtr<DepthChunkPtr> DepthChunkRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGDEPTHCHUNKBASE_HEADER_CVSID "@(#)$Id: OSGDepthChunkBase.h,v 1.7 2006/02/20 16:54:19 dirk Exp $"
+#define OSGDEPTHCHUNKBASE_HEADER_CVSID                                                             \
+  "@(#)$Id: OSGDepthChunkBase.h,v 1.7 2006/02/20 16:54:19 dirk Exp $"
 
 #endif /* _OSGDEPTHCHUNKBASE_H_ */

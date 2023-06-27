@@ -49,7 +49,6 @@
 
 OSG_USING_NAMESPACE
 
-
 /***************************************************************************\
  *                            Description                                  *
 \***************************************************************************/
@@ -57,38 +56,38 @@ OSG_USING_NAMESPACE
 /*! \class osg::StatElem
     \ingroup Statistics
 
-The StatElem is the abstract base class for all the data types that can be 
-recorded statistically. See \ref PageSystemStatistics for an overview of the statistics 
+The StatElem is the abstract base class for all the data types that can be
+recorded statistically. See \ref PageSystemStatistics for an overview of the statistics
 structure.
 
-It mainly provides the general interfaces for accessing the statistics data as 
-a Real64 value via getValue, if possible, and in ASCII via the putToString and 
-getFromString methods. Additionally every StatElem can be switched on or off, 
-to prevent collecting statistics that is not needed, via the setOn methods. 
-Finally, ever StatElem can give information about itself in the form of a 
-osg::StatElemDesc*. 
+It mainly provides the general interfaces for accessing the statistics data as
+a Real64 value via getValue, if possible, and in ASCII via the putToString and
+getFromString methods. Additionally every StatElem can be switched on or off,
+to prevent collecting statistics that is not needed, via the setOn methods.
+Finally, ever StatElem can give information about itself in the form of a
+osg::StatElemDesc*.
 
-/ext 
+/ext
 
-To add a new StatElem type the given interface has to be implemented. 
-There are no restrictions as to which types are possible, as long as they can 
+To add a new StatElem type the given interface has to be implemented.
+There are no restrictions as to which types are possible, as long as they can
 be converted to and from a string. See StatIntElem for a simple example.
 
 /endext
 
 */
 
-/*! \fn void osg::StatElem::putToString(std::string &str, 
+/*! \fn void osg::StatElem::putToString(std::string &str,
                                         const char *format) const
 
-The putToString method converts the value of the StatElem into a standard STL 
-string. 
+The putToString method converts the value of the StatElem into a standard STL
+string.
 
-The conversion can be parameterized by the format string parameter. It is 
-modelled after the printf()-format string. It typically should contain a 
+The conversion can be parameterized by the format string parameter. It is
+modelled after the printf()-format string. It typically should contain a
 single "%" value to format the contents of the StatElem.
 
-*/ 
+*/
 
 /***************************************************************************\
  *                           Class methods                                 *
@@ -100,41 +99,35 @@ single "%" value to format the contents of the StatElem.
 
 /*------------- constructors & destructors --------------------------------*/
 
-StatElem::StatElem (StatElemDescBase *desc) 
-  : _on(true),_desc(desc)
-{
+StatElem::StatElem(StatElemDescBase* desc)
+    : _on(true)
+    , _desc(desc) {
   ;
 }
 
-StatElem::~StatElem(void)
-{
+StatElem::~StatElem(void) {
 }
 
 /*-------------------------- assignment -----------------------------------*/
 
-StatElem& StatElem::operator = (const StatElem &source)
-{
-    if (this == &source)
-        return *this;
-        
-    // copy 
+StatElem& StatElem::operator=(const StatElem& source) {
+  if (this == &source)
+    return *this;
 
-	_on = source._on;
-	_desc = source._desc;
-	
-  	return *this;
+  // copy
+
+  _on   = source._on;
+  _desc = source._desc;
+
+  return *this;
 }
 
 /*-------------------------- comparison -----------------------------------*/
 
 /*! Comparison. This does not compare the actual values of the StatElem, as
-    that may not be possible for all types. 
+    that may not be possible for all types.
 */
 
-bool StatElem::operator < (const StatElem &other) const
-{
-    return this < &other;
+bool StatElem::operator<(const StatElem& other) const {
+  return this < &other;
 }
-
-
-

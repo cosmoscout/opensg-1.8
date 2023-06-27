@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGVIEWPORTBASE_H_
 #define _OSGVIEWPORTBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -67,17 +65,17 @@
 
 #include <OSGAttachmentContainer.h> // Parent
 
-#include <OSGReal32Fields.h> // Left type
-#include <OSGReal32Fields.h> // Right type
-#include <OSGReal32Fields.h> // Bottom type
-#include <OSGReal32Fields.h> // Top type
-#include <OSGWindowFields.h> // Parent type
-#include <OSGCameraFields.h> // Camera type
-#include <OSGNodeFields.h> // Root type
+#include <OSGReal32Fields.h>     // Left type
+#include <OSGReal32Fields.h>     // Right type
+#include <OSGReal32Fields.h>     // Bottom type
+#include <OSGReal32Fields.h>     // Top type
+#include <OSGWindowFields.h>     // Parent type
+#include <OSGCameraFields.h>     // Camera type
+#include <OSGNodeFields.h>       // Root type
 #include <OSGBackgroundFields.h> // Background type
 #include <OSGForegroundFields.h> // Foregrounds type
-#include <OSGUInt32Fields.h> // TravMask type
-#include <OSGReal32Fields.h> // DrawTime type
+#include <OSGUInt32Fields.h>     // TravMask type
+#include <OSGReal32Fields.h>     // DrawTime type
 
 #include <OSGViewportFields.h>
 
@@ -88,251 +86,229 @@ class BinaryDataHandler;
 
 //! \brief Viewport Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING ViewportBase : public AttachmentContainer
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING ViewportBase : public AttachmentContainer {
+ private:
+  typedef AttachmentContainer Inherited;
 
-    typedef AttachmentContainer    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef ViewportPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    LeftFieldId        = Inherited::NextFieldId,
+    RightFieldId       = LeftFieldId + 1,
+    BottomFieldId      = RightFieldId + 1,
+    TopFieldId         = BottomFieldId + 1,
+    ParentFieldId      = TopFieldId + 1,
+    CameraFieldId      = ParentFieldId + 1,
+    RootFieldId        = CameraFieldId + 1,
+    BackgroundFieldId  = RootFieldId + 1,
+    ForegroundsFieldId = BackgroundFieldId + 1,
+    TravMaskFieldId    = ForegroundsFieldId + 1,
+    DrawTimeFieldId    = TravMaskFieldId + 1,
+    NextFieldId        = DrawTimeFieldId + 1
+  };
 
-    typedef ViewportPtr  Ptr;
+  static const OSG::BitVector LeftFieldMask;
+  static const OSG::BitVector RightFieldMask;
+  static const OSG::BitVector BottomFieldMask;
+  static const OSG::BitVector TopFieldMask;
+  static const OSG::BitVector ParentFieldMask;
+  static const OSG::BitVector CameraFieldMask;
+  static const OSG::BitVector RootFieldMask;
+  static const OSG::BitVector BackgroundFieldMask;
+  static const OSG::BitVector ForegroundsFieldMask;
+  static const OSG::BitVector TravMaskFieldMask;
+  static const OSG::BitVector DrawTimeFieldMask;
 
-    enum
-    {
-        LeftFieldId        = Inherited::NextFieldId,
-        RightFieldId       = LeftFieldId        + 1,
-        BottomFieldId      = RightFieldId       + 1,
-        TopFieldId         = BottomFieldId      + 1,
-        ParentFieldId      = TopFieldId         + 1,
-        CameraFieldId      = ParentFieldId      + 1,
-        RootFieldId        = CameraFieldId      + 1,
-        BackgroundFieldId  = RootFieldId        + 1,
-        ForegroundsFieldId = BackgroundFieldId  + 1,
-        TravMaskFieldId    = ForegroundsFieldId + 1,
-        DrawTimeFieldId    = TravMaskFieldId    + 1,
-        NextFieldId        = DrawTimeFieldId    + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector LeftFieldMask;
-    static const OSG::BitVector RightFieldMask;
-    static const OSG::BitVector BottomFieldMask;
-    static const OSG::BitVector TopFieldMask;
-    static const OSG::BitVector ParentFieldMask;
-    static const OSG::BitVector CameraFieldMask;
-    static const OSG::BitVector RootFieldMask;
-    static const OSG::BitVector BackgroundFieldMask;
-    static const OSG::BitVector ForegroundsFieldMask;
-    static const OSG::BitVector TravMaskFieldMask;
-    static const OSG::BitVector DrawTimeFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFReal32*        getSFLeft(void);
+  SFReal32*        getSFRight(void);
+  SFReal32*        getSFBottom(void);
+  SFReal32*        getSFTop(void);
+  SFWindowPtr*     getSFParent(void);
+  SFCameraPtr*     getSFCamera(void);
+  SFNodePtr*       getSFRoot(void);
+  SFBackgroundPtr* getSFBackground(void);
+  MFForegroundPtr* getMFForegrounds(void);
+  SFUInt32*        getSFTravMask(void);
+  SFReal32*        getSFDrawTime(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  Real32&                getLeft(void);
+  const Real32&          getLeft(void) const;
+  Real32&                getRight(void);
+  const Real32&          getRight(void) const;
+  Real32&                getBottom(void);
+  const Real32&          getBottom(void) const;
+  Real32&                getTop(void);
+  const Real32&          getTop(void) const;
+  WindowPtr&             getParent(void);
+  const WindowPtr&       getParent(void) const;
+  CameraPtr&             getCamera(void);
+  const CameraPtr&       getCamera(void) const;
+  NodePtr&               getRoot(void);
+  const NodePtr&         getRoot(void) const;
+  BackgroundPtr&         getBackground(void);
+  const BackgroundPtr&   getBackground(void) const;
+  UInt32&                getTravMask(void);
+  const UInt32&          getTravMask(void) const;
+  Real32&                getDrawTime(void);
+  const Real32&          getDrawTime(void) const;
+  ForegroundPtr&         getForegrounds(const UInt32 index);
+  MFForegroundPtr&       getForegrounds(void);
+  const MFForegroundPtr& getForegrounds(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFReal32            *getSFLeft           (void);
-           SFReal32            *getSFRight          (void);
-           SFReal32            *getSFBottom         (void);
-           SFReal32            *getSFTop            (void);
-           SFWindowPtr         *getSFParent         (void);
-           SFCameraPtr         *getSFCamera         (void);
-           SFNodePtr           *getSFRoot           (void);
-           SFBackgroundPtr     *getSFBackground     (void);
-           MFForegroundPtr     *getMFForegrounds    (void);
-           SFUInt32            *getSFTravMask       (void);
-           SFReal32            *getSFDrawTime       (void);
+  void setLeft(const Real32& value);
+  void setRight(const Real32& value);
+  void setBottom(const Real32& value);
+  void setTop(const Real32& value);
+  void setParent(const WindowPtr& value);
+  void setCamera(const CameraPtr& value);
+  void setRoot(const NodePtr& value);
+  void setBackground(const BackgroundPtr& value);
+  void setTravMask(const UInt32& value);
+  void setDrawTime(const Real32& value);
 
-           Real32              &getLeft           (void);
-     const Real32              &getLeft           (void) const;
-           Real32              &getRight          (void);
-     const Real32              &getRight          (void) const;
-           Real32              &getBottom         (void);
-     const Real32              &getBottom         (void) const;
-           Real32              &getTop            (void);
-     const Real32              &getTop            (void) const;
-           WindowPtr           &getParent         (void);
-     const WindowPtr           &getParent         (void) const;
-           CameraPtr           &getCamera         (void);
-     const CameraPtr           &getCamera         (void) const;
-           NodePtr             &getRoot           (void);
-     const NodePtr             &getRoot           (void) const;
-           BackgroundPtr       &getBackground     (void);
-     const BackgroundPtr       &getBackground     (void) const;
-           UInt32              &getTravMask       (void);
-     const UInt32              &getTravMask       (void) const;
-           Real32              &getDrawTime       (void);
-     const Real32              &getDrawTime       (void) const;
-           ForegroundPtr       &getForegrounds    (const UInt32 index);
-           MFForegroundPtr     &getForegrounds    (void);
-     const MFForegroundPtr     &getForegrounds    (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setLeft           ( const Real32 &value );
-     void setRight          ( const Real32 &value );
-     void setBottom         ( const Real32 &value );
-     void setTop            ( const Real32 &value );
-     void setParent         ( const WindowPtr &value );
-     void setCamera         ( const CameraPtr &value );
-     void setRoot           ( const NodePtr &value );
-     void setBackground     ( const BackgroundPtr &value );
-     void setTravMask       ( const UInt32 &value );
-     void setDrawTime       ( const Real32 &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static ViewportPtr create(void);
+  static ViewportPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  ViewportPtr      create          (void); 
-    static  ViewportPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFReal32        _sfLeft;
+  SFReal32        _sfRight;
+  SFReal32        _sfBottom;
+  SFReal32        _sfTop;
+  SFWindowPtr     _sfParent;
+  SFCameraPtr     _sfCamera;
+  SFNodePtr       _sfRoot;
+  SFBackgroundPtr _sfBackground;
+  MFForegroundPtr _mfForegrounds;
+  SFUInt32        _sfTravMask;
+  SFReal32        _sfDrawTime;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  ViewportBase(void);
+  ViewportBase(const ViewportBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~ViewportBase(void);
 
-    SFReal32            _sfLeft;
-    SFReal32            _sfRight;
-    SFReal32            _sfBottom;
-    SFReal32            _sfTop;
-    SFWindowPtr         _sfParent;
-    SFCameraPtr         _sfCamera;
-    SFNodePtr           _sfRoot;
-    SFBackgroundPtr     _sfBackground;
-    MFForegroundPtr     _mfForegrounds;
-    SFUInt32            _sfTravMask;
-    SFReal32            _sfDrawTime;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    ViewportBase(void);
-    ViewportBase(const ViewportBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~ViewportBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      ViewportBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(ViewportBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      ViewportBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(ViewportBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const ViewportBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const ViewportBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef ViewportBase* ViewportBaseP;
 
-typedef ViewportBase *ViewportBaseP;
-
-typedef osgIF<ViewportBase::isNodeCore,
-              CoredNodePtr<Viewport>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet ViewportNodePtr;
+typedef osgIF<ViewportBase::isNodeCore, CoredNodePtr<Viewport>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet ViewportNodePtr;
 
 typedef RefPtr<ViewportPtr> ViewportRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGVIEWPORTBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGVIEWPORTBASE_HEADER_CVSID                                                               \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGVIEWPORTBASE_H_ */

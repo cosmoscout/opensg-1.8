@@ -50,123 +50,85 @@ OSG_BEGIN_NAMESPACE
 /*-------------------------------------------------------------------------*/
 /*                                Get                                      */
 
-inline
-const Char8 *FieldDescription::getCName(void) const
-{
-    return _szName.str();
+inline const Char8* FieldDescription::getCName(void) const {
+  return _szName.str();
 }
 
-inline
-const IDString &FieldDescription::getName(void) const
-{
-    return _szName;
+inline const IDString& FieldDescription::getName(void) const {
+  return _szName;
 }
 
-inline
-UInt32 FieldDescription::getTypeId(void) const
-{
-    return _fieldType.getId();
+inline UInt32 FieldDescription::getTypeId(void) const {
+  return _fieldType.getId();
 }
 
-inline
-BitVector FieldDescription::getFieldMask(void) const
-{
-    return _vFieldMask;
+inline BitVector FieldDescription::getFieldMask(void) const {
+  return _vFieldMask;
 }
 
-inline
-void FieldDescription::setFieldMask(BitVector vFieldMask)
-{
-    _vFieldMask = vFieldMask;
+inline void FieldDescription::setFieldMask(BitVector vFieldMask) {
+  _vFieldMask = vFieldMask;
 }
 
-inline
-UInt32 FieldDescription::getFieldId(void) const
-{
-    return _uiFieldId;
+inline UInt32 FieldDescription::getFieldId(void) const {
+  return _uiFieldId;
 }
 
-inline
-void FieldDescription::setFieldId(UInt32 uiFieldId)
-{
-    _uiFieldId = uiFieldId;
+inline void FieldDescription::setFieldId(UInt32 uiFieldId) {
+  _uiFieldId = uiFieldId;
 }
 
-inline
-const Char8 *FieldDescription::getDefaultValue(void) const
-{
-    return _defaultValue.str();
+inline const Char8* FieldDescription::getDefaultValue(void) const {
+  return _defaultValue.str();
 }
 
-inline
-const TypeBase &FieldDescription::getFieldType(void) const
-{
-    return _fieldType;
+inline const TypeBase& FieldDescription::getFieldType(void) const {
+  return _fieldType;
 }
 
 /*-------------------------------------------------------------------------*/
 /*                                Is                                       */
 
-inline
-bool FieldDescription::isInternal(void)  const
-{
-    return _bInternal;
+inline bool FieldDescription::isInternal(void) const {
+  return _bInternal;
 }
 
-inline
-bool FieldDescription::isValid(void)  const
-{
-    return (this != NULL && _szName.getLength()) ? true : false;
+inline bool FieldDescription::isValid(void) const {
+  return (this != NULL && _szName.getLength()) ? true : false;
 }
 
 /*-------------------------------------------------------------------------*/
 /*                                Set                                      */
 
-inline
-void FieldDescription::setAccessMethod(FieldAccessMethod fAccessMethod)
-{
-    _fAccessMethod = fAccessMethod;
+inline void FieldDescription::setAccessMethod(FieldAccessMethod fAccessMethod) {
+  _fAccessMethod = fAccessMethod;
 }
 
-inline
-void FieldDescription::setIndexAccessMethod(
-    FieldIndexAccessMethod  fIndexedAccessMethod)
-{
-    _fIndexedAccessMethod = fIndexedAccessMethod;
+inline void FieldDescription::setIndexAccessMethod(FieldIndexAccessMethod fIndexedAccessMethod) {
+  _fIndexedAccessMethod = fIndexedAccessMethod;
 }
 
 /*-------------------------------------------------------------------------*/
 /*                            Generic Field Access                         */
 
-inline
-Field * FieldDescription::getField(FieldContainer &dataStore) const
-{
-    Field *pField = NULL;
+inline Field* FieldDescription::getField(FieldContainer& dataStore) const {
+  Field* pField = NULL;
 
-    if(_fAccessMethod != 0)
-    {
-        pField = ( (&dataStore)->*_fAccessMethod) ();
-    }
-    else if(_fIndexedAccessMethod != 0)
-    {
-        pField = ( (&dataStore)->*_fIndexedAccessMethod)(_uiFieldId);
-    }
-    else
-    {
-        SWARNING << "No accessMethod for " << _szName.str() << std::endl;
-    }
+  if (_fAccessMethod != 0) {
+    pField = ((&dataStore)->*_fAccessMethod)();
+  } else if (_fIndexedAccessMethod != 0) {
+    pField = ((&dataStore)->*_fIndexedAccessMethod)(_uiFieldId);
+  } else {
+    SWARNING << "No accessMethod for " << _szName.str() << std::endl;
+  }
 
-    return pField;
+  return pField;
 }
 
-
-inline
-bool FieldDescriptionPLT::operator()(const FieldDescription *pElemDesc1, 
-                                     const FieldDescription *pElemDesc2) const
-{
-    return (pElemDesc1->getFieldId() < pElemDesc2->getFieldId());
+inline bool FieldDescriptionPLT::operator()(
+    const FieldDescription* pElemDesc1, const FieldDescription* pElemDesc2) const {
+  return (pElemDesc1->getFieldId() < pElemDesc2->getFieldId());
 }
-
 
 OSG_END_NAMESPACE
 

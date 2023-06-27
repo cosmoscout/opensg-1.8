@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILESTATISTICSFOREGROUNDINST
 
 #include <stdlib.h>
@@ -61,19 +60,16 @@
 #include "OSGStatisticsForegroundBase.h"
 #include "OSGStatisticsForeground.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  StatisticsForegroundBase::ElementIDsFieldMask = 
+const OSG::BitVector StatisticsForegroundBase::ElementIDsFieldMask =
     (TypeTraits<BitVector>::One << StatisticsForegroundBase::ElementIDsFieldId);
 
-const OSG::BitVector  StatisticsForegroundBase::CollectorFieldMask = 
+const OSG::BitVector StatisticsForegroundBase::CollectorFieldMask =
     (TypeTraits<BitVector>::One << StatisticsForegroundBase::CollectorFieldId);
 
-const OSG::BitVector StatisticsForegroundBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector StatisticsForegroundBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
@@ -86,210 +82,152 @@ const OSG::BitVector StatisticsForegroundBase::MTInfluenceMask =
 
 //! StatisticsForeground description
 
-FieldDescription *StatisticsForegroundBase::_desc[] = 
-{
-    new FieldDescription(MFInt32::getClassType(), 
-                     "elementIDs", 
-                     ElementIDsFieldId, ElementIDsFieldMask,
-                     false,
-                     (FieldAccessMethod) &StatisticsForegroundBase::getMFElementIDs),
-    new FieldDescription(SFStatCollector::getClassType(), 
-                     "collector", 
-                     CollectorFieldId, CollectorFieldMask,
-                     false,
-                     (FieldAccessMethod) &StatisticsForegroundBase::getSFCollector)
-};
+FieldDescription* StatisticsForegroundBase::_desc[] = {
+    new FieldDescription(MFInt32::getClassType(), "elementIDs", ElementIDsFieldId,
+        ElementIDsFieldMask, false, (FieldAccessMethod)&StatisticsForegroundBase::getMFElementIDs),
+    new FieldDescription(SFStatCollector::getClassType(), "collector", CollectorFieldId,
+        CollectorFieldMask, false, (FieldAccessMethod)&StatisticsForegroundBase::getSFCollector)};
 
+FieldContainerType StatisticsForegroundBase::_type("StatisticsForeground", "Foreground", NULL, NULL,
+    StatisticsForeground::initMethod, _desc, sizeof(_desc));
 
-FieldContainerType StatisticsForegroundBase::_type(
-    "StatisticsForeground",
-    "Foreground",
-    NULL,
-    NULL, 
-    StatisticsForeground::initMethod,
-    _desc,
-    sizeof(_desc));
-
-//OSG_FIELD_CONTAINER_DEF(StatisticsForegroundBase, StatisticsForegroundPtr)
+// OSG_FIELD_CONTAINER_DEF(StatisticsForegroundBase, StatisticsForegroundPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &StatisticsForegroundBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &StatisticsForegroundBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-UInt32 StatisticsForegroundBase::getContainerSize(void) const 
-{ 
-    return sizeof(StatisticsForeground); 
+FieldContainerType& StatisticsForegroundBase::getType(void) {
+  return _type;
 }
 
+const FieldContainerType& StatisticsForegroundBase::getType(void) const {
+  return _type;
+}
+
+UInt32 StatisticsForegroundBase::getContainerSize(void) const {
+  return sizeof(StatisticsForeground);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void StatisticsForegroundBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((StatisticsForegroundBase *) &other, whichField);
+void StatisticsForegroundBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((StatisticsForegroundBase*)&other, whichField);
 }
 #else
-void StatisticsForegroundBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((StatisticsForegroundBase *) &other, whichField, sInfo);
+void StatisticsForegroundBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((StatisticsForegroundBase*)&other, whichField, sInfo);
 }
-void StatisticsForegroundBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void StatisticsForegroundBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void StatisticsForegroundBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
+void StatisticsForegroundBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 
-    _mfElementIDs.terminateShare(uiAspect, this->getContainerSize());
+  _mfElementIDs.terminateShare(uiAspect, this->getContainerSize());
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-StatisticsForegroundBase::StatisticsForegroundBase(void) :
-    _mfElementIDs             (), 
-    _sfCollector              (), 
-    Inherited() 
-{
+StatisticsForegroundBase::StatisticsForegroundBase(void)
+    : _mfElementIDs()
+    , _sfCollector()
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-StatisticsForegroundBase::StatisticsForegroundBase(const StatisticsForegroundBase &source) :
-    _mfElementIDs             (source._mfElementIDs             ), 
-    _sfCollector              (source._sfCollector              ), 
-    Inherited                 (source)
-{
+StatisticsForegroundBase::StatisticsForegroundBase(const StatisticsForegroundBase& source)
+    : _mfElementIDs(source._mfElementIDs)
+    , _sfCollector(source._sfCollector)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-StatisticsForegroundBase::~StatisticsForegroundBase(void)
-{
+StatisticsForegroundBase::~StatisticsForegroundBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 StatisticsForegroundBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 StatisticsForegroundBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (ElementIDsFieldMask & whichField))
-    {
-        returnValue += _mfElementIDs.getBinSize();
-    }
+  if (FieldBits::NoField != (ElementIDsFieldMask & whichField)) {
+    returnValue += _mfElementIDs.getBinSize();
+  }
 
-    if(FieldBits::NoField != (CollectorFieldMask & whichField))
-    {
-        returnValue += _sfCollector.getBinSize();
-    }
+  if (FieldBits::NoField != (CollectorFieldMask & whichField)) {
+    returnValue += _sfCollector.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void StatisticsForegroundBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void StatisticsForegroundBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ElementIDsFieldMask & whichField))
-    {
-        _mfElementIDs.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (ElementIDsFieldMask & whichField)) {
+    _mfElementIDs.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (CollectorFieldMask & whichField))
-    {
-        _sfCollector.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (CollectorFieldMask & whichField)) {
+    _sfCollector.copyToBin(pMem);
+  }
 }
 
-void StatisticsForegroundBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void StatisticsForegroundBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ElementIDsFieldMask & whichField))
-    {
-        _mfElementIDs.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (ElementIDsFieldMask & whichField)) {
+    _mfElementIDs.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (CollectorFieldMask & whichField))
-    {
-        _sfCollector.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (CollectorFieldMask & whichField)) {
+    _sfCollector.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void StatisticsForegroundBase::executeSyncImpl(      StatisticsForegroundBase *pOther,
-                                        const BitVector         &whichField)
-{
+void StatisticsForegroundBase::executeSyncImpl(
+    StatisticsForegroundBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (ElementIDsFieldMask & whichField))
-        _mfElementIDs.syncWith(pOther->_mfElementIDs);
+  if (FieldBits::NoField != (ElementIDsFieldMask & whichField))
+    _mfElementIDs.syncWith(pOther->_mfElementIDs);
 
-    if(FieldBits::NoField != (CollectorFieldMask & whichField))
-        _sfCollector.syncWith(pOther->_sfCollector);
-
-
+  if (FieldBits::NoField != (CollectorFieldMask & whichField))
+    _sfCollector.syncWith(pOther->_sfCollector);
 }
 #else
-void StatisticsForegroundBase::executeSyncImpl(      StatisticsForegroundBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void StatisticsForegroundBase::executeSyncImpl(
+    StatisticsForegroundBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (CollectorFieldMask & whichField))
-        _sfCollector.syncWith(pOther->_sfCollector);
+  if (FieldBits::NoField != (CollectorFieldMask & whichField))
+    _sfCollector.syncWith(pOther->_sfCollector);
 
-
-    if(FieldBits::NoField != (ElementIDsFieldMask & whichField))
-        _mfElementIDs.syncWith(pOther->_mfElementIDs, sInfo);
-
-
+  if (FieldBits::NoField != (ElementIDsFieldMask & whichField))
+    _mfElementIDs.syncWith(pOther->_mfElementIDs, sInfo);
 }
 
-void StatisticsForegroundBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void StatisticsForegroundBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (ElementIDsFieldMask & whichField))
-        _mfElementIDs.beginEdit(uiAspect, uiContainerSize);
-
+  if (FieldBits::NoField != (ElementIDsFieldMask & whichField))
+    _mfElementIDs.beginEdit(uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>
@@ -297,7 +235,8 @@ void StatisticsForegroundBase::execBeginEditImpl (const BitVector &whichField,
 OSG_BEGIN_NAMESPACE
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_DEV)
-DataType FieldDataTraits<StatisticsForegroundPtr>::_type("StatisticsForegroundPtr", "ForegroundPtr");
+DataType FieldDataTraits<StatisticsForegroundPtr>::_type(
+    "StatisticsForegroundPtr", "ForegroundPtr");
 #endif
 
 OSG_DLLEXPORT_SFIELD_DEF1(StatisticsForegroundPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);

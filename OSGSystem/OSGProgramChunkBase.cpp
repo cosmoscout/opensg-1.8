@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEPROGRAMCHUNKINST
 
 #include <stdlib.h>
@@ -61,25 +60,22 @@
 #include "OSGProgramChunkBase.h"
 #include "OSGProgramChunk.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  ProgramChunkBase::ProgramFieldMask = 
+const OSG::BitVector ProgramChunkBase::ProgramFieldMask =
     (TypeTraits<BitVector>::One << ProgramChunkBase::ProgramFieldId);
 
-const OSG::BitVector  ProgramChunkBase::ParamValuesFieldMask = 
+const OSG::BitVector ProgramChunkBase::ParamValuesFieldMask =
     (TypeTraits<BitVector>::One << ProgramChunkBase::ParamValuesFieldId);
 
-const OSG::BitVector  ProgramChunkBase::ParamNamesFieldMask = 
+const OSG::BitVector ProgramChunkBase::ParamNamesFieldMask =
     (TypeTraits<BitVector>::One << ProgramChunkBase::ParamNamesFieldId);
 
-const OSG::BitVector  ProgramChunkBase::GLIdFieldMask = 
+const OSG::BitVector ProgramChunkBase::GLIdFieldMask =
     (TypeTraits<BitVector>::One << ProgramChunkBase::GLIdFieldId);
 
-const OSG::BitVector ProgramChunkBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector ProgramChunkBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
@@ -98,270 +94,199 @@ const OSG::BitVector ProgramChunkBase::MTInfluenceMask =
 
 //! ProgramChunk description
 
-FieldDescription *ProgramChunkBase::_desc[] = 
-{
-    new FieldDescription(SFString::getClassType(), 
-                     "program", 
-                     ProgramFieldId, ProgramFieldMask,
-                     false,
-                     (FieldAccessMethod) &ProgramChunkBase::getSFProgram),
-    new FieldDescription(MFVec4f::getClassType(), 
-                     "paramValues", 
-                     ParamValuesFieldId, ParamValuesFieldMask,
-                     false,
-                     (FieldAccessMethod) &ProgramChunkBase::getMFParamValues),
-    new FieldDescription(MFString::getClassType(), 
-                     "paramNames", 
-                     ParamNamesFieldId, ParamNamesFieldMask,
-                     false,
-                     (FieldAccessMethod) &ProgramChunkBase::getMFParamNames),
-    new FieldDescription(SFUInt32::getClassType(), 
-                     "GLId", 
-                     GLIdFieldId, GLIdFieldMask,
-                     true,
-                     (FieldAccessMethod) &ProgramChunkBase::getSFGLId)
-};
-
+FieldDescription* ProgramChunkBase::_desc[] = {
+    new FieldDescription(SFString::getClassType(), "program", ProgramFieldId, ProgramFieldMask,
+        false, (FieldAccessMethod)&ProgramChunkBase::getSFProgram),
+    new FieldDescription(MFVec4f::getClassType(), "paramValues", ParamValuesFieldId,
+        ParamValuesFieldMask, false, (FieldAccessMethod)&ProgramChunkBase::getMFParamValues),
+    new FieldDescription(MFString::getClassType(), "paramNames", ParamNamesFieldId,
+        ParamNamesFieldMask, false, (FieldAccessMethod)&ProgramChunkBase::getMFParamNames),
+    new FieldDescription(SFUInt32::getClassType(), "GLId", GLIdFieldId, GLIdFieldMask, true,
+        (FieldAccessMethod)&ProgramChunkBase::getSFGLId)};
 
 FieldContainerType ProgramChunkBase::_type(
-    "ProgramChunk",
-    "StateChunk",
-    NULL,
-    NULL, 
-    ProgramChunk::initMethod,
-    _desc,
-    sizeof(_desc));
+    "ProgramChunk", "StateChunk", NULL, NULL, ProgramChunk::initMethod, _desc, sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(ProgramChunkBase, ProgramChunkPtr)
+// OSG_FIELD_CONTAINER_DEF(ProgramChunkBase, ProgramChunkPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &ProgramChunkBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &ProgramChunkBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-UInt32 ProgramChunkBase::getContainerSize(void) const 
-{ 
-    return sizeof(ProgramChunk); 
+FieldContainerType& ProgramChunkBase::getType(void) {
+  return _type;
 }
 
+const FieldContainerType& ProgramChunkBase::getType(void) const {
+  return _type;
+}
+
+UInt32 ProgramChunkBase::getContainerSize(void) const {
+  return sizeof(ProgramChunk);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ProgramChunkBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((ProgramChunkBase *) &other, whichField);
+void ProgramChunkBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((ProgramChunkBase*)&other, whichField);
 }
 #else
-void ProgramChunkBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((ProgramChunkBase *) &other, whichField, sInfo);
+void ProgramChunkBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((ProgramChunkBase*)&other, whichField, sInfo);
 }
-void ProgramChunkBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void ProgramChunkBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void ProgramChunkBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
+void ProgramChunkBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 
-    _mfParamValues.terminateShare(uiAspect, this->getContainerSize());
-    _mfParamNames.terminateShare(uiAspect, this->getContainerSize());
+  _mfParamValues.terminateShare(uiAspect, this->getContainerSize());
+  _mfParamNames.terminateShare(uiAspect, this->getContainerSize());
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-ProgramChunkBase::ProgramChunkBase(void) :
-    _sfProgram                (), 
-    _mfParamValues            (), 
-    _mfParamNames             (), 
-    _sfGLId                   (UInt32(0)), 
-    Inherited() 
-{
+ProgramChunkBase::ProgramChunkBase(void)
+    : _sfProgram()
+    , _mfParamValues()
+    , _mfParamNames()
+    , _sfGLId(UInt32(0))
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-ProgramChunkBase::ProgramChunkBase(const ProgramChunkBase &source) :
-    _sfProgram                (source._sfProgram                ), 
-    _mfParamValues            (source._mfParamValues            ), 
-    _mfParamNames             (source._mfParamNames             ), 
-    _sfGLId                   (source._sfGLId                   ), 
-    Inherited                 (source)
-{
+ProgramChunkBase::ProgramChunkBase(const ProgramChunkBase& source)
+    : _sfProgram(source._sfProgram)
+    , _mfParamValues(source._mfParamValues)
+    , _mfParamNames(source._mfParamNames)
+    , _sfGLId(source._sfGLId)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-ProgramChunkBase::~ProgramChunkBase(void)
-{
+ProgramChunkBase::~ProgramChunkBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 ProgramChunkBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 ProgramChunkBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (ProgramFieldMask & whichField))
-    {
-        returnValue += _sfProgram.getBinSize();
-    }
+  if (FieldBits::NoField != (ProgramFieldMask & whichField)) {
+    returnValue += _sfProgram.getBinSize();
+  }
 
-    if(FieldBits::NoField != (ParamValuesFieldMask & whichField))
-    {
-        returnValue += _mfParamValues.getBinSize();
-    }
+  if (FieldBits::NoField != (ParamValuesFieldMask & whichField)) {
+    returnValue += _mfParamValues.getBinSize();
+  }
 
-    if(FieldBits::NoField != (ParamNamesFieldMask & whichField))
-    {
-        returnValue += _mfParamNames.getBinSize();
-    }
+  if (FieldBits::NoField != (ParamNamesFieldMask & whichField)) {
+    returnValue += _mfParamNames.getBinSize();
+  }
 
-    if(FieldBits::NoField != (GLIdFieldMask & whichField))
-    {
-        returnValue += _sfGLId.getBinSize();
-    }
+  if (FieldBits::NoField != (GLIdFieldMask & whichField)) {
+    returnValue += _sfGLId.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void ProgramChunkBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void ProgramChunkBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ProgramFieldMask & whichField))
-    {
-        _sfProgram.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (ProgramFieldMask & whichField)) {
+    _sfProgram.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ParamValuesFieldMask & whichField))
-    {
-        _mfParamValues.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (ParamValuesFieldMask & whichField)) {
+    _mfParamValues.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ParamNamesFieldMask & whichField))
-    {
-        _mfParamNames.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (ParamNamesFieldMask & whichField)) {
+    _mfParamNames.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GLIdFieldMask & whichField))
-    {
-        _sfGLId.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (GLIdFieldMask & whichField)) {
+    _sfGLId.copyToBin(pMem);
+  }
 }
 
-void ProgramChunkBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void ProgramChunkBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ProgramFieldMask & whichField))
-    {
-        _sfProgram.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (ProgramFieldMask & whichField)) {
+    _sfProgram.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ParamValuesFieldMask & whichField))
-    {
-        _mfParamValues.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (ParamValuesFieldMask & whichField)) {
+    _mfParamValues.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ParamNamesFieldMask & whichField))
-    {
-        _mfParamNames.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (ParamNamesFieldMask & whichField)) {
+    _mfParamNames.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GLIdFieldMask & whichField))
-    {
-        _sfGLId.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (GLIdFieldMask & whichField)) {
+    _sfGLId.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ProgramChunkBase::executeSyncImpl(      ProgramChunkBase *pOther,
-                                        const BitVector         &whichField)
-{
+void ProgramChunkBase::executeSyncImpl(ProgramChunkBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (ProgramFieldMask & whichField))
-        _sfProgram.syncWith(pOther->_sfProgram);
+  if (FieldBits::NoField != (ProgramFieldMask & whichField))
+    _sfProgram.syncWith(pOther->_sfProgram);
 
-    if(FieldBits::NoField != (ParamValuesFieldMask & whichField))
-        _mfParamValues.syncWith(pOther->_mfParamValues);
+  if (FieldBits::NoField != (ParamValuesFieldMask & whichField))
+    _mfParamValues.syncWith(pOther->_mfParamValues);
 
-    if(FieldBits::NoField != (ParamNamesFieldMask & whichField))
-        _mfParamNames.syncWith(pOther->_mfParamNames);
+  if (FieldBits::NoField != (ParamNamesFieldMask & whichField))
+    _mfParamNames.syncWith(pOther->_mfParamNames);
 
-    if(FieldBits::NoField != (GLIdFieldMask & whichField))
-        _sfGLId.syncWith(pOther->_sfGLId);
-
-
+  if (FieldBits::NoField != (GLIdFieldMask & whichField))
+    _sfGLId.syncWith(pOther->_sfGLId);
 }
 #else
-void ProgramChunkBase::executeSyncImpl(      ProgramChunkBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void ProgramChunkBase::executeSyncImpl(
+    ProgramChunkBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (ProgramFieldMask & whichField))
-        _sfProgram.syncWith(pOther->_sfProgram);
+  if (FieldBits::NoField != (ProgramFieldMask & whichField))
+    _sfProgram.syncWith(pOther->_sfProgram);
 
-    if(FieldBits::NoField != (GLIdFieldMask & whichField))
-        _sfGLId.syncWith(pOther->_sfGLId);
+  if (FieldBits::NoField != (GLIdFieldMask & whichField))
+    _sfGLId.syncWith(pOther->_sfGLId);
 
+  if (FieldBits::NoField != (ParamValuesFieldMask & whichField))
+    _mfParamValues.syncWith(pOther->_mfParamValues, sInfo);
 
-    if(FieldBits::NoField != (ParamValuesFieldMask & whichField))
-        _mfParamValues.syncWith(pOther->_mfParamValues, sInfo);
-
-    if(FieldBits::NoField != (ParamNamesFieldMask & whichField))
-        _mfParamNames.syncWith(pOther->_mfParamNames, sInfo);
-
-
+  if (FieldBits::NoField != (ParamNamesFieldMask & whichField))
+    _mfParamNames.syncWith(pOther->_mfParamNames, sInfo);
 }
 
-void ProgramChunkBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void ProgramChunkBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (ParamValuesFieldMask & whichField))
-        _mfParamValues.beginEdit(uiAspect, uiContainerSize);
+  if (FieldBits::NoField != (ParamValuesFieldMask & whichField))
+    _mfParamValues.beginEdit(uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (ParamNamesFieldMask & whichField))
-        _mfParamNames.beginEdit(uiAspect, uiContainerSize);
-
+  if (FieldBits::NoField != (ParamNamesFieldMask & whichField))
+    _mfParamNames.beginEdit(uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>

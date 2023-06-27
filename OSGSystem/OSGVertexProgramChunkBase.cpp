@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEVERTEXPROGRAMCHUNKINST
 
 #include <stdlib.h>
@@ -61,163 +60,115 @@
 #include "OSGVertexProgramChunkBase.h"
 #include "OSGVertexProgramChunk.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector VertexProgramChunkBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
+const OSG::BitVector VertexProgramChunkBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
-
-
-FieldContainerType VertexProgramChunkBase::_type(
-    "VertexProgramChunk",
-    "ProgramChunk",
-    NULL,
-    (PrototypeCreateF) &VertexProgramChunkBase::createEmpty,
-    VertexProgramChunk::initMethod,
-    NULL,
+FieldContainerType VertexProgramChunkBase::_type("VertexProgramChunk", "ProgramChunk", NULL,
+    (PrototypeCreateF)&VertexProgramChunkBase::createEmpty, VertexProgramChunk::initMethod, NULL,
     0);
 
-//OSG_FIELD_CONTAINER_DEF(VertexProgramChunkBase, VertexProgramChunkPtr)
+// OSG_FIELD_CONTAINER_DEF(VertexProgramChunkBase, VertexProgramChunkPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &VertexProgramChunkBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &VertexProgramChunkBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr VertexProgramChunkBase::shallowCopy(void) const 
-{ 
-    VertexProgramChunkPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const VertexProgramChunk *>(this)); 
-
-    return returnValue; 
+FieldContainerType& VertexProgramChunkBase::getType(void) {
+  return _type;
 }
 
-UInt32 VertexProgramChunkBase::getContainerSize(void) const 
-{ 
-    return sizeof(VertexProgramChunk); 
+const FieldContainerType& VertexProgramChunkBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr VertexProgramChunkBase::shallowCopy(void) const {
+  VertexProgramChunkPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const VertexProgramChunk*>(this));
+
+  return returnValue;
+}
+
+UInt32 VertexProgramChunkBase::getContainerSize(void) const {
+  return sizeof(VertexProgramChunk);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void VertexProgramChunkBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((VertexProgramChunkBase *) &other, whichField);
+void VertexProgramChunkBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((VertexProgramChunkBase*)&other, whichField);
 }
 #else
-void VertexProgramChunkBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((VertexProgramChunkBase *) &other, whichField, sInfo);
+void VertexProgramChunkBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((VertexProgramChunkBase*)&other, whichField, sInfo);
 }
-void VertexProgramChunkBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void VertexProgramChunkBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void VertexProgramChunkBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void VertexProgramChunkBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-VertexProgramChunkBase::VertexProgramChunkBase(void) :
-    Inherited() 
-{
+VertexProgramChunkBase::VertexProgramChunkBase(void)
+    : Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-VertexProgramChunkBase::VertexProgramChunkBase(const VertexProgramChunkBase &source) :
-    Inherited                 (source)
-{
+VertexProgramChunkBase::VertexProgramChunkBase(const VertexProgramChunkBase& source)
+    : Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-VertexProgramChunkBase::~VertexProgramChunkBase(void)
-{
+VertexProgramChunkBase::~VertexProgramChunkBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 VertexProgramChunkBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 VertexProgramChunkBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void VertexProgramChunkBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
-
-
+void VertexProgramChunkBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 }
 
-void VertexProgramChunkBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
-
-
+void VertexProgramChunkBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void VertexProgramChunkBase::executeSyncImpl(      VertexProgramChunkBase *pOther,
-                                        const BitVector         &whichField)
-{
+void VertexProgramChunkBase::executeSyncImpl(
+    VertexProgramChunkBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
-
-
+  Inherited::executeSyncImpl(pOther, whichField);
 }
 #else
-void VertexProgramChunkBase::executeSyncImpl(      VertexProgramChunkBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void VertexProgramChunkBase::executeSyncImpl(
+    VertexProgramChunkBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
-
-
-
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 }
 
-void VertexProgramChunkBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void VertexProgramChunkBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>

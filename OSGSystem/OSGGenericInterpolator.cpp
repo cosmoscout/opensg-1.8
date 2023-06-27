@@ -52,7 +52,6 @@ OSG_USING_NAMESPACE
  *                           Class variables                               *
 \***************************************************************************/
 
-
 /***************************************************************************\
  *                           Class methods                                 *
 \***************************************************************************/
@@ -79,23 +78,16 @@ OSG_USING_NAMESPACE
 
 /*------------- constructors & destructors --------------------------------*/
 
-InterpolatorBase::InterpolatorBase(InterpolType t) : 
-    _type      (t     ), 
-    _pTransform(NullFC),
-    _targetName(      ),
-    _name      (      ),
-    _keys      (      ),
-    _duration  (1.f   ),
-    _keyDelta  (1.f   ),
-    _loop      (true  ) 
-{
+InterpolatorBase::InterpolatorBase(InterpolType t)
+    : _type(t)
+    , _pTransform(NullFC)
+    , _targetName()
+    , _name()
+    , _keys()
+    , _duration(1.f)
+    , _keyDelta(1.f)
+    , _loop(true) {
 }
 
-InterpolatorBase::~InterpolatorBase(void) 
-{
+InterpolatorBase::~InterpolatorBase(void) {
 }
-
-
-
-
-

@@ -40,16 +40,16 @@
 
 using namespace OSG;
 
-DrawAction   *ract;
-RenderAction *renact;
+DrawAction*   ract;
+RenderAction* renact;
 
-NodePtr  root;
+NodePtr root;
 
-NodePtr  file;
+NodePtr file;
 
 PerspectiveCameraPtr cam;
-ViewportPtr vp;
-WindowPtr win;
+ViewportPtr          vp;
+WindowPtr            win;
 
 TransformPtr cam_trans;
 TransformPtr scene_trans;
@@ -59,423 +59,383 @@ Trackball tball;
 bool move_obj = false;
 
 int mouseb = 0;
-int lastx=0, lasty=0;
+int lastx = 0, lasty = 0;
 
 Quaternion oldq;
 Vec3f      oldv;
 
-void 
-display(void)
-{
-    Matrix m1, m2, m3;
-    Quaternion q1;
+void display(void) {
+  Matrix     m1, m2, m3;
+  Quaternion q1;
 
-    tball.getRotation().getValue(m3);
+  tball.getRotation().getValue(m3);
 
-    q1.setValue(m3);
+  q1.setValue(m3);
 
-    m1.setRotate(q1);
-    
-//    std::cout << "TBROT" << std::endl << tball.getRotation() << endl;
-//    std::cout << "M3" << std::endl << m3 << std::endl;
-//    std::cout << "Q1" << std::endl << q1 << std::endl;
-//    std::cout << "M1" << std::endl << m1 << std::endl;
+  m1.setRotate(q1);
 
-//  m1.setRotate( tball.getRotation() );
-    m2.setTranslate( tball.getPosition() );
-    
-//std::cout << "Pos: " << tball.getPosition() << ", Rot: " << tball.getRotation() << std::endl;
+  //    std::cout << "TBROT" << std::endl << tball.getRotation() << endl;
+  //    std::cout << "M3" << std::endl << m3 << std::endl;
+  //    std::cout << "Q1" << std::endl << q1 << std::endl;
+  //    std::cout << "M1" << std::endl << m1 << std::endl;
 
-//    std::cout << tball.getRotation() << std::endl;
+  //  m1.setRotate( tball.getRotation() );
+  m2.setTranslate(tball.getPosition());
 
-    m1.mult( m2 );
+  // std::cout << "Pos: " << tball.getPosition() << ", Rot: " << tball.getRotation() << std::endl;
 
-//    std::cerr << m1 << std::endl;
-    
+  //    std::cout << tball.getRotation() << std::endl;
 
-    if(move_obj == true)
-    {
-        scene_trans->getSFMatrix()->setValue( m1 );
-    }
-    else
-    {
-        cam_trans->getSFMatrix()->setValue( m1 );
-    }
+  m1.mult(m2);
 
-//    win->draw( ract );
-    win->render(renact);
+  //    std::cerr << m1 << std::endl;
+
+  if (move_obj == true) {
+    scene_trans->getSFMatrix()->setValue(m1);
+  } else {
+    cam_trans->getSFMatrix()->setValue(m1);
+  }
+
+  //    win->draw( ract );
+  win->render(renact);
 }
 
-void reshape( int w, int h )
-{
-    std::cerr << "Reshape: " << w << "," << h << std::endl;
-    win->resize( w, h );
+void reshape(int w, int h) {
+  std::cerr << "Reshape: " << w << "," << h << std::endl;
+  win->resize(w, h);
 }
 
-
-void
-animate(void)
-{
-    glutPostRedisplay();
+void animate(void) {
+  glutPostRedisplay();
 }
 
 // tballall stuff
 
+void motion(int x, int y) {
+  Real32 w = win->getWidth(), h = win->getHeight();
 
-void
-motion(int x, int y)
-{   
-    Real32 w = win->getWidth(), h = win->getHeight();
-    
+  Real32 a = -2. * (lastx / w - .5), b = -2. * (.5 - lasty / h), c = -2. * (x / w - .5),
+         d = -2. * (.5 - y / h);
 
-    Real32  a = -2. * ( lastx / w - .5 ),
-                b = -2. * ( .5 - lasty / h ),
-                c = -2. * ( x / w - .5 ),
-                d = -2. * ( .5 - y / h );
-
-    if ( mouseb & ( 1 << GLUT_LEFT_BUTTON ) )
-    {
-        tball.updateRotation( a, b, c, d );     
-    }
-    else if ( mouseb & ( 1 << GLUT_MIDDLE_BUTTON ) )
-    {
-        tball.updatePosition( a, b, c, d );     
-    }
-    else if ( mouseb & ( 1 << GLUT_RIGHT_BUTTON ) )
-    {
-        tball.updatePositionNeg( a, b, c, d );  
-    }
-    lastx = x;
-    lasty = y;
+  if (mouseb & (1 << GLUT_LEFT_BUTTON)) {
+    tball.updateRotation(a, b, c, d);
+  } else if (mouseb & (1 << GLUT_MIDDLE_BUTTON)) {
+    tball.updatePosition(a, b, c, d);
+  } else if (mouseb & (1 << GLUT_RIGHT_BUTTON)) {
+    tball.updatePositionNeg(a, b, c, d);
+  }
+  lastx = x;
+  lasty = y;
 }
 
-void
-mouse(int button, int state, int x, int y)
-{
-    if ( state == 0 )
-    {
-        switch ( button )
-        {
-        case GLUT_LEFT_BUTTON:  break;
-        case GLUT_MIDDLE_BUTTON:tball.setAutoPosition(true);
-                                break;
-        case GLUT_RIGHT_BUTTON:     tball.setAutoPositionNeg(true);
-                                break;
-        }
-        mouseb |= 1 << button;
+void mouse(int button, int state, int x, int y) {
+  if (state == 0) {
+    switch (button) {
+    case GLUT_LEFT_BUTTON:
+      break;
+    case GLUT_MIDDLE_BUTTON:
+      tball.setAutoPosition(true);
+      break;
+    case GLUT_RIGHT_BUTTON:
+      tball.setAutoPositionNeg(true);
+      break;
     }
-    else if ( state == 1 )
-    {
-        switch ( button )
-        {
-        case GLUT_LEFT_BUTTON:  break;
-        case GLUT_MIDDLE_BUTTON:tball.setAutoPosition(false);
-                                break;
-        case GLUT_RIGHT_BUTTON:     tball.setAutoPositionNeg(false);
-                                break;
-        }       
-        mouseb &= ~(1 << button);
+    mouseb |= 1 << button;
+  } else if (state == 1) {
+    switch (button) {
+    case GLUT_LEFT_BUTTON:
+      break;
+    case GLUT_MIDDLE_BUTTON:
+      tball.setAutoPosition(false);
+      break;
+    case GLUT_RIGHT_BUTTON:
+      tball.setAutoPositionNeg(false);
+      break;
     }
-    lastx = x;
-    lasty = y;
+    mouseb &= ~(1 << button);
+  }
+  lastx = x;
+  lasty = y;
 }
 
-void
-vis(int visible)
-{
-    if (visible == GLUT_VISIBLE) 
-    {
-        glutIdleFunc(animate);
-    } 
-    else 
-    {
-        glutIdleFunc(NULL);
-    }
+void vis(int visible) {
+  if (visible == GLUT_VISIBLE) {
+    glutIdleFunc(animate);
+  } else {
+    glutIdleFunc(NULL);
+  }
 }
 
-void key(unsigned char key, int x, int y)
-{
-    switch ( key )
-    {
-        case 27:    osgExit(); exit(0);
-        case 'a':   glDisable( GL_LIGHTING );
-            std::cerr << "Lighting disabled." << std::endl;
-            break;
-        case 's':   glEnable( GL_LIGHTING );
-            std::cerr << "Lighting enabled." << std::endl;
-            break;
-        case 'z':   glPolygonMode( GL_FRONT_AND_BACK, GL_POINT);
-            std::cerr << "PolygonMode: Point." << std::endl;
-            break;
-        case 'x':   glPolygonMode( GL_FRONT_AND_BACK, GL_LINE);
-            std::cerr << "PolygonMode: Line." << std::endl;
-            break;
-        case 'c':   glPolygonMode( GL_FRONT_AND_BACK, GL_FILL);
-            std::cerr << "PolygonMode: Fill." << std::endl;
-            break;
-        case 'r':   
-        {
-            std::cerr << "Sending ray through " << x << "," << y << std::endl;
-            Line l;
-            cam->calcViewRay( l, x, y, *vp );
-            std::cerr << "From " << l.getPosition() << ", dir " 
-                      << l.getDirection()
-                      << std::endl;
-        }
-        break;
+void key(unsigned char key, int x, int y) {
+  switch (key) {
+  case 27:
+    osgExit();
+    exit(0);
+  case 'a':
+    glDisable(GL_LIGHTING);
+    std::cerr << "Lighting disabled." << std::endl;
+    break;
+  case 's':
+    glEnable(GL_LIGHTING);
+    std::cerr << "Lighting enabled." << std::endl;
+    break;
+  case 'z':
+    glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+    std::cerr << "PolygonMode: Point." << std::endl;
+    break;
+  case 'x':
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    std::cerr << "PolygonMode: Line." << std::endl;
+    break;
+  case 'c':
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    std::cerr << "PolygonMode: Fill." << std::endl;
+    break;
+  case 'r': {
+    std::cerr << "Sending ray through " << x << "," << y << std::endl;
+    Line l;
+    cam->calcViewRay(l, x, y, *vp);
+    std::cerr << "From " << l.getPosition() << ", dir " << l.getDirection() << std::endl;
+  } break;
 
-        case ' ':
-        {
-            Matrix     m;
-            Quaternion q;
-            Vec3f      v;
+  case ' ': {
+    Matrix     m;
+    Quaternion q;
+    Vec3f      v;
 
-            q = oldq;
-            v = oldv;
+    q = oldq;
+    v = oldv;
 
-            oldq = tball.getRotation();
-            oldv = tball.getPosition();
+    oldq = tball.getRotation();
+    oldv = tball.getPosition();
 
-            move_obj = ! move_obj;
-            if ( move_obj )
-            {
-                puts("moving object");
-//                m = scene_trans->getSFMatrix()->getValue();
-                tball.setMode( OSG::Trackball::OSGCamera );
+    move_obj = !move_obj;
+    if (move_obj) {
+      puts("moving object");
+      //                m = scene_trans->getSFMatrix()->getValue();
+      tball.setMode(OSG::Trackball::OSGCamera);
 
-            }
-            else
-            {
-                puts("moving camera");
-//                m = cam_trans->getSFMatrix()->getValue();
-                tball.setMode( OSG::Trackball::OSGObject );
-            }
-            
-//            q.setValue(m);
-            tball.setStartPosition( v, true );
-            tball.setStartRotation( q, true );
-
-//            std::cout << q << std::endl;
-//            std::cout << v << std::endl;
-
-//            std::cout << " " << m[3][0] << " " << m[3][1] << " " << m[3][2] << std::endl;
-            
-        }
-        break;
+    } else {
+      puts("moving camera");
+      //                m = cam_trans->getSFMatrix()->getValue();
+      tball.setMode(OSG::Trackball::OSGObject);
     }
+
+    //            q.setValue(m);
+    tball.setStartPosition(v, true);
+    tball.setStartRotation(q, true);
+
+    //            std::cout << q << std::endl;
+    //            std::cout << v << std::endl;
+
+    //            std::cout << " " << m[3][0] << " " << m[3][1] << " " << m[3][2] << std::endl;
+
+  } break;
+  }
 }
 
+int main(int argc, char** argv) {
+  osgInit(argc, argv);
 
-int main (int argc, char **argv)
-{
-    osgInit(argc,argv);
+  // GLUT init
 
-    // GLUT init
+  glutInit(&argc, argv);
+  glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
+  int winid = glutCreateWindow("OpenSG");
+  glutKeyboardFunc(key);
+  glutVisibilityFunc(vis);
+  glutReshapeFunc(reshape);
+  glutDisplayFunc(display);
+  glutMouseFunc(mouse);
+  glutMotionFunc(motion);
 
-    glutInit(&argc, argv);
-    glutInitDisplayMode( GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
-    int winid = glutCreateWindow("OpenSG");
-    glutKeyboardFunc(key);
-    glutVisibilityFunc(vis);
-    glutReshapeFunc(reshape);
-    glutDisplayFunc(display);       
-    glutMouseFunc(mouse);   
-    glutMotionFunc(motion); 
-    
-    glutIdleFunc(display);  
+  glutIdleFunc(display);
 
-    // glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-    
-    glEnable( GL_DEPTH_TEST );
-    glEnable( GL_LIGHTING );
-    glEnable( GL_LIGHT0 );
+  // glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 
-    // OSG
+  glEnable(GL_DEPTH_TEST);
+  glEnable(GL_LIGHTING);
+  glEnable(GL_LIGHT0);
 
-    SceneFileHandler::the().print();
+  // OSG
 
-    // create the graph
+  SceneFileHandler::the().print();
 
-    // beacon for camera and light  
-    NodePtr b1n = Node::create();
-    GroupPtr b1 = Group::create();
-    beginEditCP(b1n);
-    b1n->setCore( b1 );
-    endEditCP(b1n);
+  // create the graph
 
-    // transformation
-    NodePtr t1n = Node::create();
-    TransformPtr t1 = Transform::create();
-    beginEditCP(t1n);
-    t1n->setCore( t1 );
-    t1n->addChild( b1n );
-    endEditCP(t1n);
+  // beacon for camera and light
+  NodePtr  b1n = Node::create();
+  GroupPtr b1  = Group::create();
+  beginEditCP(b1n);
+  b1n->setCore(b1);
+  endEditCP(b1n);
 
-    cam_trans = t1;
+  // transformation
+  NodePtr      t1n = Node::create();
+  TransformPtr t1  = Transform::create();
+  beginEditCP(t1n);
+  t1n->setCore(t1);
+  t1n->addChild(b1n);
+  endEditCP(t1n);
 
-    // light
-    
-    NodePtr dlight = Node::create();
-    DirectionalLightPtr dl = DirectionalLight::create();
+  cam_trans = t1;
 
-    beginEditCP(dlight);
-    dlight->setCore( dl );
-    endEditCP(dlight);
-    
-    beginEditCP(dl);
-    dl->setAmbient( .3, .3, .3, 1 );
-    dl->setDiffuse( 1, 1, 1, 1 );
-    dl->setDirection(0,0,1);
-    dl->setBeacon( b1n);
-    endEditCP(dl);
+  // light
 
-    // root
-    root = Node::create();
-    GroupPtr gr1 = Group::create();
-    beginEditCP(root);
-    root->setCore( gr1 );
-    root->addChild( t1n );
-    root->addChild( dlight );
-    endEditCP(root);
+  NodePtr             dlight = Node::create();
+  DirectionalLightPtr dl     = DirectionalLight::create();
 
-    // Load the file
+  beginEditCP(dlight);
+  dlight->setCore(dl);
+  endEditCP(dlight);
 
-    NodePtr file = NullFC;
-    NodePtr file1 = NullFC;
+  beginEditCP(dl);
+  dl->setAmbient(.3, .3, .3, 1);
+  dl->setDiffuse(1, 1, 1, 1);
+  dl->setDirection(0, 0, 1);
+  dl->setBeacon(b1n);
+  endEditCP(dl);
 
-    if ( argc > 1 )
-        file1 = SceneFileHandler::the().read(argv[1]);
-    
-    if ( file1 == NullFC )
-    {
-        std::cerr << "Couldn't load file, ignoring" << std::endl;
-        file1 = makeTorus( .5, 2, 16, 16 );
-    }
-    
-    file1->updateVolume();
+  // root
+  root         = Node::create();
+  GroupPtr gr1 = Group::create();
+  beginEditCP(root);
+  root->setCore(gr1);
+  root->addChild(t1n);
+  root->addChild(dlight);
+  endEditCP(root);
 
-//    file->dump();
+  // Load the file
 
-//    subRefCP(file);
+  NodePtr file  = NullFC;
+  NodePtr file1 = NullFC;
 
-//    return 0;
+  if (argc > 1)
+    file1 = SceneFileHandler::the().read(argv[1]);
 
+  if (file1 == NullFC) {
+    std::cerr << "Couldn't load file, ignoring" << std::endl;
+    file1 = makeTorus(.5, 2, 16, 16);
+  }
 
-    Vec3f min,max;
-    file1->getVolume().getBounds( min, max );
-    
-    std::cout << "Volume: from " << min << " to " << max << std::endl;
+  file1->updateVolume();
 
+  //    file->dump();
 
-    file = Node::create();
-    MaterialGroupPtr testMat = MaterialGroup::create();
+  //    subRefCP(file);
 
-    SimpleMaterialPtr defaultMaterial = SimpleMaterial::create();
+  //    return 0;
 
-    beginEditCP(defaultMaterial);
-    defaultMaterial->setDiffuse(Color3f(1,.0,.0));
-    defaultMaterial->setAmbient(Color3f(0.1,0.1,0.1));
-    defaultMaterial->setSpecular(Color3f(1,1,1));
-    defaultMaterial->setShininess(20);
-    endEditCP  (defaultMaterial);
+  Vec3f min, max;
+  file1->getVolume().getBounds(min, max);
 
+  std::cout << "Volume: from " << min << " to " << max << std::endl;
 
-    testMat->setMaterial(defaultMaterial);
+  file                     = Node::create();
+  MaterialGroupPtr testMat = MaterialGroup::create();
 
-    beginEditCP(file);
-    {
-        file->setCore(testMat);
-        file->addChild(file1);
-    }
-    endEditCP  (file);
+  SimpleMaterialPtr defaultMaterial = SimpleMaterial::create();
 
-    scene_trans      = Transform::create();
-    NodePtr sceneTrN = Node::create();
+  beginEditCP(defaultMaterial);
+  defaultMaterial->setDiffuse(Color3f(1, .0, .0));
+  defaultMaterial->setAmbient(Color3f(0.1, 0.1, 0.1));
+  defaultMaterial->setSpecular(Color3f(1, 1, 1));
+  defaultMaterial->setShininess(20);
+  endEditCP(defaultMaterial);
 
-    beginEditCP(sceneTrN);
-    {
-        sceneTrN->setCore(scene_trans);
-        sceneTrN->addChild(file);
-        sceneTrN->addChild(makeTorus( .5, 2, 16, 16 ));
-    }
-    endEditCP(sceneTrN);
+  testMat->setMaterial(defaultMaterial);
 
-    beginEditCP(dlight);
-    dlight->addChild(sceneTrN);
-    endEditCP(dlight);
+  beginEditCP(file);
+  {
+    file->setCore(testMat);
+    file->addChild(file1);
+  }
+  endEditCP(file);
 
-    std::cerr << "Tree: " << std::endl;
-//  root->dump();
+  scene_trans      = Transform::create();
+  NodePtr sceneTrN = Node::create();
 
-    // Camera
-    
-    cam = PerspectiveCamera::create();
-    cam->setBeacon( b1n );
-    cam->setFov( deg2rad( 90 ) );
-    cam->setNear( 0.1 );
-    cam->setFar( 100000 );
+  beginEditCP(sceneTrN);
+  {
+    sceneTrN->setCore(scene_trans);
+    sceneTrN->addChild(file);
+    sceneTrN->addChild(makeTorus(.5, 2, 16, 16));
+  }
+  endEditCP(sceneTrN);
 
-    // Background
-    SolidBackgroundPtr bkgnd = SolidBackground::create();
-    beginEditCP(bkgnd, SolidBackground::ColorFieldMask);
-    bkgnd->setColor(Color3f(1,1,1));
-    endEditCP(bkgnd, SolidBackground::ColorFieldMask);
-    
-    // Viewport
+  beginEditCP(dlight);
+  dlight->addChild(sceneTrN);
+  endEditCP(dlight);
 
-    vp = Viewport::create();
-    vp->setCamera( cam );
-    vp->setBackground( bkgnd );
-    vp->setRoot( root );
-    vp->setSize( 0,0, 1,1 );
+  std::cerr << "Tree: " << std::endl;
+  //  root->dump();
 
-    // Window
-    std::cout << "GLUT winid: " << winid << std::endl;
+  // Camera
 
-    GLUTWindowPtr gwin;
+  cam = PerspectiveCamera::create();
+  cam->setBeacon(b1n);
+  cam->setFov(deg2rad(90));
+  cam->setNear(0.1);
+  cam->setFar(100000);
 
-    GLint glvp[4];
-    glGetIntegerv( GL_VIEWPORT, glvp );
+  // Background
+  SolidBackgroundPtr bkgnd = SolidBackground::create();
+  beginEditCP(bkgnd, SolidBackground::ColorFieldMask);
+  bkgnd->setColor(Color3f(1, 1, 1));
+  endEditCP(bkgnd, SolidBackground::ColorFieldMask);
 
-    gwin = GLUTWindow::create();
-    gwin->setId(winid);
-    gwin->setSize( glvp[2], glvp[3] );
+  // Viewport
 
-    win = gwin;
+  vp = Viewport::create();
+  vp->setCamera(cam);
+  vp->setBackground(bkgnd);
+  vp->setRoot(root);
+  vp->setSize(0, 0, 1, 1);
 
-    win->addPort( vp );
+  // Window
+  std::cout << "GLUT winid: " << winid << std::endl;
 
-    win->init();
+  GLUTWindowPtr gwin;
 
-    // Action
-    
-    ract = DrawAction::create();
-    renact = RenderAction::create();
+  GLint glvp[4];
+  glGetIntegerv(GL_VIEWPORT, glvp);
 
-    // tball
+  gwin = GLUTWindow::create();
+  gwin->setId(winid);
+  gwin->setSize(glvp[2], glvp[3]);
 
-    Vec3f pos;
-    pos.setValues(min[0] + ((max[0] - min[0]) * 0.5), 
-                  min[1] + ((max[1] - min[1]) * 0.5), 
-                  max[2] + ( max[2] - min[2] ) * 1.5 );
-    
-    float scale = (max[2] - min[2] + max[1] - min[1] + max[0] - min[0]) / 6;
+  win = gwin;
 
-    Pnt3f tCenter(min[0] + (max[0] - min[0]) / 2,
-                  min[1] + (max[1] - min[1]) / 2,
-                  min[2] + (max[2] - min[2]) / 2);
+  win->addPort(vp);
 
-    tball.setMode( Trackball::OSGObject );
-    tball.setStartPosition( pos, true );
-    tball.setSum( true );
-    tball.setTranslationMode( Trackball::OSGFree );
-    tball.setTranslationScale(scale);
-    tball.setRotationCenter(tCenter);
+  win->init();
 
-    // run...
-    
-    glutMainLoop();
-    
-    return 0;
+  // Action
+
+  ract   = DrawAction::create();
+  renact = RenderAction::create();
+
+  // tball
+
+  Vec3f pos;
+  pos.setValues(min[0] + ((max[0] - min[0]) * 0.5), min[1] + ((max[1] - min[1]) * 0.5),
+      max[2] + (max[2] - min[2]) * 1.5);
+
+  float scale = (max[2] - min[2] + max[1] - min[1] + max[0] - min[0]) / 6;
+
+  Pnt3f tCenter(min[0] + (max[0] - min[0]) / 2, min[1] + (max[1] - min[1]) / 2,
+      min[2] + (max[2] - min[2]) / 2);
+
+  tball.setMode(Trackball::OSGObject);
+  tball.setStartPosition(pos, true);
+  tball.setSum(true);
+  tball.setTranslationMode(Trackball::OSGFree);
+  tball.setTranslationScale(scale);
+  tball.setRotationCenter(tCenter);
+
+  // run...
+
+  glutMainLoop();
+
+  return 0;
 }
-

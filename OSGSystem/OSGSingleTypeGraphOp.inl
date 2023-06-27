@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 /***************************************************************************\
 *                             Includes                                    *
 \***************************************************************************/
@@ -51,7 +50,7 @@ OSG_BEGIN_NAMESPACE
 
 /*! \class osg::SingleTypeGraphOp
     \ingroup GrpSystemNodeCoresDrawablesGeometry
-    
+
 A base class used to traverse geometries.
 
 */
@@ -64,37 +63,30 @@ A base class used to traverse geometries.
  -  public                                                                 -
 \*-------------------------------------------------------------------------*/
 
-
 /*------------- constructors & destructors --------------------------------*/
 
-template < class Type > inline
-SingleTypeGraphOp<Type>::SingleTypeGraphOp(const char* name): GraphOp(name)
-{
+template <class Type>
+inline SingleTypeGraphOp<Type>::SingleTypeGraphOp(const char* name)
+    : GraphOp(name) {
 }
 
-template < class Type > inline
-SingleTypeGraphOp<Type>::~SingleTypeGraphOp(void)
-{
+template <class Type>
+inline SingleTypeGraphOp<Type>::~SingleTypeGraphOp(void) {
 }
 
-template < class Type > inline
-Action::ResultE SingleTypeGraphOp<Type>::traverseEnter(NodePtr& node)
-{
-    if (node->getCore()->getType().isDerivedFrom(Type::getClassType()))
-        travNodeEnter(node);
-    return Action::Continue;
+template <class Type>
+inline Action::ResultE SingleTypeGraphOp<Type>::traverseEnter(NodePtr& node) {
+  if (node->getCore()->getType().isDerivedFrom(Type::getClassType()))
+    travNodeEnter(node);
+  return Action::Continue;
 }
 
-template < class Type > inline
-Action::ResultE SingleTypeGraphOp<Type>::traverseLeave(NodePtr         &node, 
-                                                       Action::ResultE      )
-{
-    if (node->getCore()->getType().isDerivedFrom(Type::getClassType()))
-        travNodeLeave(node);
-    return Action::Continue;
+template <class Type>
+inline Action::ResultE SingleTypeGraphOp<Type>::traverseLeave(NodePtr& node, Action::ResultE) {
+  if (node->getCore()->getType().isDerivedFrom(Type::getClassType()))
+    travNodeLeave(node);
+  return Action::Continue;
 }
-
-
 
 /*-------------------------------------------------------------------------*\
  -  protected                                                              -

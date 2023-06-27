@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGSHADOWVIEWPORTBASE_H_
 #define _OSGSHADOWVIEWPORTBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -69,22 +67,22 @@
 
 #include <OSGReal32Fields.h> // OffBias type
 #include <OSGReal32Fields.h> // OffFactor type
-#include <OSGNodeFields.h> // SceneRoot type
+#include <OSGNodeFields.h>   // SceneRoot type
 #include <OSGUInt32Fields.h> // MapSize type
-#include <OSGNodeFields.h> // LightNodes type
-#include <OSGNodeFields.h> // ExcludeNodes type
-#include <OSGBoolFields.h> // MapAutoUpdate type
+#include <OSGNodeFields.h>   // LightNodes type
+#include <OSGNodeFields.h>   // ExcludeNodes type
+#include <OSGBoolFields.h>   // MapAutoUpdate type
 #include <OSGUInt32Fields.h> // ShadowMode type
 #include <OSGReal32Fields.h> // ShadowSmoothness type
-#include <OSGBoolFields.h> // ShadowOn type
-#include <OSGBoolFields.h> // AutoSearchForLights type
+#include <OSGBoolFields.h>   // ShadowOn type
+#include <OSGBoolFields.h>   // AutoSearchForLights type
 #include <OSGReal32Fields.h> // GlobalShadowIntensity type
-#include <OSGBoolFields.h> // FboOn type
-#include <OSGBoolFields.h> // AutoExcludeTransparentNodes type
-#include <OSGBoolFields.h> // Red type
-#include <OSGBoolFields.h> // Blue type
-#include <OSGBoolFields.h> // Green type
-#include <OSGBoolFields.h> // Alpha type
+#include <OSGBoolFields.h>   // FboOn type
+#include <OSGBoolFields.h>   // AutoExcludeTransparentNodes type
+#include <OSGBoolFields.h>   // Red type
+#include <OSGBoolFields.h>   // Blue type
+#include <OSGBoolFields.h>   // Green type
+#include <OSGBoolFields.h>   // Alpha type
 
 #include <OSGShadowViewportFields.h>
 
@@ -95,300 +93,279 @@ class BinaryDataHandler;
 
 //! \brief ShadowViewport Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING ShadowViewportBase : public StereoBufferViewport
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING ShadowViewportBase : public StereoBufferViewport {
+ private:
+  typedef StereoBufferViewport Inherited;
 
-    typedef StereoBufferViewport    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef ShadowViewportPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    OffBiasFieldId                     = Inherited::NextFieldId,
+    OffFactorFieldId                   = OffBiasFieldId + 1,
+    SceneRootFieldId                   = OffFactorFieldId + 1,
+    MapSizeFieldId                     = SceneRootFieldId + 1,
+    LightNodesFieldId                  = MapSizeFieldId + 1,
+    ExcludeNodesFieldId                = LightNodesFieldId + 1,
+    MapAutoUpdateFieldId               = ExcludeNodesFieldId + 1,
+    ShadowModeFieldId                  = MapAutoUpdateFieldId + 1,
+    ShadowSmoothnessFieldId            = ShadowModeFieldId + 1,
+    ShadowOnFieldId                    = ShadowSmoothnessFieldId + 1,
+    AutoSearchForLightsFieldId         = ShadowOnFieldId + 1,
+    GlobalShadowIntensityFieldId       = AutoSearchForLightsFieldId + 1,
+    FboOnFieldId                       = GlobalShadowIntensityFieldId + 1,
+    AutoExcludeTransparentNodesFieldId = FboOnFieldId + 1,
+    RedFieldId                         = AutoExcludeTransparentNodesFieldId + 1,
+    BlueFieldId                        = RedFieldId + 1,
+    GreenFieldId                       = BlueFieldId + 1,
+    AlphaFieldId                       = GreenFieldId + 1,
+    NextFieldId                        = AlphaFieldId + 1
+  };
 
-    typedef ShadowViewportPtr  Ptr;
+  static const OSG::BitVector OffBiasFieldMask;
+  static const OSG::BitVector OffFactorFieldMask;
+  static const OSG::BitVector SceneRootFieldMask;
+  static const OSG::BitVector MapSizeFieldMask;
+  static const OSG::BitVector LightNodesFieldMask;
+  static const OSG::BitVector ExcludeNodesFieldMask;
+  static const OSG::BitVector MapAutoUpdateFieldMask;
+  static const OSG::BitVector ShadowModeFieldMask;
+  static const OSG::BitVector ShadowSmoothnessFieldMask;
+  static const OSG::BitVector ShadowOnFieldMask;
+  static const OSG::BitVector AutoSearchForLightsFieldMask;
+  static const OSG::BitVector GlobalShadowIntensityFieldMask;
+  static const OSG::BitVector FboOnFieldMask;
+  static const OSG::BitVector AutoExcludeTransparentNodesFieldMask;
+  static const OSG::BitVector RedFieldMask;
+  static const OSG::BitVector BlueFieldMask;
+  static const OSG::BitVector GreenFieldMask;
+  static const OSG::BitVector AlphaFieldMask;
 
-    enum
-    {
-        OffBiasFieldId                     = Inherited::NextFieldId,
-        OffFactorFieldId                   = OffBiasFieldId                     + 1,
-        SceneRootFieldId                   = OffFactorFieldId                   + 1,
-        MapSizeFieldId                     = SceneRootFieldId                   + 1,
-        LightNodesFieldId                  = MapSizeFieldId                     + 1,
-        ExcludeNodesFieldId                = LightNodesFieldId                  + 1,
-        MapAutoUpdateFieldId               = ExcludeNodesFieldId                + 1,
-        ShadowModeFieldId                  = MapAutoUpdateFieldId               + 1,
-        ShadowSmoothnessFieldId            = ShadowModeFieldId                  + 1,
-        ShadowOnFieldId                    = ShadowSmoothnessFieldId            + 1,
-        AutoSearchForLightsFieldId         = ShadowOnFieldId                    + 1,
-        GlobalShadowIntensityFieldId       = AutoSearchForLightsFieldId         + 1,
-        FboOnFieldId                       = GlobalShadowIntensityFieldId       + 1,
-        AutoExcludeTransparentNodesFieldId = FboOnFieldId                       + 1,
-        RedFieldId                         = AutoExcludeTransparentNodesFieldId + 1,
-        BlueFieldId                        = RedFieldId                         + 1,
-        GreenFieldId                       = BlueFieldId                        + 1,
-        AlphaFieldId                       = GreenFieldId                       + 1,
-        NextFieldId                        = AlphaFieldId                       + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector OffBiasFieldMask;
-    static const OSG::BitVector OffFactorFieldMask;
-    static const OSG::BitVector SceneRootFieldMask;
-    static const OSG::BitVector MapSizeFieldMask;
-    static const OSG::BitVector LightNodesFieldMask;
-    static const OSG::BitVector ExcludeNodesFieldMask;
-    static const OSG::BitVector MapAutoUpdateFieldMask;
-    static const OSG::BitVector ShadowModeFieldMask;
-    static const OSG::BitVector ShadowSmoothnessFieldMask;
-    static const OSG::BitVector ShadowOnFieldMask;
-    static const OSG::BitVector AutoSearchForLightsFieldMask;
-    static const OSG::BitVector GlobalShadowIntensityFieldMask;
-    static const OSG::BitVector FboOnFieldMask;
-    static const OSG::BitVector AutoExcludeTransparentNodesFieldMask;
-    static const OSG::BitVector RedFieldMask;
-    static const OSG::BitVector BlueFieldMask;
-    static const OSG::BitVector GreenFieldMask;
-    static const OSG::BitVector AlphaFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFReal32*  getSFOffBias(void);
+  SFReal32*  getSFOffFactor(void);
+  SFNodePtr* getSFSceneRoot(void);
+  SFUInt32*  getSFMapSize(void);
+  MFNodePtr* getMFLightNodes(void);
+  MFNodePtr* getMFExcludeNodes(void);
+  SFBool*    getSFMapAutoUpdate(void);
+  SFUInt32*  getSFShadowMode(void);
+  SFReal32*  getSFShadowSmoothness(void);
+  SFBool*    getSFShadowOn(void);
+  SFBool*    getSFAutoSearchForLights(void);
+  SFReal32*  getSFGlobalShadowIntensity(void);
+  SFBool*    getSFFboOn(void);
+  SFBool*    getSFAutoExcludeTransparentNodes(void);
+  SFBool*    getSFRed(void);
+  SFBool*    getSFBlue(void);
+  SFBool*    getSFGreen(void);
+  SFBool*    getSFAlpha(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  Real32&          getOffBias(void);
+  const Real32&    getOffBias(void) const;
+  Real32&          getOffFactor(void);
+  const Real32&    getOffFactor(void) const;
+  NodePtr&         getSceneRoot(void);
+  const NodePtr&   getSceneRoot(void) const;
+  UInt32&          getMapSize(void);
+  const UInt32&    getMapSize(void) const;
+  bool&            getMapAutoUpdate(void);
+  const bool&      getMapAutoUpdate(void) const;
+  UInt32&          getShadowMode(void);
+  const UInt32&    getShadowMode(void) const;
+  Real32&          getShadowSmoothness(void);
+  const Real32&    getShadowSmoothness(void) const;
+  bool&            getShadowOn(void);
+  const bool&      getShadowOn(void) const;
+  bool&            getAutoSearchForLights(void);
+  const bool&      getAutoSearchForLights(void) const;
+  Real32&          getGlobalShadowIntensity(void);
+  const Real32&    getGlobalShadowIntensity(void) const;
+  bool&            getFboOn(void);
+  const bool&      getFboOn(void) const;
+  bool&            getAutoExcludeTransparentNodes(void);
+  const bool&      getAutoExcludeTransparentNodes(void) const;
+  bool&            getRed(void);
+  const bool&      getRed(void) const;
+  bool&            getBlue(void);
+  const bool&      getBlue(void) const;
+  bool&            getGreen(void);
+  const bool&      getGreen(void) const;
+  bool&            getAlpha(void);
+  const bool&      getAlpha(void) const;
+  NodePtr&         getLightNodes(const UInt32 index);
+  MFNodePtr&       getLightNodes(void);
+  const MFNodePtr& getLightNodes(void) const;
+  NodePtr&         getExcludeNodes(const UInt32 index);
+  MFNodePtr&       getExcludeNodes(void);
+  const MFNodePtr& getExcludeNodes(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFReal32            *getSFOffBias        (void);
-           SFReal32            *getSFOffFactor      (void);
-           SFNodePtr           *getSFSceneRoot      (void);
-           SFUInt32            *getSFMapSize        (void);
-           MFNodePtr           *getMFLightNodes     (void);
-           MFNodePtr           *getMFExcludeNodes   (void);
-           SFBool              *getSFMapAutoUpdate  (void);
-           SFUInt32            *getSFShadowMode     (void);
-           SFReal32            *getSFShadowSmoothness(void);
-           SFBool              *getSFShadowOn       (void);
-           SFBool              *getSFAutoSearchForLights(void);
-           SFReal32            *getSFGlobalShadowIntensity(void);
-           SFBool              *getSFFboOn          (void);
-           SFBool              *getSFAutoExcludeTransparentNodes(void);
-           SFBool              *getSFRed            (void);
-           SFBool              *getSFBlue           (void);
-           SFBool              *getSFGreen          (void);
-           SFBool              *getSFAlpha          (void);
+  void setOffBias(const Real32& value);
+  void setOffFactor(const Real32& value);
+  void setSceneRoot(const NodePtr& value);
+  void setMapSize(const UInt32& value);
+  void setMapAutoUpdate(const bool& value);
+  void setShadowMode(const UInt32& value);
+  void setShadowSmoothness(const Real32& value);
+  void setShadowOn(const bool& value);
+  void setAutoSearchForLights(const bool& value);
+  void setGlobalShadowIntensity(const Real32& value);
+  void setFboOn(const bool& value);
+  void setAutoExcludeTransparentNodes(const bool& value);
+  void setRed(const bool& value);
+  void setBlue(const bool& value);
+  void setGreen(const bool& value);
+  void setAlpha(const bool& value);
 
-           Real32              &getOffBias        (void);
-     const Real32              &getOffBias        (void) const;
-           Real32              &getOffFactor      (void);
-     const Real32              &getOffFactor      (void) const;
-           NodePtr             &getSceneRoot      (void);
-     const NodePtr             &getSceneRoot      (void) const;
-           UInt32              &getMapSize        (void);
-     const UInt32              &getMapSize        (void) const;
-           bool                &getMapAutoUpdate  (void);
-     const bool                &getMapAutoUpdate  (void) const;
-           UInt32              &getShadowMode     (void);
-     const UInt32              &getShadowMode     (void) const;
-           Real32              &getShadowSmoothness(void);
-     const Real32              &getShadowSmoothness(void) const;
-           bool                &getShadowOn       (void);
-     const bool                &getShadowOn       (void) const;
-           bool                &getAutoSearchForLights(void);
-     const bool                &getAutoSearchForLights(void) const;
-           Real32              &getGlobalShadowIntensity(void);
-     const Real32              &getGlobalShadowIntensity(void) const;
-           bool                &getFboOn          (void);
-     const bool                &getFboOn          (void) const;
-           bool                &getAutoExcludeTransparentNodes(void);
-     const bool                &getAutoExcludeTransparentNodes(void) const;
-           bool                &getRed            (void);
-     const bool                &getRed            (void) const;
-           bool                &getBlue           (void);
-     const bool                &getBlue           (void) const;
-           bool                &getGreen          (void);
-     const bool                &getGreen          (void) const;
-           bool                &getAlpha          (void);
-     const bool                &getAlpha          (void) const;
-           NodePtr             &getLightNodes     (const UInt32 index);
-           MFNodePtr           &getLightNodes     (void);
-     const MFNodePtr           &getLightNodes     (void) const;
-           NodePtr             &getExcludeNodes   (const UInt32 index);
-           MFNodePtr           &getExcludeNodes   (void);
-     const MFNodePtr           &getExcludeNodes   (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setOffBias        ( const Real32 &value );
-     void setOffFactor      ( const Real32 &value );
-     void setSceneRoot      ( const NodePtr &value );
-     void setMapSize        ( const UInt32 &value );
-     void setMapAutoUpdate  ( const bool &value );
-     void setShadowMode     ( const UInt32 &value );
-     void setShadowSmoothness( const Real32 &value );
-     void setShadowOn       ( const bool &value );
-     void setAutoSearchForLights( const bool &value );
-     void setGlobalShadowIntensity( const Real32 &value );
-     void setFboOn          ( const bool &value );
-     void setAutoExcludeTransparentNodes( const bool &value );
-     void setRed            ( const bool &value );
-     void setBlue           ( const bool &value );
-     void setGreen          ( const bool &value );
-     void setAlpha          ( const bool &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static ShadowViewportPtr create(void);
+  static ShadowViewportPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  ShadowViewportPtr      create          (void); 
-    static  ShadowViewportPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFReal32  _sfOffBias;
+  SFReal32  _sfOffFactor;
+  SFNodePtr _sfSceneRoot;
+  SFUInt32  _sfMapSize;
+  MFNodePtr _mfLightNodes;
+  MFNodePtr _mfExcludeNodes;
+  SFBool    _sfMapAutoUpdate;
+  SFUInt32  _sfShadowMode;
+  SFReal32  _sfShadowSmoothness;
+  SFBool    _sfShadowOn;
+  SFBool    _sfAutoSearchForLights;
+  SFReal32  _sfGlobalShadowIntensity;
+  SFBool    _sfFboOn;
+  SFBool    _sfAutoExcludeTransparentNodes;
+  SFBool    _sfRed;
+  SFBool    _sfBlue;
+  SFBool    _sfGreen;
+  SFBool    _sfAlpha;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  ShadowViewportBase(void);
+  ShadowViewportBase(const ShadowViewportBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~ShadowViewportBase(void);
 
-    SFReal32            _sfOffBias;
-    SFReal32            _sfOffFactor;
-    SFNodePtr           _sfSceneRoot;
-    SFUInt32            _sfMapSize;
-    MFNodePtr           _mfLightNodes;
-    MFNodePtr           _mfExcludeNodes;
-    SFBool              _sfMapAutoUpdate;
-    SFUInt32            _sfShadowMode;
-    SFReal32            _sfShadowSmoothness;
-    SFBool              _sfShadowOn;
-    SFBool              _sfAutoSearchForLights;
-    SFReal32            _sfGlobalShadowIntensity;
-    SFBool              _sfFboOn;
-    SFBool              _sfAutoExcludeTransparentNodes;
-    SFBool              _sfRed;
-    SFBool              _sfBlue;
-    SFBool              _sfGreen;
-    SFBool              _sfAlpha;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    ShadowViewportBase(void);
-    ShadowViewportBase(const ShadowViewportBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~ShadowViewportBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      ShadowViewportBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(ShadowViewportBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      ShadowViewportBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      ShadowViewportBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const ShadowViewportBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const ShadowViewportBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef ShadowViewportBase* ShadowViewportBaseP;
 
-typedef ShadowViewportBase *ShadowViewportBaseP;
-
-typedef osgIF<ShadowViewportBase::isNodeCore,
-              CoredNodePtr<ShadowViewport>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet ShadowViewportNodePtr;
+typedef osgIF<ShadowViewportBase::isNodeCore, CoredNodePtr<ShadowViewport>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet ShadowViewportNodePtr;
 
 typedef RefPtr<ShadowViewportPtr> ShadowViewportRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGSHADOWVIEWPORTBASE_HEADER_CVSID "@(#)$Id: OSGShadowViewportBase.h,v 1.12 2006/12/01 18:12:43 a-m-z Exp $"
+#define OSGSHADOWVIEWPORTBASE_HEADER_CVSID                                                         \
+  "@(#)$Id: OSGShadowViewportBase.h,v 1.12 2006/12/01 18:12:43 a-m-z Exp $"
 
 #endif /* _OSGSHADOWVIEWPORTBASE_H_ */

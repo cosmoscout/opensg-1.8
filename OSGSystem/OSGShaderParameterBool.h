@@ -48,74 +48,68 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief ShaderParameterBool class. See \ref 
+/*! \brief ShaderParameterBool class. See \ref
            PageSystemShaderParameterBool for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING ShaderParameterBool : public ShaderParameterBoolBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING ShaderParameterBool : public ShaderParameterBoolBase {
+ private:
+  typedef ShaderParameterBoolBase Inherited;
 
-    typedef ShaderParameterBoolBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  ShaderParameterBool(void);
+  ShaderParameterBool(const ShaderParameterBool& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~ShaderParameterBool(void);
 
-    ShaderParameterBool(void);
-    ShaderParameterBool(const ShaderParameterBool &source);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class ShaderParameterBoolBase;
 
-    virtual ~ShaderParameterBool(void); 
+  static void initMethod(void);
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  // prohibit default functions (move to 'public' if you need one)
 
-    friend class FieldContainer;
-    friend class ShaderParameterBoolBase;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const ShaderParameterBool &source);
+  void operator=(const ShaderParameterBool& source);
 };
 
-typedef ShaderParameterBool *ShaderParameterBoolP;
+typedef ShaderParameterBool* ShaderParameterBoolP;
 
 OSG_END_NAMESPACE
 
 #include <OSGShaderParameterBoolBase.inl>
 #include <OSGShaderParameterBool.inl>
 
-#define OSGSHADERPARAMETERBOOL_HEADER_CVSID "@(#)$Id: OSGShaderParameterBool.h,v 1.2 2005/02/24 17:29:15 a-m-z Exp $"
+#define OSGSHADERPARAMETERBOOL_HEADER_CVSID                                                        \
+  "@(#)$Id: OSGShaderParameterBool.h,v 1.2 2005/02/24 17:29:15 a-m-z Exp $"
 
 #endif /* _OSGSHADERPARAMETERBOOL_H_ */

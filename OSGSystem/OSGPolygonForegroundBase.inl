@@ -52,305 +52,219 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &PolygonForegroundBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& PolygonForegroundBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 PolygonForegroundBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 PolygonForegroundBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-PolygonForegroundPtr PolygonForegroundBase::create(void) 
-{
-    PolygonForegroundPtr fc; 
+inline PolygonForegroundPtr PolygonForegroundBase::create(void) {
+  PolygonForegroundPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = PolygonForegroundPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = PolygonForegroundPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-PolygonForegroundPtr PolygonForegroundBase::createEmpty(void) 
-{ 
-    PolygonForegroundPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline PolygonForegroundPtr PolygonForegroundBase::createEmpty(void) {
+  PolygonForegroundPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the PolygonForeground::_sfMaterial field.
-inline
-SFMaterialPtr *PolygonForegroundBase::getSFMaterial(void)
-{
-    return &_sfMaterial;
+inline SFMaterialPtr* PolygonForegroundBase::getSFMaterial(void) {
+  return &_sfMaterial;
 }
 
 //! Get the PolygonForeground::_mfTexCoords field.
-inline
-MFVec3f *PolygonForegroundBase::getMFTexCoords(void)
-{
-    return &_mfTexCoords;
+inline MFVec3f* PolygonForegroundBase::getMFTexCoords(void) {
+  return &_mfTexCoords;
 }
 
 //! Get the PolygonForeground::_mfPositions field.
-inline
-MFPnt2f *PolygonForegroundBase::getMFPositions(void)
-{
-    return &_mfPositions;
+inline MFPnt2f* PolygonForegroundBase::getMFPositions(void) {
+  return &_mfPositions;
 }
 
 //! Get the PolygonForeground::_sfNormalizedX field.
-inline
-SFBool *PolygonForegroundBase::getSFNormalizedX(void)
-{
-    return &_sfNormalizedX;
+inline SFBool* PolygonForegroundBase::getSFNormalizedX(void) {
+  return &_sfNormalizedX;
 }
 
 //! Get the PolygonForeground::_sfNormalizedY field.
-inline
-SFBool *PolygonForegroundBase::getSFNormalizedY(void)
-{
-    return &_sfNormalizedY;
+inline SFBool* PolygonForegroundBase::getSFNormalizedY(void) {
+  return &_sfNormalizedY;
 }
 
 //! Get the PolygonForeground::_sfAspectHeight field.
-inline
-SFUInt16 *PolygonForegroundBase::getSFAspectHeight(void)
-{
-    return &_sfAspectHeight;
+inline SFUInt16* PolygonForegroundBase::getSFAspectHeight(void) {
+  return &_sfAspectHeight;
 }
 
 //! Get the PolygonForeground::_sfAspectWidth field.
-inline
-SFUInt16 *PolygonForegroundBase::getSFAspectWidth(void)
-{
-    return &_sfAspectWidth;
+inline SFUInt16* PolygonForegroundBase::getSFAspectWidth(void) {
+  return &_sfAspectWidth;
 }
 
 //! Get the PolygonForeground::_sfScale field.
-inline
-SFReal32 *PolygonForegroundBase::getSFScale(void)
-{
-    return &_sfScale;
+inline SFReal32* PolygonForegroundBase::getSFScale(void) {
+  return &_sfScale;
 }
 
 //! Get the PolygonForeground::_sfTile field.
-inline
-SFBool *PolygonForegroundBase::getSFTile(void)
-{
-    return &_sfTile;
-}
-
-
-//! Get the value of the PolygonForeground::_sfMaterial field.
-inline
-MaterialPtr &PolygonForegroundBase::getMaterial(void)
-{
-    return _sfMaterial.getValue();
+inline SFBool* PolygonForegroundBase::getSFTile(void) {
+  return &_sfTile;
 }
 
 //! Get the value of the PolygonForeground::_sfMaterial field.
-inline
-const MaterialPtr &PolygonForegroundBase::getMaterial(void) const
-{
-    return _sfMaterial.getValue();
+inline MaterialPtr& PolygonForegroundBase::getMaterial(void) {
+  return _sfMaterial.getValue();
+}
+
+//! Get the value of the PolygonForeground::_sfMaterial field.
+inline const MaterialPtr& PolygonForegroundBase::getMaterial(void) const {
+  return _sfMaterial.getValue();
 }
 
 //! Set the value of the PolygonForeground::_sfMaterial field.
-inline
-void PolygonForegroundBase::setMaterial(const MaterialPtr &value)
-{
-    _sfMaterial.setValue(value);
+inline void PolygonForegroundBase::setMaterial(const MaterialPtr& value) {
+  _sfMaterial.setValue(value);
 }
 
 //! Get the value of the PolygonForeground::_sfNormalizedX field.
-inline
-bool &PolygonForegroundBase::getNormalizedX(void)
-{
-    return _sfNormalizedX.getValue();
+inline bool& PolygonForegroundBase::getNormalizedX(void) {
+  return _sfNormalizedX.getValue();
 }
 
 //! Get the value of the PolygonForeground::_sfNormalizedX field.
-inline
-const bool &PolygonForegroundBase::getNormalizedX(void) const
-{
-    return _sfNormalizedX.getValue();
+inline const bool& PolygonForegroundBase::getNormalizedX(void) const {
+  return _sfNormalizedX.getValue();
 }
 
 //! Set the value of the PolygonForeground::_sfNormalizedX field.
-inline
-void PolygonForegroundBase::setNormalizedX(const bool &value)
-{
-    _sfNormalizedX.setValue(value);
+inline void PolygonForegroundBase::setNormalizedX(const bool& value) {
+  _sfNormalizedX.setValue(value);
 }
 
 //! Get the value of the PolygonForeground::_sfNormalizedY field.
-inline
-bool &PolygonForegroundBase::getNormalizedY(void)
-{
-    return _sfNormalizedY.getValue();
+inline bool& PolygonForegroundBase::getNormalizedY(void) {
+  return _sfNormalizedY.getValue();
 }
 
 //! Get the value of the PolygonForeground::_sfNormalizedY field.
-inline
-const bool &PolygonForegroundBase::getNormalizedY(void) const
-{
-    return _sfNormalizedY.getValue();
+inline const bool& PolygonForegroundBase::getNormalizedY(void) const {
+  return _sfNormalizedY.getValue();
 }
 
 //! Set the value of the PolygonForeground::_sfNormalizedY field.
-inline
-void PolygonForegroundBase::setNormalizedY(const bool &value)
-{
-    _sfNormalizedY.setValue(value);
+inline void PolygonForegroundBase::setNormalizedY(const bool& value) {
+  _sfNormalizedY.setValue(value);
 }
 
 //! Get the value of the PolygonForeground::_sfAspectHeight field.
-inline
-UInt16 &PolygonForegroundBase::getAspectHeight(void)
-{
-    return _sfAspectHeight.getValue();
+inline UInt16& PolygonForegroundBase::getAspectHeight(void) {
+  return _sfAspectHeight.getValue();
 }
 
 //! Get the value of the PolygonForeground::_sfAspectHeight field.
-inline
-const UInt16 &PolygonForegroundBase::getAspectHeight(void) const
-{
-    return _sfAspectHeight.getValue();
+inline const UInt16& PolygonForegroundBase::getAspectHeight(void) const {
+  return _sfAspectHeight.getValue();
 }
 
 //! Set the value of the PolygonForeground::_sfAspectHeight field.
-inline
-void PolygonForegroundBase::setAspectHeight(const UInt16 &value)
-{
-    _sfAspectHeight.setValue(value);
+inline void PolygonForegroundBase::setAspectHeight(const UInt16& value) {
+  _sfAspectHeight.setValue(value);
 }
 
 //! Get the value of the PolygonForeground::_sfAspectWidth field.
-inline
-UInt16 &PolygonForegroundBase::getAspectWidth(void)
-{
-    return _sfAspectWidth.getValue();
+inline UInt16& PolygonForegroundBase::getAspectWidth(void) {
+  return _sfAspectWidth.getValue();
 }
 
 //! Get the value of the PolygonForeground::_sfAspectWidth field.
-inline
-const UInt16 &PolygonForegroundBase::getAspectWidth(void) const
-{
-    return _sfAspectWidth.getValue();
+inline const UInt16& PolygonForegroundBase::getAspectWidth(void) const {
+  return _sfAspectWidth.getValue();
 }
 
 //! Set the value of the PolygonForeground::_sfAspectWidth field.
-inline
-void PolygonForegroundBase::setAspectWidth(const UInt16 &value)
-{
-    _sfAspectWidth.setValue(value);
+inline void PolygonForegroundBase::setAspectWidth(const UInt16& value) {
+  _sfAspectWidth.setValue(value);
 }
 
 //! Get the value of the PolygonForeground::_sfScale field.
-inline
-Real32 &PolygonForegroundBase::getScale(void)
-{
-    return _sfScale.getValue();
+inline Real32& PolygonForegroundBase::getScale(void) {
+  return _sfScale.getValue();
 }
 
 //! Get the value of the PolygonForeground::_sfScale field.
-inline
-const Real32 &PolygonForegroundBase::getScale(void) const
-{
-    return _sfScale.getValue();
+inline const Real32& PolygonForegroundBase::getScale(void) const {
+  return _sfScale.getValue();
 }
 
 //! Set the value of the PolygonForeground::_sfScale field.
-inline
-void PolygonForegroundBase::setScale(const Real32 &value)
-{
-    _sfScale.setValue(value);
+inline void PolygonForegroundBase::setScale(const Real32& value) {
+  _sfScale.setValue(value);
 }
 
 //! Get the value of the PolygonForeground::_sfTile field.
-inline
-bool &PolygonForegroundBase::getTile(void)
-{
-    return _sfTile.getValue();
+inline bool& PolygonForegroundBase::getTile(void) {
+  return _sfTile.getValue();
 }
 
 //! Get the value of the PolygonForeground::_sfTile field.
-inline
-const bool &PolygonForegroundBase::getTile(void) const
-{
-    return _sfTile.getValue();
+inline const bool& PolygonForegroundBase::getTile(void) const {
+  return _sfTile.getValue();
 }
 
 //! Set the value of the PolygonForeground::_sfTile field.
-inline
-void PolygonForegroundBase::setTile(const bool &value)
-{
-    _sfTile.setValue(value);
+inline void PolygonForegroundBase::setTile(const bool& value) {
+  _sfTile.setValue(value);
 }
-
 
 //! Get the value of the \a index element the PolygonForeground::_mfTexCoords field.
-inline
-Vec3f &PolygonForegroundBase::getTexCoords(const UInt32 index)
-{
-    return _mfTexCoords[index];
+inline Vec3f& PolygonForegroundBase::getTexCoords(const UInt32 index) {
+  return _mfTexCoords[index];
 }
 
 //! Get the PolygonForeground::_mfTexCoords field.
-inline
-MFVec3f &PolygonForegroundBase::getTexCoords(void)
-{
-    return _mfTexCoords;
+inline MFVec3f& PolygonForegroundBase::getTexCoords(void) {
+  return _mfTexCoords;
 }
 
 //! Get the PolygonForeground::_mfTexCoords field.
-inline
-const MFVec3f &PolygonForegroundBase::getTexCoords(void) const
-{
-    return _mfTexCoords;
+inline const MFVec3f& PolygonForegroundBase::getTexCoords(void) const {
+  return _mfTexCoords;
 }
 
 //! Get the value of the \a index element the PolygonForeground::_mfPositions field.
-inline
-Pnt2f &PolygonForegroundBase::getPositions(const UInt32 index)
-{
-    return _mfPositions[index];
+inline Pnt2f& PolygonForegroundBase::getPositions(const UInt32 index) {
+  return _mfPositions[index];
 }
 
 //! Get the PolygonForeground::_mfPositions field.
-inline
-MFPnt2f &PolygonForegroundBase::getPositions(void)
-{
-    return _mfPositions;
+inline MFPnt2f& PolygonForegroundBase::getPositions(void) {
+  return _mfPositions;
 }
 
 //! Get the PolygonForeground::_mfPositions field.
-inline
-const MFPnt2f &PolygonForegroundBase::getPositions(void) const
-{
-    return _mfPositions;
+inline const MFPnt2f& PolygonForegroundBase::getPositions(void) const {
+  return _mfPositions;
 }
 
 OSG_END_NAMESPACE
 
-#define OSGPOLYGONFOREGROUNDBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGPOLYGONFOREGROUNDBASE_INLINE_CVSID                                                      \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

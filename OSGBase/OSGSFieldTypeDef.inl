@@ -48,32 +48,24 @@ OSG_BEGIN_NAMESPACE
 
 #ifdef OSG_MICROSOFT_COMPILER_HACKS
 template <class FieldTypeT, Int32 fieldNameSpace>
-const FieldType SField<FieldTypeT, fieldNameSpace>::_fieldType = FieldType(
-    SFieldTraits::getSName(), 
-    SFieldTraits::getPName(),
-    SFieldTraits::getType (),
-    SField<FieldTypeT, fieldNameSpace>::create,
+const FieldType SField<FieldTypeT, fieldNameSpace>::_fieldType = FieldType(SFieldTraits::getSName(),
+    SFieldTraits::getPName(), SFieldTraits::getType(), SField<FieldTypeT, fieldNameSpace>::create,
     FieldType::SINGLE_FIELD);
 #else
 template <class FieldTypeT, Int32 fieldNameSpace>
-const FieldType SField<FieldTypeT, fieldNameSpace>::_fieldType(
-    SFieldTraits::getSName(), 
-    SFieldTraits::getPName(),
-    SFieldTraits::getType (),
-    SField<FieldTypeT, fieldNameSpace>::create,
+const FieldType SField<FieldTypeT, fieldNameSpace>::_fieldType(SFieldTraits::getSName(),
+    SFieldTraits::getPName(), SFieldTraits::getType(), SField<FieldTypeT, fieldNameSpace>::create,
     FieldType::SINGLE_FIELD);
 #endif
 
-template <class FieldTypeT, Int32 fieldNameSpace> inline
-const FieldType &SField<FieldTypeT, fieldNameSpace>::getClassType(void)
-{
-    return _fieldType;
+template <class FieldTypeT, Int32 fieldNameSpace>
+inline const FieldType& SField<FieldTypeT, fieldNameSpace>::getClassType(void) {
+  return _fieldType;
 }
 
-template <class FieldTypeT, Int32 fieldNameSpace> inline
-const FieldType &SField<FieldTypeT, fieldNameSpace>::getType(void) const
-{
-    return _fieldType;
+template <class FieldTypeT, Int32 fieldNameSpace>
+inline const FieldType& SField<FieldTypeT, fieldNameSpace>::getType(void) const {
+  return _fieldType;
 }
 #endif
 

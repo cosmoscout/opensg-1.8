@@ -48,126 +48,100 @@ OSG_BEGIN_NAMESPACE
 /*! Calls the enterNode method of the attached actors.
  */
 
-inline DepthFirstAction::ResultE
-DepthFirstAction::enterNode(const NodePtr &pNode, UInt32 pass)
-{
-    FunctorArgumentType funcArg(NULL, pNode, pass);
-    ResultE             result    = NewActionTypes::Continue;
+inline DepthFirstAction::ResultE DepthFirstAction::enterNode(const NodePtr& pNode, UInt32 pass) {
+  FunctorArgumentType funcArg(NULL, pNode, pass);
+  ResultE             result = NewActionTypes::Continue;
 
-    ExtendActorStoreIt  itExtend  = _extendEnterActors.begin();
-    ExtendActorStoreIt  endExtend = _extendEnterActors.end  ();
+  ExtendActorStoreIt itExtend  = _extendEnterActors.begin();
+  ExtendActorStoreIt endExtend = _extendEnterActors.end();
 
-    for(;  (itExtend != endExtend                                    )  &&
-          !(result   &  (NewActionTypes::Break | NewActionTypes::Quit));
-        ++itExtend                                                         )
-    {
-        funcArg.setActor(*itExtend);
-        
-        result = static_cast<ResultE>(result | (*itExtend)->enterNode(funcArg));
-    }
+  for (; (itExtend != endExtend) && !(result & (NewActionTypes::Break | NewActionTypes::Quit));
+       ++itExtend) {
+    funcArg.setActor(*itExtend);
 
-    BasicActorStoreIt   itBasic   = _basicEnterActors.begin();
-    BasicActorStoreIt   endBasic  = _basicEnterActors.end  ();
+    result = static_cast<ResultE>(result | (*itExtend)->enterNode(funcArg));
+  }
 
-    for(;  (itBasic != endBasic                                     )  &&
-          !(result  &  (NewActionTypes::Break | NewActionTypes::Quit));
-        ++itBasic                                                        )
-    {
-        funcArg.setActor(*itBasic);
-        
-        result = static_cast<ResultE>(result | (*itBasic)->enterNode(funcArg));
-    }
+  BasicActorStoreIt itBasic  = _basicEnterActors.begin();
+  BasicActorStoreIt endBasic = _basicEnterActors.end();
 
-    return result;
+  for (; (itBasic != endBasic) && !(result & (NewActionTypes::Break | NewActionTypes::Quit));
+       ++itBasic) {
+    funcArg.setActor(*itBasic);
+
+    result = static_cast<ResultE>(result | (*itBasic)->enterNode(funcArg));
+  }
+
+  return result;
 }
 
 /*! Calls the leaveNode method of the attached actors.
  */
 
-inline DepthFirstAction::ResultE
-DepthFirstAction::leaveNode(const NodePtr &pNode, UInt32 pass)
-{
-    FunctorArgumentType funcArg(NULL, pNode, pass);
-    ResultE             result    = NewActionTypes::Continue;
+inline DepthFirstAction::ResultE DepthFirstAction::leaveNode(const NodePtr& pNode, UInt32 pass) {
+  FunctorArgumentType funcArg(NULL, pNode, pass);
+  ResultE             result = NewActionTypes::Continue;
 
-    ExtendActorStoreIt  itExtend  = _extendLeaveActors.begin();
-    ExtendActorStoreIt  endExtend = _extendLeaveActors.end  ();
+  ExtendActorStoreIt itExtend  = _extendLeaveActors.begin();
+  ExtendActorStoreIt endExtend = _extendLeaveActors.end();
 
-    for(;  (itExtend != endExtend                                    )  &&
-          !(result   &  (NewActionTypes::Break | NewActionTypes::Quit));
-        ++itExtend                                                         )
-    {
-        funcArg.setActor(*itExtend);
+  for (; (itExtend != endExtend) && !(result & (NewActionTypes::Break | NewActionTypes::Quit));
+       ++itExtend) {
+    funcArg.setActor(*itExtend);
 
-        result = static_cast<ResultE>(result | (*itExtend)->leaveNode(funcArg));
-    }
+    result = static_cast<ResultE>(result | (*itExtend)->leaveNode(funcArg));
+  }
 
-    BasicActorStoreIt  itBasic   = _basicLeaveActors.begin();
-    BasicActorStoreIt  endBasic  = _basicLeaveActors.end  ();
+  BasicActorStoreIt itBasic  = _basicLeaveActors.begin();
+  BasicActorStoreIt endBasic = _basicLeaveActors.end();
 
-    for(;  (itBasic != endBasic                                     )  &&
-          !(result  &  (NewActionTypes::Break | NewActionTypes::Quit));
-        ++itBasic                                                         )
-    {
-        funcArg.setActor(*itBasic);
+  for (; (itBasic != endBasic) && !(result & (NewActionTypes::Break | NewActionTypes::Quit));
+       ++itBasic) {
+    funcArg.setActor(*itBasic);
 
-        result = static_cast<ResultE>(result | (*itBasic)->leaveNode(funcArg));
-    }
+    result = static_cast<ResultE>(result | (*itBasic)->leaveNode(funcArg));
+  }
 
-    return result;
+  return result;
 }
 
 //----------------------------------------------------------------------------
 //    Types
 //----------------------------------------------------------------------------
 
-inline
-DepthFirstAction::NodeStackEntry::NodeStackEntry(void)
-    : _pNode    (NullFC),
-      _passCount(1     )
-{
+inline DepthFirstAction::NodeStackEntry::NodeStackEntry(void)
+    : _pNode(NullFC)
+    , _passCount(1) {
 }
 
-inline
-DepthFirstAction::NodeStackEntry::NodeStackEntry(const NodeStackEntry &source)
-    : _pNode    (source._pNode    ),
-      _passCount(source._passCount)
-{
+inline DepthFirstAction::NodeStackEntry::NodeStackEntry(const NodeStackEntry& source)
+    : _pNode(source._pNode)
+    , _passCount(source._passCount) {
 }
 
-inline
-DepthFirstAction::NodeStackEntry::NodeStackEntry(
-    const NodePtr &pNode, Int32 passCount)
+inline DepthFirstAction::NodeStackEntry::NodeStackEntry(const NodePtr& pNode, Int32 passCount)
 
-    : _pNode    (pNode    ),
-      _passCount(passCount)
-{
+    : _pNode(pNode)
+    , _passCount(passCount) {
 }
 
-inline NodePtr
-DepthFirstAction::NodeStackEntry::getNode(void) const
-{
-    return _pNode;
+inline NodePtr DepthFirstAction::NodeStackEntry::getNode(void) const {
+  return _pNode;
 }
 
-inline void
-DepthFirstAction::NodeStackEntry::setNode(const NodePtr &pNode)
-{
-    _pNode = pNode;
+inline void DepthFirstAction::NodeStackEntry::setNode(const NodePtr& pNode) {
+  _pNode = pNode;
 }
 
-inline Int32
-DepthFirstAction::NodeStackEntry::getPassCount(void) const
-{
-    return _passCount;
+inline Int32 DepthFirstAction::NodeStackEntry::getPassCount(void) const {
+  return _passCount;
 }
 
-inline void
-DepthFirstAction::NodeStackEntry::setPassCount(Int32 passCount)
-{
-    _passCount = passCount;
+inline void DepthFirstAction::NodeStackEntry::setPassCount(Int32 passCount) {
+  _passCount = passCount;
 }
 
 OSG_END_NAMESPACE
 
-#define OSGDEPTHFIRSTACTION_INLINE_CVSID "@(#)$Id: OSGDepthFirstAction.inl,v 1.3 2004/09/17 14:09:42 neumannc Exp $"
+#define OSGDEPTHFIRSTACTION_INLINE_CVSID                                                           \
+  "@(#)$Id: OSGDepthFirstAction.inl,v 1.3 2004/09/17 14:09:42 neumannc Exp $"

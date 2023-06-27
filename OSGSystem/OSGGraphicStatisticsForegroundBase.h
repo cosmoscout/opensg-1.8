@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGGRAPHICSTATISTICSFOREGROUNDBASE_H_
 #define _OSGGRAPHICSTATISTICSFOREGROUNDBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -67,22 +65,22 @@
 
 #include <OSGStatisticsForeground.h> // Parent
 
-#include <OSGUInt32Fields.h> // DisplayType type
-#include <OSGVec2fFields.h> // Size type
-#include <OSGVec2fFields.h> // Pos type
+#include <OSGUInt32Fields.h>  // DisplayType type
+#include <OSGVec2fFields.h>   // Size type
+#include <OSGVec2fFields.h>   // Pos type
 #include <OSGColor4fFields.h> // ColorMax type
 #include <OSGColor4fFields.h> // ColorMin type
 #include <OSGColor4fFields.h> // ColorCurrent type
-#include <OSGReal32Fields.h> // MinValue type
-#include <OSGReal32Fields.h> // MaxValue type
-#include <OSGUInt32Fields.h> // Flags type
-#include <OSGUInt32Fields.h> // HistorySize type
-#include <OSGStringFields.h> // Description type
-#include <OSGReal32Fields.h> // LineWidth type
+#include <OSGReal32Fields.h>  // MinValue type
+#include <OSGReal32Fields.h>  // MaxValue type
+#include <OSGUInt32Fields.h>  // Flags type
+#include <OSGUInt32Fields.h>  // HistorySize type
+#include <OSGStringFields.h>  // Description type
+#include <OSGReal32Fields.h>  // LineWidth type
 #include <OSGColor3fFields.h> // BackgroundColor type
-#include <OSGBoolFields.h> // TextEnabled type
-#include <OSGBoolFields.h> // BackgroundEnabled type
-#include <OSGBoolFields.h> // BorderEnabled type
+#include <OSGBoolFields.h>    // TextEnabled type
+#include <OSGBoolFields.h>    // BackgroundEnabled type
+#include <OSGBoolFields.h>    // BorderEnabled type
 
 #include <OSGGraphicStatisticsForegroundFields.h>
 
@@ -93,299 +91,279 @@ class BinaryDataHandler;
 
 //! \brief GraphicStatisticsForeground Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING GraphicStatisticsForegroundBase : public StatisticsForeground
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING GraphicStatisticsForegroundBase : public StatisticsForeground {
+ private:
+  typedef StatisticsForeground Inherited;
 
-    typedef StatisticsForeground    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef GraphicStatisticsForegroundPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    DisplayTypeFieldId       = Inherited::NextFieldId,
+    SizeFieldId              = DisplayTypeFieldId + 1,
+    PosFieldId               = SizeFieldId + 1,
+    ColorMaxFieldId          = PosFieldId + 1,
+    ColorMinFieldId          = ColorMaxFieldId + 1,
+    ColorCurrentFieldId      = ColorMinFieldId + 1,
+    MinValueFieldId          = ColorCurrentFieldId + 1,
+    MaxValueFieldId          = MinValueFieldId + 1,
+    FlagsFieldId             = MaxValueFieldId + 1,
+    HistorySizeFieldId       = FlagsFieldId + 1,
+    DescriptionFieldId       = HistorySizeFieldId + 1,
+    LineWidthFieldId         = DescriptionFieldId + 1,
+    BackgroundColorFieldId   = LineWidthFieldId + 1,
+    TextEnabledFieldId       = BackgroundColorFieldId + 1,
+    BackgroundEnabledFieldId = TextEnabledFieldId + 1,
+    BorderEnabledFieldId     = BackgroundEnabledFieldId + 1,
+    NextFieldId              = BorderEnabledFieldId + 1
+  };
 
-    typedef GraphicStatisticsForegroundPtr  Ptr;
+  static const OSG::BitVector DisplayTypeFieldMask;
+  static const OSG::BitVector SizeFieldMask;
+  static const OSG::BitVector PosFieldMask;
+  static const OSG::BitVector ColorMaxFieldMask;
+  static const OSG::BitVector ColorMinFieldMask;
+  static const OSG::BitVector ColorCurrentFieldMask;
+  static const OSG::BitVector MinValueFieldMask;
+  static const OSG::BitVector MaxValueFieldMask;
+  static const OSG::BitVector FlagsFieldMask;
+  static const OSG::BitVector HistorySizeFieldMask;
+  static const OSG::BitVector DescriptionFieldMask;
+  static const OSG::BitVector LineWidthFieldMask;
+  static const OSG::BitVector BackgroundColorFieldMask;
+  static const OSG::BitVector TextEnabledFieldMask;
+  static const OSG::BitVector BackgroundEnabledFieldMask;
+  static const OSG::BitVector BorderEnabledFieldMask;
 
-    enum
-    {
-        DisplayTypeFieldId       = Inherited::NextFieldId,
-        SizeFieldId              = DisplayTypeFieldId       + 1,
-        PosFieldId               = SizeFieldId              + 1,
-        ColorMaxFieldId          = PosFieldId               + 1,
-        ColorMinFieldId          = ColorMaxFieldId          + 1,
-        ColorCurrentFieldId      = ColorMinFieldId          + 1,
-        MinValueFieldId          = ColorCurrentFieldId      + 1,
-        MaxValueFieldId          = MinValueFieldId          + 1,
-        FlagsFieldId             = MaxValueFieldId          + 1,
-        HistorySizeFieldId       = FlagsFieldId             + 1,
-        DescriptionFieldId       = HistorySizeFieldId       + 1,
-        LineWidthFieldId         = DescriptionFieldId       + 1,
-        BackgroundColorFieldId   = LineWidthFieldId         + 1,
-        TextEnabledFieldId       = BackgroundColorFieldId   + 1,
-        BackgroundEnabledFieldId = TextEnabledFieldId       + 1,
-        BorderEnabledFieldId     = BackgroundEnabledFieldId + 1,
-        NextFieldId              = BorderEnabledFieldId     + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector DisplayTypeFieldMask;
-    static const OSG::BitVector SizeFieldMask;
-    static const OSG::BitVector PosFieldMask;
-    static const OSG::BitVector ColorMaxFieldMask;
-    static const OSG::BitVector ColorMinFieldMask;
-    static const OSG::BitVector ColorCurrentFieldMask;
-    static const OSG::BitVector MinValueFieldMask;
-    static const OSG::BitVector MaxValueFieldMask;
-    static const OSG::BitVector FlagsFieldMask;
-    static const OSG::BitVector HistorySizeFieldMask;
-    static const OSG::BitVector DescriptionFieldMask;
-    static const OSG::BitVector LineWidthFieldMask;
-    static const OSG::BitVector BackgroundColorFieldMask;
-    static const OSG::BitVector TextEnabledFieldMask;
-    static const OSG::BitVector BackgroundEnabledFieldMask;
-    static const OSG::BitVector BorderEnabledFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  MFString*  getMFDescription(void);
+  SFReal32*  getSFLineWidth(void);
+  SFColor3f* getSFBackgroundColor(void);
+  SFBool*    getSFTextEnabled(void);
+  SFBool*    getSFBackgroundEnabled(void);
+  SFBool*    getSFBorderEnabled(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  Real32&         getLineWidth(void);
+  const Real32&   getLineWidth(void) const;
+  Color3f&        getBackgroundColor(void);
+  const Color3f&  getBackgroundColor(void) const;
+  bool&           getTextEnabled(void);
+  const bool&     getTextEnabled(void) const;
+  bool&           getBackgroundEnabled(void);
+  const bool&     getBackgroundEnabled(void) const;
+  bool&           getBorderEnabled(void);
+  const bool&     getBorderEnabled(void) const;
+  std::string&    getDescription(const UInt32 index);
+  MFString&       getDescription(void);
+  const MFString& getDescription(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           MFString            *getMFDescription    (void);
-           SFReal32            *getSFLineWidth      (void);
-           SFColor3f           *getSFBackgroundColor(void);
-           SFBool              *getSFTextEnabled    (void);
-           SFBool              *getSFBackgroundEnabled(void);
-           SFBool              *getSFBorderEnabled  (void);
+  void setLineWidth(const Real32& value);
+  void setBackgroundColor(const Color3f& value);
+  void setTextEnabled(const bool& value);
+  void setBackgroundEnabled(const bool& value);
+  void setBorderEnabled(const bool& value);
 
-           Real32              &getLineWidth      (void);
-     const Real32              &getLineWidth      (void) const;
-           Color3f             &getBackgroundColor(void);
-     const Color3f             &getBackgroundColor(void) const;
-           bool                &getTextEnabled    (void);
-     const bool                &getTextEnabled    (void) const;
-           bool                &getBackgroundEnabled(void);
-     const bool                &getBackgroundEnabled(void) const;
-           bool                &getBorderEnabled  (void);
-     const bool                &getBorderEnabled  (void) const;
-           std::string         &getDescription    (const UInt32 index);
-           MFString            &getDescription    (void);
-     const MFString            &getDescription    (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setLineWidth      ( const Real32 &value );
-     void setBackgroundColor( const Color3f &value );
-     void setTextEnabled    ( const bool &value );
-     void setBackgroundEnabled( const bool &value );
-     void setBorderEnabled  ( const bool &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static GraphicStatisticsForegroundPtr create(void);
+  static GraphicStatisticsForegroundPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  GraphicStatisticsForegroundPtr      create          (void); 
-    static  GraphicStatisticsForegroundPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  MFUInt32  _mfDisplayType;
+  MFVec2f   _mfSize;
+  MFVec2f   _mfPos;
+  MFColor4f _mfColorMax;
+  MFColor4f _mfColorMin;
+  MFColor4f _mfColorCurrent;
+  MFReal32  _mfMinValue;
+  MFReal32  _mfMaxValue;
+  MFUInt32  _mfFlags;
+  MFUInt32  _mfHistorySize;
+  MFString  _mfDescription;
+  SFReal32  _sfLineWidth;
+  SFColor3f _sfBackgroundColor;
+  SFBool    _sfTextEnabled;
+  SFBool    _sfBackgroundEnabled;
+  SFBool    _sfBorderEnabled;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  GraphicStatisticsForegroundBase(void);
+  GraphicStatisticsForegroundBase(const GraphicStatisticsForegroundBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~GraphicStatisticsForegroundBase(void);
 
-    MFUInt32            _mfDisplayType;
-    MFVec2f             _mfSize;
-    MFVec2f             _mfPos;
-    MFColor4f           _mfColorMax;
-    MFColor4f           _mfColorMin;
-    MFColor4f           _mfColorCurrent;
-    MFReal32            _mfMinValue;
-    MFReal32            _mfMaxValue;
-    MFUInt32            _mfFlags;
-    MFUInt32            _mfHistorySize;
-    MFString            _mfDescription;
-    SFReal32            _sfLineWidth;
-    SFColor3f           _sfBackgroundColor;
-    SFBool              _sfTextEnabled;
-    SFBool              _sfBackgroundEnabled;
-    SFBool              _sfBorderEnabled;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  MFUInt32*  getMFDisplayType(void);
+  MFVec2f*   getMFSize(void);
+  MFVec2f*   getMFPos(void);
+  MFColor4f* getMFColorMax(void);
+  MFColor4f* getMFColorMin(void);
+  MFColor4f* getMFColorCurrent(void);
+  MFReal32*  getMFMinValue(void);
+  MFReal32*  getMFMaxValue(void);
+  MFUInt32*  getMFFlags(void);
+  MFUInt32*  getMFHistorySize(void);
 
-    GraphicStatisticsForegroundBase(void);
-    GraphicStatisticsForegroundBase(const GraphicStatisticsForegroundBase &source);
+  UInt32&          getDisplayType(UInt32 index);
+  MFUInt32&        getDisplayType(void);
+  const MFUInt32&  getDisplayType(void) const;
+  Vec2f&           getSize(UInt32 index);
+  MFVec2f&         getSize(void);
+  const MFVec2f&   getSize(void) const;
+  Vec2f&           getPos(UInt32 index);
+  MFVec2f&         getPos(void);
+  const MFVec2f&   getPos(void) const;
+  Color4f&         getColorMax(UInt32 index);
+  MFColor4f&       getColorMax(void);
+  const MFColor4f& getColorMax(void) const;
+  Color4f&         getColorMin(UInt32 index);
+  MFColor4f&       getColorMin(void);
+  const MFColor4f& getColorMin(void) const;
+  Color4f&         getColorCurrent(UInt32 index);
+  MFColor4f&       getColorCurrent(void);
+  const MFColor4f& getColorCurrent(void) const;
+  Real32&          getMinValue(UInt32 index);
+  MFReal32&        getMinValue(void);
+  const MFReal32&  getMinValue(void) const;
+  Real32&          getMaxValue(UInt32 index);
+  MFReal32&        getMaxValue(void);
+  const MFReal32&  getMaxValue(void) const;
+  UInt32&          getFlags(UInt32 index);
+  MFUInt32&        getFlags(void);
+  const MFUInt32&  getFlags(void) const;
+  UInt32&          getHistorySize(UInt32 index);
+  MFUInt32&        getHistorySize(void);
+  const MFUInt32&  getHistorySize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-    virtual ~GraphicStatisticsForegroundBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
-
-           MFUInt32            *getMFDisplayType    (void);
-           MFVec2f             *getMFSize           (void);
-           MFVec2f             *getMFPos            (void);
-           MFColor4f           *getMFColorMax       (void);
-           MFColor4f           *getMFColorMin       (void);
-           MFColor4f           *getMFColorCurrent   (void);
-           MFReal32            *getMFMinValue       (void);
-           MFReal32            *getMFMaxValue       (void);
-           MFUInt32            *getMFFlags          (void);
-           MFUInt32            *getMFHistorySize    (void);
-
-           UInt32              &getDisplayType    (UInt32 index);
-           MFUInt32            &getDisplayType    (void);
-     const MFUInt32            &getDisplayType    (void) const;
-           Vec2f               &getSize           (UInt32 index);
-           MFVec2f             &getSize           (void);
-     const MFVec2f             &getSize           (void) const;
-           Vec2f               &getPos            (UInt32 index);
-           MFVec2f             &getPos            (void);
-     const MFVec2f             &getPos            (void) const;
-           Color4f             &getColorMax       (UInt32 index);
-           MFColor4f           &getColorMax       (void);
-     const MFColor4f           &getColorMax       (void) const;
-           Color4f             &getColorMin       (UInt32 index);
-           MFColor4f           &getColorMin       (void);
-     const MFColor4f           &getColorMin       (void) const;
-           Color4f             &getColorCurrent   (UInt32 index);
-           MFColor4f           &getColorCurrent   (void);
-     const MFColor4f           &getColorCurrent   (void) const;
-           Real32              &getMinValue       (UInt32 index);
-           MFReal32            &getMinValue       (void);
-     const MFReal32            &getMinValue       (void) const;
-           Real32              &getMaxValue       (UInt32 index);
-           MFReal32            &getMaxValue       (void);
-     const MFReal32            &getMaxValue       (void) const;
-           UInt32              &getFlags          (UInt32 index);
-           MFUInt32            &getFlags          (void);
-     const MFUInt32            &getFlags          (void) const;
-           UInt32              &getHistorySize    (UInt32 index);
-           MFUInt32            &getHistorySize    (void);
-     const MFUInt32            &getHistorySize    (void) const;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
-
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      GraphicStatisticsForegroundBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(GraphicStatisticsForegroundBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      GraphicStatisticsForegroundBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      GraphicStatisticsForegroundBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const GraphicStatisticsForegroundBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const GraphicStatisticsForegroundBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
-
-typedef GraphicStatisticsForegroundBase *GraphicStatisticsForegroundBaseP;
+typedef GraphicStatisticsForegroundBase* GraphicStatisticsForegroundBaseP;
 
 typedef osgIF<GraphicStatisticsForegroundBase::isNodeCore,
-              CoredNodePtr<GraphicStatisticsForeground>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet GraphicStatisticsForegroundNodePtr;
+    CoredNodePtr<GraphicStatisticsForeground>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet
+    GraphicStatisticsForegroundNodePtr;
 
 typedef RefPtr<GraphicStatisticsForegroundPtr> GraphicStatisticsForegroundRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGGRAPHICSTATISTICSFOREGROUNDBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGGRAPHICSTATISTICSFOREGROUNDBASE_HEADER_CVSID                                            \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGGRAPHICSTATISTICSFOREGROUNDBASE_H_ */

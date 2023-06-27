@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILESCREENALIGNEDTEXTINST
 
 #include <stdlib.h>
@@ -61,24 +60,21 @@
 #include "OSGScreenAlignedTextBase.h"
 #include "OSGScreenAlignedText.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  ScreenAlignedTextBase::ColorFieldMask = 
+const OSG::BitVector ScreenAlignedTextBase::ColorFieldMask =
     (TypeTraits<BitVector>::One << ScreenAlignedTextBase::ColorFieldId);
 
-const OSG::BitVector  ScreenAlignedTextBase::RenderImageFieldMask = 
+const OSG::BitVector ScreenAlignedTextBase::RenderImageFieldMask =
     (TypeTraits<BitVector>::One << ScreenAlignedTextBase::RenderImageFieldId);
 
-const OSG::BitVector ScreenAlignedTextBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector ScreenAlignedTextBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
 /*! \var Color4f         ScreenAlignedTextBase::_sfColor
-    
+
 */
 /*! \var ImagePtr        ScreenAlignedTextBase::_sfRenderImage
     Bitmap image used only for rendering
@@ -86,215 +82,156 @@ const OSG::BitVector ScreenAlignedTextBase::MTInfluenceMask =
 
 //! ScreenAlignedText description
 
-FieldDescription *ScreenAlignedTextBase::_desc[] = 
-{
-    new FieldDescription(SFColor4f::getClassType(), 
-                     "Color", 
-                     ColorFieldId, ColorFieldMask,
-                     false,
-                     (FieldAccessMethod) &ScreenAlignedTextBase::getSFColor),
-    new FieldDescription(SFImagePtr::getClassType(), 
-                     "RenderImage", 
-                     RenderImageFieldId, RenderImageFieldMask,
-                     true,
-                     (FieldAccessMethod) &ScreenAlignedTextBase::getSFRenderImage)
-};
+FieldDescription* ScreenAlignedTextBase::_desc[] = {
+    new FieldDescription(SFColor4f::getClassType(), "Color", ColorFieldId, ColorFieldMask, false,
+        (FieldAccessMethod)&ScreenAlignedTextBase::getSFColor),
+    new FieldDescription(SFImagePtr::getClassType(), "RenderImage", RenderImageFieldId,
+        RenderImageFieldMask, true, (FieldAccessMethod)&ScreenAlignedTextBase::getSFRenderImage)};
 
-
-FieldContainerType ScreenAlignedTextBase::_type(
-    "ScreenAlignedText",
-    "AbstractText",
-    NULL,
-    (PrototypeCreateF) &ScreenAlignedTextBase::createEmpty,
-    ScreenAlignedText::initMethod,
-    _desc,
+FieldContainerType ScreenAlignedTextBase::_type("ScreenAlignedText", "AbstractText", NULL,
+    (PrototypeCreateF)&ScreenAlignedTextBase::createEmpty, ScreenAlignedText::initMethod, _desc,
     sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(ScreenAlignedTextBase, ScreenAlignedTextPtr)
+// OSG_FIELD_CONTAINER_DEF(ScreenAlignedTextBase, ScreenAlignedTextPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &ScreenAlignedTextBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &ScreenAlignedTextBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr ScreenAlignedTextBase::shallowCopy(void) const 
-{ 
-    ScreenAlignedTextPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const ScreenAlignedText *>(this)); 
-
-    return returnValue; 
+FieldContainerType& ScreenAlignedTextBase::getType(void) {
+  return _type;
 }
 
-UInt32 ScreenAlignedTextBase::getContainerSize(void) const 
-{ 
-    return sizeof(ScreenAlignedText); 
+const FieldContainerType& ScreenAlignedTextBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr ScreenAlignedTextBase::shallowCopy(void) const {
+  ScreenAlignedTextPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const ScreenAlignedText*>(this));
+
+  return returnValue;
+}
+
+UInt32 ScreenAlignedTextBase::getContainerSize(void) const {
+  return sizeof(ScreenAlignedText);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ScreenAlignedTextBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((ScreenAlignedTextBase *) &other, whichField);
+void ScreenAlignedTextBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((ScreenAlignedTextBase*)&other, whichField);
 }
 #else
-void ScreenAlignedTextBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((ScreenAlignedTextBase *) &other, whichField, sInfo);
+void ScreenAlignedTextBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((ScreenAlignedTextBase*)&other, whichField, sInfo);
 }
-void ScreenAlignedTextBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void ScreenAlignedTextBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void ScreenAlignedTextBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void ScreenAlignedTextBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-ScreenAlignedTextBase::ScreenAlignedTextBase(void) :
-    _sfColor                  (), 
-    _sfRenderImage            (), 
-    Inherited() 
-{
+ScreenAlignedTextBase::ScreenAlignedTextBase(void)
+    : _sfColor()
+    , _sfRenderImage()
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-ScreenAlignedTextBase::ScreenAlignedTextBase(const ScreenAlignedTextBase &source) :
-    _sfColor                  (source._sfColor                  ), 
-    _sfRenderImage            (source._sfRenderImage            ), 
-    Inherited                 (source)
-{
+ScreenAlignedTextBase::ScreenAlignedTextBase(const ScreenAlignedTextBase& source)
+    : _sfColor(source._sfColor)
+    , _sfRenderImage(source._sfRenderImage)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-ScreenAlignedTextBase::~ScreenAlignedTextBase(void)
-{
+ScreenAlignedTextBase::~ScreenAlignedTextBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 ScreenAlignedTextBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 ScreenAlignedTextBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (ColorFieldMask & whichField))
-    {
-        returnValue += _sfColor.getBinSize();
-    }
+  if (FieldBits::NoField != (ColorFieldMask & whichField)) {
+    returnValue += _sfColor.getBinSize();
+  }
 
-    if(FieldBits::NoField != (RenderImageFieldMask & whichField))
-    {
-        returnValue += _sfRenderImage.getBinSize();
-    }
+  if (FieldBits::NoField != (RenderImageFieldMask & whichField)) {
+    returnValue += _sfRenderImage.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void ScreenAlignedTextBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void ScreenAlignedTextBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ColorFieldMask & whichField))
-    {
-        _sfColor.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (ColorFieldMask & whichField)) {
+    _sfColor.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (RenderImageFieldMask & whichField))
-    {
-        _sfRenderImage.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (RenderImageFieldMask & whichField)) {
+    _sfRenderImage.copyToBin(pMem);
+  }
 }
 
-void ScreenAlignedTextBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void ScreenAlignedTextBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ColorFieldMask & whichField))
-    {
-        _sfColor.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (ColorFieldMask & whichField)) {
+    _sfColor.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (RenderImageFieldMask & whichField))
-    {
-        _sfRenderImage.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (RenderImageFieldMask & whichField)) {
+    _sfRenderImage.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ScreenAlignedTextBase::executeSyncImpl(      ScreenAlignedTextBase *pOther,
-                                        const BitVector         &whichField)
-{
+void ScreenAlignedTextBase::executeSyncImpl(
+    ScreenAlignedTextBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (ColorFieldMask & whichField))
-        _sfColor.syncWith(pOther->_sfColor);
+  if (FieldBits::NoField != (ColorFieldMask & whichField))
+    _sfColor.syncWith(pOther->_sfColor);
 
-    if(FieldBits::NoField != (RenderImageFieldMask & whichField))
-        _sfRenderImage.syncWith(pOther->_sfRenderImage);
-
-
+  if (FieldBits::NoField != (RenderImageFieldMask & whichField))
+    _sfRenderImage.syncWith(pOther->_sfRenderImage);
 }
 #else
-void ScreenAlignedTextBase::executeSyncImpl(      ScreenAlignedTextBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void ScreenAlignedTextBase::executeSyncImpl(
+    ScreenAlignedTextBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (ColorFieldMask & whichField))
-        _sfColor.syncWith(pOther->_sfColor);
+  if (FieldBits::NoField != (ColorFieldMask & whichField))
+    _sfColor.syncWith(pOther->_sfColor);
 
-    if(FieldBits::NoField != (RenderImageFieldMask & whichField))
-        _sfRenderImage.syncWith(pOther->_sfRenderImage);
-
-
-
+  if (FieldBits::NoField != (RenderImageFieldMask & whichField))
+    _sfRenderImage.syncWith(pOther->_sfRenderImage);
 }
 
-void ScreenAlignedTextBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void ScreenAlignedTextBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>

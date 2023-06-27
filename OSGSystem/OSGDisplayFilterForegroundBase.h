@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGDISPLAYFILTERFOREGROUNDBASE_H_
 #define _OSGDISPLAYFILTERFOREGROUNDBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -68,7 +66,7 @@
 #include <OSGForeground.h> // Parent
 
 #include <OSGDisplayFilterFields.h> // Filter type
-#include <OSGStringFields.h> // Server type
+#include <OSGStringFields.h>        // Server type
 
 #include <OSGDisplayFilterForegroundFields.h>
 
@@ -79,188 +77,168 @@ class BinaryDataHandler;
 
 //! \brief DisplayFilterForeground Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING DisplayFilterForegroundBase : public Foreground
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING DisplayFilterForegroundBase : public Foreground {
+ private:
+  typedef Foreground Inherited;
 
-    typedef Foreground    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef DisplayFilterForegroundPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    FilterFieldId = Inherited::NextFieldId,
+    ServerFieldId = FilterFieldId + 1,
+    NextFieldId   = ServerFieldId + 1
+  };
 
-    typedef DisplayFilterForegroundPtr  Ptr;
+  static const OSG::BitVector FilterFieldMask;
+  static const OSG::BitVector ServerFieldMask;
 
-    enum
-    {
-        FilterFieldId = Inherited::NextFieldId,
-        ServerFieldId = FilterFieldId + 1,
-        NextFieldId   = ServerFieldId + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector FilterFieldMask;
-    static const OSG::BitVector ServerFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  MFDisplayFilterPtr* getMFFilter(void);
+  SFString*           getSFServer(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  std::string&              getServer(void);
+  const std::string&        getServer(void) const;
+  DisplayFilterPtr&         getFilter(const UInt32 index);
+  MFDisplayFilterPtr&       getFilter(void);
+  const MFDisplayFilterPtr& getFilter(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           MFDisplayFilterPtr  *getMFFilter         (void);
-           SFString            *getSFServer         (void);
+  void setServer(const std::string& value);
 
-           std::string         &getServer         (void);
-     const std::string         &getServer         (void) const;
-           DisplayFilterPtr    &getFilter         (const UInt32 index);
-           MFDisplayFilterPtr  &getFilter         (void);
-     const MFDisplayFilterPtr  &getFilter         (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setServer         ( const std::string &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static DisplayFilterForegroundPtr create(void);
+  static DisplayFilterForegroundPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  DisplayFilterForegroundPtr      create          (void); 
-    static  DisplayFilterForegroundPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  MFDisplayFilterPtr _mfFilter;
+  SFString           _sfServer;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  DisplayFilterForegroundBase(void);
+  DisplayFilterForegroundBase(const DisplayFilterForegroundBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~DisplayFilterForegroundBase(void);
 
-    MFDisplayFilterPtr   _mfFilter;
-    SFString            _sfServer;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    DisplayFilterForegroundBase(void);
-    DisplayFilterForegroundBase(const DisplayFilterForegroundBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~DisplayFilterForegroundBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      DisplayFilterForegroundBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(DisplayFilterForegroundBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      DisplayFilterForegroundBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      DisplayFilterForegroundBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const DisplayFilterForegroundBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const DisplayFilterForegroundBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef DisplayFilterForegroundBase* DisplayFilterForegroundBaseP;
 
-typedef DisplayFilterForegroundBase *DisplayFilterForegroundBaseP;
-
-typedef osgIF<DisplayFilterForegroundBase::isNodeCore,
-              CoredNodePtr<DisplayFilterForeground>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet DisplayFilterForegroundNodePtr;
+typedef osgIF<DisplayFilterForegroundBase::isNodeCore, CoredNodePtr<DisplayFilterForeground>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet
+    DisplayFilterForegroundNodePtr;
 
 typedef RefPtr<DisplayFilterForegroundPtr> DisplayFilterForegroundRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGDISPLAYFILTERFOREGROUNDBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGDISPLAYFILTERFOREGROUNDBASE_HEADER_CVSID                                                \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGDISPLAYFILTERFOREGROUNDBASE_H_ */

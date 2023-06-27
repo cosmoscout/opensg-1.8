@@ -50,4 +50,3 @@
 #include <OSGMFAttachmentPtr.h>
 
 #endif /* _OSGMFFIELDCONTAINERTYPES_H_ */
-

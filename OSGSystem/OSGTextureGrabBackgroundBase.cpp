@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILETEXTUREGRABBACKGROUNDINST
 
 #include <stdlib.h>
@@ -61,27 +60,25 @@
 #include "OSGTextureGrabBackgroundBase.h"
 #include "OSGTextureGrabBackground.h"
 
-#include <OSGGL.h>                        // BindTarget default header
-#include <OSGGL.h>                        // CopyTarget default header
+#include <OSGGL.h> // BindTarget default header
+#include <OSGGL.h> // CopyTarget default header
 
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  TextureGrabBackgroundBase::TextureFieldMask = 
+const OSG::BitVector TextureGrabBackgroundBase::TextureFieldMask =
     (TypeTraits<BitVector>::One << TextureGrabBackgroundBase::TextureFieldId);
 
-const OSG::BitVector  TextureGrabBackgroundBase::AutoResizeFieldMask = 
+const OSG::BitVector TextureGrabBackgroundBase::AutoResizeFieldMask =
     (TypeTraits<BitVector>::One << TextureGrabBackgroundBase::AutoResizeFieldId);
 
-const OSG::BitVector  TextureGrabBackgroundBase::BindTargetFieldMask = 
+const OSG::BitVector TextureGrabBackgroundBase::BindTargetFieldMask =
     (TypeTraits<BitVector>::One << TextureGrabBackgroundBase::BindTargetFieldId);
 
-const OSG::BitVector  TextureGrabBackgroundBase::CopyTargetFieldMask = 
+const OSG::BitVector TextureGrabBackgroundBase::CopyTargetFieldMask =
     (TypeTraits<BitVector>::One << TextureGrabBackgroundBase::CopyTargetFieldId);
 
-const OSG::BitVector TextureGrabBackgroundBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector TextureGrabBackgroundBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
@@ -95,282 +92,213 @@ const OSG::BitVector TextureGrabBackgroundBase::MTInfluenceMask =
     Enum to use for glBindTexture, if GL_NONE chosen from texture dimensionality.
 */
 /*! \var GLenum          TextureGrabBackgroundBase::_sfCopyTarget
-    Enum to use for glCopyTexture, if GL_NONE chosen from texture dimensionality.         Mainly useful to grab into the different parts of a CubeTexture.
+    Enum to use for glCopyTexture, if GL_NONE chosen from texture dimensionality.         Mainly
+   useful to grab into the different parts of a CubeTexture.
 */
 
 //! TextureGrabBackground description
 
-FieldDescription *TextureGrabBackgroundBase::_desc[] = 
-{
-    new FieldDescription(SFTextureChunkPtr::getClassType(), 
-                     "texture", 
-                     TextureFieldId, TextureFieldMask,
-                     false,
-                     (FieldAccessMethod) &TextureGrabBackgroundBase::getSFTexture),
-    new FieldDescription(SFBool::getClassType(), 
-                     "autoResize", 
-                     AutoResizeFieldId, AutoResizeFieldMask,
-                     false,
-                     (FieldAccessMethod) &TextureGrabBackgroundBase::getSFAutoResize),
-    new FieldDescription(SFGLenum::getClassType(), 
-                     "bindTarget", 
-                     BindTargetFieldId, BindTargetFieldMask,
-                     false,
-                     (FieldAccessMethod) &TextureGrabBackgroundBase::getSFBindTarget),
-    new FieldDescription(SFGLenum::getClassType(), 
-                     "copyTarget", 
-                     CopyTargetFieldId, CopyTargetFieldMask,
-                     false,
-                     (FieldAccessMethod) &TextureGrabBackgroundBase::getSFCopyTarget)
-};
+FieldDescription* TextureGrabBackgroundBase::_desc[] = {
+    new FieldDescription(SFTextureChunkPtr::getClassType(), "texture", TextureFieldId,
+        TextureFieldMask, false, (FieldAccessMethod)&TextureGrabBackgroundBase::getSFTexture),
+    new FieldDescription(SFBool::getClassType(), "autoResize", AutoResizeFieldId,
+        AutoResizeFieldMask, false, (FieldAccessMethod)&TextureGrabBackgroundBase::getSFAutoResize),
+    new FieldDescription(SFGLenum::getClassType(), "bindTarget", BindTargetFieldId,
+        BindTargetFieldMask, false, (FieldAccessMethod)&TextureGrabBackgroundBase::getSFBindTarget),
+    new FieldDescription(SFGLenum::getClassType(), "copyTarget", CopyTargetFieldId,
+        CopyTargetFieldMask, false,
+        (FieldAccessMethod)&TextureGrabBackgroundBase::getSFCopyTarget)};
 
+FieldContainerType TextureGrabBackgroundBase::_type("TextureGrabBackground", "SolidBackground",
+    NULL, (PrototypeCreateF)&TextureGrabBackgroundBase::createEmpty,
+    TextureGrabBackground::initMethod, _desc, sizeof(_desc));
 
-FieldContainerType TextureGrabBackgroundBase::_type(
-    "TextureGrabBackground",
-    "SolidBackground",
-    NULL,
-    (PrototypeCreateF) &TextureGrabBackgroundBase::createEmpty,
-    TextureGrabBackground::initMethod,
-    _desc,
-    sizeof(_desc));
-
-//OSG_FIELD_CONTAINER_DEF(TextureGrabBackgroundBase, TextureGrabBackgroundPtr)
+// OSG_FIELD_CONTAINER_DEF(TextureGrabBackgroundBase, TextureGrabBackgroundPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &TextureGrabBackgroundBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &TextureGrabBackgroundBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr TextureGrabBackgroundBase::shallowCopy(void) const 
-{ 
-    TextureGrabBackgroundPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const TextureGrabBackground *>(this)); 
-
-    return returnValue; 
+FieldContainerType& TextureGrabBackgroundBase::getType(void) {
+  return _type;
 }
 
-UInt32 TextureGrabBackgroundBase::getContainerSize(void) const 
-{ 
-    return sizeof(TextureGrabBackground); 
+const FieldContainerType& TextureGrabBackgroundBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr TextureGrabBackgroundBase::shallowCopy(void) const {
+  TextureGrabBackgroundPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const TextureGrabBackground*>(this));
+
+  return returnValue;
+}
+
+UInt32 TextureGrabBackgroundBase::getContainerSize(void) const {
+  return sizeof(TextureGrabBackground);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void TextureGrabBackgroundBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((TextureGrabBackgroundBase *) &other, whichField);
+void TextureGrabBackgroundBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((TextureGrabBackgroundBase*)&other, whichField);
 }
 #else
-void TextureGrabBackgroundBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((TextureGrabBackgroundBase *) &other, whichField, sInfo);
+void TextureGrabBackgroundBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((TextureGrabBackgroundBase*)&other, whichField, sInfo);
 }
-void TextureGrabBackgroundBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void TextureGrabBackgroundBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void TextureGrabBackgroundBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void TextureGrabBackgroundBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-TextureGrabBackgroundBase::TextureGrabBackgroundBase(void) :
-    _sfTexture                (), 
-    _sfAutoResize             (bool(true)), 
-    _sfBindTarget             (GLenum(GL_NONE)), 
-    _sfCopyTarget             (GLenum(GL_NONE)), 
-    Inherited() 
-{
+TextureGrabBackgroundBase::TextureGrabBackgroundBase(void)
+    : _sfTexture()
+    , _sfAutoResize(bool(true))
+    , _sfBindTarget(GLenum(GL_NONE))
+    , _sfCopyTarget(GLenum(GL_NONE))
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-TextureGrabBackgroundBase::TextureGrabBackgroundBase(const TextureGrabBackgroundBase &source) :
-    _sfTexture                (source._sfTexture                ), 
-    _sfAutoResize             (source._sfAutoResize             ), 
-    _sfBindTarget             (source._sfBindTarget             ), 
-    _sfCopyTarget             (source._sfCopyTarget             ), 
-    Inherited                 (source)
-{
+TextureGrabBackgroundBase::TextureGrabBackgroundBase(const TextureGrabBackgroundBase& source)
+    : _sfTexture(source._sfTexture)
+    , _sfAutoResize(source._sfAutoResize)
+    , _sfBindTarget(source._sfBindTarget)
+    , _sfCopyTarget(source._sfCopyTarget)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-TextureGrabBackgroundBase::~TextureGrabBackgroundBase(void)
-{
+TextureGrabBackgroundBase::~TextureGrabBackgroundBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 TextureGrabBackgroundBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 TextureGrabBackgroundBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (TextureFieldMask & whichField))
-    {
-        returnValue += _sfTexture.getBinSize();
-    }
+  if (FieldBits::NoField != (TextureFieldMask & whichField)) {
+    returnValue += _sfTexture.getBinSize();
+  }
 
-    if(FieldBits::NoField != (AutoResizeFieldMask & whichField))
-    {
-        returnValue += _sfAutoResize.getBinSize();
-    }
+  if (FieldBits::NoField != (AutoResizeFieldMask & whichField)) {
+    returnValue += _sfAutoResize.getBinSize();
+  }
 
-    if(FieldBits::NoField != (BindTargetFieldMask & whichField))
-    {
-        returnValue += _sfBindTarget.getBinSize();
-    }
+  if (FieldBits::NoField != (BindTargetFieldMask & whichField)) {
+    returnValue += _sfBindTarget.getBinSize();
+  }
 
-    if(FieldBits::NoField != (CopyTargetFieldMask & whichField))
-    {
-        returnValue += _sfCopyTarget.getBinSize();
-    }
+  if (FieldBits::NoField != (CopyTargetFieldMask & whichField)) {
+    returnValue += _sfCopyTarget.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void TextureGrabBackgroundBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void TextureGrabBackgroundBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (TextureFieldMask & whichField))
-    {
-        _sfTexture.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (TextureFieldMask & whichField)) {
+    _sfTexture.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (AutoResizeFieldMask & whichField))
-    {
-        _sfAutoResize.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (AutoResizeFieldMask & whichField)) {
+    _sfAutoResize.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BindTargetFieldMask & whichField))
-    {
-        _sfBindTarget.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (BindTargetFieldMask & whichField)) {
+    _sfBindTarget.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (CopyTargetFieldMask & whichField))
-    {
-        _sfCopyTarget.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (CopyTargetFieldMask & whichField)) {
+    _sfCopyTarget.copyToBin(pMem);
+  }
 }
 
-void TextureGrabBackgroundBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void TextureGrabBackgroundBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (TextureFieldMask & whichField))
-    {
-        _sfTexture.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (TextureFieldMask & whichField)) {
+    _sfTexture.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (AutoResizeFieldMask & whichField))
-    {
-        _sfAutoResize.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (AutoResizeFieldMask & whichField)) {
+    _sfAutoResize.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BindTargetFieldMask & whichField))
-    {
-        _sfBindTarget.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (BindTargetFieldMask & whichField)) {
+    _sfBindTarget.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (CopyTargetFieldMask & whichField))
-    {
-        _sfCopyTarget.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (CopyTargetFieldMask & whichField)) {
+    _sfCopyTarget.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void TextureGrabBackgroundBase::executeSyncImpl(      TextureGrabBackgroundBase *pOther,
-                                        const BitVector         &whichField)
-{
+void TextureGrabBackgroundBase::executeSyncImpl(
+    TextureGrabBackgroundBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (TextureFieldMask & whichField))
-        _sfTexture.syncWith(pOther->_sfTexture);
+  if (FieldBits::NoField != (TextureFieldMask & whichField))
+    _sfTexture.syncWith(pOther->_sfTexture);
 
-    if(FieldBits::NoField != (AutoResizeFieldMask & whichField))
-        _sfAutoResize.syncWith(pOther->_sfAutoResize);
+  if (FieldBits::NoField != (AutoResizeFieldMask & whichField))
+    _sfAutoResize.syncWith(pOther->_sfAutoResize);
 
-    if(FieldBits::NoField != (BindTargetFieldMask & whichField))
-        _sfBindTarget.syncWith(pOther->_sfBindTarget);
+  if (FieldBits::NoField != (BindTargetFieldMask & whichField))
+    _sfBindTarget.syncWith(pOther->_sfBindTarget);
 
-    if(FieldBits::NoField != (CopyTargetFieldMask & whichField))
-        _sfCopyTarget.syncWith(pOther->_sfCopyTarget);
-
-
+  if (FieldBits::NoField != (CopyTargetFieldMask & whichField))
+    _sfCopyTarget.syncWith(pOther->_sfCopyTarget);
 }
 #else
-void TextureGrabBackgroundBase::executeSyncImpl(      TextureGrabBackgroundBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void TextureGrabBackgroundBase::executeSyncImpl(
+    TextureGrabBackgroundBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (TextureFieldMask & whichField))
-        _sfTexture.syncWith(pOther->_sfTexture);
+  if (FieldBits::NoField != (TextureFieldMask & whichField))
+    _sfTexture.syncWith(pOther->_sfTexture);
 
-    if(FieldBits::NoField != (AutoResizeFieldMask & whichField))
-        _sfAutoResize.syncWith(pOther->_sfAutoResize);
+  if (FieldBits::NoField != (AutoResizeFieldMask & whichField))
+    _sfAutoResize.syncWith(pOther->_sfAutoResize);
 
-    if(FieldBits::NoField != (BindTargetFieldMask & whichField))
-        _sfBindTarget.syncWith(pOther->_sfBindTarget);
+  if (FieldBits::NoField != (BindTargetFieldMask & whichField))
+    _sfBindTarget.syncWith(pOther->_sfBindTarget);
 
-    if(FieldBits::NoField != (CopyTargetFieldMask & whichField))
-        _sfCopyTarget.syncWith(pOther->_sfCopyTarget);
-
-
-
+  if (FieldBits::NoField != (CopyTargetFieldMask & whichField))
+    _sfCopyTarget.syncWith(pOther->_sfCopyTarget);
 }
 
-void TextureGrabBackgroundBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void TextureGrabBackgroundBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 OSG_BEGIN_NAMESPACE
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_DEV)
-DataType FieldDataTraits<TextureGrabBackgroundPtr>::_type("TextureGrabBackgroundPtr", "SolidBackgroundPtr");
+DataType FieldDataTraits<TextureGrabBackgroundPtr>::_type(
+    "TextureGrabBackgroundPtr", "SolidBackgroundPtr");
 #endif
-
 
 OSG_END_NAMESPACE

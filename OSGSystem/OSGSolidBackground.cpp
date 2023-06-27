@@ -59,7 +59,6 @@
 
 OSG_USING_NAMESPACE
 
-
 /***************************************************************************\
  *                            Description                                  *
 \***************************************************************************/
@@ -68,7 +67,7 @@ OSG_USING_NAMESPACE
     \ingroup GrpSystemWindowBackgrounds
 
 A single colored background, see \ref PageSystemWindowBackgroundSolid for a
-description.    
+description.
 
 The color of the background is given by the _sfColor field.
 */
@@ -77,59 +76,48 @@ The color of the background is given by the _sfColor field.
  *                           Class methods                                 *
 \***************************************************************************/
 
-void SolidBackground::initMethod (void)
-{
+void SolidBackground::initMethod(void) {
 }
 
 /***************************************************************************\
  *                           Instance methods                              *
 \***************************************************************************/
 
-SolidBackground::SolidBackground(void) :
-    Inherited()
-{
+SolidBackground::SolidBackground(void)
+    : Inherited() {
 }
 
-SolidBackground::SolidBackground(const SolidBackground &source) :
-    Inherited(source)
-{
+SolidBackground::SolidBackground(const SolidBackground& source)
+    : Inherited(source) {
 }
 
-SolidBackground::~SolidBackground(void)
-{
+SolidBackground::~SolidBackground(void) {
 }
 
-
-void SolidBackground::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void SolidBackground::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
 /*-------------------------- your_category---------------------------------*/
 
-void SolidBackground::clear(DrawActionBase *, Viewport *)
-{
-    Color3f &col = getColor();
-    glClearColor(col[0], col[1], col[2], getAlpha());
-    glClearDepth(getDepth());
-    
-    Int32 bit = getClearStencilBit();   // 0x0
-    
-    if (bit >= 0)
-    {
-        glClearStencil(bit);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-    }
-    else
-    {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    }
+void SolidBackground::clear(DrawActionBase*, Viewport*) {
+  Color3f& col = getColor();
+  glClearColor(col[0], col[1], col[2], getAlpha());
+  glClearDepth(getDepth());
+
+  Int32 bit = getClearStencilBit(); // 0x0
+
+  if (bit >= 0) {
+    glClearStencil(bit);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+  } else {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  }
 }
 
 /*------------------------------- dump ----------------------------------*/
 
-void SolidBackground::dump(      UInt32    OSG_CHECK_ARG(uiIndent), 
-                           const BitVector OSG_CHECK_ARG(bvFlags )) const
-{
-    SLOG << "Dump SolidBackground NI" << std::endl;
+void SolidBackground::dump(
+    UInt32 OSG_CHECK_ARG(uiIndent), const BitVector OSG_CHECK_ARG(bvFlags)) const {
+  SLOG << "Dump SolidBackground NI" << std::endl;
 }

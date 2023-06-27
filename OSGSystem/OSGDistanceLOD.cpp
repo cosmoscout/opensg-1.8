@@ -46,9 +46,9 @@
 #include <OSGCamera.h>
 #include <OSGRenderAction.h>
 
-//just for debug
+// just for debug
 #include <iostream>
-//just for debug
+// just for debug
 
 #include "OSGDistanceLOD.h"
 
@@ -59,14 +59,14 @@ OSG_USING_NAMESPACE
   This Node manages the different levels of detail available for a Geometry
   and decides which one should be rendered, according to the distance from the
   current camera. The details of the selection process are taken from VRML97
-  standard. 
-  
+  standard.
+
   The node chooses which child to render based on the range values in the Range
   multi-field and the current distance of the camera from the object.  The children
   should be ordered from the highest level of detail to the lowest level of detail.
   The range values specify the distances at which to switch between the different
   children.
-  
+
   The center field is a translation offset in the local coordinate system that
   specified the center of the object for distance calculations.  In order to
   calculate which level to display, first the distance is calculate from the viewpoint
@@ -88,7 +88,7 @@ beginEditCP(lod);
     // now we add the distances when models will change
     lod->getMFRange()->push_back(6.0);
     lod->getMFRange()->push_back(12.0);
-    lod->getMFRange()->push_back(24.0);    
+    lod->getMFRange()->push_back(24.0);
 endEditCP(lod);
 \endcode
 
@@ -99,129 +99,99 @@ endEditCP(lod);
 /*-------------------------------------------------------------------------*/
 /*                               Sync                                      */
 
-void DistanceLOD::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void DistanceLOD::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
 /*-------------------------------------------------------------------------*/
 /*                               Dump                                      */
 
-void DistanceLOD::dump(      UInt32    OSG_CHECK_ARG(uiIndent), 
-                       const BitVector OSG_CHECK_ARG(bvFlags )) const
-{
-    SLOG << "Dump DistanceLOD NI" << std::endl;
+void DistanceLOD::dump(
+    UInt32 OSG_CHECK_ARG(uiIndent), const BitVector OSG_CHECK_ARG(bvFlags)) const {
+  SLOG << "Dump DistanceLOD NI" << std::endl;
 }
 
 /*-------------------------------------------------------------------------*/
 /*                            Constructors                                 */
 
-DistanceLOD::DistanceLOD(void) :
-    Inherited()
-{
+DistanceLOD::DistanceLOD(void)
+    : Inherited() {
 }
 
-DistanceLOD::DistanceLOD(const DistanceLOD &source) :
-    Inherited(source)
-{
+DistanceLOD::DistanceLOD(const DistanceLOD& source)
+    : Inherited(source) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Destructor                                  */
 
-DistanceLOD::~DistanceLOD(void)
-{
+DistanceLOD::~DistanceLOD(void) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                                Draw                                     */
 
-Action::ResultE DistanceLOD::draw(Action *action)
-{
-    DrawActionBase *da        = dynamic_cast<DrawActionBase *>(action);
-    RenderAction   *ra        = dynamic_cast<RenderAction   *>(action);
+Action::ResultE DistanceLOD::draw(Action* action) {
+  DrawActionBase* da = dynamic_cast<DrawActionBase*>(action);
+  RenderAction*   ra = dynamic_cast<RenderAction*>(action);
 
-    UInt32          numLevels = action->getNNodes();
-    UInt32          numRanges = getMFRange()->size();
+  UInt32 numLevels = action->getNNodes();
+  UInt32 numRanges = getMFRange()->size();
 
-    UInt32          limit     = osgMin(numLevels, numRanges); 
-    
-    Int32           index     = -1;
+  UInt32 limit = osgMin(numLevels, numRanges);
 
-    Pnt3f            eyepos(0.f, 0.f, 0.f);
-    Pnt3f            objpos;
+  Int32 index = -1;
 
-    da->getCameraToWorld().mult(eyepos);
+  Pnt3f eyepos(0.f, 0.f, 0.f);
+  Pnt3f objpos;
 
-    if(ra != NULL)
-    {
-        ra->top_matrix()              .mult(getCenter(), objpos);
-    }
-    else
-    {
-        da->getActNode()->getToWorld().mult(getCenter(), objpos);
-    }
-        
-    Real32 dist = osgsqrt((eyepos[0] - objpos[0])*(eyepos[0] - objpos[0]) +
-                          (eyepos[1] - objpos[1])*(eyepos[1] - objpos[1]) +
-                          (eyepos[2] - objpos[2])*(eyepos[2] - objpos[2]));
-    
-    da->useNodeList();
-    
-    if(numRanges != 0 && numLevels!=0 )
-    {
-        if(dist < (*(getMFRange()))[0])
-        {
-            index = 0;
-        } 
-        else if(dist >= (*(getMFRange()))[numRanges-1])
-        {
-	    index = (numLevels > numRanges) ? numRanges : (limit-1); 
-        }
-        else
-        {
-            UInt32 i = 1;
+  da->getCameraToWorld().mult(eyepos);
 
-            while( (i < numRanges) && 
-                  !( ((*(getMFRange()))[i-1] <= dist) && 
-                     (dist < (*(getMFRange()))[i]   )   ) )
-            {
-                i++;
-            }
-            
-            index = osgMin(i, limit-1);
-        } 
-        
-        if(da->isVisible(action->getNode(index).getCPtr()))
-        {
-            da->addNode(action->getNode(index));
-        }
+  if (ra != NULL) {
+    ra->top_matrix().mult(getCenter(), objpos);
+  } else {
+    da->getActNode()->getToWorld().mult(getCenter(), objpos);
+  }
+
+  Real32 dist = osgsqrt((eyepos[0] - objpos[0]) * (eyepos[0] - objpos[0]) +
+                        (eyepos[1] - objpos[1]) * (eyepos[1] - objpos[1]) +
+                        (eyepos[2] - objpos[2]) * (eyepos[2] - objpos[2]));
+
+  da->useNodeList();
+
+  if (numRanges != 0 && numLevels != 0) {
+    if (dist < (*(getMFRange()))[0]) {
+      index = 0;
+    } else if (dist >= (*(getMFRange()))[numRanges - 1]) {
+      index = (numLevels > numRanges) ? numRanges : (limit - 1);
+    } else {
+      UInt32 i = 1;
+
+      while ((i < numRanges) &&
+             !(((*(getMFRange()))[i - 1] <= dist) && (dist < (*(getMFRange()))[i]))) {
+        i++;
+      }
+
+      index = osgMin(i, limit - 1);
     }
 
-    return Action::Continue;
+    if (da->isVisible(action->getNode(index).getCPtr())) {
+      da->addNode(action->getNode(index));
+    }
+  }
+
+  return Action::Continue;
 }
 
 /*-------------------------------------------------------------------------*/
 /*                               Init                                      */
 
-void DistanceLOD::initMethod (void)
-{
-    DrawAction::registerEnterDefault( 
-        getClassType(),
-        osgTypedMethodFunctor2BaseCPtrRef<
-            Action::ResultE,
-            DistanceLODPtr  ,
-            CNodePtr        ,
-            Action         *>(&DistanceLOD::draw));
+void DistanceLOD::initMethod(void) {
+  DrawAction::registerEnterDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, DistanceLODPtr, CNodePtr, Action*>(
+          &DistanceLOD::draw));
 
-    RenderAction::registerEnterDefault(
-        getClassType(),
-        osgTypedMethodFunctor2BaseCPtrRef<
-            Action::ResultE,
-            DistanceLODPtr  ,
-            CNodePtr        ,
-            Action         *>(&DistanceLOD::draw));
+  RenderAction::registerEnterDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, DistanceLODPtr, CNodePtr, Action*>(
+          &DistanceLOD::draw));
 }
-
-
-

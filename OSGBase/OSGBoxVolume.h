@@ -48,149 +48,124 @@ OSG_BEGIN_NAMESPACE
 class BoxVolume;
 
 OSG_BASE_DLLMAPPING
-bool operator ==(const BoxVolume &b1, const BoxVolume &b2);
+bool operator==(const BoxVolume& b1, const BoxVolume& b2);
 
-inline
-bool operator !=(const BoxVolume &b1, const BoxVolume &b2);
-
+inline bool operator!=(const BoxVolume& b1, const BoxVolume& b2);
 
 /*! 3D box defined by min and max point.
 
     \ingroup GrpBaseBaseVolume
  */
 
-class OSG_BASE_DLLMAPPING BoxVolume : public Volume
-{
-    /*==========================  PUBLIC  =================================*/
+class OSG_BASE_DLLMAPPING BoxVolume : public Volume {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  BoxVolume(void);
 
-    BoxVolume(void);
+  BoxVolume(Real32 xmin, Real32 ymin, Real32 zmin, Real32 xmax, Real32 ymax, Real32 zmax);
 
-    BoxVolume(Real32 xmin, Real32 ymin, Real32 zmin,
-              Real32 xmax, Real32 ymax, Real32 zmax);
+  BoxVolume(const Pnt3f& min, const Pnt3f& max);
+  BoxVolume(const BoxVolume& obj);
 
-    BoxVolume(const Pnt3f     &min,
-              const Pnt3f     &max);
-    BoxVolume(const BoxVolume &obj);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-    
-    ~BoxVolume();
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Get                                     */
-    /*! \{                                                                 */
-    
-            const Pnt3f  &getMin         (void           ) const;    
-            const Pnt3f  &getMax         (void           ) const;
+  ~BoxVolume();
 
-    virtual       void    getCenter      (Pnt3f  &center ) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Get                                     */
+  /*! \{                                                                 */
 
-    virtual       Real32  getScalarVolume(void           ) const;
+  const Pnt3f& getMin(void) const;
+  const Pnt3f& getMax(void) const;
 
-    virtual       void    getBounds      (Pnt3f  &min, 
-                                          Pnt3f  &max    ) const;
+  virtual void getCenter(Pnt3f& center) const;
 
+  virtual Real32 getScalarVolume(void) const;
 
-                  void    getBounds      (Real32 &xmin, 
-                                          Real32 &ymin, 
-                                          Real32 &zmin,
-                                          Real32 &xmax,
-                                          Real32 &ymax, 
-                                          Real32 &zmax   ) const;
-    
+  virtual void getBounds(Pnt3f& min, Pnt3f& max) const;
 
-                  void    getOrigin      (Real32 &originX, 
-                                          Real32 &originY, 
-                                          Real32 &originZ) const;
-                  void    getSize        (Real32 &sizeX, 
-                                          Real32 &sizeY, 
-                                          Real32 &sizeZ  ) const;
-                  void    getSize        (Vec3f  &vec    ) const;    
+  void getBounds(
+      Real32& xmin, Real32& ymin, Real32& zmin, Real32& xmax, Real32& ymax, Real32& zmax) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Set                                     */
-    /*! \{                                                                 */
+  void getOrigin(Real32& originX, Real32& originY, Real32& originZ) const;
+  void getSize(Real32& sizeX, Real32& sizeY, Real32& sizeZ) const;
+  void getSize(Vec3f& vec) const;
 
-    void setBounds(      Real32  w,         Real32  h,    Real32 d   );
-    void setBounds(      Real32  xmin,      Real32  ymin, Real32 zmin,
-                         Real32  xmax,      Real32  ymax, Real32 zmax);
-    void setBounds(const Pnt3f  &min, const Pnt3f  &max              );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Set                                     */
+  /*! \{                                                                 */
 
-    void setBoundsByCenterAndSize   ( const Pnt3f &center, 
-                                      const Vec3f &size              );
+  void setBounds(Real32 w, Real32 h, Real32 d);
+  void setBounds(Real32 xmin, Real32 ymin, Real32 zmin, Real32 xmax, Real32 ymax, Real32 zmax);
+  void setBounds(const Pnt3f& min, const Pnt3f& max);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Extend                                  */
-    /*! \{                                                                 */
+  void setBoundsByCenterAndSize(const Pnt3f& center, const Vec3f& size);
 
-    virtual void extendBy(const Pnt3f     &pt    );
-    virtual void extendBy(const Volume    &volume);
-            void extendBy(const BoxVolume &bb    );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Extend                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Intersect                               */
-    /*! \{                                                                 */
+  virtual void extendBy(const Pnt3f& pt);
+  virtual void extendBy(const Volume& volume);
+  void         extendBy(const BoxVolume& bb);
 
-    virtual bool intersect  (const Pnt3f     &point ) const;
-    virtual bool intersect  (const Line      &line  ) const;
-    virtual bool intersect  (const Line      &line,
-                                   Real32    &min, 
-                                   Real32    &max   ) const;
-    virtual bool intersect  (const Volume    &volume) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Intersect                               */
+  /*! \{                                                                 */
 
-            bool intersect  (const BoxVolume &bb    ) const;
+  virtual bool intersect(const Pnt3f& point) const;
+  virtual bool intersect(const Line& line) const;
+  virtual bool intersect(const Line& line, Real32& min, Real32& max) const;
+  virtual bool intersect(const Volume& volume) const;
 
-    virtual bool isOnSurface(const Pnt3f     &point ) const;
+  bool intersect(const BoxVolume& bb) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Transform                               */
-    /*! \{                                                                 */
+  virtual bool isOnSurface(const Pnt3f& point) const;
 
-    virtual void transform(const Matrix &m);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Transform                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Operators                               */
-    /*! \{                                                                 */
+  virtual void transform(const Matrix& m);
 
-    friend OSG_BASE_DLLMAPPING
-    bool operator ==(const BoxVolume &b1, const BoxVolume &b2);
-  
-    const BoxVolume &operator =(const BoxVolume &b1);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Operators                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Output                                  */
-    /*! \{                                                                 */
+  friend OSG_BASE_DLLMAPPING bool operator==(const BoxVolume& b1, const BoxVolume& b2);
 
-    virtual void dump(      UInt32     uiIndent = 0,
-                      const BitVector  bvFlags  = 0) const;
+  const BoxVolume& operator=(const BoxVolume& b1);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Output                                  */
+  /*! \{                                                                 */
 
-  protected:
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*==========================  PRIVATE  ================================*/
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-  private:
+ protected:
+  /*==========================  PRIVATE  ================================*/
 
-    Pnt3f _min;
-    Pnt3f _max;
+ private:
+  Pnt3f _min;
+  Pnt3f _max;
 };
 
 OSG_END_NAMESPACE

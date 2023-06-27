@@ -45,9 +45,7 @@
 
 #include <OSGConfig.h>
 
-
 OSG_BEGIN_NAMESPACE
-
 
 /***************************************************************************\
  *                               Types                                     *
@@ -61,8 +59,6 @@ OSG_BEGIN_NAMESPACE
  *                           Class methods                                 *
 \***************************************************************************/
 
-
-
 /*-------------------------------------------------------------------------*\
  -  public                                                                 -
 \*-------------------------------------------------------------------------*/
@@ -71,12 +67,9 @@ OSG_BEGIN_NAMESPACE
  -  protected                                                              -
 \*-------------------------------------------------------------------------*/
 
-
 /*-------------------------------------------------------------------------*\
  -  private                                                                -
 \*-------------------------------------------------------------------------*/
-
-
 
 /***************************************************************************\
  *                           Instance methods                              *
@@ -90,88 +83,60 @@ OSG_BEGIN_NAMESPACE
 
 /*------------------------------ access -----------------------------------*/
 
-
-inline    
-Camera *DrawActionBase::getCamera(void) const
-{
-    return _camera;
+inline Camera* DrawActionBase::getCamera(void) const {
+  return _camera;
 }
 
-inline
-const Matrix &DrawActionBase::getCameraToWorld(void)
-{
-    return _mCameraToWorld;
-}
-    
-inline
-Background *DrawActionBase::getBackground(void) const
-{
-    return _background;
-}
-    
-inline
-Window *DrawActionBase::getWindow(void) const
-{
-    return _window;
-}
-    
-inline
-Viewport *DrawActionBase::getViewport(void) const
-{
-    return _viewport;
-}
-    
-inline
-bool DrawActionBase::getFrustumCulling(void) const
-{
-    return _frustumCulling;
-}
-    
-inline
-bool DrawActionBase::getVolumeDrawing(void) const
-{
-    return _volumeDrawing;
-}
-    
-inline
-bool DrawActionBase::getAutoFrustum(void) const
-{
-    return _autoFrustum;
-}
-    
-inline
-const FrustumVolume& DrawActionBase::getFrustum(void) const
-{
-    return _frustum;
-}
-    
-inline
-StatCollector* DrawActionBase::getStatistics(void)
-{
-    if(_statistics == NULL)
-    {
-        _statistics = StatCollector::create();
-        _ownStat = true;
-    }
-
-    return _statistics;
-}
-inline
-bool DrawActionBase::hasOwnStat(void)
-{
-    return _ownStat;
+inline const Matrix& DrawActionBase::getCameraToWorld(void) {
+  return _mCameraToWorld;
 }
 
-inline 
-Material *DrawActionBase::getMaterial(void) const
-{
-    return _pMaterial;
+inline Background* DrawActionBase::getBackground(void) const {
+  return _background;
 }
 
-inline 
-NodePtr DrawActionBase::getMaterialNode(void) const
-{
-    return _pMaterialNode;
+inline Window* DrawActionBase::getWindow(void) const {
+  return _window;
+}
+
+inline Viewport* DrawActionBase::getViewport(void) const {
+  return _viewport;
+}
+
+inline bool DrawActionBase::getFrustumCulling(void) const {
+  return _frustumCulling;
+}
+
+inline bool DrawActionBase::getVolumeDrawing(void) const {
+  return _volumeDrawing;
+}
+
+inline bool DrawActionBase::getAutoFrustum(void) const {
+  return _autoFrustum;
+}
+
+inline const FrustumVolume& DrawActionBase::getFrustum(void) const {
+  return _frustum;
+}
+
+inline StatCollector* DrawActionBase::getStatistics(void) {
+  if (_statistics == NULL) {
+    _statistics = StatCollector::create();
+    _ownStat    = true;
+  }
+
+  return _statistics;
+}
+inline bool DrawActionBase::hasOwnStat(void) {
+  return _ownStat;
+}
+
+inline Material* DrawActionBase::getMaterial(void) const {
+  return _pMaterial;
+}
+
+inline NodePtr DrawActionBase::getMaterialNode(void) const {
+  return _pMaterialNode;
 }
 
 /*---------------------------- properties ---------------------------------*/
@@ -186,10 +151,8 @@ NodePtr DrawActionBase::getMaterialNode(void) const
  -  protected                                                              -
 \*-------------------------------------------------------------------------*/
 
-
 /*-------------------------------------------------------------------------*\
  -  private                                                                -
 \*-------------------------------------------------------------------------*/
-
 
 OSG_END_NAMESPACE

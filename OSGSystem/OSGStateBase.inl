@@ -52,81 +52,59 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &StateBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& StateBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 StateBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 StateBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-StatePtr StateBase::create(void) 
-{
-    StatePtr fc; 
+inline StatePtr StateBase::create(void) {
+  StatePtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = StatePtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = StatePtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-StatePtr StateBase::createEmpty(void) 
-{ 
-    StatePtr returnValue; 
-    
-    newPtr(returnValue); 
+inline StatePtr StateBase::createEmpty(void) {
+  StatePtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the State::_mfChunks field.
-inline
-MFStateChunkPtr *StateBase::getMFChunks(void)
-{
-    return &_mfChunks;
+inline MFStateChunkPtr* StateBase::getMFChunks(void) {
+  return &_mfChunks;
 }
-
-
 
 //! Get the value of the \a index element the State::_mfChunks field.
-inline
-StateChunkPtr &StateBase::getChunks(const UInt32 index)
-{
-    return _mfChunks[index];
+inline StateChunkPtr& StateBase::getChunks(const UInt32 index) {
+  return _mfChunks[index];
 }
 
 //! Get the State::_mfChunks field.
-inline
-MFStateChunkPtr &StateBase::getChunks(void)
-{
-    return _mfChunks;
+inline MFStateChunkPtr& StateBase::getChunks(void) {
+  return _mfChunks;
 }
 
 //! Get the State::_mfChunks field.
-inline
-const MFStateChunkPtr &StateBase::getChunks(void) const
-{
-    return _mfChunks;
+inline const MFStateChunkPtr& StateBase::getChunks(void) const {
+  return _mfChunks;
 }
 
 OSG_END_NAMESPACE
 
-#define OSGSTATEBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGSTATEBASE_INLINE_CVSID                                                                  \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

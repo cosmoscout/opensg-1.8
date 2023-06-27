@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEPROXYGROUPINST
 
 #include <stdlib.h>
@@ -61,590 +60,466 @@
 #include "OSGProxyGroupBase.h"
 #include "OSGProxyGroup.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  ProxyGroupBase::EnabledFieldMask = 
+const OSG::BitVector ProxyGroupBase::EnabledFieldMask =
     (TypeTraits<BitVector>::One << ProxyGroupBase::EnabledFieldId);
 
-const OSG::BitVector  ProxyGroupBase::UrlFieldMask = 
+const OSG::BitVector ProxyGroupBase::UrlFieldMask =
     (TypeTraits<BitVector>::One << ProxyGroupBase::UrlFieldId);
 
-const OSG::BitVector  ProxyGroupBase::RootFieldMask = 
+const OSG::BitVector ProxyGroupBase::RootFieldMask =
     (TypeTraits<BitVector>::One << ProxyGroupBase::RootFieldId);
 
-const OSG::BitVector  ProxyGroupBase::StateFieldMask = 
+const OSG::BitVector ProxyGroupBase::StateFieldMask =
     (TypeTraits<BitVector>::One << ProxyGroupBase::StateFieldId);
 
-const OSG::BitVector  ProxyGroupBase::ConcurrentLoadFieldMask = 
+const OSG::BitVector ProxyGroupBase::ConcurrentLoadFieldMask =
     (TypeTraits<BitVector>::One << ProxyGroupBase::ConcurrentLoadFieldId);
 
-const OSG::BitVector  ProxyGroupBase::VolumeFieldMask = 
+const OSG::BitVector ProxyGroupBase::VolumeFieldMask =
     (TypeTraits<BitVector>::One << ProxyGroupBase::VolumeFieldId);
 
-const OSG::BitVector  ProxyGroupBase::IndicesFieldMask = 
+const OSG::BitVector ProxyGroupBase::IndicesFieldMask =
     (TypeTraits<BitVector>::One << ProxyGroupBase::IndicesFieldId);
 
-const OSG::BitVector  ProxyGroupBase::TrianglesFieldMask = 
+const OSG::BitVector ProxyGroupBase::TrianglesFieldMask =
     (TypeTraits<BitVector>::One << ProxyGroupBase::TrianglesFieldId);
 
-const OSG::BitVector  ProxyGroupBase::PositionsFieldMask = 
+const OSG::BitVector ProxyGroupBase::PositionsFieldMask =
     (TypeTraits<BitVector>::One << ProxyGroupBase::PositionsFieldId);
 
-const OSG::BitVector  ProxyGroupBase::GeometriesFieldMask = 
+const OSG::BitVector ProxyGroupBase::GeometriesFieldMask =
     (TypeTraits<BitVector>::One << ProxyGroupBase::GeometriesFieldId);
 
-const OSG::BitVector  ProxyGroupBase::AbsoluteUrlFieldMask = 
+const OSG::BitVector ProxyGroupBase::AbsoluteUrlFieldMask =
     (TypeTraits<BitVector>::One << ProxyGroupBase::AbsoluteUrlFieldId);
 
-const OSG::BitVector  ProxyGroupBase::InlineFieldMask = 
+const OSG::BitVector ProxyGroupBase::InlineFieldMask =
     (TypeTraits<BitVector>::One << ProxyGroupBase::InlineFieldId);
 
-const OSG::BitVector ProxyGroupBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector ProxyGroupBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
 /*! \var bool            ProxyGroupBase::_sfEnabled
-    
+
 */
 /*! \var std::string     ProxyGroupBase::_sfUrl
-    
+
 */
 /*! \var NodePtr         ProxyGroupBase::_sfRoot
-    
+
 */
 /*! \var UInt32          ProxyGroupBase::_sfState
-    
+
 */
 /*! \var bool            ProxyGroupBase::_sfConcurrentLoad
-    
+
 */
 /*! \var DynamicVolume   ProxyGroupBase::_sfVolume
-    
+
 */
 /*! \var UInt32          ProxyGroupBase::_sfIndices
-    
+
 */
 /*! \var UInt32          ProxyGroupBase::_sfTriangles
-    
+
 */
 /*! \var UInt32          ProxyGroupBase::_sfPositions
-    
+
 */
 /*! \var UInt32          ProxyGroupBase::_sfGeometries
-    
+
 */
 /*! \var std::string     ProxyGroupBase::_sfAbsoluteUrl
-    
+
 */
 /*! \var UInt8           ProxyGroupBase::_mfInline
-    
+
 */
 
 //! ProxyGroup description
 
-FieldDescription *ProxyGroupBase::_desc[] = 
-{
-    new FieldDescription(SFBool::getClassType(), 
-                     "enabled", 
-                     EnabledFieldId, EnabledFieldMask,
-                     false,
-                     (FieldAccessMethod) &ProxyGroupBase::getSFEnabled),
-    new FieldDescription(SFString::getClassType(), 
-                     "url", 
-                     UrlFieldId, UrlFieldMask,
-                     false,
-                     (FieldAccessMethod) &ProxyGroupBase::getSFUrl),
-    new FieldDescription(SFNodePtr::getClassType(), 
-                     "root", 
-                     RootFieldId, RootFieldMask,
-                     true,
-                     (FieldAccessMethod) &ProxyGroupBase::getSFRoot),
-    new FieldDescription(SFUInt32::getClassType(), 
-                     "state", 
-                     StateFieldId, StateFieldMask,
-                     false,
-                     (FieldAccessMethod) &ProxyGroupBase::getSFState),
-    new FieldDescription(SFBool::getClassType(), 
-                     "concurrentLoad", 
-                     ConcurrentLoadFieldId, ConcurrentLoadFieldMask,
-                     false,
-                     (FieldAccessMethod) &ProxyGroupBase::getSFConcurrentLoad),
-    new FieldDescription(SFDynamicVolume::getClassType(), 
-                     "volume", 
-                     VolumeFieldId, VolumeFieldMask,
-                     false,
-                     (FieldAccessMethod) &ProxyGroupBase::getSFVolume),
-    new FieldDescription(SFUInt32::getClassType(), 
-                     "indices", 
-                     IndicesFieldId, IndicesFieldMask,
-                     false,
-                     (FieldAccessMethod) &ProxyGroupBase::getSFIndices),
-    new FieldDescription(SFUInt32::getClassType(), 
-                     "triangles", 
-                     TrianglesFieldId, TrianglesFieldMask,
-                     false,
-                     (FieldAccessMethod) &ProxyGroupBase::getSFTriangles),
-    new FieldDescription(SFUInt32::getClassType(), 
-                     "positions", 
-                     PositionsFieldId, PositionsFieldMask,
-                     false,
-                     (FieldAccessMethod) &ProxyGroupBase::getSFPositions),
-    new FieldDescription(SFUInt32::getClassType(), 
-                     "geometries", 
-                     GeometriesFieldId, GeometriesFieldMask,
-                     false,
-                     (FieldAccessMethod) &ProxyGroupBase::getSFGeometries),
-    new FieldDescription(SFString::getClassType(), 
-                     "absoluteUrl", 
-                     AbsoluteUrlFieldId, AbsoluteUrlFieldMask,
-                     true,
-                     (FieldAccessMethod) &ProxyGroupBase::getSFAbsoluteUrl),
-    new FieldDescription(MFUInt8::getClassType(), 
-                     "inline", 
-                     InlineFieldId, InlineFieldMask,
-                     false,
-                     (FieldAccessMethod) &ProxyGroupBase::getMFInline)
-};
+FieldDescription* ProxyGroupBase::_desc[] = {
+    new FieldDescription(SFBool::getClassType(), "enabled", EnabledFieldId, EnabledFieldMask, false,
+        (FieldAccessMethod)&ProxyGroupBase::getSFEnabled),
+    new FieldDescription(SFString::getClassType(), "url", UrlFieldId, UrlFieldMask, false,
+        (FieldAccessMethod)&ProxyGroupBase::getSFUrl),
+    new FieldDescription(SFNodePtr::getClassType(), "root", RootFieldId, RootFieldMask, true,
+        (FieldAccessMethod)&ProxyGroupBase::getSFRoot),
+    new FieldDescription(SFUInt32::getClassType(), "state", StateFieldId, StateFieldMask, false,
+        (FieldAccessMethod)&ProxyGroupBase::getSFState),
+    new FieldDescription(SFBool::getClassType(), "concurrentLoad", ConcurrentLoadFieldId,
+        ConcurrentLoadFieldMask, false, (FieldAccessMethod)&ProxyGroupBase::getSFConcurrentLoad),
+    new FieldDescription(SFDynamicVolume::getClassType(), "volume", VolumeFieldId, VolumeFieldMask,
+        false, (FieldAccessMethod)&ProxyGroupBase::getSFVolume),
+    new FieldDescription(SFUInt32::getClassType(), "indices", IndicesFieldId, IndicesFieldMask,
+        false, (FieldAccessMethod)&ProxyGroupBase::getSFIndices),
+    new FieldDescription(SFUInt32::getClassType(), "triangles", TrianglesFieldId,
+        TrianglesFieldMask, false, (FieldAccessMethod)&ProxyGroupBase::getSFTriangles),
+    new FieldDescription(SFUInt32::getClassType(), "positions", PositionsFieldId,
+        PositionsFieldMask, false, (FieldAccessMethod)&ProxyGroupBase::getSFPositions),
+    new FieldDescription(SFUInt32::getClassType(), "geometries", GeometriesFieldId,
+        GeometriesFieldMask, false, (FieldAccessMethod)&ProxyGroupBase::getSFGeometries),
+    new FieldDescription(SFString::getClassType(), "absoluteUrl", AbsoluteUrlFieldId,
+        AbsoluteUrlFieldMask, true, (FieldAccessMethod)&ProxyGroupBase::getSFAbsoluteUrl),
+    new FieldDescription(MFUInt8::getClassType(), "inline", InlineFieldId, InlineFieldMask, false,
+        (FieldAccessMethod)&ProxyGroupBase::getMFInline)};
 
+FieldContainerType ProxyGroupBase::_type("ProxyGroup", "Group", NULL,
+    (PrototypeCreateF)&ProxyGroupBase::createEmpty, ProxyGroup::initMethod, _desc, sizeof(_desc));
 
-FieldContainerType ProxyGroupBase::_type(
-    "ProxyGroup",
-    "Group",
-    NULL,
-    (PrototypeCreateF) &ProxyGroupBase::createEmpty,
-    ProxyGroup::initMethod,
-    _desc,
-    sizeof(_desc));
-
-//OSG_FIELD_CONTAINER_DEF(ProxyGroupBase, ProxyGroupPtr)
+// OSG_FIELD_CONTAINER_DEF(ProxyGroupBase, ProxyGroupPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &ProxyGroupBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &ProxyGroupBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr ProxyGroupBase::shallowCopy(void) const 
-{ 
-    ProxyGroupPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const ProxyGroup *>(this)); 
-
-    return returnValue; 
+FieldContainerType& ProxyGroupBase::getType(void) {
+  return _type;
 }
 
-UInt32 ProxyGroupBase::getContainerSize(void) const 
-{ 
-    return sizeof(ProxyGroup); 
+const FieldContainerType& ProxyGroupBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr ProxyGroupBase::shallowCopy(void) const {
+  ProxyGroupPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const ProxyGroup*>(this));
+
+  return returnValue;
+}
+
+UInt32 ProxyGroupBase::getContainerSize(void) const {
+  return sizeof(ProxyGroup);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ProxyGroupBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((ProxyGroupBase *) &other, whichField);
+void ProxyGroupBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((ProxyGroupBase*)&other, whichField);
 }
 #else
-void ProxyGroupBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((ProxyGroupBase *) &other, whichField, sInfo);
+void ProxyGroupBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((ProxyGroupBase*)&other, whichField, sInfo);
 }
-void ProxyGroupBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void ProxyGroupBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void ProxyGroupBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
+void ProxyGroupBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 
-    _mfInline.terminateShare(uiAspect, this->getContainerSize());
+  _mfInline.terminateShare(uiAspect, this->getContainerSize());
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-ProxyGroupBase::ProxyGroupBase(void) :
-    _sfEnabled                (bool(true)), 
-    _sfUrl                    (), 
-    _sfRoot                   (NodePtr(NullFC)), 
-    _sfState                  (UInt32(0)), 
-    _sfConcurrentLoad         (bool(true)), 
-    _sfVolume                 (), 
-    _sfIndices                (UInt32(0)), 
-    _sfTriangles              (UInt32(0)), 
-    _sfPositions              (), 
-    _sfGeometries             (), 
-    _sfAbsoluteUrl            (), 
-    _mfInline                 (), 
-    Inherited() 
-{
+ProxyGroupBase::ProxyGroupBase(void)
+    : _sfEnabled(bool(true))
+    , _sfUrl()
+    , _sfRoot(NodePtr(NullFC))
+    , _sfState(UInt32(0))
+    , _sfConcurrentLoad(bool(true))
+    , _sfVolume()
+    , _sfIndices(UInt32(0))
+    , _sfTriangles(UInt32(0))
+    , _sfPositions()
+    , _sfGeometries()
+    , _sfAbsoluteUrl()
+    , _mfInline()
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-ProxyGroupBase::ProxyGroupBase(const ProxyGroupBase &source) :
-    _sfEnabled                (source._sfEnabled                ), 
-    _sfUrl                    (source._sfUrl                    ), 
-    _sfRoot                   (source._sfRoot                   ), 
-    _sfState                  (source._sfState                  ), 
-    _sfConcurrentLoad         (source._sfConcurrentLoad         ), 
-    _sfVolume                 (source._sfVolume                 ), 
-    _sfIndices                (source._sfIndices                ), 
-    _sfTriangles              (source._sfTriangles              ), 
-    _sfPositions              (source._sfPositions              ), 
-    _sfGeometries             (source._sfGeometries             ), 
-    _sfAbsoluteUrl            (source._sfAbsoluteUrl            ), 
-    _mfInline                 (source._mfInline                 ), 
-    Inherited                 (source)
-{
+ProxyGroupBase::ProxyGroupBase(const ProxyGroupBase& source)
+    : _sfEnabled(source._sfEnabled)
+    , _sfUrl(source._sfUrl)
+    , _sfRoot(source._sfRoot)
+    , _sfState(source._sfState)
+    , _sfConcurrentLoad(source._sfConcurrentLoad)
+    , _sfVolume(source._sfVolume)
+    , _sfIndices(source._sfIndices)
+    , _sfTriangles(source._sfTriangles)
+    , _sfPositions(source._sfPositions)
+    , _sfGeometries(source._sfGeometries)
+    , _sfAbsoluteUrl(source._sfAbsoluteUrl)
+    , _mfInline(source._mfInline)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-ProxyGroupBase::~ProxyGroupBase(void)
-{
+ProxyGroupBase::~ProxyGroupBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 ProxyGroupBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 ProxyGroupBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (EnabledFieldMask & whichField))
-    {
-        returnValue += _sfEnabled.getBinSize();
-    }
+  if (FieldBits::NoField != (EnabledFieldMask & whichField)) {
+    returnValue += _sfEnabled.getBinSize();
+  }
 
-    if(FieldBits::NoField != (UrlFieldMask & whichField))
-    {
-        returnValue += _sfUrl.getBinSize();
-    }
+  if (FieldBits::NoField != (UrlFieldMask & whichField)) {
+    returnValue += _sfUrl.getBinSize();
+  }
 
-    if(FieldBits::NoField != (RootFieldMask & whichField))
-    {
-        returnValue += _sfRoot.getBinSize();
-    }
+  if (FieldBits::NoField != (RootFieldMask & whichField)) {
+    returnValue += _sfRoot.getBinSize();
+  }
 
-    if(FieldBits::NoField != (StateFieldMask & whichField))
-    {
-        returnValue += _sfState.getBinSize();
-    }
+  if (FieldBits::NoField != (StateFieldMask & whichField)) {
+    returnValue += _sfState.getBinSize();
+  }
 
-    if(FieldBits::NoField != (ConcurrentLoadFieldMask & whichField))
-    {
-        returnValue += _sfConcurrentLoad.getBinSize();
-    }
+  if (FieldBits::NoField != (ConcurrentLoadFieldMask & whichField)) {
+    returnValue += _sfConcurrentLoad.getBinSize();
+  }
 
-    if(FieldBits::NoField != (VolumeFieldMask & whichField))
-    {
-        returnValue += _sfVolume.getBinSize();
-    }
+  if (FieldBits::NoField != (VolumeFieldMask & whichField)) {
+    returnValue += _sfVolume.getBinSize();
+  }
 
-    if(FieldBits::NoField != (IndicesFieldMask & whichField))
-    {
-        returnValue += _sfIndices.getBinSize();
-    }
+  if (FieldBits::NoField != (IndicesFieldMask & whichField)) {
+    returnValue += _sfIndices.getBinSize();
+  }
 
-    if(FieldBits::NoField != (TrianglesFieldMask & whichField))
-    {
-        returnValue += _sfTriangles.getBinSize();
-    }
+  if (FieldBits::NoField != (TrianglesFieldMask & whichField)) {
+    returnValue += _sfTriangles.getBinSize();
+  }
 
-    if(FieldBits::NoField != (PositionsFieldMask & whichField))
-    {
-        returnValue += _sfPositions.getBinSize();
-    }
+  if (FieldBits::NoField != (PositionsFieldMask & whichField)) {
+    returnValue += _sfPositions.getBinSize();
+  }
 
-    if(FieldBits::NoField != (GeometriesFieldMask & whichField))
-    {
-        returnValue += _sfGeometries.getBinSize();
-    }
+  if (FieldBits::NoField != (GeometriesFieldMask & whichField)) {
+    returnValue += _sfGeometries.getBinSize();
+  }
 
-    if(FieldBits::NoField != (AbsoluteUrlFieldMask & whichField))
-    {
-        returnValue += _sfAbsoluteUrl.getBinSize();
-    }
+  if (FieldBits::NoField != (AbsoluteUrlFieldMask & whichField)) {
+    returnValue += _sfAbsoluteUrl.getBinSize();
+  }
 
-    if(FieldBits::NoField != (InlineFieldMask & whichField))
-    {
-        returnValue += _mfInline.getBinSize();
-    }
+  if (FieldBits::NoField != (InlineFieldMask & whichField)) {
+    returnValue += _mfInline.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void ProxyGroupBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void ProxyGroupBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (EnabledFieldMask & whichField))
-    {
-        _sfEnabled.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (EnabledFieldMask & whichField)) {
+    _sfEnabled.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (UrlFieldMask & whichField))
-    {
-        _sfUrl.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (UrlFieldMask & whichField)) {
+    _sfUrl.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (RootFieldMask & whichField))
-    {
-        _sfRoot.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (RootFieldMask & whichField)) {
+    _sfRoot.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (StateFieldMask & whichField))
-    {
-        _sfState.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (StateFieldMask & whichField)) {
+    _sfState.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ConcurrentLoadFieldMask & whichField))
-    {
-        _sfConcurrentLoad.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (ConcurrentLoadFieldMask & whichField)) {
+    _sfConcurrentLoad.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (VolumeFieldMask & whichField))
-    {
-        _sfVolume.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (VolumeFieldMask & whichField)) {
+    _sfVolume.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (IndicesFieldMask & whichField))
-    {
-        _sfIndices.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (IndicesFieldMask & whichField)) {
+    _sfIndices.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (TrianglesFieldMask & whichField))
-    {
-        _sfTriangles.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (TrianglesFieldMask & whichField)) {
+    _sfTriangles.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (PositionsFieldMask & whichField))
-    {
-        _sfPositions.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (PositionsFieldMask & whichField)) {
+    _sfPositions.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GeometriesFieldMask & whichField))
-    {
-        _sfGeometries.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (GeometriesFieldMask & whichField)) {
+    _sfGeometries.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (AbsoluteUrlFieldMask & whichField))
-    {
-        _sfAbsoluteUrl.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (AbsoluteUrlFieldMask & whichField)) {
+    _sfAbsoluteUrl.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (InlineFieldMask & whichField))
-    {
-        _mfInline.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (InlineFieldMask & whichField)) {
+    _mfInline.copyToBin(pMem);
+  }
 }
 
-void ProxyGroupBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void ProxyGroupBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (EnabledFieldMask & whichField))
-    {
-        _sfEnabled.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (EnabledFieldMask & whichField)) {
+    _sfEnabled.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (UrlFieldMask & whichField))
-    {
-        _sfUrl.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (UrlFieldMask & whichField)) {
+    _sfUrl.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (RootFieldMask & whichField))
-    {
-        _sfRoot.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (RootFieldMask & whichField)) {
+    _sfRoot.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (StateFieldMask & whichField))
-    {
-        _sfState.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (StateFieldMask & whichField)) {
+    _sfState.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ConcurrentLoadFieldMask & whichField))
-    {
-        _sfConcurrentLoad.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (ConcurrentLoadFieldMask & whichField)) {
+    _sfConcurrentLoad.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (VolumeFieldMask & whichField))
-    {
-        _sfVolume.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (VolumeFieldMask & whichField)) {
+    _sfVolume.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (IndicesFieldMask & whichField))
-    {
-        _sfIndices.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (IndicesFieldMask & whichField)) {
+    _sfIndices.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (TrianglesFieldMask & whichField))
-    {
-        _sfTriangles.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (TrianglesFieldMask & whichField)) {
+    _sfTriangles.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (PositionsFieldMask & whichField))
-    {
-        _sfPositions.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (PositionsFieldMask & whichField)) {
+    _sfPositions.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GeometriesFieldMask & whichField))
-    {
-        _sfGeometries.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (GeometriesFieldMask & whichField)) {
+    _sfGeometries.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (AbsoluteUrlFieldMask & whichField))
-    {
-        _sfAbsoluteUrl.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (AbsoluteUrlFieldMask & whichField)) {
+    _sfAbsoluteUrl.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (InlineFieldMask & whichField))
-    {
-        _mfInline.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (InlineFieldMask & whichField)) {
+    _mfInline.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ProxyGroupBase::executeSyncImpl(      ProxyGroupBase *pOther,
-                                        const BitVector         &whichField)
-{
+void ProxyGroupBase::executeSyncImpl(ProxyGroupBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (EnabledFieldMask & whichField))
-        _sfEnabled.syncWith(pOther->_sfEnabled);
+  if (FieldBits::NoField != (EnabledFieldMask & whichField))
+    _sfEnabled.syncWith(pOther->_sfEnabled);
 
-    if(FieldBits::NoField != (UrlFieldMask & whichField))
-        _sfUrl.syncWith(pOther->_sfUrl);
+  if (FieldBits::NoField != (UrlFieldMask & whichField))
+    _sfUrl.syncWith(pOther->_sfUrl);
 
-    if(FieldBits::NoField != (RootFieldMask & whichField))
-        _sfRoot.syncWith(pOther->_sfRoot);
+  if (FieldBits::NoField != (RootFieldMask & whichField))
+    _sfRoot.syncWith(pOther->_sfRoot);
 
-    if(FieldBits::NoField != (StateFieldMask & whichField))
-        _sfState.syncWith(pOther->_sfState);
+  if (FieldBits::NoField != (StateFieldMask & whichField))
+    _sfState.syncWith(pOther->_sfState);
 
-    if(FieldBits::NoField != (ConcurrentLoadFieldMask & whichField))
-        _sfConcurrentLoad.syncWith(pOther->_sfConcurrentLoad);
+  if (FieldBits::NoField != (ConcurrentLoadFieldMask & whichField))
+    _sfConcurrentLoad.syncWith(pOther->_sfConcurrentLoad);
 
-    if(FieldBits::NoField != (VolumeFieldMask & whichField))
-        _sfVolume.syncWith(pOther->_sfVolume);
+  if (FieldBits::NoField != (VolumeFieldMask & whichField))
+    _sfVolume.syncWith(pOther->_sfVolume);
 
-    if(FieldBits::NoField != (IndicesFieldMask & whichField))
-        _sfIndices.syncWith(pOther->_sfIndices);
+  if (FieldBits::NoField != (IndicesFieldMask & whichField))
+    _sfIndices.syncWith(pOther->_sfIndices);
 
-    if(FieldBits::NoField != (TrianglesFieldMask & whichField))
-        _sfTriangles.syncWith(pOther->_sfTriangles);
+  if (FieldBits::NoField != (TrianglesFieldMask & whichField))
+    _sfTriangles.syncWith(pOther->_sfTriangles);
 
-    if(FieldBits::NoField != (PositionsFieldMask & whichField))
-        _sfPositions.syncWith(pOther->_sfPositions);
+  if (FieldBits::NoField != (PositionsFieldMask & whichField))
+    _sfPositions.syncWith(pOther->_sfPositions);
 
-    if(FieldBits::NoField != (GeometriesFieldMask & whichField))
-        _sfGeometries.syncWith(pOther->_sfGeometries);
+  if (FieldBits::NoField != (GeometriesFieldMask & whichField))
+    _sfGeometries.syncWith(pOther->_sfGeometries);
 
-    if(FieldBits::NoField != (AbsoluteUrlFieldMask & whichField))
-        _sfAbsoluteUrl.syncWith(pOther->_sfAbsoluteUrl);
+  if (FieldBits::NoField != (AbsoluteUrlFieldMask & whichField))
+    _sfAbsoluteUrl.syncWith(pOther->_sfAbsoluteUrl);
 
-    if(FieldBits::NoField != (InlineFieldMask & whichField))
-        _mfInline.syncWith(pOther->_mfInline);
-
-
+  if (FieldBits::NoField != (InlineFieldMask & whichField))
+    _mfInline.syncWith(pOther->_mfInline);
 }
 #else
-void ProxyGroupBase::executeSyncImpl(      ProxyGroupBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void ProxyGroupBase::executeSyncImpl(
+    ProxyGroupBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (EnabledFieldMask & whichField))
-        _sfEnabled.syncWith(pOther->_sfEnabled);
+  if (FieldBits::NoField != (EnabledFieldMask & whichField))
+    _sfEnabled.syncWith(pOther->_sfEnabled);
 
-    if(FieldBits::NoField != (UrlFieldMask & whichField))
-        _sfUrl.syncWith(pOther->_sfUrl);
+  if (FieldBits::NoField != (UrlFieldMask & whichField))
+    _sfUrl.syncWith(pOther->_sfUrl);
 
-    if(FieldBits::NoField != (RootFieldMask & whichField))
-        _sfRoot.syncWith(pOther->_sfRoot);
+  if (FieldBits::NoField != (RootFieldMask & whichField))
+    _sfRoot.syncWith(pOther->_sfRoot);
 
-    if(FieldBits::NoField != (StateFieldMask & whichField))
-        _sfState.syncWith(pOther->_sfState);
+  if (FieldBits::NoField != (StateFieldMask & whichField))
+    _sfState.syncWith(pOther->_sfState);
 
-    if(FieldBits::NoField != (ConcurrentLoadFieldMask & whichField))
-        _sfConcurrentLoad.syncWith(pOther->_sfConcurrentLoad);
+  if (FieldBits::NoField != (ConcurrentLoadFieldMask & whichField))
+    _sfConcurrentLoad.syncWith(pOther->_sfConcurrentLoad);
 
-    if(FieldBits::NoField != (VolumeFieldMask & whichField))
-        _sfVolume.syncWith(pOther->_sfVolume);
+  if (FieldBits::NoField != (VolumeFieldMask & whichField))
+    _sfVolume.syncWith(pOther->_sfVolume);
 
-    if(FieldBits::NoField != (IndicesFieldMask & whichField))
-        _sfIndices.syncWith(pOther->_sfIndices);
+  if (FieldBits::NoField != (IndicesFieldMask & whichField))
+    _sfIndices.syncWith(pOther->_sfIndices);
 
-    if(FieldBits::NoField != (TrianglesFieldMask & whichField))
-        _sfTriangles.syncWith(pOther->_sfTriangles);
+  if (FieldBits::NoField != (TrianglesFieldMask & whichField))
+    _sfTriangles.syncWith(pOther->_sfTriangles);
 
-    if(FieldBits::NoField != (PositionsFieldMask & whichField))
-        _sfPositions.syncWith(pOther->_sfPositions);
+  if (FieldBits::NoField != (PositionsFieldMask & whichField))
+    _sfPositions.syncWith(pOther->_sfPositions);
 
-    if(FieldBits::NoField != (GeometriesFieldMask & whichField))
-        _sfGeometries.syncWith(pOther->_sfGeometries);
+  if (FieldBits::NoField != (GeometriesFieldMask & whichField))
+    _sfGeometries.syncWith(pOther->_sfGeometries);
 
-    if(FieldBits::NoField != (AbsoluteUrlFieldMask & whichField))
-        _sfAbsoluteUrl.syncWith(pOther->_sfAbsoluteUrl);
+  if (FieldBits::NoField != (AbsoluteUrlFieldMask & whichField))
+    _sfAbsoluteUrl.syncWith(pOther->_sfAbsoluteUrl);
 
-
-    if(FieldBits::NoField != (InlineFieldMask & whichField))
-        _mfInline.syncWith(pOther->_mfInline, sInfo);
-
-
+  if (FieldBits::NoField != (InlineFieldMask & whichField))
+    _mfInline.syncWith(pOther->_mfInline, sInfo);
 }
 
-void ProxyGroupBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void ProxyGroupBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (InlineFieldMask & whichField))
-        _mfInline.beginEdit(uiAspect, uiContainerSize);
-
+  if (FieldBits::NoField != (InlineFieldMask & whichField))
+    _mfInline.beginEdit(uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 OSG_BEGIN_NAMESPACE
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_DEV)
 DataType FieldDataTraits<ProxyGroupPtr>::_type("ProxyGroupPtr", "GroupPtr");
 #endif
-
 
 OSG_END_NAMESPACE

@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEFOREGROUNDINST
 
 #include <stdlib.h>
@@ -61,16 +60,13 @@
 #include "OSGForegroundBase.h"
 #include "OSGForeground.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  ForegroundBase::ActiveFieldMask = 
+const OSG::BitVector ForegroundBase::ActiveFieldMask =
     (TypeTraits<BitVector>::One << ForegroundBase::ActiveFieldId);
 
-const OSG::BitVector ForegroundBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector ForegroundBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
@@ -80,178 +76,123 @@ const OSG::BitVector ForegroundBase::MTInfluenceMask =
 
 //! Foreground description
 
-FieldDescription *ForegroundBase::_desc[] = 
-{
-    new FieldDescription(SFBool::getClassType(), 
-                     "active", 
-                     ActiveFieldId, ActiveFieldMask,
-                     false,
-                     (FieldAccessMethod) &ForegroundBase::getSFActive)
-};
-
+FieldDescription* ForegroundBase::_desc[] = {new FieldDescription(SFBool::getClassType(), "active",
+    ActiveFieldId, ActiveFieldMask, false, (FieldAccessMethod)&ForegroundBase::getSFActive)};
 
 FieldContainerType ForegroundBase::_type(
-    "Foreground",
-    "AttachmentContainer",
-    NULL,
-    NULL, 
-    Foreground::initMethod,
-    _desc,
-    sizeof(_desc));
+    "Foreground", "AttachmentContainer", NULL, NULL, Foreground::initMethod, _desc, sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(ForegroundBase, ForegroundPtr)
+// OSG_FIELD_CONTAINER_DEF(ForegroundBase, ForegroundPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &ForegroundBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &ForegroundBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-UInt32 ForegroundBase::getContainerSize(void) const 
-{ 
-    return sizeof(Foreground); 
+FieldContainerType& ForegroundBase::getType(void) {
+  return _type;
 }
 
+const FieldContainerType& ForegroundBase::getType(void) const {
+  return _type;
+}
+
+UInt32 ForegroundBase::getContainerSize(void) const {
+  return sizeof(Foreground);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ForegroundBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((ForegroundBase *) &other, whichField);
+void ForegroundBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((ForegroundBase*)&other, whichField);
 }
 #else
-void ForegroundBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((ForegroundBase *) &other, whichField, sInfo);
+void ForegroundBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((ForegroundBase*)&other, whichField, sInfo);
 }
-void ForegroundBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void ForegroundBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void ForegroundBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void ForegroundBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-ForegroundBase::ForegroundBase(void) :
-    _sfActive                 (bool(true)), 
-    Inherited() 
-{
+ForegroundBase::ForegroundBase(void)
+    : _sfActive(bool(true))
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-ForegroundBase::ForegroundBase(const ForegroundBase &source) :
-    _sfActive                 (source._sfActive                 ), 
-    Inherited                 (source)
-{
+ForegroundBase::ForegroundBase(const ForegroundBase& source)
+    : _sfActive(source._sfActive)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-ForegroundBase::~ForegroundBase(void)
-{
+ForegroundBase::~ForegroundBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 ForegroundBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 ForegroundBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (ActiveFieldMask & whichField))
-    {
-        returnValue += _sfActive.getBinSize();
-    }
+  if (FieldBits::NoField != (ActiveFieldMask & whichField)) {
+    returnValue += _sfActive.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void ForegroundBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void ForegroundBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ActiveFieldMask & whichField))
-    {
-        _sfActive.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (ActiveFieldMask & whichField)) {
+    _sfActive.copyToBin(pMem);
+  }
 }
 
-void ForegroundBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void ForegroundBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ActiveFieldMask & whichField))
-    {
-        _sfActive.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (ActiveFieldMask & whichField)) {
+    _sfActive.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ForegroundBase::executeSyncImpl(      ForegroundBase *pOther,
-                                        const BitVector         &whichField)
-{
+void ForegroundBase::executeSyncImpl(ForegroundBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (ActiveFieldMask & whichField))
-        _sfActive.syncWith(pOther->_sfActive);
-
-
+  if (FieldBits::NoField != (ActiveFieldMask & whichField))
+    _sfActive.syncWith(pOther->_sfActive);
 }
 #else
-void ForegroundBase::executeSyncImpl(      ForegroundBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void ForegroundBase::executeSyncImpl(
+    ForegroundBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (ActiveFieldMask & whichField))
-        _sfActive.syncWith(pOther->_sfActive);
-
-
-
+  if (FieldBits::NoField != (ActiveFieldMask & whichField))
+    _sfActive.syncWith(pOther->_sfActive);
 }
 
-void ForegroundBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void ForegroundBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>

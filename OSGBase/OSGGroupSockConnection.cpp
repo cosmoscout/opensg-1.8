@@ -65,45 +65,37 @@ OSG_USING_NAMESPACE
 /*! Constructor
  */
 
-GroupSockConnection::GroupSockConnection():
-    GroupConnection(0)
-{
-    _acceptSocket.open();
-    _acceptSocket.setReusePort(true);
+GroupSockConnection::GroupSockConnection()
+    : GroupConnection(0) {
+  _acceptSocket.open();
+  _acceptSocket.setReusePort(true);
 
-    _socketReadBuffer.resize(131071);
-    _socketWriteBuffer.resize( _socketReadBuffer.size() );
-    // reserve first bytes for buffer size
-    readBufAdd (&_socketReadBuffer [sizeof(SocketBufferHeader)],
-                _socketReadBuffer.size() -sizeof(SocketBufferHeader));
-    writeBufAdd(&_socketWriteBuffer[sizeof(SocketBufferHeader)],
-                _socketWriteBuffer.size()-sizeof(SocketBufferHeader));
+  _socketReadBuffer.resize(131071);
+  _socketWriteBuffer.resize(_socketReadBuffer.size());
+  // reserve first bytes for buffer size
+  readBufAdd(&_socketReadBuffer[sizeof(SocketBufferHeader)],
+      _socketReadBuffer.size() - sizeof(SocketBufferHeader));
+  writeBufAdd(&_socketWriteBuffer[sizeof(SocketBufferHeader)],
+      _socketWriteBuffer.size() - sizeof(SocketBufferHeader));
 }
 
 /*! Destructor
  */
-GroupSockConnection::~GroupSockConnection(void)
-{
-    // close and remove sockets
-    while(_sockets.size())
-    {
-        try
-        {
-            _sockets.begin()->close();
-            _sockets.erase(_sockets.begin());
-        }
-        catch(...)
-        {
-        }
-    }
-    _acceptSocket.close();
+GroupSockConnection::~GroupSockConnection(void) {
+  // close and remove sockets
+  while (_sockets.size()) {
+    try {
+      _sockets.begin()->close();
+      _sockets.erase(_sockets.begin());
+    } catch (...) {}
+  }
+  _acceptSocket.close();
 }
 
 /*! get connection type
  */
-const ConnectionType *GroupSockConnection::getType()
-{
-    return &_type;
+const ConnectionType* GroupSockConnection::getType() {
+  return &_type;
 }
 
 /*-------------------------------------------------------------------------*/
@@ -113,58 +105,46 @@ const ConnectionType *GroupSockConnection::getType()
     returned
  */
 GroupConnection::Channel GroupSockConnection::connectPoint(
-    const std::string &address,
-    Time               timeout)
-{
-    Channel channel = -1;
-    StreamSocket socket;
-    SocketAddress destination;
-    if(connectSocket(socket,address,destination,timeout))
-    {
-        channel = newChannelIndex(_sockets.size());
-        _sockets.push_back(socket);
-        _remoteAddresses.push_back(destination);
-        _readIndex = 0;
-    }
-    return channel;
+    const std::string& address, Time timeout) {
+  Channel       channel = -1;
+  StreamSocket  socket;
+  SocketAddress destination;
+  if (connectSocket(socket, address, destination, timeout)) {
+    channel = newChannelIndex(_sockets.size());
+    _sockets.push_back(socket);
+    _remoteAddresses.push_back(destination);
+    _readIndex = 0;
+  }
+  return channel;
 }
 
 /*! disconnect the given channel
  */
-void GroupSockConnection::disconnect(Channel channel)
-{
-    ChannelIndex index = channelToIndex(channel);
-    try
-    {
-        _sockets[index].close();
-    }
-    catch(...)
-    {
-    }
-    _sockets.erase(_sockets.begin() + index);
-    delChannelIndex(index);
-    _readIndex = 0;
+void GroupSockConnection::disconnect(Channel channel) {
+  ChannelIndex index = channelToIndex(channel);
+  try {
+    _sockets[index].close();
+  } catch (...) {}
+  _sockets.erase(_sockets.begin() + index);
+  delChannelIndex(index);
+  _readIndex = 0;
 }
 
 /*! accept an icomming point connection. If timeout is reached,
     -1 is returned. If timeout is -1 then wait without timeout
  */
-GroupConnection::Channel GroupSockConnection::acceptPoint(Time timeout)
-{
-    StreamSocket from;
-    SocketAddress destination;
-    if(GroupSockConnection::acceptSocket(_acceptSocket,from,destination,timeout))
-    {
-        Channel channel = newChannelIndex(_sockets.size());
-        _sockets.push_back(from);
-        _remoteAddresses.push_back(destination);
-        _readIndex = 0;
-        return channel;
-    }
-    else
-    {
-        return -1;
-    }
+GroupConnection::Channel GroupSockConnection::acceptPoint(Time timeout) {
+  StreamSocket  from;
+  SocketAddress destination;
+  if (GroupSockConnection::acceptSocket(_acceptSocket, from, destination, timeout)) {
+    Channel channel = newChannelIndex(_sockets.size());
+    _sockets.push_back(from);
+    _remoteAddresses.push_back(destination);
+    _readIndex = 0;
+    return channel;
+  } else {
+    return -1;
+  }
 }
 
 /*! bind the connection to an network interface. The address is
@@ -173,76 +153,71 @@ GroupConnection::Channel GroupSockConnection::acceptPoint(Time timeout)
     address parameter. Address can be empty, wich means to use
     a free port or address can contain a port number.
  */
-std::string GroupSockConnection::bind(const std::string &address)
-{
-    int         port=0;
-    char        localhost[256];
-    char        host[256];
-    char        portStr[256];
-    std::string interf;
-    std::string boundedAddress;
+std::string GroupSockConnection::bind(const std::string& address) {
+  int         port = 0;
+  char        localhost[256];
+  char        host[256];
+  char        portStr[256];
+  std::string interf;
+  std::string boundedAddress;
 
-    // get local host name
-    osgGetHostname(localhost,255);
+  // get local host name
+  osgGetHostname(localhost, 255);
 
-    if(!getInterface().empty())
-        interf = getInterface();
-    else
-        interf = localhost;
-    // parse address
-    if(!address.empty())
-        if(sscanf(address.c_str(),"%*[^:]:%d",&port) != 1)
-            if(sscanf(address.c_str(),":%d",&port) != 1)
-                port = 0;
-    // bind port
-    _acceptSocket.setReusePort(true);
-    _acceptSocket.bind(SocketAddress(interf.c_str(),port));
-    SINFO << "Connection bound to "
-          << _acceptSocket.getAddress().getHost() << ":"
-          << _acceptSocket.getAddress().getPort() << std::endl;
-    _acceptSocket.listen();
-    // create address
-    sprintf(portStr,"%d",_acceptSocket.getAddress().getPort());
-    return interf + ":" + portStr;
+  if (!getInterface().empty())
+    interf = getInterface();
+  else
+    interf = localhost;
+  // parse address
+  if (!address.empty())
+    if (sscanf(address.c_str(), "%*[^:]:%d", &port) != 1)
+      if (sscanf(address.c_str(), ":%d", &port) != 1)
+        port = 0;
+  // bind port
+  _acceptSocket.setReusePort(true);
+  _acceptSocket.bind(SocketAddress(interf.c_str(), port));
+  SINFO << "Connection bound to " << _acceptSocket.getAddress().getHost() << ":"
+        << _acceptSocket.getAddress().getPort() << std::endl;
+  _acceptSocket.listen();
+  // create address
+  sprintf(portStr, "%d", _acceptSocket.getAddress().getPort());
+  return interf + ":" + portStr;
 }
 
 /*! parse the params string.
  */
-void GroupSockConnection::setParams(const std::string &params)
-{
-    if(params.empty())
-        return;
+void GroupSockConnection::setParams(const std::string& params) {
+  if (params.empty())
+    return;
 
-    std::string option = "bufferSize=";
-    std::string::size_type i = 0;
-    if((i=params.find(option)) != std::string::npos)
-    {
-        std::string str = params.substr(i + option.size());
+  std::string            option = "bufferSize=";
+  std::string::size_type i      = 0;
+  if ((i = params.find(option)) != std::string::npos) {
+    std::string str = params.substr(i + option.size());
 
-        std::stringstream ss;
-        std::string::size_type j = 0;
-        while(j < str.length() && str[j] != ',' && isdigit(str[j]))
-        {
-            ss << str[j++];
-        }
-        UInt32 bufferSize;
-        ss >> bufferSize;
-
-        // clear old buffer.
-        readBufClear();
-        writeBufClear();
-
-        _socketReadBuffer.resize(bufferSize);
-        _socketWriteBuffer.resize(_socketReadBuffer.size());
-        
-        // reserve first bytes for buffer size
-        readBufAdd (&_socketReadBuffer [sizeof(SocketBufferHeader)],
-                    _socketReadBuffer.size() -sizeof(SocketBufferHeader));
-        writeBufAdd(&_socketWriteBuffer[sizeof(SocketBufferHeader)],
-                    _socketWriteBuffer.size()-sizeof(SocketBufferHeader));
-
-        FINFO(("GroupSockConnection::setParams : setting buffer size to %u.\n", bufferSize));
+    std::stringstream      ss;
+    std::string::size_type j = 0;
+    while (j < str.length() && str[j] != ',' && isdigit(str[j])) {
+      ss << str[j++];
     }
+    UInt32 bufferSize;
+    ss >> bufferSize;
+
+    // clear old buffer.
+    readBufClear();
+    writeBufClear();
+
+    _socketReadBuffer.resize(bufferSize);
+    _socketWriteBuffer.resize(_socketReadBuffer.size());
+
+    // reserve first bytes for buffer size
+    readBufAdd(&_socketReadBuffer[sizeof(SocketBufferHeader)],
+        _socketReadBuffer.size() - sizeof(SocketBufferHeader));
+    writeBufAdd(&_socketWriteBuffer[sizeof(SocketBufferHeader)],
+        _socketWriteBuffer.size() - sizeof(SocketBufferHeader));
+
+    FINFO(("GroupSockConnection::setParams : setting buffer size to %u.\n", bufferSize));
+  }
 }
 
 /*-------------------------------------------------------------------------*/
@@ -251,60 +226,47 @@ void GroupSockConnection::setParams(const std::string &params)
 /*! select the next channel for reading. If timeout is not -1
     then -1 is returned if timeout is reached
 */
-Connection::Channel GroupSockConnection::selectChannel(Time timeout)
-{
-    Int32 maxnread=0,nread;
-    ChannelIndex index;
-    SocketSelection selection,result;
+Connection::Channel GroupSockConnection::selectChannel(Time timeout) {
+  Int32           maxnread = 0, nread;
+  ChannelIndex    index;
+  SocketSelection selection, result;
 
-    // if there is data in the read buffer, return current channel
-    if(_zeroCopyThreshold != 1 &&
-       _currentReadBuffer != readBufEnd())
-    {
-        FFATAL(("Channel change ignores data in current buffer"))
-        return indexToChannel(_readIndex);
-    }    
-
-    if(_selection[_readIndex] &&
-       _sockets[_readIndex].getAvailable())
-    {
-        return indexToChannel(_readIndex);;
-    }
-
-    // wait for first socket to deliver data
-    for(index = 0 ; index < _sockets.size() ; ++index)
-    {
-        if(_selection[index])
-            selection.setRead(_sockets[index]);
-    }
-    
-    try 
-    {
-        // select ok ?
-        if(!selection.select(timeout,result))
-            return -1;
-
-        // use socket with most data
-        for(index = 0 ; index < _sockets.size() ; ++index)
-        {
-            if(result.isSetRead(_sockets[index]))
-            {
-                nread=_sockets[index].getAvailable();
-                if(maxnread < nread)
-                {
-                    maxnread = nread;
-                    _readIndex=index;
-                }
-            }
-        }
-    }
-    catch(SocketException &e)
-    {
-        throw ReadError(e.what());
-    }
-
-    // return channel id
+  // if there is data in the read buffer, return current channel
+  if (_zeroCopyThreshold != 1 && _currentReadBuffer != readBufEnd()) {
+    FFATAL(("Channel change ignores data in current buffer"))
     return indexToChannel(_readIndex);
+  }
+
+  if (_selection[_readIndex] && _sockets[_readIndex].getAvailable()) {
+    return indexToChannel(_readIndex);
+    ;
+  }
+
+  // wait for first socket to deliver data
+  for (index = 0; index < _sockets.size(); ++index) {
+    if (_selection[index])
+      selection.setRead(_sockets[index]);
+  }
+
+  try {
+    // select ok ?
+    if (!selection.select(timeout, result))
+      return -1;
+
+    // use socket with most data
+    for (index = 0; index < _sockets.size(); ++index) {
+      if (result.isSetRead(_sockets[index])) {
+        nread = _sockets[index].getAvailable();
+        if (maxnread < nread) {
+          maxnread   = nread;
+          _readIndex = index;
+        }
+      }
+    }
+  } catch (SocketException& e) { throw ReadError(e.what()); }
+
+  // return channel id
+  return indexToChannel(_readIndex);
 }
 
 /*-------------------------------------------------------------------------*/
@@ -312,65 +274,49 @@ Connection::Channel GroupSockConnection::selectChannel(Time timeout)
 
 /*! wait for signal
  */
-bool GroupSockConnection::wait(Time timeout)
-{
-    UInt32 len;
-    UInt32 index;
-    UInt32 tag=314156;
-    UInt32 missing = _sockets.size();
-    SocketSelection selection,result;
+bool GroupSockConnection::wait(Time timeout) {
+  UInt32          len;
+  UInt32          index;
+  UInt32          tag     = 314156;
+  UInt32          missing = _sockets.size();
+  SocketSelection selection, result;
 
-    for(index = 0 ; index < _sockets.size() ; ++index)
-        selection.setRead(_sockets[index]);
+  for (index = 0; index < _sockets.size(); ++index)
+    selection.setRead(_sockets[index]);
 
-    try
-    {
-        while(missing)
-        {
-            if(!selection.select(timeout,result))
-                return false;
-            for(index = 0 ; index < _sockets.size() ; ++index)
-            {
-                if(result.isSetRead(_sockets[index]))
-                {
-                    len = _sockets[index].recv(&tag,sizeof(tag));
-                    tag = osgntohl(tag);
-                    if(len == 0)
-                        throw ReadError("Channel closed");
-                    selection.clearRead(_sockets[index]);
-                    missing--;
-                    if(tag != 314156)
-                    {
-                        FFATAL(("Stream out of sync in SockConnection\n"));
-                        throw ReadError("Stream out of sync");
-                    }
-                }
-            }
+  try {
+    while (missing) {
+      if (!selection.select(timeout, result))
+        return false;
+      for (index = 0; index < _sockets.size(); ++index) {
+        if (result.isSetRead(_sockets[index])) {
+          len = _sockets[index].recv(&tag, sizeof(tag));
+          tag = osgntohl(tag);
+          if (len == 0)
+            throw ReadError("Channel closed");
+          selection.clearRead(_sockets[index]);
+          missing--;
+          if (tag != 314156) {
+            FFATAL(("Stream out of sync in SockConnection\n"));
+            throw ReadError("Stream out of sync");
+          }
         }
+      }
     }
-    catch(SocketException &e)
-    {
-        throw ReadError(e.what());
-    }
-    return true;
+  } catch (SocketException& e) { throw ReadError(e.what()); }
+  return true;
 }
 
 /*! send signal
  */
-void GroupSockConnection::signal(void)
-{
-    UInt32 tag=osghtonl(314156);
-    UInt32 index;
+void GroupSockConnection::signal(void) {
+  UInt32 tag = osghtonl(314156);
+  UInt32 index;
 
-    try
-    {
-        for(index = 0 ; index<_sockets.size() ; ++index)
-            _sockets[index].send(&tag,sizeof(tag));
-    }
-    catch(SocketError &e)
-    {
-        throw WriteError(e.what());
-    }
+  try {
+    for (index = 0; index < _sockets.size(); ++index)
+      _sockets[index].send(&tag, sizeof(tag));
+  } catch (SocketError& e) { throw WriteError(e.what()); }
 }
 
 /*-------------------------- create ---------------------------------------*/
@@ -378,9 +324,8 @@ void GroupSockConnection::signal(void)
 /** \brief create conneciton
  */
 
-GroupConnection *GroupSockConnection::create(void)
-{
-    return new GroupSockConnection();
+GroupConnection* GroupSockConnection::create(void) {
+  return new GroupSockConnection();
 }
 
 /*-------------------------------------------------------------------------*/
@@ -393,18 +338,16 @@ GroupConnection *GroupSockConnection::create(void)
  *
  **/
 
-void GroupSockConnection::read(MemoryHandle mem,UInt32 size)
-{
-    int len;
+void GroupSockConnection::read(MemoryHandle mem, UInt32 size) {
+  int len;
 
-    // read data
-    len=_sockets[_readIndex].recv(mem,size);
-    if(len==0)
-    {
-//        throw ChannelClosed(indexToChannel(_readIndex));
-        throw ReadError("Channel closed");
-    }
-} 
+  // read data
+  len = _sockets[_readIndex].recv(mem, size);
+  if (len == 0) {
+    //        throw ChannelClosed(indexToChannel(_readIndex));
+    throw ReadError("Channel closed");
+  }
+}
 
 /** Read next data block
  *
@@ -413,23 +356,21 @@ void GroupSockConnection::read(MemoryHandle mem,UInt32 size)
  *
  */
 
-void GroupSockConnection::readBuffer()
-{
-    int size;
-    int len;
+void GroupSockConnection::readBuffer() {
+  int size;
+  int len;
 
-    // read buffer header
-    len=_sockets[_readIndex].recv(&_socketReadBuffer[0],sizeof(SocketBufferHeader));
-    if(len==0)
-        throw ReadError("Channel closed");
-    // read remaining data
-    size=osgntohl(((SocketBufferHeader*)&_socketReadBuffer[0])->size);
-    len=_sockets[_readIndex].recv(&_socketReadBuffer[sizeof(SocketBufferHeader)],
-                         size);
-    if(len==0)
-        throw ReadError("Channel closed");
-    readBufBegin()->setDataSize(size);
-}    
+  // read buffer header
+  len = _sockets[_readIndex].recv(&_socketReadBuffer[0], sizeof(SocketBufferHeader));
+  if (len == 0)
+    throw ReadError("Channel closed");
+  // read remaining data
+  size = osgntohl(((SocketBufferHeader*)&_socketReadBuffer[0])->size);
+  len  = _sockets[_readIndex].recv(&_socketReadBuffer[sizeof(SocketBufferHeader)], size);
+  if (len == 0)
+    throw ReadError("Channel closed");
+  readBufBegin()->setDataSize(size);
+}
 
 /** Write data to all destinations
  *
@@ -438,20 +379,14 @@ void GroupSockConnection::readBuffer()
  *
  **/
 
-void GroupSockConnection::write(MemoryHandle mem,UInt32 size)
-{
-    Int32 index;
+void GroupSockConnection::write(MemoryHandle mem, UInt32 size) {
+  Int32 index;
 
-    try
-    {
-        // write to all connected sockets
-        for(index = 0 ; index < _sockets.size() ; ++index)
-            _sockets[index].send(mem,size);
-    }
-    catch(SocketException &e)
-    {
-        throw WriteError(e.what());
-    }
+  try {
+    // write to all connected sockets
+    for (index = 0; index < _sockets.size(); ++index)
+      _sockets[index].send(mem, size);
+  } catch (SocketException& e) { throw WriteError(e.what()); }
 }
 
 /** Write buffer
@@ -459,22 +394,18 @@ void GroupSockConnection::write(MemoryHandle mem,UInt32 size)
  * Write blocksize and data.
  *
  **/
-void GroupSockConnection::writeBuffer(void)
-{
-    Int32 index;
-    UInt32 size = writeBufBegin()->getDataSize();
-    // write size to header
-    ((SocketBufferHeader*)&_socketWriteBuffer[0])->size=osghtonl(size);
-    if(size)
-    {
-        // write data to all sockets
-        for(index = 0 ; index < _sockets.size() ; ++index)
-        {
-            // write whole block
-            _sockets[index].send(&_socketWriteBuffer[0],
-                                 size+sizeof(SocketBufferHeader));
-        }
+void GroupSockConnection::writeBuffer(void) {
+  Int32  index;
+  UInt32 size = writeBufBegin()->getDataSize();
+  // write size to header
+  ((SocketBufferHeader*)&_socketWriteBuffer[0])->size = osghtonl(size);
+  if (size) {
+    // write data to all sockets
+    for (index = 0; index < _sockets.size(); ++index) {
+      // write whole block
+      _sockets[index].send(&_socketWriteBuffer[0], size + sizeof(SocketBufferHeader));
     }
+  }
 }
 
 /*-------------------------------------------------------------------------*/
@@ -482,71 +413,52 @@ void GroupSockConnection::writeBuffer(void)
 
 /*! connect two sockets until success or timeout
  */
-bool GroupSockConnection::connectSocket(StreamSocket &socket,
-                                        std::string   address,
-                                        SocketAddress &destination,
-                                        Time          timeout)
-{
-    std::string  host="unknown";
-    int          port=0;
-    Time         startTime = getSystemTime();
-    bool         connected=false;
-    
-    int pos = address.find(':');
-    if(pos>=0)
-    {
-        host = std::string(address,0,pos);
-        port = atoi(std::string(address,pos+1,std::string::npos).c_str());
-    }
-    else
-    {
-        host = address;
-    }
-    
-    socket.open();
-    socket.setDelay(false);
-    socket.setReadBufferSize(1048576);
-    socket.setWriteBufferSize(1048576);
-    destination = SocketAddress(host.c_str(),port);
-    while(!connected && 
-          (timeout == -1 || (getSystemTime()-startTime) < timeout))
-    {
-        try
-        {
-            socket.connect(destination);
-            connected = true;
-        }
-        catch(...)
-        {
-        }
-    }
-    if(connected)
-        return true;
-    else
-        return false;
+bool GroupSockConnection::connectSocket(
+    StreamSocket& socket, std::string address, SocketAddress& destination, Time timeout) {
+  std::string host      = "unknown";
+  int         port      = 0;
+  Time        startTime = getSystemTime();
+  bool        connected = false;
+
+  int pos = address.find(':');
+  if (pos >= 0) {
+    host = std::string(address, 0, pos);
+    port = atoi(std::string(address, pos + 1, std::string::npos).c_str());
+  } else {
+    host = address;
+  }
+
+  socket.open();
+  socket.setDelay(false);
+  socket.setReadBufferSize(1048576);
+  socket.setWriteBufferSize(1048576);
+  destination = SocketAddress(host.c_str(), port);
+  while (!connected && (timeout == -1 || (getSystemTime() - startTime) < timeout)) {
+    try {
+      socket.connect(destination);
+      connected = true;
+    } catch (...) {}
+  }
+  if (connected)
+    return true;
+  else
+    return false;
 }
 
 /*! accept socket untile success or timeout
  */
-bool GroupSockConnection::acceptSocket(StreamSocket  &accept,
-                                       StreamSocket  &from,
-                                       SocketAddress &destination,
-                                       Time          timeout)
-{
-    if(!accept.waitReadable(timeout))
-        return false;
-    from=accept.acceptFrom(destination);
-    from.setDelay(false);
-    from.setReadBufferSize(1048576);
-    from.setWriteBufferSize(1048576);
-    return true;
+bool GroupSockConnection::acceptSocket(
+    StreamSocket& accept, StreamSocket& from, SocketAddress& destination, Time timeout) {
+  if (!accept.waitReadable(timeout))
+    return false;
+  from = accept.acceptFrom(destination);
+  from.setDelay(false);
+  from.setReadBufferSize(1048576);
+  from.setWriteBufferSize(1048576);
+  return true;
 }
 
 /*-------------------------------------------------------------------------*/
 /*                              static type                                */
 
-ConnectionType GroupSockConnection::_type(
-    &GroupSockConnection::create,
-    "StreamSock");
-
-
+ConnectionType GroupSockConnection::_type(&GroupSockConnection::create, "StreamSock");

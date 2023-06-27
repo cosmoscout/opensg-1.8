@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILETEXGENCHUNKINST
 
 #include <stdlib.h>
@@ -61,584 +60,461 @@
 #include "OSGTexGenChunkBase.h"
 #include "OSGTexGenChunk.h"
 
-#include <OSGGL.h>                        // GenFuncS default header
-#include <OSGGL.h>                        // GenFuncT default header
-#include <OSGGL.h>                        // GenFuncR default header
-#include <OSGGL.h>                        // GenFuncQ default header
+#include <OSGGL.h> // GenFuncS default header
+#include <OSGGL.h> // GenFuncT default header
+#include <OSGGL.h> // GenFuncR default header
+#include <OSGGL.h> // GenFuncQ default header
 
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  TexGenChunkBase::GenFuncSFieldMask = 
+const OSG::BitVector TexGenChunkBase::GenFuncSFieldMask =
     (TypeTraits<BitVector>::One << TexGenChunkBase::GenFuncSFieldId);
 
-const OSG::BitVector  TexGenChunkBase::GenFuncTFieldMask = 
+const OSG::BitVector TexGenChunkBase::GenFuncTFieldMask =
     (TypeTraits<BitVector>::One << TexGenChunkBase::GenFuncTFieldId);
 
-const OSG::BitVector  TexGenChunkBase::GenFuncRFieldMask = 
+const OSG::BitVector TexGenChunkBase::GenFuncRFieldMask =
     (TypeTraits<BitVector>::One << TexGenChunkBase::GenFuncRFieldId);
 
-const OSG::BitVector  TexGenChunkBase::GenFuncQFieldMask = 
+const OSG::BitVector TexGenChunkBase::GenFuncQFieldMask =
     (TypeTraits<BitVector>::One << TexGenChunkBase::GenFuncQFieldId);
 
-const OSG::BitVector  TexGenChunkBase::GenFuncSPlaneFieldMask = 
+const OSG::BitVector TexGenChunkBase::GenFuncSPlaneFieldMask =
     (TypeTraits<BitVector>::One << TexGenChunkBase::GenFuncSPlaneFieldId);
 
-const OSG::BitVector  TexGenChunkBase::GenFuncTPlaneFieldMask = 
+const OSG::BitVector TexGenChunkBase::GenFuncTPlaneFieldMask =
     (TypeTraits<BitVector>::One << TexGenChunkBase::GenFuncTPlaneFieldId);
 
-const OSG::BitVector  TexGenChunkBase::GenFuncRPlaneFieldMask = 
+const OSG::BitVector TexGenChunkBase::GenFuncRPlaneFieldMask =
     (TypeTraits<BitVector>::One << TexGenChunkBase::GenFuncRPlaneFieldId);
 
-const OSG::BitVector  TexGenChunkBase::GenFuncQPlaneFieldMask = 
+const OSG::BitVector TexGenChunkBase::GenFuncQPlaneFieldMask =
     (TypeTraits<BitVector>::One << TexGenChunkBase::GenFuncQPlaneFieldId);
 
-const OSG::BitVector  TexGenChunkBase::SBeaconFieldMask = 
+const OSG::BitVector TexGenChunkBase::SBeaconFieldMask =
     (TypeTraits<BitVector>::One << TexGenChunkBase::SBeaconFieldId);
 
-const OSG::BitVector  TexGenChunkBase::TBeaconFieldMask = 
+const OSG::BitVector TexGenChunkBase::TBeaconFieldMask =
     (TypeTraits<BitVector>::One << TexGenChunkBase::TBeaconFieldId);
 
-const OSG::BitVector  TexGenChunkBase::RBeaconFieldMask = 
+const OSG::BitVector TexGenChunkBase::RBeaconFieldMask =
     (TypeTraits<BitVector>::One << TexGenChunkBase::RBeaconFieldId);
 
-const OSG::BitVector  TexGenChunkBase::QBeaconFieldMask = 
+const OSG::BitVector TexGenChunkBase::QBeaconFieldMask =
     (TypeTraits<BitVector>::One << TexGenChunkBase::QBeaconFieldId);
 
-const OSG::BitVector TexGenChunkBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector TexGenChunkBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
 /*! \var GLenum          TexGenChunkBase::_sfGenFuncS
-    
+
 */
 /*! \var GLenum          TexGenChunkBase::_sfGenFuncT
-    
+
 */
 /*! \var GLenum          TexGenChunkBase::_sfGenFuncR
-    
+
 */
 /*! \var GLenum          TexGenChunkBase::_sfGenFuncQ
-    
+
 */
 /*! \var Vec4f           TexGenChunkBase::_sfGenFuncSPlane
-    
+
 */
 /*! \var Vec4f           TexGenChunkBase::_sfGenFuncTPlane
-    
+
 */
 /*! \var Vec4f           TexGenChunkBase::_sfGenFuncRPlane
-    
+
 */
 /*! \var Vec4f           TexGenChunkBase::_sfGenFuncQPlane
-    
+
 */
 /*! \var NodePtr         TexGenChunkBase::_sfSBeacon
-    
+
 */
 /*! \var NodePtr         TexGenChunkBase::_sfTBeacon
-    
+
 */
 /*! \var NodePtr         TexGenChunkBase::_sfRBeacon
-    
+
 */
 /*! \var NodePtr         TexGenChunkBase::_sfQBeacon
-    
+
 */
 
 //! TexGenChunk description
 
-FieldDescription *TexGenChunkBase::_desc[] = 
-{
-    new FieldDescription(SFGLenum::getClassType(), 
-                     "genFuncS", 
-                     GenFuncSFieldId, GenFuncSFieldMask,
-                     false,
-                     (FieldAccessMethod) &TexGenChunkBase::getSFGenFuncS),
-    new FieldDescription(SFGLenum::getClassType(), 
-                     "genFuncT", 
-                     GenFuncTFieldId, GenFuncTFieldMask,
-                     false,
-                     (FieldAccessMethod) &TexGenChunkBase::getSFGenFuncT),
-    new FieldDescription(SFGLenum::getClassType(), 
-                     "genFuncR", 
-                     GenFuncRFieldId, GenFuncRFieldMask,
-                     false,
-                     (FieldAccessMethod) &TexGenChunkBase::getSFGenFuncR),
-    new FieldDescription(SFGLenum::getClassType(), 
-                     "genFuncQ", 
-                     GenFuncQFieldId, GenFuncQFieldMask,
-                     false,
-                     (FieldAccessMethod) &TexGenChunkBase::getSFGenFuncQ),
-    new FieldDescription(SFVec4f::getClassType(), 
-                     "genFuncSPlane", 
-                     GenFuncSPlaneFieldId, GenFuncSPlaneFieldMask,
-                     false,
-                     (FieldAccessMethod) &TexGenChunkBase::getSFGenFuncSPlane),
-    new FieldDescription(SFVec4f::getClassType(), 
-                     "genFuncTPlane", 
-                     GenFuncTPlaneFieldId, GenFuncTPlaneFieldMask,
-                     false,
-                     (FieldAccessMethod) &TexGenChunkBase::getSFGenFuncTPlane),
-    new FieldDescription(SFVec4f::getClassType(), 
-                     "genFuncRPlane", 
-                     GenFuncRPlaneFieldId, GenFuncRPlaneFieldMask,
-                     false,
-                     (FieldAccessMethod) &TexGenChunkBase::getSFGenFuncRPlane),
-    new FieldDescription(SFVec4f::getClassType(), 
-                     "genFuncQPlane", 
-                     GenFuncQPlaneFieldId, GenFuncQPlaneFieldMask,
-                     false,
-                     (FieldAccessMethod) &TexGenChunkBase::getSFGenFuncQPlane),
-    new FieldDescription(SFNodePtr::getClassType(), 
-                     "sBeacon", 
-                     SBeaconFieldId, SBeaconFieldMask,
-                     false,
-                     (FieldAccessMethod) &TexGenChunkBase::getSFSBeacon),
-    new FieldDescription(SFNodePtr::getClassType(), 
-                     "tBeacon", 
-                     TBeaconFieldId, TBeaconFieldMask,
-                     false,
-                     (FieldAccessMethod) &TexGenChunkBase::getSFTBeacon),
-    new FieldDescription(SFNodePtr::getClassType(), 
-                     "rBeacon", 
-                     RBeaconFieldId, RBeaconFieldMask,
-                     false,
-                     (FieldAccessMethod) &TexGenChunkBase::getSFRBeacon),
-    new FieldDescription(SFNodePtr::getClassType(), 
-                     "qBeacon", 
-                     QBeaconFieldId, QBeaconFieldMask,
-                     false,
-                     (FieldAccessMethod) &TexGenChunkBase::getSFQBeacon)
-};
+FieldDescription* TexGenChunkBase::_desc[] = {
+    new FieldDescription(SFGLenum::getClassType(), "genFuncS", GenFuncSFieldId, GenFuncSFieldMask,
+        false, (FieldAccessMethod)&TexGenChunkBase::getSFGenFuncS),
+    new FieldDescription(SFGLenum::getClassType(), "genFuncT", GenFuncTFieldId, GenFuncTFieldMask,
+        false, (FieldAccessMethod)&TexGenChunkBase::getSFGenFuncT),
+    new FieldDescription(SFGLenum::getClassType(), "genFuncR", GenFuncRFieldId, GenFuncRFieldMask,
+        false, (FieldAccessMethod)&TexGenChunkBase::getSFGenFuncR),
+    new FieldDescription(SFGLenum::getClassType(), "genFuncQ", GenFuncQFieldId, GenFuncQFieldMask,
+        false, (FieldAccessMethod)&TexGenChunkBase::getSFGenFuncQ),
+    new FieldDescription(SFVec4f::getClassType(), "genFuncSPlane", GenFuncSPlaneFieldId,
+        GenFuncSPlaneFieldMask, false, (FieldAccessMethod)&TexGenChunkBase::getSFGenFuncSPlane),
+    new FieldDescription(SFVec4f::getClassType(), "genFuncTPlane", GenFuncTPlaneFieldId,
+        GenFuncTPlaneFieldMask, false, (FieldAccessMethod)&TexGenChunkBase::getSFGenFuncTPlane),
+    new FieldDescription(SFVec4f::getClassType(), "genFuncRPlane", GenFuncRPlaneFieldId,
+        GenFuncRPlaneFieldMask, false, (FieldAccessMethod)&TexGenChunkBase::getSFGenFuncRPlane),
+    new FieldDescription(SFVec4f::getClassType(), "genFuncQPlane", GenFuncQPlaneFieldId,
+        GenFuncQPlaneFieldMask, false, (FieldAccessMethod)&TexGenChunkBase::getSFGenFuncQPlane),
+    new FieldDescription(SFNodePtr::getClassType(), "sBeacon", SBeaconFieldId, SBeaconFieldMask,
+        false, (FieldAccessMethod)&TexGenChunkBase::getSFSBeacon),
+    new FieldDescription(SFNodePtr::getClassType(), "tBeacon", TBeaconFieldId, TBeaconFieldMask,
+        false, (FieldAccessMethod)&TexGenChunkBase::getSFTBeacon),
+    new FieldDescription(SFNodePtr::getClassType(), "rBeacon", RBeaconFieldId, RBeaconFieldMask,
+        false, (FieldAccessMethod)&TexGenChunkBase::getSFRBeacon),
+    new FieldDescription(SFNodePtr::getClassType(), "qBeacon", QBeaconFieldId, QBeaconFieldMask,
+        false, (FieldAccessMethod)&TexGenChunkBase::getSFQBeacon)};
 
+FieldContainerType TexGenChunkBase::_type("TexGenChunk", "StateChunk", NULL,
+    (PrototypeCreateF)&TexGenChunkBase::createEmpty, TexGenChunk::initMethod, _desc, sizeof(_desc));
 
-FieldContainerType TexGenChunkBase::_type(
-    "TexGenChunk",
-    "StateChunk",
-    NULL,
-    (PrototypeCreateF) &TexGenChunkBase::createEmpty,
-    TexGenChunk::initMethod,
-    _desc,
-    sizeof(_desc));
-
-//OSG_FIELD_CONTAINER_DEF(TexGenChunkBase, TexGenChunkPtr)
+// OSG_FIELD_CONTAINER_DEF(TexGenChunkBase, TexGenChunkPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &TexGenChunkBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &TexGenChunkBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr TexGenChunkBase::shallowCopy(void) const 
-{ 
-    TexGenChunkPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const TexGenChunk *>(this)); 
-
-    return returnValue; 
+FieldContainerType& TexGenChunkBase::getType(void) {
+  return _type;
 }
 
-UInt32 TexGenChunkBase::getContainerSize(void) const 
-{ 
-    return sizeof(TexGenChunk); 
+const FieldContainerType& TexGenChunkBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr TexGenChunkBase::shallowCopy(void) const {
+  TexGenChunkPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const TexGenChunk*>(this));
+
+  return returnValue;
+}
+
+UInt32 TexGenChunkBase::getContainerSize(void) const {
+  return sizeof(TexGenChunk);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void TexGenChunkBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((TexGenChunkBase *) &other, whichField);
+void TexGenChunkBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((TexGenChunkBase*)&other, whichField);
 }
 #else
-void TexGenChunkBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((TexGenChunkBase *) &other, whichField, sInfo);
+void TexGenChunkBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((TexGenChunkBase*)&other, whichField, sInfo);
 }
-void TexGenChunkBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void TexGenChunkBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void TexGenChunkBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void TexGenChunkBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-TexGenChunkBase::TexGenChunkBase(void) :
-    _sfGenFuncS               (GLenum(GL_NONE)), 
-    _sfGenFuncT               (GLenum(GL_NONE)), 
-    _sfGenFuncR               (GLenum(GL_NONE)), 
-    _sfGenFuncQ               (GLenum(GL_NONE)), 
-    _sfGenFuncSPlane          (Vec4f(1,0,0,0)), 
-    _sfGenFuncTPlane          (Vec4f(0,1,0,0)), 
-    _sfGenFuncRPlane          (Vec4f(0,0,1,0)), 
-    _sfGenFuncQPlane          (Vec4f(0,0,0,1)), 
-    _sfSBeacon                (), 
-    _sfTBeacon                (), 
-    _sfRBeacon                (), 
-    _sfQBeacon                (), 
-    Inherited() 
-{
+TexGenChunkBase::TexGenChunkBase(void)
+    : _sfGenFuncS(GLenum(GL_NONE))
+    , _sfGenFuncT(GLenum(GL_NONE))
+    , _sfGenFuncR(GLenum(GL_NONE))
+    , _sfGenFuncQ(GLenum(GL_NONE))
+    , _sfGenFuncSPlane(Vec4f(1, 0, 0, 0))
+    , _sfGenFuncTPlane(Vec4f(0, 1, 0, 0))
+    , _sfGenFuncRPlane(Vec4f(0, 0, 1, 0))
+    , _sfGenFuncQPlane(Vec4f(0, 0, 0, 1))
+    , _sfSBeacon()
+    , _sfTBeacon()
+    , _sfRBeacon()
+    , _sfQBeacon()
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-TexGenChunkBase::TexGenChunkBase(const TexGenChunkBase &source) :
-    _sfGenFuncS               (source._sfGenFuncS               ), 
-    _sfGenFuncT               (source._sfGenFuncT               ), 
-    _sfGenFuncR               (source._sfGenFuncR               ), 
-    _sfGenFuncQ               (source._sfGenFuncQ               ), 
-    _sfGenFuncSPlane          (source._sfGenFuncSPlane          ), 
-    _sfGenFuncTPlane          (source._sfGenFuncTPlane          ), 
-    _sfGenFuncRPlane          (source._sfGenFuncRPlane          ), 
-    _sfGenFuncQPlane          (source._sfGenFuncQPlane          ), 
-    _sfSBeacon                (source._sfSBeacon                ), 
-    _sfTBeacon                (source._sfTBeacon                ), 
-    _sfRBeacon                (source._sfRBeacon                ), 
-    _sfQBeacon                (source._sfQBeacon                ), 
-    Inherited                 (source)
-{
+TexGenChunkBase::TexGenChunkBase(const TexGenChunkBase& source)
+    : _sfGenFuncS(source._sfGenFuncS)
+    , _sfGenFuncT(source._sfGenFuncT)
+    , _sfGenFuncR(source._sfGenFuncR)
+    , _sfGenFuncQ(source._sfGenFuncQ)
+    , _sfGenFuncSPlane(source._sfGenFuncSPlane)
+    , _sfGenFuncTPlane(source._sfGenFuncTPlane)
+    , _sfGenFuncRPlane(source._sfGenFuncRPlane)
+    , _sfGenFuncQPlane(source._sfGenFuncQPlane)
+    , _sfSBeacon(source._sfSBeacon)
+    , _sfTBeacon(source._sfTBeacon)
+    , _sfRBeacon(source._sfRBeacon)
+    , _sfQBeacon(source._sfQBeacon)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-TexGenChunkBase::~TexGenChunkBase(void)
-{
+TexGenChunkBase::~TexGenChunkBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 TexGenChunkBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 TexGenChunkBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (GenFuncSFieldMask & whichField))
-    {
-        returnValue += _sfGenFuncS.getBinSize();
-    }
+  if (FieldBits::NoField != (GenFuncSFieldMask & whichField)) {
+    returnValue += _sfGenFuncS.getBinSize();
+  }
 
-    if(FieldBits::NoField != (GenFuncTFieldMask & whichField))
-    {
-        returnValue += _sfGenFuncT.getBinSize();
-    }
+  if (FieldBits::NoField != (GenFuncTFieldMask & whichField)) {
+    returnValue += _sfGenFuncT.getBinSize();
+  }
 
-    if(FieldBits::NoField != (GenFuncRFieldMask & whichField))
-    {
-        returnValue += _sfGenFuncR.getBinSize();
-    }
+  if (FieldBits::NoField != (GenFuncRFieldMask & whichField)) {
+    returnValue += _sfGenFuncR.getBinSize();
+  }
 
-    if(FieldBits::NoField != (GenFuncQFieldMask & whichField))
-    {
-        returnValue += _sfGenFuncQ.getBinSize();
-    }
+  if (FieldBits::NoField != (GenFuncQFieldMask & whichField)) {
+    returnValue += _sfGenFuncQ.getBinSize();
+  }
 
-    if(FieldBits::NoField != (GenFuncSPlaneFieldMask & whichField))
-    {
-        returnValue += _sfGenFuncSPlane.getBinSize();
-    }
+  if (FieldBits::NoField != (GenFuncSPlaneFieldMask & whichField)) {
+    returnValue += _sfGenFuncSPlane.getBinSize();
+  }
 
-    if(FieldBits::NoField != (GenFuncTPlaneFieldMask & whichField))
-    {
-        returnValue += _sfGenFuncTPlane.getBinSize();
-    }
+  if (FieldBits::NoField != (GenFuncTPlaneFieldMask & whichField)) {
+    returnValue += _sfGenFuncTPlane.getBinSize();
+  }
 
-    if(FieldBits::NoField != (GenFuncRPlaneFieldMask & whichField))
-    {
-        returnValue += _sfGenFuncRPlane.getBinSize();
-    }
+  if (FieldBits::NoField != (GenFuncRPlaneFieldMask & whichField)) {
+    returnValue += _sfGenFuncRPlane.getBinSize();
+  }
 
-    if(FieldBits::NoField != (GenFuncQPlaneFieldMask & whichField))
-    {
-        returnValue += _sfGenFuncQPlane.getBinSize();
-    }
+  if (FieldBits::NoField != (GenFuncQPlaneFieldMask & whichField)) {
+    returnValue += _sfGenFuncQPlane.getBinSize();
+  }
 
-    if(FieldBits::NoField != (SBeaconFieldMask & whichField))
-    {
-        returnValue += _sfSBeacon.getBinSize();
-    }
+  if (FieldBits::NoField != (SBeaconFieldMask & whichField)) {
+    returnValue += _sfSBeacon.getBinSize();
+  }
 
-    if(FieldBits::NoField != (TBeaconFieldMask & whichField))
-    {
-        returnValue += _sfTBeacon.getBinSize();
-    }
+  if (FieldBits::NoField != (TBeaconFieldMask & whichField)) {
+    returnValue += _sfTBeacon.getBinSize();
+  }
 
-    if(FieldBits::NoField != (RBeaconFieldMask & whichField))
-    {
-        returnValue += _sfRBeacon.getBinSize();
-    }
+  if (FieldBits::NoField != (RBeaconFieldMask & whichField)) {
+    returnValue += _sfRBeacon.getBinSize();
+  }
 
-    if(FieldBits::NoField != (QBeaconFieldMask & whichField))
-    {
-        returnValue += _sfQBeacon.getBinSize();
-    }
+  if (FieldBits::NoField != (QBeaconFieldMask & whichField)) {
+    returnValue += _sfQBeacon.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void TexGenChunkBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void TexGenChunkBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (GenFuncSFieldMask & whichField))
-    {
-        _sfGenFuncS.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (GenFuncSFieldMask & whichField)) {
+    _sfGenFuncS.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GenFuncTFieldMask & whichField))
-    {
-        _sfGenFuncT.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (GenFuncTFieldMask & whichField)) {
+    _sfGenFuncT.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GenFuncRFieldMask & whichField))
-    {
-        _sfGenFuncR.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (GenFuncRFieldMask & whichField)) {
+    _sfGenFuncR.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GenFuncQFieldMask & whichField))
-    {
-        _sfGenFuncQ.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (GenFuncQFieldMask & whichField)) {
+    _sfGenFuncQ.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GenFuncSPlaneFieldMask & whichField))
-    {
-        _sfGenFuncSPlane.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (GenFuncSPlaneFieldMask & whichField)) {
+    _sfGenFuncSPlane.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GenFuncTPlaneFieldMask & whichField))
-    {
-        _sfGenFuncTPlane.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (GenFuncTPlaneFieldMask & whichField)) {
+    _sfGenFuncTPlane.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GenFuncRPlaneFieldMask & whichField))
-    {
-        _sfGenFuncRPlane.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (GenFuncRPlaneFieldMask & whichField)) {
+    _sfGenFuncRPlane.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GenFuncQPlaneFieldMask & whichField))
-    {
-        _sfGenFuncQPlane.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (GenFuncQPlaneFieldMask & whichField)) {
+    _sfGenFuncQPlane.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (SBeaconFieldMask & whichField))
-    {
-        _sfSBeacon.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (SBeaconFieldMask & whichField)) {
+    _sfSBeacon.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (TBeaconFieldMask & whichField))
-    {
-        _sfTBeacon.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (TBeaconFieldMask & whichField)) {
+    _sfTBeacon.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (RBeaconFieldMask & whichField))
-    {
-        _sfRBeacon.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (RBeaconFieldMask & whichField)) {
+    _sfRBeacon.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (QBeaconFieldMask & whichField))
-    {
-        _sfQBeacon.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (QBeaconFieldMask & whichField)) {
+    _sfQBeacon.copyToBin(pMem);
+  }
 }
 
-void TexGenChunkBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void TexGenChunkBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (GenFuncSFieldMask & whichField))
-    {
-        _sfGenFuncS.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (GenFuncSFieldMask & whichField)) {
+    _sfGenFuncS.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GenFuncTFieldMask & whichField))
-    {
-        _sfGenFuncT.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (GenFuncTFieldMask & whichField)) {
+    _sfGenFuncT.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GenFuncRFieldMask & whichField))
-    {
-        _sfGenFuncR.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (GenFuncRFieldMask & whichField)) {
+    _sfGenFuncR.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GenFuncQFieldMask & whichField))
-    {
-        _sfGenFuncQ.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (GenFuncQFieldMask & whichField)) {
+    _sfGenFuncQ.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GenFuncSPlaneFieldMask & whichField))
-    {
-        _sfGenFuncSPlane.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (GenFuncSPlaneFieldMask & whichField)) {
+    _sfGenFuncSPlane.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GenFuncTPlaneFieldMask & whichField))
-    {
-        _sfGenFuncTPlane.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (GenFuncTPlaneFieldMask & whichField)) {
+    _sfGenFuncTPlane.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GenFuncRPlaneFieldMask & whichField))
-    {
-        _sfGenFuncRPlane.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (GenFuncRPlaneFieldMask & whichField)) {
+    _sfGenFuncRPlane.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GenFuncQPlaneFieldMask & whichField))
-    {
-        _sfGenFuncQPlane.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (GenFuncQPlaneFieldMask & whichField)) {
+    _sfGenFuncQPlane.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (SBeaconFieldMask & whichField))
-    {
-        _sfSBeacon.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (SBeaconFieldMask & whichField)) {
+    _sfSBeacon.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (TBeaconFieldMask & whichField))
-    {
-        _sfTBeacon.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (TBeaconFieldMask & whichField)) {
+    _sfTBeacon.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (RBeaconFieldMask & whichField))
-    {
-        _sfRBeacon.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (RBeaconFieldMask & whichField)) {
+    _sfRBeacon.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (QBeaconFieldMask & whichField))
-    {
-        _sfQBeacon.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (QBeaconFieldMask & whichField)) {
+    _sfQBeacon.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void TexGenChunkBase::executeSyncImpl(      TexGenChunkBase *pOther,
-                                        const BitVector         &whichField)
-{
+void TexGenChunkBase::executeSyncImpl(TexGenChunkBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (GenFuncSFieldMask & whichField))
-        _sfGenFuncS.syncWith(pOther->_sfGenFuncS);
+  if (FieldBits::NoField != (GenFuncSFieldMask & whichField))
+    _sfGenFuncS.syncWith(pOther->_sfGenFuncS);
 
-    if(FieldBits::NoField != (GenFuncTFieldMask & whichField))
-        _sfGenFuncT.syncWith(pOther->_sfGenFuncT);
+  if (FieldBits::NoField != (GenFuncTFieldMask & whichField))
+    _sfGenFuncT.syncWith(pOther->_sfGenFuncT);
 
-    if(FieldBits::NoField != (GenFuncRFieldMask & whichField))
-        _sfGenFuncR.syncWith(pOther->_sfGenFuncR);
+  if (FieldBits::NoField != (GenFuncRFieldMask & whichField))
+    _sfGenFuncR.syncWith(pOther->_sfGenFuncR);
 
-    if(FieldBits::NoField != (GenFuncQFieldMask & whichField))
-        _sfGenFuncQ.syncWith(pOther->_sfGenFuncQ);
+  if (FieldBits::NoField != (GenFuncQFieldMask & whichField))
+    _sfGenFuncQ.syncWith(pOther->_sfGenFuncQ);
 
-    if(FieldBits::NoField != (GenFuncSPlaneFieldMask & whichField))
-        _sfGenFuncSPlane.syncWith(pOther->_sfGenFuncSPlane);
+  if (FieldBits::NoField != (GenFuncSPlaneFieldMask & whichField))
+    _sfGenFuncSPlane.syncWith(pOther->_sfGenFuncSPlane);
 
-    if(FieldBits::NoField != (GenFuncTPlaneFieldMask & whichField))
-        _sfGenFuncTPlane.syncWith(pOther->_sfGenFuncTPlane);
+  if (FieldBits::NoField != (GenFuncTPlaneFieldMask & whichField))
+    _sfGenFuncTPlane.syncWith(pOther->_sfGenFuncTPlane);
 
-    if(FieldBits::NoField != (GenFuncRPlaneFieldMask & whichField))
-        _sfGenFuncRPlane.syncWith(pOther->_sfGenFuncRPlane);
+  if (FieldBits::NoField != (GenFuncRPlaneFieldMask & whichField))
+    _sfGenFuncRPlane.syncWith(pOther->_sfGenFuncRPlane);
 
-    if(FieldBits::NoField != (GenFuncQPlaneFieldMask & whichField))
-        _sfGenFuncQPlane.syncWith(pOther->_sfGenFuncQPlane);
+  if (FieldBits::NoField != (GenFuncQPlaneFieldMask & whichField))
+    _sfGenFuncQPlane.syncWith(pOther->_sfGenFuncQPlane);
 
-    if(FieldBits::NoField != (SBeaconFieldMask & whichField))
-        _sfSBeacon.syncWith(pOther->_sfSBeacon);
+  if (FieldBits::NoField != (SBeaconFieldMask & whichField))
+    _sfSBeacon.syncWith(pOther->_sfSBeacon);
 
-    if(FieldBits::NoField != (TBeaconFieldMask & whichField))
-        _sfTBeacon.syncWith(pOther->_sfTBeacon);
+  if (FieldBits::NoField != (TBeaconFieldMask & whichField))
+    _sfTBeacon.syncWith(pOther->_sfTBeacon);
 
-    if(FieldBits::NoField != (RBeaconFieldMask & whichField))
-        _sfRBeacon.syncWith(pOther->_sfRBeacon);
+  if (FieldBits::NoField != (RBeaconFieldMask & whichField))
+    _sfRBeacon.syncWith(pOther->_sfRBeacon);
 
-    if(FieldBits::NoField != (QBeaconFieldMask & whichField))
-        _sfQBeacon.syncWith(pOther->_sfQBeacon);
-
-
+  if (FieldBits::NoField != (QBeaconFieldMask & whichField))
+    _sfQBeacon.syncWith(pOther->_sfQBeacon);
 }
 #else
-void TexGenChunkBase::executeSyncImpl(      TexGenChunkBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void TexGenChunkBase::executeSyncImpl(
+    TexGenChunkBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (GenFuncSFieldMask & whichField))
-        _sfGenFuncS.syncWith(pOther->_sfGenFuncS);
+  if (FieldBits::NoField != (GenFuncSFieldMask & whichField))
+    _sfGenFuncS.syncWith(pOther->_sfGenFuncS);
 
-    if(FieldBits::NoField != (GenFuncTFieldMask & whichField))
-        _sfGenFuncT.syncWith(pOther->_sfGenFuncT);
+  if (FieldBits::NoField != (GenFuncTFieldMask & whichField))
+    _sfGenFuncT.syncWith(pOther->_sfGenFuncT);
 
-    if(FieldBits::NoField != (GenFuncRFieldMask & whichField))
-        _sfGenFuncR.syncWith(pOther->_sfGenFuncR);
+  if (FieldBits::NoField != (GenFuncRFieldMask & whichField))
+    _sfGenFuncR.syncWith(pOther->_sfGenFuncR);
 
-    if(FieldBits::NoField != (GenFuncQFieldMask & whichField))
-        _sfGenFuncQ.syncWith(pOther->_sfGenFuncQ);
+  if (FieldBits::NoField != (GenFuncQFieldMask & whichField))
+    _sfGenFuncQ.syncWith(pOther->_sfGenFuncQ);
 
-    if(FieldBits::NoField != (GenFuncSPlaneFieldMask & whichField))
-        _sfGenFuncSPlane.syncWith(pOther->_sfGenFuncSPlane);
+  if (FieldBits::NoField != (GenFuncSPlaneFieldMask & whichField))
+    _sfGenFuncSPlane.syncWith(pOther->_sfGenFuncSPlane);
 
-    if(FieldBits::NoField != (GenFuncTPlaneFieldMask & whichField))
-        _sfGenFuncTPlane.syncWith(pOther->_sfGenFuncTPlane);
+  if (FieldBits::NoField != (GenFuncTPlaneFieldMask & whichField))
+    _sfGenFuncTPlane.syncWith(pOther->_sfGenFuncTPlane);
 
-    if(FieldBits::NoField != (GenFuncRPlaneFieldMask & whichField))
-        _sfGenFuncRPlane.syncWith(pOther->_sfGenFuncRPlane);
+  if (FieldBits::NoField != (GenFuncRPlaneFieldMask & whichField))
+    _sfGenFuncRPlane.syncWith(pOther->_sfGenFuncRPlane);
 
-    if(FieldBits::NoField != (GenFuncQPlaneFieldMask & whichField))
-        _sfGenFuncQPlane.syncWith(pOther->_sfGenFuncQPlane);
+  if (FieldBits::NoField != (GenFuncQPlaneFieldMask & whichField))
+    _sfGenFuncQPlane.syncWith(pOther->_sfGenFuncQPlane);
 
-    if(FieldBits::NoField != (SBeaconFieldMask & whichField))
-        _sfSBeacon.syncWith(pOther->_sfSBeacon);
+  if (FieldBits::NoField != (SBeaconFieldMask & whichField))
+    _sfSBeacon.syncWith(pOther->_sfSBeacon);
 
-    if(FieldBits::NoField != (TBeaconFieldMask & whichField))
-        _sfTBeacon.syncWith(pOther->_sfTBeacon);
+  if (FieldBits::NoField != (TBeaconFieldMask & whichField))
+    _sfTBeacon.syncWith(pOther->_sfTBeacon);
 
-    if(FieldBits::NoField != (RBeaconFieldMask & whichField))
-        _sfRBeacon.syncWith(pOther->_sfRBeacon);
+  if (FieldBits::NoField != (RBeaconFieldMask & whichField))
+    _sfRBeacon.syncWith(pOther->_sfRBeacon);
 
-    if(FieldBits::NoField != (QBeaconFieldMask & whichField))
-        _sfQBeacon.syncWith(pOther->_sfQBeacon);
-
-
-
+  if (FieldBits::NoField != (QBeaconFieldMask & whichField))
+    _sfQBeacon.syncWith(pOther->_sfQBeacon);
 }
 
-void TexGenChunkBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void TexGenChunkBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>

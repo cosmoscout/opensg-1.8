@@ -38,8 +38,8 @@
 
 #ifndef OSGTIFIMAGEFILETYPE_CLASS_DECLARATION
 #define OSGTIFIMAGEFILETYPE_CLASS_DECLARATION
-#ifdef  __sgi
-#pragma  once
+#ifdef __sgi
+#pragma once
 #endif
 
 #include <OSGSystemDef.h>
@@ -53,72 +53,66 @@ OSG_BEGIN_NAMESPACE
 See \ref PageSystemImage for a detailed description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING TIFImageFileType : public ImageFileType
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING TIFImageFileType : public ImageFileType {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  virtual ~TIFImageFileType(void);
 
-    virtual ~TIFImageFileType (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Get Method                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Get Method                                  */
-    /*! \{                                                                 */
+  static TIFImageFileType& the(void);
 
-    static TIFImageFileType & the (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Read/Write                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Read/Write                                 */
-    /*! \{                                                                 */
+  virtual bool validateHeader(const Char8* fileName, bool& implemented);
 
-    virtual bool validateHeader( const Char8 *fileName, bool &implemented);
+  virtual bool read(ImagePtr& image, std::istream& is, const std::string& mimetype);
 
-    virtual bool read (ImagePtr &image, std::istream &is, const std::string &mimetype);
+  virtual bool write(const ImagePtr& image, std::ostream& os, const std::string& mimetype);
 
-    virtual bool write (const ImagePtr &image, std::ostream &os, const std::string &mimetype);
+  virtual std::string determineMimetypeFromStream(std::istream& is);
 
-    virtual std::string determineMimetypeFromStream(std::istream &is);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name               Default Constructor                            */
+  /*! \{                                                                 */
 
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  TIFImageFileType(
+      const Char8* mimeType, const Char8* suffixArray[], UInt16 suffixByteCount, UInt32 flags);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name               Default Constructor                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    TIFImageFileType (const Char8 *mimeType,
-                      const Char8 *suffixArray[], UInt16 suffixByteCount,
-                      UInt32 flags );
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /*---------------------------------------------------------------------*/
+  /*! \name                Copy Constructor                              */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  TIFImageFileType(const TIFImageFileType& obj);
 
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                Copy Operator                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                Copy Constructor                              */
-    /*! \{                                                                 */
+  const TIFImageFileType& operator=(const TIFImageFileType& obj);
 
-    TIFImageFileType (const TIFImageFileType &obj);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                Copy Operator                                 */
-    /*! \{                                                                 */
-
-    const TIFImageFileType & operator= (const TIFImageFileType &obj);
-
-    /*! \}                                                                 */
-
-    static TIFImageFileType _the;
-
+  static TIFImageFileType _the;
 };
 
 typedef TIFImageFileType* TIFImageFileTypeP;

@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGSTRINGATTRIBUTEMAPBASE_H_
 #define _OSGSTRINGATTRIBUTEMAPBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -79,188 +77,167 @@ class BinaryDataHandler;
 
 //! \brief StringAttributeMap Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING StringAttributeMapBase : public Attachment
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING StringAttributeMapBase : public Attachment {
+ private:
+  typedef Attachment Inherited;
 
-    typedef Attachment    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef StringAttributeMapPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    KeysFieldId   = Inherited::NextFieldId,
+    ValuesFieldId = KeysFieldId + 1,
+    NextFieldId   = ValuesFieldId + 1
+  };
 
-    typedef StringAttributeMapPtr  Ptr;
+  static const OSG::BitVector KeysFieldMask;
+  static const OSG::BitVector ValuesFieldMask;
 
-    enum
-    {
-        KeysFieldId   = Inherited::NextFieldId,
-        ValuesFieldId = KeysFieldId   + 1,
-        NextFieldId   = ValuesFieldId + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector KeysFieldMask;
-    static const OSG::BitVector ValuesFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-    virtual       UInt32              getContainerSize(void) const;
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static StringAttributeMapPtr create(void);
+  static StringAttributeMapPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  StringAttributeMapPtr      create          (void); 
-    static  StringAttributeMapPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  MFString _mfKeys;
+  MFString _mfValues;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  StringAttributeMapBase(void);
+  StringAttributeMapBase(const StringAttributeMapBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~StringAttributeMapBase(void);
 
-    MFString            _mfKeys;
-    MFString            _mfValues;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  MFString* getMFKeys(void);
+  MFString* getMFValues(void);
 
-    StringAttributeMapBase(void);
-    StringAttributeMapBase(const StringAttributeMapBase &source);
+  std::string&    getKeys(UInt32 index);
+  MFString&       getKeys(void);
+  const MFString& getKeys(void) const;
+  std::string&    getValues(UInt32 index);
+  MFString&       getValues(void);
+  const MFString& getValues(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-    virtual ~StringAttributeMapBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
-
-           MFString            *getMFKeys           (void);
-           MFString            *getMFValues         (void);
-
-           std::string         &getKeys           (UInt32 index);
-           MFString            &getKeys           (void);
-     const MFString            &getKeys           (void) const;
-           std::string         &getValues         (UInt32 index);
-           MFString            &getValues         (void);
-     const MFString            &getValues         (void) const;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
-
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      StringAttributeMapBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(StringAttributeMapBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      StringAttributeMapBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      StringAttributeMapBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const StringAttributeMapBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const StringAttributeMapBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef StringAttributeMapBase* StringAttributeMapBaseP;
 
-typedef StringAttributeMapBase *StringAttributeMapBaseP;
-
-typedef osgIF<StringAttributeMapBase::isNodeCore,
-              CoredNodePtr<StringAttributeMap>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet StringAttributeMapNodePtr;
+typedef osgIF<StringAttributeMapBase::isNodeCore, CoredNodePtr<StringAttributeMap>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet
+    StringAttributeMapNodePtr;
 
 typedef RefPtr<StringAttributeMapPtr> StringAttributeMapRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGSTRINGATTRIBUTEMAPBASE_HEADER_CVSID "@(#)$Id: OSGStringAttributeMapBase.h,v 1.2 2006/02/20 16:54:57 dirk Exp $"
+#define OSGSTRINGATTRIBUTEMAPBASE_HEADER_CVSID                                                     \
+  "@(#)$Id: OSGStringAttributeMapBase.h,v 1.2 2006/02/20 16:54:57 dirk Exp $"
 
 #endif /* _OSGSTRINGATTRIBUTEMAPBASE_H_ */

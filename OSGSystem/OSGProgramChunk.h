@@ -50,180 +50,167 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief Abstract State chunk to wrap programmable functions. See \ref 
+/*! \brief Abstract State chunk to wrap programmable functions. See \ref
     PageSystemProgramChunk for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING ProgramChunk : public ProgramChunkBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING ProgramChunk : public ProgramChunkBase {
+ private:
+  typedef ProgramChunkBase Inherited;
 
-    typedef ProgramChunkBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                 Chunk Class Access                           */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual const StateChunkClass* getClass(void) const;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                 Chunk Class Access                           */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name              Static Chunk Class Access                       */
+  /*! \{                                                                 */
 
-           virtual const StateChunkClass * getClass         (void) const;
+  inline static UInt32                 getStaticClassId(void);
+  inline static const StateChunkClass* getStaticClass(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name              Static Chunk Class Access                       */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    inline static        UInt32            getStaticClassId (void);
-    inline static  const StateChunkClass * getStaticClass   (void);
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                 ProgamChunk Commands                            */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  bool read(const char* file);
+  bool read(std::istream& stream);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                 ProgamChunk Commands                            */
-    /*! \{                                                                 */
+  bool        addParameter(const char* name, Int16 index);
+  inline bool addParameter(const char* name, Int16 index, const Vec4f& value);
 
-                 bool    read        (const char   *file);
-                 bool    read        (std::istream &stream);
-    
-                 bool    addParameter(const char   *name, 
-                                            Int16   index);                                     
-    inline       bool    addParameter(const char   *name, 
-                                            Int16   index, 
-                                      const Vec4f  &value);
-    
-           const Vec4f  &getParameter(      Int16        index);
-    inline const Vec4f  &getParameter(const char        *name );
-    inline const Vec4f  &getParameter(const std::string &name );
+  const Vec4f&        getParameter(Int16 index);
+  inline const Vec4f& getParameter(const char* name);
+  inline const Vec4f& getParameter(const std::string& name);
 
-                 bool    setParameter(      Int16  index, const Vec4f& value);
-    inline       bool    setParameter(const char  *name,  const Vec4f& value);
-    inline       bool    setParameter(const std::string &name, 
-                                      const Vec4f       & value);
-    
+  bool        setParameter(Int16 index, const Vec4f& value);
+  inline bool setParameter(const char* name, const Vec4f& value);
+  inline bool setParameter(const std::string& name, const Vec4f& value);
 
-    inline       Int16   findParameter(const char        *name);
-                 Int16   findParameter(const std::string &name);
- 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    State Commands                            */
-    /*! \{                                                                 */
+  inline Int16 findParameter(const char* name);
+  Int16        findParameter(const std::string& name);
 
-    virtual void activate      ( DrawActionBase * action, UInt32 index = 0 );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    State Commands                            */
+  /*! \{                                                                 */
 
-    virtual void changeFrom    ( DrawActionBase * action, StateChunk * old,
-                                 UInt32 index = 0 );
+  virtual void activate(DrawActionBase* action, UInt32 index = 0);
 
-    virtual void deactivate    ( DrawActionBase * action, UInt32 index = 0 );
+  virtual void changeFrom(DrawActionBase* action, StateChunk* old, UInt32 index = 0);
 
-    virtual bool isTransparent ( void ) const;
+  virtual void deactivate(DrawActionBase* action, UInt32 index = 0);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Comparison                                 */
-    /*! \{                                                                 */
+  virtual bool isTransparent(void) const;
 
-    virtual Real32 switchCost  ( StateChunk * chunk );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Comparison                                 */
+  /*! \{                                                                 */
 
-    virtual bool   operator <  (const StateChunk &other) const;
+  virtual Real32 switchCost(StateChunk* chunk);
 
-    virtual bool   operator == (const StateChunk &other) const;
-    virtual bool   operator != (const StateChunk &other) const;
+  virtual bool operator<(const StateChunk& other) const;
 
-    /*! \}                                                                 */
+  virtual bool operator==(const StateChunk& other) const;
+  virtual bool operator!=(const StateChunk& other) const;
 
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
 
-    // Variables should all be in ProgramChunkBase.
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in ProgramChunkBase.
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Init                                   */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Init                                   */
+  /*! \{                                                                 */
 
-    void onCreate(const ProgramChunk *source = NULL);
+  void onCreate(const ProgramChunk* source = NULL);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    ProgramChunk(void);
-    ProgramChunk(const ProgramChunk &source);
+  ProgramChunk(void);
+  ProgramChunk(const ProgramChunk& source);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    virtual ~ProgramChunk(void); 
+  virtual ~ProgramChunk(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name             Program-Specific Methods                         */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name             Program-Specific Methods                         */
+  /*! \{                                                                 */
 
-    virtual       UInt32  getExtension(void)  const; 
-    virtual       GLenum  getTarget(void)     const; 
-    virtual const char   *getTargetName(void) const; 
+  virtual UInt32      getExtension(void) const;
+  virtual GLenum      getTarget(void) const;
+  virtual const char* getTargetName(void) const;
 
-                  void    printCompileError(Window *win, UInt32 idstatus);
+  void printCompileError(Window* win, UInt32 idstatus);
 
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                         GL                                   */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                         GL                                   */
+  /*! \{                                                                 */
 
-    void handleGL(Window *win, UInt32 id, GLenum target, UInt32 extension);
-    
-   /*! \}                                                                 */
+  void handleGL(Window* win, UInt32 id, GLenum target, UInt32 extension);
 
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
 
-    friend class FieldContainer;
-    friend class ProgramChunkBase;
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class ProgramChunkBase;
 
-    static StateChunkClass _class;
+  static StateChunkClass _class;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name            OpenGL Extension Handling                         */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name            OpenGL Extension Handling                         */
+  /*! \{                                                                 */
 
-    static UInt32 _funcGenPrograms;
-    static UInt32 _funcProgramString;
-    static UInt32 _funcBindProgram;
-    static UInt32 _funcDeletePrograms;
-    static UInt32 _funcProgramLocalParameter4fv;
-    static UInt32 _funcGetProgramiv;
+  static UInt32 _funcGenPrograms;
+  static UInt32 _funcProgramString;
+  static UInt32 _funcBindProgram;
+  static UInt32 _funcDeletePrograms;
+  static UInt32 _funcProgramLocalParameter4fv;
+  static UInt32 _funcGetProgramiv;
 
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 
-    static void initMethod(void);
+  static void initMethod(void);
 
-    // prohibit default functions (move to 'public' if you need one)
+  // prohibit default functions (move to 'public' if you need one)
 
-    void operator =(const ProgramChunk &source);
+  void operator=(const ProgramChunk& source);
 };
 
-typedef ProgramChunk *ProgramChunkP;
+typedef ProgramChunk* ProgramChunkP;
 
 OSG_END_NAMESPACE
 

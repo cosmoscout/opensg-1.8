@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGDVRISOSHADERBASE_H_
 #define _OSGDVRISOSHADERBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -79,188 +77,167 @@ class BinaryDataHandler;
 
 //! \brief DVRIsoShader Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING DVRIsoShaderBase : public DVRShader
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING DVRIsoShaderBase : public DVRShader {
+ private:
+  typedef DVRShader Inherited;
 
-    typedef DVRShader    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef DVRIsoShaderPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    ShadeModeFieldId       = Inherited::NextFieldId,
+    ActiveShadeModeFieldId = ShadeModeFieldId + 1,
+    NextFieldId            = ActiveShadeModeFieldId + 1
+  };
 
-    typedef DVRIsoShaderPtr  Ptr;
+  static const OSG::BitVector ShadeModeFieldMask;
+  static const OSG::BitVector ActiveShadeModeFieldMask;
 
-    enum
-    {
-        ShadeModeFieldId       = Inherited::NextFieldId,
-        ActiveShadeModeFieldId = ShadeModeFieldId       + 1,
-        NextFieldId            = ActiveShadeModeFieldId + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector ShadeModeFieldMask;
-    static const OSG::BitVector ActiveShadeModeFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-    virtual       UInt32              getContainerSize(void) const;
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static DVRIsoShaderPtr create(void);
+  static DVRIsoShaderPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  DVRIsoShaderPtr      create          (void); 
-    static  DVRIsoShaderPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFInt8 _sfShadeMode;
+  SFInt8 _sfActiveShadeMode;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  DVRIsoShaderBase(void);
+  DVRIsoShaderBase(const DVRIsoShaderBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~DVRIsoShaderBase(void);
 
-    SFInt8              _sfShadeMode;
-    SFInt8              _sfActiveShadeMode;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  SFInt8* getSFShadeMode(void);
+  SFInt8* getSFActiveShadeMode(void);
 
-    DVRIsoShaderBase(void);
-    DVRIsoShaderBase(const DVRIsoShaderBase &source);
+  Int8&       getShadeMode(void);
+  const Int8& getShadeMode(void) const;
+  Int8&       getActiveShadeMode(void);
+  const Int8& getActiveShadeMode(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-    virtual ~DVRIsoShaderBase(void); 
+  void setShadeMode(const Int8& value);
+  void setActiveShadeMode(const Int8& value);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
-
-           SFInt8              *getSFShadeMode      (void);
-           SFInt8              *getSFActiveShadeMode(void);
-
-           Int8                &getShadeMode      (void);
-     const Int8                &getShadeMode      (void) const;
-           Int8                &getActiveShadeMode(void);
-     const Int8                &getActiveShadeMode(void) const;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
-
-     void setShadeMode      (const Int8 &value);
-     void setActiveShadeMode(const Int8 &value);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      DVRIsoShaderBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(DVRIsoShaderBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      DVRIsoShaderBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      DVRIsoShaderBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const DVRIsoShaderBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const DVRIsoShaderBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef DVRIsoShaderBase* DVRIsoShaderBaseP;
 
-typedef DVRIsoShaderBase *DVRIsoShaderBaseP;
-
-typedef osgIF<DVRIsoShaderBase::isNodeCore,
-              CoredNodePtr<DVRIsoShader>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet DVRIsoShaderNodePtr;
+typedef osgIF<DVRIsoShaderBase::isNodeCore, CoredNodePtr<DVRIsoShader>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet DVRIsoShaderNodePtr;
 
 typedef RefPtr<DVRIsoShaderPtr> DVRIsoShaderRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGDVRISOSHADERBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGDVRISOSHADERBASE_HEADER_CVSID                                                           \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGDVRISOSHADERBASE_H_ */

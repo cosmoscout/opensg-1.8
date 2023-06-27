@@ -47,17 +47,12 @@
 
 OSG_BEGIN_NAMESPACE
 
-template <class InTypeT> inline
-AttachmentContainerPtr AttachmentContainerPtr::dcast(const InTypeT oIn)
-{
-    return AttachmentContainerPtr(
-        (dynamic_cast<const AttachmentContainer *>(oIn.getCPtr())),
-        oIn.getContainerSize(),
-        oIn.getParentFieldPos());
+template <class InTypeT>
+inline AttachmentContainerPtr AttachmentContainerPtr::dcast(const InTypeT oIn) {
+  return AttachmentContainerPtr((dynamic_cast<const AttachmentContainer*>(oIn.getCPtr())),
+      oIn.getContainerSize(), oIn.getParentFieldPos());
 }
-
 
 OSG_END_NAMESPACE
 
 #endif /* _OSGATTACHMENTCONTAINERPTRDEPIMPL_INL_ */
-

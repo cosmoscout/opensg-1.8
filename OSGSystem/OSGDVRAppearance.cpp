@@ -49,51 +49,40 @@
 
 OSG_USING_NAMESPACE
 
-
 /*! \class osg::DVRAppearance
     Appearance used for the OpenSG direct volume rendering module. It
     represents the volume data to be rendered as long as some other visual
-    parameters like transfer function or normal for shading. 
+    parameters like transfer function or normal for shading.
  */
 
 /*----------------------- constructors & destructors ----------------------*/
 
 //! Constructor
-DVRAppearance::DVRAppearance(void) :
-    Inherited()
-{
+DVRAppearance::DVRAppearance(void)
+    : Inherited() {
 }
 
 //! Copy Constructor
-DVRAppearance::DVRAppearance(const DVRAppearance &source) :
-    Inherited(source)
-{
+DVRAppearance::DVRAppearance(const DVRAppearance& source)
+    : Inherited(source) {
 }
 
 //! Destructor
-DVRAppearance::~DVRAppearance(void)
-{
+DVRAppearance::~DVRAppearance(void) {
 }
 
 /*----------------------------- class specific ----------------------------*/
 
 //! initialize the static features of the class, e.g. action callbacks
-void DVRAppearance::initMethod (void)
-{
+void DVRAppearance::initMethod(void) {
 }
 
 //! react to field changes
-void DVRAppearance::changed(BitVector whichField, UInt32 origin)
-{ 
-    Inherited::changed(whichField, origin);
+void DVRAppearance::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
 //! output the instance for debug purposes
-void DVRAppearance::dump(      UInt32    , 
-                         const BitVector ) const
-{
-    SLOG << "Dump DVRAppearance NI" << std::endl;
+void DVRAppearance::dump(UInt32, const BitVector) const {
+  SLOG << "Dump DVRAppearance NI" << std::endl;
 }
-
-
-

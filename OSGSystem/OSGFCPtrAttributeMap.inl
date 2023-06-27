@@ -47,9 +47,8 @@ OSG_BEGIN_NAMESPACE
     this attribute map.
  */
 
-inline const MFString& FCPtrAttributeMap::getKeys() const
-{
-    return FCPtrAttributeMapBase::getKeys();
+inline const MFString& FCPtrAttributeMap::getKeys() const {
+  return FCPtrAttributeMapBase::getKeys();
 }
 
 /*! Queries this attribute map attachment to determine if it includes the
@@ -57,9 +56,8 @@ inline const MFString& FCPtrAttributeMap::getKeys() const
     returned.
  */
 
-inline bool FCPtrAttributeMap::hasAttribute(const std::string& key) const
-{
-    return getKeys().find(key) != getKeys().end();
+inline bool FCPtrAttributeMap::hasAttribute(const std::string& key) const {
+  return getKeys().find(key) != getKeys().end();
 }
 
 /*! Attempts to look up the value associated with the named key in this
@@ -67,13 +65,11 @@ inline bool FCPtrAttributeMap::hasAttribute(const std::string& key) const
     empty string is returned. Otherwise, a copy of the value associated
     with the named key is returned.
  */
- 
-inline FieldContainerPtr FCPtrAttributeMap::getAttribute(const std::string& key)
-    const
-{
-    FieldContainerPtr value;
-    getAttribute(key, value);
-    return value;
+
+inline FieldContainerPtr FCPtrAttributeMap::getAttribute(const std::string& key) const {
+  FieldContainerPtr value;
+  getAttribute(key, value);
+  return value;
 }
 
 /*! Provides index access to this attribute map following the semantics of
@@ -97,29 +93,26 @@ inline FieldContainerPtr FCPtrAttributeMap::getAttribute(const std::string& key)
     @see getAttribute()
  */
 
-inline FieldContainerPtr& FCPtrAttributeMap::operator[](const std::string& key)
-{
-    MFString& keys = this->FCPtrAttributeMapBase::getKeys();
-    MFFieldContainerPtr& values = this->FCPtrAttributeMapBase::getValues();
+inline FieldContainerPtr& FCPtrAttributeMap::operator[](const std::string& key) {
+  MFString&            keys   = this->FCPtrAttributeMapBase::getKeys();
+  MFFieldContainerPtr& values = this->FCPtrAttributeMapBase::getValues();
 
-    unsigned int index(0);
-    MFString::iterator i;
-    for ( i = keys.begin(); i != keys.end(); ++i, ++index )
-    {
-        if ( *i == key )
-        {
-            return values[index];
-        }
+  unsigned int       index(0);
+  MFString::iterator i;
+  for (i = keys.begin(); i != keys.end(); ++i, ++index) {
+    if (*i == key) {
+      return values[index];
     }
+  }
 
-    keys.push_back(key);
-    values.push_back(NullFC);
+  keys.push_back(key);
+  values.push_back(NullFC);
 
-    // The value we want to return is at the end of _mfValues.
-    return values[values.size() - 1];
+  // The value we want to return is at the end of _mfValues.
+  return values[values.size() - 1];
 }
 
 OSG_END_NAMESPACE
 
-#define OSGFCPTRATTRIBUTEMAP_INLINE_CVSID "@(#)$Id: OSGFCPtrAttributeMap.inl,v 1.2 2005/09/28 03:01:44 vossg Exp $"
-
+#define OSGFCPTRATTRIBUTEMAP_INLINE_CVSID                                                          \
+  "@(#)$Id: OSGFCPtrAttributeMap.inl,v 1.2 2005/09/28 03:01:44 vossg Exp $"

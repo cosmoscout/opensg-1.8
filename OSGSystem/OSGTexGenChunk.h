@@ -49,110 +49,103 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief State chunk for texture coordinate generation. See \ref 
+/*! \brief State chunk for texture coordinate generation. See \ref
     PageSystemTexGenChunk for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING TexGenChunk : public TexGenChunkBase
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING TexGenChunk : public TexGenChunkBase {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                 Chunk Class Access                           */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                 Chunk Class Access                           */
-    /*! \{                                                                 */
+  virtual const StateChunkClass* getClass(void) const;
 
-           virtual const StateChunkClass * getClass         (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name              Static Chunk Class Access                       */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name              Static Chunk Class Access                       */
-    /*! \{                                                                 */
+  inline static UInt32                 getStaticClassId(void);
+  inline static const StateChunkClass* getStaticClass(void);
 
-    inline static        UInt32            getStaticClassId (void);
-    inline static  const StateChunkClass * getStaticClass   (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  virtual void changed(BitVector whichField, UInt32 from);
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32 from);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       State                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       State                                  */
-    /*! \{                                                                 */
+  virtual void activate(DrawActionBase* action, UInt32 index = 0);
 
-    virtual void activate   (DrawActionBase * action, UInt32 index = 0);
+  virtual void changeFrom(DrawActionBase* action, StateChunk* old, UInt32 index = 0);
 
-    virtual void changeFrom (DrawActionBase * action, StateChunk * old,
-                             UInt32 index = 0);
+  virtual void deactivate(DrawActionBase* action, UInt32 index = 0);
 
-    virtual void deactivate (DrawActionBase * action, UInt32 index = 0);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Comparison                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Comparison                                 */
-    /*! \{                                                                 */
+  virtual Real32 switchCost(StateChunk* chunk);
 
-    virtual Real32 switchCost  (StateChunk * chunk);
+  virtual bool operator<(const StateChunk& other) const;
 
-    virtual bool   operator <  (const StateChunk &other) const;
+  virtual bool operator==(const StateChunk& other) const;
+  virtual bool operator!=(const StateChunk& other) const;
 
-    virtual bool   operator == (const StateChunk &other) const;
-    virtual bool   operator != (const StateChunk &other) const;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in TexGenChunkBase.
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    // Variables should all be in TexGenChunkBase.
+  TexGenChunk(void);
+  TexGenChunk(const TexGenChunk& source);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    TexGenChunk(void);
-    TexGenChunk(const TexGenChunk &source);
+  virtual ~TexGenChunk(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    virtual ~TexGenChunk(void); 
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class TexGenChunkBase;
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  typedef TexGenChunkBase Inherited;
 
-    friend class FieldContainer;
-    friend class TexGenChunkBase;
+  // class. Used for indexing in State
+  static StateChunkClass _class;
 
-    typedef TexGenChunkBase Inherited;
+  static void initMethod(void);
 
-    // class. Used for indexing in State
-    static StateChunkClass _class;
+  // prohibit default functions (move to 'public' if you need one)
 
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const TexGenChunk &source);
+  void operator=(const TexGenChunk& source);
 };
 
-typedef TexGenChunk *TexGenChunkP;
+typedef TexGenChunk* TexGenChunkP;
 
 OSG_END_NAMESPACE
 

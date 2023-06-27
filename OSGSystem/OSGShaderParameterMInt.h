@@ -48,76 +48,70 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief ShaderParameterMInt class. See \ref 
+/*! \brief ShaderParameterMInt class. See \ref
            PageSystemShaderParameterMInt for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING ShaderParameterMInt : public ShaderParameterMIntBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING ShaderParameterMInt : public ShaderParameterMIntBase {
+ private:
+  typedef ShaderParameterMIntBase Inherited;
 
-    typedef ShaderParameterMIntBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in ShaderParameterMIntBase.
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  ShaderParameterMInt(void);
+  ShaderParameterMInt(const ShaderParameterMInt& source);
 
-    // Variables should all be in ShaderParameterMIntBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~ShaderParameterMInt(void);
 
-    ShaderParameterMInt(void);
-    ShaderParameterMInt(const ShaderParameterMInt &source);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class ShaderParameterMIntBase;
 
-    virtual ~ShaderParameterMInt(void); 
+  static void initMethod(void);
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  // prohibit default functions (move to 'public' if you need one)
 
-    friend class FieldContainer;
-    friend class ShaderParameterMIntBase;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const ShaderParameterMInt &source);
+  void operator=(const ShaderParameterMInt& source);
 };
 
-typedef ShaderParameterMInt *ShaderParameterMIntP;
+typedef ShaderParameterMInt* ShaderParameterMIntP;
 
 OSG_END_NAMESPACE
 
 #include <OSGShaderParameterMIntBase.inl>
 #include <OSGShaderParameterMInt.inl>
 
-#define OSGSHADERPARAMETERMINT_HEADER_CVSID "@(#)$Id: OSGShaderParameterMInt.h,v 1.1 2007/03/09 18:11:48 a-m-z Exp $"
+#define OSGSHADERPARAMETERMINT_HEADER_CVSID                                                        \
+  "@(#)$Id: OSGShaderParameterMInt.h,v 1.1 2007/03/09 18:11:48 a-m-z Exp $"
 
 #endif /* _OSGSHADERPARAMETERMINT_H_ */

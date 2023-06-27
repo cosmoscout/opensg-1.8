@@ -40,5 +40,3 @@
 /* field type header. */
 
 #include "OSGGeoPropFields.h"
-
-

@@ -52,88 +52,81 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief ColorDisplayFilter class. See \ref 
+/*! \brief ColorDisplayFilter class. See \ref
            PageSystemColorDisplayFilter for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING ColorDisplayFilter : public ColorDisplayFilterBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING ColorDisplayFilter : public ColorDisplayFilterBase {
+ private:
+  typedef ColorDisplayFilterBase Inherited;
 
-    typedef ColorDisplayFilterBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in ColorDisplayFilterBase.
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  ColorDisplayFilter(void);
+  ColorDisplayFilter(const ColorDisplayFilter& source);
 
-    // Variables should all be in ColorDisplayFilterBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~ColorDisplayFilter(void);
 
-    ColorDisplayFilter(void);
-    ColorDisplayFilter(const ColorDisplayFilter &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   filter handling                            */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  virtual void createFilter(DisplayFilterForeground* fg, Viewport* port);
+  void         updateFilterValues();
 
-    virtual ~ColorDisplayFilter(void); 
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   filter handling                            */
-    /*! \{                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  ImagePtr    _shadingImage;
+  SHLChunkPtr _shlChunk;
 
-    virtual void createFilter          (DisplayFilterForeground *fg,
-                                        Viewport *port);
-    void updateFilterValues();
-    
-    /*! \}                                                                 */
+  friend class FieldContainer;
+  friend class ColorDisplayFilterBase;
 
-    /*==========================  PRIVATE  ================================*/
-  private:
+  static void initMethod(void);
 
-    ImagePtr    _shadingImage;
-    SHLChunkPtr _shlChunk;
+  // prohibit default functions (move to 'public' if you need one)
 
-    friend class FieldContainer;
-    friend class ColorDisplayFilterBase;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const ColorDisplayFilter &source);
+  void operator=(const ColorDisplayFilter& source);
 };
 
-typedef ColorDisplayFilter *ColorDisplayFilterP;
+typedef ColorDisplayFilter* ColorDisplayFilterP;
 
 OSG_END_NAMESPACE
 
 #include "OSGColorDisplayFilterBase.inl"
 #include "OSGColorDisplayFilter.inl"
 
-#define OSGCOLORDISPLAYFILTER_HEADER_CVSID "@(#)$Id: FCTemplate_h.h,v 1.22 2004/08/03 05:53:03 dirk Exp $"
+#define OSGCOLORDISPLAYFILTER_HEADER_CVSID                                                         \
+  "@(#)$Id: FCTemplate_h.h,v 1.22 2004/08/03 05:53:03 dirk Exp $"
 
 #endif /* _OSGCOLORDISPLAYFILTER_H_ */

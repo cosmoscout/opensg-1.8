@@ -65,10 +65,8 @@ OSG_BEGIN_NAMESPACE
  *                           Class methods                                 *
 \***************************************************************************/
 
-void ResolutionDisplayFilter::initMethod (void)
-{
+void ResolutionDisplayFilter::initMethod(void) {
 }
-
 
 /***************************************************************************\
  *                           Instance methods                              *
@@ -80,55 +78,44 @@ void ResolutionDisplayFilter::initMethod (void)
 
 /*----------------------- constructors & destructors ----------------------*/
 
-ResolutionDisplayFilter::ResolutionDisplayFilter(void) :
-    Inherited()
-{
+ResolutionDisplayFilter::ResolutionDisplayFilter(void)
+    : Inherited() {
 }
 
-ResolutionDisplayFilter::ResolutionDisplayFilter(const ResolutionDisplayFilter &source) :
-    Inherited(source)
-{
+ResolutionDisplayFilter::ResolutionDisplayFilter(const ResolutionDisplayFilter& source)
+    : Inherited(source) {
 }
 
-ResolutionDisplayFilter::~ResolutionDisplayFilter(void)
-{
+ResolutionDisplayFilter::~ResolutionDisplayFilter(void) {
 }
 
 /*----------------------------- class specific ----------------------------*/
 
-void ResolutionDisplayFilter::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void ResolutionDisplayFilter::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
-void ResolutionDisplayFilter::dump(      UInt32    , 
-                                   const BitVector ) const
-{
-    SLOG << "Dump ResolutionDisplayFilter NI" << std::endl;
+void ResolutionDisplayFilter::dump(UInt32, const BitVector) const {
+  SLOG << "Dump ResolutionDisplayFilter NI" << std::endl;
 }
 
+void ResolutionDisplayFilter::createFilter(DisplayFilterForeground* fg, Viewport*) {
+  DisplayFilterForeground::DisplayFilterGroup* color = fg->findReadbackGroup("ColorDisplayFilter");
+  DisplayFilterForeground::DisplayFilterGroup* resolution =
+      fg->findReadbackGroup("ResolutionDisplayFilter");
 
-void ResolutionDisplayFilter::createFilter(DisplayFilterForeground *fg,
-                                           Viewport *)
-{
-    DisplayFilterForeground::DisplayFilterGroup *color      = fg->findReadbackGroup("ColorDisplayFilter");
-    DisplayFilterForeground::DisplayFilterGroup *resolution = fg->findReadbackGroup("ResolutionDisplayFilter");
+  Real32 downScale = getDownScale();
+  if (downScale > 1)
+    downScale = 1;
+  if (downScale < 0)
+    downScale = 0;
 
-    Real32 downScale = getDownScale();
-    if(downScale > 1)
-        downScale = 1;
-    if(downScale < 0)
-        downScale = 0;
-
-    beginEditCP(color->getTransform());
-    color->getTransform()->setScale(Vec3f(downScale,
-                                          downScale, 1.0));
-    endEditCP(color->getTransform());
-    beginEditCP(resolution->getTransform());
-    resolution->getTransform()->setScale(Vec3f(1/downScale,
-                                               1/downScale, 1.0));
-    endEditCP(resolution->getTransform());
+  beginEditCP(color->getTransform());
+  color->getTransform()->setScale(Vec3f(downScale, downScale, 1.0));
+  endEditCP(color->getTransform());
+  beginEditCP(resolution->getTransform());
+  resolution->getTransform()->setScale(Vec3f(1 / downScale, 1 / downScale, 1.0));
+  endEditCP(resolution->getTransform());
 }
 
 OSG_END_NAMESPACE
-

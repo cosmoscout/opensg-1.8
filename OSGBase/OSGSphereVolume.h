@@ -47,103 +47,93 @@ class Line;
 
 /*! Sphere in 3D space defined by center and radius.
 
-    \ingroup GrpBaseBaseVolume  
+    \ingroup GrpBaseBaseVolume
  */
 
-class OSG_BASE_DLLMAPPING SphereVolume : public Volume 
-{
+class OSG_BASE_DLLMAPPING SphereVolume : public Volume {
 
-    /*==========================  PUBLIC  =================================*/
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Constructor                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Constructor                               */
-    /*! \{                                                                 */
+  SphereVolume(void);
 
-    SphereVolume(void);
+  SphereVolume(const SphereVolume& obj);
+  SphereVolume(const Pnt3f& c, Real32 r);
 
-    SphereVolume(const SphereVolume &obj);
-    SphereVolume(const Pnt3f        &c, 
-                       Real32        r  );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Destructor                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Destructor                                */
-    /*! \{                                                                 */
+  ~SphereVolume(void);
 
-    ~SphereVolume(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Set Values                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Set Values                                */
-    /*! \{                                                                 */
+  void setValue(const Pnt3f& c, Real32 r);
+  void setCenter(const Pnt3f& c);
+  void setRadius(Real32 r);
 
-    void setValue (const Pnt3f &c, 
-                         Real32 r);
-    void setCenter(const Pnt3f &c);
-    void setRadius(      Real32 r);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Get Values                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Get Values                                */
-    /*! \{                                                                 */
+  const Pnt3f& getCenter(void) const;
+  Real32       getRadius(void) const;
 
-            const Pnt3f& getCenter      (void         ) const;
-                  Real32 getRadius      (void         ) const;
+  virtual void   getCenter(Pnt3f& center) const;
+  virtual Real32 getScalarVolume(void) const;
+  virtual void   getBounds(Pnt3f& min, Pnt3f& max) const;
 
-    virtual       void   getCenter      (Pnt3f &center) const;
-    virtual       Real32 getScalarVolume(void         ) const;
-    virtual       void   getBounds      (Pnt3f &min,  
-                                         Pnt3f &max   ) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Extending                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Extending                                  */
-    /*! \{                                                                 */
+  virtual void extendBy(const Pnt3f& pt);
+  virtual void extendBy(const Volume& volume);
+  void         extendBy(const SphereVolume& bb);
 
-    virtual void extendBy(const Pnt3f        &pt    );
-    virtual void extendBy(const Volume       &volume);
-            void extendBy(const SphereVolume &bb    );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                 Intersection                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                 Intersection                                 */
-    /*! \{                                                                 */
+  virtual bool intersect(const Pnt3f& point) const;
+  virtual bool intersect(const Line& line) const;
+  virtual bool intersect(const Line& line, Real32& enter, Real32& exit) const;
 
-    virtual bool intersect  (const Pnt3f        &point ) const;
-    virtual bool intersect  (const Line         &line  ) const;
-    virtual bool intersect  (const Line         &line,
-                                   Real32       &enter, 
-                                   Real32       &exit  ) const;
+  virtual bool intersect(const Volume& volume) const;
+  bool         intersect(const SphereVolume& sphere) const;
 
-    virtual bool intersect  (const Volume       &volume) const;
-            bool intersect  (const SphereVolume &sphere) const;
+  virtual bool isOnSurface(const Pnt3f& point) const;
 
-    virtual bool isOnSurface(const Pnt3f        &point ) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Transformation                             */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Transformation                             */
-    /*! \{                                                                 */
+  virtual void transform(const Matrix& mat);
 
-    virtual void transform(const Matrix &mat);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Output                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Output                                  */
-    /*! \{                                                                 */
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-    virtual void dump(      UInt32    uiIndent = 0,
-                      const BitVector bvFlags  = 0) const;
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-
-  private:
-
-    Pnt3f  _center;
-    Real32 _radius;
-
+ private:
+  Pnt3f  _center;
+  Real32 _radius;
 };
 
 OSG_END_NAMESPACE

@@ -61,183 +61,175 @@
 #include <OSGSystemDef.h>
 
 #include <OSGNewActionTypes.h>
-#include <OSGExtendActorBase.h>               // Parent
-#include <OSGMultiFunctorStore.h>      // EnterStore
-#include <OSGMultiFunctorStore.h>      // LeaveStore
+#include <OSGExtendActorBase.h>   // Parent
+#include <OSGMultiFunctorStore.h> // EnterStore
+#include <OSGMultiFunctorStore.h> // LeaveStore
 
-#include <OSGBaseTypes.h>   // TreeLevel type
-#include <OSGMatrix.h>   // WorldMatrix type
+#include <OSGBaseTypes.h> // TreeLevel type
+#include <OSGMatrix.h>    // WorldMatrix type
 
 OSG_BEGIN_NAMESPACE
 
-class OSG_SYSTEMLIB_DLLMAPPING TestingExtendActorBase : public ExtendActorBase
-{
-    /*====  PUBLIC  =========================================================*/
-  public:
-    /*---------------------------------------- ------------------------------*/
-    /*! \name    Types                                                       */
-    /*! \{                                                                   */
+class OSG_SYSTEMLIB_DLLMAPPING TestingExtendActorBase : public ExtendActorBase {
+  /*====  PUBLIC  =========================================================*/
+ public:
+  /*---------------------------------------- ------------------------------*/
+  /*! \name    Types                                                       */
+  /*! \{                                                                   */
 
-    typedef ExtendActorBase::ResultE ResultE;
-    typedef ExtendActorBase::Functor Functor;
+  typedef ExtendActorBase::ResultE ResultE;
+  typedef ExtendActorBase::Functor Functor;
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Destructor                                                  */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Destructor                                                  */
+  /*! \{                                                                   */
 
-    virtual ~TestingExtendActorBase(void);
+  virtual ~TestingExtendActorBase(void);
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Start/Stop                                                  */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Start/Stop                                                  */
+  /*! \{                                                                   */
 
-    virtual ResultE start(void);
-    virtual ResultE stop (void);
+  virtual ResultE start(void);
+  virtual ResultE stop(void);
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Enter/Leave                                                 */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Enter/Leave                                                 */
+  /*! \{                                                                   */
 
-    virtual ResultE enterNode(FunctorArgumentType &funcArg);
-    virtual ResultE leaveNode(FunctorArgumentType &funcArg);
+  virtual ResultE enterNode(FunctorArgumentType& funcArg);
+  virtual ResultE leaveNode(FunctorArgumentType& funcArg);
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Enter Registration                                          */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Enter Registration                                          */
+  /*! \{                                                                   */
 
-    static void regClassEnter         (const Functor            &refFunc,
-                                       const FieldContainerType &refType );
-           void regEnter              (const Functor            &refFunc,
-                                       const FieldContainerType &refType );
-    static void regDefaultClassEnter  (const Functor            &refFunc );
-           void regDefaultEnter       (const Functor            &refFunc );
+  static void regClassEnter(const Functor& refFunc, const FieldContainerType& refType);
+  void        regEnter(const Functor& refFunc, const FieldContainerType& refType);
+  static void regDefaultClassEnter(const Functor& refFunc);
+  void        regDefaultEnter(const Functor& refFunc);
 
-    static void unregClassEnter       (const FieldContainerType &refType );
-           void unregEnter            (const FieldContainerType &refType );
-    static void unregDefaultClassEnter(      void                        );
-           void unregDefaultEnter     (      void                        );
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Leave Registration                                          */
-    /*! \{                                                                   */
+  static void unregClassEnter(const FieldContainerType& refType);
+  void        unregEnter(const FieldContainerType& refType);
+  static void unregDefaultClassEnter(void);
+  void        unregDefaultEnter(void);
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Leave Registration                                          */
+  /*! \{                                                                   */
 
-    static void regClassLeave         (const Functor            &refFunc,
-                                       const FieldContainerType &refType );
-           void regLeave              (const Functor            &refFunc,
-                                       const FieldContainerType &refType );
-    static void regDefaultClassLeave  (const Functor            &refFunc );
-           void regDefaultLeave       (const Functor            &refFunc );
+  static void regClassLeave(const Functor& refFunc, const FieldContainerType& refType);
+  void        regLeave(const Functor& refFunc, const FieldContainerType& refType);
+  static void regDefaultClassLeave(const Functor& refFunc);
+  void        regDefaultLeave(const Functor& refFunc);
 
-    static void unregClassLeave       (const FieldContainerType &refType );
-           void unregLeave            (const FieldContainerType &refType );
-    static void unregDefaultClassLeave(      void                        );
-           void unregDefaultLeave     (      void                        );
+  static void unregClassLeave(const FieldContainerType& refType);
+  void        unregLeave(const FieldContainerType& refType);
+  static void unregDefaultClassLeave(void);
+  void        unregDefaultLeave(void);
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Public State Access                                         */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Public State Access                                         */
+  /*! \{                                                                   */
 
-    inline const UInt32 &getTreeLevel(void                             ) const;
-    inline       UInt32 &getTreeLevel(void                             );
-    inline       void               setTreeLevel(const UInt32 &stateVal);
-    inline const Matrix &getWorldMatrix(void                             ) const;
-    inline       Matrix &getWorldMatrix(void                             );
-    inline       void               setWorldMatrix(const Matrix &stateVal);
+  inline const UInt32& getTreeLevel(void) const;
+  inline UInt32&       getTreeLevel(void);
+  inline void          setTreeLevel(const UInt32& stateVal);
+  inline const Matrix& getWorldMatrix(void) const;
+  inline Matrix&       getWorldMatrix(void);
+  inline void          setWorldMatrix(const Matrix& stateVal);
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    State Management                                            */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    State Management                                            */
+  /*! \{                                                                   */
 
 #ifdef OSG_NEWACTION_STATESLOTINTERFACE
-    virtual UInt32          createStateClone  (void                       );
-    virtual void            destroyStateClone (UInt32          slotId     );
+  virtual UInt32 createStateClone(void);
+  virtual void   destroyStateClone(UInt32 slotId);
 #else
-    virtual ActorBaseState *createStateClone  (void                       );
-    virtual void            destroyStateClone (ActorBaseState *pStateClone);
+  virtual ActorBaseState* createStateClone(void);
+  virtual void            destroyStateClone(ActorBaseState* pStateClone);
 #endif
 
-    virtual void            createInitialState(void                       );
-    virtual void            deleteInitialState(void                       );
+  virtual void createInitialState(void);
+  virtual void deleteInitialState(void);
 
-    /*! \}                                                                   */
-    /*====  PROTECTED  ======================================================*/
-  protected:
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Types & Friends                                             */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*====  PROTECTED  ======================================================*/
+ protected:
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Types & Friends                                             */
+  /*! \{                                                                   */
 
-    class   TestingExtendActorBaseState;
-    friend  class OSG::TestingExtendActorBase::TestingExtendActorBaseState;
+  class TestingExtendActorBaseState;
+  friend class OSG::TestingExtendActorBase::TestingExtendActorBaseState;
 
-    typedef TestingExtendActorBaseState     StateType;
-    typedef ExtendActorBase::StateType  ParentStateType;
-    typedef MultiFunctorStore EnterStoreType;
-    typedef MultiFunctorStore LeaveStoreType;
+  typedef TestingExtendActorBaseState StateType;
+  typedef ExtendActorBase::StateType  ParentStateType;
+  typedef MultiFunctorStore           EnterStoreType;
+  typedef MultiFunctorStore           LeaveStoreType;
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    State Class                                                 */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    State Class                                                 */
+  /*! \{                                                                   */
 
-    class OSG_SYSTEMLIB_DLLMAPPING TestingExtendActorBaseState : public ParentStateType
-    {
-      public:
-        inline   TestingExtendActorBaseState(void                                );
-        inline   TestingExtendActorBaseState(const TestingExtendActorBaseState &source);
+  class OSG_SYSTEMLIB_DLLMAPPING TestingExtendActorBaseState : public ParentStateType {
+   public:
+    inline TestingExtendActorBaseState(void);
+    inline TestingExtendActorBaseState(const TestingExtendActorBaseState& source);
 
-        virtual ~TestingExtendActorBaseState(void                                );
+    virtual ~TestingExtendActorBaseState(void);
 
-        inline const UInt32 &getTreeLevel(void) const;
-        inline       UInt32 &getTreeLevel(void);
-        inline const Matrix &getWorldMatrix(void) const;
-        inline       Matrix &getWorldMatrix(void);
+    inline const UInt32& getTreeLevel(void) const;
+    inline UInt32&       getTreeLevel(void);
+    inline const Matrix& getWorldMatrix(void) const;
+    inline Matrix&       getWorldMatrix(void);
 
-      private:
-        UInt32 _stateTreeLevel;
-        Matrix _stateWorldMatrix;
-    };
+   private:
+    UInt32 _stateTreeLevel;
+    Matrix _stateWorldMatrix;
+  };
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Constructor                                                 */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Constructor                                                 */
+  /*! \{                                                                   */
 
-    TestingExtendActorBase(void);
+  TestingExtendActorBase(void);
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Event Notification                                          */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Event Notification                                          */
+  /*! \{                                                                   */
 
-    virtual void addEvent(NewActionBase *pAction, UInt32 actorId);
-    virtual void subEvent(NewActionBase *pAction, UInt32 actorId);
+  virtual void addEvent(NewActionBase* pAction, UInt32 actorId);
+  virtual void subEvent(NewActionBase* pAction, UInt32 actorId);
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    State Access                                                */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    State Access                                                */
+  /*! \{                                                                   */
 
-    inline const TestingExtendActorBaseState *getCastState(void) const;
-    inline       TestingExtendActorBaseState *getCastState(void);
+  inline const TestingExtendActorBaseState* getCastState(void) const;
+  inline TestingExtendActorBaseState*       getCastState(void);
 
+  /*! \}                                                                   */
+  /*====  PRIVATE  ========================================================*/
+ private:
+  typedef ExtendActorBase Inherited;
 
-    /*! \}                                                                   */
-    /*====  PRIVATE  ========================================================*/
-  private:
-    typedef ExtendActorBase Inherited;
+  static EnterStoreType* _pClassEnterStore;
+  static LeaveStoreType* _pClassLeaveStore;
 
-    static EnterStoreType *_pClassEnterStore;
-    static LeaveStoreType *_pClassLeaveStore;
-
-
-    EnterStoreType         _instanceEnterStore;
-    LeaveStoreType         _instanceLeaveStore;
+  EnterStoreType _instanceEnterStore;
+  LeaveStoreType _instanceLeaveStore;
 };
 
 OSG_END_NAMESPACE

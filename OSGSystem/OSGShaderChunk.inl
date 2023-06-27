@@ -44,5 +44,5 @@ OSG_BEGIN_NAMESPACE
 
 OSG_END_NAMESPACE
 
-#define OSGSHADERCHUNK_INLINE_CVSID "@(#)$Id: OSGShaderChunk.inl,v 1.1 2004/07/01 11:26:56 a-m-z Exp $"
-
+#define OSGSHADERCHUNK_INLINE_CVSID                                                                \
+  "@(#)$Id: OSGShaderChunk.inl,v 1.1 2004/07/01 11:26:56 a-m-z Exp $"

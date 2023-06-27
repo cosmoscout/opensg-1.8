@@ -52,49 +52,45 @@ OSG_BEGIN_NAMESPACE
     \ingroup GrpBaseBase
  */
 
-class OSG_BASE_DLLMAPPING MemoryObject
-{
+class OSG_BASE_DLLMAPPING MemoryObject {
 
-    /*==========================  PUBLIC  =================================*/
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  virtual ~MemoryObject(void);
 
-    virtual ~MemoryObject(void); 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                 Reference Counting                           */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                 Reference Counting                           */
-    /*! \{                                                                 */
+  void  addRef(void);
+  void  subRef(void);
+  Int32 getRefCount(void);
 
-    void  addRef     (void);
-    void  subRef     (void);    
-    Int32 getRefCount(void);
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-  protected:
+  MemoryObject(void);
+  MemoryObject(const MemoryObject& source);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
- 
-    MemoryObject(void);
-    MemoryObject(const  MemoryObject &source);
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-    /*! \}                                                                 */
-   /*==========================  PRIVATE  ================================*/
+ private:
+  Int32 _refCount;
 
-  private:
-
-    Int32 _refCount;
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const MemoryObject &source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const MemoryObject& source);
 };
 
 OSG_END_NAMESPACE

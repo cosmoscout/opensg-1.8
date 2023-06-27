@@ -52,211 +52,191 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief *put brief class description here* 
+/*! \brief *put brief class description here*
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING DVRClipGeometry : public DVRClipGeometryBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING DVRClipGeometry : public DVRClipGeometryBase {
+ private:
+  typedef DVRClipGeometryBase Inherited;
 
-    typedef DVRClipGeometryBase Inherited;
+  /*==========================  PUBLIC  =================================*/
 
-    /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Clipping                                  */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  //! Prepare the object for clipping a volume's slices (transform it to
+  //! volume's space)
+  void initialize(const Matrix& volumeToWorld);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Clipping                                  */
-    /*! \{                                                                 */
+  //! Reset local data of vertices and triangles
+  void resetLocalData(void);
 
-    //! Prepare the object for clipping a volume's slices (transform it to 
-    //! volume's space)
-    void initialize            (const Matrix &volumeToWorld                );
+  //! Set the reference plane used in the clipping algorithm
+  void setReferencePlane(const Plane& referencePlane);
 
-    //! Reset local data of vertices and triangles
-    void resetLocalData        (      void                                 );
+  //! set the number of additional per vertex attributes
+  /*!
+      basically there are two attributes available, the vertex position and a
+      3D texture coordinate. If one needs additional attributes, e.g.
+      color, texture coordinates,.., the number of (double) values needed
+      has to be set with this function.
+  */
+  bool setNumAddPerVertexAttr(UInt32 additionalPerVertexAttributes);
 
-    //! Set the reference plane used in the clipping algorithm
-    void setReferencePlane     (const Plane  &referencePlane               );
-  
-    //! set the number of additional per vertex attributes 
-    /*!
-        basically there are two attributes available, the vertex position and a
-        3D texture coordinate. If one needs additional attributes, e.g.
-        color, texture coordinates,.., the number of (double) values needed 
-        has to be set with this function.
-    */
-    bool setNumAddPerVertexAttr(      UInt32  additionalPerVertexAttributes);
-  
-    //! Compute the seed vertex set
-    void computeSeedVertices   (      void                                 );
-    
-    //! find contour made up by triangles which are cut by the current slice
-    const DVRTriangleList &getContours(      float dist2RefPlane, 
-                                             bool positiveWinding, 
-                                       const Vec3f &sliceNormal);
+  //! Compute the seed vertex set
+  void computeSeedVertices(void);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  //! find contour made up by triangles which are cut by the current slice
+  const DVRTriangleList& getContours(
+      float dist2RefPlane, bool positiveWinding, const Vec3f& sliceNormal);
 
-  protected:
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Locals                                    */
-    /*! \{                                                                 */
+ protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Locals                                    */
+  /*! \{                                                                 */
 
-    //! is the clip geometry initialized?
-    bool                       initialized;
+  //! is the clip geometry initialized?
+  bool initialized;
 
-    //! the core of the geometry node
-    GeometryPtr                geometry;
+  //! the core of the geometry node
+  GeometryPtr geometry;
 
-    //! list of vertices in the triangulated clip geometry
-    std::vector<DVRVertex>     _mfVertices;
+  //! list of vertices in the triangulated clip geometry
+  std::vector<DVRVertex> _mfVertices;
 
-    //! list of triangles in the triangulated clip geometry
-    std::vector<DVRTriangle>   _mfTriangles;
+  //! list of triangles in the triangulated clip geometry
+  std::vector<DVRTriangle> _mfTriangles;
 
-    //! The transformation matrix needed to transform the clip geoemtry to 
-    //! the volume's space.
-    Matrix                     toVolumeSpace;
+  //! The transformation matrix needed to transform the clip geoemtry to
+  //! the volume's space.
+  Matrix toVolumeSpace;
 
-    //! the triangles which are cut by the current slice
-    DVRTriangle              **activeTriangles;
-    UInt32                     activeTrianglesCount;
-    UInt32                     maxActiveTrianglesCount;
+  //! the triangles which are cut by the current slice
+  DVRTriangle** activeTriangles;
+  UInt32        activeTrianglesCount;
+  UInt32        maxActiveTrianglesCount;
 
-    //! the vertices which are closest to the reference plane
-    DVRVertex                **seedVertices;
-    UInt32                     seedVerticesCount;
-    UInt32                     maxSeedVerticesCount;
+  //! the vertices which are closest to the reference plane
+  DVRVertex** seedVertices;
+  UInt32      seedVerticesCount;
+  UInt32      maxSeedVerticesCount;
 
-    //! the start triangles of all contours made up by intersections with 
-    //! the current slice
-    DVRTriangleList            contours;
-  
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  //! the start triangles of all contours made up by intersections with
+  //! the current slice
+  DVRTriangleList contours;
 
-    DVRClipGeometry(void);
-    DVRClipGeometry(const DVRClipGeometry &source);
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  DVRClipGeometry(void);
+  DVRClipGeometry(const DVRClipGeometry& source);
 
-    virtual ~DVRClipGeometry(void); 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Vertices                                   */
-    /*! \{                                                                 */
+  virtual ~DVRClipGeometry(void);
 
-    //! Insert a vertex in the vertex list
-    /*!
-      if there already exists a vertex at the position of the new vertex
-      they get unified, i.e. the index of the already existent vertex is 
-      returned, else a new one is inserted
-    */
-    Int32 insertVertex (Int32      idx   );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Vertices                                   */
+  /*! \{                                                                 */
 
-    //! returns true, iff this vertex is a local minimum 
-    //! with respect to refPlaneDistance.
-    bool isLocalMinimum(DVRVertex &vertex);
+  //! Insert a vertex in the vertex list
+  /*!
+    if there already exists a vertex at the position of the new vertex
+    they get unified, i.e. the index of the already existent vertex is
+    returned, else a new one is inserted
+  */
+  Int32 insertVertex(Int32 idx);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Triangles                                  */
-    /*! \{                                                                 */
+  //! returns true, iff this vertex is a local minimum
+  //! with respect to refPlaneDistance.
+  bool isLocalMinimum(DVRVertex& vertex);
 
-    //! returns true, iff the plane with distance dist2RefPlane to the ref 
-    //! plane cuts the triangle.
-    bool isCut         (      DVRTriangle *tri, 
-                              Real32       dist2RefPlane, 
-                              DVRVertex   *switchedVertices[3]);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Triangles                                  */
+  /*! \{                                                                 */
 
-    //! returns true, iff dist2RefPlane is bigger than the distance to the 
-    //! reference plane of all vertices within the triangle.
-    bool isBehindPlane (      DVRTriangle &tri, 
-                              Real32       dist2RefPlane      );
+  //! returns true, iff the plane with distance dist2RefPlane to the ref
+  //! plane cuts the triangle.
+  bool isCut(DVRTriangle* tri, Real32 dist2RefPlane, DVRVertex* switchedVertices[3]);
 
-    //! Use OpenGL to render the triangle
-    void renderTriangle(const DVRTriangle &tri                ) const;
+  //! returns true, iff dist2RefPlane is bigger than the distance to the
+  //! reference plane of all vertices within the triangle.
+  bool isBehindPlane(DVRTriangle& tri, Real32 dist2RefPlane);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name              Triangle Geometry Setup                         */
-    /*! \{                                                                 */
+  //! Use OpenGL to render the triangle
+  void renderTriangle(const DVRTriangle& tri) const;
 
-    //! create the triangled geometry data structure
-    bool buildTriangledGeometry(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name              Triangle Geometry Setup                         */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Clipping                                  */
-    /*! \{                                                                 */
+  //! create the triangled geometry data structure
+  bool buildTriangledGeometry(void);
 
-    //! Identifies all contours and links them
-    void buildContours        (      Real32       dist2RefPlane, 
-                                     bool         positiveWinding, 
-                               const Vec3f       &sliceNormal    );
-    
-    //! Identifies and links a contour starting with the given triangle
-    void linkContour          (      DVRTriangle *startTriangle,
-                                     Real32       dist2RefPlane,
-                               const Vec3f       &viewDir, 
-                                     bool         positiveWinding);
-    
-    //! updates the active triangle list
-    void updateActiveTriangles(      Real32       dist2RefPlane, 
-                               const Vec3f       &sliceNormal    );
-    
-    //!
-    void addActiveTriangle    (      DVRTriangle *tri            );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Clipping                                  */
+  /*! \{                                                                 */
 
-    //!
-    void addNewActiveTriangles(      DVRVertex   *vertex,
-                                     Real32       dist2RefPlane  );
-    
-    //! 
-    Pnt3f interpolate         (      DVRTriangle *tri, 
-                                     Int32        v1, 
-                                     Int32        v2, 
-                                     Real32       dist2RefPlane  );
-    
-    /*==========================  PRIVATE  ================================*/
+  //! Identifies all contours and links them
+  void buildContours(Real32 dist2RefPlane, bool positiveWinding, const Vec3f& sliceNormal);
 
-  private:
+  //! Identifies and links a contour starting with the given triangle
+  void linkContour(
+      DVRTriangle* startTriangle, Real32 dist2RefPlane, const Vec3f& viewDir, bool positiveWinding);
 
-    friend class FieldContainer;
-    friend class DVRClipGeometryBase;
+  //! updates the active triangle list
+  void updateActiveTriangles(Real32 dist2RefPlane, const Vec3f& sliceNormal);
 
-    static void initMethod(void);
+  //!
+  void addActiveTriangle(DVRTriangle* tri);
 
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const DVRClipGeometry &source);
+  //!
+  void addNewActiveTriangles(DVRVertex* vertex, Real32 dist2RefPlane);
+
+  //!
+  Pnt3f interpolate(DVRTriangle* tri, Int32 v1, Int32 v2, Real32 dist2RefPlane);
+
+  /*==========================  PRIVATE  ================================*/
+
+ private:
+  friend class FieldContainer;
+  friend class DVRClipGeometryBase;
+
+  static void initMethod(void);
+
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const DVRClipGeometry& source);
 };
 
-typedef DVRClipGeometry *DVRClipGeometryP;
+typedef DVRClipGeometry* DVRClipGeometryP;
 
 OSG_END_NAMESPACE
 

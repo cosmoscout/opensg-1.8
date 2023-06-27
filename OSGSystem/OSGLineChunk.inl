@@ -42,19 +42,14 @@
 
 OSG_BEGIN_NAMESPACE
 
-inline
-UInt32 LineChunk::getStaticClassId(void)
-{
-    return getStaticClass()->getId();
+inline UInt32 LineChunk::getStaticClassId(void) {
+  return getStaticClass()->getId();
 }
 
-inline
-const StateChunkClass *LineChunk::getStaticClass(void)
-{
-    return &LineChunk::_class;
+inline const StateChunkClass* LineChunk::getStaticClass(void) {
+  return &LineChunk::_class;
 }
 
 OSG_END_NAMESPACE
 
 #define OSGLINECHUNK_INLINE_CVSID "@(#)$Id: $"
-

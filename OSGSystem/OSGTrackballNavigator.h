@@ -48,99 +48,91 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief Navigator for trackball model. See \ref 
+/*! \brief Navigator for trackball model. See \ref
     PageSystemWindowNavigatorsTrackball for a description.
 */
-class OSG_SYSTEMLIB_DLLMAPPING TrackballNavigator
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING TrackballNavigator {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  enum State { IDLE = 0, ROTATING, TRANSLATING_XY, TRANSLATING_Z };
 
-    enum State
-    {
-        IDLE=0,
-        ROTATING,
-        TRANSLATING_XY,
-        TRANSLATING_Z
-    };
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
+  TrackballNavigator(Real32 rSize = 0.8);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    TrackballNavigator(Real32 rSize=0.8);
+  ~TrackballNavigator();
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
-    ~TrackballNavigator();
+  const char* getClassname(void) {
+    return "TrackballNavigator";
+  }
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                        Get                                   */
+  /*! \{                                                                 */
 
-    const char *getClassname(void) { return "TrackballNavigator"; }
+  Matrix& getMatrix();
+  Pnt3f&  getFrom();
+  Pnt3f&  getAt();
+  Vec3f&  getUp();
+  Real32  getDistance();
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                        Get                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                        Set                                   */
+  /*! \{                                                                 */
 
-    Matrix &getMatrix();
-    Pnt3f  &getFrom();
-    Pnt3f  &getAt();
-    Vec3f  &getUp();
-    Real32  getDistance();
+  void setAt(Pnt3f new_at);
+  void setFrom(Pnt3f new_from);
+  void setDistance(Real32 new_distance);
+  void setUp(Vec3f new_up);
+  void set(Pnt3f new_from, Pnt3f new_center, Vec3f new_up);
+  void set(Matrix new_matrix);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                        Set                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name              Trackball Transformations                       */
+  /*! \{                                                                 */
 
-    void setAt       (Pnt3f  new_at);
-    void setFrom     (Pnt3f  new_from);
-    void setDistance (Real32 new_distance);
-    void setUp       (Vec3f  new_up);
-    void set         (Pnt3f  new_from, Pnt3f new_center, Vec3f new_up);
-    void set         (Matrix new_matrix);
+  void rotate(Real32 fromX, Real32 fromY, Real32 toX, Real32 toY);
+  void translateXY(Real32 distanceX, Real32 distanceY);
+  void translateZ(Real32 distance);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name              Trackball Transformations                       */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Members                                  */
+  /*! \{                                                                 */
 
-    void rotate     (Real32 fromX, Real32 fromY,
-                     Real32 toX,   Real32 toY);
-    void translateXY(Real32 distanceX, Real32 distanceY);
-    void translateZ (Real32 distance);
+  Real32 _rRadius, _rDistance;
+  Matrix _tMatrix, _finalMatrix;
+  State  _currentState;
+  Pnt3f  _pFrom, _pAt;
+  Vec3f  _vUp;
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
-    
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Members                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    Real32 _rRadius, _rDistance;
-    Matrix _tMatrix, _finalMatrix;
-    State  _currentState;
-    Pnt3f  _pFrom, _pAt;
-    Vec3f  _vUp;
+  void updateFinalMatrix();
 
-    /*! \}                                                                 */
-
-    void updateFinalMatrix();
-
-    Real32 projectToSphere(Real32 rRadius, Real32 rX, Real32 rY);
+  Real32 projectToSphere(Real32 rRadius, Real32 rX, Real32 rY);
 };
 
 OSG_END_NAMESPACE
 
-#define OSGTRACKBALLNAVIGATOR_HEADER_CVSID "@(#)$Id: OSGTrackballNavigator.h,v 1.3 2002/05/24 14:45:12 istoynov Exp $"
+#define OSGTRACKBALLNAVIGATOR_HEADER_CVSID                                                         \
+  "@(#)$Id: OSGTrackballNavigator.h,v 1.3 2002/05/24 14:45:12 istoynov Exp $"
 
 #endif

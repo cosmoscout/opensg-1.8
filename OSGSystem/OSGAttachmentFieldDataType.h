@@ -61,18 +61,23 @@ OSG_BEGIN_NAMESPACE
 #endif
 
 template <>
-struct OSG_SYSTEMLIB_DLLMAPPING FieldDataTraits<AttachmentPtr> : 
-    public FieldTraitsRecurseMapper<AttachmentPtr, true>
-{
-    static DataType                  _type;
+struct OSG_SYSTEMLIB_DLLMAPPING FieldDataTraits<AttachmentPtr>
+    : public FieldTraitsRecurseMapper<AttachmentPtr, true> {
+  static DataType _type;
 
-    enum                            { StringConvertable = 0x00  };
-    enum                            { bHasParent        = 0x01  };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType &getType (void) { return _type;             }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static char     *getSName(void) { return "SFAttachmentPtr"; }
-    static char     *getMName(void) { return "MFAttachmentPtr"; }
+  static char* getSName(void) {
+    return "SFAttachmentPtr";
+  }
+  static char* getMName(void) {
+    return "MFAttachmentPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -87,10 +92,3 @@ OSG_END_NAMESPACE
 #define OSGATTACHMENTFIELDDATATYPE_HEADER_CVSID "@(#)$Id: $"
 
 #endif /* _OSG_ATTACHMENTFIELD_H_ */
-
-
-
-
-
-
-

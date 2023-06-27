@@ -38,8 +38,8 @@
 
 #ifndef _OSGBINSCENEFILETYPE_H_
 #define _OSGBINSCENEFILETYPE_H_
-#ifdef  __sgi
-#pragma  once
+#ifdef __sgi
+#pragma once
 #endif
 
 #include <OSGBaseTypes.h>
@@ -49,87 +49,79 @@
 OSG_BEGIN_NAMESPACE
 
 /*! \brief BINSceneFileType
-*/
+ */
 
-class OSG_SYSTEMLIB_DLLMAPPING BINSceneFileType : public SceneFileType
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING BINSceneFileType : public SceneFileType {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Static Get                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Static Get                                 */
-    /*! \{                                                                 */
+  static BINSceneFileType& the(void);
 
-    static BINSceneFileType &the(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  virtual ~BINSceneFileType(void);
 
-    virtual ~BINSceneFileType(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Get                                        */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Get                                        */
-    /*! \{                                                                 */
+  virtual const Char8* getName(void) const;
 
-    virtual const Char8 *getName(void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Read                                       */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Read                                       */
-    /*! \{                                                                 */
+  virtual NodePtr read(std::istream& is, const Char8* fileNameOrExtension) const;
 
-    virtual NodePtr read(std::istream &is,
-                         const Char8 *fileNameOrExtension) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Write                                      */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Write                                      */
-    /*! \{                                                                 */
+  virtual bool write(const NodePtr& node, std::ostream& os, const Char8* fileNameOrExtension) const;
 
-    virtual bool write(const NodePtr &node, std::ostream &os,
-                       const Char8 *fileNameOrExtension) const;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Member                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  static const Char8*     _suffixA[];
+  static BINSceneFileType _the;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Member                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    static const Char8            *_suffixA[];
-    static       BINSceneFileType  _the;
+  BINSceneFileType(const Char8* binSuffixArray[], UInt16 suffixByteCount, bool override,
+      UInt32 overridePriority, UInt32 flags);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  BINSceneFileType(const BINSceneFileType& obj);
 
-    BINSceneFileType(const Char8  *binSuffixArray[],
-                           UInt16  suffixByteCount,
-                           bool    override,
-                           UInt32  overridePriority,
-                           UInt32  flags);
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  typedef SceneFileType Inherited;
 
-    BINSceneFileType(const BINSceneFileType &obj);
-
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
-
-    typedef SceneFileType Inherited;
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const BINSceneFileType &source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const BINSceneFileType& source);
 };
 
 typedef BINSceneFileType* BINSceneFileTypeP;
 
 OSG_END_NAMESPACE
 
-#define OSGBINSCENEFILETYPE_HEADER_CVSID "@(#)$Id: OSGBINSceneFileType.h,v 1.4 2001/10/08 05:21:54 vossg Exp $"
+#define OSGBINSCENEFILETYPE_HEADER_CVSID                                                           \
+  "@(#)$Id: OSGBINSceneFileType.h,v 1.4 2001/10/08 05:21:54 vossg Exp $"
 
 #endif // _OSGBINSCENEFILETYPE_H_

@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILERESOLUTIONDISPLAYFILTERINST
 
 #include <stdlib.h>
@@ -61,206 +60,151 @@
 #include "OSGResolutionDisplayFilterBase.h"
 #include "OSGResolutionDisplayFilter.h"
 
-
 OSG_BEGIN_NAMESPACE
 
-const OSG::BitVector  ResolutionDisplayFilterBase::DownScaleFieldMask = 
+const OSG::BitVector ResolutionDisplayFilterBase::DownScaleFieldMask =
     (TypeTraits<BitVector>::One << ResolutionDisplayFilterBase::DownScaleFieldId);
 
-const OSG::BitVector ResolutionDisplayFilterBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector ResolutionDisplayFilterBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
 /*! \var Real32          ResolutionDisplayFilterBase::_sfDownScale
-    
+
 */
 
 //! ResolutionDisplayFilter description
 
-FieldDescription *ResolutionDisplayFilterBase::_desc[] = 
-{
-    new FieldDescription(SFReal32::getClassType(), 
-                     "downScale", 
-                     DownScaleFieldId, DownScaleFieldMask,
-                     false,
-                     (FieldAccessMethod) &ResolutionDisplayFilterBase::getSFDownScale)
-};
+FieldDescription* ResolutionDisplayFilterBase::_desc[] = {new FieldDescription(
+    SFReal32::getClassType(), "downScale", DownScaleFieldId, DownScaleFieldMask, false,
+    (FieldAccessMethod)&ResolutionDisplayFilterBase::getSFDownScale)};
 
+FieldContainerType ResolutionDisplayFilterBase::_type("ResolutionDisplayFilter", "DisplayFilter",
+    NULL, (PrototypeCreateF)&ResolutionDisplayFilterBase::createEmpty,
+    ResolutionDisplayFilter::initMethod, _desc, sizeof(_desc));
 
-FieldContainerType ResolutionDisplayFilterBase::_type(
-    "ResolutionDisplayFilter",
-    "DisplayFilter",
-    NULL,
-    (PrototypeCreateF) &ResolutionDisplayFilterBase::createEmpty,
-    ResolutionDisplayFilter::initMethod,
-    _desc,
-    sizeof(_desc));
-
-//OSG_FIELD_CONTAINER_DEF(ResolutionDisplayFilterBase, ResolutionDisplayFilterPtr)
+// OSG_FIELD_CONTAINER_DEF(ResolutionDisplayFilterBase, ResolutionDisplayFilterPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &ResolutionDisplayFilterBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &ResolutionDisplayFilterBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr ResolutionDisplayFilterBase::shallowCopy(void) const 
-{ 
-    ResolutionDisplayFilterPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const ResolutionDisplayFilter *>(this)); 
-
-    return returnValue; 
+FieldContainerType& ResolutionDisplayFilterBase::getType(void) {
+  return _type;
 }
 
-UInt32 ResolutionDisplayFilterBase::getContainerSize(void) const 
-{ 
-    return sizeof(ResolutionDisplayFilter); 
+const FieldContainerType& ResolutionDisplayFilterBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr ResolutionDisplayFilterBase::shallowCopy(void) const {
+  ResolutionDisplayFilterPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const ResolutionDisplayFilter*>(this));
+
+  return returnValue;
+}
+
+UInt32 ResolutionDisplayFilterBase::getContainerSize(void) const {
+  return sizeof(ResolutionDisplayFilter);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ResolutionDisplayFilterBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((ResolutionDisplayFilterBase *) &other, whichField);
+void ResolutionDisplayFilterBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((ResolutionDisplayFilterBase*)&other, whichField);
 }
 #else
-void ResolutionDisplayFilterBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((ResolutionDisplayFilterBase *) &other, whichField, sInfo);
+void ResolutionDisplayFilterBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((ResolutionDisplayFilterBase*)&other, whichField, sInfo);
 }
-void ResolutionDisplayFilterBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void ResolutionDisplayFilterBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void ResolutionDisplayFilterBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void ResolutionDisplayFilterBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-ResolutionDisplayFilterBase::ResolutionDisplayFilterBase(void) :
-    _sfDownScale              (), 
-    Inherited() 
-{
+ResolutionDisplayFilterBase::ResolutionDisplayFilterBase(void)
+    : _sfDownScale()
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-ResolutionDisplayFilterBase::ResolutionDisplayFilterBase(const ResolutionDisplayFilterBase &source) :
-    _sfDownScale              (source._sfDownScale              ), 
-    Inherited                 (source)
-{
+ResolutionDisplayFilterBase::ResolutionDisplayFilterBase(const ResolutionDisplayFilterBase& source)
+    : _sfDownScale(source._sfDownScale)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-ResolutionDisplayFilterBase::~ResolutionDisplayFilterBase(void)
-{
+ResolutionDisplayFilterBase::~ResolutionDisplayFilterBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 ResolutionDisplayFilterBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 ResolutionDisplayFilterBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (DownScaleFieldMask & whichField))
-    {
-        returnValue += _sfDownScale.getBinSize();
-    }
+  if (FieldBits::NoField != (DownScaleFieldMask & whichField)) {
+    returnValue += _sfDownScale.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void ResolutionDisplayFilterBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void ResolutionDisplayFilterBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (DownScaleFieldMask & whichField))
-    {
-        _sfDownScale.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (DownScaleFieldMask & whichField)) {
+    _sfDownScale.copyToBin(pMem);
+  }
 }
 
-void ResolutionDisplayFilterBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void ResolutionDisplayFilterBase::copyFromBin(
+    BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (DownScaleFieldMask & whichField))
-    {
-        _sfDownScale.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (DownScaleFieldMask & whichField)) {
+    _sfDownScale.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ResolutionDisplayFilterBase::executeSyncImpl(      ResolutionDisplayFilterBase *pOther,
-                                        const BitVector         &whichField)
-{
+void ResolutionDisplayFilterBase::executeSyncImpl(
+    ResolutionDisplayFilterBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (DownScaleFieldMask & whichField))
-        _sfDownScale.syncWith(pOther->_sfDownScale);
-
-
+  if (FieldBits::NoField != (DownScaleFieldMask & whichField))
+    _sfDownScale.syncWith(pOther->_sfDownScale);
 }
 #else
-void ResolutionDisplayFilterBase::executeSyncImpl(      ResolutionDisplayFilterBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void ResolutionDisplayFilterBase::executeSyncImpl(
+    ResolutionDisplayFilterBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (DownScaleFieldMask & whichField))
-        _sfDownScale.syncWith(pOther->_sfDownScale);
-
-
-
+  if (FieldBits::NoField != (DownScaleFieldMask & whichField))
+    _sfDownScale.syncWith(pOther->_sfDownScale);
 }
 
-void ResolutionDisplayFilterBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void ResolutionDisplayFilterBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 OSG_END_NAMESPACE
 
@@ -270,11 +214,11 @@ OSG_END_NAMESPACE
 OSG_BEGIN_NAMESPACE
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_DEV)
-DataType FieldDataTraits<ResolutionDisplayFilterPtr>::_type("ResolutionDisplayFilterPtr", "DisplayFilterPtr");
+DataType FieldDataTraits<ResolutionDisplayFilterPtr>::_type(
+    "ResolutionDisplayFilterPtr", "DisplayFilterPtr");
 #endif
 
 OSG_DLLEXPORT_SFIELD_DEF1(ResolutionDisplayFilterPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 OSG_DLLEXPORT_MFIELD_DEF1(ResolutionDisplayFilterPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
-

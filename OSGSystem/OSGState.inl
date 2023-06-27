@@ -34,7 +34,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -42,48 +41,37 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 /*! Return the chunk with the given id. Returns NullFC if no such chunk is in
-   the State. 
+   the State.
 */
 
-inline
-StateChunkPtr State::getChunk(UInt32 chunkId)
-{
-    if(chunkId < _mfChunks.size())
-        return _mfChunks[chunkId];
+inline StateChunkPtr State::getChunk(UInt32 chunkId) {
+  if (chunkId < _mfChunks.size())
+    return _mfChunks[chunkId];
 
-    return NullFC;
+  return NullFC;
 }
 
-/*! Checks if a chunk with the given id is in the current state. 
+/*! Checks if a chunk with the given id is in the current state.
+ */
+
+inline bool State::chunkPresent(UInt32 chunkId) {
+  return chunkId < _mfChunks.size() && _mfChunks[chunkId] != NullFC;
+}
+
+/*! Checks if a chunk of the same type like the given one is in the current
+    state.
 */
 
-inline
-bool State::chunkPresent(UInt32 chunkId)
-{
-    return  chunkId < _mfChunks.size() &&
-            _mfChunks[chunkId] != NullFC ;
+inline bool State::chunkPresent(StateChunkPtr chunk) {
+  const StateChunkClass* cls = chunk->getClass();
+
+  for (UInt16 i = 0; i < cls->getNumSlots(); ++i) {
+    if (chunkPresent(cls->getId() + i))
+      return true;
+  }
+
+  return false;
 }
-
-/*! Checks if a chunk of the same type like the given one is in the current 
-    state. 
-*/
-
-inline
-bool State::chunkPresent(StateChunkPtr chunk)
-{
-    const StateChunkClass * cls = chunk->getClass();
-    
-    for(UInt16 i = 0; i < cls->getNumSlots(); ++i)
-    {
-        if(chunkPresent(cls->getId() + i))
-            return true;
-    }
-    
-    return false;
-}
-
 
 OSG_END_NAMESPACE
-

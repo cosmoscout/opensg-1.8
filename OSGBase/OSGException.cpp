@@ -47,60 +47,49 @@ OSG_USING_NAMESPACE
 /*-------------------------------------------------------------------------*/
 /*                            Constructors                                 */
 
-Exception::Exception(void) :
-     Inherited(),
-    _what     ()
-{
+Exception::Exception(void)
+    : Inherited()
+    , _what() {
 }
 
-
-Exception::Exception(const Exception &source) :
-     Inherited(source      ),
-    _what     (source._what)
-{
+Exception::Exception(const Exception& source)
+    : Inherited(source)
+    , _what(source._what) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Destructor                                  */
 
-Exception::~Exception(void) OSG_THROW_NOTHING()
-{
+Exception::~Exception(void) OSG_THROW_NOTHING() {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                                Info                                     */
 
-const Char8 *Exception::what() const OSG_THROW_NOTHING()
-{
-    return _what.c_str();
+const Char8* Exception::what() const OSG_THROW_NOTHING() {
+  return _what.c_str();
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Assignment                                  */
 
-Exception &Exception::operator =(const Exception &source)
-{
-    if(this == &source)
-        return *this;
-
-    // copy parts inherited from parent
-    *(static_cast<Inherited *>(this)) = source;
-
-    // copy
-    _what = source._what;
-
+Exception& Exception::operator=(const Exception& source) {
+  if (this == &source)
     return *this;
+
+  // copy parts inherited from parent
+  *(static_cast<Inherited*>(this)) = source;
+
+  // copy
+  _what = source._what;
+
+  return *this;
 }
 
 OSG_BEGIN_NAMESPACE
 
-OSG_BASE_DLLMAPPING std::ostream &operator <<(      std::ostream &os, 
-                                              const Exception    &obj)
-{
-    return os << obj.what() << std::endl;
+OSG_BASE_DLLMAPPING std::ostream& operator<<(std::ostream& os, const Exception& obj) {
+  return os << obj.what() << std::endl;
 }
 
 OSG_END_NAMESPACE
-
-
-

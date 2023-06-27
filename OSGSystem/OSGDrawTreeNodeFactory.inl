@@ -38,46 +38,37 @@
 
 OSG_BEGIN_NAMESPACE
 
-inline
-DrawTreeNode *DrawTreeNodeFactory::create(void)
-{
-    DrawTreeNode *returnValue = NULL;
+inline DrawTreeNode* DrawTreeNodeFactory::create(void) {
+  DrawTreeNode* returnValue = NULL;
 
-    if(_currentFreeNode != _nodeStore.end())
-    {
-        returnValue = *_currentFreeNode;
+  if (_currentFreeNode != _nodeStore.end()) {
+    returnValue = *_currentFreeNode;
 
-        ++_currentFreeNode;
+    ++_currentFreeNode;
 
-        returnValue->reset();
+    returnValue->reset();
 
-        ++_uiReused;
-    }
-    else
-    {
-        returnValue = new DrawTreeNode();
+    ++_uiReused;
+  } else {
+    returnValue = new DrawTreeNode();
 
-        _nodeStore.push_back(returnValue);
+    _nodeStore.push_back(returnValue);
 
-        _currentFreeNode = _nodeStore.end();
+    _currentFreeNode = _nodeStore.end();
 
-        ++_uiAllocated;
-    }
-    
-    return returnValue;
+    ++_uiAllocated;
+  }
+
+  return returnValue;
 }
 
-inline
-void DrawTreeNodeFactory::freeAll(void)
-{
-    _currentFreeNode = _nodeStore.begin();
+inline void DrawTreeNodeFactory::freeAll(void) {
+  _currentFreeNode = _nodeStore.begin();
 
-    _uiAllocated = 0;
-    _uiReused    = 0;
+  _uiAllocated = 0;
+  _uiReused    = 0;
 }
-
 
 OSG_END_NAMESPACE
 
 #define OSGDRAWTREENODEFACTORY_INLINE_CVSID "@(#)$Id: $"
-

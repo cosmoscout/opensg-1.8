@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGSPOTLIGHTBASE_H_
 #define _OSGSPOTLIGHTBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -67,7 +65,7 @@
 
 #include <OSGPointLight.h> // Parent
 
-#include <OSGVec3fFields.h> // Direction type
+#include <OSGVec3fFields.h>  // Direction type
 #include <OSGReal32Fields.h> // SpotExponent type
 #include <OSGReal32Fields.h> // SpotCutOff type
 
@@ -80,195 +78,173 @@ class BinaryDataHandler;
 
 //! \brief SpotLight Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING SpotLightBase : public PointLight
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING SpotLightBase : public PointLight {
+ private:
+  typedef PointLight Inherited;
 
-    typedef PointLight    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef SpotLightPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    DirectionFieldId    = Inherited::NextFieldId,
+    SpotExponentFieldId = DirectionFieldId + 1,
+    SpotCutOffFieldId   = SpotExponentFieldId + 1,
+    NextFieldId         = SpotCutOffFieldId + 1
+  };
 
-    typedef SpotLightPtr  Ptr;
+  static const OSG::BitVector DirectionFieldMask;
+  static const OSG::BitVector SpotExponentFieldMask;
+  static const OSG::BitVector SpotCutOffFieldMask;
 
-    enum
-    {
-        DirectionFieldId    = Inherited::NextFieldId,
-        SpotExponentFieldId = DirectionFieldId    + 1,
-        SpotCutOffFieldId   = SpotExponentFieldId + 1,
-        NextFieldId         = SpotCutOffFieldId   + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector DirectionFieldMask;
-    static const OSG::BitVector SpotExponentFieldMask;
-    static const OSG::BitVector SpotCutOffFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFVec3f*  getSFDirection(void);
+  SFReal32* getSFSpotExponent(void);
+  SFReal32* getSFSpotCutOff(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  Vec3f&        getDirection(void);
+  const Vec3f&  getDirection(void) const;
+  Real32&       getSpotExponent(void);
+  const Real32& getSpotExponent(void) const;
+  Real32&       getSpotCutOff(void);
+  const Real32& getSpotCutOff(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFVec3f             *getSFDirection      (void);
-           SFReal32            *getSFSpotExponent   (void);
-           SFReal32            *getSFSpotCutOff     (void);
+  void setDirection(const Vec3f& value);
+  void setSpotExponent(const Real32& value);
+  void setSpotCutOff(const Real32& value);
 
-           Vec3f               &getDirection      (void);
-     const Vec3f               &getDirection      (void) const;
-           Real32              &getSpotExponent   (void);
-     const Real32              &getSpotExponent   (void) const;
-           Real32              &getSpotCutOff     (void);
-     const Real32              &getSpotCutOff     (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setDirection      ( const Vec3f &value );
-     void setSpotExponent   ( const Real32 &value );
-     void setSpotCutOff     ( const Real32 &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static SpotLightPtr create(void);
+  static SpotLightPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  SpotLightPtr      create          (void); 
-    static  SpotLightPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFVec3f  _sfDirection;
+  SFReal32 _sfSpotExponent;
+  SFReal32 _sfSpotCutOff;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  SpotLightBase(void);
+  SpotLightBase(const SpotLightBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~SpotLightBase(void);
 
-    SFVec3f             _sfDirection;
-    SFReal32            _sfSpotExponent;
-    SFReal32            _sfSpotCutOff;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    SpotLightBase(void);
-    SpotLightBase(const SpotLightBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~SpotLightBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      SpotLightBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(SpotLightBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      SpotLightBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(SpotLightBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const SpotLightBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const SpotLightBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef SpotLightBase* SpotLightBaseP;
 
-typedef SpotLightBase *SpotLightBaseP;
-
-typedef osgIF<SpotLightBase::isNodeCore,
-              CoredNodePtr<SpotLight>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet SpotLightNodePtr;
+typedef osgIF<SpotLightBase::isNodeCore, CoredNodePtr<SpotLight>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet SpotLightNodePtr;
 
 typedef RefPtr<SpotLightPtr> SpotLightRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGSPOTLIGHTBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGSPOTLIGHTBASE_HEADER_CVSID                                                              \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGSPOTLIGHTBASE_H_ */

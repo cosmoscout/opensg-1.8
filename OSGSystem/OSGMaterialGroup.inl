@@ -41,14 +41,12 @@
 
 OSG_BEGIN_NAMESPACE
 
-inline
-void MaterialGroup::setMaterial(const MaterialPtr &value)
-{
-     addRefCP(value);
+inline void MaterialGroup::setMaterial(const MaterialPtr& value) {
+  addRefCP(value);
 
-     subRefCP(_sfMaterial.getValue());
+  subRefCP(_sfMaterial.getValue());
 
-    _sfMaterial.setValue(value);
+  _sfMaterial.setValue(value);
 }
 
 OSG_END_NAMESPACE

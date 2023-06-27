@@ -48,83 +48,76 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief FCPtrAttributeMap class. See \ref 
+/*! \brief FCPtrAttributeMap class. See \ref
            PageSystemFCPtrAttributeMap for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING FCPtrAttributeMap : public FCPtrAttributeMapBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING FCPtrAttributeMap : public FCPtrAttributeMapBase {
+ private:
+  typedef FCPtrAttributeMapBase Inherited;
 
-    typedef FCPtrAttributeMapBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  inline const MFString& getKeys() const;
 
-    /*! \}                                                                 */
+  void setAttribute(const std::string& key, FieldContainerPtr value);
 
-    inline const MFString& getKeys() const;
+  inline bool hasAttribute(const std::string& key) const;
 
-    void setAttribute(const std::string& key, FieldContainerPtr value);
+  bool getAttribute(const std::string& key, FieldContainerPtr& value) const;
 
-    inline bool hasAttribute(const std::string& key) const;
+  inline FieldContainerPtr getAttribute(const std::string& key) const;
 
-    bool getAttribute(const std::string& key, FieldContainerPtr& value) const;
+  inline FieldContainerPtr& operator[](const std::string& key);
 
-    inline FieldContainerPtr getAttribute(const std::string& key) const;
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in FCPtrAttributeMapBase.
 
-    inline FieldContainerPtr& operator[](const std::string& key);
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  FCPtrAttributeMap(void);
+  FCPtrAttributeMap(const FCPtrAttributeMap& source);
 
-    // Variables should all be in FCPtrAttributeMapBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~FCPtrAttributeMap(void);
 
-    FCPtrAttributeMap(void);
-    FCPtrAttributeMap(const FCPtrAttributeMap &source);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class FCPtrAttributeMapBase;
 
-    virtual ~FCPtrAttributeMap(void); 
+  static void initMethod(void);
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  // prohibit default functions (move to 'public' if you need one)
 
-    friend class FieldContainer;
-    friend class FCPtrAttributeMapBase;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const FCPtrAttributeMap &source);
+  void operator=(const FCPtrAttributeMap& source);
 };
 
-typedef FCPtrAttributeMap *FCPtrAttributeMapP;
+typedef FCPtrAttributeMap* FCPtrAttributeMapP;
 
 class AttachmentContainerPtr;
 
@@ -136,6 +129,7 @@ OSG_END_NAMESPACE
 #include <OSGFCPtrAttributeMapBase.inl>
 #include <OSGFCPtrAttributeMap.inl>
 
-#define OSGFCPTRATTRIBUTEMAP_HEADER_CVSID "@(#)$Id: OSGFCPtrAttributeMap.h,v 1.1 2005/09/25 23:00:54 dirk Exp $"
+#define OSGFCPTRATTRIBUTEMAP_HEADER_CVSID                                                          \
+  "@(#)$Id: OSGFCPtrAttributeMap.h,v 1.1 2005/09/25 23:00:54 dirk Exp $"
 
 #endif /* _OSGFCPTRATTRIBUTEMAP_H_ */

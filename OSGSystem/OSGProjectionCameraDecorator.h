@@ -52,86 +52,76 @@ OSG_BEGIN_NAMESPACE
     PageSystemWindowCameraDecorators for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING ProjectionCameraDecorator : public ProjectionCameraDecoratorBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING ProjectionCameraDecorator : public ProjectionCameraDecoratorBase {
+ private:
+  typedef ProjectionCameraDecoratorBase Inherited;
 
-    typedef ProjectionCameraDecoratorBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector whichField, 
-                         UInt32    origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    access                                    */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  virtual void getViewing(Matrix& result, UInt32 width, UInt32 height);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    access                                    */
-    /*! \{                                                                 */
- 
-    virtual void getViewing              (Matrix        &result, 
-                                          UInt32 width, UInt32 height);
- 
-    virtual void getProjection           (Matrix        &result, 
-                                          UInt32 width, UInt32 height);
- 
-    virtual void getProjectionTranslation(Matrix        &result, 
-                                          UInt32 width, UInt32 height);
- 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  virtual void getProjection(Matrix& result, UInt32 width, UInt32 height);
 
-    // Variables should all be in ProjectionCameraDecoratorBase.
+  virtual void getProjectionTranslation(Matrix& result, UInt32 width, UInt32 height);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in ProjectionCameraDecoratorBase.
 
-    ProjectionCameraDecorator(void);
-    ProjectionCameraDecorator(const ProjectionCameraDecorator &source);
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  ProjectionCameraDecorator(void);
+  ProjectionCameraDecorator(const ProjectionCameraDecorator& source);
 
-    virtual ~ProjectionCameraDecorator(void); 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   internal                                   */
-    /*! \{                                                                 */
- 
-    void updateData(void);
- 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  virtual ~ProjectionCameraDecorator(void);
 
-    friend class FieldContainer;
-    friend class ProjectionCameraDecoratorBase;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   internal                                   */
+  /*! \{                                                                 */
 
-    static void initMethod(void);
+  void updateData(void);
 
-    // prohibit default functions (move to 'public' if you need one)
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class ProjectionCameraDecoratorBase;
 
-    void operator =(const ProjectionCameraDecorator &source);
+  static void initMethod(void);
+
+  // prohibit default functions (move to 'public' if you need one)
+
+  void operator=(const ProjectionCameraDecorator& source);
 };
 
-typedef ProjectionCameraDecorator *ProjectionCameraDecoratorP;
+typedef ProjectionCameraDecorator* ProjectionCameraDecoratorP;
 
 OSG_END_NAMESPACE
 

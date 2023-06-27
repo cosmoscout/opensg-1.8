@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEDRAWABLEINST
 
 #include <stdlib.h>
@@ -61,154 +60,105 @@
 #include "OSGDrawableBase.h"
 #include "OSGDrawable.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector DrawableBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
-
+const OSG::BitVector DrawableBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 FieldContainerType DrawableBase::_type(
-    "Drawable",
-    "NodeCore",
-    NULL,
-    NULL, 
-    Drawable::initMethod,
-    NULL,
-    0);
+    "Drawable", "NodeCore", NULL, NULL, Drawable::initMethod, NULL, 0);
 
-//OSG_FIELD_CONTAINER_DEF(DrawableBase, DrawablePtr)
+// OSG_FIELD_CONTAINER_DEF(DrawableBase, DrawablePtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &DrawableBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &DrawableBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-UInt32 DrawableBase::getContainerSize(void) const 
-{ 
-    return sizeof(Drawable); 
+FieldContainerType& DrawableBase::getType(void) {
+  return _type;
 }
 
+const FieldContainerType& DrawableBase::getType(void) const {
+  return _type;
+}
+
+UInt32 DrawableBase::getContainerSize(void) const {
+  return sizeof(Drawable);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void DrawableBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((DrawableBase *) &other, whichField);
+void DrawableBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((DrawableBase*)&other, whichField);
 }
 #else
-void DrawableBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((DrawableBase *) &other, whichField, sInfo);
+void DrawableBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((DrawableBase*)&other, whichField, sInfo);
 }
-void DrawableBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void DrawableBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void DrawableBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void DrawableBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-DrawableBase::DrawableBase(void) :
-    Inherited() 
-{
+DrawableBase::DrawableBase(void)
+    : Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-DrawableBase::DrawableBase(const DrawableBase &source) :
-    Inherited                 (source)
-{
+DrawableBase::DrawableBase(const DrawableBase& source)
+    : Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-DrawableBase::~DrawableBase(void)
-{
+DrawableBase::~DrawableBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 DrawableBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 DrawableBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void DrawableBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
-
-
+void DrawableBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 }
 
-void DrawableBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
-
-
+void DrawableBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void DrawableBase::executeSyncImpl(      DrawableBase *pOther,
-                                        const BitVector         &whichField)
-{
+void DrawableBase::executeSyncImpl(DrawableBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
-
-
+  Inherited::executeSyncImpl(pOther, whichField);
 }
 #else
-void DrawableBase::executeSyncImpl(      DrawableBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void DrawableBase::executeSyncImpl(
+    DrawableBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
-
-
-
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 }
 
-void DrawableBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void DrawableBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>

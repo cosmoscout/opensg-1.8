@@ -52,53 +52,39 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &FragmentProgramChunkBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& FragmentProgramChunkBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 FragmentProgramChunkBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 FragmentProgramChunkBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-FragmentProgramChunkPtr FragmentProgramChunkBase::create(void) 
-{
-    FragmentProgramChunkPtr fc; 
+inline FragmentProgramChunkPtr FragmentProgramChunkBase::create(void) {
+  FragmentProgramChunkPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = FragmentProgramChunkPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = FragmentProgramChunkPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-FragmentProgramChunkPtr FragmentProgramChunkBase::createEmpty(void) 
-{ 
-    FragmentProgramChunkPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline FragmentProgramChunkPtr FragmentProgramChunkBase::createEmpty(void) {
+  FragmentProgramChunkPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
-
-
 OSG_END_NAMESPACE
 
-#define OSGFRAGMENTPROGRAMCHUNKBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGFRAGMENTPROGRAMCHUNKBASE_INLINE_CVSID                                                   \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

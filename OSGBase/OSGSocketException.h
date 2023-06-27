@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _SOCKETEXCEPTION_H_
 #define _SOCKETEXCEPTION_H_
 #ifdef __sgi
@@ -54,69 +53,64 @@
 
 OSG_BEGIN_NAMESPACE
 
-class OSG_BASE_DLLMAPPING SocketException : public Exception 
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+class OSG_BASE_DLLMAPPING SocketException : public Exception {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    SocketException();
+  SocketException();
 
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 };
 
-class OSG_BASE_DLLMAPPING SocketError : public SocketException 
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+class OSG_BASE_DLLMAPPING SocketError : public SocketException {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    SocketError(const char *function);
+  SocketError(const char* function);
 
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 };
 
-class OSG_BASE_DLLMAPPING SocketHostError : public SocketException 
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+class OSG_BASE_DLLMAPPING SocketHostError : public SocketException {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    SocketHostError(const char *function);
+  SocketHostError(const char* function);
 
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 };
 
-class OSG_BASE_DLLMAPPING SocketInUse : public SocketError
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+class OSG_BASE_DLLMAPPING SocketInUse : public SocketError {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    SocketInUse(const char *text);
+  SocketInUse(const char* text);
 
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 };
 
-class OSG_BASE_DLLMAPPING SocketConnReset : public SocketError
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-    
-    SocketConnReset(const char *text);
-    
-    /*! \}                                                                 */
+class OSG_BASE_DLLMAPPING SocketConnReset : public SocketError {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
+
+  SocketConnReset(const char* text);
+
+  /*! \}                                                                 */
 };
 
 OSG_END_NAMESPACE

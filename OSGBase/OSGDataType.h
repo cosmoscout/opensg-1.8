@@ -49,52 +49,46 @@ OSG_BEGIN_NAMESPACE
 /*! \ingroup GrpBaseBaseTypeSystem
  */
 
-class OSG_BASE_DLLMAPPING DataType : public TypeBase
-{
-    /*==========================  PUBLIC  =================================*/
+class OSG_BASE_DLLMAPPING DataType : public TypeBase {
+  /*==========================  PUBLIC  =================================*/
 
-  public :
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  DataType(const Char8* szName, const Char8* szParentName, const UInt32 uiNameSpace = 0);
 
-    DataType(const Char8  *szName, 
-             const Char8  *szParentName,
-             const UInt32  uiNameSpace = 0);
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    virtual ~DataType(void);
+  virtual ~DataType(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Operators                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Operators                                 */
+  /*! \{                                                                 */
 
-    bool operator ==(const DataType &other) const;
-    bool operator !=(const DataType &other) const;
+  bool operator==(const DataType& other) const;
+  bool operator!=(const DataType& other) const;
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-  protected:
+ protected:
+  typedef TypeBase Inherited;
 
-    typedef TypeBase Inherited;
+  DataType(const DataType& source);
 
-    DataType(const DataType &source);
-
-    /*==========================  PRIVATE  ================================*/
-  private:
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const DataType &source);
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const DataType& source);
 };
 
-typedef DataType *DataTypeP;
+typedef DataType* DataTypeP;
 
 OSG_END_NAMESPACE
 

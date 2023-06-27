@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGSHADERPARAMETERMINTFIELDS_H_
 #define _OSGSHADERPARAMETERMINTFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class ShaderParameterMInt;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! ShaderParameterMIntPtr
 
 typedef FCPtr<ShaderParameterPtr, ShaderParameterMInt> ShaderParameterMIntPtr;
@@ -81,18 +80,23 @@ typedef FCPtr<ShaderParameterPtr, ShaderParameterMInt> ShaderParameterMIntPtr;
 #endif
 
 template <>
-struct FieldDataTraits<ShaderParameterMIntPtr> : 
-    public FieldTraitsRecurseMapper<ShaderParameterMIntPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<ShaderParameterMIntPtr>
+    : public FieldTraitsRecurseMapper<ShaderParameterMIntPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getSName(void) { return "SFShaderParameterMIntPtr"; }
-    static const char *getMName(void) { return "MFShaderParameterMIntPtr"; }
+  static const char* getSName(void) {
+    return "SFShaderParameterMIntPtr";
+  }
+  static const char* getMName(void) {
+    return "MFShaderParameterMIntPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -102,7 +106,6 @@ struct FieldDataTraits<ShaderParameterMIntPtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
@@ -126,6 +129,7 @@ OSG_DLLEXPORT_DECL1(MField, ShaderParameterMIntPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING
 
 OSG_END_NAMESPACE
 
-#define OSGSHADERPARAMETERMINTFIELDS_HEADER_CVSID "@(#)$Id: OSGShaderParameterMIntFields.h,v 1.1 2007/03/09 18:11:48 a-m-z Exp $"
+#define OSGSHADERPARAMETERMINTFIELDS_HEADER_CVSID                                                  \
+  "@(#)$Id: OSGShaderParameterMIntFields.h,v 1.1 2007/03/09 18:11:48 a-m-z Exp $"
 
 #endif /* _OSGSHADERPARAMETERMINTFIELDS_H_ */

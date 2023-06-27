@@ -52,165 +52,119 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &ColorMaskChunkBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& ColorMaskChunkBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 ColorMaskChunkBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 ColorMaskChunkBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-ColorMaskChunkPtr ColorMaskChunkBase::create(void) 
-{
-    ColorMaskChunkPtr fc; 
+inline ColorMaskChunkPtr ColorMaskChunkBase::create(void) {
+  ColorMaskChunkPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = ColorMaskChunkPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = ColorMaskChunkPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-ColorMaskChunkPtr ColorMaskChunkBase::createEmpty(void) 
-{ 
-    ColorMaskChunkPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline ColorMaskChunkPtr ColorMaskChunkBase::createEmpty(void) {
+  ColorMaskChunkPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the ColorMaskChunk::_sfMaskR field.
-inline
-SFBool *ColorMaskChunkBase::getSFMaskR(void)
-{
-    return &_sfMaskR;
+inline SFBool* ColorMaskChunkBase::getSFMaskR(void) {
+  return &_sfMaskR;
 }
 
 //! Get the ColorMaskChunk::_sfMaskG field.
-inline
-SFBool *ColorMaskChunkBase::getSFMaskG(void)
-{
-    return &_sfMaskG;
+inline SFBool* ColorMaskChunkBase::getSFMaskG(void) {
+  return &_sfMaskG;
 }
 
 //! Get the ColorMaskChunk::_sfMaskB field.
-inline
-SFBool *ColorMaskChunkBase::getSFMaskB(void)
-{
-    return &_sfMaskB;
+inline SFBool* ColorMaskChunkBase::getSFMaskB(void) {
+  return &_sfMaskB;
 }
 
 //! Get the ColorMaskChunk::_sfMaskA field.
-inline
-SFBool *ColorMaskChunkBase::getSFMaskA(void)
-{
-    return &_sfMaskA;
-}
-
-
-//! Get the value of the ColorMaskChunk::_sfMaskR field.
-inline
-bool &ColorMaskChunkBase::getMaskR(void)
-{
-    return _sfMaskR.getValue();
+inline SFBool* ColorMaskChunkBase::getSFMaskA(void) {
+  return &_sfMaskA;
 }
 
 //! Get the value of the ColorMaskChunk::_sfMaskR field.
-inline
-const bool &ColorMaskChunkBase::getMaskR(void) const
-{
-    return _sfMaskR.getValue();
+inline bool& ColorMaskChunkBase::getMaskR(void) {
+  return _sfMaskR.getValue();
+}
+
+//! Get the value of the ColorMaskChunk::_sfMaskR field.
+inline const bool& ColorMaskChunkBase::getMaskR(void) const {
+  return _sfMaskR.getValue();
 }
 
 //! Set the value of the ColorMaskChunk::_sfMaskR field.
-inline
-void ColorMaskChunkBase::setMaskR(const bool &value)
-{
-    _sfMaskR.setValue(value);
+inline void ColorMaskChunkBase::setMaskR(const bool& value) {
+  _sfMaskR.setValue(value);
 }
 
 //! Get the value of the ColorMaskChunk::_sfMaskG field.
-inline
-bool &ColorMaskChunkBase::getMaskG(void)
-{
-    return _sfMaskG.getValue();
+inline bool& ColorMaskChunkBase::getMaskG(void) {
+  return _sfMaskG.getValue();
 }
 
 //! Get the value of the ColorMaskChunk::_sfMaskG field.
-inline
-const bool &ColorMaskChunkBase::getMaskG(void) const
-{
-    return _sfMaskG.getValue();
+inline const bool& ColorMaskChunkBase::getMaskG(void) const {
+  return _sfMaskG.getValue();
 }
 
 //! Set the value of the ColorMaskChunk::_sfMaskG field.
-inline
-void ColorMaskChunkBase::setMaskG(const bool &value)
-{
-    _sfMaskG.setValue(value);
+inline void ColorMaskChunkBase::setMaskG(const bool& value) {
+  _sfMaskG.setValue(value);
 }
 
 //! Get the value of the ColorMaskChunk::_sfMaskB field.
-inline
-bool &ColorMaskChunkBase::getMaskB(void)
-{
-    return _sfMaskB.getValue();
+inline bool& ColorMaskChunkBase::getMaskB(void) {
+  return _sfMaskB.getValue();
 }
 
 //! Get the value of the ColorMaskChunk::_sfMaskB field.
-inline
-const bool &ColorMaskChunkBase::getMaskB(void) const
-{
-    return _sfMaskB.getValue();
+inline const bool& ColorMaskChunkBase::getMaskB(void) const {
+  return _sfMaskB.getValue();
 }
 
 //! Set the value of the ColorMaskChunk::_sfMaskB field.
-inline
-void ColorMaskChunkBase::setMaskB(const bool &value)
-{
-    _sfMaskB.setValue(value);
+inline void ColorMaskChunkBase::setMaskB(const bool& value) {
+  _sfMaskB.setValue(value);
 }
 
 //! Get the value of the ColorMaskChunk::_sfMaskA field.
-inline
-bool &ColorMaskChunkBase::getMaskA(void)
-{
-    return _sfMaskA.getValue();
+inline bool& ColorMaskChunkBase::getMaskA(void) {
+  return _sfMaskA.getValue();
 }
 
 //! Get the value of the ColorMaskChunk::_sfMaskA field.
-inline
-const bool &ColorMaskChunkBase::getMaskA(void) const
-{
-    return _sfMaskA.getValue();
+inline const bool& ColorMaskChunkBase::getMaskA(void) const {
+  return _sfMaskA.getValue();
 }
 
 //! Set the value of the ColorMaskChunk::_sfMaskA field.
-inline
-void ColorMaskChunkBase::setMaskA(const bool &value)
-{
-    _sfMaskA.setValue(value);
+inline void ColorMaskChunkBase::setMaskA(const bool& value) {
+  _sfMaskA.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGCOLORMASKCHUNKBASE_INLINE_CVSID "@(#)$Id: OSGColorMaskChunkBase.inl,v 1.3 2006/02/20 17:04:46 dirk Exp $"
-
+#define OSGCOLORMASKCHUNKBASE_INLINE_CVSID                                                         \
+  "@(#)$Id: OSGColorMaskChunkBase.inl,v 1.3 2006/02/20 17:04:46 dirk Exp $"

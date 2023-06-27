@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILESWITCHINST
 
 #include <stdlib.h>
@@ -61,206 +60,147 @@
 #include "OSGSwitchBase.h"
 #include "OSGSwitch.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  SwitchBase::ChoiceFieldMask = 
+const OSG::BitVector SwitchBase::ChoiceFieldMask =
     (TypeTraits<BitVector>::One << SwitchBase::ChoiceFieldId);
 
-const OSG::BitVector SwitchBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector SwitchBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
 /*! \var Int32           SwitchBase::_sfChoice
-    
+
 */
 
 //! Switch description
 
-FieldDescription *SwitchBase::_desc[] = 
-{
-    new FieldDescription(SFInt32::getClassType(), 
-                     "choice", 
-                     ChoiceFieldId, ChoiceFieldMask,
-                     false,
-                     (FieldAccessMethod) &SwitchBase::getSFChoice)
-};
+FieldDescription* SwitchBase::_desc[] = {new FieldDescription(SFInt32::getClassType(), "choice",
+    ChoiceFieldId, ChoiceFieldMask, false, (FieldAccessMethod)&SwitchBase::getSFChoice)};
 
+FieldContainerType SwitchBase::_type("Switch", "Group", NULL,
+    (PrototypeCreateF)&SwitchBase::createEmpty, Switch::initMethod, _desc, sizeof(_desc));
 
-FieldContainerType SwitchBase::_type(
-    "Switch",
-    "Group",
-    NULL,
-    (PrototypeCreateF) &SwitchBase::createEmpty,
-    Switch::initMethod,
-    _desc,
-    sizeof(_desc));
-
-//OSG_FIELD_CONTAINER_DEF(SwitchBase, SwitchPtr)
+// OSG_FIELD_CONTAINER_DEF(SwitchBase, SwitchPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &SwitchBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &SwitchBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr SwitchBase::shallowCopy(void) const 
-{ 
-    SwitchPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const Switch *>(this)); 
-
-    return returnValue; 
+FieldContainerType& SwitchBase::getType(void) {
+  return _type;
 }
 
-UInt32 SwitchBase::getContainerSize(void) const 
-{ 
-    return sizeof(Switch); 
+const FieldContainerType& SwitchBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr SwitchBase::shallowCopy(void) const {
+  SwitchPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const Switch*>(this));
+
+  return returnValue;
+}
+
+UInt32 SwitchBase::getContainerSize(void) const {
+  return sizeof(Switch);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void SwitchBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((SwitchBase *) &other, whichField);
+void SwitchBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((SwitchBase*)&other, whichField);
 }
 #else
-void SwitchBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((SwitchBase *) &other, whichField, sInfo);
+void SwitchBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((SwitchBase*)&other, whichField, sInfo);
 }
-void SwitchBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void SwitchBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void SwitchBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void SwitchBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-SwitchBase::SwitchBase(void) :
-    _sfChoice                 (Int32(-1)), 
-    Inherited() 
-{
+SwitchBase::SwitchBase(void)
+    : _sfChoice(Int32(-1))
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-SwitchBase::SwitchBase(const SwitchBase &source) :
-    _sfChoice                 (source._sfChoice                 ), 
-    Inherited                 (source)
-{
+SwitchBase::SwitchBase(const SwitchBase& source)
+    : _sfChoice(source._sfChoice)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-SwitchBase::~SwitchBase(void)
-{
+SwitchBase::~SwitchBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 SwitchBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 SwitchBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (ChoiceFieldMask & whichField))
-    {
-        returnValue += _sfChoice.getBinSize();
-    }
+  if (FieldBits::NoField != (ChoiceFieldMask & whichField)) {
+    returnValue += _sfChoice.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void SwitchBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void SwitchBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ChoiceFieldMask & whichField))
-    {
-        _sfChoice.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (ChoiceFieldMask & whichField)) {
+    _sfChoice.copyToBin(pMem);
+  }
 }
 
-void SwitchBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void SwitchBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ChoiceFieldMask & whichField))
-    {
-        _sfChoice.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (ChoiceFieldMask & whichField)) {
+    _sfChoice.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void SwitchBase::executeSyncImpl(      SwitchBase *pOther,
-                                        const BitVector         &whichField)
-{
+void SwitchBase::executeSyncImpl(SwitchBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (ChoiceFieldMask & whichField))
-        _sfChoice.syncWith(pOther->_sfChoice);
-
-
+  if (FieldBits::NoField != (ChoiceFieldMask & whichField))
+    _sfChoice.syncWith(pOther->_sfChoice);
 }
 #else
-void SwitchBase::executeSyncImpl(      SwitchBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void SwitchBase::executeSyncImpl(
+    SwitchBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (ChoiceFieldMask & whichField))
-        _sfChoice.syncWith(pOther->_sfChoice);
-
-
-
+  if (FieldBits::NoField != (ChoiceFieldMask & whichField))
+    _sfChoice.syncWith(pOther->_sfChoice);
 }
 
-void SwitchBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void SwitchBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>
@@ -275,5 +215,3 @@ OSG_DLLEXPORT_SFIELD_DEF1(SwitchPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 OSG_DLLEXPORT_MFIELD_DEF1(SwitchPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
-
-

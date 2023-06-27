@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEPASSIVEVIEWPORTINST
 
 #include <stdlib.h>
@@ -61,163 +60,114 @@
 #include "OSGPassiveViewportBase.h"
 #include "OSGPassiveViewport.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector PassiveViewportBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
+const OSG::BitVector PassiveViewportBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
+FieldContainerType PassiveViewportBase::_type("PassiveViewport", "Viewport", NULL,
+    (PrototypeCreateF)&PassiveViewportBase::createEmpty, PassiveViewport::initMethod, NULL, 0);
 
-
-FieldContainerType PassiveViewportBase::_type(
-    "PassiveViewport",
-    "Viewport",
-    NULL,
-    (PrototypeCreateF) &PassiveViewportBase::createEmpty,
-    PassiveViewport::initMethod,
-    NULL,
-    0);
-
-//OSG_FIELD_CONTAINER_DEF(PassiveViewportBase, PassiveViewportPtr)
+// OSG_FIELD_CONTAINER_DEF(PassiveViewportBase, PassiveViewportPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &PassiveViewportBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &PassiveViewportBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr PassiveViewportBase::shallowCopy(void) const 
-{ 
-    PassiveViewportPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const PassiveViewport *>(this)); 
-
-    return returnValue; 
+FieldContainerType& PassiveViewportBase::getType(void) {
+  return _type;
 }
 
-UInt32 PassiveViewportBase::getContainerSize(void) const 
-{ 
-    return sizeof(PassiveViewport); 
+const FieldContainerType& PassiveViewportBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr PassiveViewportBase::shallowCopy(void) const {
+  PassiveViewportPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const PassiveViewport*>(this));
+
+  return returnValue;
+}
+
+UInt32 PassiveViewportBase::getContainerSize(void) const {
+  return sizeof(PassiveViewport);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void PassiveViewportBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((PassiveViewportBase *) &other, whichField);
+void PassiveViewportBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((PassiveViewportBase*)&other, whichField);
 }
 #else
-void PassiveViewportBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((PassiveViewportBase *) &other, whichField, sInfo);
+void PassiveViewportBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((PassiveViewportBase*)&other, whichField, sInfo);
 }
-void PassiveViewportBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void PassiveViewportBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void PassiveViewportBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void PassiveViewportBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-PassiveViewportBase::PassiveViewportBase(void) :
-    Inherited() 
-{
+PassiveViewportBase::PassiveViewportBase(void)
+    : Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-PassiveViewportBase::PassiveViewportBase(const PassiveViewportBase &source) :
-    Inherited                 (source)
-{
+PassiveViewportBase::PassiveViewportBase(const PassiveViewportBase& source)
+    : Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-PassiveViewportBase::~PassiveViewportBase(void)
-{
+PassiveViewportBase::~PassiveViewportBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 PassiveViewportBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 PassiveViewportBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void PassiveViewportBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
-
-
+void PassiveViewportBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 }
 
-void PassiveViewportBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
-
-
+void PassiveViewportBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void PassiveViewportBase::executeSyncImpl(      PassiveViewportBase *pOther,
-                                        const BitVector         &whichField)
-{
+void PassiveViewportBase::executeSyncImpl(
+    PassiveViewportBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
-
-
+  Inherited::executeSyncImpl(pOther, whichField);
 }
 #else
-void PassiveViewportBase::executeSyncImpl(      PassiveViewportBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void PassiveViewportBase::executeSyncImpl(
+    PassiveViewportBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
-
-
-
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 }
 
-void PassiveViewportBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void PassiveViewportBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>
@@ -232,4 +182,3 @@ OSG_DLLEXPORT_SFIELD_DEF1(PassiveViewportPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 OSG_DLLEXPORT_MFIELD_DEF1(PassiveViewportPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
-

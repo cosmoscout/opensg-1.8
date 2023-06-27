@@ -55,7 +55,7 @@
 
 OSG_BEGIN_NAMESPACE
 
-#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS) 
+#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
 
 typedef SField<AttachmentMap> SFAttachmentMap;
@@ -70,4 +70,3 @@ OSG_END_NAMESPACE
 #define OSGSFATTACHMENTMAP_HEADER_CVSID "@(#)$Id: $"
 
 #endif /* _OSGSFATTACHMENTMAP_H_ */
-

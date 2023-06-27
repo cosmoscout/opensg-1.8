@@ -49,89 +49,84 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief PolygonBackground class. See \ref 
+/*! \brief PolygonBackground class. See \ref
            PageSystemPolygonBackground for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING PolygonBackground : public PolygonBackgroundBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING PolygonBackground : public PolygonBackgroundBase {
+ private:
+  typedef PolygonBackgroundBase Inherited;
 
-    typedef PolygonBackgroundBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Clear                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Clear                                    */
-    /*! \{                                                                 */
+  virtual void clear(DrawActionBase* act, Viewport* port);
 
-    virtual void clear( DrawActionBase *act, Viewport *port );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Helpers                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Helpers                                  */
-    /*! \{                                                                 */
+  Real32 mapCoordinate(Real32 val, Real32 max, bool norm);
 
-    Real32 mapCoordinate(Real32 val, Real32 max, bool norm);
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in PolygonBackgroundBase.
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    // Variables should all be in PolygonBackgroundBase.
+  PolygonBackground(void);
+  PolygonBackground(const PolygonBackground& source);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    PolygonBackground(void);
-    PolygonBackground(const PolygonBackground &source);
+  virtual ~PolygonBackground(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    virtual ~PolygonBackground(void); 
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class PolygonBackgroundBase;
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  static void initMethod(void);
 
-    friend class FieldContainer;
-    friend class PolygonBackgroundBase;
+  // prohibit default functions (move to 'public' if you need one)
 
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const PolygonBackground &source);
+  void operator=(const PolygonBackground& source);
 };
 
-typedef PolygonBackground *PolygonBackgroundP;
+typedef PolygonBackground* PolygonBackgroundP;
 
 OSG_END_NAMESPACE
 
 #include <OSGPolygonBackgroundBase.inl>
 #include <OSGPolygonBackground.inl>
 
-#define OSGPOLYGONBACKGROUND_HEADER_CVSID "@(#)$Id: OSGPolygonBackground.h,v 1.1 2005/06/06 17:16:01 yjung Exp $"
+#define OSGPOLYGONBACKGROUND_HEADER_CVSID                                                          \
+  "@(#)$Id: OSGPolygonBackground.h,v 1.1 2005/06/06 17:16:01 yjung Exp $"
 
 #endif /* _OSGPOLYGONBACKGROUND_H_ */

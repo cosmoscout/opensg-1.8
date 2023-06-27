@@ -65,10 +65,8 @@ OSG_USING_NAMESPACE
  *                           Class methods                                 *
 \***************************************************************************/
 
-void ShaderChunk::initMethod (void)
-{
+void ShaderChunk::initMethod(void) {
 }
-
 
 /***************************************************************************\
  *                           Instance methods                              *
@@ -80,117 +78,93 @@ void ShaderChunk::initMethod (void)
 
 /*----------------------- constructors & destructors ----------------------*/
 
-ShaderChunk::ShaderChunk(void) :
-    Inherited()
-{
+ShaderChunk::ShaderChunk(void)
+    : Inherited() {
 }
 
-ShaderChunk::ShaderChunk(const ShaderChunk &source) :
-    Inherited(source)
-{
+ShaderChunk::ShaderChunk(const ShaderChunk& source)
+    : Inherited(source) {
 }
 
-ShaderChunk::~ShaderChunk(void)
-{
+ShaderChunk::~ShaderChunk(void) {
 }
 
 /*----------------------------- class specific ----------------------------*/
 
-void ShaderChunk::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void ShaderChunk::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
-void ShaderChunk::dump(      UInt32    , 
-                         const BitVector ) const
-{
-    SLOG << "Dump ShaderChunk NI" << std::endl;
+void ShaderChunk::dump(UInt32, const BitVector) const {
+  SLOG << "Dump ShaderChunk NI" << std::endl;
 }
 
 /*---------------------------------- Access -------------------------------*/
 
 /*! Read the program string from the given file
-*/
-bool ShaderChunk::readVertexProgram(const char *file)
-{
-    std::ifstream s(file);
-    
-    if(s.good())
-    {
-        return readVertexProgram(s);
-    }
-    else
-    {
-        FWARNING(("ShaderChunk::readVertexProgram: couldn't open '%s' for reading!\n",
-                  file));
-        return false;
-    }
+ */
+bool ShaderChunk::readVertexProgram(const char* file) {
+  std::ifstream s(file);
+
+  if (s.good()) {
+    return readVertexProgram(s);
+  } else {
+    FWARNING(("ShaderChunk::readVertexProgram: couldn't open '%s' for reading!\n", file));
+    return false;
+  }
 }
 
 /*! Read the program string from the given stream
-*/
-bool ShaderChunk::readVertexProgram(std::istream &stream)
-{
+ */
+bool ShaderChunk::readVertexProgram(std::istream& stream) {
 #define BUFSIZE 200
-    
-    getVertexProgram().erase();    
-    char buf[BUFSIZE];
 
-    if(!stream.good())
-    {
-        FWARNING(("SHLChunk::readVertexProgram: stream is not good!\n"));
-        return false;
-    }
-    
-    do
-    {
-        stream.read(buf, BUFSIZE);
-        getVertexProgram().append(buf, stream.gcount());
-    }
-    while(!stream.eof());
-    
-    return true;
+  getVertexProgram().erase();
+  char buf[BUFSIZE];
+
+  if (!stream.good()) {
+    FWARNING(("SHLChunk::readVertexProgram: stream is not good!\n"));
+    return false;
+  }
+
+  do {
+    stream.read(buf, BUFSIZE);
+    getVertexProgram().append(buf, stream.gcount());
+  } while (!stream.eof());
+
+  return true;
 }
 
 /*! Read the program string from the given file
-*/
-bool ShaderChunk::readFragmentProgram(const char *file)
-{
-    std::ifstream s(file);
-    
-    if(s.good())
-    {
-        return readFragmentProgram(s);
-    }
-    else
-    {
-        FWARNING(("ShaderChunk::readFragmentProgram: couldn't open '%s' for reading!\n",
-                  file));
-        return false;
-    }
+ */
+bool ShaderChunk::readFragmentProgram(const char* file) {
+  std::ifstream s(file);
+
+  if (s.good()) {
+    return readFragmentProgram(s);
+  } else {
+    FWARNING(("ShaderChunk::readFragmentProgram: couldn't open '%s' for reading!\n", file));
+    return false;
+  }
 }
 
 /*! Read the program string from the given stream
-*/
-bool ShaderChunk::readFragmentProgram(std::istream &stream)
-{
+ */
+bool ShaderChunk::readFragmentProgram(std::istream& stream) {
 #define BUFSIZE 200
-    
-    getFragmentProgram().erase();    
-    char buf[BUFSIZE];
 
-    if(!stream.good())
-    {
-        FWARNING(("SHLChunk::readFragmentProgram: stream is not good!\n"));
-        return false;
-    }
-    
-    do
-    {
-        stream.read(buf, BUFSIZE);
-        getFragmentProgram().append(buf, stream.gcount());
-    }
-    while(!stream.eof());
-    
-    return true;
+  getFragmentProgram().erase();
+  char buf[BUFSIZE];
+
+  if (!stream.good()) {
+    FWARNING(("SHLChunk::readFragmentProgram: stream is not good!\n"));
+    return false;
+  }
+
+  do {
+    stream.read(buf, BUFSIZE);
+    getFragmentProgram().append(buf, stream.gcount());
+  } while (!stream.eof());
+
+  return true;
 }

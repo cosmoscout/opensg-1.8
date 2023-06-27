@@ -69,90 +69,69 @@ The only parameter is defined by the _sfZeroParallaxDistance field.
 
 /*----------------------- constructors & destructors ----------------------*/
 
-ShearedStereoCameraDecorator::ShearedStereoCameraDecorator(void) :
-    Inherited()
-{
+ShearedStereoCameraDecorator::ShearedStereoCameraDecorator(void)
+    : Inherited() {
 }
 
-ShearedStereoCameraDecorator::ShearedStereoCameraDecorator(const ShearedStereoCameraDecorator &source) :
-    Inherited(source)
-{
+ShearedStereoCameraDecorator::ShearedStereoCameraDecorator(
+    const ShearedStereoCameraDecorator& source)
+    : Inherited(source) {
 }
 
-ShearedStereoCameraDecorator::~ShearedStereoCameraDecorator(void)
-{
+ShearedStereoCameraDecorator::~ShearedStereoCameraDecorator(void) {
 }
 
 /*----------------------------- class specific ----------------------------*/
 
-void ShearedStereoCameraDecorator::initMethod (void)
-{
+void ShearedStereoCameraDecorator::initMethod(void) {
 }
 
-void ShearedStereoCameraDecorator::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void ShearedStereoCameraDecorator::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
-void ShearedStereoCameraDecorator::dump(      UInt32    , 
-                         const BitVector ) const
-{
-    SLOG << "Dump ShearedStereoCameraDecorator NI" << std::endl;
+void ShearedStereoCameraDecorator::dump(UInt32, const BitVector) const {
+  SLOG << "Dump ShearedStereoCameraDecorator NI" << std::endl;
 }
-
 
 /*! Get the projection matrix, uses MatrixStereoPerspective to generate it.
-*/
+ */
 
-void ShearedStereoCameraDecorator::getProjection( Matrix &result, 
-                                                  UInt32 width, UInt32 height)
-{
-    if(width == 0 || height == 0)
-    {
-        result.setIdentity();
-        return;
-    }
-       
-    PerspectiveCameraPtr cam = PerspectiveCameraPtr::dcast(getDecoratee());
-    
-    if(cam == NullFC)
-    {
-        FFATAL(("ShearedStereoCameraDecorator::getProjection: can only"
-                " decorate PerspectiveCameras!\n"));
-        result.setIdentity();
-        return;
-    }
-    
-    Matrix trans;
-    MatrixStereoPerspective(result, trans, cam->getFov(), 
-                            width / (Real32) height * cam->getAspect(), 
-                            cam->getNear(), cam->getFar(),
-                            getZeroParallaxDistance(),
-                            getEyeSeparation(),
-                            getLeftEye() ? 0.f : 1.f,
-                            getOverlap());
-    
-    result.mult(trans);
-}                                       
+void ShearedStereoCameraDecorator::getProjection(Matrix& result, UInt32 width, UInt32 height) {
+  if (width == 0 || height == 0) {
+    result.setIdentity();
+    return;
+  }
 
-void ShearedStereoCameraDecorator::getDecoration(Matrix        &result, 
-												 UInt32 width, UInt32 height)
-{
-    if(width == 0 || height == 0)
-    {
-        result.setIdentity();
-        return;
-    }
+  PerspectiveCameraPtr cam = PerspectiveCameraPtr::dcast(getDecoratee());
 
-    CameraPtr camera = getDecoratee();
-    if(camera == NullFC)
-    {
-        FWARNING(("TileCameraDecorator::getProjection: no decoratee!\n"));
-        result.setIdentity();
-        return;
-    }
-	
-    camera->getDecoration(result, width, height);
+  if (cam == NullFC) {
+    FFATAL(("ShearedStereoCameraDecorator::getProjection: can only"
+            " decorate PerspectiveCameras!\n"));
+    result.setIdentity();
+    return;
+  }
+
+  Matrix trans;
+  MatrixStereoPerspective(result, trans, cam->getFov(), width / (Real32)height * cam->getAspect(),
+      cam->getNear(), cam->getFar(), getZeroParallaxDistance(), getEyeSeparation(),
+      getLeftEye() ? 0.f : 1.f, getOverlap());
+
+  result.mult(trans);
 }
 
+void ShearedStereoCameraDecorator::getDecoration(Matrix& result, UInt32 width, UInt32 height) {
+  if (width == 0 || height == 0) {
+    result.setIdentity();
+    return;
+  }
 
+  CameraPtr camera = getDecoratee();
+  if (camera == NullFC) {
+    FWARNING(("TileCameraDecorator::getProjection: no decoratee!\n"));
+    result.setIdentity();
+    return;
+  }
+
+  camera->getDecoration(result, width, height);
+}

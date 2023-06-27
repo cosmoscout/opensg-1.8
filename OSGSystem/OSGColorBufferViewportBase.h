@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGCOLORBUFFERVIEWPORTBASE_H_
 #define _OSGCOLORBUFFERVIEWPORTBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -81,202 +79,182 @@ class BinaryDataHandler;
 
 //! \brief ColorBufferViewport Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING ColorBufferViewportBase : public Viewport
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING ColorBufferViewportBase : public Viewport {
+ private:
+  typedef Viewport Inherited;
 
-    typedef Viewport    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef ColorBufferViewportPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    RedFieldId   = Inherited::NextFieldId,
+    BlueFieldId  = RedFieldId + 1,
+    GreenFieldId = BlueFieldId + 1,
+    AlphaFieldId = GreenFieldId + 1,
+    NextFieldId  = AlphaFieldId + 1
+  };
 
-    typedef ColorBufferViewportPtr  Ptr;
+  static const OSG::BitVector RedFieldMask;
+  static const OSG::BitVector BlueFieldMask;
+  static const OSG::BitVector GreenFieldMask;
+  static const OSG::BitVector AlphaFieldMask;
 
-    enum
-    {
-        RedFieldId   = Inherited::NextFieldId,
-        BlueFieldId  = RedFieldId   + 1,
-        GreenFieldId = BlueFieldId  + 1,
-        AlphaFieldId = GreenFieldId + 1,
-        NextFieldId  = AlphaFieldId + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector RedFieldMask;
-    static const OSG::BitVector BlueFieldMask;
-    static const OSG::BitVector GreenFieldMask;
-    static const OSG::BitVector AlphaFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFBool* getSFRed(void);
+  SFBool* getSFBlue(void);
+  SFBool* getSFGreen(void);
+  SFBool* getSFAlpha(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  bool&       getRed(void);
+  const bool& getRed(void) const;
+  bool&       getBlue(void);
+  const bool& getBlue(void) const;
+  bool&       getGreen(void);
+  const bool& getGreen(void) const;
+  bool&       getAlpha(void);
+  const bool& getAlpha(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFBool              *getSFRed            (void);
-           SFBool              *getSFBlue           (void);
-           SFBool              *getSFGreen          (void);
-           SFBool              *getSFAlpha          (void);
+  void setRed(const bool& value);
+  void setBlue(const bool& value);
+  void setGreen(const bool& value);
+  void setAlpha(const bool& value);
 
-           bool                &getRed            (void);
-     const bool                &getRed            (void) const;
-           bool                &getBlue           (void);
-     const bool                &getBlue           (void) const;
-           bool                &getGreen          (void);
-     const bool                &getGreen          (void) const;
-           bool                &getAlpha          (void);
-     const bool                &getAlpha          (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setRed            ( const bool &value );
-     void setBlue           ( const bool &value );
-     void setGreen          ( const bool &value );
-     void setAlpha          ( const bool &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static ColorBufferViewportPtr create(void);
+  static ColorBufferViewportPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  ColorBufferViewportPtr      create          (void); 
-    static  ColorBufferViewportPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFBool _sfRed;
+  SFBool _sfBlue;
+  SFBool _sfGreen;
+  SFBool _sfAlpha;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  ColorBufferViewportBase(void);
+  ColorBufferViewportBase(const ColorBufferViewportBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~ColorBufferViewportBase(void);
 
-    SFBool              _sfRed;
-    SFBool              _sfBlue;
-    SFBool              _sfGreen;
-    SFBool              _sfAlpha;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    ColorBufferViewportBase(void);
-    ColorBufferViewportBase(const ColorBufferViewportBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~ColorBufferViewportBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      ColorBufferViewportBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(ColorBufferViewportBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      ColorBufferViewportBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      ColorBufferViewportBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const ColorBufferViewportBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const ColorBufferViewportBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef ColorBufferViewportBase* ColorBufferViewportBaseP;
 
-typedef ColorBufferViewportBase *ColorBufferViewportBaseP;
-
-typedef osgIF<ColorBufferViewportBase::isNodeCore,
-              CoredNodePtr<ColorBufferViewport>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet ColorBufferViewportNodePtr;
+typedef osgIF<ColorBufferViewportBase::isNodeCore, CoredNodePtr<ColorBufferViewport>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet
+    ColorBufferViewportNodePtr;
 
 typedef RefPtr<ColorBufferViewportPtr> ColorBufferViewportRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGCOLORBUFFERVIEWPORTBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGCOLORBUFFERVIEWPORTBASE_HEADER_CVSID                                                    \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGCOLORBUFFERVIEWPORTBASE_H_ */

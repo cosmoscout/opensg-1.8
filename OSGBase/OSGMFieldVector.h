@@ -55,27 +55,26 @@ OSG_BEGIN_NAMESPACE
  */
 #endif
 
-#if defined(__sgi) || defined(__linux) || defined(darwin) || \
-    defined(__sun) || defined(__hpux)
+#if defined(__sgi) || defined(__linux) || defined(darwin) || defined(__sun) || defined(__hpux)
 
 #if defined(__sgi)
 #pragma set woff 1375
 #endif
 
 #if defined(__linux) || defined(__hpux) || defined(darwin) || defined(__sun)
-#    if __GNUC__ >= 3
-#        define OSG_STL_DEFAULT_ALLOCATOR(TP) = std::allocator<TP>
-#    elif defined (__ICL)
-#        define OSG_STL_DEFAULT_ALLOCATOR(TP) = std::allocator<TP>
-#    elif defined (OSG_HPUX_ACC)
-#        define OSG_STL_DEFAULT_ALLOCATOR(TP) _RWSTD_COMPLEX_DEFAULT(std::allocator<TP>)
-#    elif defined(OSG_SUN_CC)
-#        define OSG_STL_DEFAULT_ALLOCATOR(TP) _RWSTD_COMPLEX_DEFAULT(std::allocator<TP>)
-#    else
-#        define OSG_STL_DEFAULT_ALLOCATOR(TP) = std::__STL_DEFAULT_ALLOCATOR(TP)
-#    endif
+#if __GNUC__ >= 3
+#define OSG_STL_DEFAULT_ALLOCATOR(TP) = std::allocator<TP>
+#elif defined(__ICL)
+#define OSG_STL_DEFAULT_ALLOCATOR(TP) = std::allocator<TP>
+#elif defined(OSG_HPUX_ACC)
+#define OSG_STL_DEFAULT_ALLOCATOR(TP) _RWSTD_COMPLEX_DEFAULT(std::allocator<TP>)
+#elif defined(OSG_SUN_CC)
+#define OSG_STL_DEFAULT_ALLOCATOR(TP) _RWSTD_COMPLEX_DEFAULT(std::allocator<TP>)
 #else
-#    define OSG_STL_DEFAULT_ALLOCATOR(TP) = std::__STL_DEFAULT_ALLOCATOR(TP)
+#define OSG_STL_DEFAULT_ALLOCATOR(TP) = std::__STL_DEFAULT_ALLOCATOR(TP)
+#endif
+#else
+#define OSG_STL_DEFAULT_ALLOCATOR(TP) = std::__STL_DEFAULT_ALLOCATOR(TP)
 #endif
 
 template <class FieldTypeT, Int32 fieldNameSpace>
@@ -86,49 +85,40 @@ class MField;
     \hideinhierarchy
  */
 
-template <class Tp, class Alloc OSG_STL_DEFAULT_ALLOCATOR(Tp) >
-class MFieldVector : public std::vector<Tp, Alloc> 
-{
-  public:
+template <class Tp, class Alloc OSG_STL_DEFAULT_ALLOCATOR(Tp)>
+class MFieldVector : public std::vector<Tp, Alloc> {
+ public:
+  typedef std::vector<Tp, Alloc> Inherited;
 
-    typedef std::vector<Tp, Alloc> Inherited;
+ private:
+  typedef MFieldVector<Tp, Alloc> Self;
 
-  private:
+ public:
+  typedef typename Inherited::allocator_type allocator_type;
+  typedef typename Inherited::size_type      size_type;
 
-    typedef MFieldVector<Tp, Alloc> Self;
-    
-  public:
+  explicit MFieldVector(const allocator_type& __a = allocator_type());
 
-    typedef typename Inherited::allocator_type allocator_type;
-    typedef typename Inherited::size_type      size_type;
+  MFieldVector(size_type __n, const Tp& __value, const allocator_type& __a = allocator_type());
 
-    explicit MFieldVector(const allocator_type& __a = allocator_type());
+  explicit MFieldVector(size_type __n);
 
-             MFieldVector(      size_type       __n, 
-                          const Tp             &__value,
-                          const allocator_type &__a    = allocator_type());
-
-    explicit MFieldVector(size_type __n);
-    
-             MFieldVector(const std::vector <Tp, Alloc>& __x);
-             MFieldVector(const MFieldVector<Tp, Alloc>& __x);
+  MFieldVector(const std::vector<Tp, Alloc>& __x);
+  MFieldVector(const MFieldVector<Tp, Alloc>& __x);
 
 #ifdef __STL_MEMBER_TEMPLATES
   // Check whether it's an integral type.  If so, it's not an iterator.
-             template <class InputIterator>
-             MFieldVector(      InputIterator   __first, 
-                                InputIterator   __last,
-                          const allocator_type &__a = allocator_type());
+  template <class InputIterator>
+  MFieldVector(
+      InputIterator __first, InputIterator __last, const allocator_type& __a = allocator_type());
 #else
-             MFieldVector(const Tp             *__first, 
-                          const Tp             *__last,
-                          const allocator_type &__a = allocator_type());
+  MFieldVector(const Tp* __first, const Tp* __last, const allocator_type& __a = allocator_type());
 #endif /* __STL_MEMBER_TEMPLATES */
 
-    ~MFieldVector();
+  ~MFieldVector();
 
-    void shareValues (Self &other, bool bDeleteOld);
-    void resolveShare(void                        );
+  void shareValues(Self& other, bool bDeleteOld);
+  void resolveShare(void);
 };
 
 #if defined(__sgi)
@@ -142,38 +132,29 @@ class MFieldVector : public std::vector<Tp, Alloc>
     \hideinhierarchy
  */
 
-template<class Ty, class A = std::allocator<Ty> >
-class MFieldVector : public std::vector<Ty, A>
-{
-  public:
+template <class Ty, class A = std::allocator<Ty>>
+class MFieldVector : public std::vector<Ty, A> {
+ public:
+  typedef std::vector<Ty, A> Inherited;
 
-    typedef          std::vector<Ty, A>        Inherited;
+ private:
+  typedef typename Inherited::const_iterator It;
 
-  private :
+  typedef MFieldVector<Ty, A> Self;
 
-	typedef typename Inherited::const_iterator It;
+ public:
+  explicit MFieldVector(const A& _Al = A());
 
-    typedef           MFieldVector<Ty, A>      Self;
+  explicit MFieldVector(size_type _N, const Ty& _V = Ty(), const A& _Al = A());
 
-  public :	
+  MFieldVector(const MFieldVector<Ty, A>& _X);
 
-    explicit MFieldVector(const A& _Al = A());
+  MFieldVector(It _F, It _L, const A& _Al = A());
 
-	explicit MFieldVector(      size_type  _N, 
-                          const Ty        &_V  = Ty(),
-                          const A         &_Al = A ());
+  ~MFieldVector(void);
 
-	MFieldVector(const MFieldVector<Ty, A> &_X);
-
-
-	MFieldVector(      It  _F, 
-                       It  _L, 
-                 const A  &_Al = A());
-
-	~MFieldVector(void);
-
-    void shareValues (Self &other, bool bDeleteOld);
-    void resolveShare(void                        );
+  void shareValues(Self& other, bool bDeleteOld);
+  void resolveShare(void);
 };
 
 #endif

@@ -52,81 +52,59 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &ShaderParameterRealBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& ShaderParameterRealBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 ShaderParameterRealBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 ShaderParameterRealBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-ShaderParameterRealPtr ShaderParameterRealBase::create(void) 
-{
-    ShaderParameterRealPtr fc; 
+inline ShaderParameterRealPtr ShaderParameterRealBase::create(void) {
+  ShaderParameterRealPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = ShaderParameterRealPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = ShaderParameterRealPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-ShaderParameterRealPtr ShaderParameterRealBase::createEmpty(void) 
-{ 
-    ShaderParameterRealPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline ShaderParameterRealPtr ShaderParameterRealBase::createEmpty(void) {
+  ShaderParameterRealPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the ShaderParameterReal::_sfValue field.
-inline
-SFReal32 *ShaderParameterRealBase::getSFValue(void)
-{
-    return &_sfValue;
-}
-
-
-//! Get the value of the ShaderParameterReal::_sfValue field.
-inline
-Real32 &ShaderParameterRealBase::getValue(void)
-{
-    return _sfValue.getValue();
+inline SFReal32* ShaderParameterRealBase::getSFValue(void) {
+  return &_sfValue;
 }
 
 //! Get the value of the ShaderParameterReal::_sfValue field.
-inline
-const Real32 &ShaderParameterRealBase::getValue(void) const
-{
-    return _sfValue.getValue();
+inline Real32& ShaderParameterRealBase::getValue(void) {
+  return _sfValue.getValue();
+}
+
+//! Get the value of the ShaderParameterReal::_sfValue field.
+inline const Real32& ShaderParameterRealBase::getValue(void) const {
+  return _sfValue.getValue();
 }
 
 //! Set the value of the ShaderParameterReal::_sfValue field.
-inline
-void ShaderParameterRealBase::setValue(const Real32 &value)
-{
-    _sfValue.setValue(value);
+inline void ShaderParameterRealBase::setValue(const Real32& value) {
+  _sfValue.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGSHADERPARAMETERREALBASE_INLINE_CVSID "@(#)$Id: OSGShaderParameterRealBase.inl,v 1.5 2006/02/20 17:04:38 dirk Exp $"
-
+#define OSGSHADERPARAMETERREALBASE_INLINE_CVSID                                                    \
+  "@(#)$Id: OSGShaderParameterRealBase.inl,v 1.5 2006/02/20 17:04:38 dirk Exp $"

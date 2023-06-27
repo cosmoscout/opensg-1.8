@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGOFFCENTERPERSPECTIVECAMERABASE_H_
 #define _OSGOFFCENTERPERSPECTIVECAMERABASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -78,181 +76,158 @@ class BinaryDataHandler;
 
 //! \brief OffCenterPerspectiveCamera Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING OffCenterPerspectiveCameraBase : public PerspectiveCamera
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING OffCenterPerspectiveCameraBase : public PerspectiveCamera {
+ private:
+  typedef PerspectiveCamera Inherited;
 
-    typedef PerspectiveCamera    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef OffCenterPerspectiveCameraPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum { PrincipalPointFieldId = Inherited::NextFieldId, NextFieldId = PrincipalPointFieldId + 1 };
 
-    typedef OffCenterPerspectiveCameraPtr  Ptr;
+  static const OSG::BitVector PrincipalPointFieldMask;
 
-    enum
-    {
-        PrincipalPointFieldId = Inherited::NextFieldId,
-        NextFieldId           = PrincipalPointFieldId + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector PrincipalPointFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFVec2f* getSFPrincipalPoint(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  Vec2f&       getPrincipalPoint(void);
+  const Vec2f& getPrincipalPoint(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFVec2f             *getSFPrincipalPoint (void);
+  void setPrincipalPoint(const Vec2f& value);
 
-           Vec2f               &getPrincipalPoint (void);
-     const Vec2f               &getPrincipalPoint (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setPrincipalPoint ( const Vec2f &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static OffCenterPerspectiveCameraPtr create(void);
+  static OffCenterPerspectiveCameraPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  OffCenterPerspectiveCameraPtr      create          (void); 
-    static  OffCenterPerspectiveCameraPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFVec2f _sfPrincipalPoint;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  OffCenterPerspectiveCameraBase(void);
+  OffCenterPerspectiveCameraBase(const OffCenterPerspectiveCameraBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~OffCenterPerspectiveCameraBase(void);
 
-    SFVec2f             _sfPrincipalPoint;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    OffCenterPerspectiveCameraBase(void);
-    OffCenterPerspectiveCameraBase(const OffCenterPerspectiveCameraBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~OffCenterPerspectiveCameraBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      OffCenterPerspectiveCameraBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(OffCenterPerspectiveCameraBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      OffCenterPerspectiveCameraBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      OffCenterPerspectiveCameraBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const OffCenterPerspectiveCameraBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const OffCenterPerspectiveCameraBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef OffCenterPerspectiveCameraBase* OffCenterPerspectiveCameraBaseP;
 
-typedef OffCenterPerspectiveCameraBase *OffCenterPerspectiveCameraBaseP;
-
-typedef osgIF<OffCenterPerspectiveCameraBase::isNodeCore,
-              CoredNodePtr<OffCenterPerspectiveCamera>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet OffCenterPerspectiveCameraNodePtr;
+typedef osgIF<OffCenterPerspectiveCameraBase::isNodeCore, CoredNodePtr<OffCenterPerspectiveCamera>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet
+    OffCenterPerspectiveCameraNodePtr;
 
 typedef RefPtr<OffCenterPerspectiveCameraPtr> OffCenterPerspectiveCameraRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGOFFCENTERPERSPECTIVECAMERABASE_HEADER_CVSID "@(#)$Id: OSGOffCenterPerspectiveCameraBase.h,v 1.2 2006/02/20 16:54:30 dirk Exp $"
+#define OSGOFFCENTERPERSPECTIVECAMERABASE_HEADER_CVSID                                             \
+  "@(#)$Id: OSGOffCenterPerspectiveCameraBase.h,v 1.2 2006/02/20 16:54:30 dirk Exp $"
 
 #endif /* _OSGOFFCENTERPERSPECTIVECAMERABASE_H_ */

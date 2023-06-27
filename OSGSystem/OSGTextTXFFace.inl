@@ -36,26 +36,29 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 OSG_BEGIN_NAMESPACE
 
+inline Real32 TextTXFFace::getScale() const {
+  return _scale;
+}
 
-inline Real32 TextTXFFace::getScale() const { return _scale; }
+inline const TextTXFParam& TextTXFFace::getParam() const {
+  return _param;
+}
 
-
-inline const TextTXFParam &TextTXFFace::getParam() const { return _param; }
-
-
-inline ImagePtr TextTXFFace::getTexture() const { return _texture; }
-
+inline ImagePtr TextTXFFace::getTexture() const {
+  return _texture;
+}
 
 inline TextTXFFace::TextTXFFace()
-: TextFace(), _scale(), _param(),
-  _texture(), _glyphMap()
-{}
-
+    : TextFace()
+    , _scale()
+    , _param()
+    , _texture()
+    , _glyphMap() {
+}
 
 OSG_END_NAMESPACE
 
-
-#define OSGTEXTTXFFACE_INLINE_CVSID "@(#)$Id: OSGTextTXFFace.inl,v 1.1 2005/03/03 13:43:07 a-m-z Exp $"
+#define OSGTEXTTXFFACE_INLINE_CVSID                                                                \
+  "@(#)$Id: OSGTextTXFFace.inl,v 1.1 2005/03/03 13:43:07 a-m-z Exp $"

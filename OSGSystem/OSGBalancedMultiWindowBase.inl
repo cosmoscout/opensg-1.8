@@ -52,193 +52,139 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &BalancedMultiWindowBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& BalancedMultiWindowBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 BalancedMultiWindowBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 BalancedMultiWindowBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-BalancedMultiWindowPtr BalancedMultiWindowBase::create(void) 
-{
-    BalancedMultiWindowPtr fc; 
+inline BalancedMultiWindowPtr BalancedMultiWindowBase::create(void) {
+  BalancedMultiWindowPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = BalancedMultiWindowPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = BalancedMultiWindowPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-BalancedMultiWindowPtr BalancedMultiWindowBase::createEmpty(void) 
-{ 
-    BalancedMultiWindowPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline BalancedMultiWindowPtr BalancedMultiWindowBase::createEmpty(void) {
+  BalancedMultiWindowPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the BalancedMultiWindow::_sfBalance field.
-inline
-SFBool *BalancedMultiWindowBase::getSFBalance(void)
-{
-    return &_sfBalance;
+inline SFBool* BalancedMultiWindowBase::getSFBalance(void) {
+  return &_sfBalance;
 }
 
 //! Get the BalancedMultiWindow::_sfBestCut field.
-inline
-SFBool *BalancedMultiWindowBase::getSFBestCut(void)
-{
-    return &_sfBestCut;
+inline SFBool* BalancedMultiWindowBase::getSFBestCut(void) {
+  return &_sfBestCut;
 }
 
 //! Get the BalancedMultiWindow::_sfShowBalancing field.
-inline
-SFBool *BalancedMultiWindowBase::getSFShowBalancing(void)
-{
-    return &_sfShowBalancing;
+inline SFBool* BalancedMultiWindowBase::getSFShowBalancing(void) {
+  return &_sfShowBalancing;
 }
 
 //! Get the BalancedMultiWindow::_sfTileSize field.
-inline
-SFUInt32 *BalancedMultiWindowBase::getSFTileSize(void)
-{
-    return &_sfTileSize;
+inline SFUInt32* BalancedMultiWindowBase::getSFTileSize(void) {
+  return &_sfTileSize;
 }
 
 //! Get the BalancedMultiWindow::_sfShort field.
-inline
-SFBool *BalancedMultiWindowBase::getSFShort(void)
-{
-    return &_sfShort;
-}
-
-
-//! Get the value of the BalancedMultiWindow::_sfBalance field.
-inline
-bool &BalancedMultiWindowBase::getBalance(void)
-{
-    return _sfBalance.getValue();
+inline SFBool* BalancedMultiWindowBase::getSFShort(void) {
+  return &_sfShort;
 }
 
 //! Get the value of the BalancedMultiWindow::_sfBalance field.
-inline
-const bool &BalancedMultiWindowBase::getBalance(void) const
-{
-    return _sfBalance.getValue();
+inline bool& BalancedMultiWindowBase::getBalance(void) {
+  return _sfBalance.getValue();
+}
+
+//! Get the value of the BalancedMultiWindow::_sfBalance field.
+inline const bool& BalancedMultiWindowBase::getBalance(void) const {
+  return _sfBalance.getValue();
 }
 
 //! Set the value of the BalancedMultiWindow::_sfBalance field.
-inline
-void BalancedMultiWindowBase::setBalance(const bool &value)
-{
-    _sfBalance.setValue(value);
+inline void BalancedMultiWindowBase::setBalance(const bool& value) {
+  _sfBalance.setValue(value);
 }
 
 //! Get the value of the BalancedMultiWindow::_sfBestCut field.
-inline
-bool &BalancedMultiWindowBase::getBestCut(void)
-{
-    return _sfBestCut.getValue();
+inline bool& BalancedMultiWindowBase::getBestCut(void) {
+  return _sfBestCut.getValue();
 }
 
 //! Get the value of the BalancedMultiWindow::_sfBestCut field.
-inline
-const bool &BalancedMultiWindowBase::getBestCut(void) const
-{
-    return _sfBestCut.getValue();
+inline const bool& BalancedMultiWindowBase::getBestCut(void) const {
+  return _sfBestCut.getValue();
 }
 
 //! Set the value of the BalancedMultiWindow::_sfBestCut field.
-inline
-void BalancedMultiWindowBase::setBestCut(const bool &value)
-{
-    _sfBestCut.setValue(value);
+inline void BalancedMultiWindowBase::setBestCut(const bool& value) {
+  _sfBestCut.setValue(value);
 }
 
 //! Get the value of the BalancedMultiWindow::_sfShowBalancing field.
-inline
-bool &BalancedMultiWindowBase::getShowBalancing(void)
-{
-    return _sfShowBalancing.getValue();
+inline bool& BalancedMultiWindowBase::getShowBalancing(void) {
+  return _sfShowBalancing.getValue();
 }
 
 //! Get the value of the BalancedMultiWindow::_sfShowBalancing field.
-inline
-const bool &BalancedMultiWindowBase::getShowBalancing(void) const
-{
-    return _sfShowBalancing.getValue();
+inline const bool& BalancedMultiWindowBase::getShowBalancing(void) const {
+  return _sfShowBalancing.getValue();
 }
 
 //! Set the value of the BalancedMultiWindow::_sfShowBalancing field.
-inline
-void BalancedMultiWindowBase::setShowBalancing(const bool &value)
-{
-    _sfShowBalancing.setValue(value);
+inline void BalancedMultiWindowBase::setShowBalancing(const bool& value) {
+  _sfShowBalancing.setValue(value);
 }
 
 //! Get the value of the BalancedMultiWindow::_sfTileSize field.
-inline
-UInt32 &BalancedMultiWindowBase::getTileSize(void)
-{
-    return _sfTileSize.getValue();
+inline UInt32& BalancedMultiWindowBase::getTileSize(void) {
+  return _sfTileSize.getValue();
 }
 
 //! Get the value of the BalancedMultiWindow::_sfTileSize field.
-inline
-const UInt32 &BalancedMultiWindowBase::getTileSize(void) const
-{
-    return _sfTileSize.getValue();
+inline const UInt32& BalancedMultiWindowBase::getTileSize(void) const {
+  return _sfTileSize.getValue();
 }
 
 //! Set the value of the BalancedMultiWindow::_sfTileSize field.
-inline
-void BalancedMultiWindowBase::setTileSize(const UInt32 &value)
-{
-    _sfTileSize.setValue(value);
+inline void BalancedMultiWindowBase::setTileSize(const UInt32& value) {
+  _sfTileSize.setValue(value);
 }
 
 //! Get the value of the BalancedMultiWindow::_sfShort field.
-inline
-bool &BalancedMultiWindowBase::getShort(void)
-{
-    return _sfShort.getValue();
+inline bool& BalancedMultiWindowBase::getShort(void) {
+  return _sfShort.getValue();
 }
 
 //! Get the value of the BalancedMultiWindow::_sfShort field.
-inline
-const bool &BalancedMultiWindowBase::getShort(void) const
-{
-    return _sfShort.getValue();
+inline const bool& BalancedMultiWindowBase::getShort(void) const {
+  return _sfShort.getValue();
 }
 
 //! Set the value of the BalancedMultiWindow::_sfShort field.
-inline
-void BalancedMultiWindowBase::setShort(const bool &value)
-{
-    _sfShort.setValue(value);
+inline void BalancedMultiWindowBase::setShort(const bool& value) {
+  _sfShort.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGBALANCEDMULTIWINDOWBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGBALANCEDMULTIWINDOWBASE_INLINE_CVSID                                                    \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

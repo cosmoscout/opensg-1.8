@@ -44,98 +44,72 @@
 
 OSG_BEGIN_NAMESPACE
 
-inline 
-UInt32 Indenter::getIndent(void) const
-{
-    return _indent;
+inline UInt32 Indenter::getIndent(void) const {
+  return _indent;
 }
 
-inline 
-UInt32 Indenter::getStep(void) const
-{
-    return _step;
+inline UInt32 Indenter::getStep(void) const {
+  return _step;
 }
 
-inline 
-std::string Indenter::str(void) const
-{
-    std::string indStr;
+inline std::string Indenter::str(void) const {
+  std::string indStr;
 
-    for(UInt32 i = 0; i < _indent; i++)
-    {
-        indStr.append(" ");
-    }
+  for (UInt32 i = 0; i < _indent; i++) {
+    indStr.append(" ");
+  }
 
-    return indStr;
+  return indStr;
 }
 
-inline 
-void Indenter::setIndent(UInt32 indent)
-{
-    _indent = indent;
+inline void Indenter::setIndent(UInt32 indent) {
+  _indent = indent;
 }
 
-inline 
-void Indenter::setStep(UInt32 step)
-{
-    _step = step;
+inline void Indenter::setStep(UInt32 step) {
+  _step = step;
 }
 
 /*! increase indent by _step
  */
 
-inline 
-void Indenter::operator++(int)
-{
-    _indent += _step;
+inline void Indenter::operator++(int) {
+  _indent += _step;
 }
 
 /*! increase indent by _step
  */
 
-inline 
-void Indenter::operator++(void)
-{
-    _indent += _step;
+inline void Indenter::operator++(void) {
+  _indent += _step;
 }
-
 
 /*! decrease indent by _step
  */
 
-inline 
-void Indenter::operator--(int)
-{
-    _indent -= _step;
+inline void Indenter::operator--(int) {
+  _indent -= _step;
 }
-
 
 /*! decrease indent by _step
  */
 
-inline 
-void Indenter::operator--(void)
-{
-    _indent -= _step;
+inline void Indenter::operator--(void) {
+  _indent -= _step;
 }
-
 
 /*! \ingroup GrpBaseStringConversion
     write _indent spaces to stream
  */
 
-inline 
-std::ostream &operator <<(std::ostream &stream, const Indenter &indent)
-{
-    for(UInt32 i = 0; i < indent.getIndent(); i++)
-    {
-        stream << ' ';
-    }
+inline std::ostream& operator<<(std::ostream& stream, const Indenter& indent) {
+  for (UInt32 i = 0; i < indent.getIndent(); i++) {
+    stream << ' ';
+  }
 
-    return stream;
+  return stream;
 }
 
 OSG_END_NAMESPACE
 
 #define OSGINDENTER_INLINE_CVSID "@(#)$Id: $"
-

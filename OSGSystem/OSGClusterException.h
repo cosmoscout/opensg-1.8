@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGCLUSTEREXCEPTIONS_H_
 #define _OSGCLUSTEREXCEPTIONS_H_
 #ifdef __sgi
@@ -49,31 +48,26 @@
 
 OSG_BEGIN_NAMESPACE
 
-class OSG_SYSTEMLIB_DLLMAPPING ClusterException : public Exception 
-{
-    /*==========================  PUBLIC  =================================*/
-public:
-    ClusterException();
+class OSG_SYSTEMLIB_DLLMAPPING ClusterException : public Exception {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  ClusterException();
 };
 
-class OSG_SYSTEMLIB_DLLMAPPING ConnectionClosed : public ClusterException
-{
-    /*==========================  PUBLIC  =================================*/
-public:
-    ConnectionClosed();
+class OSG_SYSTEMLIB_DLLMAPPING ConnectionClosed : public ClusterException {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  ConnectionClosed();
 };
 
-class OSG_SYSTEMLIB_DLLMAPPING RemoteSyncError : public ClusterException
-{
-    /*==========================  PUBLIC  =================================*/
-public:
-    RemoteSyncError();
+class OSG_SYSTEMLIB_DLLMAPPING RemoteSyncError : public ClusterException {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  RemoteSyncError();
 };
 
 OSG_END_NAMESPACE
 
 #define OSGCLUSTEREXCEPTION_HEADER_CVSID "@(#)$Id:$"
 
-#endif 
-
-
+#endif

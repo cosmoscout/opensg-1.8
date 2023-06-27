@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGLIGHTMODELCHUNKFIELDS_H_
 #define _OSGLIGHTMODELCHUNKFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class LightModelChunk;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! LightModelChunkPtr
 
 typedef FCPtr<StateChunkPtr, LightModelChunk> LightModelChunkPtr;
@@ -81,18 +80,23 @@ typedef FCPtr<StateChunkPtr, LightModelChunk> LightModelChunkPtr;
 #endif
 
 template <>
-struct FieldDataTraits<LightModelChunkPtr> : 
-    public FieldTraitsRecurseMapper<LightModelChunkPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<LightModelChunkPtr>
+    : public FieldTraitsRecurseMapper<LightModelChunkPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getSName(void) { return "SFLightModelChunkPtr"; }
-    static const char *getMName(void) { return "MFLightModelChunkPtr"; }
+  static const char* getSName(void) {
+    return "SFLightModelChunkPtr";
+  }
+  static const char* getMName(void) {
+    return "MFLightModelChunkPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -102,7 +106,6 @@ struct FieldDataTraits<LightModelChunkPtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
@@ -126,6 +129,7 @@ OSG_DLLEXPORT_DECL1(MField, LightModelChunkPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 
 OSG_END_NAMESPACE
 
-#define OSGLIGHTMODELCHUNKFIELDS_HEADER_CVSID "@(#)$Id: OSGLightModelChunkFields.h,v 1.3 2006/02/20 17:04:46 dirk Exp $"
+#define OSGLIGHTMODELCHUNKFIELDS_HEADER_CVSID                                                      \
+  "@(#)$Id: OSGLightModelChunkFields.h,v 1.3 2006/02/20 17:04:46 dirk Exp $"
 
 #endif /* _OSGLIGHTMODELCHUNKFIELDS_H_ */

@@ -37,9 +37,8 @@
 \*---------------------------------------------------------------------------*/
 
 //-----------------------------------------------------------------------------
-//                                 Includes                                    
+//                                 Includes
 //-----------------------------------------------------------------------------
-
 
 #include "OSGConfig.h"
 #include "OSGLog.h"
@@ -54,37 +53,31 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //-----------------------------------------------------------------------------
 // Compare operator for vector types. Used to map properties with a
 // distance (taken component-wise) of less than Eps to the same index.
 //
-// Author: jbehr, afischle (cut'n pasted from OSGGeoFunctions.cpp) 
+// Author: jbehr, afischle (cut'n pasted from OSGGeoFunctions.cpp)
 //-----------------------------------------------------------------------------
-template<class type>
-inline bool ExtrusionSurface::vecless<type>::operator () (const type &a,
-                                                          const type &b) const
-{
-    UInt32  i;
-    bool    ret = false;
-    for(i = 0; i < type::_iSize; i++)
-    {
-        if(osgabs(a[i] - b[i]) < Eps)
-            continue;
-        if(a[i] > b[i])
-        {
-            ret = false;
-            break;
-        }
-        ret = true;
-        break;
+template <class type>
+inline bool ExtrusionSurface::vecless<type>::operator()(const type& a, const type& b) const {
+  UInt32 i;
+  bool   ret = false;
+  for (i = 0; i < type::_iSize; i++) {
+    if (osgabs(a[i] - b[i]) < Eps)
+      continue;
+    if (a[i] > b[i]) {
+      ret = false;
+      break;
     }
-    return ret;
+    ret = true;
+    break;
+  }
+  return ret;
 }
 
-
 //-----------------------------------------------------------------------------
-//                     CP to SCP Transformation Helpers                        
+//                     CP to SCP Transformation Helpers
 //-----------------------------------------------------------------------------
 
 //-----------------------------------------------------------------------------
@@ -96,105 +89,94 @@ inline bool ExtrusionSurface::vecless<type>::operator () (const type &a,
 //
 // Author: afischle
 //-----------------------------------------------------------------------------
-inline ExtrusionSurface::Pnt3fConstItPair 
-ExtrusionSurface::getPrevAndNextIt(const Pnt3fConstIt &pIt)
-{
-    Pnt3fConstIt prevIt, nextIt;
-    bool firstPoint = (pIt == _spine.begin()) ? true : false;
-    bool lastPoint  = (pIt == _spine.end() - 1) ? true : false;
+inline ExtrusionSurface::Pnt3fConstItPair ExtrusionSurface::getPrevAndNextIt(
+    const Pnt3fConstIt& pIt) {
+  Pnt3fConstIt prevIt, nextIt;
+  bool         firstPoint = (pIt == _spine.begin()) ? true : false;
+  bool         lastPoint  = (pIt == _spine.end() - 1) ? true : false;
 
-    if(!firstPoint && !lastPoint)   // it's an interior point
+  if (!firstPoint && !lastPoint) // it's an interior point
+  {
+    prevIt = pIt - 1;
+    nextIt = pIt + 1;
+  } else // either it's the first or the last point
+  {
+    if (_spineClosed) {
+      prevIt = _spine.end() - 2;
+      nextIt = _spine.begin() + 1;
+    } else // spine is open
     {
-        prevIt = pIt - 1;
-        nextIt = pIt + 1;
+      if (firstPoint) {
+        prevIt = _spine.begin();
+        nextIt = _spine.begin() + 1;
+      } else // last point
+      {
+        prevIt = _spine.end() - 2;
+        nextIt = _spine.end() - 1;
+      }
     }
-    else // either it's the first or the last point
-    {
-        if(_spineClosed)
-        {
-            prevIt = _spine.end() - 2;
-            nextIt = _spine.begin() + 1;
-        }
-        else // spine is open
-        {
-            if(firstPoint)
-            {
-                prevIt = _spine.begin();
-                nextIt = _spine.begin() + 1;
-            }
-            else // last point
-            {
-                prevIt = _spine.end() - 2;
-                nextIt = _spine.end() - 1;
-            }
-        }
-    }
-    return Pnt3fConstItPair(prevIt, nextIt);
+  }
+  return Pnt3fConstItPair(prevIt, nextIt);
 }
-
 
 //-----------------------------------------------------------------------------
 // Returns the non-normalized y-axis of a CP to SCP transform at pIt
 // Author: afischle
 //-----------------------------------------------------------------------------
-inline Vec3f ExtrusionSurface::calcNonUnitYAxis(const Pnt3fConstIt &pIt)
-{
-    /* X3D Spec:
-     *
-     * a. For all points other than the first or last: The Y-axis for spine[i]
-     *    is found by normalizing the vector defined by
-     *    (spine[i+1] - spine[i-1]). 
-     * b. If the spine curve is closed: The SCP for the first and last points
-     *    is the same and is found using (spine[1] - spine[n-2]) to compute
-     *    the Y-axis.
-     * c. If the spine curve is not closed: The Y-axis used for the first point
-     *    is the vector from spine[0] to spine[1], and for the last it is the 
-     *    vector from spine[n-2] to spine[n-1].
-     */
+inline Vec3f ExtrusionSurface::calcNonUnitYAxis(const Pnt3fConstIt& pIt) {
+  /* X3D Spec:
+   *
+   * a. For all points other than the first or last: The Y-axis for spine[i]
+   *    is found by normalizing the vector defined by
+   *    (spine[i+1] - spine[i-1]).
+   * b. If the spine curve is closed: The SCP for the first and last points
+   *    is the same and is found using (spine[1] - spine[n-2]) to compute
+   *    the Y-axis.
+   * c. If the spine curve is not closed: The Y-axis used for the first point
+   *    is the vector from spine[0] to spine[1], and for the last it is the
+   *    vector from spine[n-2] to spine[n-1].
+   */
 
-    Pnt3fConstItPair prevAndNextIt = getPrevAndNextIt(pIt);
-    Vec3f yAxis = *(prevAndNextIt.second) - *(prevAndNextIt.first);
-    return yAxis;
+  Pnt3fConstItPair prevAndNextIt = getPrevAndNextIt(pIt);
+  Vec3f            yAxis         = *(prevAndNextIt.second) - *(prevAndNextIt.first);
+  return yAxis;
 }
-
 
 //-----------------------------------------------------------------------------
 // Returns the non-normalized z-axis of a CP to SCP transform at pIt
 // Author: afischle
 //-----------------------------------------------------------------------------
-inline Vec3f ExtrusionSurface::calcNonUnitZAxis(const Pnt3fConstIt &pIt)
-{
-    /* X3D Spec:
-     *
-     * The Z-axis is determined as follows:
-     *
-     * d.  For all points other than the first or last: Take the following 
-     *     cross-product: Z = (spine[i+1] - spine[i]) x (spine[i-1] - spine[i])
-     * e.  If the spine curve is closed: The SCP for the first and last points 
-     *     is the same and is found by taking the following cross-product: 
-     *     Z = (spine[1] - spine[0]) x (spine[n-2] - spine[0]) 
-     * f.  If the spine curve is not closed: The Z-axis used for the first
-     *     spine point is the same as the Z-axis for spine[1]. The Z-axis
-     *     used for the last spine point is the same as the Z-axis for
-     *     spine[n-2].
-     * g.  After determining the Z-axis, its dot product with the Z-axis of
-     *     the previous spine point is computed. If this value is negative,
-     *     the Z-axis is flipped (multiplied by -1). In most cases,
-     *     this prevents small changes in the spine segment angles from
-     *     flipping the cross-section 180 degrees.
-     */
+inline Vec3f ExtrusionSurface::calcNonUnitZAxis(const Pnt3fConstIt& pIt) {
+  /* X3D Spec:
+   *
+   * The Z-axis is determined as follows:
+   *
+   * d.  For all points other than the first or last: Take the following
+   *     cross-product: Z = (spine[i+1] - spine[i]) x (spine[i-1] - spine[i])
+   * e.  If the spine curve is closed: The SCP for the first and last points
+   *     is the same and is found by taking the following cross-product:
+   *     Z = (spine[1] - spine[0]) x (spine[n-2] - spine[0])
+   * f.  If the spine curve is not closed: The Z-axis used for the first
+   *     spine point is the same as the Z-axis for spine[1]. The Z-axis
+   *     used for the last spine point is the same as the Z-axis for
+   *     spine[n-2].
+   * g.  After determining the Z-axis, its dot product with the Z-axis of
+   *     the previous spine point is computed. If this value is negative,
+   *     the Z-axis is flipped (multiplied by -1). In most cases,
+   *     this prevents small changes in the spine segment angles from
+   *     flipping the cross-section 180 degrees.
+   */
 
-    Pnt3fConstItPair prevAndNextIt = getPrevAndNextIt(pIt);
-    Vec3f pToNext, pToPrev;
-    pToNext = *(prevAndNextIt.second) - *pIt;
-    pToPrev = *(prevAndNextIt.first) - *pIt;
+  Pnt3fConstItPair prevAndNextIt = getPrevAndNextIt(pIt);
+  Vec3f            pToNext, pToPrev;
+  pToNext = *(prevAndNextIt.second) - *pIt;
+  pToPrev = *(prevAndNextIt.first) - *pIt;
 
-    // If pIt points to the first or the last point the cross-product below
-    // is zero because either pToNext or pToPrev is zero in this case.
-    Vec3f zAxis = pToNext.cross(pToPrev);
-    return zAxis;
+  // If pIt points to the first or the last point the cross-product below
+  // is zero because either pToNext or pToPrev is zero in this case.
+  Vec3f zAxis = pToNext.cross(pToPrev);
+  return zAxis;
 }
-
 
 //-----------------------------------------------------------------------------
 // Returns the unit length x-axis of a CP to SCP transform as the cross product
@@ -202,22 +184,19 @@ inline Vec3f ExtrusionSurface::calcNonUnitZAxis(const Pnt3fConstIt &pIt)
 //
 // Author: afischle
 //-----------------------------------------------------------------------------
-inline Vec3f ExtrusionSurface::calcXAxis(const MatrixConstIt &mIt)
-{
-    Vec3f yAxis((*mIt)[1]);
-    Vec3f zAxis((*mIt)[2]);
+inline Vec3f ExtrusionSurface::calcXAxis(const MatrixConstIt& mIt) {
+  Vec3f yAxis((*mIt)[1]);
+  Vec3f zAxis((*mIt)[2]);
 
-    Vec3f xAxis = yAxis.cross(zAxis);
-    xAxis.normalize();
+  Vec3f xAxis = yAxis.cross(zAxis);
+  xAxis.normalize();
 
-    return xAxis;
+  return xAxis;
 }
 
-
 //-----------------------------------------------------------------------------
-//                            Subdivision schemes                              
+//                            Subdivision schemes
 //-----------------------------------------------------------------------------
-
 
 //-----------------------------------------------------------------------------
 // Returns an interpolated vector to be inserted between points b and c,
@@ -225,30 +204,23 @@ inline Vec3f ExtrusionSurface::calcXAxis(const MatrixConstIt &mIt)
 //
 // Author: afischle
 //-----------------------------------------------------------------------------
-template <class VectorTypeT> 
-inline VectorTypeT 
-apply4PtScheme(const typename std::vector<VectorTypeT>::const_iterator &a,
-               const typename std::vector<VectorTypeT>::const_iterator &b,
-               const typename std::vector<VectorTypeT>::const_iterator &c,
-               const typename std::vector<VectorTypeT>::const_iterator &d)
-{
+template <class VectorTypeT>
+inline VectorTypeT apply4PtScheme(const typename std::vector<VectorTypeT>::const_iterator& a,
+    const typename std::vector<VectorTypeT>::const_iterator&                               b,
+    const typename std::vector<VectorTypeT>::const_iterator&                               c,
+    const typename std::vector<VectorTypeT>::const_iterator&                               d) {
 
 #ifdef DEBUG_SUBDIVISION
-     SLOG << "4ptScheme: interior: "
-          << "( " << *a << " ) "
-          << "(_" << *b << "_) " 
-          << "( " << *c << " ) "
-          << "( " << *d << " ) "
-          << endl;
+  SLOG << "4ptScheme: interior: "
+       << "( " << *a << " ) "
+       << "(_" << *b << "_) "
+       << "( " << *c << " ) "
+       << "( " << *d << " ) " << endl;
 #endif
 
-    // return the weighted sum of the four points (a,b,c,d)
-    return (-1.f/16.f) * (*a) 
-        + ( 9.f/16.f) * (*b) 
-        + ( 9.f/16.f) * (*c) 
-        + (-1.f/16.f) * (*d);
+  // return the weighted sum of the four points (a,b,c,d)
+  return (-1.f / 16.f) * (*a) + (9.f / 16.f) * (*b) + (9.f / 16.f) * (*c) + (-1.f / 16.f) * (*d);
 }
-
 
 //-----------------------------------------------------------------------------
 // Returns an interpolated vector to be inserted between points a and b,
@@ -257,31 +229,24 @@ apply4PtScheme(const typename std::vector<VectorTypeT>::const_iterator &a,
 // Author: afischle
 //-----------------------------------------------------------------------------
 template <class VectorTypeT>
-inline VectorTypeT 
-apply3PtScheme(const typename std::vector<VectorTypeT>::const_iterator &a,
-               const typename std::vector<VectorTypeT>::const_iterator &b,
-               const typename std::vector<VectorTypeT>::const_iterator &c)
-{
+inline VectorTypeT apply3PtScheme(const typename std::vector<VectorTypeT>::const_iterator& a,
+    const typename std::vector<VectorTypeT>::const_iterator&                               b,
+    const typename std::vector<VectorTypeT>::const_iterator&                               c) {
 
-#ifdef DEBUG_SUBDIVISION    
-     SLOG << "3PtScheme: exterior"
-          << "( " << *a << " ) "
-          << "(_" << *b << "_) " 
-          << "( " << *c << " ) "
-          << endl;
+#ifdef DEBUG_SUBDIVISION
+  SLOG << "3PtScheme: exterior"
+       << "( " << *a << " ) "
+       << "(_" << *b << "_) "
+       << "( " << *c << " ) " << endl;
 #endif
 
-    // return the weighted sum of the three points (a,b,c)
-    return ( 3.f/8.f) * (*a)
-        + ( 6.f/8.f) * (*b)
-        + (-1.f/8.f) * (*c);
+  // return the weighted sum of the three points (a,b,c)
+  return (3.f / 8.f) * (*a) + (6.f / 8.f) * (*b) + (-1.f / 8.f) * (*c);
 }
 
-
 //-----------------------------------------------------------------------------
-//                        Normals calculation helpers                          
+//                        Normals calculation helpers
 //-----------------------------------------------------------------------------
-
 
 //-----------------------------------------------------------------------------
 // Returns the right handed face normal of the triangle ABC if _ccw is true
@@ -289,15 +254,13 @@ apply3PtScheme(const typename std::vector<VectorTypeT>::const_iterator &a,
 //
 // Author: afischle
 //-----------------------------------------------------------------------------
-inline Vec3f ExtrusionSurface::calcTriangleFaceNormal(const Pnt3f &a,
-                                                      const Pnt3f &b,
-                                                      const Pnt3f &c)
-{
-    Vec3f d1 = b - a;
-    Vec3f d2 = c - a;
-    Vec3f faceNormal = _ccw ? d1.cross(d2) : d2.cross(d1);
+inline Vec3f ExtrusionSurface::calcTriangleFaceNormal(
+    const Pnt3f& a, const Pnt3f& b, const Pnt3f& c) {
+  Vec3f d1         = b - a;
+  Vec3f d2         = c - a;
+  Vec3f faceNormal = _ccw ? d1.cross(d2) : d2.cross(d1);
 
-    return faceNormal;
+  return faceNormal;
 }
 
 //-----------------------------------------------------------------------------
@@ -307,36 +270,29 @@ inline Vec3f ExtrusionSurface::calcTriangleFaceNormal(const Pnt3f &a,
 //
 // Author: afischle
 //-----------------------------------------------------------------------------
-inline Vec3f ExtrusionSurface::calcQuadFaceNormal(const Pnt3f &a,
-                                                  const Pnt3f &b,
-                                                  const Pnt3f &c,
-                                                  const Pnt3f &d)
-{
-    Vec3f faceNormal = calcTriangleFaceNormal(a, b, d);
-    if(faceNormal.length() > Eps)
-    {
-        faceNormal.normalize();
-        return faceNormal;
-    }
+inline Vec3f ExtrusionSurface::calcQuadFaceNormal(
+    const Pnt3f& a, const Pnt3f& b, const Pnt3f& c, const Pnt3f& d) {
+  Vec3f faceNormal = calcTriangleFaceNormal(a, b, d);
+  if (faceNormal.length() > Eps) {
+    faceNormal.normalize();
+    return faceNormal;
+  }
 
-    faceNormal = calcTriangleFaceNormal(b, c, a);
-    if(faceNormal.length() > Eps)
-    {
-        faceNormal.normalize();
-        return faceNormal;
-    }
+  faceNormal = calcTriangleFaceNormal(b, c, a);
+  if (faceNormal.length() > Eps) {
+    faceNormal.normalize();
+    return faceNormal;
+  }
 
-    faceNormal = calcTriangleFaceNormal(c, d, b);
-    if(faceNormal.length() > Eps)
-    {
-        faceNormal.normalize();
-        return faceNormal;
-    }
+  faceNormal = calcTriangleFaceNormal(c, d, b);
+  if (faceNormal.length() > Eps) {
+    faceNormal.normalize();
+    return faceNormal;
+  }
 
-    // if we get here, the quad is completely degenerate and has no normal
-    return Vec3f(0.f, 0.f, 0.f);
+  // if we get here, the quad is completely degenerate and has no normal
+  return Vec3f(0.f, 0.f, 0.f);
 }
-
 
 //-----------------------------------------------------------------------------
 // Calculates the vertex normal of a corner of a quad face. The quadrant
@@ -348,100 +304,88 @@ inline Vec3f ExtrusionSurface::calcQuadFaceNormal(const Pnt3f &a,
 //
 // The result is stored in the normal component of the vertex pointed to by
 // vPtr.
-// 
+//
 // Author: afischle
 //-----------------------------------------------------------------------------
-inline void ExtrusionSurface::calcVertexNormal(Vertex *vPtr, UInt32 quadrant)
-{
-    assert(quadrant < 4);
-    
-    Vec3f refFN = vPtr->adjFaceNormals[quadrant];
+inline void ExtrusionSurface::calcVertexNormal(Vertex* vPtr, UInt32 quadrant) {
+  assert(quadrant < 4);
 
-    // set the vertex normal to the reference face normal
-    vPtr->normal = refFN;    
+  Vec3f refFN = vPtr->adjFaceNormals[quadrant];
 
-    if(_creaseAngle < Eps)
-    {   
-        // we don't need to smooth across faces
-        return;
-    }
+  // set the vertex normal to the reference face normal
+  vPtr->normal = refFN;
 
-    // we need to smooth the normals
-    for(UInt32 k = 0; k < 4; k++)
+  if (_creaseAngle < Eps) {
+    // we don't need to smooth across faces
+    return;
+  }
+
+  // we need to smooth the normals
+  for (UInt32 k = 0; k < 4; k++) {
+    if (k != quadrant) // check the other 3 adjacent faces of the vertex
     {
-        if(k != quadrant) // check the other 3 adjacent faces of the vertex 
-        {
-            Vec3f fN = vPtr->adjFaceNormals[k];
-            if(refFN.enclosedAngle(fN) - Eps < _creaseAngle + Eps)
-            {
-                vPtr->normal += fN;
-            }
-        }
+      Vec3f fN = vPtr->adjFaceNormals[k];
+      if (refFN.enclosedAngle(fN) - Eps < _creaseAngle + Eps) {
+        vPtr->normal += fN;
+      }
     }
+  }
 
-    vPtr->normal.normalize();
+  vPtr->normal.normalize();
 }
 
 //-----------------------------------------------------------------------------
-//                          Geometry store helpers                             
+//                          Geometry store helpers
 //-----------------------------------------------------------------------------
-
-
-
-
 
 //-----------------------------------------------------------------------------
 // Determines indices for the position, normal and texCoord components of a
 // vertex and stores them into the specified index field container. The indices
 // are stored in the following order:
-// 
+//
 //   1. position index
 //   2. normal index (if _createNormals is true)
 //   3. texCoord index (if _createTexCoords is true)
-// 
+//
 // Author: afischle
 //-----------------------------------------------------------------------------
-inline void ExtrusionSurface::storeVertex(const Vertex &vertex, 
-                                          const GeoIndicesUI32Ptr indicesPtr)
-{
-    assert(indicesPtr != NullFC);
+inline void ExtrusionSurface::storeVertex(
+    const Vertex& vertex, const GeoIndicesUI32Ptr indicesPtr) {
+  assert(indicesPtr != NullFC);
 
 #ifdef DEBUG_VERTEX_STORE
-    std::ostringstream strout;
-    strout << "OSGExtrusion:storeVertex:Storing:" << std::endl;
-    strout << "\t[ (Pos: " << vertex.position << ")" << std::endl;
+  std::ostringstream strout;
+  strout << "OSGExtrusion:storeVertex:Storing:" << std::endl;
+  strout << "\t[ (Pos: " << vertex.position << ")" << std::endl;
 #endif
-    
-    // store position
-    store(vertex.position, _posMap, indicesPtr);
 
-    if(_createNormals)
-    {
-#ifdef DEBUG_VERTEX_STORE        
-        strout << "\t  (Normal:" << vertex.normal << ")" << std::endl;
+  // store position
+  store(vertex.position, _posMap, indicesPtr);
+
+  if (_createNormals) {
+#ifdef DEBUG_VERTEX_STORE
+    strout << "\t  (Normal:" << vertex.normal << ")" << std::endl;
 #endif
-        // store normal
-        store(vertex.normal, _normalMap, indicesPtr);
-    }
-    
-    if(_createTexCoords)
-    {
-#ifdef DEBUG_VERTEX_STORE        
-        strout << "\t  (TexCoord:" << vertex.texCoord << ")" << std::endl;
+    // store normal
+    store(vertex.normal, _normalMap, indicesPtr);
+  }
+
+  if (_createTexCoords) {
+#ifdef DEBUG_VERTEX_STORE
+    strout << "\t  (TexCoord:" << vertex.texCoord << ")" << std::endl;
 #endif
-        // store texture coordinate
-        store(vertex.texCoord, _texCoordMap, indicesPtr);
-    }
-    
-    // increase the vertex count of the current primitive
-    _vertexCount++;
-    
-#ifdef DEBUG_VERTEX_STORE        
-    strout << "\t  (vc:" << _vertexCount << "/tvc:" << _totalVertexCount << ")]";
-    SLOG << strout.str() << std::endl;
+    // store texture coordinate
+    store(vertex.texCoord, _texCoordMap, indicesPtr);
+  }
+
+  // increase the vertex count of the current primitive
+  _vertexCount++;
+
+#ifdef DEBUG_VERTEX_STORE
+  strout << "\t  (vc:" << _vertexCount << "/tvc:" << _totalVertexCount << ")]";
+  SLOG << strout.str() << std::endl;
 #endif
 }
-
 
 //-----------------------------------------------------------------------------
 // Stores the number of vertices of the current primitive and its specified
@@ -449,53 +393,46 @@ inline void ExtrusionSurface::storeVertex(const Vertex &vertex,
 //
 // Author: afischle
 //-----------------------------------------------------------------------------
-inline void ExtrusionSurface::storePrimitive(GLenum type, 
-                                             GeoPLengthsUI32Ptr lensPtr, 
-                                             GeoPTypesUI8Ptr    typesPtr)
-{
-    assert(lensPtr != NullFC);
-    assert(typesPtr != NullFC);
+inline void ExtrusionSurface::storePrimitive(
+    GLenum type, GeoPLengthsUI32Ptr lensPtr, GeoPTypesUI8Ptr typesPtr) {
+  assert(lensPtr != NullFC);
+  assert(typesPtr != NullFC);
 
 #ifdef DEBUG_PRIMITIVE_STORE
-    switch(type)
-    {
-        case GL_TRIANGLE_STRIP:
-            assert(_vertexCount > 2);
-            assert(_vertexCount % 2 == 0);
-            break;
+  switch (type) {
+  case GL_TRIANGLE_STRIP:
+    assert(_vertexCount > 2);
+    assert(_vertexCount % 2 == 0);
+    break;
 
-        case GL_TRIANGLE_FAN:
-            assert(_vertexCount > 2);
-            break;
-            
-        case GL_QUADS:
-            assert(_vertexCount == 4);
-            break;
-            
-        case GL_LINES:
-            assert(_vertexCount == 2);
-            break;
-    };
+  case GL_TRIANGLE_FAN:
+    assert(_vertexCount > 2);
+    break;
+
+  case GL_QUADS:
+    assert(_vertexCount == 4);
+    break;
+
+  case GL_LINES:
+    assert(_vertexCount == 2);
+    break;
+  };
 #endif
-    
-    if(_vertexCount != 0)
-    {
-        lensPtr->push_back(_vertexCount);
-        typesPtr->push_back(type);
-        _totalVertexCount += _vertexCount;
 
-        // reset vertex count
-        _vertexCount = 0;
+  if (_vertexCount != 0) {
+    lensPtr->push_back(_vertexCount);
+    typesPtr->push_back(type);
+    _totalVertexCount += _vertexCount;
 
-        // increment primitive count (for stats only)
-        _primitiveCount++;
-    }
-    else
-    {
-        FFATAL(("OSGExtrusion::storePrimitive: Tried to store empty primitive\n"));
-    }
+    // reset vertex count
+    _vertexCount = 0;
+
+    // increment primitive count (for stats only)
+    _primitiveCount++;
+  } else {
+    FFATAL(("OSGExtrusion::storePrimitive: Tried to store empty primitive\n"));
+  }
 }
-
 
 //-----------------------------------------------------------------------------
 // Computes a new index of type UInt32 for the specified property and
@@ -505,35 +442,27 @@ inline void ExtrusionSurface::storePrimitive(GLenum type,
 //
 // Author: afischle
 //-----------------------------------------------------------------------------
-template <typename PType> 
-inline UInt32 
-ExtrusionSurface::store(PType property, 
-                        std::map<PType, UInt32, vecless<PType> > &pIndexMap)
-{
-    typedef typename std::map<PType, 
-                              UInt32,
-                              vecless<PType> >::iterator   PTypeMapIterator;
-    typedef typename std::map<PType, 
-                              UInt32,
-                              vecless<PType> >::value_type PTypeMapValueType;
-    
-    UInt32 newIndex = pIndexMap.size();
-    const std::pair<PTypeMapIterator, bool>& result
-        = pIndexMap.insert(PTypeMapValueType(property, newIndex));
+template <typename PType>
+inline UInt32 ExtrusionSurface::store(
+    PType property, std::map<PType, UInt32, vecless<PType>>& pIndexMap) {
+  typedef typename std::map<PType, UInt32, vecless<PType>>::iterator   PTypeMapIterator;
+  typedef typename std::map<PType, UInt32, vecless<PType>>::value_type PTypeMapValueType;
+
+  UInt32                                   newIndex = pIndexMap.size();
+  const std::pair<PTypeMapIterator, bool>& result =
+      pIndexMap.insert(PTypeMapValueType(property, newIndex));
 
 #ifdef DEBUG_PROPERTY_STORE
-    std::ostringstream strout;
-    strout << "OSGExtrusion:store: Storing property:" << std::endl;
-    strout << "\t"
-           << result.first->first << " -> " << result.first->second
-           << " (new insert: " << (result.second ? "TRUE" : "FALSE") << ")";
-    SLOG << strout.str() << std::endl;
+  std::ostringstream strout;
+  strout << "OSGExtrusion:store: Storing property:" << std::endl;
+  strout << "\t" << result.first->first << " -> " << result.first->second
+         << " (new insert: " << (result.second ? "TRUE" : "FALSE") << ")";
+  SLOG << strout.str() << std::endl;
 #endif
 
-    // return index of property
-    return result.first->second;
+  // return index of property
+  return result.first->second;
 }
-
 
 //-----------------------------------------------------------------------------
 // Stores the index of the property argument into the specified map and index
@@ -542,21 +471,16 @@ ExtrusionSurface::store(PType property,
 // Author: afischle
 //-----------------------------------------------------------------------------
 template <typename PType>
-inline void
-ExtrusionSurface::store(PType property, 
-                        std::map<PType, UInt32, vecless<PType> > &propertyIndexMap,
-                        GeoIndicesUI32Ptr indicesPtr)
-{
-    assert(indicesPtr != NullFC);
-    indicesPtr->push_back(store(property, propertyIndexMap));
+inline void ExtrusionSurface::store(PType    property,
+    std::map<PType, UInt32, vecless<PType>>& propertyIndexMap, GeoIndicesUI32Ptr indicesPtr) {
+  assert(indicesPtr != NullFC);
+  indicesPtr->push_back(store(property, propertyIndexMap));
 }
-
 
 OSG_END_NAMESPACE
 
-
-#define OSGEXTRUSIONGEOMETRY_INLINE_CVSID "@(#)$Id: OSGExtrusionGeometry.inl,v 1.2 2005/06/02 14:32:16 vossg Exp $"
-
+#define OSGEXTRUSIONGEOMETRY_INLINE_CVSID                                                          \
+  "@(#)$Id: OSGExtrusionGeometry.inl,v 1.2 2005/06/02 14:32:16 vossg Exp $"
 
 #ifdef DEBUG_SUBDIVISION
 #undef DEBUG_SUBDIVISION

@@ -35,38 +35,36 @@
 // namespace declaration
 namespace xmlpp {
 
-
 //! xml parser implementation class
-class xmlparser
-{
-public:
-   //! ctor
-   xmlparser( std::istream &inputstream, xmllocation &loc );
+class xmlparser {
+ public:
+  //! ctor
+  xmlparser(std::istream& inputstream, xmllocation& loc);
 
-   //! parses the node as the document root
-   void parse_document( xmldocument &doc, xmlcontextptr &ctxptr );
-   
-   //! parses a node, without processing instructions
-   void parse_node( xmlnode &node, xmlcontextptr &ctxptr );
+  //! parses the node as the document root
+  void parse_document(xmldocument& doc, xmlcontextptr& ctxptr);
 
-protected:
-   //! parses xml header, such as processing instructions, doctype etc.
-   void parse_header( xmldocument &doc, xmlcontextptr &ctxptr );
+  //! parses a node, without processing instructions
+  void parse_node(xmlnode& node, xmlcontextptr& ctxptr);
 
-   //! parses an xml tag attribute list
-   void parse_attributes( xmlattributes &attr );
+ protected:
+  //! parses xml header, such as processing instructions, doctype etc.
+  void parse_header(xmldocument& doc, xmlcontextptr& ctxptr);
 
-   //! parses a <!-- --> comment 
-   void parse_comment( xmlcontextptr &ctxptr );
+  //! parses an xml tag attribute list
+  void parse_attributes(xmlattributes& attr);
 
-protected:
-   //! input stream
-   std::istream &instream;
-   //! stream iterator
-   xmlstream_iterator tokenizer;
+  //! parses a <!-- --> comment
+  void parse_comment(xmlcontextptr& ctxptr);
+
+ protected:
+  //! input stream
+  std::istream& instream;
+  //! stream iterator
+  xmlstream_iterator tokenizer;
 };
 
 // namespace end
-}
+} // namespace xmlpp
 
 #endif

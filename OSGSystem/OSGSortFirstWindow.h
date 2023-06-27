@@ -51,96 +51,88 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief *put brief class description here* 
+/*! \brief *put brief class description here*
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING SortFirstWindow : public SortFirstWindowBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING SortFirstWindow : public SortFirstWindowBase {
+ private:
+  typedef SortFirstWindowBase Inherited;
 
-    typedef SortFirstWindowBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector whichField, 
-                         UInt32    origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name      client window funcitons                                 */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  virtual void clientInit(void);
+  virtual void clientPreSync(void);
+  virtual void clientRender(RenderActionBase* action);
+  virtual void clientSwap(void);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name      server window funcitons                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name      client window funcitons                                 */
-    /*! \{                                                                 */
+  virtual void serverInit(WindowPtr window, UInt32 id);
+  virtual void serverRender(WindowPtr window, UInt32 id, RenderActionBase* action);
+  virtual void serverSwap(WindowPtr window, UInt32 id);
 
-    virtual void clientInit              ( void                        );
-    virtual void clientPreSync           ( void                        );
-    virtual void clientRender            ( RenderActionBase *action    );
-    virtual void clientSwap              ( void                        );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name      server window funcitons                                 */
-    /*! \{                                                                 */
+  SortFirstWindow(void);
+  SortFirstWindow(const SortFirstWindow& source);
 
-    virtual void serverInit              ( WindowPtr window,UInt32 id  );
-    virtual void serverRender            ( WindowPtr window,UInt32 id,
-                                           RenderActionBase *action    );
-    virtual void serverSwap              ( WindowPtr window,UInt32 id  );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~SortFirstWindow(void);
 
-    SortFirstWindow(void);
-    SortFirstWindow(const SortFirstWindow &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                utilities                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    virtual ~SortFirstWindow(void); 
+  /*==========================  PRIVATE  ================================*/
+ private:
+  static ClusterViewBuffer _bufferHandler;
+  TileLoadBalancer*        _tileLoadBalancer;
+  RenderNode*              _renderNode;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                utilities                                     */
-    /*! \{                                                                 */
+  friend class FieldContainer;
+  friend class SortFirstWindowBase;
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  static void initMethod(void);
 
-    static ClusterViewBuffer _bufferHandler;
-    TileLoadBalancer           *_tileLoadBalancer;
-    RenderNode              *_renderNode;
+  // prohibit default functions (move to 'public' if you need one)
 
-    friend class FieldContainer;
-    friend class SortFirstWindowBase;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const SortFirstWindow &source);
+  void operator=(const SortFirstWindow& source);
 };
 
-typedef SortFirstWindow *SortFirstWindowP;
+typedef SortFirstWindow* SortFirstWindowP;
 
 OSG_END_NAMESPACE
 

@@ -46,7 +46,6 @@
 
 #include "OSGParallelComposerBase.h"
 
-
 #ifdef OSG_WITH_PARALLEL
 #include <cei_pc.h>
 #endif
@@ -59,129 +58,121 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief ParallelComposer class. See \ref 
+/*! \brief ParallelComposer class. See \ref
            PageSystemParallelComposer for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING ParallelComposer : public ParallelComposerBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING ParallelComposer : public ParallelComposerBase {
+ private:
+  typedef ParallelComposerBase Inherited;
 
-    typedef ParallelComposerBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name      features                                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  virtual bool clientRendering(void);
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name      features                                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name      composition                                             */
+  /*! \{                                                                 */
 
-    virtual bool clientRendering (void);
+  virtual void open();
+  virtual void composeViewport(ViewportPtr port);
+  virtual void close(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name      composition                                             */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name      features                                                */
+  /*! \{                                                                 */
 
-    virtual void open           (                  );
-    virtual void composeViewport( ViewportPtr port );
-    virtual void close          ( void             );
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name      features                                                */
-    /*! \{                                                                 */
+  virtual bool   getClientRendering(void);
+  virtual UInt32 getUsableServers(void);
 
-    virtual bool   getClientRendering(void);
-    virtual UInt32 getUsableServers  (void);
-
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
-
-    UInt32          _usableServers;
-    UInt32          _wWidth;
-    UInt32          _wHeight;
-    Real64          _fRenderRequest[6]; 
-    char**          _serverList;
-    char            _serviceAddr[256];    
-    UInt8*          _bufColor;
-    UInt8*          _bufDepth;
-    UInt8*          _bufRet;
-    bool            _createContext;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  UInt32 _usableServers;
+  UInt32 _wWidth;
+  UInt32 _wHeight;
+  Real64 _fRenderRequest[6];
+  char** _serverList;
+  char   _serviceAddr[256];
+  UInt8* _bufColor;
+  UInt8* _bufDepth;
+  UInt8* _bufRet;
+  bool   _createContext;
 #ifdef OSG_WITH_PARALLEL
-    PCint           _rowPixels;
-    PCcontext       _context;
+  PCint     _rowPixels;
+  PCcontext _context;
 #endif
-    
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
 
-    ParallelComposer(void);
-    ParallelComposer(const ParallelComposer &source);
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  ParallelComposer(void);
+  ParallelComposer(const ParallelComposer& source);
 
-    virtual ~ParallelComposer(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name              compose                                         */
-    /*! \{                                                                 */
+  virtual ~ParallelComposer(void);
 
-    void writeBuffer();
-    void readBuffer();
- 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name              compose                                         */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
-  
-    // helper functions
-    void            createCtx   ( ViewportPtr port  );
-    void            endFrame    ( UInt32 id         );
-    UInt32          beginFrame  ( void              );
-    void            drawFrame   ( void              );
-    void            renderRead  ( void              );
+  void writeBuffer();
+  void readBuffer();
 
-    friend class FieldContainer;
-    friend class ParallelComposerBase;
+  /*! \}                                                                 */
 
-    static void initMethod(void);
+  /*==========================  PRIVATE  ================================*/
+ private:
+  // helper functions
+  void   createCtx(ViewportPtr port);
+  void   endFrame(UInt32 id);
+  UInt32 beginFrame(void);
+  void   drawFrame(void);
+  void   renderRead(void);
 
-    // prohibit default functions (move to 'public' if you need one)
+  friend class FieldContainer;
+  friend class ParallelComposerBase;
 
-    void operator =(const ParallelComposer &source);
+  static void initMethod(void);
 
+  // prohibit default functions (move to 'public' if you need one)
+
+  void operator=(const ParallelComposer& source);
 };
 
-typedef ParallelComposer *ParallelComposerP;
+typedef ParallelComposer* ParallelComposerP;
 
 OSG_END_NAMESPACE
 
 #include <OSGParallelComposerBase.inl>
 #include <OSGParallelComposer.inl>
 
-#define OSGPARALLELCOMPOSER_HEADER_CVSID "@(#)$Id: OSGParallelComposer.h,v 1.1 2006/05/08 04:00:01 eysquared Exp $"
+#define OSGPARALLELCOMPOSER_HEADER_CVSID                                                           \
+  "@(#)$Id: OSGParallelComposer.h,v 1.1 2006/05/08 04:00:01 eysquared Exp $"
 
 #endif /* _OSGPARALLELCOMPOSER_H_ */

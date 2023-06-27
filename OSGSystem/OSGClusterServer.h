@@ -56,103 +56,95 @@ class ClusterWindow;
 class RemoteAspect;
 class RenderActionBase;
 
-class OSG_SYSTEMLIB_DLLMAPPING ClusterServer
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING ClusterServer {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  ClusterServer(WindowPtr window, const std::string& serviceName,
+      const std::string& connectionType = "StreamSock", const std::string& address = "",
+      UInt32 servicePort = 8437, const std::string& serviceGroup = "");
 
-    ClusterServer(           WindowPtr  window,
-                  const std::string    &serviceName,
-                  const std::string    &connectionType = "StreamSock",
-                  const std::string    &address        = "",
-                             UInt32     servicePort    = 8437,
-                  const std::string    &serviceGroup   = "");
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  virtual ~ClusterServer(void);
 
-    virtual ~ClusterServer(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   server actions                             */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   server actions                             */
-    /*! \{                                                                 */
+  void start(void);
+  void stop(void);
+  void render(RenderActionBase* action);
+  void doSync(bool applyToChangelist);
+  void doRender(RenderActionBase* action);
+  void doSwap(void);
 
-    void start             ( void                     );
-    void stop              ( void                     );
-    void render            ( RenderActionBase *action );
-    void doSync            ( bool applyToChangelist   );
-    void doRender          ( RenderActionBase *action );
-    void doSwap            ( void                     );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   window access                              */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   window access                              */
-    /*! \{                                                                 */
+  WindowPtr getClusterWindow(void);
+  WindowPtr getServerWindow(void);
 
-    WindowPtr getClusterWindow (void);
-    WindowPtr getServerWindow  (void);
+  inline RemoteAspect* getRemoteAspect(void) const;
 
-    inline RemoteAspect *getRemoteAspect   (void)                   const;
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   set                                        */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   set                                        */
+  /*! \{                                                                 */
 
-    void setInterface(const std::string &interf);
+  void setInterface(const std::string& interf);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name            ClusterWindow changed function                    */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name            ClusterWindow changed function                    */
-    /*! \{                                                                 */
+  bool windowChanged(FieldContainerPtr& fcp, RemoteAspect*);
 
-    bool windowChanged(FieldContainerPtr& fcp,
-                       RemoteAspect *);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Member                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Member                                  */
-    /*! \{                                                                 */
+  WindowPtr        _window;
+  PointConnection* _connection;
+  std::string      _requestAddress;
+  std::string      _boundAddress;
+  ClusterWindowPtr _clusterWindow;
+  RemoteAspect*    _aspect;
+  std::string      _serviceName;
+  std::string      _connectionType;
+  UInt32           _servicePort;
+  std::string      _serviceGroup;
+  UInt32           _serverId;
+  std::string      _interface;
 
-    WindowPtr         _window;
-    PointConnection  *_connection;
-    std::string       _requestAddress;
-    std::string       _boundAddress;
-    ClusterWindowPtr  _clusterWindow;
-    RemoteAspect     *_aspect;
-    std::string       _serviceName;
-    std::string       _connectionType;
-    UInt32            _servicePort;
-    std::string       _serviceGroup;
-    UInt32            _serverId;
-    std::string       _interface;
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /*---------------------------------------------------------------------*/
+  /*! \name                     helper function                          */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  void acceptClient();
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                     helper function                          */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    void acceptClient();
-
-    /*! \}                                                                 */
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    ClusterServer(const ClusterServer &source);
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const ClusterServer &source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  ClusterServer(const ClusterServer& source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const ClusterServer& source);
 };
 
 OSG_END_NAMESPACE
@@ -162,4 +154,3 @@ OSG_END_NAMESPACE
 #define OSG_CLUSTERSERVERHEADER_CVSID "@(#)$Id:$"
 
 #endif /* _CLUSTERSERVER_H_ */
-

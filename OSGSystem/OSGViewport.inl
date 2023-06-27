@@ -44,17 +44,15 @@ OSG_BEGIN_NAMESPACE
 /*------------------------------- size ----------------------------------*/
 
 /*! Calculate the width of the viewport in Pixel.
-*/ 
-inline Int32 Viewport::getPixelWidth( void ) const
-{
-    return getPixelRight() - getPixelLeft() + 1;
+ */
+inline Int32 Viewport::getPixelWidth(void) const {
+  return getPixelRight() - getPixelLeft() + 1;
 }
 
 /*! Calculate the height of the viewport in Pixel.
-*/ 
-inline Int32 Viewport::getPixelHeight( void ) const
-{
-    return getPixelTop() - getPixelBottom() + 1;
+ */
+inline Int32 Viewport::getPixelHeight(void) const {
+  return getPixelTop() - getPixelBottom() + 1;
 }
 
 /*---------------------------- properties ---------------------------------*/
@@ -62,18 +60,14 @@ inline Int32 Viewport::getPixelHeight( void ) const
 /*! Set all of the size-related fields of the viewport.
 
     Does not call begin/endEdit internally!
-*/ 
-inline void Viewport::setSize( Real32 left, Real32 bottom, Real32 right, 
-                        Real32 top )
-{
-    _sfLeft.setValue( left );
-    _sfRight.setValue( right );
-    _sfBottom.setValue( bottom );
-    _sfTop.setValue( top );
+*/
+inline void Viewport::setSize(Real32 left, Real32 bottom, Real32 right, Real32 top) {
+  _sfLeft.setValue(left);
+  _sfRight.setValue(right);
+  _sfBottom.setValue(bottom);
+  _sfTop.setValue(top);
 }
-
 
 OSG_END_NAMESPACE
 
 #define OSGVIEWPORT_INLINE_CVSID "@(#)$Id: FCTemplate_inl.h,v 1.7 2001/09/17 14:15:07 vossg Exp $"
-

@@ -36,7 +36,6 @@
 *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGGRAPHOPFACTORY_H_
 #define _OSGGRAPHOPFACTORY_H_
 #ifdef __sgi
@@ -55,39 +54,34 @@ OSG_BEGIN_NAMESPACE
 //! \ingroup GrpSystemRenderingBackend
 //! GraphOpSeq class
 
-class OSG_SYSTEMLIB_DLLMAPPING GraphOpFactory
-{
-  public:
-        
-    void registerOp(GraphOp* prototype);
-    void unRegisterOp(GraphOp* prototype);
-    void unRegisterOp(const char* name);
-        
-    GraphOp *create(const char* name);
+class OSG_SYSTEMLIB_DLLMAPPING GraphOpFactory {
+ public:
+  void registerOp(GraphOp* prototype);
+  void unRegisterOp(GraphOp* prototype);
+  void unRegisterOp(const char* name);
 
-    static GraphOpFactory& the();
-    
-    
-    /* map access */
-    typedef std::map<std::string, GraphOp*>::const_iterator iterator;
-    
-    iterator begin(void);
-    iterator end();  
-    
-  private:
+  GraphOp* create(const char* name);
 
-    typedef std::pair <std::string, GraphOp*> GraphOpPair;
-        
-    GraphOpFactory(void);
+  static GraphOpFactory& the();
 
-    static GraphOpFactory *_the;
+  /* map access */
+  typedef std::map<std::string, GraphOp*>::const_iterator iterator;
 
-    std::map<std::string, GraphOp*> _typeMap;
+  iterator begin(void);
+  iterator end();
+
+ private:
+  typedef std::pair<std::string, GraphOp*> GraphOpPair;
+
+  GraphOpFactory(void);
+
+  static GraphOpFactory* _the;
+
+  std::map<std::string, GraphOp*> _typeMap;
 };
 
-typedef GraphOpFactory *GraphOpFactoryP;
+typedef GraphOpFactory* GraphOpFactoryP;
 
 OSG_END_NAMESPACE
 
 #endif /* _OSGGRAPHOPSEQ_H_ */
-

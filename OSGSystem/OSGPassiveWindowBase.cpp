@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEPASSIVEWINDOWINST
 
 #include <stdlib.h>
@@ -61,163 +60,113 @@
 #include "OSGPassiveWindowBase.h"
 #include "OSGPassiveWindow.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector PassiveWindowBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
+const OSG::BitVector PassiveWindowBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
+FieldContainerType PassiveWindowBase::_type("PassiveWindow", "Window", NULL,
+    (PrototypeCreateF)&PassiveWindowBase::createEmpty, PassiveWindow::initMethod, NULL, 0);
 
-
-FieldContainerType PassiveWindowBase::_type(
-    "PassiveWindow",
-    "Window",
-    NULL,
-    (PrototypeCreateF) &PassiveWindowBase::createEmpty,
-    PassiveWindow::initMethod,
-    NULL,
-    0);
-
-//OSG_FIELD_CONTAINER_DEF(PassiveWindowBase, PassiveWindowPtr)
+// OSG_FIELD_CONTAINER_DEF(PassiveWindowBase, PassiveWindowPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &PassiveWindowBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &PassiveWindowBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr PassiveWindowBase::shallowCopy(void) const 
-{ 
-    PassiveWindowPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const PassiveWindow *>(this)); 
-
-    return returnValue; 
+FieldContainerType& PassiveWindowBase::getType(void) {
+  return _type;
 }
 
-UInt32 PassiveWindowBase::getContainerSize(void) const 
-{ 
-    return sizeof(PassiveWindow); 
+const FieldContainerType& PassiveWindowBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr PassiveWindowBase::shallowCopy(void) const {
+  PassiveWindowPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const PassiveWindow*>(this));
+
+  return returnValue;
+}
+
+UInt32 PassiveWindowBase::getContainerSize(void) const {
+  return sizeof(PassiveWindow);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void PassiveWindowBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((PassiveWindowBase *) &other, whichField);
+void PassiveWindowBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((PassiveWindowBase*)&other, whichField);
 }
 #else
-void PassiveWindowBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((PassiveWindowBase *) &other, whichField, sInfo);
+void PassiveWindowBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((PassiveWindowBase*)&other, whichField, sInfo);
 }
-void PassiveWindowBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void PassiveWindowBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void PassiveWindowBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void PassiveWindowBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-PassiveWindowBase::PassiveWindowBase(void) :
-    Inherited() 
-{
+PassiveWindowBase::PassiveWindowBase(void)
+    : Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-PassiveWindowBase::PassiveWindowBase(const PassiveWindowBase &source) :
-    Inherited                 (source)
-{
+PassiveWindowBase::PassiveWindowBase(const PassiveWindowBase& source)
+    : Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-PassiveWindowBase::~PassiveWindowBase(void)
-{
+PassiveWindowBase::~PassiveWindowBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 PassiveWindowBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 PassiveWindowBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void PassiveWindowBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
-
-
+void PassiveWindowBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 }
 
-void PassiveWindowBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
-
-
+void PassiveWindowBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void PassiveWindowBase::executeSyncImpl(      PassiveWindowBase *pOther,
-                                        const BitVector         &whichField)
-{
+void PassiveWindowBase::executeSyncImpl(PassiveWindowBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
-
-
+  Inherited::executeSyncImpl(pOther, whichField);
 }
 #else
-void PassiveWindowBase::executeSyncImpl(      PassiveWindowBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void PassiveWindowBase::executeSyncImpl(
+    PassiveWindowBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
-
-
-
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 }
 
-void PassiveWindowBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void PassiveWindowBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>

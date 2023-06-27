@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEDISTORTIONDISPLAYFILTERINST
 
 #include <stdlib.h>
@@ -61,278 +60,212 @@
 #include "OSGDistortionDisplayFilterBase.h"
 #include "OSGDistortionDisplayFilter.h"
 
-
 OSG_BEGIN_NAMESPACE
 
-const OSG::BitVector  DistortionDisplayFilterBase::RowsFieldMask = 
+const OSG::BitVector DistortionDisplayFilterBase::RowsFieldMask =
     (TypeTraits<BitVector>::One << DistortionDisplayFilterBase::RowsFieldId);
 
-const OSG::BitVector  DistortionDisplayFilterBase::ColumnsFieldMask = 
+const OSG::BitVector DistortionDisplayFilterBase::ColumnsFieldMask =
     (TypeTraits<BitVector>::One << DistortionDisplayFilterBase::ColumnsFieldId);
 
-const OSG::BitVector  DistortionDisplayFilterBase::PositionsFieldMask = 
+const OSG::BitVector DistortionDisplayFilterBase::PositionsFieldMask =
     (TypeTraits<BitVector>::One << DistortionDisplayFilterBase::PositionsFieldId);
 
-const OSG::BitVector DistortionDisplayFilterBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector DistortionDisplayFilterBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
 /*! \var UInt32          DistortionDisplayFilterBase::_sfRows
-    
+
 */
 /*! \var UInt32          DistortionDisplayFilterBase::_sfColumns
-    
+
 */
 /*! \var Vec2f           DistortionDisplayFilterBase::_mfPositions
-    
+
 */
 
 //! DistortionDisplayFilter description
 
-FieldDescription *DistortionDisplayFilterBase::_desc[] = 
-{
-    new FieldDescription(SFUInt32::getClassType(), 
-                     "rows", 
-                     RowsFieldId, RowsFieldMask,
-                     false,
-                     (FieldAccessMethod) &DistortionDisplayFilterBase::getSFRows),
-    new FieldDescription(SFUInt32::getClassType(), 
-                     "columns", 
-                     ColumnsFieldId, ColumnsFieldMask,
-                     false,
-                     (FieldAccessMethod) &DistortionDisplayFilterBase::getSFColumns),
-    new FieldDescription(MFVec2f::getClassType(), 
-                     "positions", 
-                     PositionsFieldId, PositionsFieldMask,
-                     false,
-                     (FieldAccessMethod) &DistortionDisplayFilterBase::getMFPositions)
-};
+FieldDescription* DistortionDisplayFilterBase::_desc[] = {
+    new FieldDescription(SFUInt32::getClassType(), "rows", RowsFieldId, RowsFieldMask, false,
+        (FieldAccessMethod)&DistortionDisplayFilterBase::getSFRows),
+    new FieldDescription(SFUInt32::getClassType(), "columns", ColumnsFieldId, ColumnsFieldMask,
+        false, (FieldAccessMethod)&DistortionDisplayFilterBase::getSFColumns),
+    new FieldDescription(MFVec2f::getClassType(), "positions", PositionsFieldId, PositionsFieldMask,
+        false, (FieldAccessMethod)&DistortionDisplayFilterBase::getMFPositions)};
 
+FieldContainerType DistortionDisplayFilterBase::_type("DistortionDisplayFilter", "DisplayFilter",
+    NULL, (PrototypeCreateF)&DistortionDisplayFilterBase::createEmpty,
+    DistortionDisplayFilter::initMethod, _desc, sizeof(_desc));
 
-FieldContainerType DistortionDisplayFilterBase::_type(
-    "DistortionDisplayFilter",
-    "DisplayFilter",
-    NULL,
-    (PrototypeCreateF) &DistortionDisplayFilterBase::createEmpty,
-    DistortionDisplayFilter::initMethod,
-    _desc,
-    sizeof(_desc));
-
-//OSG_FIELD_CONTAINER_DEF(DistortionDisplayFilterBase, DistortionDisplayFilterPtr)
+// OSG_FIELD_CONTAINER_DEF(DistortionDisplayFilterBase, DistortionDisplayFilterPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &DistortionDisplayFilterBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &DistortionDisplayFilterBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr DistortionDisplayFilterBase::shallowCopy(void) const 
-{ 
-    DistortionDisplayFilterPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const DistortionDisplayFilter *>(this)); 
-
-    return returnValue; 
+FieldContainerType& DistortionDisplayFilterBase::getType(void) {
+  return _type;
 }
 
-UInt32 DistortionDisplayFilterBase::getContainerSize(void) const 
-{ 
-    return sizeof(DistortionDisplayFilter); 
+const FieldContainerType& DistortionDisplayFilterBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr DistortionDisplayFilterBase::shallowCopy(void) const {
+  DistortionDisplayFilterPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const DistortionDisplayFilter*>(this));
+
+  return returnValue;
+}
+
+UInt32 DistortionDisplayFilterBase::getContainerSize(void) const {
+  return sizeof(DistortionDisplayFilter);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void DistortionDisplayFilterBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((DistortionDisplayFilterBase *) &other, whichField);
+void DistortionDisplayFilterBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((DistortionDisplayFilterBase*)&other, whichField);
 }
 #else
-void DistortionDisplayFilterBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((DistortionDisplayFilterBase *) &other, whichField, sInfo);
+void DistortionDisplayFilterBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((DistortionDisplayFilterBase*)&other, whichField, sInfo);
 }
-void DistortionDisplayFilterBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void DistortionDisplayFilterBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void DistortionDisplayFilterBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
+void DistortionDisplayFilterBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 
-    _mfPositions.terminateShare(uiAspect, this->getContainerSize());
+  _mfPositions.terminateShare(uiAspect, this->getContainerSize());
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-DistortionDisplayFilterBase::DistortionDisplayFilterBase(void) :
-    _sfRows                   (), 
-    _sfColumns                (), 
-    _mfPositions              (), 
-    Inherited() 
-{
+DistortionDisplayFilterBase::DistortionDisplayFilterBase(void)
+    : _sfRows()
+    , _sfColumns()
+    , _mfPositions()
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-DistortionDisplayFilterBase::DistortionDisplayFilterBase(const DistortionDisplayFilterBase &source) :
-    _sfRows                   (source._sfRows                   ), 
-    _sfColumns                (source._sfColumns                ), 
-    _mfPositions              (source._mfPositions              ), 
-    Inherited                 (source)
-{
+DistortionDisplayFilterBase::DistortionDisplayFilterBase(const DistortionDisplayFilterBase& source)
+    : _sfRows(source._sfRows)
+    , _sfColumns(source._sfColumns)
+    , _mfPositions(source._mfPositions)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-DistortionDisplayFilterBase::~DistortionDisplayFilterBase(void)
-{
+DistortionDisplayFilterBase::~DistortionDisplayFilterBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 DistortionDisplayFilterBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 DistortionDisplayFilterBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (RowsFieldMask & whichField))
-    {
-        returnValue += _sfRows.getBinSize();
-    }
+  if (FieldBits::NoField != (RowsFieldMask & whichField)) {
+    returnValue += _sfRows.getBinSize();
+  }
 
-    if(FieldBits::NoField != (ColumnsFieldMask & whichField))
-    {
-        returnValue += _sfColumns.getBinSize();
-    }
+  if (FieldBits::NoField != (ColumnsFieldMask & whichField)) {
+    returnValue += _sfColumns.getBinSize();
+  }
 
-    if(FieldBits::NoField != (PositionsFieldMask & whichField))
-    {
-        returnValue += _mfPositions.getBinSize();
-    }
+  if (FieldBits::NoField != (PositionsFieldMask & whichField)) {
+    returnValue += _mfPositions.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void DistortionDisplayFilterBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void DistortionDisplayFilterBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (RowsFieldMask & whichField))
-    {
-        _sfRows.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (RowsFieldMask & whichField)) {
+    _sfRows.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ColumnsFieldMask & whichField))
-    {
-        _sfColumns.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (ColumnsFieldMask & whichField)) {
+    _sfColumns.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (PositionsFieldMask & whichField))
-    {
-        _mfPositions.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (PositionsFieldMask & whichField)) {
+    _mfPositions.copyToBin(pMem);
+  }
 }
 
-void DistortionDisplayFilterBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void DistortionDisplayFilterBase::copyFromBin(
+    BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (RowsFieldMask & whichField))
-    {
-        _sfRows.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (RowsFieldMask & whichField)) {
+    _sfRows.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ColumnsFieldMask & whichField))
-    {
-        _sfColumns.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (ColumnsFieldMask & whichField)) {
+    _sfColumns.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (PositionsFieldMask & whichField))
-    {
-        _mfPositions.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (PositionsFieldMask & whichField)) {
+    _mfPositions.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void DistortionDisplayFilterBase::executeSyncImpl(      DistortionDisplayFilterBase *pOther,
-                                        const BitVector         &whichField)
-{
+void DistortionDisplayFilterBase::executeSyncImpl(
+    DistortionDisplayFilterBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (RowsFieldMask & whichField))
-        _sfRows.syncWith(pOther->_sfRows);
+  if (FieldBits::NoField != (RowsFieldMask & whichField))
+    _sfRows.syncWith(pOther->_sfRows);
 
-    if(FieldBits::NoField != (ColumnsFieldMask & whichField))
-        _sfColumns.syncWith(pOther->_sfColumns);
+  if (FieldBits::NoField != (ColumnsFieldMask & whichField))
+    _sfColumns.syncWith(pOther->_sfColumns);
 
-    if(FieldBits::NoField != (PositionsFieldMask & whichField))
-        _mfPositions.syncWith(pOther->_mfPositions);
-
-
+  if (FieldBits::NoField != (PositionsFieldMask & whichField))
+    _mfPositions.syncWith(pOther->_mfPositions);
 }
 #else
-void DistortionDisplayFilterBase::executeSyncImpl(      DistortionDisplayFilterBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void DistortionDisplayFilterBase::executeSyncImpl(
+    DistortionDisplayFilterBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (RowsFieldMask & whichField))
-        _sfRows.syncWith(pOther->_sfRows);
+  if (FieldBits::NoField != (RowsFieldMask & whichField))
+    _sfRows.syncWith(pOther->_sfRows);
 
-    if(FieldBits::NoField != (ColumnsFieldMask & whichField))
-        _sfColumns.syncWith(pOther->_sfColumns);
+  if (FieldBits::NoField != (ColumnsFieldMask & whichField))
+    _sfColumns.syncWith(pOther->_sfColumns);
 
-
-    if(FieldBits::NoField != (PositionsFieldMask & whichField))
-        _mfPositions.syncWith(pOther->_mfPositions, sInfo);
-
-
+  if (FieldBits::NoField != (PositionsFieldMask & whichField))
+    _mfPositions.syncWith(pOther->_mfPositions, sInfo);
 }
 
-void DistortionDisplayFilterBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void DistortionDisplayFilterBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (PositionsFieldMask & whichField))
-        _mfPositions.beginEdit(uiAspect, uiContainerSize);
-
+  if (FieldBits::NoField != (PositionsFieldMask & whichField))
+    _mfPositions.beginEdit(uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 OSG_END_NAMESPACE
 
@@ -342,11 +275,11 @@ OSG_END_NAMESPACE
 OSG_BEGIN_NAMESPACE
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_DEV)
-DataType FieldDataTraits<DistortionDisplayFilterPtr>::_type("DistortionDisplayFilterPtr", "DisplayFilterPtr");
+DataType FieldDataTraits<DistortionDisplayFilterPtr>::_type(
+    "DistortionDisplayFilterPtr", "DisplayFilterPtr");
 #endif
 
 OSG_DLLEXPORT_SFIELD_DEF1(DistortionDisplayFilterPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 OSG_DLLEXPORT_MFIELD_DEF1(DistortionDisplayFilterPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
-

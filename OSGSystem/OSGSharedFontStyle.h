@@ -48,76 +48,70 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! rief SharedFontStyle class. See ef 
+/*! rief SharedFontStyle class. See ef
            PageSYSTEMSharedFontStyle for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING SharedFontStyle : public SharedFontStyleBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING SharedFontStyle : public SharedFontStyleBase {
+ private:
+  typedef SharedFontStyleBase Inherited;
 
-    typedef SharedFontStyleBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in SharedFontStyleBase.
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  SharedFontStyle(void);
+  SharedFontStyle(const SharedFontStyle& source);
 
-    // Variables should all be in SharedFontStyleBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~SharedFontStyle(void);
 
-    SharedFontStyle(void);
-    SharedFontStyle(const SharedFontStyle &source);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class SharedFontStyleBase;
 
-    virtual ~SharedFontStyle(void); 
+  static void initMethod(void);
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  // prohibit default functions (move to 'public' if you need one)
 
-    friend class FieldContainer;
-    friend class SharedFontStyleBase;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const SharedFontStyle &source);
+  void operator=(const SharedFontStyle& source);
 };
 
-typedef SharedFontStyle *SharedFontStyleP;
+typedef SharedFontStyle* SharedFontStyleP;
 
 OSG_END_NAMESPACE
 
 #include <OSGSharedFontStyleBase.inl>
 #include <OSGSharedFontStyle.inl>
 
-#define OSGSHAREDFONTSTYLE_HEADER_CVSID "@(#)$Id: FCTemplate_h.h,v 1.18 2002/12/11 06:34:58 dirk Exp $"
+#define OSGSHAREDFONTSTYLE_HEADER_CVSID                                                            \
+  "@(#)$Id: FCTemplate_h.h,v 1.18 2002/12/11 06:34:58 dirk Exp $"
 
 #endif /* _OSGSHAREDFONTSTYLE_H_ */

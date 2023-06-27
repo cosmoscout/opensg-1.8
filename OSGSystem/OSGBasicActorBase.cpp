@@ -48,40 +48,31 @@ OSG_USING_NAMESPACE
 //    Destructor
 //----------------------------------------------------------------------------
 
-BasicActorBase::~BasicActorBase(void)
-{
+BasicActorBase::~BasicActorBase(void) {
 }
 
 //----------------------------------------------------------------------------
 //    Start/Stop
 //----------------------------------------------------------------------------
 
-BasicActorBase::ResultE
-BasicActorBase::start(void)
-{
-    return Inherited::start();
+BasicActorBase::ResultE BasicActorBase::start(void) {
+  return Inherited::start();
 }
 
-BasicActorBase::ResultE
-BasicActorBase::stop(void)
-{
-    return Inherited::stop();
+BasicActorBase::ResultE BasicActorBase::stop(void) {
+  return Inherited::stop();
 }
 
 //----------------------------------------------------------------------------
 //    Enter/Leave
 //----------------------------------------------------------------------------
 
-BasicActorBase::ResultE
-BasicActorBase::enterNode(FunctorArgumentType &funcArg)
-{
-    return NewActionTypes::Continue;
+BasicActorBase::ResultE BasicActorBase::enterNode(FunctorArgumentType& funcArg) {
+  return NewActionTypes::Continue;
 }
 
-BasicActorBase::ResultE
-BasicActorBase::leaveNode(FunctorArgumentType &funcArg)
-{
-    return NewActionTypes::Continue;
+BasicActorBase::ResultE BasicActorBase::leaveNode(FunctorArgumentType& funcArg) {
+  return NewActionTypes::Continue;
 }
 
 //----------------------------------------------------------------------------
@@ -92,38 +83,29 @@ BasicActorBase::leaveNode(FunctorArgumentType &funcArg)
  */
 
 BasicActorBase::BasicActorBase(void)
-    : Inherited()
-{
+    : Inherited() {
 }
 
 //----------------------------------------------------------------------------
 //    Add, Sub and Find helper
 //----------------------------------------------------------------------------
 
-UInt32
-BasicActorBase::addHelper(NewActionBase *pAction)
-{
-    return pAction->addBasicActor(this);
+UInt32 BasicActorBase::addHelper(NewActionBase* pAction) {
+  return pAction->addBasicActor(this);
 }
 
-void
-BasicActorBase::subHelper(NewActionBase *pAction)
-{
-    UInt32 actorIndex = pAction->findBasicActor(this);
+void BasicActorBase::subHelper(NewActionBase* pAction) {
+  UInt32 actorIndex = pAction->findBasicActor(this);
 
-    if(actorIndex == TypeTraits<UInt32>::getMax())
-    {
-        SWARNING << "BasicActorBase::subHelper: Illegal actor index."
-                 << endLog;
+  if (actorIndex == TypeTraits<UInt32>::getMax()) {
+    SWARNING << "BasicActorBase::subHelper: Illegal actor index." << endLog;
 
-        return;
-    }
+    return;
+  }
 
-    pAction->subBasicActor(actorIndex);
+  pAction->subBasicActor(actorIndex);
 }
 
-UInt32
-BasicActorBase::findHelper(const NewActionBase *pAction)
-{
-    return pAction->findBasicActor(this);
+UInt32 BasicActorBase::findHelper(const NewActionBase* pAction) {
+  return pAction->findBasicActor(this);
 }

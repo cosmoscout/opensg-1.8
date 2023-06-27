@@ -38,8 +38,8 @@
 
 #ifndef _OSGSTLSCENEFILETYPE_H_
 #define _OSGSTLSCENEFILETYPE_H_
-#ifdef  __sgi
-#pragma  once
+#ifdef __sgi
+#pragma once
 #endif
 
 #include <OSGBaseTypes.h>
@@ -51,96 +51,85 @@
 OSG_BEGIN_NAMESPACE
 
 /*! \brief OSGSTLSceneFileType
-*/
+ */
 
-class OSG_SYSTEMLIB_DLLMAPPING STLSceneFileType : public SceneFileType
-{
-	/*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING STLSceneFileType : public SceneFileType {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Class Get                                  */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Class Get                                  */
-    /*! \{                                                                 */
+  static STLSceneFileType& the(void);
 
-    static STLSceneFileType &the(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  virtual ~STLSceneFileType(void);
 
-    virtual ~STLSceneFileType(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Get                                        */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Get                                        */
-    /*! \{                                                                 */
+  virtual const Char8* getName(void) const;
 
-    virtual const Char8 *getName(void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Read                                       */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Read                                       */
-    /*! \{                                                                 */
+  virtual NodePtr read(std::istream& is, const Char8* fileNameOrExtension) const;
 
-    virtual NodePtr read(std::istream &is,
-                         const Char8 *fileNameOrExtension) const;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  struct STLFace {
+    Real32 v1x, v1y, v1z;
+    Real32 v2x, v2y, v2z;
+    Real32 v3x, v3y, v3z;
+    Real32 nx, ny, nz;
+  };
+  typedef std::vector<STLFace>           STLFaceList;
+  typedef std::vector<STLFace>::iterator STLFaceListIterator;
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  Real32       ReadFloat(std::istream& is, bool bigEndian = false) const;
+  bool         IsASCII(std::istream& is, const Char8* fileNameOrExtension) const;
+  virtual bool readASCII(std::istream& is, STLFaceList& theFaces, std::string& theName) const;
+  virtual bool readBinary(std::istream& is, STLFaceList& theFaces, std::string& theName) const;
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Member                                  */
+  /*! \{                                                                 */
 
-	struct STLFace	{
-		Real32 v1x, v1y, v1z; 
-		Real32 v2x, v2y, v2z; 
-		Real32 v3x, v3y, v3z; 
-		Real32 nx, ny, nz; 
-	}; 
-	typedef std::vector<STLFace> STLFaceList;
-	typedef std::vector<STLFace>::iterator STLFaceListIterator;
+  static const Char8*     _suffixA[];
+  static STLSceneFileType _the;
 
-	Real32 ReadFloat(std::istream& is, bool bigEndian=false) const;
-	bool IsASCII(std::istream &is, const Char8* fileNameOrExtension) const;
-	virtual bool readASCII(std::istream &is, STLFaceList& theFaces, 
-                            std::string& theName) const;
-    virtual bool readBinary(std::istream &is, STLFaceList& theFaces, 
-                            std::string& theName) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
+  STLSceneFileType(const Char8* suffixArray[], UInt16 suffixByteCount, bool override,
+      UInt32 overridePriority, UInt32 flags);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Member                                  */
-    /*! \{                                                                 */
+  STLSceneFileType(const STLSceneFileType& obj);
 
-    static const Char8            *_suffixA[];
-    static       STLSceneFileType  _the;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    STLSceneFileType(const Char8  *suffixArray[],
-                           UInt16  suffixByteCount,
-                           bool    override,
-                           UInt32  overridePriority,
-                           UInt32  flags);
-
-    STLSceneFileType(const STLSceneFileType &obj);
-
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
-
-    typedef SceneFileType Inherited;
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const STLSceneFileType &source);
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  typedef SceneFileType Inherited;
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const STLSceneFileType& source);
 };
 
 typedef STLSceneFileType* STLSceneFileTypeP;
 
 OSG_END_NAMESPACE
 
-#define OSGSTLSCENEFILETYPE_HEADER_CVSID "@(#)$Id: OSGSTLSceneFileType.h,v 1.1 2006/04/26 23:35:18 dirk Exp $"
+#define OSGSTLSCENEFILETYPE_HEADER_CVSID                                                           \
+  "@(#)$Id: OSGSTLSceneFileType.h,v 1.1 2006/04/26 23:35:18 dirk Exp $"
 
 #endif // _OSGSTLSCENEFILETYPE_H_

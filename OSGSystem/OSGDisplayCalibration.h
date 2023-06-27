@@ -62,131 +62,125 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief DisplayCalibration class. See \ref 
+/*! \brief DisplayCalibration class. See \ref
            PageSystemDisplayCalibration for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING DisplayCalibration : public DisplayCalibrationBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING DisplayCalibration : public DisplayCalibrationBase {
+ private:
+  typedef DisplayCalibrationBase Inherited;
 
-    typedef DisplayCalibrationBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      calibration                             */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void calibrate(ViewportPtr port, RenderActionBase* ract);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      calibration                             */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    virtual void calibrate(ViewportPtr port,RenderActionBase *ract);
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in DisplayCalibrationBase.
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  DisplayCalibration(void);
+  DisplayCalibration(const DisplayCalibration& source);
 
-    // Variables should all be in DisplayCalibrationBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~DisplayCalibration(void);
 
-    DisplayCalibration(void);
-    DisplayCalibration(const DisplayCalibration &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   helper                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  void createCMViewports(ViewportPtr port);
+  void updateMatrix();
+  void updateGamma();
+  void updateGrid(ViewportPtr port);
+  void createPincushionGrid();
 
-    virtual ~DisplayCalibration(void); 
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   helper                                     */
-    /*! \{                                                                 */
+  bool                      _useFragmentProgram;
+  bool                      _changed;
+  bool                      _nonPowerOfTwo;
+  GeometryPtr               _scalegeo;
+  GeoPositions3fPtr         _positions;
+  GeoTexCoords2fPtr         _texcoords;
+  GeoPositions3fPtr         _positionsScale;
+  GeoTexCoords2fPtr         _texcoordsScale;
+  ImagePtr                  _rgammaimg;
+  TextureChunkPtr           _rgammachunk;
+  ImagePtr                  _ggammaimg;
+  TextureChunkPtr           _ggammachunk;
+  ImagePtr                  _bgammaimg;
+  TextureChunkPtr           _bgammachunk;
+  ImagePtr                  _argammaimg;
+  TextureChunkPtr           _argammachunk;
+  ImagePtr                  _gbgammaimg;
+  TextureChunkPtr           _gbgammachunk;
+  FragmentProgramChunkPtr   _fragProgram;
+  RegisterCombinersChunkPtr _regCombiner;
 
-    void createCMViewports(ViewportPtr port);
-    void updateMatrix();
-    void updateGamma();
-    void updateGrid(ViewportPtr port);
-    void createPincushionGrid();
+  ViewportPtr              _cmPort;
+  ViewportPtr              _dsPort;
+  ViewportPtr              _dsPort2;
+  NodePtr                  _cmRoot;
+  NodePtr                  _dsRoot;
+  NodePtr                  _ds2Root;
+  MatrixCameraPtr          _cam;
+  TextureGrabBackgroundPtr _cmBack;
+  TextureGrabBackgroundPtr _dsBack;
+  SolidBackgroundPtr       _ds2Back;
 
-    /*! \}                                                                 */
+  UInt32 _vpLeft;
+  UInt32 _vpRight;
+  UInt32 _vpBottom;
+  UInt32 _vpTop;
 
-    bool                      _useFragmentProgram;
-    bool                      _changed;
-    bool                      _nonPowerOfTwo;
-    GeometryPtr               _scalegeo;
-    GeoPositions3fPtr         _positions;
-    GeoTexCoords2fPtr         _texcoords;
-    GeoPositions3fPtr         _positionsScale;
-    GeoTexCoords2fPtr         _texcoordsScale;
-    ImagePtr                  _rgammaimg;
-    TextureChunkPtr           _rgammachunk;    
-    ImagePtr                  _ggammaimg;
-    TextureChunkPtr           _ggammachunk;    
-    ImagePtr                  _bgammaimg;
-    TextureChunkPtr           _bgammachunk;    
-    ImagePtr                  _argammaimg;
-    TextureChunkPtr           _argammachunk;    
-    ImagePtr                  _gbgammaimg;
-    TextureChunkPtr           _gbgammachunk;    
-    FragmentProgramChunkPtr   _fragProgram;
-    RegisterCombinersChunkPtr _regCombiner;
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class DisplayCalibrationBase;
 
-    ViewportPtr               _cmPort;
-    ViewportPtr               _dsPort;
-    ViewportPtr               _dsPort2;
-    NodePtr                   _cmRoot;
-    NodePtr                   _dsRoot;
-    NodePtr                   _ds2Root;
-    MatrixCameraPtr           _cam;
-    TextureGrabBackgroundPtr  _cmBack;
-    TextureGrabBackgroundPtr  _dsBack;
-    SolidBackgroundPtr        _ds2Back;
+  static void initMethod(void);
 
-    UInt32                    _vpLeft;
-    UInt32                    _vpRight;
-    UInt32                    _vpBottom;
-    UInt32                    _vpTop;
+  // prohibit default functions (move to 'public' if you need one)
 
-    /*==========================  PRIVATE  ================================*/
-  private:
-
-    friend class FieldContainer;
-    friend class DisplayCalibrationBase;
-    
-    static void initMethod(void);
-    
-    // prohibit default functions (move to 'public' if you need one)
-    
-    void operator =(const DisplayCalibration &source);
+  void operator=(const DisplayCalibration& source);
 };
 
-typedef DisplayCalibration *DisplayCalibrationP;
+typedef DisplayCalibration* DisplayCalibrationP;
 
 OSG_END_NAMESPACE
 
 #include <OSGDisplayCalibrationBase.inl>
 #include <OSGDisplayCalibration.inl>
 
-#define OSGDISPLAYCALIBRATION_HEADER_CVSID "@(#)$Id: FCTemplate_h.h,v 1.21 2003/07/11 18:39:08 dirk Exp $"
+#define OSGDISPLAYCALIBRATION_HEADER_CVSID                                                         \
+  "@(#)$Id: FCTemplate_h.h,v 1.21 2003/07/11 18:39:08 dirk Exp $"
 
 #endif /* _OSGDISPLAYCALIBRATION_H_ */

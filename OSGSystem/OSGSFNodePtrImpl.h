@@ -55,7 +55,7 @@
 
 OSG_BEGIN_NAMESPACE
 
-#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS) 
+#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
 
 typedef SField<NodePtr> SFNodePtr;
@@ -66,4 +66,3 @@ OSG_END_NAMESPACE
 #define OSGSFNODEPTR_HEADER_CVSID "@(#)$Id: $"
 
 #endif /* _OSGSFFIELDCONTAINERTYPES_H_ */
-

@@ -37,7 +37,7 @@
 \*---------------------------------------------------------------------------*/
 
 //---------------------------------------------------------------------------
- //  Includes
+//  Includes
 //---------------------------------------------------------------------------
 
 #include <stdlib.h>
@@ -51,17 +51,13 @@ OSG_USING_NAMESPACE
 
 #ifndef OSG_SUPPORT_NO_GEO_INTERFACE
 
-GeoPropertyArrayInterface::GeoPropertyArrayInterface(void)
-{
+GeoPropertyArrayInterface::GeoPropertyArrayInterface(void) {
 }
 
-GeoPropertyArrayInterface::GeoPropertyArrayInterface(
-    const GeoPropertyArrayInterface &)
-{
+GeoPropertyArrayInterface::GeoPropertyArrayInterface(const GeoPropertyArrayInterface&) {
 }
 
-GeoPropertyArrayInterface::~GeoPropertyArrayInterface(void)
-{
+GeoPropertyArrayInterface::~GeoPropertyArrayInterface(void) {
 }
 
 #endif

@@ -49,120 +49,94 @@ OSG_BEGIN_NAMESPACE
 
 //! \brief Trackball class. Deprecated, use the TrackballNavigator instead.
 
-class OSG_SYSTEMLIB_DLLMAPPING Trackball
-{
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING Trackball {
+ public:
+  enum TranslationGen { OSGOrientedTranslation = 0x01, OSGAbsoluteTranslation = 0x02 };
 
-    enum TranslationGen
-    {
-        OSGOrientedTranslation = 0x01,
-        OSGAbsoluteTranslation = 0x02
-    };
+  enum Mode { OSGCamera = 0x01, OSGObject = 0x02 };
 
-    enum Mode
-    {
-        OSGCamera = 0x01,
-        OSGObject = 0x02
-    };
-        
-    enum TranslationMode
-    {
-        OSGFixedX,
-        OSGFixedY,
-        OSGFixedZ,        
+  enum TranslationMode {
+    OSGFixedX,
+    OSGFixedY,
+    OSGFixedZ,
 
-        OSGFree
-    };
-        
-  public:
-    const char *getClassname(void) { return "Trackball"; }
+    OSGFree
+  };
 
-    Trackball(Real32 rSize = 1.0);
-    ~Trackball(void);
+ public:
+  const char* getClassname(void) {
+    return "Trackball";
+  }
 
-    void setSum(bool bVal);
+  Trackball(Real32 rSize = 1.0);
+  ~Trackball(void);
 
-    void updateRotation(Real32 rLastX,    Real32 rLastY, 
-                        Real32 rCurrentX, Real32 rCurrentY);
-    void updatePosition(Real32 rLastX,    Real32 rLastY, 
-                        Real32 rCurrentX, Real32 rCurrentY);
-    void updatePositionNeg(Real32 rLastX,    Real32 rLastY, 
-                           Real32 rCurrentX, Real32 rCurrentY);
+  void setSum(bool bVal);
 
+  void updateRotation(Real32 rLastX, Real32 rLastY, Real32 rCurrentX, Real32 rCurrentY);
+  void updatePosition(Real32 rLastX, Real32 rLastY, Real32 rCurrentX, Real32 rCurrentY);
+  void updatePositionNeg(Real32 rLastX, Real32 rLastY, Real32 rCurrentX, Real32 rCurrentY);
 
-    void setAutoPositionIncrement(Real32 rVal);
-    void setAutoPosition(bool bVal);
-    void setAutoPositionNeg(bool bVal);
-    
-    void setMode            (Mode gMode);
-    void setTranslationMode (TranslationMode gMode            );
-    void setTranslationScale(Real32          rTranslationScale);
-    void setTranslationGen  (TranslationGen  gMode            );
+  void setAutoPositionIncrement(Real32 rVal);
+  void setAutoPosition(bool bVal);
+  void setAutoPositionNeg(bool bVal);
 
-    void reset(void);
+  void setMode(Mode gMode);
+  void setTranslationMode(TranslationMode gMode);
+  void setTranslationScale(Real32 rTranslationScale);
+  void setTranslationGen(TranslationGen gMode);
 
-    void   setStartPosition(Real32 rX, Real32 rY, Real32 rZ, 
-                            bool bUpdate = false);
-    void   setStartPosition(Vec3f &gStartPos, bool bUpdate = false);
+  void reset(void);
 
-    Vec3f &getPosition     (void);
+  void setStartPosition(Real32 rX, Real32 rY, Real32 rZ, bool bUpdate = false);
+  void setStartPosition(Vec3f& gStartPos, bool bUpdate = false);
 
-    void setStartRotation(Real32 rX, Real32 rY, Real32 rZ, Real32 rW, 
-                          bool bUpdate = false);
-    void setStartRotation(Quaternion &gStartRot, bool bUpdate = false);
+  Vec3f& getPosition(void);
 
-    void setRotationCenter(const Pnt3f &pRotationCenter);
+  void setStartRotation(Real32 rX, Real32 rY, Real32 rZ, Real32 rW, bool bUpdate = false);
+  void setStartRotation(Quaternion& gStartRot, bool bUpdate = false);
 
-    Quaternion &getRotation  (void);        
+  void setRotationCenter(const Pnt3f& pRotationCenter);
 
-    Matrix     &getFullExamineMatrix  (void);
-    Matrix     &getFullTrackballMatrix(void);
+  Quaternion& getRotation(void);
 
-    void   setSize(Real32 s);
-    Real32 getSize(void    ) const;
-        
-  private:
+  Matrix& getFullExamineMatrix(void);
+  Matrix& getFullTrackballMatrix(void);
 
-    bool   _bSum;
-    bool   _bAutoPosition;
+  void   setSize(Real32 s);
+  Real32 getSize(void) const;
 
-    Mode            _gMode;
-    TranslationMode _gTransMode;
-    TranslationGen  _gTransGen;
+ private:
+  bool _bSum;
+  bool _bAutoPosition;
 
-    Real32 _rAutoPositionStep;
-    Real32 _rAutoPositionIncrement;
+  Mode            _gMode;
+  TranslationMode _gTransMode;
+  TranslationGen  _gTransGen;
 
-    Real32 _rTrackballSize;
-    Real32 _rTranslationScale;
-    
-    Quaternion _qVal;
-    Vec3f      _pVal;
+  Real32 _rAutoPositionStep;
+  Real32 _rAutoPositionIncrement;
 
-    Quaternion _qValStart;
-    Vec3f      _pValStart;
+  Real32 _rTrackballSize;
+  Real32 _rTranslationScale;
 
-    Pnt3f      _pRotationCenter;
+  Quaternion _qVal;
+  Vec3f      _pVal;
 
-    Matrix     _fullMatrix;
+  Quaternion _qValStart;
+  Vec3f      _pValStart;
 
-    Trackball(const Trackball &org);
-    void operator =(const Trackball &org);
+  Pnt3f _pRotationCenter;
 
-  protected:
+  Matrix _fullMatrix;
 
+  Trackball(const Trackball& org);
+  void operator=(const Trackball& org);
 
-    float projectToSphere(Real32 rRadius, Real32 rX, Real32 rY);
-
+ protected:
+  float projectToSphere(Real32 rRadius, Real32 rX, Real32 rY);
 };
 
 OSG_END_NAMESPACE
 
 #endif
-
-
-
-
-
-
-

@@ -31,260 +31,249 @@
 
 using namespace OSG;
 
-DrawAction * dact;
+DrawAction* dact;
 
-NodePtr  root;
+NodePtr root;
 
 Matrix accumM;
 Matrix stepM;
 
 GLUTWindowPtr win;
 
-void 
-display(void)
-{
-    static float a = 0;
+void display(void) {
+  static float a = 0;
 
-    win->frameInit();
-    
-    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+  win->frameInit();
 
-    glPushMatrix();
-    glRotatef( a, 0,1,0 );
-//    glMultMatrixf(accumM.getValues());
-    dact->apply( root );
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glPopMatrix();
+  glPushMatrix();
+  glRotatef(a, 0, 1, 0);
+  //    glMultMatrixf(accumM.getValues());
+  dact->apply(root);
 
-    a+=1;
+  glPopMatrix();
 
-    accumM.mult(stepM);
+  a += 1;
 
-    win->frameExit();
+  accumM.mult(stepM);
 
-    glutSwapBuffers();
+  win->frameExit();
+
+  glutSwapBuffers();
 }
 
-int main (int argc, char **argv)
-{
-    // GLUT init
+int main(int argc, char** argv) {
+  // GLUT init
 
-    osgInit(argc, argv);
-    
-    FieldContainerPtr pProto = Geometry::getClassType().getPrototype();
+  osgInit(argc, argv);
 
-    GeometryPtr pGeoProto = GeometryPtr::dcast(pProto);
+  FieldContainerPtr pProto = Geometry::getClassType().getPrototype();
 
-    if(pGeoProto != NullFC)
-    {
-        pGeoProto->setDlistCache(false);
-    }
+  GeometryPtr pGeoProto = GeometryPtr::dcast(pProto);
 
-    glutInit(&argc, argv);
-    glutInitDisplayMode( GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
-    int winid = glutCreateWindow("OpenSG");
-    // glutKeyboardFunc(key);
-    // glutReshapeFunc(resize);
-    glutDisplayFunc(display);       
-    // glutMouseFunc(mouse);   
-    // glutMotionFunc(motion); 
-    
-    glutIdleFunc(display);
+  if (pGeoProto != NullFC) {
+    pGeoProto->setDlistCache(false);
+  }
 
-    glMatrixMode( GL_PROJECTION );
-    glLoadIdentity();
-    gluPerspective( 60, 1, 0.1, 10 );
-    glMatrixMode( GL_MODELVIEW );
-    glLoadIdentity();
-    gluLookAt( 3, 3, 3,  0, 0, 0,   0, 1, 0 );
-    
-    glEnable( GL_DEPTH_TEST );
-    // glEnable( GL_LIGHTING );
+  glutInit(&argc, argv);
+  glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
+  int winid = glutCreateWindow("OpenSG");
+  // glutKeyboardFunc(key);
+  // glutReshapeFunc(resize);
+  glutDisplayFunc(display);
+  // glutMouseFunc(mouse);
+  // glutMotionFunc(motion);
 
-    // OSG
+  glutIdleFunc(display);
 
-    Quaternion stepQ;
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  gluPerspective(60, 1, 0.1, 10);
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+  gluLookAt(3, 3, 3, 0, 0, 0, 0, 1, 0);
 
-    stepQ.setValueAsAxisDeg(0., 1., 0., 1.);
+  glEnable(GL_DEPTH_TEST);
+  // glEnable( GL_LIGHTING );
 
-    stepM.setRotate(stepQ);
+  // OSG
 
-    root = Node::create();
-    GeometryPtr g1 = Geometry::create();
+  Quaternion stepQ;
 
-        beginEditCP(root);
-    root->setCore( g1 );
-        endEditCP(root);
+  stepQ.setValueAsAxisDeg(0., 1., 0., 1.);
 
-        beginEditCP(g1);
-    std::cerr << "Geometry Node: " << std::hex << (Geometry*) g1.getCPtr() << std::endl;
+  stepM.setRotate(stepQ);
 
-    g1->setMaterial(getDefaultUnlitMaterial());
+  root           = Node::create();
+  GeometryPtr g1 = Geometry::create();
 
-    GeoPositions3fPtr pnts = GeoPositions3f::create();
-    g1->setPositions( pnts );
-    std::cerr << "Points property: " << std::hex << pnts << std::endl;
+  beginEditCP(root);
+  root->setCore(g1);
+  endEditCP(root);
 
-    std::cerr << "Geometry Points: " << std::hex << g1->getPositions() << std::endl;
+  beginEditCP(g1);
+  std::cerr << "Geometry Node: " << std::hex << (Geometry*)g1.getCPtr() << std::endl;
 
+  g1->setMaterial(getDefaultUnlitMaterial());
 
-    MFPnt3f* p = pnts->getFieldPtr();
+  GeoPositions3fPtr pnts = GeoPositions3f::create();
+  g1->setPositions(pnts);
+  std::cerr << "Points property: " << std::hex << pnts << std::endl;
 
-    beginEditCP(pnts);
-    p->push_back( Pnt3f( -1, -1, -1) );
-    p->push_back( Pnt3f(  1, -1, -1) );
-    p->push_back( Pnt3f(  1,  1, -1) );
-    p->push_back( Pnt3f( -1,  1, -1) );
-    p->push_back( Pnt3f( -1, -1,  1) );
-    p->push_back( Pnt3f(  1, -1,  1) );
-    p->push_back( Pnt3f(  1,  1,  1) );
-    p->push_back( Pnt3f( -1,  1,  1) );
-    endEditCP(pnts);
+  std::cerr << "Geometry Points: " << std::hex << g1->getPositions() << std::endl;
 
+  MFPnt3f* p = pnts->getFieldPtr();
 
-    GeoColors4ubPtr cols = GeoColors4ub::create();
-    g1->setColors( cols );
-    beginEditCP(cols);
-    cols->getFieldPtr()->push_back( Color4ub( 255, 255, 255, 255) );
-    cols->getFieldPtr()->push_back( Color4ub(   0, 255, 255, 255) );
-    cols->getFieldPtr()->push_back( Color4ub( 255,   0, 255, 255) );
-    cols->getFieldPtr()->push_back( Color4ub( 255, 255,   0, 255) );
-    cols->getFieldPtr()->push_back( Color4ub( 255,   0,   0, 255) );
-    cols->getFieldPtr()->push_back( Color4ub(   0, 255,   0, 255) );
-    endEditCP(cols);
+  beginEditCP(pnts);
+  p->push_back(Pnt3f(-1, -1, -1));
+  p->push_back(Pnt3f(1, -1, -1));
+  p->push_back(Pnt3f(1, 1, -1));
+  p->push_back(Pnt3f(-1, 1, -1));
+  p->push_back(Pnt3f(-1, -1, 1));
+  p->push_back(Pnt3f(1, -1, 1));
+  p->push_back(Pnt3f(1, 1, 1));
+  p->push_back(Pnt3f(-1, 1, 1));
+  endEditCP(pnts);
 
-    GeoColors4fPtr colsf = GeoColors4f::create();
-    g1->setColors( colsf );
-    beginEditCP(colsf);
-    colsf->getFieldPtr()->push_back( Color4f(   1,   1,   1,   1) );
-    colsf->getFieldPtr()->push_back( Color4f(   0,   1,   1,   1) );
-    colsf->getFieldPtr()->push_back( Color4f(   1,   0,   1,   1) );
-    colsf->getFieldPtr()->push_back( Color4f(   1,   1,   0,   1) );
-    colsf->getFieldPtr()->push_back( Color4f(   1,   0,   0,   1) );
-    colsf->getFieldPtr()->push_back( Color4f(   0,   1,   0,   1) );
-    endEditCP(colsf);
+  GeoColors4ubPtr cols = GeoColors4ub::create();
+  g1->setColors(cols);
+  beginEditCP(cols);
+  cols->getFieldPtr()->push_back(Color4ub(255, 255, 255, 255));
+  cols->getFieldPtr()->push_back(Color4ub(0, 255, 255, 255));
+  cols->getFieldPtr()->push_back(Color4ub(255, 0, 255, 255));
+  cols->getFieldPtr()->push_back(Color4ub(255, 255, 0, 255));
+  cols->getFieldPtr()->push_back(Color4ub(255, 0, 0, 255));
+  cols->getFieldPtr()->push_back(Color4ub(0, 255, 0, 255));
+  endEditCP(cols);
 
+  GeoColors4fPtr colsf = GeoColors4f::create();
+  g1->setColors(colsf);
+  beginEditCP(colsf);
+  colsf->getFieldPtr()->push_back(Color4f(1, 1, 1, 1));
+  colsf->getFieldPtr()->push_back(Color4f(0, 1, 1, 1));
+  colsf->getFieldPtr()->push_back(Color4f(1, 0, 1, 1));
+  colsf->getFieldPtr()->push_back(Color4f(1, 1, 0, 1));
+  colsf->getFieldPtr()->push_back(Color4f(1, 0, 0, 1));
+  colsf->getFieldPtr()->push_back(Color4f(0, 1, 0, 1));
+  endEditCP(colsf);
 
-    // Note: the object has texCoords, but no texture, so don't be suprised to 
-    // not see the texture. ;)
-    GeoTexCoords2fPtr texs = GeoTexCoords2f::create();
-    g1->setTexCoords( texs );
-    beginEditCP(texs);
-    texs->push_back( Vec2f( 0, 0 ) );
-    texs->push_back( Vec2f( 1, 0 ) );
-    texs->push_back( Vec2f( 1, 1 ) );
-    texs->push_back( Vec2f( 0, 1 ) );
-    texs->push_back( Vec2f( 0, 0 ) );
-    texs->push_back( Vec2f( 2, 0 ) );
-    texs->push_back( Vec2f( 2, 2 ) );
-    texs->push_back( Vec2f( 0, 2 ) );
-    endEditCP(texs);
+  // Note: the object has texCoords, but no texture, so don't be suprised to
+  // not see the texture. ;)
+  GeoTexCoords2fPtr texs = GeoTexCoords2f::create();
+  g1->setTexCoords(texs);
+  beginEditCP(texs);
+  texs->push_back(Vec2f(0, 0));
+  texs->push_back(Vec2f(1, 0));
+  texs->push_back(Vec2f(1, 1));
+  texs->push_back(Vec2f(0, 1));
+  texs->push_back(Vec2f(0, 0));
+  texs->push_back(Vec2f(2, 0));
+  texs->push_back(Vec2f(2, 2));
+  texs->push_back(Vec2f(0, 2));
+  endEditCP(texs);
 
-    // Note: the object has texCoords, but no texture, so don't be suprised to 
-    // not see the texture. ;)
-    GeoTexCoords1fPtr texs1 = GeoTexCoords1f::create();
-    g1->setTexCoords1( texs1 );
-    beginEditCP(texs1);
-    texs1->getField().push_back( 0 );
-    texs1->getField().push_back( 0.5 );
-    texs1->getField().push_back( 1 );
-    texs1->getField().push_back( 0.5 );
-    texs1->getField().push_back( 0 );
-    texs1->getField().push_back( 2 );
-    texs1->getField().push_back( 2 );
-    texs1->getField().push_back( 0 );
-    endEditCP(texs1);
+  // Note: the object has texCoords, but no texture, so don't be suprised to
+  // not see the texture. ;)
+  GeoTexCoords1fPtr texs1 = GeoTexCoords1f::create();
+  g1->setTexCoords1(texs1);
+  beginEditCP(texs1);
+  texs1->getField().push_back(0);
+  texs1->getField().push_back(0.5);
+  texs1->getField().push_back(1);
+  texs1->getField().push_back(0.5);
+  texs1->getField().push_back(0);
+  texs1->getField().push_back(2);
+  texs1->getField().push_back(2);
+  texs1->getField().push_back(0);
+  endEditCP(texs1);
 
-    // use second texture coordinates
-    texs = GeoTexCoords2f::create();
-    g1->setTexCoords2( texs );
-    beginEditCP(texs);
-    texs->push_back( Vec2f( 0, 0 ) );
-    texs->push_back( Vec2f( 1, 0 ) );
-    texs->push_back( Vec2f( 1, 1 ) );
-    texs->push_back( Vec2f( 0, 1 ) );
-    texs->push_back( Vec2f( 0, 0 ) );
-    texs->push_back( Vec2f( 2, 0 ) );
-    texs->push_back( Vec2f( 2, 2 ) );
-    texs->push_back( Vec2f( 0, 2 ) );
-    endEditCP(texs);
-    
-    GeoTexCoords3fPtr texs3 = GeoTexCoords3f::create();
-    g1->setTexCoords( texs3 );
-    beginEditCP(texs3);
-    texs3->getField().push_back( Vec3f( 0, 0, 0 ) );
-    texs3->getField().push_back( Vec3f( 1, 0, 0 ) );
-    texs3->getField().push_back( Vec3f( 1, 1, 0 ) );
-    texs3->getField().push_back( Vec3f( 0, 1, 0 ) );
-    texs3->getField().push_back( Vec3f( 0, 0, 0 ) );
-    texs3->getField().push_back( Vec3f( 3, 0, 0 ) );
-    texs3->getField().push_back( Vec3f( 3, 3, 0 ) );
-    texs3->getField().push_back( Vec3f( 0, 3, 0 ) );
-    endEditCP(texs3);
+  // use second texture coordinates
+  texs = GeoTexCoords2f::create();
+  g1->setTexCoords2(texs);
+  beginEditCP(texs);
+  texs->push_back(Vec2f(0, 0));
+  texs->push_back(Vec2f(1, 0));
+  texs->push_back(Vec2f(1, 1));
+  texs->push_back(Vec2f(0, 1));
+  texs->push_back(Vec2f(0, 0));
+  texs->push_back(Vec2f(2, 0));
+  texs->push_back(Vec2f(2, 2));
+  texs->push_back(Vec2f(0, 2));
+  endEditCP(texs);
 
-    GeoIndicesUI32Ptr index = GeoIndicesUI32::create();     
-    g1->setIndices( index );
-    beginEditCP(index);
-    index->getFieldPtr()->push_back( 0 ); // PNT index
-//  index->getFieldPtr()->push_back( 0 ); // C index
-    index->getFieldPtr()->push_back( 1 ); // PNT index
-//  index->getFieldPtr()->push_back( 0 ); // C index
-    index->getFieldPtr()->push_back( 2 ); // PNT index
-//  index->getFieldPtr()->push_back( 1 ); // C index
-    index->getFieldPtr()->push_back( 3 ); // PNT index
-//  index->getFieldPtr()->push_back( 1 ); // C index
-    index->getFieldPtr()->push_back( 4 ); // PNT index
-//  index->getFieldPtr()->push_back( 2 ); // C index
-    index->getFieldPtr()->push_back( 5 ); // PNT index
-//  index->getFieldPtr()->push_back( 3 ); // C index
-    index->getFieldPtr()->push_back( 6 ); // PNT index
-//  index->getFieldPtr()->push_back( 4 ); // C index
-    index->getFieldPtr()->push_back( 7 ); // PNT index
-//  index->getFieldPtr()->push_back( 5 ); // C index
-    endEditCP(index);
+  GeoTexCoords3fPtr texs3 = GeoTexCoords3f::create();
+  g1->setTexCoords(texs3);
+  beginEditCP(texs3);
+  texs3->getField().push_back(Vec3f(0, 0, 0));
+  texs3->getField().push_back(Vec3f(1, 0, 0));
+  texs3->getField().push_back(Vec3f(1, 1, 0));
+  texs3->getField().push_back(Vec3f(0, 1, 0));
+  texs3->getField().push_back(Vec3f(0, 0, 0));
+  texs3->getField().push_back(Vec3f(3, 0, 0));
+  texs3->getField().push_back(Vec3f(3, 3, 0));
+  texs3->getField().push_back(Vec3f(0, 3, 0));
+  endEditCP(texs3);
 
-//    g1->getIndexMapping().push_back( 
-//      Geometry::MapPosition | Geometry::MapNormal |
-//      Geometry::MapTexCoords );
-//    g1->getIndexMapping().push_back( Geometry::MapColor );
+  GeoIndicesUI32Ptr index = GeoIndicesUI32::create();
+  g1->setIndices(index);
+  beginEditCP(index);
+  index->getFieldPtr()->push_back(0); // PNT index
+                                      //  index->getFieldPtr()->push_back( 0 ); // C index
+  index->getFieldPtr()->push_back(1); // PNT index
+                                      //  index->getFieldPtr()->push_back( 0 ); // C index
+  index->getFieldPtr()->push_back(2); // PNT index
+                                      //  index->getFieldPtr()->push_back( 1 ); // C index
+  index->getFieldPtr()->push_back(3); // PNT index
+                                      //  index->getFieldPtr()->push_back( 1 ); // C index
+  index->getFieldPtr()->push_back(4); // PNT index
+                                      //  index->getFieldPtr()->push_back( 2 ); // C index
+  index->getFieldPtr()->push_back(5); // PNT index
+                                      //  index->getFieldPtr()->push_back( 3 ); // C index
+  index->getFieldPtr()->push_back(6); // PNT index
+                                      //  index->getFieldPtr()->push_back( 4 ); // C index
+  index->getFieldPtr()->push_back(7); // PNT index
+                                      //  index->getFieldPtr()->push_back( 5 ); // C index
+  endEditCP(index);
 
+  //    g1->getIndexMapping().push_back(
+  //      Geometry::MapPosition | Geometry::MapNormal |
+  //      Geometry::MapTexCoords );
+  //    g1->getIndexMapping().push_back( Geometry::MapColor );
 
 #if 1
-    GeoPLengthsPtr lens = GeoPLengthsUI32::create();    
-//    g1->setLengths( lens );
-    beginEditCP(lens);
-    lens->push_back( 4 );
-    lens->push_back( 4 );
-    endEditCP(lens);
+  GeoPLengthsPtr lens = GeoPLengthsUI32::create();
+  //    g1->setLengths( lens );
+  beginEditCP(lens);
+  lens->push_back(4);
+  lens->push_back(4);
+  endEditCP(lens);
 #endif
 
-    GeoPTypesPtr type = GeoPTypesUI8::create();     
-    g1->setTypes( type );
-    beginEditCP(type);
-    type->push_back( GL_QUADS );
-//    type->push_back( GL_POLYGON );
-    endEditCP(type);
+  GeoPTypesPtr type = GeoPTypesUI8::create();
+  g1->setTypes(type);
+  beginEditCP(type);
+  type->push_back(GL_QUADS);
+  //    type->push_back( GL_POLYGON );
+  endEditCP(type);
 
-        endEditCP(g1);
-    
-    std::cerr << "Geometry type " << g1->getType().getId() << std::endl;
-    
+  endEditCP(g1);
 
-    std::vector<OSG::Color3f> colData_l;
-    OSG::GeoColors3fPtr colorPtr_l;
+  std::cerr << "Geometry type " << g1->getType().getId() << std::endl;
 
-//    colorPtr_l->getField().setValues(colData_l);
+  std::vector<OSG::Color3f> colData_l;
+  OSG::GeoColors3fPtr       colorPtr_l;
 
-    win = GLUTWindow::create();
-    win->setId(winid);
-    win->init();
+  //    colorPtr_l->getField().setValues(colData_l);
 
-    dact = DrawAction::create();
-    dact->setWindow( win.getCPtr() );
-    
-    glutMainLoop();
+  win = GLUTWindow::create();
+  win->setId(winid);
+  win->init();
 
-    
-    return 0;
+  dact = DrawAction::create();
+  dact->setWindow(win.getCPtr());
+
+  glutMainLoop();
+
+  return 0;
 }
-

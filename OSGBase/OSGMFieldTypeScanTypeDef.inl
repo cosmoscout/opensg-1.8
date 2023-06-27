@@ -49,34 +49,24 @@ OSG_BEGIN_NAMESPACE
 
 #ifdef OSG_MICROSOFT_COMPILER_HACKS
 template <class FieldTypeT, Int32 fieldNameSpace>
-const FieldType MField<FieldTypeT, fieldNameSpace>::_fieldType = FieldType(
-    MFieldTraits::getMName(), 
-    MFieldTraits::getPName(),
-    MFieldTraits::getType (),
-    MField<FieldTypeT, fieldNameSpace>::create,
-    FieldType   ::MULTI_FIELD,
-	FieldDataTraits<FontStyleP>::getScanAsTypeMF());
+const FieldType MField<FieldTypeT, fieldNameSpace>::_fieldType = FieldType(MFieldTraits::getMName(),
+    MFieldTraits::getPName(), MFieldTraits::getType(), MField<FieldTypeT, fieldNameSpace>::create,
+    FieldType ::MULTI_FIELD, FieldDataTraits<FontStyleP>::getScanAsTypeMF());
 #else
 template <class FieldTypeT, Int32 fieldNameSpace>
-const FieldType MField<FieldTypeT, fieldNameSpace>::_fieldType(
-    MFieldTraits::getMName(), 
-    MFieldTraits::getPName(),
-    MFieldTraits::getType (),
-    MField<FieldTypeT, fieldNameSpace>::create,
-    FieldType   ::MULTI_FIELD,
-	FieldDataTraits<FontStyleP>::getScanAsTypeMF());
+const FieldType MField<FieldTypeT, fieldNameSpace>::_fieldType(MFieldTraits::getMName(),
+    MFieldTraits::getPName(), MFieldTraits::getType(), MField<FieldTypeT, fieldNameSpace>::create,
+    FieldType ::MULTI_FIELD, FieldDataTraits<FontStyleP>::getScanAsTypeMF());
 #endif
 
-template <class FieldTypeT, Int32 fieldNameSpace> inline
-const FieldType &MField<FieldTypeT, fieldNameSpace>::getClassType(void)
-{
-    return _fieldType;
+template <class FieldTypeT, Int32 fieldNameSpace>
+inline const FieldType& MField<FieldTypeT, fieldNameSpace>::getClassType(void) {
+  return _fieldType;
 }
 
-template <class FieldTypeT, Int32 fieldNameSpace> inline
-const FieldType &MField<FieldTypeT, fieldNameSpace>::getType(void) const
-{
-    return _fieldType;
+template <class FieldTypeT, Int32 fieldNameSpace>
+inline const FieldType& MField<FieldTypeT, fieldNameSpace>::getType(void) const {
+  return _fieldType;
 }
 #endif
 

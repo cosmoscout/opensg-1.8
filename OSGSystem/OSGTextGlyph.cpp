@@ -38,15 +38,13 @@
 
 #include "OSGTextGlyph.h"
 
-
 OSG_BEGIN_NAMESPACE
-
 
 //----------------------------------------------------------------------
 // Destructor
 // Author: pdaehne
 //----------------------------------------------------------------------
-TextGlyph::~TextGlyph() {}
-
+TextGlyph::~TextGlyph() {
+}
 
 OSG_END_NAMESPACE

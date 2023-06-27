@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILESHADERPARAMETERCHUNKINST
 
 #include <stdlib.h>
@@ -61,16 +60,13 @@
 #include "OSGShaderParameterChunkBase.h"
 #include "OSGShaderParameterChunk.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  ShaderParameterChunkBase::ParametersFieldMask = 
+const OSG::BitVector ShaderParameterChunkBase::ParametersFieldMask =
     (TypeTraits<BitVector>::One << ShaderParameterChunkBase::ParametersFieldId);
 
-const OSG::BitVector ShaderParameterChunkBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector ShaderParameterChunkBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
@@ -80,182 +76,130 @@ const OSG::BitVector ShaderParameterChunkBase::MTInfluenceMask =
 
 //! ShaderParameterChunk description
 
-FieldDescription *ShaderParameterChunkBase::_desc[] = 
-{
-    new FieldDescription(MFShaderParameterPtr::getClassType(), 
-                     "parameters", 
-                     ParametersFieldId, ParametersFieldMask,
-                     false,
-                     (FieldAccessMethod) &ShaderParameterChunkBase::getMFParameters)
-};
+FieldDescription* ShaderParameterChunkBase::_desc[] = {
+    new FieldDescription(MFShaderParameterPtr::getClassType(), "parameters", ParametersFieldId,
+        ParametersFieldMask, false, (FieldAccessMethod)&ShaderParameterChunkBase::getMFParameters)};
 
+FieldContainerType ShaderParameterChunkBase::_type("ShaderParameterChunk", "StateChunk", NULL, NULL,
+    ShaderParameterChunk::initMethod, _desc, sizeof(_desc));
 
-FieldContainerType ShaderParameterChunkBase::_type(
-    "ShaderParameterChunk",
-    "StateChunk",
-    NULL,
-    NULL, 
-    ShaderParameterChunk::initMethod,
-    _desc,
-    sizeof(_desc));
-
-//OSG_FIELD_CONTAINER_DEF(ShaderParameterChunkBase, ShaderParameterChunkPtr)
+// OSG_FIELD_CONTAINER_DEF(ShaderParameterChunkBase, ShaderParameterChunkPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &ShaderParameterChunkBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &ShaderParameterChunkBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-UInt32 ShaderParameterChunkBase::getContainerSize(void) const 
-{ 
-    return sizeof(ShaderParameterChunk); 
+FieldContainerType& ShaderParameterChunkBase::getType(void) {
+  return _type;
 }
 
+const FieldContainerType& ShaderParameterChunkBase::getType(void) const {
+  return _type;
+}
+
+UInt32 ShaderParameterChunkBase::getContainerSize(void) const {
+  return sizeof(ShaderParameterChunk);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ShaderParameterChunkBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((ShaderParameterChunkBase *) &other, whichField);
+void ShaderParameterChunkBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((ShaderParameterChunkBase*)&other, whichField);
 }
 #else
-void ShaderParameterChunkBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((ShaderParameterChunkBase *) &other, whichField, sInfo);
+void ShaderParameterChunkBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((ShaderParameterChunkBase*)&other, whichField, sInfo);
 }
-void ShaderParameterChunkBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void ShaderParameterChunkBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void ShaderParameterChunkBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
+void ShaderParameterChunkBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 
-    _mfParameters.terminateShare(uiAspect, this->getContainerSize());
+  _mfParameters.terminateShare(uiAspect, this->getContainerSize());
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-ShaderParameterChunkBase::ShaderParameterChunkBase(void) :
-    _mfParameters             (), 
-    Inherited() 
-{
+ShaderParameterChunkBase::ShaderParameterChunkBase(void)
+    : _mfParameters()
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-ShaderParameterChunkBase::ShaderParameterChunkBase(const ShaderParameterChunkBase &source) :
-    _mfParameters             (source._mfParameters             ), 
-    Inherited                 (source)
-{
+ShaderParameterChunkBase::ShaderParameterChunkBase(const ShaderParameterChunkBase& source)
+    : _mfParameters(source._mfParameters)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-ShaderParameterChunkBase::~ShaderParameterChunkBase(void)
-{
+ShaderParameterChunkBase::~ShaderParameterChunkBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 ShaderParameterChunkBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 ShaderParameterChunkBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (ParametersFieldMask & whichField))
-    {
-        returnValue += _mfParameters.getBinSize();
-    }
+  if (FieldBits::NoField != (ParametersFieldMask & whichField)) {
+    returnValue += _mfParameters.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void ShaderParameterChunkBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void ShaderParameterChunkBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ParametersFieldMask & whichField))
-    {
-        _mfParameters.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (ParametersFieldMask & whichField)) {
+    _mfParameters.copyToBin(pMem);
+  }
 }
 
-void ShaderParameterChunkBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void ShaderParameterChunkBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ParametersFieldMask & whichField))
-    {
-        _mfParameters.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (ParametersFieldMask & whichField)) {
+    _mfParameters.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ShaderParameterChunkBase::executeSyncImpl(      ShaderParameterChunkBase *pOther,
-                                        const BitVector         &whichField)
-{
+void ShaderParameterChunkBase::executeSyncImpl(
+    ShaderParameterChunkBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (ParametersFieldMask & whichField))
-        _mfParameters.syncWith(pOther->_mfParameters);
-
-
+  if (FieldBits::NoField != (ParametersFieldMask & whichField))
+    _mfParameters.syncWith(pOther->_mfParameters);
 }
 #else
-void ShaderParameterChunkBase::executeSyncImpl(      ShaderParameterChunkBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void ShaderParameterChunkBase::executeSyncImpl(
+    ShaderParameterChunkBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-
-    if(FieldBits::NoField != (ParametersFieldMask & whichField))
-        _mfParameters.syncWith(pOther->_mfParameters, sInfo);
-
-
+  if (FieldBits::NoField != (ParametersFieldMask & whichField))
+    _mfParameters.syncWith(pOther->_mfParameters, sInfo);
 }
 
-void ShaderParameterChunkBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void ShaderParameterChunkBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (ParametersFieldMask & whichField))
-        _mfParameters.beginEdit(uiAspect, uiContainerSize);
-
+  if (FieldBits::NoField != (ParametersFieldMask & whichField))
+    _mfParameters.beginEdit(uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>
@@ -263,7 +207,8 @@ void ShaderParameterChunkBase::execBeginEditImpl (const BitVector &whichField,
 OSG_BEGIN_NAMESPACE
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_DEV)
-DataType FieldDataTraits<ShaderParameterChunkPtr>::_type("ShaderParameterChunkPtr", "StateChunkPtr");
+DataType FieldDataTraits<ShaderParameterChunkPtr>::_type(
+    "ShaderParameterChunkPtr", "StateChunkPtr");
 #endif
 
 OSG_DLLEXPORT_SFIELD_DEF1(ShaderParameterChunkPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);

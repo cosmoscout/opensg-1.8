@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGSHADERPARAMETERBOOLFIELDS_H_
 #define _OSGSHADERPARAMETERBOOLFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class ShaderParameterBool;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! ShaderParameterBoolPtr
 
 typedef FCPtr<ShaderParameterPtr, ShaderParameterBool> ShaderParameterBoolPtr;
@@ -81,18 +80,23 @@ typedef FCPtr<ShaderParameterPtr, ShaderParameterBool> ShaderParameterBoolPtr;
 #endif
 
 template <>
-struct FieldDataTraits<ShaderParameterBoolPtr> : 
-    public FieldTraitsRecurseMapper<ShaderParameterBoolPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<ShaderParameterBoolPtr>
+    : public FieldTraitsRecurseMapper<ShaderParameterBoolPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getSName(void) { return "SFShaderParameterBoolPtr"; }
-    static const char *getMName(void) { return "MFShaderParameterBoolPtr"; }
+  static const char* getSName(void) {
+    return "SFShaderParameterBoolPtr";
+  }
+  static const char* getMName(void) {
+    return "MFShaderParameterBoolPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -102,7 +106,6 @@ struct FieldDataTraits<ShaderParameterBoolPtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
@@ -126,6 +129,7 @@ OSG_DLLEXPORT_DECL1(MField, ShaderParameterBoolPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING
 
 OSG_END_NAMESPACE
 
-#define OSGSHADERPARAMETERBOOLFIELDS_HEADER_CVSID "@(#)$Id: OSGShaderParameterBoolFields.h,v 1.5 2006/02/20 17:04:38 dirk Exp $"
+#define OSGSHADERPARAMETERBOOLFIELDS_HEADER_CVSID                                                  \
+  "@(#)$Id: OSGShaderParameterBoolFields.h,v 1.5 2006/02/20 17:04:38 dirk Exp $"
 
 #endif /* _OSGSHADERPARAMETERBOOLFIELDS_H_ */

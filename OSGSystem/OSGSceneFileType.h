@@ -38,8 +38,8 @@
 
 #ifndef _OSGSCENEFILETYPE_H_
 #define _OSGSCENEFILETYPE_H_
-#ifdef  __sgi
-#pragma  once
+#ifdef __sgi
+#pragma once
 #endif
 
 #include <OSGSystemDef.h>
@@ -57,125 +57,110 @@ OSG_BEGIN_NAMESPACE
  * \brief OSGSceneFileType
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING SceneFileType
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING SceneFileType {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef std::vector<FieldContainerPtr> FCPtrStore;
 
-    typedef std::vector<FieldContainerPtr> FCPtrStore;
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Class Get                                  */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Class Get                                  */
-    /*! \{                                                                 */
+  virtual const Char8* getName(void) const = 0;
 
-    virtual const Char8 *getName(void) const = 0;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Flags                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Flags                                    */
-    /*! \{                                                                 */
-  
-    enum
-    {
-        OSG_READ_SUPPORTED = 1,
-        OSG_WRITE_SUPPORTED = 2
-    };
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  enum { OSG_READ_SUPPORTED = 1, OSG_WRITE_SUPPORTED = 2 };
 
-    virtual ~SceneFileType(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Set                                        */
-    /*! \{                                                                 */
-    
-    void setOptions(const Char8 *options);
+  virtual ~SceneFileType(void);
 
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Get                                        */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Set                                        */
+  /*! \{                                                                 */
 
-    virtual std::list<IDString> &suffixList         (void);
+  void setOptions(const Char8* options);
 
-            bool                 doOverride         (void);
-            UInt32               getOverridePriority(void);
-            UInt32               getFlags           (void);
-    
-            const Char8         *getOptions         (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Get                                        */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Read                                       */
-    /*! \{                                                                 */
+  virtual std::list<IDString>& suffixList(void);
 
-    virtual NodePtr    read        (std::istream &is,
-                                    const Char8 *fileNameOrExtension) const;
+  bool   doOverride(void);
+  UInt32 getOverridePriority(void);
+  UInt32 getFlags(void);
+
+  const Char8* getOptions(void);
+
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Read                                       */
+  /*! \{                                                                 */
+
+  virtual NodePtr read(std::istream& is, const Char8* fileNameOrExtension) const;
 
 #ifndef OSG_DISABLE_DEPRECATED
-    virtual NodePtr    readFile    (const Char8 *fileName) const;
+  virtual NodePtr readFile(const Char8* fileName) const;
 #endif
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Write                                      */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Write                                      */
+  /*! \{                                                                 */
 
-    virtual bool write(const NodePtr &node, std::ostream &os,
-                       const Char8 *fileNameOrExtension) const;
+  virtual bool write(const NodePtr& node, std::ostream& os, const Char8* fileNameOrExtension) const;
 
 #ifndef OSG_DISABLE_DEPRECATED
-    virtual bool writeFile(const NodePtr &node,
-                           const Char8 *fileName) const;
+  virtual bool writeFile(const NodePtr& node, const Char8* fileName) const;
 #endif
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Debug                                      */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Debug                                      */
+  /*! \{                                                                 */
 
-    void print(void);
+  void print(void);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Member                                  */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Member                                  */
-    /*! \{                                                                 */
+  std::list<IDString> _suffixList;
 
-    std::list<IDString> _suffixList;
+  bool   _override;
+  UInt32 _overridePriority;
+  UInt32 _flags;
 
-    bool                _override;
-    UInt32              _overridePriority;
-    UInt32              _flags;
-  
-    std::string         _options;
+  std::string _options;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    SceneFileType(const Char8  *suffixArray[],
-                        UInt16  suffixByteCount,
-                        bool    override,
-                        UInt32  overridePriority,
-                        UInt32  flags = OSG_READ_SUPPORTED);
+  SceneFileType(const Char8* suffixArray[], UInt16 suffixByteCount, bool override,
+      UInt32 overridePriority, UInt32 flags = OSG_READ_SUPPORTED);
 
-    SceneFileType(const SceneFileType &obj);
+  SceneFileType(const SceneFileType& obj);
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const SceneFileType &source);
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const SceneFileType& source);
 };
 
 typedef SceneFileType* SceneFileTypeP;

@@ -48,86 +48,74 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief MoveManipulator class. See \ref 
+/*! \brief MoveManipulator class. See \ref
            PageManipulatorsMoveManipulator for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING MoveManipulator : public MoveManipulatorBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING MoveManipulator : public MoveManipulatorBase {
+ private:
+  typedef MoveManipulatorBase Inherited;
 
-    typedef MoveManipulatorBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in MoveManipulatorBase.
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  MoveManipulator(void);
+  MoveManipulator(const MoveManipulator& source);
 
-    // Variables should all be in MoveManipulatorBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~MoveManipulator(void);
 
-    MoveManipulator(void);
-    MoveManipulator(const MoveManipulator &source);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  virtual NodePtr makeHandleGeo();
+  virtual void    doMovement(TransformPtr t, Int32 coord, Real32 value, const Vec3f& translation,
+         const Quaternion& rotation, const Vec3f& scaleFactor, const Quaternion& scaleOrientation);
 
-    virtual ~MoveManipulator(void); 
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class MoveManipulatorBase;
 
+  static void initMethod(void);
 
-    /*! \}                                                                 */
+  // prohibit default functions (move to 'public' if you need one)
 
-	virtual NodePtr makeHandleGeo();
-	virtual void    doMovement(TransformPtr t,
-							   Int32 coord,
-							   Real32 value,
-							   const Vec3f      &translation,
-							   const Quaternion &rotation,
-							   const Vec3f      &scaleFactor,
-							   const Quaternion &scaleOrientation );
-    
-    /*==========================  PRIVATE  ================================*/
-private:
-
-    friend class FieldContainer;
-    friend class MoveManipulatorBase;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const MoveManipulator &source);
+  void operator=(const MoveManipulator& source);
 };
 
-typedef MoveManipulator *MoveManipulatorP;
+typedef MoveManipulator* MoveManipulatorP;
 
 OSG_END_NAMESPACE
 
 #include <OSGMoveManipulatorBase.inl>
 #include <OSGMoveManipulator.inl>
 
-#define OSGMOVEMANIPULATOR_HEADER_CVSID "@(#)$Id: OSGMoveManipulator.h,v 1.1 2005/06/26 12:44:40 a-m-z Exp $"
+#define OSGMOVEMANIPULATOR_HEADER_CVSID                                                            \
+  "@(#)$Id: OSGMoveManipulator.h,v 1.1 2005/06/26 12:44:40 a-m-z Exp $"
 
 #endif /* _OSGMOVEMANIPULATOR_H_ */

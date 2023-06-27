@@ -52,91 +52,85 @@
 
 OSG_BEGIN_NAMESPACE
 
-class OSG_SYSTEMLIB_DLLMAPPING BINWriter
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING BINWriter {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors/Destructor                    */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors/Destructor                    */
-    /*! \{                                                                 */
+  BINWriter(std::ostream& os);
+  virtual ~BINWriter(void);
 
-             BINWriter(std::ostream &os);
-    virtual ~BINWriter(void      );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                 write                                        */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                 write                                        */
-    /*! \{                                                                 */
+  bool write(NodePtr node);
+  bool write(std::vector<NodePtr> nodes);
 
-    bool write(            NodePtr  node );
-    bool write(std::vector<NodePtr> nodes);
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Type information                            */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \hideinhierarchy */
+  struct FCInfo {
+    OSG::IDString     type;
+    FieldContainerPtr ptr;
+    BitVector         mask; // should match UInt32
+    FCInfo(void);
+  };
+  // FieldContainerId is of type UInt32
+  typedef std::map<UInt32, FCInfo>                   FCInfoMap;
+  typedef std::map<std::string, std::vector<UInt32>> FCTypeIdMap;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Type information                            */
-    /*! \{                                                                 */
+  /*! \hideinhierarchy */
 
-    /*! \hideinhierarchy */
-	struct FCInfo
-	{
-         OSG::IDString     type;
-		 FieldContainerPtr ptr;
- 		 BitVector         mask; //should match UInt32
-		 FCInfo(void);
-	};
-    //FieldContainerId is of type UInt32
-  	typedef std::map<     UInt32,             FCInfo  > FCInfoMap;
-    typedef std::map<std::string, std::vector<UInt32> > FCTypeIdMap;
+  class BinaryFileHandler : public BinaryDataHandler {
+   public:
+    BinaryFileHandler(std::ostream& os);
+    virtual ~BinaryFileHandler();
 
-    /*! \hideinhierarchy */
+    void write(MemoryHandle mem, UInt32 size);
 
-	class BinaryFileHandler : public BinaryDataHandler
-    {
-	  public:
-		BinaryFileHandler(std::ostream &os);
-		virtual ~BinaryFileHandler();
+   private:
+    std::vector<UInt8> _writeMemory;
+    std::ostream&      _os;
 
-		void write(MemoryHandle mem, UInt32 size);
+    BinaryFileHandler(const BinaryFileHandler& source);
+    void operator=(const BinaryFileHandler& source);
+  };
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Helper                                    */
+  /*! \{                                                                 */
 
-	  private:
+  void addToIdMap(FieldContainerPtr fcPtr);
+  void writeFileHeader(void);
+  void doIndexFC(FieldContainerPtr fieldConPtr);
+  void doWriteIndexedFC(void);
 
-		std::vector<UInt8> _writeMemory;
-        std::ostream &_os;
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /*---------------------------------------------------------------------*/
+  /*! \name                provate members                               */
+  /*! \{                                                                 */
 
-        BinaryFileHandler(const BinaryFileHandler &source);
-        void operator =(const BinaryFileHandler &source);
-	};
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Helper                                    */
-    /*! \{                                                                 */
+  FCInfoMap            _fcMap;
+  FCTypeIdMap          _fcIdMap;
+  BinaryFileHandler    _outFileHandler;
+  std::vector<NodePtr> _vec_pRootNodes;
+  bool                 _valid_stream;
 
-	void addToIdMap      (FieldContainerPtr fcPtr      );
-	void writeFileHeader (void                         );
-	void doIndexFC       (FieldContainerPtr fieldConPtr);
-    void doWriteIndexedFC(void                         );
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
-    /*---------------------------------------------------------------------*/
-    /*! \name                provate members                               */
-    /*! \{                                                                 */
-
-	FCInfoMap            _fcMap;
-	FCTypeIdMap          _fcIdMap;
-	BinaryFileHandler    _outFileHandler;
-    std::vector<NodePtr> _vec_pRootNodes;
-    bool                 _valid_stream;
-
-    /*! \}                                                                 */
-
-    BINWriter(const BINWriter &source);
-    void operator =(const BINWriter &source);
+  BINWriter(const BINWriter& source);
+  void operator=(const BINWriter& source);
 };
 
 OSG_END_NAMESPACE

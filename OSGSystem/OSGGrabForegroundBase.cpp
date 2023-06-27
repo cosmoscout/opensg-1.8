@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEGRABFOREGROUNDINST
 
 #include <stdlib.h>
@@ -61,19 +60,16 @@
 #include "OSGGrabForegroundBase.h"
 #include "OSGGrabForeground.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  GrabForegroundBase::ImageFieldMask = 
+const OSG::BitVector GrabForegroundBase::ImageFieldMask =
     (TypeTraits<BitVector>::One << GrabForegroundBase::ImageFieldId);
 
-const OSG::BitVector  GrabForegroundBase::AutoResizeFieldMask = 
+const OSG::BitVector GrabForegroundBase::AutoResizeFieldMask =
     (TypeTraits<BitVector>::One << GrabForegroundBase::AutoResizeFieldId);
 
-const OSG::BitVector GrabForegroundBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector GrabForegroundBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
@@ -86,215 +82,155 @@ const OSG::BitVector GrabForegroundBase::MTInfluenceMask =
 
 //! GrabForeground description
 
-FieldDescription *GrabForegroundBase::_desc[] = 
-{
-    new FieldDescription(SFImagePtr::getClassType(), 
-                     "image", 
-                     ImageFieldId, ImageFieldMask,
-                     false,
-                     (FieldAccessMethod) &GrabForegroundBase::getSFImage),
-    new FieldDescription(SFBool::getClassType(), 
-                     "autoResize", 
-                     AutoResizeFieldId, AutoResizeFieldMask,
-                     false,
-                     (FieldAccessMethod) &GrabForegroundBase::getSFAutoResize)
-};
+FieldDescription* GrabForegroundBase::_desc[] = {
+    new FieldDescription(SFImagePtr::getClassType(), "image", ImageFieldId, ImageFieldMask, false,
+        (FieldAccessMethod)&GrabForegroundBase::getSFImage),
+    new FieldDescription(SFBool::getClassType(), "autoResize", AutoResizeFieldId,
+        AutoResizeFieldMask, false, (FieldAccessMethod)&GrabForegroundBase::getSFAutoResize)};
 
-
-FieldContainerType GrabForegroundBase::_type(
-    "GrabForeground",
-    "Foreground",
-    NULL,
-    (PrototypeCreateF) &GrabForegroundBase::createEmpty,
-    GrabForeground::initMethod,
-    _desc,
+FieldContainerType GrabForegroundBase::_type("GrabForeground", "Foreground", NULL,
+    (PrototypeCreateF)&GrabForegroundBase::createEmpty, GrabForeground::initMethod, _desc,
     sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(GrabForegroundBase, GrabForegroundPtr)
+// OSG_FIELD_CONTAINER_DEF(GrabForegroundBase, GrabForegroundPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &GrabForegroundBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &GrabForegroundBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr GrabForegroundBase::shallowCopy(void) const 
-{ 
-    GrabForegroundPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const GrabForeground *>(this)); 
-
-    return returnValue; 
+FieldContainerType& GrabForegroundBase::getType(void) {
+  return _type;
 }
 
-UInt32 GrabForegroundBase::getContainerSize(void) const 
-{ 
-    return sizeof(GrabForeground); 
+const FieldContainerType& GrabForegroundBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr GrabForegroundBase::shallowCopy(void) const {
+  GrabForegroundPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const GrabForeground*>(this));
+
+  return returnValue;
+}
+
+UInt32 GrabForegroundBase::getContainerSize(void) const {
+  return sizeof(GrabForeground);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void GrabForegroundBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((GrabForegroundBase *) &other, whichField);
+void GrabForegroundBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((GrabForegroundBase*)&other, whichField);
 }
 #else
-void GrabForegroundBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((GrabForegroundBase *) &other, whichField, sInfo);
+void GrabForegroundBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((GrabForegroundBase*)&other, whichField, sInfo);
 }
-void GrabForegroundBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void GrabForegroundBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void GrabForegroundBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void GrabForegroundBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-GrabForegroundBase::GrabForegroundBase(void) :
-    _sfImage                  (), 
-    _sfAutoResize             (bool(false)), 
-    Inherited() 
-{
+GrabForegroundBase::GrabForegroundBase(void)
+    : _sfImage()
+    , _sfAutoResize(bool(false))
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-GrabForegroundBase::GrabForegroundBase(const GrabForegroundBase &source) :
-    _sfImage                  (source._sfImage                  ), 
-    _sfAutoResize             (source._sfAutoResize             ), 
-    Inherited                 (source)
-{
+GrabForegroundBase::GrabForegroundBase(const GrabForegroundBase& source)
+    : _sfImage(source._sfImage)
+    , _sfAutoResize(source._sfAutoResize)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-GrabForegroundBase::~GrabForegroundBase(void)
-{
+GrabForegroundBase::~GrabForegroundBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 GrabForegroundBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 GrabForegroundBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (ImageFieldMask & whichField))
-    {
-        returnValue += _sfImage.getBinSize();
-    }
+  if (FieldBits::NoField != (ImageFieldMask & whichField)) {
+    returnValue += _sfImage.getBinSize();
+  }
 
-    if(FieldBits::NoField != (AutoResizeFieldMask & whichField))
-    {
-        returnValue += _sfAutoResize.getBinSize();
-    }
+  if (FieldBits::NoField != (AutoResizeFieldMask & whichField)) {
+    returnValue += _sfAutoResize.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void GrabForegroundBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void GrabForegroundBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ImageFieldMask & whichField))
-    {
-        _sfImage.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (ImageFieldMask & whichField)) {
+    _sfImage.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (AutoResizeFieldMask & whichField))
-    {
-        _sfAutoResize.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (AutoResizeFieldMask & whichField)) {
+    _sfAutoResize.copyToBin(pMem);
+  }
 }
 
-void GrabForegroundBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void GrabForegroundBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ImageFieldMask & whichField))
-    {
-        _sfImage.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (ImageFieldMask & whichField)) {
+    _sfImage.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (AutoResizeFieldMask & whichField))
-    {
-        _sfAutoResize.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (AutoResizeFieldMask & whichField)) {
+    _sfAutoResize.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void GrabForegroundBase::executeSyncImpl(      GrabForegroundBase *pOther,
-                                        const BitVector         &whichField)
-{
+void GrabForegroundBase::executeSyncImpl(GrabForegroundBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (ImageFieldMask & whichField))
-        _sfImage.syncWith(pOther->_sfImage);
+  if (FieldBits::NoField != (ImageFieldMask & whichField))
+    _sfImage.syncWith(pOther->_sfImage);
 
-    if(FieldBits::NoField != (AutoResizeFieldMask & whichField))
-        _sfAutoResize.syncWith(pOther->_sfAutoResize);
-
-
+  if (FieldBits::NoField != (AutoResizeFieldMask & whichField))
+    _sfAutoResize.syncWith(pOther->_sfAutoResize);
 }
 #else
-void GrabForegroundBase::executeSyncImpl(      GrabForegroundBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void GrabForegroundBase::executeSyncImpl(
+    GrabForegroundBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (ImageFieldMask & whichField))
-        _sfImage.syncWith(pOther->_sfImage);
+  if (FieldBits::NoField != (ImageFieldMask & whichField))
+    _sfImage.syncWith(pOther->_sfImage);
 
-    if(FieldBits::NoField != (AutoResizeFieldMask & whichField))
-        _sfAutoResize.syncWith(pOther->_sfAutoResize);
-
-
-
+  if (FieldBits::NoField != (AutoResizeFieldMask & whichField))
+    _sfAutoResize.syncWith(pOther->_sfAutoResize);
 }
 
-void GrabForegroundBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void GrabForegroundBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>
@@ -309,5 +245,3 @@ OSG_DLLEXPORT_SFIELD_DEF1(GrabForegroundPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 OSG_DLLEXPORT_MFIELD_DEF1(GrabForegroundPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
-
-

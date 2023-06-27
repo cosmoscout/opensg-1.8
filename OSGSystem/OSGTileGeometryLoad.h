@@ -54,137 +54,123 @@ OSG_BEGIN_NAMESPACE
 
 #define FACE_DISTRIBUTION_SAMPLING_COUNT 8
 
-class OSG_SYSTEMLIB_DLLMAPPING TileGeometryLoad
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING TileGeometryLoad {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  TileGeometryLoad(UInt32 nodeId, bool useFaceDistribution = false);
+  TileGeometryLoad(const TileGeometryLoad& source);
 
-    TileGeometryLoad(UInt32 nodeId,bool useFaceDistribution=false);
-    TileGeometryLoad(const TileGeometryLoad &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  virtual ~TileGeometryLoad(void);
 
-    virtual ~TileGeometryLoad(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  load calculation                            */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                  load calculation                            */
-    /*! \{                                                                 */
+  void updateView(Matrix& viewing, Matrix& projection, Real32 near, UInt32 width, UInt32 height);
+  void updateGeometry();
+  bool checkRegion(Int32 min[2], Int32 max[2]);
+  bool isVisible() const;
 
-    void updateView        ( Matrix &viewing,
-                             Matrix &projection,
-                             Real32 near,
-                             UInt32 width,
-                             UInt32 height                );
-    void updateGeometry    (                              );
-    bool checkRegion       ( Int32 min[2],
-                             Int32 max[2]                 );
-    bool isVisible         (                              ) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Set                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Set                                     */
-    /*! \{                                                                 */
+  void setValid(bool s);
 
-    void             setValid(bool s);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Get                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Get                                     */
-    /*! \{                                                                 */
+  NodePtr      getNode() const;
+  const Int32* getMin();
+  const Int32* getMax();
+  UInt32       getFaces();
+  Real32       getVisibleFraction(
+            const Int32 wmin[2], const Int32 wmax[2], Int32 viswmin[2], Int32 viswmax[2]);
+  bool getVisibleArea(const Int32 wmin[2], const Int32 wmax[2], Int32 viswmin[2], Int32 viswmax[2]);
 
-    NodePtr           getNode() const;
-    const Int32 *     getMin();
-    const Int32 *     getMax();
-    UInt32            getFaces();
-    Real32            getVisibleFraction( const Int32 wmin[2],
-                                          const Int32 wmax[2],
-                                                Int32 viswmin[2],
-                                                Int32 viswmax[2] );
-    bool              getVisibleArea    ( const Int32 wmin[2],
-                                          const Int32 wmax[2],
-                                                Int32 viswmin[2],
-                                                Int32 viswmax[2] );
+  bool isInvalid(void);
 
-    bool              isInvalid(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   your_operators                             */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   your_operators                             */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Assignment                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Assignment                                */
-    /*! \{                                                                 */
+  TileGeometryLoad& operator=(const TileGeometryLoad& source);
 
-    TileGeometryLoad& operator = (const TileGeometryLoad &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Comparison                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Comparison                                */
-    /*! \{                                                                 */
+  bool operator<(const TileGeometryLoad& other) const;
+  // bool operator == (const TileGeometryLoad &other) const;
+  // bool operator != (const TileGeometryLoad &other) const;
 
-    bool operator < (const TileGeometryLoad &other) const;
-    //bool operator == (const TileGeometryLoad &other) const;
-    //bool operator != (const TileGeometryLoad &other) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                        Dump                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                        Dump                                  */
-    /*! \{                                                                 */
+  void dump(void);
 
-    void dump(void);
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                     utilities                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  Real32 getFaceDistribution(UInt32 dir, Real32 cut);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                     utilities                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    Real32 getFaceDistribution(UInt32 dir,Real32 cut);
+  /*---------------------------------------------------------------------*/
+  /*! \name                        Members                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  UInt32                           _nodeId;
+  GeometryPtr                      _geometry;
+  UInt32                           _faces;
+  Int32                            _min[2];
+  Int32                            _max[2];
+  std::vector<std::vector<Real32>> _faceDistribution;
+  UInt32                           _faceDistDirX;
+  UInt32                           _faceDistDirY;
+  bool                             _visible;
+  bool                             _useFaceDistribution;
+  Real32                           _areaSize;
+  bool                             _valid;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                        Members                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    UInt32                             _nodeId;
-    GeometryPtr                        _geometry;
-    UInt32                             _faces;
-    Int32                              _min[2];
-    Int32                              _max[2];
-    std::vector<std::vector<Real32> >  _faceDistribution;
-    UInt32                             _faceDistDirX;
-    UInt32                             _faceDistDirY;
-    bool                               _visible;
-    bool                               _useFaceDistribution;
-    Real32                             _areaSize;
-    bool                               _valid;
+  /*---------------------------------------------------------------------*/
+  /*! \name                  static elements                             */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  static std::vector<Plane> _directions;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  static elements                             */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    static std::vector<Plane>    _directions;
-
-    /*! \}                                                                 */
-
-    /*==========================  PRIVATE  ================================*/
-  private:
-
+  /*==========================  PRIVATE  ================================*/
+ private:
 };
 
 OSG_END_NAMESPACE

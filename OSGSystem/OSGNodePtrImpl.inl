@@ -50,118 +50,90 @@ OSG_BEGIN_NAMESPACE
 /*-------------------------------------------------------------------------*/
 /*                            Constructors                                 */
 
-inline
-NodePtr::NodePtr(void) : 
-    Inherited()
-{
+inline NodePtr::NodePtr(void)
+    : Inherited() {
 }
 
-inline
-NodePtr::NodePtr(const NodePtr &source) :
-    Inherited(source)
-{
+inline NodePtr::NodePtr(const NodePtr& source)
+    : Inherited(source) {
 }
 
-inline
-NodePtr::NodePtr(const NullFieldContainerPtr &source) :
-    Inherited(source)
-{
+inline NodePtr::NodePtr(const NullFieldContainerPtr& source)
+    : Inherited(source) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Destructor                                  */
 
-inline
-NodePtr::~NodePtr(void)
-{
+inline NodePtr::~NodePtr(void) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                           Container Access                              */
 
-inline
-Node *NodePtr::operator->(void)
-{
+inline Node* NodePtr::operator->(void) {
 #if 0
     return (Node *) getElemP(Thread::getAspect());
 #else
-    return reinterpret_cast<Node *>(Inherited::operator ->());
+  return reinterpret_cast<Node*>(Inherited::operator->());
 #endif
 }
 
-inline
-Node *NodePtr::operator->(void) const
-{
+inline Node* NodePtr::operator->(void) const {
 #if 0
     return (Node *) getElemP(Thread::getAspect());
 #else
-    return reinterpret_cast<Node *>(Inherited::operator ->());
+  return reinterpret_cast<Node*>(Inherited::operator->());
 #endif
 }
 
-inline
-Node &NodePtr::operator *(void)
-{
+inline Node& NodePtr::operator*(void) {
 #if 0
     return *((Node *) getElemP(Thread::getAspect()));
 #else
-    return *(reinterpret_cast<Node *>(Inherited::operator ->()));
+  return *(reinterpret_cast<Node*>(Inherited::operator->()));
 #endif
 }
 
-inline
-Node &NodePtr::operator *(void) const
-{
+inline Node& NodePtr::operator*(void) const {
 #if 0
     return *((Node *) getElemP(Thread::getAspect()));
 #else
-    return *(reinterpret_cast<Node *>(Inherited::operator ->()));
+  return *(reinterpret_cast<Node*>(Inherited::operator->()));
 #endif
 }
 
-inline
-Node *NodePtr::getCPtr(void)
-{
+inline Node* NodePtr::getCPtr(void) {
 #if 0
     return (Node *) getElemP(Thread::getAspect());
 #else
-    return reinterpret_cast<Node *>(Inherited::getCPtr());
+  return reinterpret_cast<Node*>(Inherited::getCPtr());
 #endif
 }
 
-inline
-Node *NodePtr::getCPtr(void) const
-{
+inline Node* NodePtr::getCPtr(void) const {
 #if 0
     return (Node *) getElemP(Thread::getAspect());
 #else
-    return reinterpret_cast<Node *>(Inherited::getCPtr());
+  return reinterpret_cast<Node*>(Inherited::getCPtr());
 #endif
 }
-
 
 /*-------------------------------------------------------------------------*/
 /*                             Assignment                                  */
 
-inline
-void NodePtr::operator = (const NodePtr &source)
-{
-    // copy parts inherited from parent
-    *(static_cast<Inherited *>(this)) = source;
+inline void NodePtr::operator=(const NodePtr& source) {
+  // copy parts inherited from parent
+  *(static_cast<Inherited*>(this)) = source;
 }
 
-inline
-void NodePtr::operator = (const NullFieldContainerPtr &source)
-{
-    // copy parts inherited from parent
-    *(static_cast<Inherited *>(this)) = source;
+inline void NodePtr::operator=(const NullFieldContainerPtr& source) {
+  // copy parts inherited from parent
+  *(static_cast<Inherited*>(this)) = source;
 }
-
 
 OSG_END_NAMESPACE
 
 #define OSGNODEPTR_INLINE_CVSID "@(#)$Id: $"
 
 #endif /* _OSGNODEPTRIMPL_INL_ */
-
-

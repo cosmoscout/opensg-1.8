@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILESTATESORTINGGROUPINST
 
 #include <stdlib.h>
@@ -61,16 +60,13 @@
 #include "OSGStateSortingGroupBase.h"
 #include "OSGStateSortingGroup.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  StateSortingGroupBase::SortingFieldMask = 
+const OSG::BitVector StateSortingGroupBase::SortingFieldMask =
     (TypeTraits<BitVector>::One << StateSortingGroupBase::SortingFieldId);
 
-const OSG::BitVector StateSortingGroupBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector StateSortingGroupBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
@@ -80,193 +76,139 @@ const OSG::BitVector StateSortingGroupBase::MTInfluenceMask =
 
 //! StateSortingGroup description
 
-FieldDescription *StateSortingGroupBase::_desc[] = 
-{
-    new FieldDescription(SFBool::getClassType(), 
-                     "sorting", 
-                     SortingFieldId, SortingFieldMask,
-                     false,
-                     (FieldAccessMethod) &StateSortingGroupBase::getSFSorting)
-};
+FieldDescription* StateSortingGroupBase::_desc[] = {
+    new FieldDescription(SFBool::getClassType(), "sorting", SortingFieldId, SortingFieldMask, false,
+        (FieldAccessMethod)&StateSortingGroupBase::getSFSorting)};
 
-
-FieldContainerType StateSortingGroupBase::_type(
-    "StateSortingGroup",
-    "NodeCore",
-    NULL,
-    (PrototypeCreateF) &StateSortingGroupBase::createEmpty,
-    StateSortingGroup::initMethod,
-    _desc,
+FieldContainerType StateSortingGroupBase::_type("StateSortingGroup", "NodeCore", NULL,
+    (PrototypeCreateF)&StateSortingGroupBase::createEmpty, StateSortingGroup::initMethod, _desc,
     sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(StateSortingGroupBase, StateSortingGroupPtr)
+// OSG_FIELD_CONTAINER_DEF(StateSortingGroupBase, StateSortingGroupPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &StateSortingGroupBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &StateSortingGroupBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr StateSortingGroupBase::shallowCopy(void) const 
-{ 
-    StateSortingGroupPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const StateSortingGroup *>(this)); 
-
-    return returnValue; 
+FieldContainerType& StateSortingGroupBase::getType(void) {
+  return _type;
 }
 
-UInt32 StateSortingGroupBase::getContainerSize(void) const 
-{ 
-    return sizeof(StateSortingGroup); 
+const FieldContainerType& StateSortingGroupBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr StateSortingGroupBase::shallowCopy(void) const {
+  StateSortingGroupPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const StateSortingGroup*>(this));
+
+  return returnValue;
+}
+
+UInt32 StateSortingGroupBase::getContainerSize(void) const {
+  return sizeof(StateSortingGroup);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void StateSortingGroupBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((StateSortingGroupBase *) &other, whichField);
+void StateSortingGroupBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((StateSortingGroupBase*)&other, whichField);
 }
 #else
-void StateSortingGroupBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((StateSortingGroupBase *) &other, whichField, sInfo);
+void StateSortingGroupBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((StateSortingGroupBase*)&other, whichField, sInfo);
 }
-void StateSortingGroupBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void StateSortingGroupBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void StateSortingGroupBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void StateSortingGroupBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-StateSortingGroupBase::StateSortingGroupBase(void) :
-    _sfSorting                (bool(false)), 
-    Inherited() 
-{
+StateSortingGroupBase::StateSortingGroupBase(void)
+    : _sfSorting(bool(false))
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-StateSortingGroupBase::StateSortingGroupBase(const StateSortingGroupBase &source) :
-    _sfSorting                (source._sfSorting                ), 
-    Inherited                 (source)
-{
+StateSortingGroupBase::StateSortingGroupBase(const StateSortingGroupBase& source)
+    : _sfSorting(source._sfSorting)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-StateSortingGroupBase::~StateSortingGroupBase(void)
-{
+StateSortingGroupBase::~StateSortingGroupBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 StateSortingGroupBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 StateSortingGroupBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (SortingFieldMask & whichField))
-    {
-        returnValue += _sfSorting.getBinSize();
-    }
+  if (FieldBits::NoField != (SortingFieldMask & whichField)) {
+    returnValue += _sfSorting.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void StateSortingGroupBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void StateSortingGroupBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (SortingFieldMask & whichField))
-    {
-        _sfSorting.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (SortingFieldMask & whichField)) {
+    _sfSorting.copyToBin(pMem);
+  }
 }
 
-void StateSortingGroupBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void StateSortingGroupBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (SortingFieldMask & whichField))
-    {
-        _sfSorting.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (SortingFieldMask & whichField)) {
+    _sfSorting.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void StateSortingGroupBase::executeSyncImpl(      StateSortingGroupBase *pOther,
-                                        const BitVector         &whichField)
-{
+void StateSortingGroupBase::executeSyncImpl(
+    StateSortingGroupBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (SortingFieldMask & whichField))
-        _sfSorting.syncWith(pOther->_sfSorting);
-
-
+  if (FieldBits::NoField != (SortingFieldMask & whichField))
+    _sfSorting.syncWith(pOther->_sfSorting);
 }
 #else
-void StateSortingGroupBase::executeSyncImpl(      StateSortingGroupBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void StateSortingGroupBase::executeSyncImpl(
+    StateSortingGroupBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (SortingFieldMask & whichField))
-        _sfSorting.syncWith(pOther->_sfSorting);
-
-
-
+  if (FieldBits::NoField != (SortingFieldMask & whichField))
+    _sfSorting.syncWith(pOther->_sfSorting);
 }
 
-void StateSortingGroupBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void StateSortingGroupBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 OSG_BEGIN_NAMESPACE
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_DEV)
 DataType FieldDataTraits<StateSortingGroupPtr>::_type("StateSortingGroupPtr", "NodeCorePtr");
 #endif
-
 
 OSG_END_NAMESPACE

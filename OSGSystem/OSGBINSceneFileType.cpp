@@ -71,9 +71,8 @@ OSG_USING_NAMESPACE
 
 /*! get instance
  */
-BINSceneFileType &BINSceneFileType::the(void)
-{
-    return _the;
+BINSceneFileType& BINSceneFileType::the(void) {
+  return _the;
 }
 
 /*-------------------------------------------------------------------------*/
@@ -81,9 +80,8 @@ BINSceneFileType &BINSceneFileType::the(void)
 
 /*! destructor
  */
-BINSceneFileType::~BINSceneFileType(void)
-{
-    return;
+BINSceneFileType::~BINSceneFileType(void) {
+  return;
 }
 
 #ifdef __sgi
@@ -95,11 +93,10 @@ BINSceneFileType::~BINSceneFileType(void)
 
 /*! read filename
  */
-NodePtr BINSceneFileType::read(std::istream &is, const Char8 *) const
-{
-    BINLoader loader(is);
-    loader.read();
-    return loader.getRootNode();
+NodePtr BINSceneFileType::read(std::istream& is, const Char8*) const {
+  BINLoader loader(is);
+  loader.read();
+  return loader.getRootNode();
 }
 
 #ifdef __sgi
@@ -111,11 +108,9 @@ NodePtr BINSceneFileType::read(std::istream &is, const Char8 *) const
 
 /*! write node and its subtree to the given fileName
  */
-bool BINSceneFileType::write(const NodePtr &node,
-                             std::ostream &os, const Char8 *) const
-{
-    BINWriter writer(os);
-    return writer.write(node);
+bool BINSceneFileType::write(const NodePtr& node, std::ostream& os, const Char8*) const {
+  BINWriter writer(os);
+  return writer.write(node);
 }
 
 /*-------------------------------------------------------------------------*/
@@ -123,37 +118,27 @@ bool BINSceneFileType::write(const NodePtr &node,
 
 /*! constructor
  */
-BINSceneFileType::BINSceneFileType(const Char8 *binSuffixArray[],
-                                   UInt16 suffixByteCount, bool override,
-                                   UInt32 overridePriority,
-                                   UInt32 flags) :
-        SceneFileType(binSuffixArray, suffixByteCount, override, overridePriority,
-                      flags)
-{
+BINSceneFileType::BINSceneFileType(const Char8* binSuffixArray[], UInt16 suffixByteCount,
+    bool override, UInt32 overridePriority, UInt32 flags)
+    : SceneFileType(binSuffixArray, suffixByteCount, override, overridePriority, flags) {
 }
 
 /*! copy constructor
  */
-BINSceneFileType::BINSceneFileType(const BINSceneFileType &obj) :
-    SceneFileType(obj)
-{
-    return;
+BINSceneFileType::BINSceneFileType(const BINSceneFileType& obj)
+    : SceneFileType(obj) {
+  return;
 }
 
 /*! get name
  */
-const Char8 *BINSceneFileType::getName(void) const
-{
-    return "OpenSG Binary Geometry";
+const Char8* BINSceneFileType::getName(void) const {
+  return "OpenSG Binary Geometry";
 }
 
 /*-------------------------------------------------------------------------*/
 /*                              static elements                            */
 
-const Char8 *    BINSceneFileType::_suffixA[] = { "bin" };
-BINSceneFileType BINSceneFileType:: _the(_suffixA,
-                                         sizeof(_suffixA), false, 10,
-                                         OSG_READ_SUPPORTED | 
-                                         OSG_WRITE_SUPPORTED);
-
-
+const Char8*     BINSceneFileType::_suffixA[] = {"bin"};
+BINSceneFileType BINSceneFileType::_the(
+    _suffixA, sizeof(_suffixA), false, 10, OSG_READ_SUPPORTED | OSG_WRITE_SUPPORTED);

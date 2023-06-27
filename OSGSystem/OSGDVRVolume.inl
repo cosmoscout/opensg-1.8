@@ -52,72 +52,52 @@ OSG_BEGIN_NAMESPACE
 
 /*------------------------------ access -----------------------------------*/
 
+inline void DVRVolume::setAppearance(const DVRAppearancePtr& value) {
+  SINFO << "DVRVolume::setAppearance this: " << this << std::endl;
 
-inline
-void DVRVolume::setAppearance(const DVRAppearancePtr &value)
-{
-    SINFO << "DVRVolume::setAppearance this: " << this << std::endl;
+  //  SINFO << "setRefdCP(" << _sfAppearance.getValue()
+  //        << ", " << value << std::endl;
 
-//  SINFO << "setRefdCP(" << _sfAppearance.getValue() 
-//        << ", " << value << std::endl;
-
-    setRefdCP(_sfAppearance.getValue(), value);
+  setRefdCP(_sfAppearance.getValue(), value);
 }
 
-inline
-void DVRVolume::setGeometry(const DVRGeometryPtr &value)
-{
-    SINFO << "DVRVolume::setGeometry this: " << this << std::endl;
-//  SINFO << "setRefdCP(" << _sfGeometry.getValue() << ", " 
-//        << value << std::endl;
+inline void DVRVolume::setGeometry(const DVRGeometryPtr& value) {
+  SINFO << "DVRVolume::setGeometry this: " << this << std::endl;
+  //  SINFO << "setRefdCP(" << _sfGeometry.getValue() << ", "
+  //        << value << std::endl;
 
-    setRefdCP(_sfGeometry.getValue(), value);
+  setRefdCP(_sfGeometry.getValue(), value);
 }
 
-inline
-void DVRVolume::setShader(const DVRShaderPtr &value)
-{
-    SINFO << "DVRVolume::setShader this: " << this << std::endl;
-//  SINFO << "setRefdCP(" << _sfShader.getValue() << ", " 
-//        << value << std::endl;
+inline void DVRVolume::setShader(const DVRShaderPtr& value) {
+  SINFO << "DVRVolume::setShader this: " << this << std::endl;
+  //  SINFO << "setRefdCP(" << _sfShader.getValue() << ", "
+  //        << value << std::endl;
 
-    setRefdCP(_sfShader.getValue(), value);
+  setRefdCP(_sfShader.getValue(), value);
 }
 
-inline
-void DVRVolume::setRenderMaterial(const MaterialPtr &value)
-{
-    SINFO << "DVRVolume::setRenderMaterial this: " 
-          << this 
-          << std::endl;
+inline void DVRVolume::setRenderMaterial(const MaterialPtr& value) {
+  SINFO << "DVRVolume::setRenderMaterial this: " << this << std::endl;
 
-    SINFO << "setRefdCP(" 
-          << _sfRenderMaterial.getValue() << ", " 
-          << value << std::endl;
+  SINFO << "setRefdCP(" << _sfRenderMaterial.getValue() << ", " << value << std::endl;
 
-    SINFO << "---" << std::endl;
+  SINFO << "---" << std::endl;
 
-    setRefdCP(_sfRenderMaterial.getValue(), value);
+  setRefdCP(_sfRenderMaterial.getValue(), value);
 }
 
-inline
-void DVRVolume::setTextureStorage(const ChunkMaterialPtr &value)
-{
-    SINFO << "DVRVolume::setTextureStorage this: " 
-          << this << std::endl;
-    SINFO << "setRefdCP(" 
-          << _sfTextureStorage.getValue() << ", " 
-          << value << std::endl;
+inline void DVRVolume::setTextureStorage(const ChunkMaterialPtr& value) {
+  SINFO << "DVRVolume::setTextureStorage this: " << this << std::endl;
+  SINFO << "setRefdCP(" << _sfTextureStorage.getValue() << ", " << value << std::endl;
 
-    SINFO << "---" << std::endl;
+  SINFO << "---" << std::endl;
 
-    setRefdCP(_sfTextureStorage.getValue(), value);
+  setRefdCP(_sfTextureStorage.getValue(), value);
 }
 
-inline
-TextureManager &DVRVolume::getTextureManager() 
-{
-    return textureManager;
+inline TextureManager& DVRVolume::getTextureManager() {
+  return textureManager;
 }
 
 /*-------------------------------------------------------------------------*\
@@ -128,8 +108,6 @@ TextureManager &DVRVolume::getTextureManager()
  -  private                                                                -
 \*-------------------------------------------------------------------------*/
 
-
 OSG_END_NAMESPACE
 
 #define OSGDVRVOLUME_INLINE_CVSID "@(#)$Id: $"
-

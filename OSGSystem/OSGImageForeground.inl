@@ -34,7 +34,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -42,18 +41,13 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 /*------------------------------ access -----------------------------------*/
 
-inline void ImageForeground::addImage(ImagePtr image, Pnt2f position)
-{
-    getImages().push_back( image );
-    getPositions().push_back( position );
+inline void ImageForeground::addImage(ImagePtr image, Pnt2f position) {
+  getImages().push_back(image);
+  getPositions().push_back(position);
 }
-
 
 OSG_END_NAMESPACE
 
 #define OSGIMAGEFOREGROUND_INLINE_CVSID "@(#)$Id: $"
-
-

@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEINVERSETRANSFORMINST
 
 #include <stdlib.h>
@@ -61,163 +60,114 @@
 #include "OSGInverseTransformBase.h"
 #include "OSGInverseTransform.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector InverseTransformBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
+const OSG::BitVector InverseTransformBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
+FieldContainerType InverseTransformBase::_type("InverseTransform", "Group", NULL,
+    (PrototypeCreateF)&InverseTransformBase::createEmpty, InverseTransform::initMethod, NULL, 0);
 
-
-FieldContainerType InverseTransformBase::_type(
-    "InverseTransform",
-    "Group",
-    NULL,
-    (PrototypeCreateF) &InverseTransformBase::createEmpty,
-    InverseTransform::initMethod,
-    NULL,
-    0);
-
-//OSG_FIELD_CONTAINER_DEF(InverseTransformBase, InverseTransformPtr)
+// OSG_FIELD_CONTAINER_DEF(InverseTransformBase, InverseTransformPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &InverseTransformBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &InverseTransformBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr InverseTransformBase::shallowCopy(void) const 
-{ 
-    InverseTransformPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const InverseTransform *>(this)); 
-
-    return returnValue; 
+FieldContainerType& InverseTransformBase::getType(void) {
+  return _type;
 }
 
-UInt32 InverseTransformBase::getContainerSize(void) const 
-{ 
-    return sizeof(InverseTransform); 
+const FieldContainerType& InverseTransformBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr InverseTransformBase::shallowCopy(void) const {
+  InverseTransformPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const InverseTransform*>(this));
+
+  return returnValue;
+}
+
+UInt32 InverseTransformBase::getContainerSize(void) const {
+  return sizeof(InverseTransform);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void InverseTransformBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((InverseTransformBase *) &other, whichField);
+void InverseTransformBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((InverseTransformBase*)&other, whichField);
 }
 #else
-void InverseTransformBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((InverseTransformBase *) &other, whichField, sInfo);
+void InverseTransformBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((InverseTransformBase*)&other, whichField, sInfo);
 }
-void InverseTransformBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void InverseTransformBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void InverseTransformBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void InverseTransformBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-InverseTransformBase::InverseTransformBase(void) :
-    Inherited() 
-{
+InverseTransformBase::InverseTransformBase(void)
+    : Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-InverseTransformBase::InverseTransformBase(const InverseTransformBase &source) :
-    Inherited                 (source)
-{
+InverseTransformBase::InverseTransformBase(const InverseTransformBase& source)
+    : Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-InverseTransformBase::~InverseTransformBase(void)
-{
+InverseTransformBase::~InverseTransformBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 InverseTransformBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 InverseTransformBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void InverseTransformBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
-
-
+void InverseTransformBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 }
 
-void InverseTransformBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
-
-
+void InverseTransformBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void InverseTransformBase::executeSyncImpl(      InverseTransformBase *pOther,
-                                        const BitVector         &whichField)
-{
+void InverseTransformBase::executeSyncImpl(
+    InverseTransformBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
-
-
+  Inherited::executeSyncImpl(pOther, whichField);
 }
 #else
-void InverseTransformBase::executeSyncImpl(      InverseTransformBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void InverseTransformBase::executeSyncImpl(
+    InverseTransformBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
-
-
-
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 }
 
-void InverseTransformBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void InverseTransformBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>

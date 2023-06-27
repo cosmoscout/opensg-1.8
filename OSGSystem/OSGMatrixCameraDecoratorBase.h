@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGMATRIXCAMERADECORATORBASE_H_
 #define _OSGMATRIXCAMERADECORATORBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -83,216 +81,196 @@ class BinaryDataHandler;
 
 //! \brief MatrixCameraDecorator Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING MatrixCameraDecoratorBase : public CameraDecorator
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING MatrixCameraDecoratorBase : public CameraDecorator {
+ private:
+  typedef CameraDecorator Inherited;
 
-    typedef CameraDecorator    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef MatrixCameraDecoratorPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    PreViewingFieldId                = Inherited::NextFieldId,
+    PostViewingFieldId               = PreViewingFieldId + 1,
+    PreProjectionTranslationFieldId  = PostViewingFieldId + 1,
+    PostProjectionTranslationFieldId = PreProjectionTranslationFieldId + 1,
+    PreProjectionFieldId             = PostProjectionTranslationFieldId + 1,
+    PostProjectionFieldId            = PreProjectionFieldId + 1,
+    NextFieldId                      = PostProjectionFieldId + 1
+  };
 
-    typedef MatrixCameraDecoratorPtr  Ptr;
+  static const OSG::BitVector PreViewingFieldMask;
+  static const OSG::BitVector PostViewingFieldMask;
+  static const OSG::BitVector PreProjectionTranslationFieldMask;
+  static const OSG::BitVector PostProjectionTranslationFieldMask;
+  static const OSG::BitVector PreProjectionFieldMask;
+  static const OSG::BitVector PostProjectionFieldMask;
 
-    enum
-    {
-        PreViewingFieldId                = Inherited::NextFieldId,
-        PostViewingFieldId               = PreViewingFieldId                + 1,
-        PreProjectionTranslationFieldId  = PostViewingFieldId               + 1,
-        PostProjectionTranslationFieldId = PreProjectionTranslationFieldId  + 1,
-        PreProjectionFieldId             = PostProjectionTranslationFieldId + 1,
-        PostProjectionFieldId            = PreProjectionFieldId             + 1,
-        NextFieldId                      = PostProjectionFieldId            + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector PreViewingFieldMask;
-    static const OSG::BitVector PostViewingFieldMask;
-    static const OSG::BitVector PreProjectionTranslationFieldMask;
-    static const OSG::BitVector PostProjectionTranslationFieldMask;
-    static const OSG::BitVector PreProjectionFieldMask;
-    static const OSG::BitVector PostProjectionFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFMatrix* getSFPreViewing(void);
+  SFMatrix* getSFPostViewing(void);
+  SFMatrix* getSFPreProjectionTranslation(void);
+  SFMatrix* getSFPostProjectionTranslation(void);
+  SFMatrix* getSFPreProjection(void);
+  SFMatrix* getSFPostProjection(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  Matrix&       getPreViewing(void);
+  const Matrix& getPreViewing(void) const;
+  Matrix&       getPostViewing(void);
+  const Matrix& getPostViewing(void) const;
+  Matrix&       getPreProjectionTranslation(void);
+  const Matrix& getPreProjectionTranslation(void) const;
+  Matrix&       getPostProjectionTranslation(void);
+  const Matrix& getPostProjectionTranslation(void) const;
+  Matrix&       getPreProjection(void);
+  const Matrix& getPreProjection(void) const;
+  Matrix&       getPostProjection(void);
+  const Matrix& getPostProjection(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFMatrix            *getSFPreViewing     (void);
-           SFMatrix            *getSFPostViewing    (void);
-           SFMatrix            *getSFPreProjectionTranslation(void);
-           SFMatrix            *getSFPostProjectionTranslation(void);
-           SFMatrix            *getSFPreProjection  (void);
-           SFMatrix            *getSFPostProjection (void);
+  void setPreViewing(const Matrix& value);
+  void setPostViewing(const Matrix& value);
+  void setPreProjectionTranslation(const Matrix& value);
+  void setPostProjectionTranslation(const Matrix& value);
+  void setPreProjection(const Matrix& value);
+  void setPostProjection(const Matrix& value);
 
-           Matrix              &getPreViewing     (void);
-     const Matrix              &getPreViewing     (void) const;
-           Matrix              &getPostViewing    (void);
-     const Matrix              &getPostViewing    (void) const;
-           Matrix              &getPreProjectionTranslation(void);
-     const Matrix              &getPreProjectionTranslation(void) const;
-           Matrix              &getPostProjectionTranslation(void);
-     const Matrix              &getPostProjectionTranslation(void) const;
-           Matrix              &getPreProjection  (void);
-     const Matrix              &getPreProjection  (void) const;
-           Matrix              &getPostProjection (void);
-     const Matrix              &getPostProjection (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setPreViewing     ( const Matrix &value );
-     void setPostViewing    ( const Matrix &value );
-     void setPreProjectionTranslation( const Matrix &value );
-     void setPostProjectionTranslation( const Matrix &value );
-     void setPreProjection  ( const Matrix &value );
-     void setPostProjection ( const Matrix &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static MatrixCameraDecoratorPtr create(void);
+  static MatrixCameraDecoratorPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  MatrixCameraDecoratorPtr      create          (void); 
-    static  MatrixCameraDecoratorPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFMatrix _sfPreViewing;
+  SFMatrix _sfPostViewing;
+  SFMatrix _sfPreProjectionTranslation;
+  SFMatrix _sfPostProjectionTranslation;
+  SFMatrix _sfPreProjection;
+  SFMatrix _sfPostProjection;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  MatrixCameraDecoratorBase(void);
+  MatrixCameraDecoratorBase(const MatrixCameraDecoratorBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~MatrixCameraDecoratorBase(void);
 
-    SFMatrix            _sfPreViewing;
-    SFMatrix            _sfPostViewing;
-    SFMatrix            _sfPreProjectionTranslation;
-    SFMatrix            _sfPostProjectionTranslation;
-    SFMatrix            _sfPreProjection;
-    SFMatrix            _sfPostProjection;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    MatrixCameraDecoratorBase(void);
-    MatrixCameraDecoratorBase(const MatrixCameraDecoratorBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~MatrixCameraDecoratorBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      MatrixCameraDecoratorBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(MatrixCameraDecoratorBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      MatrixCameraDecoratorBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      MatrixCameraDecoratorBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const MatrixCameraDecoratorBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const MatrixCameraDecoratorBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef MatrixCameraDecoratorBase* MatrixCameraDecoratorBaseP;
 
-typedef MatrixCameraDecoratorBase *MatrixCameraDecoratorBaseP;
-
-typedef osgIF<MatrixCameraDecoratorBase::isNodeCore,
-              CoredNodePtr<MatrixCameraDecorator>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet MatrixCameraDecoratorNodePtr;
+typedef osgIF<MatrixCameraDecoratorBase::isNodeCore, CoredNodePtr<MatrixCameraDecorator>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet
+    MatrixCameraDecoratorNodePtr;
 
 typedef RefPtr<MatrixCameraDecoratorPtr> MatrixCameraDecoratorRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGMATRIXCAMERADECORATORBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGMATRIXCAMERADECORATORBASE_HEADER_CVSID                                                  \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGMATRIXCAMERADECORATORBASE_H_ */

@@ -60,159 +60,137 @@ class BinaryDataHandler;
 /*! \ingroup GrpSystemFieldContainer
     AttachmentContainer provides the functionality to store
     attachments for derived FieldContainer classes.
-    
+
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING AttachmentContainer : public FieldContainer 
-{
-    /*=========================  PROTECTED  ===============================*/
+class OSG_SYSTEMLIB_DLLMAPPING AttachmentContainer : public FieldContainer {
+  /*=========================  PROTECTED  ===============================*/
 
-  protected:
+ protected:
+  typedef FieldContainer Inherited;
 
-    typedef FieldContainer Inherited;
+  /*==========================  PUBLIC  =================================*/
 
-    /*==========================  PUBLIC  =================================*/
+ public:
+  enum { AttachmentsFieldId = Inherited::NextFieldId, NextFieldId = AttachmentsFieldId + 1 };
 
-  public:
+  static const BitVector AttachmentsFieldMask;
 
-    enum 
-    { 
-        AttachmentsFieldId = Inherited::NextFieldId, 
-        NextFieldId        = AttachmentsFieldId + 1
-    };
+  /*---------------------------------------------------------------------*/
+  /*! \name        General Fieldcontainer Declaration                    */
+  /*! \{                                                                 */
 
-    static const BitVector AttachmentsFieldMask;
+  OSG_ABSTR_FIELD_CONTAINER_DECL(AttachmentContainerPtr)
 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Handle Attachments                        */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name        General Fieldcontainer Declaration                    */
-    /*! \{                                                                 */
+  void addAttachment(const AttachmentPtr& fieldContainerP, UInt16 binding = 0);
 
-    OSG_ABSTR_FIELD_CONTAINER_DECL(AttachmentContainerPtr)
+  void subAttachment(const AttachmentPtr& fieldContainerP, UInt16 binding = 0);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Handle Attachments                        */
-    /*! \{                                                                 */
+  AttachmentPtr findAttachment(UInt32 groupId, UInt16 binding = 0);
 
-    void          addAttachment (const AttachmentPtr &fieldContainerP, 
-                                       UInt16         binding        = 0);
+  AttachmentPtr findAttachment(const FieldContainerType& type, UInt16 binding = 0);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                                                              */
+  /*! \{                        Field Access                             */
 
-    void          subAttachment (const AttachmentPtr &fieldContainerP,
-                                       UInt16         binding        = 0);
+  SFAttachmentMap* getSFAttachments(void);
 
-    AttachmentPtr findAttachment(      UInt32         groupId,
-                                       UInt16         binding        = 0);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                        Changed                               */
+  /*! \{                                                                 */
 
-    AttachmentPtr findAttachment(const FieldContainerType &type,
-                                       UInt16              binding   = 0);
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                                                              */
-    /*! \{                        Field Access                             */
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    SFAttachmentMap *getSFAttachments(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                        Changed                               */
-    /*! \{                                                                 */
+  virtual UInt32 getBinSize(const BitVector& whichField);
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                        Dump                                  */
+  /*! \{                                                                 */
 
-    virtual UInt32  getBinSize (const BitVector         &whichField);
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    virtual void    copyToBin  (      BinaryDataHandler &pMem, 
-                                const BitVector         &whichField);
-    virtual void    copyFromBin(      BinaryDataHandler &pMem, 
-                                const BitVector         &whichField);
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                        Dump                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    virtual void dump(      UInt32    uiIndent = 0, 
-                      const BitVector bvFlags  = 0) const;
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Type information                            */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Type information                            */
-    /*! \{                                                                 */
+  SFAttachmentMap _attachmentMap;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  AttachmentContainer(void);
+  AttachmentContainer(const AttachmentContainer& source);
 
-    SFAttachmentMap _attachmentMap;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  virtual ~AttachmentContainer(void);
 
-    AttachmentContainer(void);
-    AttachmentContainer(const AttachmentContainer &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
-
-    virtual ~AttachmentContainer (void);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Sync                                     */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Sync                                     */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    virtual void executeSync    (      FieldContainer      &other,
-                                 const BitVector           &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 
-            void executeSyncImpl(      AttachmentContainer *pOther,
-                                 const BitVector           &whichField);
+  void executeSyncImpl(AttachmentContainer* pOther, const BitVector& whichField);
 #else
-    virtual void executeSync    (      FieldContainer      &other,
-                                 const BitVector           &whichField,
-                                 const SyncInfo            &sInfo     );
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-            void executeSyncImpl(      AttachmentContainer *pOther,
-                                 const BitVector           &whichField,
-                                 const SyncInfo            &sInfo     );
+  void executeSyncImpl(
+      AttachmentContainer* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 #endif
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Pointer                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Pointer                                  */
+  /*! \{                                                                 */
 
-    AttachmentContainerPtr getPtr(void);
+  AttachmentContainerPtr getPtr(void);
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-  private:
+ private:
+  friend class FieldContainer;
+  friend class FieldContainerType;
 
-    friend class FieldContainer;
-    friend class FieldContainerType;
-
-    /*!\brief prohibit default functions (move to 'public' if needed) */
-    void operator =(const AttachmentContainer &source);
+  /*!\brief prohibit default functions (move to 'public' if needed) */
+  void operator=(const AttachmentContainer& source);
 };
 
 OSG_END_NAMESPACE

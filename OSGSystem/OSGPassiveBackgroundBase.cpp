@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEPASSIVEBACKGROUNDINST
 
 #include <stdlib.h>
@@ -61,163 +60,114 @@
 #include "OSGPassiveBackgroundBase.h"
 #include "OSGPassiveBackground.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector PassiveBackgroundBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
+const OSG::BitVector PassiveBackgroundBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
+FieldContainerType PassiveBackgroundBase::_type("PassiveBackground", "Background", NULL,
+    (PrototypeCreateF)&PassiveBackgroundBase::createEmpty, PassiveBackground::initMethod, NULL, 0);
 
-
-FieldContainerType PassiveBackgroundBase::_type(
-    "PassiveBackground",
-    "Background",
-    NULL,
-    (PrototypeCreateF) &PassiveBackgroundBase::createEmpty,
-    PassiveBackground::initMethod,
-    NULL,
-    0);
-
-//OSG_FIELD_CONTAINER_DEF(PassiveBackgroundBase, PassiveBackgroundPtr)
+// OSG_FIELD_CONTAINER_DEF(PassiveBackgroundBase, PassiveBackgroundPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &PassiveBackgroundBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &PassiveBackgroundBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr PassiveBackgroundBase::shallowCopy(void) const 
-{ 
-    PassiveBackgroundPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const PassiveBackground *>(this)); 
-
-    return returnValue; 
+FieldContainerType& PassiveBackgroundBase::getType(void) {
+  return _type;
 }
 
-UInt32 PassiveBackgroundBase::getContainerSize(void) const 
-{ 
-    return sizeof(PassiveBackground); 
+const FieldContainerType& PassiveBackgroundBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr PassiveBackgroundBase::shallowCopy(void) const {
+  PassiveBackgroundPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const PassiveBackground*>(this));
+
+  return returnValue;
+}
+
+UInt32 PassiveBackgroundBase::getContainerSize(void) const {
+  return sizeof(PassiveBackground);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void PassiveBackgroundBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((PassiveBackgroundBase *) &other, whichField);
+void PassiveBackgroundBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((PassiveBackgroundBase*)&other, whichField);
 }
 #else
-void PassiveBackgroundBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((PassiveBackgroundBase *) &other, whichField, sInfo);
+void PassiveBackgroundBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((PassiveBackgroundBase*)&other, whichField, sInfo);
 }
-void PassiveBackgroundBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void PassiveBackgroundBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void PassiveBackgroundBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void PassiveBackgroundBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-PassiveBackgroundBase::PassiveBackgroundBase(void) :
-    Inherited() 
-{
+PassiveBackgroundBase::PassiveBackgroundBase(void)
+    : Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-PassiveBackgroundBase::PassiveBackgroundBase(const PassiveBackgroundBase &source) :
-    Inherited                 (source)
-{
+PassiveBackgroundBase::PassiveBackgroundBase(const PassiveBackgroundBase& source)
+    : Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-PassiveBackgroundBase::~PassiveBackgroundBase(void)
-{
+PassiveBackgroundBase::~PassiveBackgroundBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 PassiveBackgroundBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 PassiveBackgroundBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void PassiveBackgroundBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
-
-
+void PassiveBackgroundBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 }
 
-void PassiveBackgroundBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
-
-
+void PassiveBackgroundBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void PassiveBackgroundBase::executeSyncImpl(      PassiveBackgroundBase *pOther,
-                                        const BitVector         &whichField)
-{
+void PassiveBackgroundBase::executeSyncImpl(
+    PassiveBackgroundBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
-
-
+  Inherited::executeSyncImpl(pOther, whichField);
 }
 #else
-void PassiveBackgroundBase::executeSyncImpl(      PassiveBackgroundBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void PassiveBackgroundBase::executeSyncImpl(
+    PassiveBackgroundBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
-
-
-
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 }
 
-void PassiveBackgroundBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void PassiveBackgroundBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 

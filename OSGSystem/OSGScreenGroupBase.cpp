@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILESCREENGROUPINST
 
 #include <stdlib.h>
@@ -61,163 +60,113 @@
 #include "OSGScreenGroupBase.h"
 #include "OSGScreenGroup.h"
 
-
 OSG_BEGIN_NAMESPACE
 
-const OSG::BitVector ScreenGroupBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
+const OSG::BitVector ScreenGroupBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
+FieldContainerType ScreenGroupBase::_type("ScreenGroup", "Group", NULL,
+    (PrototypeCreateF)&ScreenGroupBase::createEmpty, ScreenGroup::initMethod, NULL, 0);
 
-
-FieldContainerType ScreenGroupBase::_type(
-    "ScreenGroup",
-    "Group",
-    NULL,
-    (PrototypeCreateF) &ScreenGroupBase::createEmpty,
-    ScreenGroup::initMethod,
-    NULL,
-    0);
-
-//OSG_FIELD_CONTAINER_DEF(ScreenGroupBase, ScreenGroupPtr)
+// OSG_FIELD_CONTAINER_DEF(ScreenGroupBase, ScreenGroupPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &ScreenGroupBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &ScreenGroupBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr ScreenGroupBase::shallowCopy(void) const 
-{ 
-    ScreenGroupPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const ScreenGroup *>(this)); 
-
-    return returnValue; 
+FieldContainerType& ScreenGroupBase::getType(void) {
+  return _type;
 }
 
-UInt32 ScreenGroupBase::getContainerSize(void) const 
-{ 
-    return sizeof(ScreenGroup); 
+const FieldContainerType& ScreenGroupBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr ScreenGroupBase::shallowCopy(void) const {
+  ScreenGroupPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const ScreenGroup*>(this));
+
+  return returnValue;
+}
+
+UInt32 ScreenGroupBase::getContainerSize(void) const {
+  return sizeof(ScreenGroup);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ScreenGroupBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((ScreenGroupBase *) &other, whichField);
+void ScreenGroupBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((ScreenGroupBase*)&other, whichField);
 }
 #else
-void ScreenGroupBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((ScreenGroupBase *) &other, whichField, sInfo);
+void ScreenGroupBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((ScreenGroupBase*)&other, whichField, sInfo);
 }
-void ScreenGroupBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void ScreenGroupBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void ScreenGroupBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void ScreenGroupBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-ScreenGroupBase::ScreenGroupBase(void) :
-    Inherited() 
-{
+ScreenGroupBase::ScreenGroupBase(void)
+    : Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-ScreenGroupBase::ScreenGroupBase(const ScreenGroupBase &source) :
-    Inherited                 (source)
-{
+ScreenGroupBase::ScreenGroupBase(const ScreenGroupBase& source)
+    : Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-ScreenGroupBase::~ScreenGroupBase(void)
-{
+ScreenGroupBase::~ScreenGroupBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 ScreenGroupBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 ScreenGroupBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void ScreenGroupBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
-
-
+void ScreenGroupBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 }
 
-void ScreenGroupBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
-
-
+void ScreenGroupBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ScreenGroupBase::executeSyncImpl(      ScreenGroupBase *pOther,
-                                        const BitVector         &whichField)
-{
+void ScreenGroupBase::executeSyncImpl(ScreenGroupBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
-
-
+  Inherited::executeSyncImpl(pOther, whichField);
 }
 #else
-void ScreenGroupBase::executeSyncImpl(      ScreenGroupBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void ScreenGroupBase::executeSyncImpl(
+    ScreenGroupBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
-
-
-
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 }
 
-void ScreenGroupBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void ScreenGroupBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 OSG_END_NAMESPACE
 
@@ -234,4 +183,3 @@ OSG_DLLEXPORT_SFIELD_DEF1(ScreenGroupPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 OSG_DLLEXPORT_MFIELD_DEF1(ScreenGroupPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
-

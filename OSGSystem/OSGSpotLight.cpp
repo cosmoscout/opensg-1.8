@@ -52,180 +52,147 @@ OSG_USING_NAMESPACE
 
 /*! \class osg::SpotLight
     SpotLight is a located lightsource. The position of the light source
-    (in the beacon's coordinate system) is defined by the \c position 
-    attribute, its direction by the \c direction attribute. The spot has an 
-    exponential fallof, controlled by the \c spotExponent attribute and a 
+    (in the beacon's coordinate system) is defined by the \c position
+    attribute, its direction by the \c direction attribute. The spot has an
+    exponential fallof, controlled by the \c spotExponent attribute and a
     maximum opening angle, defined by the \c spotCutOff attribute.
     The influence of the light diminishes with distance, controlled
     by the \c constantAttenuation, \c linearAttenuation and \c
-    quadraticAttenuation attributes. 
+    quadraticAttenuation attributes.
 */
-
 
 /*----------------------------- class variables ---------------------------*/
 
-StatElemDesc<StatIntElem>  SpotLight::statNSpotLights(
-"NSpotLights", "number of spot light sources");
+StatElemDesc<StatIntElem> SpotLight::statNSpotLights("NSpotLights", "number of spot light sources");
 
 /*-------------------------------------------------------------------------*/
 /*                             Changed                                     */
 
-void SpotLight::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void SpotLight::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Chunk                                       */
 
-void SpotLight::makeChunk(void)
-{
-    Inherited::makeChunk();
+void SpotLight::makeChunk(void) {
+  Inherited::makeChunk();
 
-    Vec4f pos(_sfPosition.getValue ());
+  Vec4f pos(_sfPosition.getValue());
 
-    pos[3] = 1;
+  pos[3] = 1;
 
-    _pChunk->setPosition (pos                     );
-    _pChunk->setDirection(getDirection         () );
+  _pChunk->setPosition(pos);
+  _pChunk->setDirection(getDirection());
 
-    _pChunk->setExponent (getSpotExponent      () );
-    _pChunk->setCutoff   (rad2deg(getSpotCutOff()));
+  _pChunk->setExponent(getSpotExponent());
+  _pChunk->setCutoff(rad2deg(getSpotCutOff()));
 }
 
 /*-------------------------------------------------------------------------*/
 /*                                Dump                                     */
 
-void SpotLight::dump(      UInt32    uiIndent, 
-                     const BitVector bvFlags) const
-{
-   Inherited::dump(uiIndent, bvFlags);
+void SpotLight::dump(UInt32 uiIndent, const BitVector bvFlags) const {
+  Inherited::dump(uiIndent, bvFlags);
 }
 
 /*-------------------------------------------------------------------------*/
 /*                            Constructors                                 */
 
-SpotLight::SpotLight(void) :
-    Inherited()
-{
+SpotLight::SpotLight(void)
+    : Inherited() {
 }
 
-SpotLight::SpotLight(const SpotLight &source) :
-    Inherited(source)
-{
+SpotLight::SpotLight(const SpotLight& source)
+    : Inherited(source) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Destructor                                  */
 
-SpotLight::~SpotLight(void)
-{
+SpotLight::~SpotLight(void) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                               Drawing                                   */
 
-Action::ResultE SpotLight::drawEnter(Action *action)
-{   
-    if(getOn() == false)
-        return Action::Continue;
-
-    DrawAction *da    = dynamic_cast<DrawAction *>(action);
-    GLenum      light = GL_LIGHT0 + da->getLightCount();
-    
-    Light::drawEnter(action);
-
-    Vec4f  dir(_sfDirection.getValue());
-    Vec4f  pos(_sfPosition .getValue());
-
-    pos[3] = 1;
-    dir[3] = 0;
-
-    Real32 deg = rad2deg(_sfSpotCutOff.getValue());
-
-    if(deg > 90.f) 
-        deg = 180.f;
-
-    glLightfv(light, GL_POSITION      ,  pos.getValues()          );
-    glLightfv(light, GL_SPOT_DIRECTION,  dir.getValues()          );
-
-    glLightf (light, GL_SPOT_CUTOFF   ,  deg                      );
-    glLightf (light, GL_SPOT_EXPONENT , _sfSpotExponent.getValue());
-
-    glPopMatrix();
-
-    da->getStatistics()->getElem(SpotLight::statNSpotLights)->inc();
-
+Action::ResultE SpotLight::drawEnter(Action* action) {
+  if (getOn() == false)
     return Action::Continue;
-}
-    
-Action::ResultE SpotLight::drawLeave(Action *action)
-{
-    if(getOn() == false)
-        return Action::Continue;
 
-    return Light::drawLeave(action);
+  DrawAction* da    = dynamic_cast<DrawAction*>(action);
+  GLenum      light = GL_LIGHT0 + da->getLightCount();
+
+  Light::drawEnter(action);
+
+  Vec4f dir(_sfDirection.getValue());
+  Vec4f pos(_sfPosition.getValue());
+
+  pos[3] = 1;
+  dir[3] = 0;
+
+  Real32 deg = rad2deg(_sfSpotCutOff.getValue());
+
+  if (deg > 90.f)
+    deg = 180.f;
+
+  glLightfv(light, GL_POSITION, pos.getValues());
+  glLightfv(light, GL_SPOT_DIRECTION, dir.getValues());
+
+  glLightf(light, GL_SPOT_CUTOFF, deg);
+  glLightf(light, GL_SPOT_EXPONENT, _sfSpotExponent.getValue());
+
+  glPopMatrix();
+
+  da->getStatistics()->getElem(SpotLight::statNSpotLights)->inc();
+
+  return Action::Continue;
+}
+
+Action::ResultE SpotLight::drawLeave(Action* action) {
+  if (getOn() == false)
+    return Action::Continue;
+
+  return Light::drawLeave(action);
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Rendering                                   */
 
-Action::ResultE SpotLight::renderEnter(Action *action)
-{
-    if(getOn() == false)
-        return Action::Continue;
+Action::ResultE SpotLight::renderEnter(Action* action) {
+  if (getOn() == false)
+    return Action::Continue;
 
-    DrawActionBase *da    = dynamic_cast<DrawActionBase *>(action);
-    da->getStatistics()->getElem(SpotLight::statNSpotLights)->inc();
+  DrawActionBase* da = dynamic_cast<DrawActionBase*>(action);
+  da->getStatistics()->getElem(SpotLight::statNSpotLights)->inc();
 
-    return PointLight::renderEnter(action);
+  return PointLight::renderEnter(action);
 }
 
-Action::ResultE SpotLight::renderLeave(Action *action)
-{
-    if(getOn() == false)
-        return Action::Continue;
+Action::ResultE SpotLight::renderLeave(Action* action) {
+  if (getOn() == false)
+    return Action::Continue;
 
-    return PointLightBase::renderLeave(action);
+  return PointLightBase::renderLeave(action);
 }
 
 /*-------------------------------------------------------------------------*/
 /*                               Init                                      */
 
-void SpotLight::initMethod (void)
-{
-    DrawAction::registerEnterDefault( 
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<
-            Action::ResultE,
-            SpotLightPtr    , 
-            CNodePtr        ,  
-            Action         *>(&SpotLight::drawEnter));
+void SpotLight::initMethod(void) {
+  DrawAction::registerEnterDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, SpotLightPtr, CNodePtr, Action*>(
+          &SpotLight::drawEnter));
 
-    DrawAction::registerLeaveDefault( 
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<
-            Action::ResultE,
-            SpotLightPtr    , 
-            CNodePtr        ,  
-            Action         *>(&SpotLight::drawLeave));
+  DrawAction::registerLeaveDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, SpotLightPtr, CNodePtr, Action*>(
+          &SpotLight::drawLeave));
 
-    RenderAction::registerEnterDefault(
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<
-            Action::ResultE,
-            SpotLightPtr    , 
-            CNodePtr        ,  
-            Action         *>(&SpotLight::renderEnter));
+  RenderAction::registerEnterDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, SpotLightPtr, CNodePtr, Action*>(
+          &SpotLight::renderEnter));
 
-    RenderAction::registerLeaveDefault( 
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<
-            Action::ResultE,
-            SpotLightPtr    , 
-            CNodePtr        ,  
-            Action         *>(&SpotLight::renderLeave));
+  RenderAction::registerLeaveDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, SpotLightPtr, CNodePtr, Action*>(
+          &SpotLight::renderLeave));
 }
-
-
-

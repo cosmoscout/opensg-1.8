@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGCLIPPLANEBASE_H_
 #define _OSGCLIPPLANEBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -68,8 +66,8 @@
 #include <OSGGroup.h> // Parent
 
 #include <OSGVec4fFields.h> // Equation type
-#include <OSGBoolFields.h> // On type
-#include <OSGNodeFields.h> // Beacon type
+#include <OSGBoolFields.h>  // On type
+#include <OSGNodeFields.h>  // Beacon type
 
 #include <OSGClipPlaneFields.h>
 
@@ -80,195 +78,173 @@ class BinaryDataHandler;
 
 //! \brief ClipPlane Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING ClipPlaneBase : public Group
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING ClipPlaneBase : public Group {
+ private:
+  typedef Group Inherited;
 
-    typedef Group    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef ClipPlanePtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    EquationFieldId = Inherited::NextFieldId,
+    OnFieldId       = EquationFieldId + 1,
+    BeaconFieldId   = OnFieldId + 1,
+    NextFieldId     = BeaconFieldId + 1
+  };
 
-    typedef ClipPlanePtr  Ptr;
+  static const OSG::BitVector EquationFieldMask;
+  static const OSG::BitVector OnFieldMask;
+  static const OSG::BitVector BeaconFieldMask;
 
-    enum
-    {
-        EquationFieldId = Inherited::NextFieldId,
-        OnFieldId       = EquationFieldId + 1,
-        BeaconFieldId   = OnFieldId       + 1,
-        NextFieldId     = BeaconFieldId   + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector EquationFieldMask;
-    static const OSG::BitVector OnFieldMask;
-    static const OSG::BitVector BeaconFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFVec4f*   getSFEquation(void);
+  SFBool*    getSFOn(void);
+  SFNodePtr* getSFBeacon(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  Vec4f&         getEquation(void);
+  const Vec4f&   getEquation(void) const;
+  bool&          getOn(void);
+  const bool&    getOn(void) const;
+  NodePtr&       getBeacon(void);
+  const NodePtr& getBeacon(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFVec4f             *getSFEquation       (void);
-           SFBool              *getSFOn             (void);
-           SFNodePtr           *getSFBeacon         (void);
+  void setEquation(const Vec4f& value);
+  void setOn(const bool& value);
+  void setBeacon(const NodePtr& value);
 
-           Vec4f               &getEquation       (void);
-     const Vec4f               &getEquation       (void) const;
-           bool                &getOn             (void);
-     const bool                &getOn             (void) const;
-           NodePtr             &getBeacon         (void);
-     const NodePtr             &getBeacon         (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setEquation       ( const Vec4f &value );
-     void setOn             ( const bool &value );
-     void setBeacon         ( const NodePtr &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static ClipPlanePtr create(void);
+  static ClipPlanePtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  ClipPlanePtr      create          (void); 
-    static  ClipPlanePtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFVec4f   _sfEquation;
+  SFBool    _sfOn;
+  SFNodePtr _sfBeacon;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  ClipPlaneBase(void);
+  ClipPlaneBase(const ClipPlaneBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~ClipPlaneBase(void);
 
-    SFVec4f             _sfEquation;
-    SFBool              _sfOn;
-    SFNodePtr           _sfBeacon;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    ClipPlaneBase(void);
-    ClipPlaneBase(const ClipPlaneBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~ClipPlaneBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      ClipPlaneBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(ClipPlaneBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      ClipPlaneBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(ClipPlaneBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const ClipPlaneBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const ClipPlaneBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef ClipPlaneBase* ClipPlaneBaseP;
 
-typedef ClipPlaneBase *ClipPlaneBaseP;
-
-typedef osgIF<ClipPlaneBase::isNodeCore,
-              CoredNodePtr<ClipPlane>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet ClipPlaneNodePtr;
+typedef osgIF<ClipPlaneBase::isNodeCore, CoredNodePtr<ClipPlane>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet ClipPlaneNodePtr;
 
 typedef RefPtr<ClipPlanePtr> ClipPlaneRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGCLIPPLANEBASE_HEADER_CVSID "@(#)$Id: OSGClipPlaneBase.h,v 1.1 2007/04/26 15:22:01 a-m-z Exp $"
+#define OSGCLIPPLANEBASE_HEADER_CVSID                                                              \
+  "@(#)$Id: OSGClipPlaneBase.h,v 1.1 2007/04/26 15:22:01 a-m-z Exp $"
 
 #endif /* _OSGCLIPPLANEBASE_H_ */

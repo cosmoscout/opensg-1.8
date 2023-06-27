@@ -52,81 +52,59 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &TextureTransformChunkBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& TextureTransformChunkBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 TextureTransformChunkBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 TextureTransformChunkBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-TextureTransformChunkPtr TextureTransformChunkBase::create(void) 
-{
-    TextureTransformChunkPtr fc; 
+inline TextureTransformChunkPtr TextureTransformChunkBase::create(void) {
+  TextureTransformChunkPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = TextureTransformChunkPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = TextureTransformChunkPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-TextureTransformChunkPtr TextureTransformChunkBase::createEmpty(void) 
-{ 
-    TextureTransformChunkPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline TextureTransformChunkPtr TextureTransformChunkBase::createEmpty(void) {
+  TextureTransformChunkPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the TextureTransformChunk::_sfUseCameraBeacon field.
-inline
-SFBool *TextureTransformChunkBase::getSFUseCameraBeacon(void)
-{
-    return &_sfUseCameraBeacon;
-}
-
-
-//! Get the value of the TextureTransformChunk::_sfUseCameraBeacon field.
-inline
-bool &TextureTransformChunkBase::getUseCameraBeacon(void)
-{
-    return _sfUseCameraBeacon.getValue();
+inline SFBool* TextureTransformChunkBase::getSFUseCameraBeacon(void) {
+  return &_sfUseCameraBeacon;
 }
 
 //! Get the value of the TextureTransformChunk::_sfUseCameraBeacon field.
-inline
-const bool &TextureTransformChunkBase::getUseCameraBeacon(void) const
-{
-    return _sfUseCameraBeacon.getValue();
+inline bool& TextureTransformChunkBase::getUseCameraBeacon(void) {
+  return _sfUseCameraBeacon.getValue();
+}
+
+//! Get the value of the TextureTransformChunk::_sfUseCameraBeacon field.
+inline const bool& TextureTransformChunkBase::getUseCameraBeacon(void) const {
+  return _sfUseCameraBeacon.getValue();
 }
 
 //! Set the value of the TextureTransformChunk::_sfUseCameraBeacon field.
-inline
-void TextureTransformChunkBase::setUseCameraBeacon(const bool &value)
-{
-    _sfUseCameraBeacon.setValue(value);
+inline void TextureTransformChunkBase::setUseCameraBeacon(const bool& value) {
+  _sfUseCameraBeacon.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGTEXTURETRANSFORMCHUNKBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGTEXTURETRANSFORMCHUNKBASE_INLINE_CVSID                                                  \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

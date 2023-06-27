@@ -69,143 +69,133 @@ class BinaryDataHandler;
  */
 
 template <class FieldTypeT, Int32 fieldNameSpace = 0>
-class SField : public Field 
-{
-    /*==========================  PUBLIC  =================================*/
+class SField : public Field {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  typedef typename osgIF<fieldNameSpace == 0, FieldDataTraits<FieldTypeT>, InvalidTrait>::_IRet
+      SF0Trait;
 
-    typedef typename osgIF<fieldNameSpace == 0,
-                           FieldDataTraits <FieldTypeT>,
-                           InvalidTrait                >::_IRet SF0Trait;
+  typedef
+      typename osgIF<fieldNameSpace == 1, FieldDataTraits1<FieldTypeT>, SF0Trait>::_IRet SF1Trait;
 
-    typedef typename osgIF<fieldNameSpace == 1,
-                           FieldDataTraits1<FieldTypeT>,
-                           SF0Trait                    >::_IRet SF1Trait;
+  typedef typename osgIF<fieldNameSpace == 2, FieldDataTraits2<FieldTypeT>, SF1Trait>::_IRet
+      SFieldTraits;
 
-    typedef typename osgIF<fieldNameSpace == 2, 
-                           FieldDataTraits2<FieldTypeT>, 
-                           SF1Trait                     >::_IRet SFieldTraits;
+  typedef SField<FieldTypeT, fieldNameSpace> Self;
 
-    typedef          SField<FieldTypeT, fieldNameSpace>          Self;
+  typedef FieldTypeT                          StoredType;
+  typedef FieldTypeT&                         reference;
+  typedef const FieldTypeT&                   const_reference;
+  typedef typename SFieldTraits::ArgumentType ArgumentType;
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Class Get                                  */
+  /*! \{                                                                 */
 
+  static const FieldType& getClassType(void);
 
-    typedef          FieldTypeT                  StoredType;
-    typedef          FieldTypeT                 &reference;
-    typedef const    FieldTypeT                 &const_reference;
-    typedef typename SFieldTraits::ArgumentType  ArgumentType;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Class Get                                  */
-    /*! \{                                                                 */
+  SField(void);
+  SField(const SField& obj);
+  explicit SField(ArgumentType value);
 
-    static const FieldType &getClassType(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  virtual ~SField(void);
 
-             SField(void                     );
-             SField(const SField       &obj  );
-    explicit SField(      ArgumentType  value);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Get                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  virtual UInt32 getSize(void) const;
 
-    virtual ~SField(void); 
+  reference       getValue(void);
+  const_reference getValue(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Get                                     */
-    /*! \{                                                                 */
+  virtual const FieldType& getType(void) const;
 
-    virtual       UInt32      getSize (void) const;
+  virtual bool isEmpty(void) const;
 
-                  reference   getValue(void);
-            const_reference   getValue(void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Set                                     */
+  /*! \{                                                                 */
 
-    virtual const FieldType  &getType (void) const;
+  void setValue(ArgumentType value);
+  void setValue(const Self& obj);
 
-    virtual       bool        isEmpty (void) const;
+  virtual void setAbstrValue(const Field& obj);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Set                                     */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   String IO                                  */
+  /*! \{                                                                 */
 
-            void setValue     (      ArgumentType  value);
-            void setValue     (const Self         &obj  );
+  virtual void         pushValueByStr(const Char8* str);
+  virtual std::string& getValueByStr(std::string& str) const;
+  virtual std::string& getValueByStr(std::string& str, StringConversionStateBase& state) const;
+  virtual std::string& getValueByStr(std::string& str, UInt32 index) const;
 
-    virtual void setAbstrValue(const Field        &obj  );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      MT Sync                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   String IO                                  */
-    /*! \{                                                                 */
+  void syncWith(Self& source);
 
-    virtual void         pushValueByStr(const Char8             *str  );
-    virtual std::string &getValueByStr (      std::string       &str  ) const;
-    virtual std::string &getValueByStr (      std::string       &str,
-                                      StringConversionStateBase &state) const;
-    virtual std::string &getValueByStr (      std::string       &str,
-                                              UInt32             index) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Interface                           */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      MT Sync                                 */
-    /*! \{                                                                 */
+  UInt32 getBinSize(void);
 
-    void syncWith(Self &source);
+  void copyToBin(BinaryDataHandler& pMem);
+  void copyFromBin(BinaryDataHandler& pMem);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Interface                           */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Assign                                  */
+  /*! \{                                                                 */
 
-    UInt32 getBinSize (void                   );
-    
-    void   copyToBin  (BinaryDataHandler &pMem);
-    void   copyFromBin(BinaryDataHandler &pMem);
+  void operator=(const SField& source);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Assign                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                        Dump                                  */
+  /*! \{                                                                 */
 
-    void operator =(const SField &source);
+  virtual void dump(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                        Dump                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    virtual void dump(void) const;
+ protected:
+  typedef Field Inherited;
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  /*---------------------------------------------------------------------*/
+  /*                             Member                                  */
 
-  protected:
+  static const FieldType _fieldType;
 
-    typedef Field Inherited;
+  FieldTypeT _value;
 
-    /*---------------------------------------------------------------------*/
-    /*                             Member                                  */
+  static Field* create(void);
 
-    static const FieldType   _fieldType;
+  /*---------------------------------------------------------------------*/
 
-                 FieldTypeT  _value;
+  /*==========================  PRIVATE  ================================*/
 
-    static       Field      *create(void);
-
-    /*---------------------------------------------------------------------*/
-
-    /*==========================  PRIVATE  ================================*/
-
-  private:
+ private:
 };
 
 OSG_END_NAMESPACE
@@ -215,4 +205,3 @@ OSG_END_NAMESPACE
 #define OSGSFIELD_HEADER_CVSID "@(#)$Id: $"
 
 #endif /* _OSGSFIELD_H_ */
-

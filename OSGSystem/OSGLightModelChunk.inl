@@ -42,19 +42,15 @@
 
 OSG_BEGIN_NAMESPACE
 
-inline
-UInt32 LightModelChunk::getStaticClassId(void)
-{
-    return getStaticClass()->getId();
+inline UInt32 LightModelChunk::getStaticClassId(void) {
+  return getStaticClass()->getId();
 }
 
-inline
-const StateChunkClass *LightModelChunk::getStaticClass(void)
-{
-    return &LightModelChunk::_class;
+inline const StateChunkClass* LightModelChunk::getStaticClass(void) {
+  return &LightModelChunk::_class;
 }
 
 OSG_END_NAMESPACE
 
-#define OSGLIGHTMODELCHUNK_INLINE_CVSID "@(#)$Id: OSGLightModelChunk.inl,v 1.1 2005/12/14 22:17:03 dirk Exp $"
-
+#define OSGLIGHTMODELCHUNK_INLINE_CVSID                                                            \
+  "@(#)$Id: OSGLightModelChunk.inl,v 1.1 2005/12/14 22:17:03 dirk Exp $"

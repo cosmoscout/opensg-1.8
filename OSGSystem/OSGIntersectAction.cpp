@@ -55,7 +55,6 @@
 
 OSG_USING_NAMESPACE
 
-
 /***************************************************************************\
  *                            Description                                  *
 \***************************************************************************/
@@ -75,80 +74,63 @@ The intersect action class.
  *                           Class variables                               *
 \***************************************************************************/
 
-char IntersectAction::cvsid[] = "@(#)$Id: OSGIntersectAction.cpp,v 1.10 2001/10/15 04:52:15 vossg Exp $";
+char IntersectAction::cvsid[] =
+    "@(#)$Id: OSGIntersectAction.cpp,v 1.10 2001/10/15 04:52:15 vossg Exp $";
 
-IntersectAction * IntersectAction::_prototype = NULL;
+IntersectAction* IntersectAction::_prototype = NULL;
 
-std::vector<Action::Functor> *IntersectAction::_defaultEnterFunctors;
-std::vector<Action::Functor> *IntersectAction::_defaultLeaveFunctors;
+std::vector<Action::Functor>* IntersectAction::_defaultEnterFunctors;
+std::vector<Action::Functor>* IntersectAction::_defaultLeaveFunctors;
 
 /***************************************************************************\
  *                           Class methods                                 *
 \***************************************************************************/
 
-
-
 /*-------------------------------------------------------------------------*\
  -  public                                                                 -
 \*-------------------------------------------------------------------------*/
 
-void IntersectAction::registerEnterDefault(     const FieldContainerType &type, 
-                                        const Action::Functor &func )
-{
-    if ( ! _defaultEnterFunctors )
-        _defaultEnterFunctors = new std::vector<Action::Functor>;
+void IntersectAction::registerEnterDefault(
+    const FieldContainerType& type, const Action::Functor& func) {
+  if (!_defaultEnterFunctors)
+    _defaultEnterFunctors = new std::vector<Action::Functor>;
 
-    while(type.getId() >= _defaultEnterFunctors->size())
-    {
-        _defaultEnterFunctors->push_back( 
-            osgTypedFunctionFunctor2CPtrRef<ResultE, 
-                                            CNodePtr,
-                                            Action *>(
-                    &IntersectAction::_defaultEnterFunction));
-    }
-    
-    (*_defaultEnterFunctors)[ type.getId() ] = func;
+  while (type.getId() >= _defaultEnterFunctors->size()) {
+    _defaultEnterFunctors->push_back(osgTypedFunctionFunctor2CPtrRef<ResultE, CNodePtr, Action*>(
+        &IntersectAction::_defaultEnterFunction));
+  }
+
+  (*_defaultEnterFunctors)[type.getId()] = func;
 }
 
-void IntersectAction::registerLeaveDefault(     const FieldContainerType &type, 
-                                        const Action::Functor &func )
-{
-    if ( ! _defaultLeaveFunctors )
-        _defaultLeaveFunctors = new std::vector<Action::Functor>;
+void IntersectAction::registerLeaveDefault(
+    const FieldContainerType& type, const Action::Functor& func) {
+  if (!_defaultLeaveFunctors)
+    _defaultLeaveFunctors = new std::vector<Action::Functor>;
 
-    while(type.getId() >= _defaultLeaveFunctors->size())
-    {
-        _defaultLeaveFunctors->push_back( 
-            osgTypedFunctionFunctor2CPtrRef<ResultE, 
-                                            CNodePtr,
-                                            Action *>(
-                &IntersectAction::_defaultLeaveFunction));
-    }
-    
-    (*_defaultLeaveFunctors)[ type.getId() ] = func;
+  while (type.getId() >= _defaultLeaveFunctors->size()) {
+    _defaultLeaveFunctors->push_back(osgTypedFunctionFunctor2CPtrRef<ResultE, CNodePtr, Action*>(
+        &IntersectAction::_defaultLeaveFunction));
+  }
+
+  (*_defaultLeaveFunctors)[type.getId()] = func;
 }
 
-
-void IntersectAction::setPrototype( IntersectAction * proto )
-{
-    _prototype = proto;
+void IntersectAction::setPrototype(IntersectAction* proto) {
+  _prototype = proto;
 }
 
-IntersectAction *IntersectAction::getPrototype( void )
-{
-    return _prototype;
+IntersectAction* IntersectAction::getPrototype(void) {
+  return _prototype;
 }
 
 /*-------------------------------------------------------------------------*\
  -  protected                                                              -
 \*-------------------------------------------------------------------------*/
 
-
 /*-------------------------------------------------------------------------*\
  -  private                                                                -
 \*-------------------------------------------------------------------------*/
-
-
 
 /***************************************************************************\
  *                           Instance methods                              *
@@ -163,120 +145,111 @@ IntersectAction *IntersectAction::getPrototype( void )
 /** \brief Constructor
  */
 
-IntersectAction::IntersectAction(void) :
-    _line(), _maxdist(), 
-    _hit(false), _enterT(-1), _leaveT(-1), _hitT(-1), _hitObject(),
-    _hitTriangle(-1)
-{
-    if ( _defaultEnterFunctors )
-        _enterFunctors = *_defaultEnterFunctors;
+IntersectAction::IntersectAction(void)
+    : _line()
+    , _maxdist()
+    , _hit(false)
+    , _enterT(-1)
+    , _leaveT(-1)
+    , _hitT(-1)
+    , _hitObject()
+    , _hitTriangle(-1) {
+  if (_defaultEnterFunctors)
+    _enterFunctors = *_defaultEnterFunctors;
 
-    if ( _defaultLeaveFunctors )
-        _leaveFunctors = *_defaultLeaveFunctors;
+  if (_defaultLeaveFunctors)
+    _leaveFunctors = *_defaultLeaveFunctors;
 }
 
-
-IntersectAction::IntersectAction( const IntersectAction& source ) :
-    Inherited( source ),
-    _line( source._line ), _maxdist( source._maxdist ), 
-    _hit(source._hit), _enterT(source._enterT), _leaveT(source._leaveT), 
-    _hitT(source._hitT), _hitObject(source._hitObject),
-    _hitTriangle(source._hitTriangle)
-{
+IntersectAction::IntersectAction(const IntersectAction& source)
+    : Inherited(source)
+    , _line(source._line)
+    , _maxdist(source._maxdist)
+    , _hit(source._hit)
+    , _enterT(source._enterT)
+    , _leaveT(source._leaveT)
+    , _hitT(source._hitT)
+    , _hitObject(source._hitObject)
+    , _hitTriangle(source._hitTriangle) {
 }
-
 
 /** \brief create a new action
  */
 
-IntersectAction * IntersectAction::create( void )
-{
-    IntersectAction * act;
-    
-    if ( _prototype )
-        act = new IntersectAction( *_prototype );
-    else
-        act = new IntersectAction();
-    
-    return act;
-}
+IntersectAction* IntersectAction::create(void) {
+  IntersectAction* act;
 
+  if (_prototype)
+    act = new IntersectAction(*_prototype);
+  else
+    act = new IntersectAction();
+
+  return act;
+}
 
 /** \brief create a new action
  */
 
-IntersectAction * IntersectAction::create(  const Line &line, 
-                                            const Real32 maxdist )
-{
-    IntersectAction * act;
-    
-    if ( _prototype )
-        act = new IntersectAction( *_prototype );
-    else
-        act = new IntersectAction();
-    
-    act->setLine( line, maxdist );
+IntersectAction* IntersectAction::create(const Line& line, const Real32 maxdist) {
+  IntersectAction* act;
 
-    return act;
+  if (_prototype)
+    act = new IntersectAction(*_prototype);
+  else
+    act = new IntersectAction();
+
+  act->setLine(line, maxdist);
+
+  return act;
 }
 
 /** \brief Destructor
  */
 
-IntersectAction::~IntersectAction(void)
-{
+IntersectAction::~IntersectAction(void) {
 }
 
 /*---------------------------- application --------------------------------*/
 
 /*---------------------------- properties ---------------------------------*/
 
-void IntersectAction::setLine( const Line &line, const Real32 maxdist )
-{
-    _line = line;
-    _maxdist = maxdist;
-}
-    
-Action::ResultE  IntersectAction::setEnterLeave( Real32 enter, Real32 leave )
-{
-    if ( leave < 0 || enter > _maxdist ||
-        ( _hit && enter > _hitT ) )
-        return Action::Skip;
-
-    return Action::Continue;
+void IntersectAction::setLine(const Line& line, const Real32 maxdist) {
+  _line    = line;
+  _maxdist = maxdist;
 }
 
-void IntersectAction::setHit( Real32 t, NodePtr obj, Int32 triIndex, 
-    Vec3f &normal )
-{
-    if ( t < 0 || t > _hitT || t > _maxdist)
-        return;
-        
-    _hitT = t;
-    _hitObject = obj;
-    _hitTriangle = triIndex;
-    _hitNormal = normal;
-    _hit = true;
+Action::ResultE IntersectAction::setEnterLeave(Real32 enter, Real32 leave) {
+  if (leave < 0 || enter > _maxdist || (_hit && enter > _hitT))
+    return Action::Skip;
+
+  return Action::Continue;
 }
 
-void IntersectAction::scale(Real32 s)
-{
-    _hitT    *= s;
-    _maxdist *= s;
+void IntersectAction::setHit(Real32 t, NodePtr obj, Int32 triIndex, Vec3f& normal) {
+  if (t < 0 || t > _hitT || t > _maxdist)
+    return;
+
+  _hitT        = t;
+  _hitObject   = obj;
+  _hitTriangle = triIndex;
+  _hitNormal   = normal;
+  _hit         = true;
+}
+
+void IntersectAction::scale(Real32 s) {
+  _hitT *= s;
+  _maxdist *= s;
 }
 
 /*-------------------------- your_category---------------------------------*/
 
-
-Action::ResultE IntersectAction::start( void )
-{
-    _hitT = Inf;
-    _hitObject = NullFC;
-    _hitTriangle = -1;
-    _hit = false;
-    return Continue;
+Action::ResultE IntersectAction::start(void) {
+  _hitT        = Inf;
+  _hitObject   = NullFC;
+  _hitTriangle = -1;
+  _hit         = false;
+  return Continue;
 }
-
 
 /*-------------------------- assignment -----------------------------------*/
 
@@ -297,7 +270,7 @@ IntersectAction& IntersectAction::operator = (const IntersectAction &source)
 
     // alloc new mem for members
 
-    // copy 
+    // copy
 }
 
 */
@@ -307,77 +280,64 @@ IntersectAction& IntersectAction::operator = (const IntersectAction &source)
 /** \brief assignment
  */
 
-bool IntersectAction::operator < (const IntersectAction &other) const
-{
-    return this < &other;
+bool IntersectAction::operator<(const IntersectAction& other) const {
+  return this < &other;
 }
 
 /** \brief equal
  */
 
-bool IntersectAction::operator == (
-    const IntersectAction &OSG_CHECK_ARG(other)) const
-{
-    return false;
+bool IntersectAction::operator==(const IntersectAction& OSG_CHECK_ARG(other)) const {
+  return false;
 }
 
 /** \brief unequal
  */
 
-bool IntersectAction::operator != (const IntersectAction &other) const
-{
-    return ! (*this == other);
+bool IntersectAction::operator!=(const IntersectAction& other) const {
+  return !(*this == other);
 }
-
 
 /*-------------------------------------------------------------------------*\
  -  protected                                                              -
 \*-------------------------------------------------------------------------*/
 
-
-std::vector<IntersectAction::Functor> *
-    IntersectAction::getDefaultEnterFunctors(void)
-{
-    return _defaultEnterFunctors;
+std::vector<IntersectAction::Functor>* IntersectAction::getDefaultEnterFunctors(void) {
+  return _defaultEnterFunctors;
 }
 
-std::vector<IntersectAction::Functor> *
-    IntersectAction::getDefaultLeaveFunctors(void)
-{
-    return _defaultLeaveFunctors;
+std::vector<IntersectAction::Functor>* IntersectAction::getDefaultLeaveFunctors(void) {
+  return _defaultLeaveFunctors;
 }
 
 /*-------------------------------------------------------------------------*\
  -  private                                                                -
 \*-------------------------------------------------------------------------*/
 
-
-
 ///---------------------------------------------------------------------------
-///  FUNCTION: 
+///  FUNCTION:
 ///---------------------------------------------------------------------------
 //:  Example for the head comment of a function
 ///---------------------------------------------------------------------------
 ///
-//p: Paramaters: 
-//p: 
+// p: Paramaters:
+// p:
 ///
-//g: GlobalVars:
-//g: 
+// g: GlobalVars:
+// g:
 ///
-//r: Return:
-//r: 
+// r: Return:
+// r:
 ///
-//c: Caution:
-//c: 
+// c: Caution:
+// c:
 ///
-//a: Assumptions:
-//a: 
+// a: Assumptions:
+// a:
 ///
-//d: Description:
-//d: 
+// d: Description:
+// d:
 ///
-//s: SeeAlso:
-//s: 
+// s: SeeAlso:
+// s:
 ///---------------------------------------------------------------------------
-

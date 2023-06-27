@@ -36,36 +36,41 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 OSG_BEGIN_NAMESPACE
 
+inline const std::string TextFace::getFamily() const {
+  return _family;
+}
 
-inline const std::string TextFace::getFamily() const { return _family; }
+inline TextFace::Style TextFace::getStyle() const {
+  return _style;
+}
 
+inline Real32 TextFace::getHoriAscent() const {
+  return _horiAscent;
+}
 
-inline TextFace::Style TextFace::getStyle() const { return _style; }
+inline Real32 TextFace::getVertAscent() const {
+  return _vertAscent;
+}
 
+inline Real32 TextFace::getHoriDescent() const {
+  return _horiDescent;
+}
 
-inline Real32 TextFace::getHoriAscent() const { return _horiAscent; }
-
-
-inline Real32 TextFace::getVertAscent() const { return _vertAscent; }
-
-
-inline Real32 TextFace::getHoriDescent() const { return _horiDescent; }
-
-
-inline Real32 TextFace::getVertDescent() const { return _vertDescent; }
-
+inline Real32 TextFace::getVertDescent() const {
+  return _vertDescent;
+}
 
 inline TextFace::TextFace()
-: _family(), _style(STYLE_PLAIN),
-  _horiAscent(0.f), _vertAscent(0.f),
-  _horiDescent(0.f), _vertDescent(0.f)
-{}
-
+    : _family()
+    , _style(STYLE_PLAIN)
+    , _horiAscent(0.f)
+    , _vertAscent(0.f)
+    , _horiDescent(0.f)
+    , _vertDescent(0.f) {
+}
 
 OSG_END_NAMESPACE
-
 
 #define OSGTEXTFACE_INLINE_CVSID "@(#)$Id: OSGTextFace.inl,v 1.1 2005/03/03 13:43:06 a-m-z Exp $"

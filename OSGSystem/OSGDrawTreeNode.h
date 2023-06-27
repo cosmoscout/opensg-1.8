@@ -56,135 +56,130 @@ class State;
 class DrawTreeNodeFactory;
 
 /*! \ingroup GrpSystemRenderingBackend
-*/
+ */
 
-class OSG_SYSTEMLIB_DLLMAPPING DrawTreeNode : public MemoryObject
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING DrawTreeNode : public MemoryObject {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Statistic                                  */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Statistic                                  */
-    /*! \{                                                                 */
+  static Int32 _iCreateCount;
+  static Int32 _iDeleteCount;
 
-    static Int32 _iCreateCount;
-    static Int32 _iDeleteCount;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Flags                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Flags                                     */
-    /*! \{                                                                 */
+  static const UInt8 MultiPass;
+  static const UInt8 LastMultiPass;
+  static const UInt8 NoStateSorting;
 
-    static const UInt8 MultiPass;
-    static const UInt8 LastMultiPass;
-    static const UInt8 NoStateSorting;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Access                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Access                                    */
-    /*! \{                                                                 */
+  DrawTreeNode* getFirstChild(void);
+  DrawTreeNode* getLastChild(void);
 
-    DrawTreeNode *getFirstChild   (void                           );
-    DrawTreeNode *getLastChild    (void                           );
+  void addChild(DrawTreeNode* pChild);
+  void insertFirstChild(DrawTreeNode* pChild);
+  void insertChildAfter(DrawTreeNode* pCurrent, DrawTreeNode* pChild);
 
-    void          addChild        (DrawTreeNode *pChild           );
-    void          insertFirstChild(DrawTreeNode *pChild           );
-    void          insertChildAfter(DrawTreeNode *pCurrent, 
-                                   DrawTreeNode *pChild           );
+  DrawTreeNode* getBrother(void);
+  void          setBrother(DrawTreeNode* pBrother);
 
-    DrawTreeNode *getBrother      (void);
-    void          setBrother      (DrawTreeNode *pBrother         );
+  void      setGeometry(Geometry* pGeo);
+  Geometry* getGeometry(void);
 
-    void          setGeometry     (Geometry *pGeo                 );
-    Geometry     *getGeometry     (void                           );
+  void                   setFunctor(Material::DrawFunctor& func);
+  Material::DrawFunctor& getFunctor(void);
+  bool                   hasFunctor(void);
 
-    void          setFunctor      (Material::DrawFunctor &func    );
-    Material::DrawFunctor &getFunctor(void                        );
-    bool          hasFunctor      (void                           );
-    
-    void          setState        (State    *pState               );
-    State        *getState        (void                           );
-    
-    void          setNode         (NodePtr   pNode                );
-    NodePtr       getNode         (void                           );
+  void   setState(State* pState);
+  State* getState(void);
 
-    void          setMatrixStore  (const RenderAction::MatrixStore &oMatrixStore);
-    RenderAction::MatrixStore  &getMatrixStore  (void                           );
+  void    setNode(NodePtr pNode);
+  NodePtr getNode(void);
 
-    void          setScalar       (Real32 rScalar                 );
-    Real32        getScalar       (void                           );
+  void                       setMatrixStore(const RenderAction::MatrixStore& oMatrixStore);
+  RenderAction::MatrixStore& getMatrixStore(void);
 
-    void          setLightsState  (UInt32 state                   );
-    UInt32        getLightsState  (void                           );
+  void   setScalar(Real32 rScalar);
+  Real32 getScalar(void);
 
-    void          setClipPlanesState  (UInt32 state               );
-    UInt32        getClipPlanesState  (void                       );
+  void   setLightsState(UInt32 state);
+  UInt32 getLightsState(void);
 
-    void          setMultiPass    (void                           );
-    void          setLastMultiPass(void                           );
-    bool          isMultiPass     (void                           );
-    bool          isLastMultiPass (void                           );
+  void   setClipPlanesState(UInt32 state);
+  UInt32 getClipPlanesState(void);
 
-    void          setNoStateSorting(void                           );
-    bool          isNoStateSorting (void                           );
+  void setMultiPass(void);
+  void setLastMultiPass(void);
+  bool isMultiPass(void);
+  bool isLastMultiPass(void);
 
-    void          reset           (void                           );
+  void setNoStateSorting(void);
+  bool isNoStateSorting(void);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  void reset(void);
 
-    typedef MemoryObject Inherited;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  typedef MemoryObject Inherited;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Member                                  */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Member                                  */
+  /*! \{                                                                 */
 
-    DrawTreeNode              *_pFirstChild;
-    DrawTreeNode              *_pLastChild;
+  DrawTreeNode* _pFirstChild;
+  DrawTreeNode* _pLastChild;
 
-    DrawTreeNode              *_pBrother;
+  DrawTreeNode* _pBrother;
 
-    NodePtr                    _pNode;
+  NodePtr _pNode;
 
-    State                     *_pState;
-    Geometry                  *_pGeo;
-    Material::DrawFunctor      _functor;
-    bool                       _hasFunctor;
-    
-    RenderAction::MatrixStore  _oMatrixStore;        
+  State*                _pState;
+  Geometry*             _pGeo;
+  Material::DrawFunctor _functor;
+  bool                  _hasFunctor;
 
-    Real32                     _rScalarVal;
+  RenderAction::MatrixStore _oMatrixStore;
 
-    UInt32                     _lightsState;
-    UInt32                     _clipPlanesState;
+  Real32 _rScalarVal;
 
-    Int8                       _flags;
+  UInt32 _lightsState;
+  UInt32 _clipPlanesState;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  Int8 _flags;
 
-    DrawTreeNode(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  DrawTreeNode(void);
 
-    virtual ~DrawTreeNode(void); 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  virtual ~DrawTreeNode(void);
 
-    friend class DrawTreeNodeFactory;
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class DrawTreeNodeFactory;
 
-    /*! \brief prohibit default function (move to 'public' if needed) */
-    DrawTreeNode(const DrawTreeNode &source);
-    /*! \brief prohibit default function (move to 'public' if needed) */
-    void operator =(const DrawTreeNode &source);
+  /*! \brief prohibit default function (move to 'public' if needed) */
+  DrawTreeNode(const DrawTreeNode& source);
+  /*! \brief prohibit default function (move to 'public' if needed) */
+  void operator=(const DrawTreeNode& source);
 };
 
 OSG_END_NAMESPACE

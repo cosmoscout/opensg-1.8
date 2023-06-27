@@ -48,117 +48,109 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief StencilChunk class. See \ref 
+/*! \brief StencilChunk class. See \ref
            PageSystemStencilChunk for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING StencilChunk : public StencilChunkBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING StencilChunk : public StencilChunkBase {
+ private:
+  typedef StencilChunkBase Inherited;
 
-    typedef StencilChunkBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                 Chunk Class Access                           */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual const StateChunkClass* getClass(void) const;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                 Chunk Class Access                           */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name              Static Chunk Class Access                       */
+  /*! \{                                                                 */
 
-    virtual const StateChunkClass * getClass                (void) const;
+  inline static UInt32                 getStaticClassId(void);
+  inline static const StateChunkClass* getStaticClass(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name              Static Chunk Class Access                       */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    inline static        UInt32            getStaticClassId (void);
-    inline static  const StateChunkClass * getStaticClass   (void);
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    State Commands                            */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  virtual void activate(DrawActionBase* action, UInt32 index = 0);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    State Commands                            */
-    /*! \{                                                                 */
+  virtual void changeFrom(DrawActionBase* action, StateChunk* old, UInt32 index = 0);
 
-    virtual void activate      ( DrawActionBase * action, UInt32 index = 0 );
+  virtual void deactivate(DrawActionBase* action, UInt32 index = 0);
 
-    virtual void changeFrom    ( DrawActionBase * action, StateChunk * old,
-                                 UInt32 index = 0 );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Comparison                                 */
+  /*! \{                                                                 */
 
-    virtual void deactivate    ( DrawActionBase * action, UInt32 index = 0 );
+  virtual Real32 switchCost(StateChunk* chunk);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Comparison                                 */
-    /*! \{                                                                 */
+  virtual bool operator<(const StateChunk& other) const;
 
-    virtual Real32 switchCost  ( StateChunk * chunk );
+  virtual bool operator==(const StateChunk& other) const;
+  virtual bool operator!=(const StateChunk& other) const;
 
-    virtual bool   operator <  (const StateChunk &other) const;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in StencilChunkBase.
 
-    virtual bool   operator == (const StateChunk &other) const;
-    virtual bool   operator != (const StateChunk &other) const;
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  StencilChunk(void);
+  StencilChunk(const StencilChunk& source);
 
-    // Variables should all be in StencilChunkBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~StencilChunk(void);
 
-    StencilChunk(void);
-    StencilChunk(const StencilChunk &source);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class StencilChunkBase;
 
-    virtual ~StencilChunk(void); 
+  static StateChunkClass _class;
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  static void initMethod(void);
 
-    friend class FieldContainer;
-    friend class StencilChunkBase;
-
-    static StateChunkClass _class;
-    
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const StencilChunk &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const StencilChunk& source);
 };
 
-typedef StencilChunk *StencilChunkP;
+typedef StencilChunk* StencilChunkP;
 
 OSG_END_NAMESPACE
 
 #include <OSGStencilChunkBase.inl>
 #include <OSGStencilChunk.inl>
 
-#define OSGSTENCILCHUNK_HEADER_CVSID "@(#)$Id: OSGStencilChunk.h,v 1.1 2005/03/21 14:41:41 yjung Exp $"
+#define OSGSTENCILCHUNK_HEADER_CVSID                                                               \
+  "@(#)$Id: OSGStencilChunk.h,v 1.1 2005/03/21 14:41:41 yjung Exp $"
 
 #endif /* _OSGSTENCILCHUNK_H_ */

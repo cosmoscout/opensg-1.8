@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILESTATEINST
 
 #include <stdlib.h>
@@ -61,210 +60,152 @@
 #include "OSGStateBase.h"
 #include "OSGState.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  StateBase::ChunksFieldMask = 
+const OSG::BitVector StateBase::ChunksFieldMask =
     (TypeTraits<BitVector>::One << StateBase::ChunksFieldId);
 
-const OSG::BitVector StateBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector StateBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
 /*! \var StateChunkPtr   StateBase::_mfChunks
-    
+
 */
 
 //! State description
 
-FieldDescription *StateBase::_desc[] = 
-{
-    new FieldDescription(MFStateChunkPtr::getClassType(), 
-                     "chunks", 
-                     ChunksFieldId, ChunksFieldMask,
-                     false,
-                     (FieldAccessMethod) &StateBase::getMFChunks)
-};
+FieldDescription* StateBase::_desc[] = {new FieldDescription(MFStateChunkPtr::getClassType(),
+    "chunks", ChunksFieldId, ChunksFieldMask, false, (FieldAccessMethod)&StateBase::getMFChunks)};
 
+FieldContainerType StateBase::_type("State", "FieldContainer", NULL,
+    (PrototypeCreateF)&StateBase::createEmpty, State::initMethod, _desc, sizeof(_desc));
 
-FieldContainerType StateBase::_type(
-    "State",
-    "FieldContainer",
-    NULL,
-    (PrototypeCreateF) &StateBase::createEmpty,
-    State::initMethod,
-    _desc,
-    sizeof(_desc));
-
-//OSG_FIELD_CONTAINER_DEF(StateBase, StatePtr)
+// OSG_FIELD_CONTAINER_DEF(StateBase, StatePtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &StateBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &StateBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr StateBase::shallowCopy(void) const 
-{ 
-    StatePtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const State *>(this)); 
-
-    return returnValue; 
+FieldContainerType& StateBase::getType(void) {
+  return _type;
 }
 
-UInt32 StateBase::getContainerSize(void) const 
-{ 
-    return sizeof(State); 
+const FieldContainerType& StateBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr StateBase::shallowCopy(void) const {
+  StatePtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const State*>(this));
+
+  return returnValue;
+}
+
+UInt32 StateBase::getContainerSize(void) const {
+  return sizeof(State);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void StateBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((StateBase *) &other, whichField);
+void StateBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((StateBase*)&other, whichField);
 }
 #else
-void StateBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((StateBase *) &other, whichField, sInfo);
+void StateBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((StateBase*)&other, whichField, sInfo);
 }
-void StateBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void StateBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void StateBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
+void StateBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 
-    _mfChunks.terminateShare(uiAspect, this->getContainerSize());
+  _mfChunks.terminateShare(uiAspect, this->getContainerSize());
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-StateBase::StateBase(void) :
-    _mfChunks                 (), 
-    Inherited() 
-{
+StateBase::StateBase(void)
+    : _mfChunks()
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-StateBase::StateBase(const StateBase &source) :
-    _mfChunks                 (source._mfChunks                 ), 
-    Inherited                 (source)
-{
+StateBase::StateBase(const StateBase& source)
+    : _mfChunks(source._mfChunks)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-StateBase::~StateBase(void)
-{
+StateBase::~StateBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 StateBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 StateBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (ChunksFieldMask & whichField))
-    {
-        returnValue += _mfChunks.getBinSize();
-    }
+  if (FieldBits::NoField != (ChunksFieldMask & whichField)) {
+    returnValue += _mfChunks.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void StateBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void StateBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ChunksFieldMask & whichField))
-    {
-        _mfChunks.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (ChunksFieldMask & whichField)) {
+    _mfChunks.copyToBin(pMem);
+  }
 }
 
-void StateBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void StateBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ChunksFieldMask & whichField))
-    {
-        _mfChunks.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (ChunksFieldMask & whichField)) {
+    _mfChunks.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void StateBase::executeSyncImpl(      StateBase *pOther,
-                                        const BitVector         &whichField)
-{
+void StateBase::executeSyncImpl(StateBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (ChunksFieldMask & whichField))
-        _mfChunks.syncWith(pOther->_mfChunks);
-
-
+  if (FieldBits::NoField != (ChunksFieldMask & whichField))
+    _mfChunks.syncWith(pOther->_mfChunks);
 }
 #else
-void StateBase::executeSyncImpl(      StateBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void StateBase::executeSyncImpl(
+    StateBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-
-    if(FieldBits::NoField != (ChunksFieldMask & whichField))
-        _mfChunks.syncWith(pOther->_mfChunks, sInfo);
-
-
+  if (FieldBits::NoField != (ChunksFieldMask & whichField))
+    _mfChunks.syncWith(pOther->_mfChunks, sInfo);
 }
 
-void StateBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void StateBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (ChunksFieldMask & whichField))
-        _mfChunks.beginEdit(uiAspect, uiContainerSize);
-
+  if (FieldBits::NoField != (ChunksFieldMask & whichField))
+    _mfChunks.beginEdit(uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>

@@ -42,31 +42,22 @@
 
 OSG_BEGIN_NAMESPACE
 
-inline
-UInt32 ColorMaskChunk::getStaticClassId(void)
-{
-    return getStaticClass()->getId();
+inline UInt32 ColorMaskChunk::getStaticClassId(void) {
+  return getStaticClass()->getId();
 }
 
-inline
-const StateChunkClass *ColorMaskChunk::getStaticClass(void)
-{
-    return &ColorMaskChunk::_class;
+inline const StateChunkClass* ColorMaskChunk::getStaticClass(void) {
+  return &ColorMaskChunk::_class;
 }
 
-inline
-void ColorMaskChunk::setMask( const bool &r,
-                          const bool &g, 
-                          const bool &b, 
-                          const bool &a )
-{
-    _sfMaskR.setValue(r);
-    _sfMaskG.setValue(g);
-    _sfMaskB.setValue(b);
-    _sfMaskA.setValue(a);
+inline void ColorMaskChunk::setMask(const bool& r, const bool& g, const bool& b, const bool& a) {
+  _sfMaskR.setValue(r);
+  _sfMaskG.setValue(g);
+  _sfMaskB.setValue(b);
+  _sfMaskA.setValue(a);
 }
 
 OSG_END_NAMESPACE
 
-#define OSGCOLORMASKCHUNK_INLINE_CVSID "@(#)$Id: OSGColorMaskChunk.inl,v 1.1 2005/06/06 17:14:20 yjung Exp $"
-
+#define OSGCOLORMASKCHUNK_INLINE_CVSID                                                             \
+  "@(#)$Id: OSGColorMaskChunk.inl,v 1.1 2005/06/06 17:14:20 yjung Exp $"

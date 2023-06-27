@@ -42,7 +42,6 @@
 #pragma once
 #endif
 
-
 #include <OSGSystemDef.h>
 #include <OSGBaseTypes.h>
 #include <OSGColor.h>
@@ -71,329 +70,302 @@ OSG_BEGIN_NAMESPACE
 //! Parser / Scanner Skeleton for VRML97 syntax based file formats
 //! \ingroup GrpSystemDrawablesGeometrymetryLoaderLib
 
-class OSG_SYSTEMLIB_DLLMAPPING ScanParseSkel
-{
+class OSG_SYSTEMLIB_DLLMAPPING ScanParseSkel {
   friend int ::OSGScanParseSkel_parse(void*);
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  /*==========================  PUBLIC  =================================*/
+ public:
+  enum BuildInFieldType {
+    OSGsfBool      = TOK_SFBool,
+    OSGsfColor     = TOK_SFColor,
+    OSGsfColorRGBA = TOK_SFColorRGBA,
+    OSGsfDouble    = TOK_SFDouble,
+    OSGsfFloat     = TOK_SFFloat,
+    OSGsfImage     = TOK_SFImage,
+    OSGsfInt32     = TOK_SFInt32,
+    OSGsfMatrix3d  = TOK_SFMatrix3d,
+    OSGsfMatrix3f  = TOK_SFMatrix3f,
+    OSGsfMatrix4d  = TOK_SFMatrix4d,
+    OSGsfMatrix4f  = TOK_SFMatrix4f,
+    OSGsfNode      = TOK_SFNode,
+    OSGsfRotation  = TOK_SFRotation,
+    OSGsfString    = TOK_SFString,
+    OSGsfTime      = TOK_SFTime,
+    OSGsfVec2d     = TOK_SFVec2d,
+    OSGsfVec2f     = TOK_SFVec2f,
+    OSGsfVec3d     = TOK_SFVec3d,
+    OSGsfVec3f     = TOK_SFVec3f,
+    OSGsfVec4d     = TOK_SFVec4d,
+    OSGsfVec4f     = TOK_SFVec4f,
+    OSGmfBool      = TOK_MFBool,
+    OSGmfColor     = TOK_MFColor,
+    OSGmfColorRGBA = TOK_MFColorRGBA,
+    OSGmfDouble    = TOK_MFDouble,
+    OSGmfFloat     = TOK_MFFloat,
+    OSGmfImage     = TOK_MFImage,
+    OSGmfInt32     = TOK_MFInt32,
+    OSGmfMatrix3d  = TOK_MFMatrix3d,
+    OSGmfMatrix3f  = TOK_MFMatrix3f,
+    OSGmfMatrix4d  = TOK_MFMatrix4d,
+    OSGmfMatrix4f  = TOK_MFMatrix4f,
+    OSGmfNode      = TOK_MFNode,
+    OSGmfRotation  = TOK_MFRotation,
+    OSGmfString    = TOK_MFString,
+    OSGmfTime      = TOK_MFTime,
+    OSGmfVec2d     = TOK_MFVec2d,
+    OSGmfVec2f     = TOK_MFVec2f,
+    OSGmfVec3d     = TOK_MFVec3d,
+    OSGmfVec3f     = TOK_MFVec3f,
+    OSGmfVec4d     = TOK_MFVec4d,
+    OSGmfVec4f     = TOK_MFVec4f,
 
-    enum BuildInFieldType
-    {
-        OSGsfBool      = TOK_SFBool,
-        OSGsfColor     = TOK_SFColor,
-        OSGsfColorRGBA = TOK_SFColorRGBA,
-        OSGsfDouble    = TOK_SFDouble,
-        OSGsfFloat     = TOK_SFFloat,
-        OSGsfImage     = TOK_SFImage,
-        OSGsfInt32     = TOK_SFInt32,
-        OSGsfMatrix3d  = TOK_SFMatrix3d,
-        OSGsfMatrix3f  = TOK_SFMatrix3f,
-        OSGsfMatrix4d  = TOK_SFMatrix4d,
-        OSGsfMatrix4f  = TOK_SFMatrix4f,
-        OSGsfNode      = TOK_SFNode,
-        OSGsfRotation  = TOK_SFRotation,
-        OSGsfString    = TOK_SFString,
-        OSGsfTime      = TOK_SFTime,
-        OSGsfVec2d     = TOK_SFVec2d,
-        OSGsfVec2f     = TOK_SFVec2f,
-        OSGsfVec3d     = TOK_SFVec3d,
-        OSGsfVec3f     = TOK_SFVec3f,
-        OSGsfVec4d     = TOK_SFVec4d,
-        OSGsfVec4f     = TOK_SFVec4f,
-        OSGmfBool      = TOK_MFBool,
-        OSGmfColor     = TOK_MFColor,
-        OSGmfColorRGBA = TOK_MFColorRGBA,
-        OSGmfDouble    = TOK_MFDouble,
-        OSGmfFloat     = TOK_MFFloat,
-        OSGmfImage     = TOK_MFImage,
-        OSGmfInt32     = TOK_MFInt32,
-        OSGmfMatrix3d  = TOK_MFMatrix3d,
-        OSGmfMatrix3f  = TOK_MFMatrix3f,
-        OSGmfMatrix4d  = TOK_MFMatrix4d,
-        OSGmfMatrix4f  = TOK_MFMatrix4f,
-        OSGmfNode      = TOK_MFNode,
-        OSGmfRotation  = TOK_MFRotation,
-        OSGmfString    = TOK_MFString,
-        OSGmfTime      = TOK_MFTime,
-        OSGmfVec2d     = TOK_MFVec2d,
-        OSGmfVec2f     = TOK_MFVec2f,
-        OSGmfVec3d     = TOK_MFVec3d,
-        OSGmfVec3f     = TOK_MFVec3f,
-        OSGmfVec4d     = TOK_MFVec4d,
-        OSGmfVec4f     = TOK_MFVec4f,
+    OSGmfColor4f = TOK_MFColorRGBA,
+    OSGmfColor4i = TOK_MFColor4i,
+    OSGmfColor3f = TOK_MFColor,
+    OSGmfMatrix  = TOK_MFMatrix4f,
+    OSGmfPnt2f   = TOK_MFPnt2f,
+    OSGmfPnt3f   = TOK_MFPnt3f,
+    OSGmfPnt4f   = TOK_MFPnt4f,
+    OSGmfPlane   = TOK_MFPlane,
+    OSGsfColor4f = TOK_SFColorRGBA,
+    OSGsfColor4i = TOK_SFColor4i,
+    OSGsfColor3f = TOK_SFColor,
+    OSGsfMatrix  = TOK_SFMatrix4f,
+    OSGsfPnt2f   = TOK_SFPnt2f,
+    OSGsfPnt3f   = TOK_SFPnt3f,
+    OSGsfPnt4f   = TOK_SFPnt4f,
+    OSGsfPlane   = TOK_SFPlane,
+    OSGsfVolume  = TOK_SFVolume
+  };
 
-        OSGmfColor4f   = TOK_MFColorRGBA,
-        OSGmfColor4i   = TOK_MFColor4i,
-        OSGmfColor3f   = TOK_MFColor,
-        OSGmfMatrix    = TOK_MFMatrix4f,
-        OSGmfPnt2f     = TOK_MFPnt2f,
-        OSGmfPnt3f     = TOK_MFPnt3f,
-        OSGmfPnt4f     = TOK_MFPnt4f,
-        OSGmfPlane     = TOK_MFPlane,
-        OSGsfColor4f   = TOK_SFColorRGBA,
-        OSGsfColor4i   = TOK_SFColor4i,
-        OSGsfColor3f   = TOK_SFColor,
-        OSGsfMatrix    = TOK_SFMatrix4f,
-        OSGsfPnt2f     = TOK_SFPnt2f,
-        OSGsfPnt3f     = TOK_SFPnt3f,
-        OSGsfPnt4f     = TOK_SFPnt4f,
-        OSGsfPlane     = TOK_SFPlane,
-        OSGsfVolume    = TOK_SFVolume
-    };
+  enum { LastOption = 0x0001 };
 
-    enum
-    {
-        LastOption = 0x0001
-    };
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  ScanParseSkel(void);
 
-    ScanParseSkel(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  virtual ~ScanParseSkel(void);
 
-    virtual ~ScanParseSkel(void);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Scan                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Scan                                    */
+  /*! \{                                                                 */
 
 #ifdef OSG_FLEX_USE_IOSTREAM_INPUT
-    virtual       void   scanStream (      std::istream &is        );
+  virtual void scanStream(std::istream& is);
 #endif
 
-    virtual       void   scanFile   (const Char8        *szFilename);
+  virtual void scanFile(const Char8* szFilename);
 
-    virtual       Int32  lex        (      YYSTYPE *lvalp          );
-    virtual const Char8 *getText    (      void                    );
+  virtual Int32        lex(YYSTYPE* lvalp);
+  virtual const Char8* getText(void);
 
-    virtual       void   handleError(const Char8       *szErrorText);
+  virtual void handleError(const Char8* szErrorText);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Prototypes                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Prototypes                               */
+  /*! \{                                                                 */
 
-    virtual bool verifyHeader             (const Char8 *szHeader);
+  virtual bool verifyHeader(const Char8* szHeader);
 
-    virtual void beginProto               (const Char8 *szProtoname);
-    virtual void endProto                 (void);
+  virtual void beginProto(const Char8* szProtoname);
+  virtual void endProto(void);
 
-    virtual void beginExternProto         (const Char8 *szProtoname);
-    virtual void endExternProtoInterface  (void                    );
-    virtual void endExternProto           (void                    );
+  virtual void beginExternProto(const Char8* szProtoname);
+  virtual void endExternProtoInterface(void);
+  virtual void endExternProto(void);
 
-    virtual void beginScript              (const Char8 *szProtoname);
-    virtual void endScript                (void);
+  virtual void beginScript(const Char8* szProtoname);
+  virtual void endScript(void);
 
-    virtual void beginEventInDecl         (const Char8  *szEventType,
-                                           const UInt32  uiFieldTypeId,
-                                           const Char8  *szEventName);
+  virtual void beginEventInDecl(
+      const Char8* szEventType, const UInt32 uiFieldTypeId, const Char8* szEventName);
 
-    virtual void beginEventOutDecl        (const Char8  *szEventType,
-                                           const UInt32  uiFieldTypeId,
-                                           const Char8  *szEventName);
+  virtual void beginEventOutDecl(
+      const Char8* szEventType, const UInt32 uiFieldTypeId, const Char8* szEventName);
 
-    virtual void endEventDecl             (void);
+  virtual void endEventDecl(void);
 
-    virtual void beginFieldDecl           (const Char8  *szFieldType,
-                                           const UInt32  uiFieldTypeId,
-                                           const Char8  *szFieldName);
+  virtual void beginFieldDecl(
+      const Char8* szFieldType, const UInt32 uiFieldTypeId, const Char8* szFieldName);
 
-    virtual void endFieldDecl             (void);
+  virtual void endFieldDecl(void);
 
-    virtual void beginExposedFieldDecl    (const Char8  *szFieldType,
-                                           const UInt32  uiFieldTypeId,
-                                           const Char8  *szFieldName);
+  virtual void beginExposedFieldDecl(
+      const Char8* szFieldType, const UInt32 uiFieldTypeId, const Char8* szFieldName);
 
-    virtual void endExposedFieldDecl      (void);
+  virtual void endExposedFieldDecl(void);
 
+  virtual void addExternEventInDecl(
+      const Char8* szEventType, const UInt32 uiFieldTypeId, const Char8* szEventName);
 
-    virtual void addExternEventInDecl     (const Char8  *szEventType,
-                                           const UInt32  uiFieldTypeId,
-                                           const Char8  *szEventName);
+  virtual void addExternEventOutDecl(
+      const Char8* szEventType, const UInt32 uiFieldTypeId, const Char8* szEventName);
 
-    virtual void addExternEventOutDecl    (const Char8  *szEventType,
-                                           const UInt32  uiFieldTypeId,
-                                           const Char8  *szEventName);
+  virtual void addExternFieldDecl(
+      const Char8* szFieldType, const UInt32 uiFieldTypeId, const Char8* szFieldName);
 
-    virtual void addExternFieldDecl       (const Char8  *szFieldType,
-                                           const UInt32  uiFieldTypeId,
-                                           const Char8  *szFieldName);
+  virtual void addExternExposedFieldDecl(
+      const Char8* szFieldType, const UInt32 uiFieldTypeId, const Char8* szFieldName);
 
-    virtual void addExternExposedFieldDecl(const Char8  *szFieldType,
-                                           const UInt32  uiFieldTypeId,
-                                           const Char8  *szFieldName);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Fields                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Fields                                   */
-    /*! \{                                                                 */
+  virtual void beginField(const Char8* szFieldname, const UInt32 uiFieldTypeId);
 
-    virtual void beginField(const Char8  *szFieldname,
-                            const UInt32  uiFieldTypeId);
+  virtual void endField(void);
 
-    virtual void endField  (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Nodes                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Nodes                                    */
-    /*! \{                                                                 */
+  virtual void beginNode(const Char8* szNodeTypename, const Char8* szNodename);
 
-    virtual void beginNode(const Char8 *szNodeTypename,
-                           const Char8 *szNodename);
+  virtual void endNode(void);
 
-    virtual void endNode  (void);
+  virtual void use(const Char8* szName);
+  virtual void is(const Char8* szName);
 
-    virtual void use      (const Char8 *szName);
-    virtual void is       (const Char8 *szName);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Misc                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Misc                                     */
-    /*! \{                                                                 */
+  virtual void addFieldValue(const Char8* szFieldVal);
 
-    virtual void addFieldValue(const Char8 *szFieldVal);
+  virtual void addBoolValue(bool b);
 
-    virtual void addBoolValue(bool b);
+  virtual void addColorValue(const Color3f& c);
 
-    virtual void addColorValue(const Color3f &c);
+  virtual void addColorRGBAValue(const Color4f& c);
 
-    virtual void addColorRGBAValue(const Color4f &c);
+  virtual void addDoubleValue(Real64 d);
 
-    virtual void addDoubleValue(Real64 d);
+  virtual void addFloatValue(Real32 f);
 
-    virtual void addFloatValue(Real32 f);
+  virtual void addImageValue(ImagePtr& img);
 
-    virtual void addImageValue(ImagePtr &img);
+  virtual void addInt32Value(Int32 i);
 
-    virtual void addInt32Value(Int32 i);
+  virtual void addMatrix3dValue(Real64 m00, Real64 m10, Real64 m20, Real64 m01, Real64 m11,
+      Real64 m21, Real64 m02, Real64 m12, Real64 m22);
 
-    virtual void addMatrix3dValue(Real64 m00, Real64 m10, Real64 m20,
-                                  Real64 m01, Real64 m11, Real64 m21,
-                                  Real64 m02, Real64 m12, Real64 m22);
+  virtual void addMatrix3fValue(Real32 m00, Real32 m10, Real32 m20, Real32 m01, Real32 m11,
+      Real32 m21, Real32 m02, Real32 m12, Real32 m22);
 
-    virtual void addMatrix3fValue(Real32 m00, Real32 m10, Real32 m20,
-                                  Real32 m01, Real32 m11, Real32 m21,
-                                  Real32 m02, Real32 m12, Real32 m22);
+  virtual void addMatrix4dValue(const Matrix4d& m);
 
-    virtual void addMatrix4dValue(const Matrix4d &m);
+  virtual void addMatrix4fValue(const Matrix4f& m);
 
-    virtual void addMatrix4fValue(const Matrix4f &m);
+  virtual void addRotationValue(const Vec3f& axis, Real32 angle);
 
-    virtual void addRotationValue(const Vec3f &axis, Real32 angle);
+  virtual void addStringValue(const std::string& s);
 
-    virtual void addStringValue(const std::string &s);
+  virtual void addTimeValue(Time t);
 
-    virtual void addTimeValue(Time t);
+  virtual void addVec2dValue(const Vec2d& v);
 
-    virtual void addVec2dValue(const Vec2d &v);
+  virtual void addVec2fValue(const Vec2f& v);
 
-    virtual void addVec2fValue(const Vec2f &v);
+  virtual void addVec3dValue(const Vec3d& v);
 
-    virtual void addVec3dValue(const Vec3d &v);
+  virtual void addVec3fValue(const Vec3f& v);
 
-    virtual void addVec3fValue(const Vec3f &v);
+  virtual void addVec4dValue(const Vec4d& v);
 
-    virtual void addVec4dValue(const Vec4d &v);
+  virtual void addVec4fValue(const Vec4f& v);
 
-    virtual void addVec4fValue(const Vec4f &v);
+  virtual void addColor4iValue(const Color4ub& c);
 
-    virtual void addColor4iValue(const Color4ub &c);
+  virtual void addPnt2fValue(const Pnt2f& p);
 
-    virtual void addPnt2fValue(const Pnt2f &p);
+  virtual void addPnt3fValue(const Pnt3f& p);
 
-    virtual void addPnt3fValue(const Pnt3f &p);
+  virtual void addPnt4fValue(const Pnt4f& p);
 
-    virtual void addPnt4fValue(const Pnt4f &p);
+  virtual void addPlaneValue(const Plane& p);
 
-    virtual void addPlaneValue(const Plane &p);
+  virtual void addVolumeValue(const DynamicVolume& v);
 
-    virtual void addVolumeValue(const DynamicVolume &v);
+  virtual void addRoute(const Char8* szOutNodename, const Char8* szOutFieldname,
+      const Char8* szInNodename, const Char8* szInFieldname);
 
-    virtual void addRoute     (const Char8 *szOutNodename,
-                               const Char8 *szOutFieldname,
-                               const Char8 *szInNodename,
-                               const Char8 *szInFieldname);
+  virtual void profileElement(const Char8* szProfileName);
 
-    virtual void profileElement   (const Char8 *szProfileName);
+  virtual void componentElement(const Char8* szComponentName);
 
-    virtual void componentElement (const Char8 *szComponentName);
+  virtual void metaElement(const Char8* szMetaKey, const Char8* szMetaValue);
 
-    virtual void metaElement      (const Char8 *szMetaKey,
-                                   const Char8 *szMetaValue);
+  virtual void importElement(
+      const Char8* szInlineName, const Char8* szNodeName, const Char8* szImportAs);
 
-    virtual void importElement    (const Char8 *szInlineName,
-                                   const Char8 *szNodeName,
-                                   const Char8 *szImportAs   );
+  virtual void exportElement(const Char8* szNodeName, const Char8* szExportAs);
 
-    virtual void exportElement    (const Char8 *szNodeName,
-                                   const Char8 *szExportAs   );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                 Type Information                             */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                 Type Information                             */
-    /*! \{                                                                 */
+  bool getMapFieldTypes(void);
 
-    bool           getMapFieldTypes  (void);
+  virtual Int32 mapExtIntFieldType(const Char8* szFieldname, const Int32 iFieldTypeId);
 
-    virtual Int32  mapExtIntFieldType(const Char8 *szFieldname,
-                                      const Int32  iFieldTypeId);
+  virtual UInt32 getFieldType(const Char8* szFieldname);
 
-    virtual UInt32 getFieldType      (const Char8 *szFieldname);
+  OSGScanParseLexer* getLexer(void);
 
-    OSGScanParseLexer *getLexer(void);
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Member                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  bool               _bMapTypeIds;
+  Char8*             _szReferenceHeader;
+  OSGScanParseLexer* _pLexer;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Member                                  */
-    /*! \{                                                                 */
+  void reset(void);
 
-    bool               _bMapTypeIds;
-    Char8             *_szReferenceHeader;
-    OSGScanParseLexer *_pLexer;
+  void setMapTypeIds(bool bVal);
 
-    void reset             (      void);
+  void setReferenceHeader(const Char8* szReferenceHeader);
 
-    void setMapTypeIds     (      bool   bVal);
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  ScanParseSkel(const ScanParseSkel& source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const ScanParseSkel& source);
 
-    void setReferenceHeader(const Char8 *szReferenceHeader);
+  std::string _tmpString1, _tmpString2, _tmpString3;
+  Real32      _tmpFloat1, _tmpFloat2, _tmpFloat3, _tmpFloat4;
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  void beginValue();
 
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    ScanParseSkel(const ScanParseSkel &source);
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const ScanParseSkel &source);
+  void appendValue();
 
-    std::string _tmpString1, _tmpString2, _tmpString3;
-    Real32 _tmpFloat1, _tmpFloat2, _tmpFloat3, _tmpFloat4;
+  void beginImage(Int32 width, Int32 height, Int32 components);
 
-    void beginValue();
+  void addImagePixel(Int32 pixel);
 
-    void appendValue();
+  void endImage();
 
-    void beginImage(Int32 width, Int32 height, Int32 components);
+  ImagePtr _image;
 
-    void addImagePixel(Int32 pixel);
-
-    void endImage();
-
-    ImagePtr _image;
-
-    UInt8 *_imageDataPtr;
+  UInt8* _imageDataPtr;
 };
 
 //---------------------------------------------------------------------------

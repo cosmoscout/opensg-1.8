@@ -42,37 +42,30 @@
 
 OSG_BEGIN_NAMESPACE
 
-inline bool ImageComposer::isClient(void)
-{
-    return _isClient;
+inline bool ImageComposer::isClient(void) {
+  return _isClient;
 }
 
-inline UInt32 ImageComposer::clusterId(void)
-{
-    return _clusterId;
+inline UInt32 ImageComposer::clusterId(void) {
+  return _clusterId;
 }
 
-inline UInt32 ImageComposer::clusterSize(void)
-{
-    return _clusterSize;
+inline UInt32 ImageComposer::clusterSize(void) {
+  return _clusterSize;
 }
 
-inline UInt32 ImageComposer::serverCount(void)
-{
-    return _serverCount;
+inline UInt32 ImageComposer::serverCount(void) {
+  return _serverCount;
 }
 
-inline WindowPtr ImageComposer::localWindow(void)
-{
-    return _localWindow;
+inline WindowPtr ImageComposer::localWindow(void) {
+  return _localWindow;
 }
 
-inline ClusterWindowPtr ImageComposer::clusterWindow(void)
-{
-    return _clusterWindow;
+inline ClusterWindowPtr ImageComposer::clusterWindow(void) {
+  return _clusterWindow;
 }
 
 OSG_END_NAMESPACE
 
 #define OSGIMAGECOMPOSER_INLINE_CVSID "@(#)$Id: $"
-

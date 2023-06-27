@@ -72,27 +72,19 @@
 
 \*---------------------------------------------------------------------------*/
 
-
-
 //---------------------------------------------------------------------------
 
 //  Includes
 
 //---------------------------------------------------------------------------
 
-
-
 #include <stdlib.h>
 
 #include <stdio.h>
 
-
-
 #include <OSGConfig.h>
 
 #include <OSGGL.h>
-
-
 
 #include "OSGInverseTransform.h"
 
@@ -106,11 +98,7 @@
 
 #include "OSGNode.h"
 
-
-
 OSG_USING_NAMESPACE
-
-
 
 /***************************************************************************\
 
@@ -118,15 +106,11 @@ OSG_USING_NAMESPACE
 
 \***************************************************************************/
 
-
-
 /*! \class osg::InverseTransform
 
 
 
 */
-
-
 
 /***************************************************************************\
 
@@ -134,123 +118,100 @@ OSG_USING_NAMESPACE
 
 \***************************************************************************/
 
-
-
 /***************************************************************************\
 
  *                           Class methods                                 *
 
 \***************************************************************************/
 
-
-
-void InverseTransform::initMethod (void)
+void InverseTransform::initMethod(void)
 
 {
 
-    DrawAction::registerEnterDefault(
+  DrawAction::registerEnterDefault(
 
-        getClassType(),
+      getClassType(),
 
-        osgTypedMethodFunctor2BaseCPtrRef<
+      osgTypedMethodFunctor2BaseCPtrRef<
 
-            Action::ResultE,
+          Action::ResultE,
 
-            InverseTransformPtr    ,
+          InverseTransformPtr,
 
-            CNodePtr        ,
+          CNodePtr,
 
-            Action         *>(&InverseTransform::drawEnter));
+          Action*>(&InverseTransform::drawEnter));
 
+  DrawAction::registerLeaveDefault(
 
+      getClassType(),
 
-    DrawAction::registerLeaveDefault(
+      osgTypedMethodFunctor2BaseCPtrRef<
 
-        getClassType(),
+          Action::ResultE,
 
-        osgTypedMethodFunctor2BaseCPtrRef<
+          InverseTransformPtr,
 
-            Action::ResultE,
+          CNodePtr,
 
-            InverseTransformPtr    ,
+          Action*>(&InverseTransform::drawLeave));
 
-            CNodePtr        ,
+  IntersectAction::registerEnterDefault(
 
-            Action         *>(&InverseTransform::drawLeave));
+      getClassType(),
 
+      osgTypedMethodFunctor2BaseCPtrRef<
 
+          Action::ResultE,
 
+          InverseTransformPtr,
 
+          CNodePtr,
 
-    IntersectAction::registerEnterDefault(
+          Action*>(&InverseTransform::intersectEnter));
 
-        getClassType(),
+  IntersectAction::registerLeaveDefault(
 
-        osgTypedMethodFunctor2BaseCPtrRef<
+      getClassType(),
 
-            Action::ResultE,
+      osgTypedMethodFunctor2BaseCPtrRef<
 
-            InverseTransformPtr    ,
+          Action::ResultE,
 
-            CNodePtr        ,
+          InverseTransformPtr,
 
-            Action         *>(&InverseTransform::intersectEnter));
+          CNodePtr,
 
+          Action*>(&InverseTransform::intersectLeave));
 
+  RenderAction::registerEnterDefault(
 
-    IntersectAction::registerLeaveDefault(
+      getClassType(),
 
-        getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<
 
-        osgTypedMethodFunctor2BaseCPtrRef<
+          Action::ResultE,
 
-            Action::ResultE,
+          InverseTransformPtr,
 
-            InverseTransformPtr    ,
+          CNodePtr,
 
-            CNodePtr        ,
+          Action*>(&InverseTransform::renderEnter));
 
-            Action         *>(&InverseTransform::intersectLeave));
+  RenderAction::registerLeaveDefault(
 
+      getClassType(),
 
+      osgTypedMethodFunctor2BaseCPtrRef<
 
+          Action::ResultE,
 
+          InverseTransformPtr,
 
-    RenderAction::registerEnterDefault(
+          CNodePtr,
 
-        getClassType(),
-
-        osgTypedMethodFunctor2BaseCPtrRef<
-
-            Action::ResultE,
-
-            InverseTransformPtr    ,
-
-            CNodePtr        ,
-
-            Action         *>(&InverseTransform::renderEnter));
-
-
-
-    RenderAction::registerLeaveDefault(
-
-        getClassType(),
-
-        osgTypedMethodFunctor2BaseCPtrRef<
-
-            Action::ResultE,
-
-            InverseTransformPtr    ,
-
-            CNodePtr        ,
-
-            Action         *>(&InverseTransform::renderLeave));
-
+          Action*>(&InverseTransform::renderLeave));
 }
-
-
-
-
 
 /***************************************************************************\
 
@@ -258,302 +219,207 @@ void InverseTransform::initMethod (void)
 
 \***************************************************************************/
 
-
-
 /*-------------------------------------------------------------------------*\
 
  -  private                                                                 -
 
 \*-------------------------------------------------------------------------*/
 
-
-
 /*----------------------- constructors & destructors ----------------------*/
 
+InverseTransform::InverseTransform(void)
+    :
 
-
-InverseTransform::InverseTransform(void) :
-
-    Inherited(),
+    Inherited()
+    ,
 
     _invWorld()
 
 {
-
 }
 
+InverseTransform::InverseTransform(const InverseTransform& source)
+    :
 
-
-InverseTransform::InverseTransform(const InverseTransform &source) :
-
-    Inherited(source),
+    Inherited(source)
+    ,
 
     _invWorld(source._invWorld)
 
 {
-
 }
-
-
 
 InverseTransform::~InverseTransform(void)
 
 {
-
 }
 
-
-
 /*----------------------------- class specific ----------------------------*/
-
-
 
 void InverseTransform::changed(BitVector whichField, UInt32 origin)
 
 {
 
-    Inherited::changed(whichField, origin);
-
+  Inherited::changed(whichField, origin);
 }
 
+void InverseTransform::dump(UInt32 uiIndent,
 
-
-void InverseTransform::dump(      UInt32    uiIndent,
-
-                            const BitVector bvFlags ) const
+    const BitVector bvFlags) const
 
 {
 
-    Inherited::dump(uiIndent, bvFlags);
-
+  Inherited::dump(uiIndent, bvFlags);
 }
-
-
 
 /*------------------------- volume update -------------------------------*/
 
-
-
-void InverseTransform::adjustVolume( Volume & volume )
+void InverseTransform::adjustVolume(Volume& volume)
 
 {
 
-    volume.transform(_invWorld);
-
+  volume.transform(_invWorld);
 }
 
-
-
-void InverseTransform::accumulateMatrix(Matrix &result)
+void InverseTransform::accumulateMatrix(Matrix& result)
 
 {
 
-    result.mult(_invWorld);
-
+  result.mult(_invWorld);
 }
-
-
 
 /*------------------------- calc matrix ---------------------------------*/
 
+void InverseTransform::calcMatrix(DrawActionBase* OSG_CHECK_ARG(pAction),
 
+    const Matrix& mToWorld,
 
-void InverseTransform::calcMatrix(      DrawActionBase * OSG_CHECK_ARG(pAction),
-
-                                  const Matrix         &mToWorld,
-
-                                        Matrix         &mResult)
+    Matrix& mResult)
 
 {
 
-    mResult.invertFrom(mToWorld);
+  mResult.invertFrom(mToWorld);
 
-
-
-    _invWorld = mResult;    // remember dynamically set matrix field
-
+  _invWorld = mResult; // remember dynamically set matrix field
 }
 
-
-
-void InverseTransform::initMatrix(const Matrix &mToWorld)
+void InverseTransform::initMatrix(const Matrix& mToWorld)
 
 {
 
-    _invWorld.invertFrom(mToWorld);
-
+  _invWorld.invertFrom(mToWorld);
 }
-
-
 
 /*-------------------------------------------------------------------------*/
 
 /*                               Draw                                      */
 
-
-
-Action::ResultE InverseTransform::drawEnter(Action *action)
+Action::ResultE InverseTransform::drawEnter(Action* action)
 
 {
 
-    DrawAction *da = dynamic_cast<DrawAction *>(action);
+  DrawAction* da = dynamic_cast<DrawAction*>(action);
 
-    Matrix mMat;
+  Matrix mMat;
 
+  calcMatrix(da, da->getActNode()->getToWorld(), mMat);
 
+  // should use the chunk, but it's not updated yet
 
-    calcMatrix(da, da->getActNode()->getToWorld(), mMat);
+  glPushMatrix();
 
+  glMultMatrixf(mMat.getValues());
 
-
-    // should use the chunk, but it's not updated yet
-
-    glPushMatrix ();
-
-    glMultMatrixf(mMat.getValues());
-
-
-
-    return Action::Continue;
-
+  return Action::Continue;
 }
 
-
-
-Action::ResultE InverseTransform::drawLeave(Action * OSG_CHECK_ARG(action))
+Action::ResultE InverseTransform::drawLeave(Action* OSG_CHECK_ARG(action))
 
 {
 
-    glPopMatrix();
+  glPopMatrix();
 
-
-
-    return Action::Continue;
-
+  return Action::Continue;
 }
-
-
 
 /*-------------------------------------------------------------------------*/
 
 /*                            Intersect                                    */
 
-
-
-Action::ResultE InverseTransform::intersectEnter(Action *action)
+Action::ResultE InverseTransform::intersectEnter(Action* action)
 
 {
 
-    IntersectAction *ia = dynamic_cast<IntersectAction *>(action);
+  IntersectAction* ia = dynamic_cast<IntersectAction*>(action);
 
-    Matrix           m(_invWorld);
+  Matrix m(_invWorld);
 
+  m.invert();
 
+  Pnt3f pos;
 
-    m.invert();
+  Vec3f dir;
 
+  m.multFullMatrixPnt(ia->getLine().getPosition(), pos);
 
+  m.multMatrixVec(ia->getLine().getDirection(), dir);
 
-    Pnt3f pos;
+  ia->setLine(Line(pos, dir), ia->getMaxDist());
 
-    Vec3f dir;
+  ia->scale(dir.length());
 
-
-
-    m.multFullMatrixPnt(ia->getLine().getPosition (), pos);
-
-    m.multMatrixVec    (ia->getLine().getDirection(), dir);
-
-
-
-    ia->setLine(Line(pos, dir), ia->getMaxDist());
-
-    ia->scale(dir.length());
-
-
-
-    return Action::Continue;
-
+  return Action::Continue;
 }
 
-
-
-Action::ResultE InverseTransform::intersectLeave(Action *action)
+Action::ResultE InverseTransform::intersectLeave(Action* action)
 
 {
 
-    IntersectAction *ia = dynamic_cast<IntersectAction *>(action);
+  IntersectAction* ia = dynamic_cast<IntersectAction*>(action);
 
-    Matrix           m(_invWorld);
+  Matrix m(_invWorld);
 
+  Pnt3f pos;
 
+  Vec3f dir;
 
-    Pnt3f pos;
+  m.multFullMatrixPnt(ia->getLine().getPosition(), pos);
 
-    Vec3f dir;
+  m.multMatrixVec(ia->getLine().getDirection(), dir);
 
+  ia->setLine(Line(pos, dir), ia->getMaxDist());
 
+  ia->scale(dir.length());
 
-    m.multFullMatrixPnt(ia->getLine().getPosition (), pos);
-
-    m.multMatrixVec    (ia->getLine().getDirection(), dir);
-
-
-
-    ia->setLine(Line(pos, dir), ia->getMaxDist());
-
-    ia->scale(dir.length());
-
-
-
-    return Action::Continue;
-
+  return Action::Continue;
 }
-
-
 
 /*-------------------------------------------------------------------------*/
 
 /*                                Render                                   */
 
-
-
-Action::ResultE InverseTransform::renderEnter(Action *action)
+Action::ResultE InverseTransform::renderEnter(Action* action)
 
 {
 
-    RenderAction *pAction = dynamic_cast<RenderAction *>(action);
+  RenderAction* pAction = dynamic_cast<RenderAction*>(action);
 
-    Matrix mMat;    // will be set to World^-1
+  Matrix mMat; // will be set to World^-1
 
+  calcMatrix(pAction, pAction->top_matrix(), mMat);
 
+  pAction->push_matrix(mMat);
 
-    calcMatrix(pAction, pAction->top_matrix(), mMat);
-
-
-
-    pAction->push_matrix(mMat);
-
-
-
-    return Action::Continue;
-
+  return Action::Continue;
 }
 
-
-
-Action::ResultE InverseTransform::renderLeave(Action *action)
+Action::ResultE InverseTransform::renderLeave(Action* action)
 
 {
 
-    RenderAction *pAction = dynamic_cast<RenderAction *>(action);
+  RenderAction* pAction = dynamic_cast<RenderAction*>(action);
 
+  pAction->pop_matrix();
 
-
-    pAction->pop_matrix();
-
-
-
-    return Action::Continue;
-
+  return Action::Continue;
 }

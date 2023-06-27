@@ -48,7 +48,7 @@
 
 OSG_BEGIN_NAMESPACE
 
-typedef std::map<UInt32, AttachmentPtr>  AttachmentMap;
+typedef std::map<UInt32, AttachmentPtr> AttachmentMap;
 
 #if !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
 
@@ -66,129 +66,107 @@ typedef std::map<UInt32, AttachmentPtr>  AttachmentMap;
 #endif
 
 template <>
-struct FieldTraitsRecurseMapper<AttachmentMap, false> : 
-    public FieldTraitsRecurseBase<AttachmentMap>
-{
-    enum                    { bHasParent        = 0x00   };
+struct FieldTraitsRecurseMapper<AttachmentMap, false>
+    : public FieldTraitsRecurseBase<AttachmentMap> {
+  enum { bHasParent = 0x00 };
 
-    static UInt32 getBinSize(const AttachmentMap &oObject)
-    {
-        AttachmentMap::const_iterator mapIt  = oObject.begin();
-        AttachmentMap::const_iterator mapEnd = oObject.end();
+  static UInt32 getBinSize(const AttachmentMap& oObject) {
+    AttachmentMap::const_iterator mapIt  = oObject.begin();
+    AttachmentMap::const_iterator mapEnd = oObject.end();
 
-        UInt32 uiNumPublicObjects = 0;
+    UInt32 uiNumPublicObjects = 0;
 
-        while(mapIt != mapEnd)
-        {
-            if(mapIt->second->getInternal().getValue() == false)
-            {
-                ++uiNumPublicObjects;
-            }
+    while (mapIt != mapEnd) {
+      if (mapIt->second->getInternal().getValue() == false) {
+        ++uiNumPublicObjects;
+      }
 
-            ++mapIt;
-        }
-
-        return sizeof(UInt32) +  // Number of elements in the map 
-               uiNumPublicObjects * (sizeof(UInt16) + sizeof(UInt32));
+      ++mapIt;
     }
 
-    static UInt32 getBinSize(const AttachmentMap *pObjectStore,
-                                   UInt32         uiNumObjects)
-    {
-        UInt32 size = 0;
+    return sizeof(UInt32) + // Number of elements in the map
+           uiNumPublicObjects * (sizeof(UInt16) + sizeof(UInt32));
+  }
 
-        // defaut: individual field sizes
-        for(UInt32 i = 0; i < uiNumObjects; ++i)
-        {
-            size += getBinSize(pObjectStore[i]);
-        }
+  static UInt32 getBinSize(const AttachmentMap* pObjectStore, UInt32 uiNumObjects) {
+    UInt32 size = 0;
 
-        return size;
+    // defaut: individual field sizes
+    for (UInt32 i = 0; i < uiNumObjects; ++i) {
+      size += getBinSize(pObjectStore[i]);
     }
 
-    static void copyToBin(      BinaryDataHandler &pMem, 
-                          const AttachmentMap     &pObject)
-    {
-        UInt16 binding;
-        UInt32 fcId;
-        UInt32 uiNumPublicObjects = 0;
+    return size;
+  }
 
-        AttachmentMap::const_iterator mapIt  = pObject.begin();
-        AttachmentMap::const_iterator mapEnd = pObject.end();
+  static void copyToBin(BinaryDataHandler& pMem, const AttachmentMap& pObject) {
+    UInt16 binding;
+    UInt32 fcId;
+    UInt32 uiNumPublicObjects = 0;
 
-        while(mapIt != mapEnd)
-        {
-            if(mapIt->second->getInternal().getValue() == false)
-            {
-                ++uiNumPublicObjects;
-            }
+    AttachmentMap::const_iterator mapIt  = pObject.begin();
+    AttachmentMap::const_iterator mapEnd = pObject.end();
 
-            ++mapIt;
-        }
+    while (mapIt != mapEnd) {
+      if (mapIt->second->getInternal().getValue() == false) {
+        ++uiNumPublicObjects;
+      }
 
-        pMem.putValue(uiNumPublicObjects);
-
-        mapIt = pObject.begin();
-
-        for(; mapIt != mapEnd; ++mapIt)
-        {
-            if(mapIt->second->getInternal().getValue() == false)
-            {
-                binding = mapIt->first & 0xffff;
-                fcId    = mapIt->second.getFieldContainerId();
-                
-                pMem.putValue(binding);
-                pMem.putValue(fcId);
-            }
-        }
+      ++mapIt;
     }
 
-    static void copyToBin(      BinaryDataHandler &pMem, 
-                          const AttachmentMap *pObjectStore,
-                                UInt32         uiNumObjects)
-    {
-        for(UInt32 i = 0; i < uiNumObjects; ++i)
-        {
-            copyToBin(pMem, pObjectStore[i]);
-        }
+    pMem.putValue(uiNumPublicObjects);
+
+    mapIt = pObject.begin();
+
+    for (; mapIt != mapEnd; ++mapIt) {
+      if (mapIt->second->getInternal().getValue() == false) {
+        binding = mapIt->first & 0xffff;
+        fcId    = mapIt->second.getFieldContainerId();
+
+        pMem.putValue(binding);
+        pMem.putValue(fcId);
+      }
     }
+  }
 
-    static void copyFromBin(BinaryDataHandler &pMem, 
-                            AttachmentMap     &pObject)
-    {
-        FieldContainerPtr fcp;
-
-        UInt32 key;
-        UInt16 binding;
-        UInt32 fcId;
-        UInt32 size;
-
-        pMem.getValue(size);
-
-        pObject.clear();
-
-        for(UInt32 i = 0; i < size; ++i)
-        {
-            pMem.getValue(binding);
-            pMem.getValue(fcId);
-
-            fcp = FieldContainerFactory::the()->getMappedContainer(fcId);
-
-            key = (UInt32 (fcp->getGroupId()) << 16) | binding;
-
-            ((FieldContainerPtr &) pObject[key]) = fcp;
-        }
+  static void copyToBin(
+      BinaryDataHandler& pMem, const AttachmentMap* pObjectStore, UInt32 uiNumObjects) {
+    for (UInt32 i = 0; i < uiNumObjects; ++i) {
+      copyToBin(pMem, pObjectStore[i]);
     }
+  }
 
-    static void copyFromBin(BinaryDataHandler &pMem, 
-                            AttachmentMap     *pObjectStore,
-                            UInt32             uiNumObjects)
-    {
-        for(UInt32 i = 0; i < uiNumObjects; ++i)
-        {
-            copyFromBin(pMem, pObjectStore[i]);
-        }
+  static void copyFromBin(BinaryDataHandler& pMem, AttachmentMap& pObject) {
+    FieldContainerPtr fcp;
+
+    UInt32 key;
+    UInt16 binding;
+    UInt32 fcId;
+    UInt32 size;
+
+    pMem.getValue(size);
+
+    pObject.clear();
+
+    for (UInt32 i = 0; i < size; ++i) {
+      pMem.getValue(binding);
+      pMem.getValue(fcId);
+
+      fcp = FieldContainerFactory::the()->getMappedContainer(fcId);
+
+      key = (UInt32(fcp->getGroupId()) << 16) | binding;
+
+      ((FieldContainerPtr&)pObject[key]) = fcp;
     }
+  }
+
+  static void copyFromBin(
+      BinaryDataHandler& pMem, AttachmentMap* pObjectStore, UInt32 uiNumObjects) {
+    for (UInt32 i = 0; i < uiNumObjects; ++i) {
+      copyFromBin(pMem, pObjectStore[i]);
+    }
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -203,29 +181,30 @@ struct FieldTraitsRecurseMapper<AttachmentMap, false> :
 #endif
 
 template <>
-struct OSG_SYSTEMLIB_DLLMAPPING FieldDataTraits<AttachmentMap> : 
-    public FieldTraitsRecurseMapper<AttachmentMap, false>
-{
-    static DataType                  _type;
+struct OSG_SYSTEMLIB_DLLMAPPING FieldDataTraits<AttachmentMap>
+    : public FieldTraitsRecurseMapper<AttachmentMap, false> {
+  static DataType _type;
 
-    enum                            { StringConvertable = 0x01  };
-    enum                            { bHasParent        = 0x00  };
+  enum { StringConvertable = 0x01 };
+  enum { bHasParent = 0x00 };
 
-    static DataType &getType (void) { return _type;             }
-    static char     *getSName(void) { return "SFAttachmentMap"; }
-    static char     *getMName(void) { return "MFAttachmentMap"; }
+  static DataType& getType(void) {
+    return _type;
+  }
+  static char* getSName(void) {
+    return "SFAttachmentMap";
+  }
+  static char* getMName(void) {
+    return "MFAttachmentMap";
+  }
 
-    static bool        getFromString(      AttachmentMap  &,
-                                     const Char8         *&)
-    {
-        return false;
-    }
+  static bool getFromString(AttachmentMap&, const Char8*&) {
+    return false;
+  }
 
-    static void      putToString    (const AttachmentMap &,
-                                           std::string   &outStr)
-    {
-        outStr.assign("AttachmentMap");
-    }
+  static void putToString(const AttachmentMap&, std::string& outStr) {
+    outStr.assign("AttachmentMap");
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -240,15 +219,3 @@ OSG_END_NAMESPACE
 #define OSGATTACHMENTMAPFIELDDATATYPE_HEADER_CVSID "@(#)$Id: $"
 
 #endif /* _OSG_ATTACHMENTMAPFIELDDATATYPE_H_ */
-
-
-
-
-
-
-
-
-
-
-
-

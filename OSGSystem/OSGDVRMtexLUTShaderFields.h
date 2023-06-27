@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGDVRMTEXLUTSHADERFIELDS_H_
 #define _OSGDVRMTEXLUTSHADERFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class DVRMtexLUTShader;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! DVRMtexLUTShaderPtr
 
 typedef FCPtr<DVRSimpleLUTShaderPtr, DVRMtexLUTShader> DVRMtexLUTShaderPtr;
@@ -81,13 +80,12 @@ typedef FCPtr<DVRSimpleLUTShaderPtr, DVRMtexLUTShader> DVRMtexLUTShaderPtr;
 #endif
 
 template <>
-struct FieldDataTraits<DVRMtexLUTShaderPtr> : 
-    public FieldTraitsRecurseMapper<DVRMtexLUTShaderPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<DVRMtexLUTShaderPtr>
+    : public FieldTraitsRecurseMapper<DVRMtexLUTShaderPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -98,10 +96,9 @@ struct FieldDataTraits<DVRMtexLUTShaderPtr> :
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
 
-
-
 OSG_END_NAMESPACE
 
-#define OSGDVRMTEXLUTSHADERFIELDS_HEADER_CVSID "@(#)$Id: FCFieldsTemplate_h.h,v 1.25 2005/04/04 14:51:48 dirk Exp $"
+#define OSGDVRMTEXLUTSHADERFIELDS_HEADER_CVSID                                                     \
+  "@(#)$Id: FCFieldsTemplate_h.h,v 1.25 2005/04/04 14:51:48 dirk Exp $"
 
 #endif /* _OSGDVRMTEXLUTSHADERFIELDS_H_ */

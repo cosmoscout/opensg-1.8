@@ -52,221 +52,159 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &SHLChunkBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& SHLChunkBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 SHLChunkBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 SHLChunkBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-SHLChunkPtr SHLChunkBase::create(void) 
-{
-    SHLChunkPtr fc; 
+inline SHLChunkPtr SHLChunkBase::create(void) {
+  SHLChunkPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = SHLChunkPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = SHLChunkPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-SHLChunkPtr SHLChunkBase::createEmpty(void) 
-{ 
-    SHLChunkPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline SHLChunkPtr SHLChunkBase::createEmpty(void) {
+  SHLChunkPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the SHLChunk::_sfCgFrontEnd field.
-inline
-SFBool *SHLChunkBase::getSFCgFrontEnd(void)
-{
-    return &_sfCgFrontEnd;
+inline SFBool* SHLChunkBase::getSFCgFrontEnd(void) {
+  return &_sfCgFrontEnd;
 }
 
 //! Get the SHLChunk::_sfPointSize field.
-inline
-SFBool *SHLChunkBase::getSFPointSize(void)
-{
-    return &_sfPointSize;
+inline SFBool* SHLChunkBase::getSFPointSize(void) {
+  return &_sfPointSize;
 }
 
 //! Get the SHLChunk::_mfProgramParameterNames field.
-inline
-MFGLenum *SHLChunkBase::getMFProgramParameterNames(void)
-{
-    return &_mfProgramParameterNames;
+inline MFGLenum* SHLChunkBase::getMFProgramParameterNames(void) {
+  return &_mfProgramParameterNames;
 }
 
 //! Get the SHLChunk::_mfProgramParameterValues field.
-inline
-MFUInt32 *SHLChunkBase::getMFProgramParameterValues(void)
-{
-    return &_mfProgramParameterValues;
+inline MFUInt32* SHLChunkBase::getMFProgramParameterValues(void) {
+  return &_mfProgramParameterValues;
 }
 
 //! Get the SHLChunk::_sfGLId field.
-inline
-SFUInt32 *SHLChunkBase::getSFGLId(void)
-{
-    return &_sfGLId;
+inline SFUInt32* SHLChunkBase::getSFGLId(void) {
+  return &_sfGLId;
 }
 
 //! Get the SHLChunk::_sfIgnoreGLForAspect field.
-inline
-SFInt32 *SHLChunkBase::getSFIgnoreGLForAspect(void)
-{
-    return &_sfIgnoreGLForAspect;
-}
-
-
-//! Get the value of the SHLChunk::_sfCgFrontEnd field.
-inline
-bool &SHLChunkBase::getCgFrontEnd(void)
-{
-    return _sfCgFrontEnd.getValue();
+inline SFInt32* SHLChunkBase::getSFIgnoreGLForAspect(void) {
+  return &_sfIgnoreGLForAspect;
 }
 
 //! Get the value of the SHLChunk::_sfCgFrontEnd field.
-inline
-const bool &SHLChunkBase::getCgFrontEnd(void) const
-{
-    return _sfCgFrontEnd.getValue();
+inline bool& SHLChunkBase::getCgFrontEnd(void) {
+  return _sfCgFrontEnd.getValue();
+}
+
+//! Get the value of the SHLChunk::_sfCgFrontEnd field.
+inline const bool& SHLChunkBase::getCgFrontEnd(void) const {
+  return _sfCgFrontEnd.getValue();
 }
 
 //! Set the value of the SHLChunk::_sfCgFrontEnd field.
-inline
-void SHLChunkBase::setCgFrontEnd(const bool &value)
-{
-    _sfCgFrontEnd.setValue(value);
+inline void SHLChunkBase::setCgFrontEnd(const bool& value) {
+  _sfCgFrontEnd.setValue(value);
 }
 
 //! Get the value of the SHLChunk::_sfPointSize field.
-inline
-bool &SHLChunkBase::getPointSize(void)
-{
-    return _sfPointSize.getValue();
+inline bool& SHLChunkBase::getPointSize(void) {
+  return _sfPointSize.getValue();
 }
 
 //! Get the value of the SHLChunk::_sfPointSize field.
-inline
-const bool &SHLChunkBase::getPointSize(void) const
-{
-    return _sfPointSize.getValue();
+inline const bool& SHLChunkBase::getPointSize(void) const {
+  return _sfPointSize.getValue();
 }
 
 //! Set the value of the SHLChunk::_sfPointSize field.
-inline
-void SHLChunkBase::setPointSize(const bool &value)
-{
-    _sfPointSize.setValue(value);
+inline void SHLChunkBase::setPointSize(const bool& value) {
+  _sfPointSize.setValue(value);
 }
 
 //! Get the value of the SHLChunk::_sfGLId field.
-inline
-UInt32 &SHLChunkBase::getGLId(void)
-{
-    return _sfGLId.getValue();
+inline UInt32& SHLChunkBase::getGLId(void) {
+  return _sfGLId.getValue();
 }
 
 //! Get the value of the SHLChunk::_sfGLId field.
-inline
-const UInt32 &SHLChunkBase::getGLId(void) const
-{
-    return _sfGLId.getValue();
+inline const UInt32& SHLChunkBase::getGLId(void) const {
+  return _sfGLId.getValue();
 }
 
 //! Set the value of the SHLChunk::_sfGLId field.
-inline
-void SHLChunkBase::setGLId(const UInt32 &value)
-{
-    _sfGLId.setValue(value);
+inline void SHLChunkBase::setGLId(const UInt32& value) {
+  _sfGLId.setValue(value);
 }
 
 //! Get the value of the SHLChunk::_sfIgnoreGLForAspect field.
-inline
-Int32 &SHLChunkBase::getIgnoreGLForAspect(void)
-{
-    return _sfIgnoreGLForAspect.getValue();
+inline Int32& SHLChunkBase::getIgnoreGLForAspect(void) {
+  return _sfIgnoreGLForAspect.getValue();
 }
 
 //! Get the value of the SHLChunk::_sfIgnoreGLForAspect field.
-inline
-const Int32 &SHLChunkBase::getIgnoreGLForAspect(void) const
-{
-    return _sfIgnoreGLForAspect.getValue();
+inline const Int32& SHLChunkBase::getIgnoreGLForAspect(void) const {
+  return _sfIgnoreGLForAspect.getValue();
 }
 
 //! Set the value of the SHLChunk::_sfIgnoreGLForAspect field.
-inline
-void SHLChunkBase::setIgnoreGLForAspect(const Int32 &value)
-{
-    _sfIgnoreGLForAspect.setValue(value);
+inline void SHLChunkBase::setIgnoreGLForAspect(const Int32& value) {
+  _sfIgnoreGLForAspect.setValue(value);
 }
-
 
 //! Get the value of the \a index element the SHLChunk::_mfProgramParameterNames field.
-inline
-GLenum &SHLChunkBase::getProgramParameterNames(const UInt32 index)
-{
-    return _mfProgramParameterNames[index];
+inline GLenum& SHLChunkBase::getProgramParameterNames(const UInt32 index) {
+  return _mfProgramParameterNames[index];
 }
 
 //! Get the SHLChunk::_mfProgramParameterNames field.
-inline
-MFGLenum &SHLChunkBase::getProgramParameterNames(void)
-{
-    return _mfProgramParameterNames;
+inline MFGLenum& SHLChunkBase::getProgramParameterNames(void) {
+  return _mfProgramParameterNames;
 }
 
 //! Get the SHLChunk::_mfProgramParameterNames field.
-inline
-const MFGLenum &SHLChunkBase::getProgramParameterNames(void) const
-{
-    return _mfProgramParameterNames;
+inline const MFGLenum& SHLChunkBase::getProgramParameterNames(void) const {
+  return _mfProgramParameterNames;
 }
 
 //! Get the value of the \a index element the SHLChunk::_mfProgramParameterValues field.
-inline
-UInt32 &SHLChunkBase::getProgramParameterValues(const UInt32 index)
-{
-    return _mfProgramParameterValues[index];
+inline UInt32& SHLChunkBase::getProgramParameterValues(const UInt32 index) {
+  return _mfProgramParameterValues[index];
 }
 
 //! Get the SHLChunk::_mfProgramParameterValues field.
-inline
-MFUInt32 &SHLChunkBase::getProgramParameterValues(void)
-{
-    return _mfProgramParameterValues;
+inline MFUInt32& SHLChunkBase::getProgramParameterValues(void) {
+  return _mfProgramParameterValues;
 }
 
 //! Get the SHLChunk::_mfProgramParameterValues field.
-inline
-const MFUInt32 &SHLChunkBase::getProgramParameterValues(void) const
-{
-    return _mfProgramParameterValues;
+inline const MFUInt32& SHLChunkBase::getProgramParameterValues(void) const {
+  return _mfProgramParameterValues;
 }
 
 OSG_END_NAMESPACE
 
-#define OSGSHLCHUNKBASE_INLINE_CVSID "@(#)$Id: OSGSHLChunkBase.inl,v 1.13 2006/11/17 17:16:04 a-m-z Exp $"
-
+#define OSGSHLCHUNKBASE_INLINE_CVSID                                                               \
+  "@(#)$Id: OSGSHLChunkBase.inl,v 1.13 2006/11/17 17:16:04 a-m-z Exp $"

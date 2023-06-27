@@ -52,50 +52,48 @@
 
 OSG_BEGIN_NAMESPACE
 
-class OSG_SYSTEMLIB_DLLMAPPING TestingExtendActor : public TestingExtendActorBase
-{
-    /*====  PUBLIC  =========================================================*/
-  public:
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Types                                                       */
-    /*! \{                                                                   */
+class OSG_SYSTEMLIB_DLLMAPPING TestingExtendActor : public TestingExtendActorBase {
+  /*====  PUBLIC  =========================================================*/
+ public:
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Types                                                       */
+  /*! \{                                                                   */
 
-    typedef ExtendActorBase::ResultE ResultE;
-    typedef ExtendActorBase::Functor Functor;
+  typedef ExtendActorBase::ResultE ResultE;
+  typedef ExtendActorBase::Functor Functor;
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Create                                                      */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Create                                                      */
+  /*! \{                                                                   */
 
-    static TestingExtendActor *create(void);
+  static TestingExtendActor* create(void);
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Destructor                                                  */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Destructor                                                  */
+  /*! \{                                                                   */
 
-    virtual ~TestingExtendActor(void);
+  virtual ~TestingExtendActor(void);
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Enter/Leave                                                 */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Enter/Leave                                                 */
+  /*! \{                                                                   */
 
+  /*! \}                                                                   */
+  /*==== PROTECTED ========================================================*/
+ protected:
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Constructor                                                 */
+  /*! \{                                                                   */
 
-    /*! \}                                                                   */
-    /*==== PROTECTED ========================================================*/
-  protected:
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Constructor                                                 */
-    /*! \{                                                                   */
+  TestingExtendActor(void);
 
-    TestingExtendActor(void);
-
-    /*! \}                                                                   */
-    /*==== PRIVATE ==========================================================*/
-  private:
-    typedef TestingExtendActorBase Inherited;
+  /*! \}                                                                   */
+  /*==== PRIVATE ==========================================================*/
+ private:
+  typedef TestingExtendActorBase Inherited;
 };
 
 OSG_END_NAMESPACE

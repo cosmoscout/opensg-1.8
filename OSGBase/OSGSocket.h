@@ -50,123 +50,119 @@ OSG_BEGIN_NAMESPACE
 
 class NetworkMessage;
 
-class OSG_BASE_DLLMAPPING Socket
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+class OSG_BASE_DLLMAPPING Socket {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    Socket(void);
-    Socket(const Socket &source);
+  Socket(void);
+  Socket(const Socket& source);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    virtual ~Socket();
+  virtual ~Socket();
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                 open, close, connect                         */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                 open, close, connect                         */
+  /*! \{                                                                 */
 
-    virtual void open   (      void                       )=0;
-    virtual void close  (      void                       )=0;
-            void bind   (const SocketAddress &address=
-                         SocketAddress(SocketAddress::ANY));
-            void listen (      int maxPending=10          );
-            void connect(const SocketAddress &address     );
+  virtual void open(void)  = 0;
+  virtual void close(void) = 0;
+  void         bind(const SocketAddress& address = SocketAddress(SocketAddress::ANY));
+  void         listen(int maxPending = 10);
+  void         connect(const SocketAddress& address);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                 read, write                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                 read, write                                  */
+  /*! \{                                                                 */
 
-    int recv         (      void           *buf,int size);
-    int recvAvailable(      void           *buf,int size);
-    int recv         (      NetworkMessage &msg         );
-    int peek         (      void           *buf,int size);
-    int send         (const void           *buf,int size);
-    int send         (      NetworkMessage &msg         );
+  int recv(void* buf, int size);
+  int recvAvailable(void* buf, int size);
+  int recv(NetworkMessage& msg);
+  int peek(void* buf, int size);
+  int send(const void* buf, int size);
+  int send(NetworkMessage& msg);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                 state access                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                 state access                                 */
+  /*! \{                                                                 */
 
-    void          setReusePort      (bool   value   );
-    void          setBlocking       (bool   value   );
-    SocketAddress getAddress        (void           );
-    void          setReadBufferSize (int    size    );
-    void          setWriteBufferSize(int    size    );
-    int           getReadBufferSize (void           );
-    int           getWriteBufferSize(void           );
-    int           getAvailable      (void           );
-    bool          waitReadable      (double duration);
-    bool          waitWritable      (double duration);
+  void          setReusePort(bool value);
+  void          setBlocking(bool value);
+  SocketAddress getAddress(void);
+  void          setReadBufferSize(int size);
+  void          setWriteBufferSize(int size);
+  int           getReadBufferSize(void);
+  int           getWriteBufferSize(void);
+  int           getAvailable(void);
+  bool          waitReadable(double duration);
+  bool          waitWritable(double duration);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Assignment                              */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Assignment                              */
+  /*! \{                                                                 */
 
-	const Socket & operator =(const Socket &source);
+  const Socket& operator=(const Socket& source);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Error information                       */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Error information                       */
+  /*! \{                                                                 */
 
-    static int         getError       (void);
-    static int         getHostError   (void);
-    static std::string getErrorStr    (void);
-    static std::string getHostErrorStr(void);
+  static int         getError(void);
+  static int         getHostError(void);
+  static std::string getErrorStr(void);
+  static std::string getHostErrorStr(void);
 
-    /*! \}      
-                                                           */
-    /*==========================  PROTECTED ===============================*/
-  protected:
-
-    /*! Socket option type. Used to hide the different interface 
-        implementations
-     */
+  /*! \}
+   */
+  /*==========================  PROTECTED ===============================*/
+ protected:
+  /*! Socket option type. Used to hide the different interface
+      implementations
+   */
 #if defined WIN32
-    typedef char FAR  SocketOptT;
+  typedef char FAR SocketOptT;
 #else
-    typedef void      SocketOptT;
+  typedef void SocketOptT;
 #endif
 
-    /*! Socket length type. Used to hide the different interface 
-        implementations
-     **/
+  /*! Socket length type. Used to hide the different interface
+      implementations
+   **/
 #if defined(__linux) || defined(__APPLE__)
-    typedef socklen_t SocketLenT;
+  typedef socklen_t SocketLenT;
 #else
-    typedef int       SocketLenT;
+  typedef int  SocketLenT;
 #endif
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   member                                     */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   member                                     */
+  /*! \{                                                                 */
 
-    int _sd;
+  int _sd;
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE =================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE =================================*/
+ private:
+  friend class SocketSelection;
 
-    friend class SocketSelection;
+  /*---------------------------------------------------------------------*/
+  /*! \name                  static member                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  static member                               */
-    /*! \{                                                                 */
+  static int initialized;
 
-    static int  initialized;
-
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 };
 
 OSG_END_NAMESPACE

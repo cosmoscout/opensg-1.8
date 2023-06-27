@@ -38,66 +38,42 @@
 
 OSG_BEGIN_NAMESPACE
 
-inline
-const Char8 *IDString::str(void) const
-{
-    return _str; 
+inline const Char8* IDString::str(void) const {
+  return _str;
 }
 
-inline
-bool IDString::isEmpty(void) const
-{
-    return (_str != NULL && *_str != '\0') ? false : true; 
+inline bool IDString::isEmpty(void) const {
+  return (_str != NULL && *_str != '\0') ? false : true;
 }
 
-inline
-const IDString &IDString::operator =(const IDString &obj)
-{
-    set(obj._str);
-    
-    return *this;
+inline const IDString& IDString::operator=(const IDString& obj) {
+  set(obj._str);
+
+  return *this;
 }
 
-inline
-bool IDString::operator ==(const IDString &obj)   const
-{
-    return ((_str == obj._str) ? 
-            1 : 
-            (_str != NULL && obj._str != NULL && !::strcmp(_str, obj._str)));
+inline bool IDString::operator==(const IDString& obj) const {
+  return ((_str == obj._str) ? 1 : (_str != NULL && obj._str != NULL && !::strcmp(_str, obj._str)));
 }
 
-inline 
-bool IDString::operator !=(const IDString &obj)   const
-{
-    return ! (*this == obj);
+inline bool IDString::operator!=(const IDString& obj) const {
+  return !(*this == obj);
 }
 
-inline 
-bool IDString::operator <(const IDString &obj) const
-{
-    return (    _str != NULL && 
-            obj._str != NULL && 
-            (::strcmp(_str, obj._str) < 0));
+inline bool IDString::operator<(const IDString& obj) const {
+  return (_str != NULL && obj._str != NULL && (::strcmp(_str, obj._str) < 0));
 }
 
-inline 
-bool IDString::operator >(const IDString &obj) const
-{
-        return ! (*this < obj) && ! (*this == obj);
+inline bool IDString::operator>(const IDString& obj) const {
+  return !(*this < obj) && !(*this == obj);
 }
 
-inline
-bool IDString::operator >=(const IDString &obj) const
-{
-    return ! (*this < obj);
+inline bool IDString::operator>=(const IDString& obj) const {
+  return !(*this < obj);
 }
 
-inline
-bool IDString::operator <=(const IDString &obj) const
-{
-    return (*this < obj) || (*this == obj);
+inline bool IDString::operator<=(const IDString& obj) const {
+  return (*this < obj) || (*this == obj);
 }
 
 OSG_END_NAMESPACE
-
-

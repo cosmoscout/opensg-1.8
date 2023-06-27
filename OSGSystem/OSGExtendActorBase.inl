@@ -46,32 +46,27 @@ OSG_BEGIN_NAMESPACE
     was a child of the currently traversed node.
  */
 
-inline UInt32
-ExtendActorBase::addExtraChild(const NodePtr &pNode)
-{
-    return getAction()->getExtraChildrenList().addChild(pNode);
+inline UInt32 ExtendActorBase::addExtraChild(const NodePtr& pNode) {
+  return getAction()->getExtraChildrenList().addChild(pNode);
 }
 
 /*! Add a node as extra child with priority, this node will be traversed as if
     it was a child of the currently traversed node.
  */
 
-inline UInt32
-ExtendActorBase::addExtraChild(const NodePtr &pNode, PriorityType prio)
-{
-    return getAction()->getExtraChildrenList().addChild(pNode, prio);
+inline UInt32 ExtendActorBase::addExtraChild(const NodePtr& pNode, PriorityType prio) {
+  return getAction()->getExtraChildrenList().addChild(pNode, prio);
 }
 
 //----------------------------------------------------------------------------
 //    Multi Pass Management
 //----------------------------------------------------------------------------
 
-inline void
-ExtendActorBase::setNumPasses(UInt32 numPasses)
-{
-    getAction()->setNumPasses(numPasses);
+inline void ExtendActorBase::setNumPasses(UInt32 numPasses) {
+  getAction()->setNumPasses(numPasses);
 }
 
 OSG_END_NAMESPACE
 
-#define OSGEXTENDACTORBASE_INLINE_CVSID "@(#)$Id: OSGExtendActorBase.inl,v 1.4 2004/09/17 14:09:43 neumannc Exp $"
+#define OSGEXTENDACTORBASE_INLINE_CVSID                                                            \
+  "@(#)$Id: OSGExtendActorBase.inl,v 1.4 2004/09/17 14:09:43 neumannc Exp $"

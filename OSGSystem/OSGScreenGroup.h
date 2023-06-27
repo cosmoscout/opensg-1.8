@@ -51,111 +51,103 @@ OSG_BEGIN_NAMESPACE
 
 class DrawActionBase;
 
-/*! \brief ScreenGroup class. See \ref 
+/*! \brief ScreenGroup class. See \ref
            PageSystemScreenGroup for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING ScreenGroup : public ScreenGroupBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING ScreenGroup : public ScreenGroupBase {
+ private:
+  typedef ScreenGroupBase Inherited;
 
-    typedef ScreenGroupBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name               calc the model matrix                          */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  void calcMatrix(DrawActionBase* pAction, const Matrix& mToWorld, Matrix& mResult);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name               calc the model matrix                          */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    void calcMatrix(      DrawActionBase *pAction, 
-                    const Matrix         &mToWorld,
-                          Matrix         &mResult);
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in ScreenGroupBase.
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  ScreenGroup(void);
+  ScreenGroup(const ScreenGroup& source);
 
-    // Variables should all be in ScreenGroupBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~ScreenGroup(void);
 
-    ScreenGroup(void);
-    ScreenGroup(const ScreenGroup &source);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      NodeCore Specific                       */
+  /*! \{                                                                 */
 
-    virtual ~ScreenGroup(void); 
+  virtual void accumulateMatrix(Matrix& result);
 
-    /*! \}                                                                 */
-    
-    /*---------------------------------------------------------------------*/
-    /*! \name                      NodeCore Specific                       */
-    /*! \{                                                                 */
+  void adjustVolume(Volume& volume);
 
-    virtual void accumulateMatrix(Matrix &result);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name              Draw & Intersect & Render                       */
+  /*! \{                                                                 */
 
-    void         adjustVolume   (Volume & volume);
+  Action::ResultE drawEnter(Action* action);
+  Action::ResultE drawLeave(Action* action);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name              Draw & Intersect & Render                       */
-    /*! \{                                                                 */
+  Action::ResultE intersectEnter(Action* action);
+  Action::ResultE intersectLeave(Action* action);
 
-    Action::ResultE drawEnter     (Action *action);
-    Action::ResultE drawLeave     (Action *action);
+  Action::ResultE renderEnter(Action* action);
+  Action::ResultE renderLeave(Action* action);
 
-    Action::ResultE intersectEnter(Action *action);
-    Action::ResultE intersectLeave(Action *action);
+  /*! \}                                                                 */
 
-    Action::ResultE renderEnter   (Action *action);
-    Action::ResultE renderLeave   (Action *action);
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class ScreenGroupBase;
 
-    /*! \}                                                                 */
+  static void initMethod(void);
 
-    /*==========================  PRIVATE  ================================*/
-  private:
+  Matrix _camTransform;
 
-    friend class FieldContainer;
-    friend class ScreenGroupBase;
+  // prohibit default functions (move to 'public' if you need one)
 
-    static void initMethod(void);
-
-    Matrix _camTransform;
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const ScreenGroup &source);
+  void operator=(const ScreenGroup& source);
 };
 
-typedef ScreenGroup *ScreenGroupP;
+typedef ScreenGroup* ScreenGroupP;
 
 OSG_END_NAMESPACE
 
 #include <OSGScreenGroupBase.inl>
 #include <OSGScreenGroup.inl>
 
-#define OSGSCREENGROUP_HEADER_CVSID "@(#)$Id: OSGScreenGroup.h,v 1.1 2007/05/07 11:50:36 pdaehne Exp $"
+#define OSGSCREENGROUP_HEADER_CVSID                                                                \
+  "@(#)$Id: OSGScreenGroup.h,v 1.1 2007/05/07 11:50:36 pdaehne Exp $"
 
 #endif /* _OSGSCREENGROUP_H_ */

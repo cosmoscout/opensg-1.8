@@ -52,7 +52,6 @@
 
 OSG_USING_NAMESPACE
 
-
 /***************************************************************************\
  *                            Description                                  *
 \***************************************************************************/
@@ -86,8 +85,7 @@ StateChunkClass LightChunk::_class("Light", 8);
  -  private                                                                -
 \*-------------------------------------------------------------------------*/
 
-void LightChunk::initMethod (void)
-{
+void LightChunk::initMethod(void) {
 }
 
 /***************************************************************************\
@@ -98,164 +96,128 @@ void LightChunk::initMethod (void)
  -  public                                                                 -
 \*-------------------------------------------------------------------------*/
 
-
 /*------------- constructors & destructors --------------------------------*/
 
-LightChunk::LightChunk(void) :
-    Inherited()
-{
+LightChunk::LightChunk(void)
+    : Inherited() {
 }
 
-LightChunk::LightChunk(const LightChunk &source) :
-    Inherited(source)
-{
+LightChunk::LightChunk(const LightChunk& source)
+    : Inherited(source) {
 }
 
-LightChunk::~LightChunk(void)
-{
+LightChunk::~LightChunk(void) {
 }
 
 /*------------------------- Chunk Class Access ---------------------------*/
 
-const StateChunkClass *LightChunk::getClass(void) const
-{
-    return &_class;
+const StateChunkClass* LightChunk::getClass(void) const {
+  return &_class;
 }
 
 /*------------------------------- Sync -----------------------------------*/
 
-void LightChunk::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void LightChunk::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
 /*------------------------------ Output ----------------------------------*/
 
-void LightChunk::dump(      UInt32    OSG_CHECK_ARG(uiIndent),
-                      const BitVector OSG_CHECK_ARG(bvFlags )) const
-{
-    SLOG << "Dump LightChunk NI" << std::endl;
+void LightChunk::dump(
+    UInt32 OSG_CHECK_ARG(uiIndent), const BitVector OSG_CHECK_ARG(bvFlags)) const {
+  SLOG << "Dump LightChunk NI" << std::endl;
 }
-
 
 /*------------------------------ State ------------------------------------*/
 
-void LightChunk::activate(DrawActionBase *, UInt32 index)
-{
-	glErr("light:activate:precheck");
+void LightChunk::activate(DrawActionBase*, UInt32 index) {
+  glErr("light:activate:precheck");
 
-    glLightfv(GL_LIGHT0 + index, GL_DIFFUSE,
-                            _sfDiffuse.getValue().getValuesRGBA());
-    glLightfv(GL_LIGHT0 + index, GL_AMBIENT,
-                            _sfAmbient.getValue().getValuesRGBA());
-    glLightfv(GL_LIGHT0 + index, GL_SPECULAR,
-                            _sfSpecular.getValue().getValuesRGBA());
-    glLightfv(GL_LIGHT0 + index, GL_POSITION,
-                            _sfPosition.getValue().getValues());
-    glLightf (GL_LIGHT0 + index, GL_CONSTANT_ATTENUATION,
-                            _sfConstantAttenuation.getValue());
-    glLightf (GL_LIGHT0 + index, GL_LINEAR_ATTENUATION,
-                            _sfLinearAttenuation.getValue());
-    glLightf (GL_LIGHT0 + index, GL_QUADRATIC_ATTENUATION,
-                            _sfQuadraticAttenuation.getValue());
+  glLightfv(GL_LIGHT0 + index, GL_DIFFUSE, _sfDiffuse.getValue().getValuesRGBA());
+  glLightfv(GL_LIGHT0 + index, GL_AMBIENT, _sfAmbient.getValue().getValuesRGBA());
+  glLightfv(GL_LIGHT0 + index, GL_SPECULAR, _sfSpecular.getValue().getValuesRGBA());
+  glLightfv(GL_LIGHT0 + index, GL_POSITION, _sfPosition.getValue().getValues());
+  glLightf(GL_LIGHT0 + index, GL_CONSTANT_ATTENUATION, _sfConstantAttenuation.getValue());
+  glLightf(GL_LIGHT0 + index, GL_LINEAR_ATTENUATION, _sfLinearAttenuation.getValue());
+  glLightf(GL_LIGHT0 + index, GL_QUADRATIC_ATTENUATION, _sfQuadraticAttenuation.getValue());
 
-    glLightf( GL_LIGHT0 + index, GL_SPOT_CUTOFF, _sfCutoff.getValue());
+  glLightf(GL_LIGHT0 + index, GL_SPOT_CUTOFF, _sfCutoff.getValue());
 
-    if(_sfCutoff.getValue() < 180)
-    {
-        glLightfv(GL_LIGHT0 + index, GL_SPOT_DIRECTION,
-                                        _sfDirection.getValue().getValues());
-        glLightf( GL_LIGHT0 + index, GL_SPOT_EXPONENT, _sfExponent.getValue());
-    }
-    glEnable(GL_LIGHT0 + index);
+  if (_sfCutoff.getValue() < 180) {
+    glLightfv(GL_LIGHT0 + index, GL_SPOT_DIRECTION, _sfDirection.getValue().getValues());
+    glLightf(GL_LIGHT0 + index, GL_SPOT_EXPONENT, _sfExponent.getValue());
+  }
+  glEnable(GL_LIGHT0 + index);
 
-	glErr("light:activate:postcheck");
+  glErr("light:activate:postcheck");
 }
 
-void LightChunk::changeFrom(DrawActionBase *, StateChunk * old_chunk, UInt32 index)
-{
-	glErr("light:changed:precheck");
+void LightChunk::changeFrom(DrawActionBase*, StateChunk* old_chunk, UInt32 index) {
+  glErr("light:changed:precheck");
 
-    LightChunk const *old = dynamic_cast<LightChunk const*>(old_chunk);
+  LightChunk const* old = dynamic_cast<LightChunk const*>(old_chunk);
 
-    // change from me to me?
-    // this assumes I haven't changed in the meantime. is that a valid assumption?
-    if(old == this)
-        return;
+  // change from me to me?
+  // this assumes I haven't changed in the meantime. is that a valid assumption?
+  if (old == this)
+    return;
 
-    // it could theoretically be more efficient to turn the light off before
-    // changing its parameters, have to try that sometime
-    glLightfv(GL_LIGHT0 + index, GL_DIFFUSE,
-                            _sfDiffuse.getValue().getValuesRGBA());
-    glLightfv(GL_LIGHT0 + index, GL_AMBIENT,
-                            _sfAmbient.getValue().getValuesRGBA());
-    glLightfv(GL_LIGHT0 + index, GL_SPECULAR,
-                            _sfSpecular.getValue().getValuesRGBA());
-    glLightfv(GL_LIGHT0 + index, GL_POSITION,
-                            _sfPosition.getValue().getValues());
-    glLightf (GL_LIGHT0 + index, GL_CONSTANT_ATTENUATION,
-                            _sfConstantAttenuation.getValue());
-    glLightf (GL_LIGHT0 + index, GL_LINEAR_ATTENUATION,
-                            _sfLinearAttenuation.getValue());
-    glLightf (GL_LIGHT0 + index, GL_QUADRATIC_ATTENUATION,
-                            _sfQuadraticAttenuation.getValue());
+  // it could theoretically be more efficient to turn the light off before
+  // changing its parameters, have to try that sometime
+  glLightfv(GL_LIGHT0 + index, GL_DIFFUSE, _sfDiffuse.getValue().getValuesRGBA());
+  glLightfv(GL_LIGHT0 + index, GL_AMBIENT, _sfAmbient.getValue().getValuesRGBA());
+  glLightfv(GL_LIGHT0 + index, GL_SPECULAR, _sfSpecular.getValue().getValuesRGBA());
+  glLightfv(GL_LIGHT0 + index, GL_POSITION, _sfPosition.getValue().getValues());
+  glLightf(GL_LIGHT0 + index, GL_CONSTANT_ATTENUATION, _sfConstantAttenuation.getValue());
+  glLightf(GL_LIGHT0 + index, GL_LINEAR_ATTENUATION, _sfLinearAttenuation.getValue());
+  glLightf(GL_LIGHT0 + index, GL_QUADRATIC_ATTENUATION, _sfQuadraticAttenuation.getValue());
 
-    glLightf( GL_LIGHT0 + index, GL_SPOT_CUTOFF, _sfCutoff.getValue());
-    if(_sfCutoff.getValue() < 180)
-    {
-        glLightfv(GL_LIGHT0 + index, GL_SPOT_DIRECTION,
-                                        _sfDirection.getValue().getValues());
-        glLightf( GL_LIGHT0 + index, GL_SPOT_EXPONENT, _sfExponent.getValue());
-    }
+  glLightf(GL_LIGHT0 + index, GL_SPOT_CUTOFF, _sfCutoff.getValue());
+  if (_sfCutoff.getValue() < 180) {
+    glLightfv(GL_LIGHT0 + index, GL_SPOT_DIRECTION, _sfDirection.getValue().getValues());
+    glLightf(GL_LIGHT0 + index, GL_SPOT_EXPONENT, _sfExponent.getValue());
+  }
 
-	glErr("light:changed:postcheck");
+  glErr("light:changed:postcheck");
 }
 
-void LightChunk::deactivate(DrawActionBase *, UInt32 index)
-{
-    glDisable(GL_LIGHT0 + index);
+void LightChunk::deactivate(DrawActionBase*, UInt32 index) {
+  glDisable(GL_LIGHT0 + index);
 }
-
 
 /*-------------------------- Comparison -----------------------------------*/
 
-Real32 LightChunk::switchCost(StateChunk *OSG_CHECK_ARG(chunk))
-{
-    return 0;
+Real32 LightChunk::switchCost(StateChunk* OSG_CHECK_ARG(chunk)) {
+  return 0;
 }
 
-bool LightChunk::operator < (const StateChunk &other) const
-{
-    return this < &other;
+bool LightChunk::operator<(const StateChunk& other) const {
+  return this < &other;
 }
 
-bool LightChunk::operator == (const StateChunk &other) const
-{
-    LightChunk const *tother = dynamic_cast<LightChunk const*>(&other);
+bool LightChunk::operator==(const StateChunk& other) const {
+  LightChunk const* tother = dynamic_cast<LightChunk const*>(&other);
 
-    if(!tother)
-        return false;
+  if (!tother)
+    return false;
 
-    if(tother == this)
-        return true;
-
-    if(!getAmbient  ().equals(tother->getAmbient  (), Eps) ||
-       !getDiffuse  ().equals(tother->getDiffuse  (), Eps) ||
-       !getSpecular ().equals(tother->getSpecular (), Eps) ||
-       !getPosition ().equals(tother->getPosition (), Eps) ||
-       !getDirection().equals(tother->getDirection(), Eps) ||
-        getConstantAttenuation()  != tother->getConstantAttenuation()  ||
-        getLinearAttenuation()    != tother->getLinearAttenuation()    ||
-        getQuadraticAttenuation() != tother->getQuadraticAttenuation() ||
-        getCutoff()               != tother->getCutoff()               ||
-        getExponent()             != tother->getExponent()
-      )
-        return false;
-
+  if (tother == this)
     return true;
+
+  if (!getAmbient().equals(tother->getAmbient(), Eps) ||
+      !getDiffuse().equals(tother->getDiffuse(), Eps) ||
+      !getSpecular().equals(tother->getSpecular(), Eps) ||
+      !getPosition().equals(tother->getPosition(), Eps) ||
+      !getDirection().equals(tother->getDirection(), Eps) ||
+      getConstantAttenuation() != tother->getConstantAttenuation() ||
+      getLinearAttenuation() != tother->getLinearAttenuation() ||
+      getQuadraticAttenuation() != tother->getQuadraticAttenuation() ||
+      getCutoff() != tother->getCutoff() || getExponent() != tother->getExponent())
+    return false;
+
+  return true;
 }
 
-bool LightChunk::operator != (const StateChunk &other) const
-{
-    return ! (*this == other);
+bool LightChunk::operator!=(const StateChunk& other) const {
+  return !(*this == other);
 }

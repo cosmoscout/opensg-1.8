@@ -60,7 +60,7 @@ OSG_USING_NAMESPACE
  * A ClusterServer is responsible for syncronizing all client changes.
  * Each cluster renderer can offer it's service by a symbolic name.
  * So it is possible to have a server called "left" or "right".
- * The server uses a local Qt or GLUT window for rendering. 
+ * The server uses a local Qt or GLUT window for rendering.
  * <pre>
  * // create a server
  * GLUTWindowPtr window=GLUTWindow::create();
@@ -76,48 +76,42 @@ OSG_USING_NAMESPACE
 /*-------------------------------------------------------------------------*/
 /*                            Constructors                                 */
 
-/*! Constructor 
+/*! Constructor
  *
- * \param window          rendering window. e.g. a Qt or GLUT window 
+ * \param window          rendering window. e.g. a Qt or GLUT window
  * \param serviceName     wait for connections that request this name
  * \param connectionType  network type. e.g. "Multicast"
  * \param address         address to wait for connections
  * \param servicePort     port to wait for connections
  *
  */
-ClusterServer::ClusterServer(        WindowPtr    window,
-                             const std::string    &serviceName,
-                             const std::string    &connectionType,
-                             const std::string    &address,
-                                     UInt32       servicePort,
-                             const std::string    &serviceGroup):
-    _window(window),
-    _connection(NULL),
-    _requestAddress(address),
-    _boundAddress(""),
-    _clusterWindow(),
-    _aspect(NULL),
-    _serviceName(serviceName),
-    _connectionType(connectionType),
-    _servicePort(servicePort),
-    _serviceGroup(serviceGroup),
-    _serverId(0),
-    _interface("")
-{
-    char localhost[256];
+ClusterServer::ClusterServer(WindowPtr window, const std::string& serviceName,
+    const std::string& connectionType, const std::string& address, UInt32 servicePort,
+    const std::string& serviceGroup)
+    : _window(window)
+    , _connection(NULL)
+    , _requestAddress(address)
+    , _boundAddress("")
+    , _clusterWindow()
+    , _aspect(NULL)
+    , _serviceName(serviceName)
+    , _connectionType(connectionType)
+    , _servicePort(servicePort)
+    , _serviceGroup(serviceGroup)
+    , _serverId(0)
+    , _interface("") {
+  char localhost[256];
 
-    // default is hostname
-    if(_serviceName.empty())
-    {
-        osgGetHostname(localhost,255);
-        _serviceName = localhost;
-    }
-    // if service contains ":" than treat as address
-    if(_requestAddress.empty())
-    {
-        if(strstr(_serviceName.c_str(),":"))
-            _requestAddress = _serviceName;
-    }
+  // default is hostname
+  if (_serviceName.empty()) {
+    osgGetHostname(localhost, 255);
+    _serviceName = localhost;
+  }
+  // if service contains ":" than treat as address
+  if (_requestAddress.empty()) {
+    if (strstr(_serviceName.c_str(), ":"))
+      _requestAddress = _serviceName;
+  }
 }
 
 /*-------------------------------------------------------------------------*/
@@ -125,414 +119,304 @@ ClusterServer::ClusterServer(        WindowPtr    window,
 
 /*! Destructor. Disconnect from all connected rendering servers
  */
-ClusterServer::~ClusterServer(void)
-{
-    try
-    {
-        if(_connection)
-            delete _connection;
-        if(_aspect)
-            delete _aspect;
-    }
-    catch(...)
-    {
-    }
+ClusterServer::~ClusterServer(void) {
+  try {
+    if (_connection)
+      delete _connection;
+    if (_aspect)
+      delete _aspect;
+  } catch (...) {}
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Class specific                              */
-
 
 /*! start server
  *
  * Start cluster server and wait for a client to connect. This method
  * will return after a client connection or an error situation.
  */
-void ClusterServer::start()
-{
-    OSG::FieldContainerType *fct;
+void ClusterServer::start() {
+  OSG::FieldContainerType* fct;
 
-    // reset conneciton
-    if(_connection)
-        delete _connection;
-    _connection = NULL;
+  // reset conneciton
+  if (_connection)
+    delete _connection;
+  _connection = NULL;
 
-    // create aspect
-    _aspect = new RemoteAspect();
+  // create aspect
+  _aspect = new RemoteAspect();
 
-    // register interrest for all changed cluster windows
-    for(UInt32 i = 0; i < OSG::TypeFactory::the()->getNumTypes(); ++i)
-    {
-        fct=OSG::FieldContainerFactory::the()->findType(i);
-        if(fct && fct->isDerivedFrom(ClusterWindow::getClassType()))
-        {
-            _aspect->registerChanged(
-                *fct,
-                osgTypedMethodFunctor2ObjPtrCPtrRef
-                <
-                bool,
-                ClusterServer,
-                FieldContainerPtr,
-                RemoteAspect     *
-                >(this,&ClusterServer::windowChanged));
-        }
+  // register interrest for all changed cluster windows
+  for (UInt32 i = 0; i < OSG::TypeFactory::the()->getNumTypes(); ++i) {
+    fct = OSG::FieldContainerFactory::the()->findType(i);
+    if (fct && fct->isDerivedFrom(ClusterWindow::getClassType())) {
+      _aspect->registerChanged(
+          *fct, osgTypedMethodFunctor2ObjPtrCPtrRef<bool, ClusterServer, FieldContainerPtr,
+                    RemoteAspect*>(this, &ClusterServer::windowChanged));
     }
-    // accept incomming connections
-    try {
-        UInt8                    forceNetworkOrder;
+  }
+  // accept incomming connections
+  try {
+    UInt8 forceNetworkOrder;
 #if BYTE_ORDER == LITTLE_ENDIAN
-        UInt8                    littleEndian = true;
+    UInt8 littleEndian = true;
 #else
-        UInt8                    littleEndian = false;
+    UInt8 littleEndian = false;
 #endif
 
-        // accept
-        acceptClient();
-        // determine network order
-        _connection->putValue(littleEndian);
-        _connection->flush();
-        _connection->selectChannel();
-        _connection->getValue(forceNetworkOrder);
-        _connection->setNetworkOrder((forceNetworkOrder != 0));
-    } 
-    catch(...)
-    {
-        throw;
-    }
+    // accept
+    acceptClient();
+    // determine network order
+    _connection->putValue(littleEndian);
+    _connection->flush();
+    _connection->selectChannel();
+    _connection->getValue(forceNetworkOrder);
+    _connection->setNetworkOrder((forceNetworkOrder != 0));
+  } catch (...) { throw; }
 }
 
-/*! Stop cluster server, remove current remote aspect and all its 
+/*! Stop cluster server, remove current remote aspect and all its
     field containers.
  */
-void ClusterServer::stop()
-{
-    // get aspect ownership
-    if(_clusterWindow != NullFC)
-    {
-        _aspect=_clusterWindow->getNetwork()->getAspect();
-        _clusterWindow->getNetwork()->setAspect(NULL);
-    }
-    // destroy connection
-    try
-    {
-        if(_connection)
-            delete _connection;
-        _connection = NULL;
-    }
-    catch(...)
-    {
-    }
-    // destroy aspect
-    if(_aspect)
-        delete _aspect;
-    // reset 
-    _connection=NULL;
-    _aspect=NULL;
-    _clusterWindow=NullFC;
+void ClusterServer::stop() {
+  // get aspect ownership
+  if (_clusterWindow != NullFC) {
+    _aspect = _clusterWindow->getNetwork()->getAspect();
+    _clusterWindow->getNetwork()->setAspect(NULL);
+  }
+  // destroy connection
+  try {
+    if (_connection)
+      delete _connection;
+    _connection = NULL;
+  } catch (...) {}
+  // destroy aspect
+  if (_aspect)
+    delete _aspect;
+  // reset
+  _connection    = NULL;
+  _aspect        = NULL;
+  _clusterWindow = NullFC;
 }
 
 /*! sync with client and render scenegraph
  */
-void ClusterServer::render(RenderActionBase *action)
-{
-    doSync(false);
-    doRender(action);
-    doSwap();
+void ClusterServer::render(RenderActionBase* action) {
+  doSync(false);
+  doRender(action);
+  doSwap();
 }
 
-/*! Synchronize all field containers with the client and call 
+/*! Synchronize all field containers with the client and call
  *  <code>serverInit</code>, <code>serverRender</code> and
  *  <code>serverSwap</code> for the cluster window.
- *  The cluster server uses the first synced ClusterWindow that 
+ *  The cluster server uses the first synced ClusterWindow that
  *  contains the name of this server. <code>serverInit</code> is
- *  called after the first ClusterWindow sync. 
+ *  called after the first ClusterWindow sync.
  *
  *  todo: Sync RenderAciton contents
  */
-void ClusterServer::doSync(bool applyToChangelist)
-{
-    // do we have a cluster window?
-    if(_clusterWindow==NullFC)
-    {
-        do
-        {
-            // recive 
-            _aspect->receiveSync(*_connection,applyToChangelist);
-        }
-        while(_clusterWindow==NullFC);
-        // get server id
-        for(_serverId=0;
-            _clusterWindow->getServers()[_serverId] != _serviceName &&
-                _serverId<_clusterWindow->getServers().size();
-            _serverId++);
-        // server connected and cluster window found
-        SINFO << "Start server " << _serviceName 
-              << " with id "     << _serverId 
-              << std::endl;
-        // now the window is responsible for connection and aspect
-        _clusterWindow->getNetwork()->setMainConnection(_connection);
-        _clusterWindow->getNetwork()->setAspect        (_aspect);
-        _connection=NULL;
-        _aspect=NULL;
-        SHLChunk::setClusterId(Int32(_serverId));
-        _clusterWindow->serverInit(_window,_serverId);
+void ClusterServer::doSync(bool applyToChangelist) {
+  // do we have a cluster window?
+  if (_clusterWindow == NullFC) {
+    do {
+      // recive
+      _aspect->receiveSync(*_connection, applyToChangelist);
+    } while (_clusterWindow == NullFC);
+    // get server id
+    for (_serverId = 0; _clusterWindow->getServers()[_serverId] != _serviceName &&
+                        _serverId < _clusterWindow->getServers().size();
+         _serverId++)
+      ;
+    // server connected and cluster window found
+    SINFO << "Start server " << _serviceName << " with id " << _serverId << std::endl;
+    // now the window is responsible for connection and aspect
+    _clusterWindow->getNetwork()->setMainConnection(_connection);
+    _clusterWindow->getNetwork()->setAspect(_aspect);
+    _connection = NULL;
+    _aspect     = NULL;
+    SHLChunk::setClusterId(Int32(_serverId));
+    _clusterWindow->serverInit(_window, _serverId);
+  }
+
+  RemoteAspect* aspect     = _clusterWindow->getNetwork()->getAspect();
+  Connection*   connection = _clusterWindow->getNetwork()->getMainConnection();
+
+  // sync with render clinet
+  aspect->receiveSync(*connection, applyToChangelist);
+
+  // sync with render client
+  if (_clusterWindow->getInterleave()) {
+    // if the reminder of the division of interleave and
+    // framecount is equal to the servers id, the right
+    // sync point for the current render frame is reached
+    while ((_clusterWindow->getFrameCount() % _clusterWindow->getInterleave()) !=
+           (_serverId % _clusterWindow->getInterleave())) {
+      aspect->receiveSync(*connection, applyToChangelist);
     }
-
-    RemoteAspect *aspect=_clusterWindow->getNetwork()->getAspect();
-    Connection   *connection=_clusterWindow->getNetwork()->getMainConnection();
-
-    // sync with render clinet
-    aspect->receiveSync(*connection,applyToChangelist);
-
-    // sync with render client
-    if(_clusterWindow->getInterleave())
-    {
-        // if the reminder of the division of interleave and 
-        // framecount is equal to the servers id, the right
-        // sync point for the current render frame is reached
-        while( (_clusterWindow->getFrameCount()%
-                _clusterWindow->getInterleave())
-               !=
-               (_serverId%_clusterWindow->getInterleave()) ) 
-        {
-            aspect->receiveSync(*connection,applyToChangelist);
-        }
-    }
+  }
 }
 
 /*! render server window
  */
-void ClusterServer::doRender(RenderActionBase *action)
-{
-    _clusterWindow->serverRender( _window,_serverId,action );
+void ClusterServer::doRender(RenderActionBase* action) {
+  _clusterWindow->serverRender(_window, _serverId, action);
 }
 
 /*! swap server window
  */
-void ClusterServer::doSwap(void)
-{
-    _clusterWindow->serverSwap  ( _window,_serverId );
+void ClusterServer::doSwap(void) {
+  _clusterWindow->serverSwap(_window, _serverId);
 }
 
-/*! return the cluster window received from the client 
+/*! return the cluster window received from the client
  */
-WindowPtr ClusterServer::getClusterWindow (void)
-{
-    return _clusterWindow;
+WindowPtr ClusterServer::getClusterWindow(void) {
+  return _clusterWindow;
 }
 
 /*! return the window used for rendering
  */
-WindowPtr ClusterServer::getServerWindow  (void)
-{
-    return _window;
+WindowPtr ClusterServer::getServerWindow(void) {
+  return _window;
 }
 
-/*! clusterWindow changed callback. This is a callback functor. 
+/*! clusterWindow changed callback. This is a callback functor.
     It is called for each change of a ClusterWindow.
  */
-bool ClusterServer::windowChanged(FieldContainerPtr& fcp,
-                                  RemoteAspect *)
-{
-    if(_clusterWindow != NullFC)
-        return true;
-
-    ClusterWindowPtr window=ClusterWindowPtr::dcast(fcp);
-
-    if(window->getServers().size())
-    {
-        if(window->getServers().find(_serviceName) == 
-           window->getServers().end())
-        {
-            SWARNING << "wrong window" << std::endl;
-        }
-        else
-        {
-            _clusterWindow=window;
-        }
-    }
+bool ClusterServer::windowChanged(FieldContainerPtr& fcp, RemoteAspect*) {
+  if (_clusterWindow != NullFC)
     return true;
+
+  ClusterWindowPtr window = ClusterWindowPtr::dcast(fcp);
+
+  if (window->getServers().size()) {
+    if (window->getServers().find(_serviceName) == window->getServers().end()) {
+      SWARNING << "wrong window" << std::endl;
+    } else {
+      _clusterWindow = window;
+    }
+  }
+  return true;
 }
 
 /*! Wait for incomming clients. A client can send a request for a
  *  special connection type or it can try to connect it it knows
- *  the servers address. 
+ *  the servers address.
  */
-void ClusterServer::acceptClient()
-{
-    BinaryMessage  msg;
-    DgramSocket    serviceSock;
-    SocketAddress  addr;
-    std::string    service;
-    std::string    connectionType;
-    UInt32         readable;
-    bool           connected=false;
-    std::string    address;
-    bool           bound = false;
+void ClusterServer::acceptClient() {
+  BinaryMessage msg;
+  DgramSocket   serviceSock;
+  SocketAddress addr;
+  std::string   service;
+  std::string   connectionType;
+  UInt32        readable;
+  bool          connected = false;
+  std::string   address;
+  bool          bound = false;
 
-    SINFO << "Waiting for request of "
-          << _serviceName
-          << std::endl;
+  SINFO << "Waiting for request of " << _serviceName << std::endl;
 
-    try
-    {
-        if(!_requestAddress.empty())
-        {            
-            // create connection
-            _connection = ConnectionFactory::the().
-                createPoint(_connectionType);
-            if(_connection)
-            {
+  try {
+    if (!_requestAddress.empty()) {
+      // create connection
+      _connection = ConnectionFactory::the().createPoint(_connectionType);
+      if (_connection) {
+        // set interface
+        _connection->setInterface(_interface);
+        // bind connection
+        try {
+          // bind to requested address
+          _boundAddress = _connection->bind(_requestAddress);
+          bound         = true;
+        } catch (...) { SINFO << "Unable to bind, use name as symbolic service name" << std::endl; }
+      }
+    }
+    serviceSock.open();
+    serviceSock.setReusePort(true);
+    // join to multicast group
+    if (!_serviceGroup.empty()) {
+      SocketAddress groupAddress = SocketAddress(_serviceGroup.c_str(), _servicePort);
+      if (groupAddress.isMulticast()) {
+        SINFO << "wait for request on multicast:" << _serviceGroup << std::endl;
+        serviceSock.bind(SocketAddress(SocketAddress::ANY, _servicePort));
+        serviceSock.join(SocketAddress(groupAddress));
+      } else {
+        SINFO << "wait for request by broadcast:" << _serviceGroup << std::endl;
+        serviceSock.bind(SocketAddress(groupAddress));
+      }
+    } else {
+      SINFO << "wait for request by broadcast" << std::endl;
+      serviceSock.bind(SocketAddress(SocketAddress::ANY, _servicePort));
+    }
+
+    while (!connected) {
+      try {
+        if (_connection)
+          readable = serviceSock.waitReadable(.01);
+        else
+          readable = true;
+        if (readable) {
+          serviceSock.recvFrom(msg, addr);
+
+          service        = msg.getString();
+          connectionType = msg.getString();
+
+          SINFO << "Request for " << service << " " << connectionType << std::endl;
+
+          if (service == _serviceName) {
+            // remove old connection if typename missmaches
+            if (_connection && _connection->getType()->getName() != connectionType) {
+              delete _connection;
+              _connection = NULL;
+            }
+            // try to create connection
+            if (!_connection) {
+              // create connection
+              _connection = ConnectionFactory::the().createPoint(connectionType);
+              if (_connection) {
                 // set interface
                 _connection->setInterface(_interface);
                 // bind connection
-                try 
-                {
-                    // bind to requested address
-                    _boundAddress = _connection->bind(_requestAddress);
-                    bound = true;
-                }
-                catch(...)
-                {
-                    SINFO << "Unable to bind, use name as symbolic service name" 
-                          << std::endl;
-                }
+                _boundAddress = _connection->bind(_requestAddress);
+                bound         = true;
+              } else {
+                SINFO << "Unknown connection type '" << connectionType << "'" << std::endl;
+              }
             }
+            if (_connection) {
+              msg.clear();
+              msg.putString(_serviceName);
+              msg.putString(_boundAddress);
+              serviceSock.sendTo(msg, addr);
+              SINFO << "Response " << connectionType << ":" << _boundAddress << std::endl;
+            }
+          }
         }
-        serviceSock.open();
-        serviceSock.setReusePort(true);
-        // join to multicast group
-        if(!_serviceGroup.empty())
-        {
-            SocketAddress groupAddress = SocketAddress(
-                _serviceGroup.c_str(),
-                _servicePort);
-            if(groupAddress.isMulticast())
-            {
-                SINFO << "wait for request on multicast:" << 
-                    _serviceGroup << std::endl;
-                serviceSock.bind(SocketAddress(SocketAddress::ANY,
-                                               _servicePort));
-                serviceSock.join(SocketAddress(groupAddress));
-            }
-            else
-            {
-                SINFO << "wait for request by broadcast:" << 
-                    _serviceGroup << std::endl;
-                serviceSock.bind(SocketAddress(groupAddress));
-            }
+      } catch (SocketConnReset& e) {
+        // ignore if there is a connection. This can happen, if
+        // a client has send a request. The server has send an
+        // answer meanwile the client has send a second request
+        // the client gets the answer to the first request and
+        // the server tries to send a second answer. The second
+        // answer can not be delivered because the client has
+        // closed its service port. This is a win-socket problem.
+
+        SWARNING << e.what() << std::endl;
+
+        // if there is no connection, then its a real problem
+        if (!_connection)
+          throw;
+      } catch (OSG_STDEXCEPTION_NAMESPACE::exception& e) { SWARNING << e.what() << std::endl; }
+      try {
+        // try to accept
+        if (bound && _connection && _connection->acceptGroup(0.2) >= 0) {
+          connected = true;
+          SINFO << "Connection accepted " << _boundAddress << std::endl;
         }
-        else
-        {
-            SINFO << "wait for request by broadcast" << std::endl;
-            serviceSock.bind(SocketAddress(SocketAddress::ANY,
-                                           _servicePort));
-        }
-
-        while(!connected)
-        {
-            try
-            {
-                if(_connection) 
-                    readable = serviceSock.waitReadable(.01);
-                else
-                    readable = true;
-                if(readable)
-                {
-                    serviceSock.recvFrom(msg,addr);
-
-                    service        = msg.getString();
-                    connectionType = msg.getString();
-
-                    SINFO << "Request for " 
-                          << service << " " 
-                          << connectionType 
-                          << std::endl;
-                    
-                    if(service == _serviceName)
-                    {
-                        // remove old connection if typename missmaches
-                        if(_connection && 
-                           _connection->getType()->getName() != connectionType)
-                        {
-                            delete _connection;
-                            _connection = NULL;
-                        }
-                        // try to create connection
-                        if(!_connection)
-                        {
-                            // create connection
-                            _connection = ConnectionFactory::the().
-                                createPoint(connectionType);
-                            if(_connection)
-                            {
-                                // set interface
-                                _connection->setInterface(_interface);
-                                // bind connection
-                                _boundAddress = _connection->bind(_requestAddress);
-                                bound = true;
-                            } 
-                            else
-                            {
-                                SINFO << "Unknown connection type '" 
-                                      << connectionType << "'" << std::endl;
-                            }
-                        }
-                        if(_connection)
-                        {
-                            msg.clear    (             );
-                            msg.putString(_serviceName );
-                            msg.putString(_boundAddress);
-                            serviceSock.sendTo(msg, addr);
-                            SINFO << "Response " 
-                                  << connectionType << ":"
-                                  << _boundAddress 
-                                  << std::endl;
-                        }
-                    }
-                }
-            }
-            catch(SocketConnReset &e)
-            {
-                // ignore if there is a connection. This can happen, if
-                // a client has send a request. The server has send an
-                // answer meanwile the client has send a second request
-                // the client gets the answer to the first request and
-                // the server tries to send a second answer. The second
-                // answer can not be delivered because the client has
-                // closed its service port. This is a win-socket problem.
-
-                SWARNING << e.what() << std::endl;
-
-                // if there is no connection, then its a real problem
-                if(!_connection)
-                    throw;
-            }
-            catch(OSG_STDEXCEPTION_NAMESPACE::exception &e)
-            {
-                SWARNING << e.what() << std::endl;
-            }
-            try 
-            {
-                // try to accept
-                if(bound && _connection && _connection->acceptGroup(0.2) >= 0)
-                {
-                    connected = true;
-                    SINFO << "Connection accepted " << _boundAddress << std::endl;
-                }
-            }
-            catch(OSG_STDEXCEPTION_NAMESPACE::exception &e)
-            {
-                SWARNING << e.what() << std::endl;
-            }
-        }
-        serviceSock.close();
+      } catch (OSG_STDEXCEPTION_NAMESPACE::exception& e) { SWARNING << e.what() << std::endl; }
     }
-    catch(OSG_STDEXCEPTION_NAMESPACE::exception &e)
-    {
-        throw;
-    }
+    serviceSock.close();
+  } catch (OSG_STDEXCEPTION_NAMESPACE::exception& e) { throw; }
 }
-
-
-

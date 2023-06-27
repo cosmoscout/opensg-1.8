@@ -45,20 +45,16 @@
 
 #include "OSGGeoPumpFactory.h"
 
-
 OSG_BEGIN_NAMESPACE
 
 /*! Access the GeoPumpFactory Singleton.
-*/
-inline
-GeoPumpFactory *GeoPumpFactory::the(void)
-{
-    if(_the == NULL)
-    {
-        _the = new GeoPumpFactory();
-    }
+ */
+inline GeoPumpFactory* GeoPumpFactory::the(void) {
+  if (_the == NULL) {
+    _the = new GeoPumpFactory();
+  }
 
-    return _the;
+  return _the;
 }
 
 OSG_END_NAMESPACE

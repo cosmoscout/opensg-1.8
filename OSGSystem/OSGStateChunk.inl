@@ -34,7 +34,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -44,31 +43,22 @@ OSG_BEGIN_NAMESPACE
 
 /*---------------------- Chunk Class Access -------------------------------*/
 
-inline
-UInt32 StateChunk::getClassId(void) const
-{
-    return getClass()->getId();
+inline UInt32 StateChunk::getClassId(void) const {
+  return getClass()->getId();
 }
 
 /*-------------------- Static Chunk Class Access --------------------------*/
 
-inline
-UInt32 StateChunk::getStaticClassId(void)
-{
-    return StateChunk::getStaticClass()->getId();
+inline UInt32 StateChunk::getStaticClassId(void) {
+  return StateChunk::getStaticClass()->getId();
 }
 
-inline
-const StateChunkClass *StateChunk::getStaticClass(void)
-{
-    return NULL;
+inline const StateChunkClass* StateChunk::getStaticClass(void) {
+  return NULL;
 }
 
-inline
-UInt32 StateChunkClass::getUsedSlots(void)
-{
-    return StateChunkClass::_numslots->size();
+inline UInt32 StateChunkClass::getUsedSlots(void) {
+  return StateChunkClass::_numslots->size();
 }
 
 OSG_END_NAMESPACE
-

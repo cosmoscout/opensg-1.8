@@ -52,165 +52,119 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &LineChunkBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& LineChunkBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 LineChunkBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 LineChunkBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-LineChunkPtr LineChunkBase::create(void) 
-{
-    LineChunkPtr fc; 
+inline LineChunkPtr LineChunkBase::create(void) {
+  LineChunkPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = LineChunkPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = LineChunkPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-LineChunkPtr LineChunkBase::createEmpty(void) 
-{ 
-    LineChunkPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline LineChunkPtr LineChunkBase::createEmpty(void) {
+  LineChunkPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the LineChunk::_sfWidth field.
-inline
-SFReal32 *LineChunkBase::getSFWidth(void)
-{
-    return &_sfWidth;
+inline SFReal32* LineChunkBase::getSFWidth(void) {
+  return &_sfWidth;
 }
 
 //! Get the LineChunk::_sfStippleRepeat field.
-inline
-SFInt32 *LineChunkBase::getSFStippleRepeat(void)
-{
-    return &_sfStippleRepeat;
+inline SFInt32* LineChunkBase::getSFStippleRepeat(void) {
+  return &_sfStippleRepeat;
 }
 
 //! Get the LineChunk::_sfStipplePattern field.
-inline
-SFUInt16 *LineChunkBase::getSFStipplePattern(void)
-{
-    return &_sfStipplePattern;
+inline SFUInt16* LineChunkBase::getSFStipplePattern(void) {
+  return &_sfStipplePattern;
 }
 
 //! Get the LineChunk::_sfSmooth field.
-inline
-SFBool *LineChunkBase::getSFSmooth(void)
-{
-    return &_sfSmooth;
-}
-
-
-//! Get the value of the LineChunk::_sfWidth field.
-inline
-Real32 &LineChunkBase::getWidth(void)
-{
-    return _sfWidth.getValue();
+inline SFBool* LineChunkBase::getSFSmooth(void) {
+  return &_sfSmooth;
 }
 
 //! Get the value of the LineChunk::_sfWidth field.
-inline
-const Real32 &LineChunkBase::getWidth(void) const
-{
-    return _sfWidth.getValue();
+inline Real32& LineChunkBase::getWidth(void) {
+  return _sfWidth.getValue();
+}
+
+//! Get the value of the LineChunk::_sfWidth field.
+inline const Real32& LineChunkBase::getWidth(void) const {
+  return _sfWidth.getValue();
 }
 
 //! Set the value of the LineChunk::_sfWidth field.
-inline
-void LineChunkBase::setWidth(const Real32 &value)
-{
-    _sfWidth.setValue(value);
+inline void LineChunkBase::setWidth(const Real32& value) {
+  _sfWidth.setValue(value);
 }
 
 //! Get the value of the LineChunk::_sfStippleRepeat field.
-inline
-Int32 &LineChunkBase::getStippleRepeat(void)
-{
-    return _sfStippleRepeat.getValue();
+inline Int32& LineChunkBase::getStippleRepeat(void) {
+  return _sfStippleRepeat.getValue();
 }
 
 //! Get the value of the LineChunk::_sfStippleRepeat field.
-inline
-const Int32 &LineChunkBase::getStippleRepeat(void) const
-{
-    return _sfStippleRepeat.getValue();
+inline const Int32& LineChunkBase::getStippleRepeat(void) const {
+  return _sfStippleRepeat.getValue();
 }
 
 //! Set the value of the LineChunk::_sfStippleRepeat field.
-inline
-void LineChunkBase::setStippleRepeat(const Int32 &value)
-{
-    _sfStippleRepeat.setValue(value);
+inline void LineChunkBase::setStippleRepeat(const Int32& value) {
+  _sfStippleRepeat.setValue(value);
 }
 
 //! Get the value of the LineChunk::_sfStipplePattern field.
-inline
-UInt16 &LineChunkBase::getStipplePattern(void)
-{
-    return _sfStipplePattern.getValue();
+inline UInt16& LineChunkBase::getStipplePattern(void) {
+  return _sfStipplePattern.getValue();
 }
 
 //! Get the value of the LineChunk::_sfStipplePattern field.
-inline
-const UInt16 &LineChunkBase::getStipplePattern(void) const
-{
-    return _sfStipplePattern.getValue();
+inline const UInt16& LineChunkBase::getStipplePattern(void) const {
+  return _sfStipplePattern.getValue();
 }
 
 //! Set the value of the LineChunk::_sfStipplePattern field.
-inline
-void LineChunkBase::setStipplePattern(const UInt16 &value)
-{
-    _sfStipplePattern.setValue(value);
+inline void LineChunkBase::setStipplePattern(const UInt16& value) {
+  _sfStipplePattern.setValue(value);
 }
 
 //! Get the value of the LineChunk::_sfSmooth field.
-inline
-bool &LineChunkBase::getSmooth(void)
-{
-    return _sfSmooth.getValue();
+inline bool& LineChunkBase::getSmooth(void) {
+  return _sfSmooth.getValue();
 }
 
 //! Get the value of the LineChunk::_sfSmooth field.
-inline
-const bool &LineChunkBase::getSmooth(void) const
-{
-    return _sfSmooth.getValue();
+inline const bool& LineChunkBase::getSmooth(void) const {
+  return _sfSmooth.getValue();
 }
 
 //! Set the value of the LineChunk::_sfSmooth field.
-inline
-void LineChunkBase::setSmooth(const bool &value)
-{
-    _sfSmooth.setValue(value);
+inline void LineChunkBase::setSmooth(const bool& value) {
+  _sfSmooth.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGLINECHUNKBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGLINECHUNKBASE_INLINE_CVSID                                                              \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

@@ -60,24 +60,19 @@ OSG_BEGIN_NAMESPACE
 #ifndef OSG_INVALID_PTR_CHECK
 
 OSG_SYSTEMLIB_DLLMAPPING
-inline
-void addRefCP   (const FieldContainerPtrBase &objectP);
+inline void addRefCP(const FieldContainerPtrBase& objectP);
 
 #else
 
-#define addRefCP(objectP) \
-do \
-{ \
-    if(!safeAddRefCP(objectP)) \
-    { \
-        FFATAL(("addRefCP: invalid pointer in file '%s' line %d!\n", __FILE__, __LINE__)); \
-    } \
-} \
-while (0)
+#define addRefCP(objectP)                                                                          \
+  do {                                                                                             \
+    if (!safeAddRefCP(objectP)) {                                                                  \
+      FFATAL(("addRefCP: invalid pointer in file '%s' line %d!\n", __FILE__, __LINE__));           \
+    }                                                                                              \
+  } while (0)
 
 OSG_SYSTEMLIB_DLLMAPPING
-inline
-bool safeAddRefCP   (const FieldContainerPtrBase &objectP);
+inline bool safeAddRefCP(const FieldContainerPtrBase& objectP);
 
 #endif
 
@@ -87,24 +82,19 @@ bool safeAddRefCP   (const FieldContainerPtrBase &objectP);
 #ifndef OSG_INVALID_PTR_CHECK
 
 OSG_SYSTEMLIB_DLLMAPPING
-inline
-void subRefCP   (const FieldContainerPtrBase &objectP);
+inline void subRefCP(const FieldContainerPtrBase& objectP);
 
 #else
 
-#define subRefCP(objectP) \
-do \
-{ \
-    if(!safeSubRefCP(objectP)) \
-    { \
-        FFATAL(("subRefCP: invalid pointer in file '%s' line %d!\n", __FILE__, __LINE__)); \
-    } \
-} \
-while (0)
+#define subRefCP(objectP)                                                                          \
+  do {                                                                                             \
+    if (!safeSubRefCP(objectP)) {                                                                  \
+      FFATAL(("subRefCP: invalid pointer in file '%s' line %d!\n", __FILE__, __LINE__));           \
+    }                                                                                              \
+  } while (0)
 
 OSG_SYSTEMLIB_DLLMAPPING
-inline
-bool safeSubRefCP   (const FieldContainerPtrBase &objectP);
+inline bool safeSubRefCP(const FieldContainerPtrBase& objectP);
 
 #endif
 
@@ -114,26 +104,19 @@ bool safeSubRefCP   (const FieldContainerPtrBase &objectP);
 #ifndef OSG_INVALID_PTR_CHECK
 
 OSG_SYSTEMLIB_DLLMAPPING
-inline
-void setRefdCP  (      FieldContainerPtrBase &objectP,
-                 const FieldContainerPtrBase &newObjectP);
+inline void setRefdCP(FieldContainerPtrBase& objectP, const FieldContainerPtrBase& newObjectP);
 
 #else
 
-#define setRefdCP(objectP, newObjectP) \
-do \
-{ \
-    if(!safeSetRefdCP(objectP, newObjectP)) \
-    { \
-        FFATAL(("setRefdCP: invalid pointer in file '%s' line %d!\n", __FILE__, __LINE__)); \
-    } \
-} \
-while (0)
+#define setRefdCP(objectP, newObjectP)                                                             \
+  do {                                                                                             \
+    if (!safeSetRefdCP(objectP, newObjectP)) {                                                     \
+      FFATAL(("setRefdCP: invalid pointer in file '%s' line %d!\n", __FILE__, __LINE__));          \
+    }                                                                                              \
+  } while (0)
 
 OSG_SYSTEMLIB_DLLMAPPING
-inline
-bool safeSetRefdCP  (      FieldContainerPtrBase &objectP,
-                 const FieldContainerPtrBase &newObjectP);
+inline bool safeSetRefdCP(FieldContainerPtrBase& objectP, const FieldContainerPtrBase& newObjectP);
 
 #endif
 
@@ -143,24 +126,19 @@ bool safeSetRefdCP  (      FieldContainerPtrBase &objectP,
 #ifndef OSG_INVALID_PTR_CHECK
 
 OSG_SYSTEMLIB_DLLMAPPING
-inline
-void clearRefCP(FieldContainerPtrBase &objectP);
+inline void clearRefCP(FieldContainerPtrBase& objectP);
 
 #else
 
-#define clearRefCP(objectP) \
-do \
-{ \
-    if(!safeClearRefCP(objectP)) \
-    { \
-        FFATAL(("clearRefCP: invalid pointer in file '%s' line %d!\n", __FILE__, __LINE__)); \
-    } \
-} \
-while (0)
+#define clearRefCP(objectP)                                                                        \
+  do {                                                                                             \
+    if (!safeClearRefCP(objectP)) {                                                                \
+      FFATAL(("clearRefCP: invalid pointer in file '%s' line %d!\n", __FILE__, __LINE__));         \
+    }                                                                                              \
+  } while (0)
 
 OSG_SYSTEMLIB_DLLMAPPING
-inline
-bool safeClearRefCP(FieldContainerPtrBase &objectP);
+inline bool safeClearRefCP(FieldContainerPtrBase& objectP);
 
 #endif
 
@@ -168,76 +146,60 @@ bool safeClearRefCP(FieldContainerPtrBase &objectP);
  */
 
 OSG_SYSTEMLIB_DLLMAPPING
-inline
-void beginEditCP(const FieldContainerPtr &objectP, 
-                       BitVector         whichField = FieldBits    ::AllFields,
-                       UInt32            origin     = ChangedOrigin::External);
+inline void beginEditCP(const FieldContainerPtr& objectP,
+    BitVector whichField = FieldBits ::AllFields, UInt32 origin = ChangedOrigin::External);
 
 /*! \ingroup GrpSystemFieldContainerFuncs
  */
 
 OSG_SYSTEMLIB_DLLMAPPING
-inline
-void endEditCP  (const FieldContainerPtr &objectP, 
-                       BitVector         whichField = FieldBits    ::AllFields,
-                       UInt32            origin     = ChangedOrigin::External);
+inline void endEditCP(const FieldContainerPtr& objectP,
+    BitVector whichField = FieldBits ::AllFields, UInt32 origin = ChangedOrigin::External);
 
 /*! \ingroup GrpSystemFieldContainerFuncs
  */
 
 OSG_SYSTEMLIB_DLLMAPPING
-inline
-void changedCP  (const FieldContainerPtr &objectP, 
-                       BitVector         whichField = FieldBits    ::AllFields,
-                       UInt32            origin     = ChangedOrigin::External);
+inline void changedCP(const FieldContainerPtr& objectP,
+    BitVector whichField = FieldBits ::AllFields, UInt32 origin = ChangedOrigin::External);
 
 /*! \ingroup GrpSystemFieldContainerFuncs
  */
 
 OSG_SYSTEMLIB_DLLMAPPING
-inline
-void endEditNotChangedCP(
-    const FieldContainerPtr &objectP, 
-          BitVector          whichField = FieldBits    ::AllFields,
-          UInt32             origin     = ChangedOrigin::External);
-
+inline void endEditNotChangedCP(const FieldContainerPtr& objectP,
+    BitVector whichField = FieldBits ::AllFields, UInt32 origin = ChangedOrigin::External);
 
 // 2.x compat
 
-template <class OutPtrT> inline
-OutPtrT dynamic_fcptr_cast(const FieldContainerPtr &pPtr)
-{
-    return OutPtrT::dcast(pPtr);
+template <class OutPtrT>
+inline OutPtrT dynamic_fcptr_cast(const FieldContainerPtr& pPtr) {
+  return OutPtrT::dcast(pPtr);
 }
 
-template <class PtrT> inline
-typename PtrT::StoredObjectType *getCPtr(PtrT &ptr)
-{
-    return ptr.getCPtr();
+template <class PtrT>
+inline typename PtrT::StoredObjectType* getCPtr(PtrT& ptr) {
+  return ptr.getCPtr();
 }
 
-template <class PtrT> inline
-Int32 getRefCount(const PtrT &ptr)
-{
-    return ptr.getRefCount();
+template <class PtrT>
+inline Int32 getRefCount(const PtrT& ptr) {
+  return ptr.getRefCount();
 }
 
-template <class PtrT> inline
-UInt32 getContainerId(const PtrT &objectP)
-{
-    return objectP.getFieldContainerId();
+template <class PtrT>
+inline UInt32 getContainerId(const PtrT& objectP) {
+  return objectP.getFieldContainerId();
 }
 
-template <class PtrT> inline
-void subRef(const PtrT &ptr)
-{
-    subRefCP(ptr);
+template <class PtrT>
+inline void subRef(const PtrT& ptr) {
+  subRefCP(ptr);
 }
 
-template <class PtrT> inline
-void addRef(const PtrT &ptr)
-{
-    subRefCP(ptr);
+template <class PtrT>
+inline void addRef(const PtrT& ptr) {
+  subRefCP(ptr);
 }
 
 OSG_END_NAMESPACE

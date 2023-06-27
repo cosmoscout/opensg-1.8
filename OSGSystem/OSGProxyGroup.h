@@ -54,110 +54,106 @@ OSG_BEGIN_NAMESPACE
 //! ProxyGroup
 //! \ingroup GrpSystemNodeCoresMisc
 
-class OSG_SYSTEMLIB_DLLMAPPING ProxyGroup : public ProxyGroupBase
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING ProxyGroup : public ProxyGroupBase {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  enum {
+    NOT_LOADED           = 0,
+    LOAD_THREAD_RUNNING  = 1,
+    LOAD_THREAD_FINISHED = 2,
+    LOADED               = 4,
+    LOAD_ERROR           = 100
+  };
 
-    enum { NOT_LOADED           =   0,
-           LOAD_THREAD_RUNNING  =   1,
-           LOAD_THREAD_FINISHED =   2,
-           LOADED               =   4,
-           LOAD_ERROR           = 100 };
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    virtual void changed(BitVector whichField,
-                         UInt32    origin    );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                        Dump                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                        Dump                                  */
-    /*! \{                                                                 */
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    virtual void dump(      UInt32    uiIndent = 0,
-                      const BitVector bvFlags  = 0) const;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  typedef ProxyGroupBase Inherited;
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    typedef ProxyGroupBase Inherited;
+  ProxyGroup(void);
+  ProxyGroup(const ProxyGroup& source);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    ProxyGroup(void);
-    ProxyGroup(const ProxyGroup &source);
+  virtual ~ProxyGroup(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Draw                                       */
+  /*! \{                                                                 */
 
-    virtual ~ProxyGroup(void);
+  Action::ResultE draw(Action* action);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Draw                                       */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      NodeCore Specific                       */
+  /*! \{                                                                 */
 
-    Action::ResultE draw( Action* action );
+  void adjustVolume(Volume& volume);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      NodeCore Specific                       */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     loading                                  */
+  /*! \{                                                                 */
 
-    void               adjustVolume     (Volume & volume);
+  void startLoading(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     loading                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class ProxyGroupBase;
 
-    void               startLoading     (void);
+  /*---------------------------------------------------------------------*/
+  /*! \name                   thread local                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  NodePtr _loadedRoot;
 
-    friend class FieldContainer;
-    friend class ProxyGroupBase;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Init                                    */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   thread local                               */
-    /*! \{                                                                 */
+  static void initMethod(void);
 
-    NodePtr          _loadedRoot;
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Init                                    */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    load thread                               */
+  /*! \{                                                                 */
 
-    static void initMethod(      void                     );
+  static ThreadBase*               _loadThread;
+  static std::queue<ProxyGroupPtr> _loadQueue;
+  static Lock*                     _loadLock;
 
-    /*! \}                                                                 */
+  static void loadProc(void*);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    load thread                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
 
-    static ThreadBase                 *_loadThread;
-    static std::queue<ProxyGroupPtr>   _loadQueue;
-    static Lock                       *_loadLock;
-
-    static void loadProc(void *);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const ProxyGroup &source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const ProxyGroup& source);
 };
 
 OSG_END_NAMESPACE

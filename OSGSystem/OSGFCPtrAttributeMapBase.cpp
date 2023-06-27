@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEFCPTRATTRIBUTEMAPINST
 
 #include <stdlib.h>
@@ -61,248 +60,187 @@
 #include "OSGFCPtrAttributeMapBase.h"
 #include "OSGFCPtrAttributeMap.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  FCPtrAttributeMapBase::KeysFieldMask = 
+const OSG::BitVector FCPtrAttributeMapBase::KeysFieldMask =
     (TypeTraits<BitVector>::One << FCPtrAttributeMapBase::KeysFieldId);
 
-const OSG::BitVector  FCPtrAttributeMapBase::ValuesFieldMask = 
+const OSG::BitVector FCPtrAttributeMapBase::ValuesFieldMask =
     (TypeTraits<BitVector>::One << FCPtrAttributeMapBase::ValuesFieldId);
 
-const OSG::BitVector FCPtrAttributeMapBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector FCPtrAttributeMapBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
 /*! \var std::string     FCPtrAttributeMapBase::_mfKeys
-    
+
 */
 /*! \var FieldContainerPtr FCPtrAttributeMapBase::_mfValues
-    
+
 */
 
 //! FCPtrAttributeMap description
 
-FieldDescription *FCPtrAttributeMapBase::_desc[] = 
-{
-    new FieldDescription(MFString::getClassType(), 
-                     "keys", 
-                     KeysFieldId, KeysFieldMask,
-                     false,
-                     (FieldAccessMethod) &FCPtrAttributeMapBase::getMFKeys),
-    new FieldDescription(MFFieldContainerPtr::getClassType(), 
-                     "values", 
-                     ValuesFieldId, ValuesFieldMask,
-                     false,
-                     (FieldAccessMethod) &FCPtrAttributeMapBase::getMFValues)
-};
+FieldDescription* FCPtrAttributeMapBase::_desc[] = {
+    new FieldDescription(MFString::getClassType(), "keys", KeysFieldId, KeysFieldMask, false,
+        (FieldAccessMethod)&FCPtrAttributeMapBase::getMFKeys),
+    new FieldDescription(MFFieldContainerPtr::getClassType(), "values", ValuesFieldId,
+        ValuesFieldMask, false, (FieldAccessMethod)&FCPtrAttributeMapBase::getMFValues)};
 
-
-FieldContainerType FCPtrAttributeMapBase::_type(
-    "FCPtrAttributeMap",
-    "Attachment",
-    NULL,
-    (PrototypeCreateF) &FCPtrAttributeMapBase::createEmpty,
-    FCPtrAttributeMap::initMethod,
-    _desc,
+FieldContainerType FCPtrAttributeMapBase::_type("FCPtrAttributeMap", "Attachment", NULL,
+    (PrototypeCreateF)&FCPtrAttributeMapBase::createEmpty, FCPtrAttributeMap::initMethod, _desc,
     sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(FCPtrAttributeMapBase, FCPtrAttributeMapPtr)
+// OSG_FIELD_CONTAINER_DEF(FCPtrAttributeMapBase, FCPtrAttributeMapPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &FCPtrAttributeMapBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &FCPtrAttributeMapBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr FCPtrAttributeMapBase::shallowCopy(void) const 
-{ 
-    FCPtrAttributeMapPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const FCPtrAttributeMap *>(this)); 
-
-    return returnValue; 
+FieldContainerType& FCPtrAttributeMapBase::getType(void) {
+  return _type;
 }
 
-UInt32 FCPtrAttributeMapBase::getContainerSize(void) const 
-{ 
-    return sizeof(FCPtrAttributeMap); 
+const FieldContainerType& FCPtrAttributeMapBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr FCPtrAttributeMapBase::shallowCopy(void) const {
+  FCPtrAttributeMapPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const FCPtrAttributeMap*>(this));
+
+  return returnValue;
+}
+
+UInt32 FCPtrAttributeMapBase::getContainerSize(void) const {
+  return sizeof(FCPtrAttributeMap);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void FCPtrAttributeMapBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((FCPtrAttributeMapBase *) &other, whichField);
+void FCPtrAttributeMapBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((FCPtrAttributeMapBase*)&other, whichField);
 }
 #else
-void FCPtrAttributeMapBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((FCPtrAttributeMapBase *) &other, whichField, sInfo);
+void FCPtrAttributeMapBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((FCPtrAttributeMapBase*)&other, whichField, sInfo);
 }
-void FCPtrAttributeMapBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void FCPtrAttributeMapBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void FCPtrAttributeMapBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
+void FCPtrAttributeMapBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 
-    _mfKeys.terminateShare(uiAspect, this->getContainerSize());
-    _mfValues.terminateShare(uiAspect, this->getContainerSize());
+  _mfKeys.terminateShare(uiAspect, this->getContainerSize());
+  _mfValues.terminateShare(uiAspect, this->getContainerSize());
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-FCPtrAttributeMapBase::FCPtrAttributeMapBase(void) :
-    _mfKeys                   (), 
-    _mfValues                 (), 
-    Inherited() 
-{
+FCPtrAttributeMapBase::FCPtrAttributeMapBase(void)
+    : _mfKeys()
+    , _mfValues()
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-FCPtrAttributeMapBase::FCPtrAttributeMapBase(const FCPtrAttributeMapBase &source) :
-    _mfKeys                   (source._mfKeys                   ), 
-    _mfValues                 (source._mfValues                 ), 
-    Inherited                 (source)
-{
+FCPtrAttributeMapBase::FCPtrAttributeMapBase(const FCPtrAttributeMapBase& source)
+    : _mfKeys(source._mfKeys)
+    , _mfValues(source._mfValues)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-FCPtrAttributeMapBase::~FCPtrAttributeMapBase(void)
-{
+FCPtrAttributeMapBase::~FCPtrAttributeMapBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 FCPtrAttributeMapBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 FCPtrAttributeMapBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (KeysFieldMask & whichField))
-    {
-        returnValue += _mfKeys.getBinSize();
-    }
+  if (FieldBits::NoField != (KeysFieldMask & whichField)) {
+    returnValue += _mfKeys.getBinSize();
+  }
 
-    if(FieldBits::NoField != (ValuesFieldMask & whichField))
-    {
-        returnValue += _mfValues.getBinSize();
-    }
+  if (FieldBits::NoField != (ValuesFieldMask & whichField)) {
+    returnValue += _mfValues.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void FCPtrAttributeMapBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void FCPtrAttributeMapBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (KeysFieldMask & whichField))
-    {
-        _mfKeys.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (KeysFieldMask & whichField)) {
+    _mfKeys.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ValuesFieldMask & whichField))
-    {
-        _mfValues.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (ValuesFieldMask & whichField)) {
+    _mfValues.copyToBin(pMem);
+  }
 }
 
-void FCPtrAttributeMapBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void FCPtrAttributeMapBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (KeysFieldMask & whichField))
-    {
-        _mfKeys.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (KeysFieldMask & whichField)) {
+    _mfKeys.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ValuesFieldMask & whichField))
-    {
-        _mfValues.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (ValuesFieldMask & whichField)) {
+    _mfValues.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void FCPtrAttributeMapBase::executeSyncImpl(      FCPtrAttributeMapBase *pOther,
-                                        const BitVector         &whichField)
-{
+void FCPtrAttributeMapBase::executeSyncImpl(
+    FCPtrAttributeMapBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (KeysFieldMask & whichField))
-        _mfKeys.syncWith(pOther->_mfKeys);
+  if (FieldBits::NoField != (KeysFieldMask & whichField))
+    _mfKeys.syncWith(pOther->_mfKeys);
 
-    if(FieldBits::NoField != (ValuesFieldMask & whichField))
-        _mfValues.syncWith(pOther->_mfValues);
-
-
+  if (FieldBits::NoField != (ValuesFieldMask & whichField))
+    _mfValues.syncWith(pOther->_mfValues);
 }
 #else
-void FCPtrAttributeMapBase::executeSyncImpl(      FCPtrAttributeMapBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void FCPtrAttributeMapBase::executeSyncImpl(
+    FCPtrAttributeMapBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
+  if (FieldBits::NoField != (KeysFieldMask & whichField))
+    _mfKeys.syncWith(pOther->_mfKeys, sInfo);
 
-    if(FieldBits::NoField != (KeysFieldMask & whichField))
-        _mfKeys.syncWith(pOther->_mfKeys, sInfo);
-
-    if(FieldBits::NoField != (ValuesFieldMask & whichField))
-        _mfValues.syncWith(pOther->_mfValues, sInfo);
-
-
+  if (FieldBits::NoField != (ValuesFieldMask & whichField))
+    _mfValues.syncWith(pOther->_mfValues, sInfo);
 }
 
-void FCPtrAttributeMapBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void FCPtrAttributeMapBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (KeysFieldMask & whichField))
-        _mfKeys.beginEdit(uiAspect, uiContainerSize);
+  if (FieldBits::NoField != (KeysFieldMask & whichField))
+    _mfKeys.beginEdit(uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (ValuesFieldMask & whichField))
-        _mfValues.beginEdit(uiAspect, uiContainerSize);
-
+  if (FieldBits::NoField != (ValuesFieldMask & whichField))
+    _mfValues.beginEdit(uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 
@@ -315,4 +253,3 @@ DataType FieldDataTraits<FCPtrAttributeMapPtr>::_type("FCPtrAttributeMapPtr", "A
 OSG_DLLEXPORT_SFIELD_DEF1(FCPtrAttributeMapPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
-

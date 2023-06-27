@@ -52,221 +52,159 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &DVRVolumeTextureBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& DVRVolumeTextureBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 DVRVolumeTextureBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 DVRVolumeTextureBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-DVRVolumeTexturePtr DVRVolumeTextureBase::create(void) 
-{
-    DVRVolumeTexturePtr fc; 
+inline DVRVolumeTexturePtr DVRVolumeTextureBase::create(void) {
+  DVRVolumeTexturePtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = DVRVolumeTexturePtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = DVRVolumeTexturePtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-DVRVolumeTexturePtr DVRVolumeTextureBase::createEmpty(void) 
-{ 
-    DVRVolumeTexturePtr returnValue; 
-    
-    newPtr(returnValue); 
+inline DVRVolumeTexturePtr DVRVolumeTextureBase::createEmpty(void) {
+  DVRVolumeTexturePtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the DVRVolumeTexture::_sfImage field.
-inline
-SFImagePtr *DVRVolumeTextureBase::getSFImage(void)
-{
-    return &_sfImage;
+inline SFImagePtr* DVRVolumeTextureBase::getSFImage(void) {
+  return &_sfImage;
 }
 
 //! Get the DVRVolumeTexture::_mfHistogram field.
-inline
-MFReal32 *DVRVolumeTextureBase::getMFHistogram(void)
-{
-    return &_mfHistogram;
+inline MFReal32* DVRVolumeTextureBase::getMFHistogram(void) {
+  return &_mfHistogram;
 }
 
 //! Get the DVRVolumeTexture::_sfMaxVal field.
-inline
-SFReal32 *DVRVolumeTextureBase::getSFMaxVal(void)
-{
-    return &_sfMaxVal;
+inline SFReal32* DVRVolumeTextureBase::getSFMaxVal(void) {
+  return &_sfMaxVal;
 }
 
 //! Get the DVRVolumeTexture::_sfSliceThickness field.
-inline
-SFVec3f *DVRVolumeTextureBase::getSFSliceThickness(void)
-{
-    return &_sfSliceThickness;
+inline SFVec3f* DVRVolumeTextureBase::getSFSliceThickness(void) {
+  return &_sfSliceThickness;
 }
 
 //! Get the DVRVolumeTexture::_sfResolution field.
-inline
-SFVec3f *DVRVolumeTextureBase::getSFResolution(void)
-{
-    return &_sfResolution;
+inline SFVec3f* DVRVolumeTextureBase::getSFResolution(void) {
+  return &_sfResolution;
 }
 
 //! Get the DVRVolumeTexture::_sfFileName field.
-inline
-SFString *DVRVolumeTextureBase::getSFFileName(void)
-{
-    return &_sfFileName;
-}
-
-
-//! Get the value of the DVRVolumeTexture::_sfImage field.
-inline
-ImagePtr &DVRVolumeTextureBase::getImage(void)
-{
-    return _sfImage.getValue();
+inline SFString* DVRVolumeTextureBase::getSFFileName(void) {
+  return &_sfFileName;
 }
 
 //! Get the value of the DVRVolumeTexture::_sfImage field.
-inline
-const ImagePtr &DVRVolumeTextureBase::getImage(void) const
-{
-    return _sfImage.getValue();
+inline ImagePtr& DVRVolumeTextureBase::getImage(void) {
+  return _sfImage.getValue();
+}
+
+//! Get the value of the DVRVolumeTexture::_sfImage field.
+inline const ImagePtr& DVRVolumeTextureBase::getImage(void) const {
+  return _sfImage.getValue();
 }
 
 //! Set the value of the DVRVolumeTexture::_sfImage field.
-inline
-void DVRVolumeTextureBase::setImage(const ImagePtr &value)
-{
-    _sfImage.setValue(value);
+inline void DVRVolumeTextureBase::setImage(const ImagePtr& value) {
+  _sfImage.setValue(value);
 }
 
 //! Get the value of the DVRVolumeTexture::_sfMaxVal field.
-inline
-Real32 &DVRVolumeTextureBase::getMaxVal(void)
-{
-    return _sfMaxVal.getValue();
+inline Real32& DVRVolumeTextureBase::getMaxVal(void) {
+  return _sfMaxVal.getValue();
 }
 
 //! Get the value of the DVRVolumeTexture::_sfMaxVal field.
-inline
-const Real32 &DVRVolumeTextureBase::getMaxVal(void) const
-{
-    return _sfMaxVal.getValue();
+inline const Real32& DVRVolumeTextureBase::getMaxVal(void) const {
+  return _sfMaxVal.getValue();
 }
 
 //! Set the value of the DVRVolumeTexture::_sfMaxVal field.
-inline
-void DVRVolumeTextureBase::setMaxVal(const Real32 &value)
-{
-    _sfMaxVal.setValue(value);
+inline void DVRVolumeTextureBase::setMaxVal(const Real32& value) {
+  _sfMaxVal.setValue(value);
 }
 
 //! Get the value of the DVRVolumeTexture::_sfSliceThickness field.
-inline
-Vec3f &DVRVolumeTextureBase::getSliceThickness(void)
-{
-    return _sfSliceThickness.getValue();
+inline Vec3f& DVRVolumeTextureBase::getSliceThickness(void) {
+  return _sfSliceThickness.getValue();
 }
 
 //! Get the value of the DVRVolumeTexture::_sfSliceThickness field.
-inline
-const Vec3f &DVRVolumeTextureBase::getSliceThickness(void) const
-{
-    return _sfSliceThickness.getValue();
+inline const Vec3f& DVRVolumeTextureBase::getSliceThickness(void) const {
+  return _sfSliceThickness.getValue();
 }
 
 //! Set the value of the DVRVolumeTexture::_sfSliceThickness field.
-inline
-void DVRVolumeTextureBase::setSliceThickness(const Vec3f &value)
-{
-    _sfSliceThickness.setValue(value);
+inline void DVRVolumeTextureBase::setSliceThickness(const Vec3f& value) {
+  _sfSliceThickness.setValue(value);
 }
 
 //! Get the value of the DVRVolumeTexture::_sfResolution field.
-inline
-Vec3f &DVRVolumeTextureBase::getResolution(void)
-{
-    return _sfResolution.getValue();
+inline Vec3f& DVRVolumeTextureBase::getResolution(void) {
+  return _sfResolution.getValue();
 }
 
 //! Get the value of the DVRVolumeTexture::_sfResolution field.
-inline
-const Vec3f &DVRVolumeTextureBase::getResolution(void) const
-{
-    return _sfResolution.getValue();
+inline const Vec3f& DVRVolumeTextureBase::getResolution(void) const {
+  return _sfResolution.getValue();
 }
 
 //! Set the value of the DVRVolumeTexture::_sfResolution field.
-inline
-void DVRVolumeTextureBase::setResolution(const Vec3f &value)
-{
-    _sfResolution.setValue(value);
+inline void DVRVolumeTextureBase::setResolution(const Vec3f& value) {
+  _sfResolution.setValue(value);
 }
 
 //! Get the value of the DVRVolumeTexture::_sfFileName field.
-inline
-std::string &DVRVolumeTextureBase::getFileName(void)
-{
-    return _sfFileName.getValue();
+inline std::string& DVRVolumeTextureBase::getFileName(void) {
+  return _sfFileName.getValue();
 }
 
 //! Get the value of the DVRVolumeTexture::_sfFileName field.
-inline
-const std::string &DVRVolumeTextureBase::getFileName(void) const
-{
-    return _sfFileName.getValue();
+inline const std::string& DVRVolumeTextureBase::getFileName(void) const {
+  return _sfFileName.getValue();
 }
 
 //! Set the value of the DVRVolumeTexture::_sfFileName field.
-inline
-void DVRVolumeTextureBase::setFileName(const std::string &value)
-{
-    _sfFileName.setValue(value);
+inline void DVRVolumeTextureBase::setFileName(const std::string& value) {
+  _sfFileName.setValue(value);
 }
-
 
 //! Get the value of the \a index element the DVRVolumeTexture::_mfHistogram field.
-inline
-Real32 &DVRVolumeTextureBase::getHistogram(const UInt32 index)
-{
-    return _mfHistogram[index];
+inline Real32& DVRVolumeTextureBase::getHistogram(const UInt32 index) {
+  return _mfHistogram[index];
 }
 
 //! Get the DVRVolumeTexture::_mfHistogram field.
-inline
-MFReal32 &DVRVolumeTextureBase::getHistogram(void)
-{
-    return _mfHistogram;
+inline MFReal32& DVRVolumeTextureBase::getHistogram(void) {
+  return _mfHistogram;
 }
 
 //! Get the DVRVolumeTexture::_mfHistogram field.
-inline
-const MFReal32 &DVRVolumeTextureBase::getHistogram(void) const
-{
-    return _mfHistogram;
+inline const MFReal32& DVRVolumeTextureBase::getHistogram(void) const {
+  return _mfHistogram;
 }
 
 OSG_END_NAMESPACE
 
-#define OSGDVRVOLUMETEXTUREBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGDVRVOLUMETEXTUREBASE_INLINE_CVSID                                                       \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

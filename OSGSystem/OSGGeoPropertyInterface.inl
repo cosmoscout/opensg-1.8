@@ -40,23 +40,21 @@ OSG_BEGIN_NAMESPACE
 
 #ifndef OSG_SUPPORT_NO_GEO_INTERFACE
 
-template <class GeoPropertyDesc> inline
-GeoPropertyInterface<GeoPropertyDesc>::GeoPropertyInterface(void) :
-    Inherited()
-{
+template <class GeoPropertyDesc>
+inline GeoPropertyInterface<GeoPropertyDesc>::GeoPropertyInterface(void)
+    : Inherited() {
 }
 
-template <class GeoPropertyDesc> inline
-GeoPropertyInterface<GeoPropertyDesc>::GeoPropertyInterface(
-    const GeoPropertyInterface &source) :
+template <class GeoPropertyDesc>
+inline GeoPropertyInterface<GeoPropertyDesc>::GeoPropertyInterface(
+    const GeoPropertyInterface& source)
+    :
 
-    Inherited(source)
-{
+    Inherited(source) {
 }
 
-template <class GeoPropertyDesc> inline
-GeoPropertyInterface<GeoPropertyDesc>::~GeoPropertyInterface()
-{
+template <class GeoPropertyDesc>
+inline GeoPropertyInterface<GeoPropertyDesc>::~GeoPropertyInterface() {
 }
 
 #endif
@@ -64,4 +62,3 @@ GeoPropertyInterface<GeoPropertyDesc>::~GeoPropertyInterface()
 OSG_END_NAMESPACE
 
 #define OSGGEOPROPERTYINTERFACE_INLINE_CVSID "@(#)$Id: $"
-

@@ -40,81 +40,66 @@ OSG_BEGIN_NAMESPACE
 
 /*-------------------------------------------------------------------------*/
 
-inline bool StatElemDescBase::isValidID (Int32 descId)
-{ 
-  return (_descVec && (descId >= 0) && (descId < Int32(_descVec->size()))); 
+inline bool StatElemDescBase::isValidID(Int32 descId) {
+  return (_descVec && (descId >= 0) && (descId < Int32(_descVec->size())));
 }
 
 /*-------------------------------------------------------------------------*/
 
-inline  StatElemDescBase *StatElemDescBase::getDesc (Int32 descId)
-{ 
+inline StatElemDescBase* StatElemDescBase::getDesc(Int32 descId) {
   return (*_descVec)[descId];
 }
 
 /*-------------------------------------------------------------------------*/
 
-inline  Int32 StatElemDescBase::getNumOfDescs(void)
-{ 
-  return _descVec ? _descVec->size() : 0; 
+inline Int32 StatElemDescBase::getNumOfDescs(void) {
+  return _descVec ? _descVec->size() : 0;
 }
 
 /*-------------------------------------------------------------------------*/
 
-inline const Char8 *StatElemDescBase::getClassname(void)
-{ 
-  return "StatElemDescBase"; 
+inline const Char8* StatElemDescBase::getClassname(void) {
+  return "StatElemDescBase";
 }
 
 /*-------------------------------------------------------------------------*/
 
-inline        Int32   StatElemDescBase::getID            (void) 
-{ 
-  return _id; 
+inline Int32 StatElemDescBase::getID(void) {
+  return _id;
 }
 
 /*-------------------------------------------------------------------------*/
 
-inline  const IDString &StatElemDescBase::getName        (void) 
-{ 
-  return _name; 
+inline const IDString& StatElemDescBase::getName(void) {
+  return _name;
 }
 
 /*-------------------------------------------------------------------------*/
 
-inline  const IDString &StatElemDescBase::getDescription (void) 
-{ 
-  return _description; 
+inline const IDString& StatElemDescBase::getDescription(void) {
+  return _description;
 }
-
-
 
 // The templated StatElemDesc
 
 template <class T>
 char StatElemDesc<T>::cvsid[] = "@(#)$Id: OSGStatElemDesc.inl,v 1.5 2002/01/24 22:55:05 dirk Exp $";
 
-
-template <class T> inline
-StatElemDesc<T>::StatElemDesc( const Char8 *name, const Char8 *description ) :
-    StatElemDescBase(name, description)
-{
+template <class T>
+inline StatElemDesc<T>::StatElemDesc(const Char8* name, const Char8* description)
+    : StatElemDescBase(name, description) {
 }
 
-
-template <class T> inline
-StatElemDesc<T>::~StatElemDesc()
-{
+template <class T>
+inline StatElemDesc<T>::~StatElemDesc() {
 }
 
-
-template <class T> inline
-StatElem *StatElemDesc<T>::createElem(void)
-{
-    return T::create(this);
+template <class T>
+inline StatElem* StatElemDesc<T>::createElem(void) {
+  return T::create(this);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGSTATELEMDESC_INLINE_CVSID "@(#)$Id: OSGStatElemDesc.inl,v 1.5 2002/01/24 22:55:05 dirk Exp $"
+#define OSGSTATELEMDESC_INLINE_CVSID                                                               \
+  "@(#)$Id: OSGStatElemDesc.inl,v 1.5 2002/01/24 22:55:05 dirk Exp $"

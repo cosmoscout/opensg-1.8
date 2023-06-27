@@ -50,85 +50,79 @@
 
 OSG_BEGIN_NAMESPACE
 
-class OSG_SYSTEMLIB_DLLMAPPING MaterialGroup : public MaterialGroupBase
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING MaterialGroup : public MaterialGroupBase {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    virtual void changed(BitVector whichField,
-                         UInt32    origin    );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
-    
-    void setMaterial(const MaterialPtr &value);
+  void setMaterial(const MaterialPtr& value);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                        Dump                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                        Dump                                  */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32    uiIndent = 0,
-                      const BitVector bvFlags  = 0) const;
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  typedef MaterialGroupBase Inherited;
 
-    typedef MaterialGroupBase Inherited;
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  MaterialGroup(void);
+  MaterialGroup(const MaterialGroup& source);
 
-    MaterialGroup(void);
-    MaterialGroup(const MaterialGroup &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  virtual ~MaterialGroup(void);
 
-    virtual ~MaterialGroup(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Draw & Render                              */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Draw & Render                              */
-    /*! \{                                                                 */
+  Action::ResultE drawEnter(Action* action);
+  Action::ResultE drawLeave(Action* action);
 
-    Action::ResultE drawEnter  (Action *action);
-    Action::ResultE drawLeave  (Action *action);
+  Action::ResultE renderEnter(Action* action);
+  Action::ResultE renderLeave(Action* action);
 
-    Action::ResultE renderEnter(Action *action);
-    Action::ResultE renderLeave(Action *action);
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class MaterialGroupBase;
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Init                                   */
+  /*! \{                                                                 */
 
-    friend class FieldContainer;
-    friend class MaterialGroupBase;
+  static void initMethod(void);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Init                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
 
-    static void initMethod(void);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const MaterialGroup &source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const MaterialGroup& source);
 };
 
-typedef MaterialGroup *MaterialGroupP;
+typedef MaterialGroup* MaterialGroupP;
 
 OSG_END_NAMESPACE
 

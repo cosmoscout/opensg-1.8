@@ -67,25 +67,22 @@ OSG_USING_NAMESPACE
 /*! Constructor
  */
 
-GroupSockPipeline::GroupSockPipeline():
-    Inherited(),
-    _initialized(false)
-{
-    _next.open();
+GroupSockPipeline::GroupSockPipeline()
+    : Inherited()
+    , _initialized(false) {
+  _next.open();
 }
 
 /*! Destructor
  */
-GroupSockPipeline::~GroupSockPipeline(void)
-{
-    _next.close();
+GroupSockPipeline::~GroupSockPipeline(void) {
+  _next.close();
 }
 
 /*! get connection type
  */
-const ConnectionType *GroupSockPipeline::getType()
-{
-    return &_type;
+const ConnectionType* GroupSockPipeline::getType() {
+  return &_type;
 }
 
 /*-------------------------------------------------------------------------*/
@@ -94,28 +91,23 @@ const ConnectionType *GroupSockPipeline::getType()
 /*! connect to the given point. If timeout is reached, -1 is
     returned
  */
-GroupConnection::Channel GroupSockPipeline::connectPoint(
-    const std::string &address,
-    Time               timeout)
-{
-    Channel channel = Inherited::connectPoint(address,timeout);
-    return channel;
+GroupConnection::Channel GroupSockPipeline::connectPoint(const std::string& address, Time timeout) {
+  Channel channel = Inherited::connectPoint(address, timeout);
+  return channel;
 }
 
 /*! disconnect the given channel
  */
-void GroupSockPipeline::disconnect(Channel channel)
-{
-    Inherited::disconnect(channel);
+void GroupSockPipeline::disconnect(Channel channel) {
+  Inherited::disconnect(channel);
 }
 
 /*! accept an icomming point connection. If timeout is reached,
     -1 is returned. If timeout is -1 then wait without timeout
  */
-GroupConnection::Channel GroupSockPipeline::acceptPoint(Time timeout)
-{
-    Connection::Channel channel = Inherited::acceptPoint(timeout);
-    return channel;
+GroupConnection::Channel GroupSockPipeline::acceptPoint(Time timeout) {
+  Connection::Channel channel = Inherited::acceptPoint(timeout);
+  return channel;
 }
 
 /*-------------------------- helpers --------------------------------------*/
@@ -123,9 +115,8 @@ GroupConnection::Channel GroupSockPipeline::acceptPoint(Time timeout)
 /** \brief create conneciton
  */
 
-GroupConnection *GroupSockPipeline::create(void)
-{
-    return new GroupSockPipeline();
+GroupConnection* GroupSockPipeline::create(void) {
+  return new GroupSockPipeline();
 }
 
 /*-------------------------------------------------------------------------*/
@@ -138,20 +129,14 @@ GroupConnection *GroupSockPipeline::create(void)
  *
  **/
 
-void GroupSockPipeline::write(MemoryHandle mem,UInt32 size)
-{
-    if(!_initialized)
-        initialize();
+void GroupSockPipeline::write(MemoryHandle mem, UInt32 size) {
+  if (!_initialized)
+    initialize();
 
-    try
-    {
-        if(getChannelCount())
-            _next.send(mem,size);
-    }
-    catch(SocketException &e)
-    {
-        throw WriteError(e.what());
-    }
+  try {
+    if (getChannelCount())
+      _next.send(mem, size);
+  } catch (SocketException& e) { throw WriteError(e.what()); }
 }
 
 /** Write buffer
@@ -159,21 +144,18 @@ void GroupSockPipeline::write(MemoryHandle mem,UInt32 size)
  * Write blocksize and data.
  *
  **/
-void GroupSockPipeline::writeBuffer(void)
-{
-    Int32 index;
+void GroupSockPipeline::writeBuffer(void) {
+  Int32 index;
 
-    if(!_initialized)
-        initialize();
+  if (!_initialized)
+    initialize();
 
-    UInt32 size = writeBufBegin()->getDataSize();
-    // write size to header
-    ((SocketBufferHeader*)&_socketWriteBuffer[0])->size=osghtonl(size);
-    if(size)
-    {
-        _next.send(&_socketWriteBuffer[0],
-                          size+sizeof(SocketBufferHeader));
-    }
+  UInt32 size = writeBufBegin()->getDataSize();
+  // write size to header
+  ((SocketBufferHeader*)&_socketWriteBuffer[0])->size = osghtonl(size);
+  if (size) {
+    _next.send(&_socketWriteBuffer[0], size + sizeof(SocketBufferHeader));
+  }
 }
 
 /*-------------------------------------------------------------------------*/
@@ -181,56 +163,41 @@ void GroupSockPipeline::writeBuffer(void)
 
 /*! initialize pipeline
  */
-void GroupSockPipeline::initialize(void)
-{
-    UInt32         index,len;
-    UInt32         nextPort;
-    std::string    nextHost;
-    BinaryMessage  message;
+void GroupSockPipeline::initialize(void) {
+  UInt32        index, len;
+  UInt32        nextPort;
+  std::string   nextHost;
+  BinaryMessage message;
 
-    for(index = 0 ; index<_sockets.size() ; ++index)
-    {
-        len = _sockets[index].recv(message);
-        if(len == 0)
-            throw ReadError("Channel closed\n");
-        nextHost = message.getString();
-        nextPort = message.getUInt32();
+  for (index = 0; index < _sockets.size(); ++index) {
+    len = _sockets[index].recv(message);
+    if (len == 0)
+      throw ReadError("Channel closed\n");
+    nextHost = message.getString();
+    nextPort = message.getUInt32();
 
-        message.clear();
-        if(index == 0)
-        {
-            message.putUInt32(true);
-            _sockets[_sockets.size()-1].send(message);
-            for(;;)
-            {
-                try
-                {
-                    _next.connect(SocketAddress(nextHost.c_str(),
-                                                nextPort));
-                    break;
-                }
-                catch(...)
-                {
-                }
-            }
-        }
-        else
-        {
-            message.clear();
-            message.putUInt32(false);
-            message.putString(nextHost);
-            message.putUInt32(nextPort);
-            _sockets[index-1].send(message);
-        }
+    message.clear();
+    if (index == 0) {
+      message.putUInt32(true);
+      _sockets[_sockets.size() - 1].send(message);
+      for (;;) {
+        try {
+          _next.connect(SocketAddress(nextHost.c_str(), nextPort));
+          break;
+        } catch (...) {}
+      }
+    } else {
+      message.clear();
+      message.putUInt32(false);
+      message.putString(nextHost);
+      message.putUInt32(nextPort);
+      _sockets[index - 1].send(message);
     }
-    _initialized = true;
+  }
+  _initialized = true;
 }
 
 /*-------------------------------------------------------------------------*/
 /*                              static type                                */
 
-ConnectionType GroupSockPipeline::_type(
-    &GroupSockPipeline::create,
-    "SockPipeline");
-
-
+ConnectionType GroupSockPipeline::_type(&GroupSockPipeline::create, "SockPipeline");

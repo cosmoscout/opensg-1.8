@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGDRAWABLEFIELDS_H_
 #define _OSGDRAWABLEFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class Drawable;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! DrawablePtr
 
 typedef FCPtr<NodeCorePtr, Drawable> DrawablePtr;
@@ -81,18 +80,22 @@ typedef FCPtr<NodeCorePtr, Drawable> DrawablePtr;
 #endif
 
 template <>
-struct FieldDataTraits<DrawablePtr> : 
-    public FieldTraitsRecurseMapper<DrawablePtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<DrawablePtr> : public FieldTraitsRecurseMapper<DrawablePtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getSName(void) { return "SFDrawablePtr"; }
-    static const char *getMName(void) { return "MFDrawablePtr"; }
+  static const char* getSName(void) {
+    return "SFDrawablePtr";
+  }
+  static const char* getMName(void) {
+    return "MFDrawablePtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -102,7 +105,6 @@ struct FieldDataTraits<DrawablePtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
@@ -126,6 +128,7 @@ OSG_DLLEXPORT_DECL1(MField, DrawablePtr, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 
 OSG_END_NAMESPACE
 
-#define OSGDRAWABLEFIELDS_HEADER_CVSID "@(#)$Id: OSGDrawableFields.h,v 1.10 2006/02/20 16:54:27 dirk Exp $"
+#define OSGDRAWABLEFIELDS_HEADER_CVSID                                                             \
+  "@(#)$Id: OSGDrawableFields.h,v 1.10 2006/02/20 16:54:27 dirk Exp $"
 
 #endif /* _OSGDRAWABLEFIELDS_H_ */

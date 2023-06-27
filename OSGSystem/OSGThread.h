@@ -56,23 +56,21 @@
 
 #include <OSGBaseTypes.h>
 
-#if ! defined (OSG_USE_PTHREADS)   && \
-    ! defined (OSG_USE_SPROC)      && \
-    ! defined (OSG_USE_WINTHREADS)
+#if !defined(OSG_USE_PTHREADS) && !defined(OSG_USE_SPROC) && !defined(OSG_USE_WINTHREADS)
 #error "No threading model defined, check your system/compiler combination"
 #endif
 
 #ifdef OSG_USE_PTHREADS
-#   ifdef OSG_USE_SPROC
-#       error  "PTHREAD and SPROC threading models defined. This is a bug!"
-#   endif
-#   ifdef OSG_USE_WINTHREADS
-#       error  "PTHREAD and WINTHREADS threading models defined. This is a bug!"
-#   endif
+#ifdef OSG_USE_SPROC
+#error "PTHREAD and SPROC threading models defined. This is a bug!"
+#endif
+#ifdef OSG_USE_WINTHREADS
+#error "PTHREAD and WINTHREADS threading models defined. This is a bug!"
+#endif
 #elif defined(OSG_USE_SPROC)
-#   ifdef OSG_USE_WINTHREADS
-#       error  "SPROC and WINTHREADS threading models defined. This is a bug!"
-#   endif
+#ifdef OSG_USE_WINTHREADS
+#error "SPROC and WINTHREADS threading models defined. This is a bug!"
+#endif
 #endif
 
 OSG_BEGIN_NAMESPACE
@@ -87,72 +85,65 @@ class ChangeList;
 /*! \ingroup GrpSystemMultithreading
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING ThreadCommonBase : public BaseThread
-{
-    /*==========================  PUBLIC  =================================*/
+class OSG_SYSTEMLIB_DLLMAPPING ThreadCommonBase : public BaseThread {
+  /*==========================  PUBLIC  =================================*/
 
-  public :
+ public:
+  static const UInt32 InvalidAspect;
 
-    static const UInt32 InvalidAspect;
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Get                                     */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Get                                     */
-    /*! \{                                                                 */
+  ChangeList* getChangeList(void);
 
-    ChangeList *getChangeList(void);
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+ protected:
+  typedef BaseThread Inherited;
 
-  protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Member                                  */
+  /*! \{                                                                 */
 
-    typedef BaseThread Inherited;
+  UInt32      _uiAspectId;
+  ChangeList* _pChangeList;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Member                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    UInt32      _uiAspectId;
-    ChangeList *_pChangeList;
+  ThreadCommonBase(void);
+  ThreadCommonBase(const Char8* szName, UInt32 uiId);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    ThreadCommonBase(void);
-    ThreadCommonBase(const Char8 *szName, UInt32 uiId);
+  virtual ~ThreadCommonBase(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Set                                     */
+  /*! \{                                                                 */
 
-    virtual ~ThreadCommonBase(void); 
+  void setAspect(UInt32 uiAspectId);
+  void setChangeList(ChangeList* pChangeList);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Set                                     */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-    void setAspect    (UInt32      uiAspectId);
-    void setChangeList(ChangeList *pChangeList);
+ private:
+  friend class ThreadManager;
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-
-  private:
-
-    friend class ThreadManager;
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    ThreadCommonBase(const ThreadCommonBase &source);
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const ThreadCommonBase &source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  ThreadCommonBase(const ThreadCommonBase& source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const ThreadCommonBase& source);
 };
-
-
-
 
 //---------------------------------------------------------------------------
 //  Class
@@ -163,100 +154,91 @@ class OSG_SYSTEMLIB_DLLMAPPING ThreadCommonBase : public BaseThread
 /*! \ingroup GrpSystemMultithreading
  */
 
-class PThreadBase : public ThreadCommonBase
-{
-    /*==========================  PUBLIC  =================================*/
+class PThreadBase : public ThreadCommonBase {
+  /*==========================  PUBLIC  =================================*/
 
-  public :
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Get                                     */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Get                                     */
-    /*! \{                                                                 */
+  static UInt32      getAspect(void);
+  static ChangeList* getCurrentChangeList(void);
 
-    static UInt32       getAspect           (void);
-    static ChangeList  *getCurrentChangeList(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Run                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Run                                     */
-    /*! \{                                                                 */
+  bool runFunction(ThreadFuncF fThreadFunc, UInt32 uiAspectId, void* pThreadArg);
 
-    bool runFunction(ThreadFuncF  fThreadFunc, 
-                     UInt32       uiAspectId,
-                     void        *pThreadArg);
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+ protected:
+  typedef ThreadCommonBase Inherited;
 
-  protected:
-
-    typedef ThreadCommonBase Inherited;
-
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Member                                  */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Member                                  */
+  /*! \{                                                                 */
 
 #if defined(OSG_PTHREAD_ELF_TLS)
-    static __thread UInt32      _uiTLSAspectId;
-    static __thread ChangeList *_pTLSChangeList;
+  static __thread UInt32      _uiTLSAspectId;
+  static __thread ChangeList* _pTLSChangeList;
 #else
-    static pthread_key_t  _aspectKey;
-    static pthread_key_t  _changeListKey;
+  static pthread_key_t _aspectKey;
+  static pthread_key_t _changeListKey;
 #endif
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Free                                     */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Free                                     */
+  /*! \{                                                                 */
 
 #if !defined(OSG_PTHREAD_ELF_TLS)
-    static void  freeAspect    (void *pAspect);
-    static void  freeChangeList(void *pChangeList);
+  static void freeAspect(void* pAspect);
+  static void freeChangeList(void* pChangeList);
 #endif
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    PThreadBase(const Char8 *szName, UInt32 uiId);
+  PThreadBase(const Char8* szName, UInt32 uiId);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    virtual ~PThreadBase(void); 
+  virtual ~PThreadBase(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Setup                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Setup                                   */
+  /*! \{                                                                 */
 
-    virtual void init           (void);
-    
-            void setupAspect    (void);
-            void setupChangeList(void);
+  virtual void init(void);
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
+  void setupAspect(void);
+  void setupChangeList(void);
 
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-    friend class ThreadManager;
+ private:
+  friend class ThreadManager;
 
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    PThreadBase(const PThreadBase &source);
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const PThreadBase &source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  PThreadBase(const PThreadBase& source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const PThreadBase& source);
 };
 
 typedef PThreadBase ThreadBase;
 
 #endif /* OSG_USE_PTHREADS */
-
-
-
 
 //---------------------------------------------------------------------------
 //  Class
@@ -267,89 +249,79 @@ typedef PThreadBase ThreadBase;
 /*! \ingroup GrpSystemMultithreading
  */
 
-class SprocBase : public ThreadCommonBase
-{
-    /*==========================  PUBLIC  =================================*/
+class SprocBase : public ThreadCommonBase {
+  /*==========================  PUBLIC  =================================*/
 
-  public :
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Get                                     */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Get                                     */
-    /*! \{                                                                 */
+  static UInt32      getAspect(void);
+  static ChangeList* getCurrentChangeList(void);
 
-    static UInt32      getAspect           (void);
-    static ChangeList *getCurrentChangeList(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Run                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Run                                     */
-    /*! \{                                                                 */
+  bool runFunction(ThreadFuncF fThreadFunc, UInt32 uiAspectId, void* pThreadArg);
 
-    bool runFunction(ThreadFuncF  fThreadFunc, 
-                     UInt32       uiAspectId,
-                     void        *pThreadArg);
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+ protected:
+  typedef ThreadCommonBase Inherited;
 
-  protected:
+  struct OSGProcessData : public ProcessData {
+    UInt32      _uiAspectId;
+    ChangeList* _pChangeList;
+  };
 
-    typedef ThreadCommonBase Inherited;
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    struct OSGProcessData : public ProcessData
-    {
-        UInt32      _uiAspectId;
-        ChangeList *_pChangeList;
-    };
+  SprocBase(const Char8* szName, UInt32 uiId);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    SprocBase(const Char8 *szName, UInt32 uiId);
+  virtual ~SprocBase(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Set                                     */
+  /*! \{                                                                 */
 
-    virtual ~SprocBase(void); 
+  void setAspectInternal(UInt32 uiAspect);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Set                                     */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Setup                                   */
+  /*! \{                                                                 */
 
-    void setAspectInternal(UInt32 uiAspect);
+  virtual void init(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Setup                                   */
-    /*! \{                                                                 */
+  void setupChangeListInternal(void);
 
-    virtual void init                   (void);
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-            void setupChangeListInternal(void);
+ private:
+  friend class ThreadManager;
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-
-  private:
-
-    friend class ThreadManager;
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    SprocBase(const SprocBase &source);
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const SprocBase &source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  SprocBase(const SprocBase& source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const SprocBase& source);
 };
 
 typedef SprocBase ThreadBase;
 
 #endif /* OSG_USE_SPROC */
-
-
-
 
 //---------------------------------------------------------------------------
 //  Class
@@ -360,102 +332,93 @@ typedef SprocBase ThreadBase;
 /*! \ingroup GrpSystemMultithreading
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING WinThreadBase : public ThreadCommonBase
-{
-    /*==========================  PUBLIC  =================================*/
+class OSG_SYSTEMLIB_DLLMAPPING WinThreadBase : public ThreadCommonBase {
+  /*==========================  PUBLIC  =================================*/
 
-  public :
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Get                                     */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Get                                     */
-    /*! \{                                                                 */
+  static UInt32      getAspect(void);
+  static ChangeList* getCurrentChangeList(void);
 
-    static UInt32      getAspect           (void);
-    static ChangeList *getCurrentChangeList(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Run                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Run                                     */
-    /*! \{                                                                 */
+  bool runFunction(ThreadFuncF fThreadFunc, UInt32 uiAspectId, void* pThreadArg);
 
-    bool runFunction(ThreadFuncF  fThreadFunc, 
-                     UInt32       uiAspectId,
-                     void        *pThreadArg);
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+ protected:
+  typedef ThreadCommonBase Inherited;
 
-  protected:
-
-    typedef ThreadCommonBase Inherited;
-
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Member                                  */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Member                                  */
+  /*! \{                                                                 */
 
 #if defined(OSG_ASPECT_USE_LOCALSTORAGE)
-    static UInt32 _aspectKey;
-    static UInt32 _changeListKey;
+  static UInt32 _aspectKey;
+  static UInt32 _changeListKey;
 #endif
 #if defined(OSG_ASPECT_USE_DECLSPEC)
-    static __declspec (thread) UInt32      _uiAspectLocal;
-    static __declspec (thread) ChangeList *_pChangeListLocal;
+  static __declspec(thread) UInt32 _uiAspectLocal;
+  static __declspec(thread) ChangeList* _pChangeListLocal;
 #endif
 
 #ifdef OSG_ASPECT_USE_LOCALSTORAGE
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Free                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Free                                   */
+  /*! \{                                                                 */
 
-    static void freeAspect    (void);
-    static void freeChangeList(void);
+  static void freeAspect(void);
+  static void freeChangeList(void);
 #endif
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    WinThreadBase(const Char8 *szName, UInt32 uiId);
+  WinThreadBase(const Char8* szName, UInt32 uiId);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    virtual ~WinThreadBase(void); 
+  virtual ~WinThreadBase(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Init                                     */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Init                                     */
+  /*! \{                                                                 */
 
-    virtual void init            (void);
+  virtual void init(void);
 
-            void setupAspect     (void);
-            void setupChangeList (void);
+  void setupAspect(void);
+  void setupChangeList(void);
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-  private:
+ private:
+  friend class ThreadManager;
 
-    friend class ThreadManager;
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    WinThreadBase(const WinThreadBase &source);
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const WinThreadBase &source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  WinThreadBase(const WinThreadBase& source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const WinThreadBase& source);
 };
 
 typedef WinThreadBase ThreadBase;
 
 #endif /* OSG_USE_WINTHREADS */
 
-
-
-
 //---------------------------------------------------------------------------
 //  Class
 //---------------------------------------------------------------------------
@@ -463,86 +426,79 @@ typedef WinThreadBase ThreadBase;
 /*! \ingroup GrpSystemMultithreading
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING Thread : public ThreadBase
-{
-    /*=========================  PROTECTED  ===============================*/
+class OSG_SYSTEMLIB_DLLMAPPING Thread : public ThreadBase {
+  /*=========================  PROTECTED  ===============================*/
 
-  protected:
+ protected:
+  typedef ThreadBase Inherited;
 
-    typedef ThreadBase Inherited;
+  /*==========================  PUBLIC  =================================*/
 
-    /*==========================  PUBLIC  =================================*/
+ public:
+  typedef MPThreadType Type;
 
-  public :
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Get                                     */
+  /*! \{                                                                 */
 
-    typedef      MPThreadType Type;
+  static ThreadBase* getCurrent(void);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Get                                     */
-    /*! \{                                                                 */
-    
-    static ThreadBase *getCurrent(      void         );
+  static Thread* get(const Char8* szName);
+  static Thread* find(const Char8* szName);
 
-    static Thread     *get       (const Char8 *szName);
-    static Thread     *find      (const Char8 *szName);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Run                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Run                                     */
-    /*! \{                                                                 */
-    
-    void run(UInt32 uiAspectId);
+  void run(UInt32 uiAspectId);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-  protected:
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Member                                  */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Member                                  */
-    /*! \{                                                                 */
+  static MPThreadType _type;
 
-    static MPThreadType _type;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Init                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Init                                    */
-    /*! \{                                                                 */
+  static Thread* create(const Char8* szName, UInt32 uiId);
 
-    static Thread *create       (const Char8 *szName, UInt32 uiId);
+  static void initThreading(void);
 
-    static void    initThreading(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  Thread(const Char8* szName, UInt32 uiId);
 
-    Thread(const Char8 *szName, UInt32 uiId);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  virtual ~Thread(void);
 
-    virtual ~Thread(void);
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
+ private:
+  friend class ThreadManager;
+  friend class MPFieldStore<BaseThread>;
 
-  private:
-
-    friend class ThreadManager;
-    friend class MPFieldStore<BaseThread>;
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    Thread(const Thread &source);
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const Thread &source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  Thread(const Thread& source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const Thread& source);
 };
 
-
-
 //---------------------------------------------------------------------------
 //  Class
 //---------------------------------------------------------------------------
@@ -550,78 +506,74 @@ class OSG_SYSTEMLIB_DLLMAPPING Thread : public ThreadBase
 /*! \ingroup GrpSystemMultithreading
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING ExternalThread : public ThreadBase
-{
-    /*==========================  PUBLIC  =================================*/
+class OSG_SYSTEMLIB_DLLMAPPING ExternalThread : public ThreadBase {
+  /*==========================  PUBLIC  =================================*/
 
-  public :
+ public:
+  typedef MPThreadType Type;
 
-    typedef MPThreadType Type;
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Get                                     */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Get                                     */
-    /*! \{                                                                 */
-    
-    static ThreadBase     *getCurrent(      void         );
+  static ThreadBase* getCurrent(void);
 
-    static ExternalThread *get       (const Char8 *szName);
-    static ExternalThread *find      (const Char8 *szName);
+  static ExternalThread* get(const Char8* szName);
+  static ExternalThread* find(const Char8* szName);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Get                                     */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Get                                     */
+  /*! \{                                                                 */
 
-    void initialize   (UInt32 uiAspectId);
+  void initialize(UInt32 uiAspectId);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-  protected:
+ protected:
+  typedef ThreadBase Inherited;
 
-    typedef ThreadBase Inherited;
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Member                                  */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Member                                  */
-    /*! \{                                                                 */
+  static MPThreadType _type;
 
-    static MPThreadType _type;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Init                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Init                                    */
-    /*! \{                                                                 */
+  static ExternalThread* create(const Char8* szName, UInt32 uiId);
 
-    static ExternalThread *create       (const Char8 *szName, UInt32 uiId);
+  //    static void            initThreading(void);
 
-//    static void            initThreading(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  ExternalThread(const Char8* szName, UInt32 uiId);
 
-    ExternalThread(const Char8 *szName, UInt32 uiId);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  virtual ~ExternalThread(void);
 
-    virtual ~ExternalThread(void);
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
+ private:
+  friend class ThreadManager;
+  friend class MPFieldStore<BaseThread>;
 
-  private:
-
-    friend class ThreadManager;
-    friend class MPFieldStore<BaseThread>;
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    ExternalThread(const ExternalThread &source);
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const ExternalThread &source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  ExternalThread(const ExternalThread& source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const ExternalThread& source);
 };
 
 OSG_END_NAMESPACE

@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _POINTMCASTCONNECTION_H_
 #define _POINTMCASTCONNECTION_H_
 #ifdef __sgi
@@ -59,129 +58,124 @@
 
 OSG_BEGIN_NAMESPACE
 
-class OSG_BASE_DLLMAPPING PointMCastConnection : public PointSockConnection
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_BASE_DLLMAPPING PointMCastConnection : public PointSockConnection {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  PointMCastConnection(void);
+  virtual ~PointMCastConnection(void);
 
-             PointMCastConnection ( void );
-    virtual ~PointMCastConnection ( void ); 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   type info                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   type info                                  */
-    /*! \{                                                                 */
+  virtual const ConnectionType* getType(void);
 
-    virtual const ConnectionType *getType (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   connection                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   connection                                 */
-    /*! \{                                                                 */
+  virtual Channel connectGroup(const std::string& address, Time timeout = -1);
+  virtual void    disconnect(void);
+  virtual Channel acceptGroup(Time timeout = -1);
 
-    virtual Channel     connectGroup(const std::string &address,
-                                           Time        timeout=-1 );
-    virtual void        disconnect  (      void                   );
-    virtual Channel     acceptGroup (      Time        timeout=-1 );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   synchronisation                            */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   synchronisation                            */
-    /*! \{                                                                 */
+  virtual bool wait(Time timeout);
 
-    virtual bool wait  (Time timeout);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   channel handling                           */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   channel handling                           */
-    /*! \{                                                                 */
+  virtual Channel selectChannel(Time timeout = -1);
 
-    virtual Channel selectChannel (Time timeout=-1);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   create                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   create                                     */
-    /*! \{                                                                 */
+  static PointConnection* create(void);
 
-    static PointConnection *create(void);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Types                                      */
+  /*! \{                                                                 */
 
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  struct SocketBufferHeader {
+    UInt32 size;
+  };
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Types                                      */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   IO Implementation                          */
+  /*! \{                                                                 */
 
-    struct SocketBufferHeader {
-        UInt32 size;
-    };
+  virtual void read(MemoryHandle mem, UInt32 size);
+  virtual void readBuffer(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   IO Implementation                          */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   members                                    */
+  /*! \{                                                                 */
 
-    virtual void read             (MemoryHandle mem, UInt32 size);
-    virtual void readBuffer       (void);
+  DgramSocket                     _mcastSocket;
+  DgramSocket                     _responseSocket;
+  BaseThread*                     _recvQueueThread;
+  bool                            _recvQueueThreadRunning;
+  bool                            _recvQueueThreadStop;
+  UInt16                          _seqNumber;
+  SocketAddress                   _mcastAddress;
+  DgramQueue                      _queue;
+  DgramQueue                      _free;
+  Lock*                           _lock;
+  SocketAddress                   _sender;
+  SocketAddress                   _ackDestination;
+  Dgram*                          _lastDgram;
+  UInt32                          _lastDgramPos;
+  bool                            _initialized;
+  std::map<SocketAddress, UInt16> _combineAck;
+  UInt16                          _maxAck;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   members                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    DgramSocket                    _mcastSocket;
-    DgramSocket                    _responseSocket;
-    BaseThread                    *_recvQueueThread;
-    bool                           _recvQueueThreadRunning;
-    bool                           _recvQueueThreadStop;
-    UInt16                         _seqNumber;
-    SocketAddress                  _mcastAddress;
-    DgramQueue                     _queue;
-    DgramQueue                     _free;
-    Lock                          *_lock;
-    SocketAddress                  _sender;
-    SocketAddress                  _ackDestination;
-    Dgram                         *_lastDgram;
-    UInt32                         _lastDgramPos;
-    bool                           _initialized;
-    std::map<SocketAddress,UInt16> _combineAck;
-    UInt16                         _maxAck;
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /*---------------------------------------------------------------------*/
+  /*! \name               private helpers                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  bool        recvNextDgram(Dgram* dgram);
+  void        combineAck(Dgram* dgram, SocketAddress from);
+  static void recvQueueThread(void* arg);
+  bool        recvQueue(void);
+  void        initialize(void);
 
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   static type                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name               private helpers                                */
-    /*! \{                                                                 */
+  static ConnectionType _type;
 
-           bool recvNextDgram  (Dgram *dgram                   );
-           void combineAck     (Dgram *dgram,SocketAddress from);
-    static void recvQueueThread( void *arg                     );
-           bool recvQueue      ( void                          );
-           void initialize     ( void                          );
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   static type                                */
-    /*! \{                                                                 */
+  typedef PointSockConnection Inherited;
 
-    static ConnectionType _type;
-
-    /*! \}                                                                 */
-
-    typedef PointSockConnection Inherited;
-
-	// prohibit default functions (move to 'public' if you need one)
-    PointMCastConnection(const PointMCastConnection &source);
-    PointMCastConnection& operator =(const PointMCastConnection &source);
+  // prohibit default functions (move to 'public' if you need one)
+  PointMCastConnection(const PointMCastConnection& source);
+  PointMCastConnection& operator=(const PointMCastConnection& source);
 };
 
 //---------------------------------------------------------------------------
@@ -190,7 +184,7 @@ class OSG_BASE_DLLMAPPING PointMCastConnection : public PointSockConnection
 
 // class pointer
 
-typedef PointMCastConnection *PointMCastConnectionP;
+typedef PointMCastConnection* PointMCastConnectionP;
 
 OSG_END_NAMESPACE
 

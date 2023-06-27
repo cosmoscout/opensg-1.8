@@ -54,43 +54,34 @@ OSG_USING_NAMESPACE
 /*-------------------------------------------------------------------------*/
 /*                             Destructor                                  */
 
-MemoryObject::~MemoryObject(void)
-{
+MemoryObject::~MemoryObject(void) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                        Reference Counting                               */
 
-void MemoryObject::addRef(void)
-{
-    _refCount++;
+void MemoryObject::addRef(void) {
+  _refCount++;
 }
 
-void MemoryObject::subRef(void)
-{
-    _refCount--;
+void MemoryObject::subRef(void) {
+  _refCount--;
 
-    if(_refCount <= 0)
-        delete this;
+  if (_refCount <= 0)
+    delete this;
 }
 
-Int32 MemoryObject::getRefCount(void)
-{
-    return _refCount;
+Int32 MemoryObject::getRefCount(void) {
+  return _refCount;
 }
 
 /*-------------------------------------------------------------------------*/
 /*                            Constructors                                 */
 
-MemoryObject::MemoryObject(void) :
-    _refCount(0)
-{
+MemoryObject::MemoryObject(void)
+    : _refCount(0) {
 }
 
-MemoryObject::MemoryObject(const MemoryObject &) :
-    _refCount(0)
-{
+MemoryObject::MemoryObject(const MemoryObject&)
+    : _refCount(0) {
 }
-
-
-

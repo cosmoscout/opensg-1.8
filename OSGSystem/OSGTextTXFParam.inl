@@ -36,37 +36,32 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #include "OSGTextFace.h"
-
 
 OSG_BEGIN_NAMESPACE
 
-
 inline TextTXFParam::TextTXFParam()
-: size(46), gap(1), textureWidth(0),
-  _characters(_defaultCharacters)
-{}
-
-
-inline void TextTXFParam::setCharacters(const std::string &utf8Characters)
-{
-    TextFace::convertUTF8ToUnicode(utf8Characters, _characters);
-    normalizeCharacters();
+    : size(46)
+    , gap(1)
+    , textureWidth(0)
+    , _characters(_defaultCharacters) {
 }
 
-
-inline void TextTXFParam::setCharacters(const std::wstring &characters)
-{
-    _characters = characters;
-    normalizeCharacters();
+inline void TextTXFParam::setCharacters(const std::string& utf8Characters) {
+  TextFace::convertUTF8ToUnicode(utf8Characters, _characters);
+  normalizeCharacters();
 }
 
+inline void TextTXFParam::setCharacters(const std::wstring& characters) {
+  _characters = characters;
+  normalizeCharacters();
+}
 
-inline const std::wstring &TextTXFParam::getCharacters() const { return _characters; }
-
+inline const std::wstring& TextTXFParam::getCharacters() const {
+  return _characters;
+}
 
 OSG_END_NAMESPACE
 
-
-#define OSGTEXTTXFPARAM_INLINE_CVSID "@(#)$Id: OSGTextTXFParam.inl,v 1.1 2005/03/03 13:43:07 a-m-z Exp $"
+#define OSGTEXTTXFPARAM_INLINE_CVSID                                                               \
+  "@(#)$Id: OSGTextTXFParam.inl,v 1.1 2005/03/03 13:43:07 a-m-z Exp $"

@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGSTATISTICSFOREGROUNDBASE_H_
 #define _OSGSTATISTICSFOREGROUNDBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -67,7 +65,7 @@
 
 #include <OSGForeground.h> // Parent
 
-#include <OSGInt32Fields.h> // ElementIDs type
+#include <OSGInt32Fields.h>         // ElementIDs type
 #include <OSGStatCollectorFields.h> // Collector type
 
 #include <OSGStatisticsForegroundFields.h>
@@ -79,172 +77,152 @@ class BinaryDataHandler;
 
 //! \brief StatisticsForeground Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING StatisticsForegroundBase : public Foreground
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING StatisticsForegroundBase : public Foreground {
+ private:
+  typedef Foreground Inherited;
 
-    typedef Foreground    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef StatisticsForegroundPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    ElementIDsFieldId = Inherited::NextFieldId,
+    CollectorFieldId  = ElementIDsFieldId + 1,
+    NextFieldId       = CollectorFieldId + 1
+  };
 
-    typedef StatisticsForegroundPtr  Ptr;
+  static const OSG::BitVector ElementIDsFieldMask;
+  static const OSG::BitVector CollectorFieldMask;
 
-    enum
-    {
-        ElementIDsFieldId = Inherited::NextFieldId,
-        CollectorFieldId  = ElementIDsFieldId + 1,
-        NextFieldId       = CollectorFieldId  + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector ElementIDsFieldMask;
-    static const OSG::BitVector CollectorFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  MFInt32*         getMFElementIDs(void);
+  SFStatCollector* getSFCollector(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  StatCollector&       getCollector(void);
+  const StatCollector& getCollector(void) const;
+  Int32&               getElementIDs(const UInt32 index);
+  MFInt32&             getElementIDs(void);
+  const MFInt32&       getElementIDs(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           MFInt32             *getMFElementIDs     (void);
-           SFStatCollector     *getSFCollector      (void);
+  void setCollector(const StatCollector& value);
 
-           StatCollector       &getCollector      (void);
-     const StatCollector       &getCollector      (void) const;
-           Int32               &getElementIDs     (const UInt32 index);
-           MFInt32             &getElementIDs     (void);
-     const MFInt32             &getElementIDs     (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setCollector      ( const StatCollector &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  MFInt32         _mfElementIDs;
+  SFStatCollector _sfCollector;
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
+  StatisticsForegroundBase(void);
+  StatisticsForegroundBase(const StatisticsForegroundBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~StatisticsForegroundBase(void);
 
-    MFInt32             _mfElementIDs;
-    SFStatCollector     _sfCollector;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    StatisticsForegroundBase(void);
-    StatisticsForegroundBase(const StatisticsForegroundBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~StatisticsForegroundBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      StatisticsForegroundBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(StatisticsForegroundBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      StatisticsForegroundBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      StatisticsForegroundBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const StatisticsForegroundBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const StatisticsForegroundBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef StatisticsForegroundBase* StatisticsForegroundBaseP;
 
-typedef StatisticsForegroundBase *StatisticsForegroundBaseP;
-
-typedef osgIF<StatisticsForegroundBase::isNodeCore,
-              CoredNodePtr<StatisticsForeground>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet StatisticsForegroundNodePtr;
+typedef osgIF<StatisticsForegroundBase::isNodeCore, CoredNodePtr<StatisticsForeground>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet
+    StatisticsForegroundNodePtr;
 
 typedef RefPtr<StatisticsForegroundPtr> StatisticsForegroundRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGSTATISTICSFOREGROUNDBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGSTATISTICSFOREGROUNDBASE_HEADER_CVSID                                                   \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGSTATISTICSFOREGROUNDBASE_H_ */

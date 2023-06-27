@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGSHADERPARAMETERCHUNKBASE_H_
 #define _OSGSHADERPARAMETERCHUNKBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -78,165 +76,141 @@ class BinaryDataHandler;
 
 //! \brief ShaderParameterChunk Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING ShaderParameterChunkBase : public StateChunk
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING ShaderParameterChunkBase : public StateChunk {
+ private:
+  typedef StateChunk Inherited;
 
-    typedef StateChunk    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef ShaderParameterChunkPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum { ParametersFieldId = Inherited::NextFieldId, NextFieldId = ParametersFieldId + 1 };
 
-    typedef ShaderParameterChunkPtr  Ptr;
+  static const OSG::BitVector ParametersFieldMask;
 
-    enum
-    {
-        ParametersFieldId = Inherited::NextFieldId,
-        NextFieldId       = ParametersFieldId + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector ParametersFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  MFShaderParameterPtr* getMFParameters(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  ShaderParameterPtr&         getParameters(const UInt32 index);
+  MFShaderParameterPtr&       getParameters(void);
+  const MFShaderParameterPtr& getParameters(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           MFShaderParameterPtr *getMFParameters     (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-           ShaderParameterPtr  &getParameters     (const UInt32 index);
-           MFShaderParameterPtr &getParameters     (void);
-     const MFShaderParameterPtr &getParameters     (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  MFShaderParameterPtr _mfParameters;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  ShaderParameterChunkBase(void);
+  ShaderParameterChunkBase(const ShaderParameterChunkBase& source);
 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  virtual ~ShaderParameterChunkBase(void);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
-
-    MFShaderParameterPtr   _mfParameters;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    ShaderParameterChunkBase(void);
-    ShaderParameterChunkBase(const ShaderParameterChunkBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~ShaderParameterChunkBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      ShaderParameterChunkBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(ShaderParameterChunkBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      ShaderParameterChunkBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      ShaderParameterChunkBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const ShaderParameterChunkBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const ShaderParameterChunkBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef ShaderParameterChunkBase* ShaderParameterChunkBaseP;
 
-typedef ShaderParameterChunkBase *ShaderParameterChunkBaseP;
-
-typedef osgIF<ShaderParameterChunkBase::isNodeCore,
-              CoredNodePtr<ShaderParameterChunk>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet ShaderParameterChunkNodePtr;
+typedef osgIF<ShaderParameterChunkBase::isNodeCore, CoredNodePtr<ShaderParameterChunk>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet
+    ShaderParameterChunkNodePtr;
 
 typedef RefPtr<ShaderParameterChunkPtr> ShaderParameterChunkRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGSHADERPARAMETERCHUNKBASE_HEADER_CVSID "@(#)$Id: OSGShaderParameterChunkBase.h,v 1.6 2006/02/20 17:04:38 dirk Exp $"
+#define OSGSHADERPARAMETERCHUNKBASE_HEADER_CVSID                                                   \
+  "@(#)$Id: OSGShaderParameterChunkBase.h,v 1.6 2006/02/20 17:04:38 dirk Exp $"
 
 #endif /* _OSGSHADERPARAMETERCHUNKBASE_H_ */

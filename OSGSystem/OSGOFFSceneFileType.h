@@ -38,8 +38,8 @@
 
 #ifndef _OSGOFFSCENEFILETYPE_H_
 #define _OSGOFFSCENEFILETYPE_H_
-#ifdef  __sgi
-#pragma  once
+#ifdef __sgi
+#pragma once
 #endif
 
 #include <OSGBaseTypes.h>
@@ -49,79 +49,72 @@
 OSG_BEGIN_NAMESPACE
 
 /*! \brief OSGOFFSceneFileType
-*/
+ */
 
-class OSG_SYSTEMLIB_DLLMAPPING OFFSceneFileType : public SceneFileType
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING OFFSceneFileType : public SceneFileType {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Class Get                                  */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Class Get                                  */
-    /*! \{                                                                 */
+  static OFFSceneFileType& the(void);
 
-    static OFFSceneFileType &the(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  virtual ~OFFSceneFileType(void);
 
-    virtual ~OFFSceneFileType(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Get                                        */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Get                                        */
-    /*! \{                                                                 */
+  virtual const Char8* getName(void) const;
 
-    virtual const Char8 *getName(void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Read                                       */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Read                                       */
-    /*! \{                                                                 */
+  virtual NodePtr read(std::istream& is, const Char8* fileNameOrExtension) const;
 
-    virtual NodePtr read(std::istream &is,
-                         const Char8 *fileNameOrExtension) const;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Member                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  static const Char8*     _suffixA[];
+  static OFFSceneFileType _the;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Member                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    static const Char8            *_suffixA[];
-    static       OFFSceneFileType  _the;
+  OFFSceneFileType(const Char8* suffixArray[], UInt16 suffixByteCount, bool override,
+      UInt32 overridePriority, UInt32 flags);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  OFFSceneFileType(const OFFSceneFileType& obj);
 
-    OFFSceneFileType(const Char8  *suffixArray[],
-                           UInt16  suffixByteCount,
-                           bool    override,
-                           UInt32  overridePriority,
-                           UInt32  flags);
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  typedef SceneFileType Inherited;
 
-    OFFSceneFileType(const OFFSceneFileType &obj);
-
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
-
-    typedef SceneFileType Inherited;
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const OFFSceneFileType &source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const OFFSceneFileType& source);
 };
 
 typedef OFFSceneFileType* OFFSceneFileTypeP;
 
 OSG_END_NAMESPACE
 
-#define OSGOFFSCENEFILETYPE_HEADER_CVSID "@(#)$Id: OSGOFFSceneFileType.h,v 1.4 2001/10/08 05:21:54 vossg Exp $"
+#define OSGOFFSCENEFILETYPE_HEADER_CVSID                                                           \
+  "@(#)$Id: OSGOFFSceneFileType.h,v 1.4 2001/10/08 05:21:54 vossg Exp $"
 
 #endif // _OSGOFFSCENEFILETYPE_H_

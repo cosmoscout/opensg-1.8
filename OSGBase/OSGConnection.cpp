@@ -73,38 +73,31 @@ OSG_USING_NAMESPACE
 /*! Constructor
  */
 
-Connection::Connection(int zeroCopyThreshold):
-    BinaryDataHandler(zeroCopyThreshold),
-    _interface("")
-{
+Connection::Connection(int zeroCopyThreshold)
+    : BinaryDataHandler(zeroCopyThreshold)
+    , _interface("") {
 }
 
 /*! Destructor
  */
 
-Connection::~Connection(void)
-{
+Connection::~Connection(void) {
 }
 
 /*! set connections parameters, a comma separated list e.g. "TTL=255"
  */
-void Connection::setParams(const std::string &OSG_CHECK_ARG(params))
-{
-    // do nothing this is implemented in the derived classes e.g. OSGGroupMCastConnection.cpp
+void Connection::setParams(const std::string& OSG_CHECK_ARG(params)) {
+  // do nothing this is implemented in the derived classes e.g. OSGGroupMCastConnection.cpp
 }
 
 /*! get network interface
  */
-const std::string &Connection::getInterface(void)
-{
-    return _interface;
+const std::string& Connection::getInterface(void) {
+  return _interface;
 }
 
 /*! set network interface
  */
-void Connection::setInterface(const std::string &interf)
-{
-    _interface = interf;
+void Connection::setInterface(const std::string& interf) {
+  _interface = interf;
 }
-
-

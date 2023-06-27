@@ -44,5 +44,5 @@ OSG_BEGIN_NAMESPACE
 
 OSG_END_NAMESPACE
 
-#define OSGMOVEMANIPULATOR_INLINE_CVSID "@(#)$Id: OSGMoveManipulator.inl,v 1.1 2005/06/26 12:44:40 a-m-z Exp $"
-
+#define OSGMOVEMANIPULATOR_INLINE_CVSID                                                            \
+  "@(#)$Id: OSGMoveManipulator.inl,v 1.1 2005/06/26 12:44:40 a-m-z Exp $"

@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGGRADIENTBACKGROUNDBASE_H_
 #define _OSGGRADIENTBACKGROUNDBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -68,8 +66,8 @@
 #include <OSGBackground.h> // Parent
 
 #include <OSGColor3fFields.h> // Color type
-#include <OSGReal32Fields.h> // Position type
-#include <OSGInt32Fields.h> // ClearStencilBit type
+#include <OSGReal32Fields.h>  // Position type
+#include <OSGInt32Fields.h>   // ClearStencilBit type
 
 #include <OSGGradientBackgroundFields.h>
 
@@ -80,208 +78,187 @@ class BinaryDataHandler;
 
 //! \brief GradientBackground Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING GradientBackgroundBase : public Background
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING GradientBackgroundBase : public Background {
+ private:
+  typedef Background Inherited;
 
-    typedef Background    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef GradientBackgroundPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    ColorFieldId           = Inherited::NextFieldId,
+    PositionFieldId        = ColorFieldId + 1,
+    ClearStencilBitFieldId = PositionFieldId + 1,
+    NextFieldId            = ClearStencilBitFieldId + 1
+  };
 
-    typedef GradientBackgroundPtr  Ptr;
+  static const OSG::BitVector ColorFieldMask;
+  static const OSG::BitVector PositionFieldMask;
+  static const OSG::BitVector ClearStencilBitFieldMask;
 
-    enum
-    {
-        ColorFieldId           = Inherited::NextFieldId,
-        PositionFieldId        = ColorFieldId           + 1,
-        ClearStencilBitFieldId = PositionFieldId        + 1,
-        NextFieldId            = ClearStencilBitFieldId + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector ColorFieldMask;
-    static const OSG::BitVector PositionFieldMask;
-    static const OSG::BitVector ClearStencilBitFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFInt32* getSFClearStencilBit(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  Int32&       getClearStencilBit(void);
+  const Int32& getClearStencilBit(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFInt32             *getSFClearStencilBit(void);
+  void setClearStencilBit(const Int32& value);
 
-           Int32               &getClearStencilBit(void);
-     const Int32               &getClearStencilBit(void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setClearStencilBit( const Int32 &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static GradientBackgroundPtr create(void);
+  static GradientBackgroundPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  GradientBackgroundPtr      create          (void); 
-    static  GradientBackgroundPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  MFColor3f _mfColor;
+  MFReal32  _mfPosition;
+  SFInt32   _sfClearStencilBit;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  GradientBackgroundBase(void);
+  GradientBackgroundBase(const GradientBackgroundBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~GradientBackgroundBase(void);
 
-    MFColor3f           _mfColor;
-    MFReal32            _mfPosition;
-    SFInt32             _sfClearStencilBit;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  MFColor3f* getMFColor(void);
+  MFReal32*  getMFPosition(void);
 
-    GradientBackgroundBase(void);
-    GradientBackgroundBase(const GradientBackgroundBase &source);
+  Color3f&         getColor(UInt32 index);
+  MFColor3f&       getColor(void);
+  const MFColor3f& getColor(void) const;
+  Real32&          getPosition(UInt32 index);
+  MFReal32&        getPosition(void);
+  const MFReal32&  getPosition(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-    virtual ~GradientBackgroundBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
-
-           MFColor3f           *getMFColor          (void);
-           MFReal32            *getMFPosition       (void);
-
-           Color3f             &getColor          (UInt32 index);
-           MFColor3f           &getColor          (void);
-     const MFColor3f           &getColor          (void) const;
-           Real32              &getPosition       (UInt32 index);
-           MFReal32            &getPosition       (void);
-     const MFReal32            &getPosition       (void) const;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
-
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      GradientBackgroundBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(GradientBackgroundBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      GradientBackgroundBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      GradientBackgroundBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const GradientBackgroundBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const GradientBackgroundBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef GradientBackgroundBase* GradientBackgroundBaseP;
 
-typedef GradientBackgroundBase *GradientBackgroundBaseP;
-
-typedef osgIF<GradientBackgroundBase::isNodeCore,
-              CoredNodePtr<GradientBackground>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet GradientBackgroundNodePtr;
+typedef osgIF<GradientBackgroundBase::isNodeCore, CoredNodePtr<GradientBackground>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet
+    GradientBackgroundNodePtr;
 
 typedef RefPtr<GradientBackgroundPtr> GradientBackgroundRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGGRADIENTBACKGROUNDBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGGRADIENTBACKGROUNDBASE_HEADER_CVSID                                                     \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGGRADIENTBACKGROUNDBASE_H_ */

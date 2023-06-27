@@ -1,4 +1,5 @@
-/* Builds/i686-pc-cygwin-cl.net2003-ms_stl/Base/OSGConfigured.h.  Generated automatically by configure.  */
+/* Builds/i686-pc-cygwin-cl.net2003-ms_stl/Base/OSGConfigured.h.  Generated automatically by
+ * configure.  */
 /*---------------------------------------------------------------------------*\
  *                                OpenSG                                     *
  *                                                                           *
@@ -29,7 +30,7 @@
 #ifndef _OSGCONFIGURED_H_
 #define _OSGCONFIGURED_H_
 
-#if defined (OSG_USE_WINTHREADS)
+#if defined(OSG_USE_WINTHREADS)
 #define OSG_ASPECT_USE_LOCALSTORAGE 1
 /* #undef OSG_ASPECT_USE_DECLSPEC */
 #endif
@@ -39,14 +40,14 @@
 #endif
 
 #define OSG_DEFAULT_LOG_LEVEL LOG_WARNING
-#define OSG_DEFAULT_LOG_TYPE LOG_STDERR 
+#define OSG_DEFAULT_LOG_TYPE LOG_STDERR
 
 #ifndef OSG_DEFAULT_LOG_LEVEL
-#    define OSG_DEFAULT_LOG_LEVEL LOG_WARNING
+#define OSG_DEFAULT_LOG_LEVEL LOG_WARNING
 #endif
 
 #ifndef OSG_DEFAULT_LOG_TYPE
-#    define OSG_DEFAULT_LOG_TYPE LOG_STDERR 
+#define OSG_DEFAULT_LOG_TYPE LOG_STDERR
 #endif
 
 //#define OSG_DISABLE_DEPRECATED 1
@@ -61,21 +62,21 @@
 
 /* #undef OSG_NO_GLUT_GLSUBDIR */
 
-#if defined(WIN32) && ! defined(__ICL)
-#pragma warning( disable : 4786 4661 4305 )
+#if defined(WIN32) && !defined(__ICL)
+#pragma warning(disable : 4786 4661 4305)
 #endif
 
 /* #undef OSG_SGI_USE_PTHREAD */
 #define OSG_SGI_USE_SPROC 1
 
 #if defined(__sgi)
-#   if defined(OSG_SGI_USE_PTHREAD)
-#       define OSG_USE_PTHREADS
-#       define OSG_ASPECT_USE_PTHREADKEY
+#if defined(OSG_SGI_USE_PTHREAD)
+#define OSG_USE_PTHREADS
+#define OSG_ASPECT_USE_PTHREADKEY
 /* #       undef  OSG_USE_SPROC */
-#   else
-#       define OSG_USE_SPROC
-#   endif
+#else
+#define OSG_USE_SPROC
+#endif
 #endif
 
 /* #undef OSG_USE_MPATROL */
@@ -88,5 +89,3 @@
 /* #undef OSG_ICC_GNU_COMPAT */
 
 #endif
-
-

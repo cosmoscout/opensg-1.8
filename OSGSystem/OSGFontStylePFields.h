@@ -47,8 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
-
 #ifndef _OSGFONTSTYLEFIELDS_H_
 #define _OSGFONTSTYLEFIELDS_H_
 
@@ -80,156 +78,121 @@ using namespace std;
 
 OSG_BEGIN_NAMESPACE
 
-
 typedef FontStyle* FontStyleP;
 
-
-/*! \brief FontStyle field traits 
-*/
+/*! \brief FontStyle field traits
+ */
 
 template <>
-struct FieldDataTraits<FontStyleP> : 
-    public FieldTraitsRecurseBase<FontStyleP>
-{
-    static DataType       _type;
+struct FieldDataTraits<FontStyleP> : public FieldTraitsRecurseBase<FontStyleP> {
+  static DataType _type;
 
-    enum                  { StringConvertable = ToStringConvertable | 
-                                                FromStringConvertable    };
+  enum { StringConvertable = ToStringConvertable | FromStringConvertable };
 
-    static DataType       &getType      (void) { return _type;          }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static Char8          *getSName     (void) { return "SFFontStyleP"; }
-    static Char8          *getMName     (void) { return "MFFontStyleP"; }
+  static Char8* getSName(void) {
+    return "SFFontStyleP";
+  }
+  static Char8* getMName(void) {
+    return "MFFontStyleP";
+  }
 
-    static FontStyleP getDefault   (void) { return FontStyleP();   }
+  static FontStyleP getDefault(void) {
+    return FontStyleP();
+  }
 
-    static const FieldType &getScanAsTypeMF(void)
-    {
-        return SFString::getClassType();
+  static const FieldType& getScanAsTypeMF(void) {
+    return SFString::getClassType();
+  }
+
+  static const FieldType& getScanAsTypeSF(void) {
+    return MFString::getClassType();
+  }
+
+  static bool getFromString(FontStyleP& outVal, const Char8*& inVal) {
+    PathHandler paths;
+    paths.push_backPath(".");
+
+    istringstream buf(inVal);
+
+    Real32 fontSize;
+    string fontName;
+
+    buf >> fontSize >> fontName;
+
+    outVal = FontStyleFactory::the().create(paths, fontName.c_str(), fontSize);
+
+    if (outVal == NULL) {
+      cout << "************* getFromString: FontStyleFactory "
+           << "returned NULL, when trying to load font: " << inVal << endl;
+
+      exit(3);
+
+      return false;
     }
 
-    static const FieldType &getScanAsTypeSF(void)
-    {
-        return MFString::getClassType();
+    cout << " ************* getFromString in OSGFontStyleFields "
+         << "called successfully, loaded font: " << inVal << endl;
+
+    return true;
+  }
+
+  static void putToString(const FontStyleP& inVal, std::string& outVal) {
+    ostringstream buf;
+
+    buf << '\"' << inVal->getSize() << ' ' << inVal->getFontName() << '\"';
+
+    outVal = buf.str();
+  }
+
+  static UInt32 getBinSize(const FontStyleP& oObject) {
+    // AT: HIER WEITERMACHEN!
+
+    cout << "getBinSize in OSGFontStyleFields called with " << &oObject << endl;
+
+    return 0;
+
+    // return oObject.getBinSize();
+  }
+
+  static UInt32 getBinSize(const FontStyleP*, UInt32 uiNumObjects) {
+    return sizeof(FontStyleP) * uiNumObjects;
+  }
+
+  static void copyToBin(BinaryDataHandler& pMem, const FontStyleP& oObject) {
+
+    // AT: HIER WEITERMACHEN!
+    // oObject.copyToBin(pMem);
+    cout << "copyToBin in OSGFontStyleFields called with " << &pMem << " " << &oObject << endl;
+  }
+
+  static void copyToBin(
+      BinaryDataHandler& pMem, const FontStyleP* pObjectStore, UInt32 uiNumObjects) {
+    for (UInt32 i = 0; i < uiNumObjects; i++) {
+      copyToBin(pMem, pObjectStore[i]);
     }
+  }
 
-    static bool getFromString( FontStyleP  &outVal,
-							   const Char8 *&inVal)
-    {
-		PathHandler paths;
-		paths.push_backPath(".");
+  static void copyFromBin(BinaryDataHandler& pMem, FontStyleP& oObject) {
+    // AT: HIER WEITERMACHEN!
+    // oObject.copyFromBin(pMem);
+    cout << "copyFromBin in OSGFontStyleFields called" << &pMem << " " << &oObject << endl;
+  }
 
-		istringstream buf( inVal );
-
-		Real32 fontSize;
-		string fontName;
-
-		buf >> fontSize
-			>> fontName;
-
-		outVal = FontStyleFactory::the().create(paths, fontName.c_str(), fontSize);
-
-		if(outVal == NULL)
-		{
-			cout << "************* getFromString: FontStyleFactory "
-                 << "returned NULL, when trying to load font: " 
-				 << inVal 
-				 << endl;
-
-			exit(3);
-
-			return false;
-		}
-
-		cout << " ************* getFromString in OSGFontStyleFields "
-             << "called successfully, loaded font: " 
-			 << inVal 
-			 << endl;
-
-        return true;
+  static void copyFromBin(BinaryDataHandler& pMem, FontStyleP* pObjectStore, UInt32 uiNumObjects) {
+    for (UInt32 i = 0; i < uiNumObjects; i++) {
+      copyFromBin(pMem, pObjectStore[i]);
     }
-
-    static void putToString( const FontStyleP &inVal,
-							 std::string     &outVal )
-    {
-		ostringstream buf;
-		
-		buf << '\"' 
-			<< inVal->getSize()
-			<< ' '
-			<< inVal->getFontName()
-			<< '\"';
-
-		outVal = buf.str();
-    }
-    
-    static UInt32 getBinSize(const FontStyleP &oObject)
-    {
-		// AT: HIER WEITERMACHEN!
-
-		cout << "getBinSize in OSGFontStyleFields called with " 
-             << &oObject << endl;
-
-		return 0;
-
-        //return oObject.getBinSize();
-    }
-
-    static UInt32 getBinSize(const FontStyleP *,
-                                   UInt32      uiNumObjects)
-    {
-        return sizeof(FontStyleP) * uiNumObjects;
-    }
-
-    static void copyToBin(      BinaryDataHandler &pMem, 
-                          const FontStyleP        &oObject)
-    {
-	   
-		// AT: HIER WEITERMACHEN!
-		//oObject.copyToBin(pMem);
-		cout << "copyToBin in OSGFontStyleFields called with " 
-			 << &pMem 
-			 << " " 
-			 << &oObject 
-			 << endl;
-    }
-
-    static void copyToBin(      BinaryDataHandler &pMem, 
-                          const FontStyleP        *pObjectStore,
-                                UInt32             uiNumObjects)
-    {
-        for(UInt32 i = 0; i < uiNumObjects; i++)
-        {
-            copyToBin(pMem, pObjectStore[i]);
-        }
-    }
-
-    static void copyFromBin(BinaryDataHandler &pMem, 
-                            FontStyleP     &oObject)
-    {
-		// AT: HIER WEITERMACHEN!
-        //oObject.copyFromBin(pMem);
-		cout << "copyFromBin in OSGFontStyleFields called" 
-			 << &pMem 
-			 << " " 
-			 << &oObject << endl;
-    }
-
-    static void copyFromBin(BinaryDataHandler &pMem, 
-                            FontStyleP        *pObjectStore,
-                            UInt32             uiNumObjects)
-    {
-        for(UInt32 i = 0; i < uiNumObjects; i++)
-        {
-            copyFromBin(pMem, pObjectStore[i]);
-        }
-    }
+  }
 };
 
 /*! \brief FontStyleP fields
-*/
+ */
 
- //! SFFontStyleP
+//! SFFontStyleP
 //! \ingroup SingleFields
 
 typedef SField<FontStyleP> SFFontStyleP;
@@ -238,7 +201,6 @@ typedef SField<FontStyleP> SFFontStyleP;
 OSG_DLLEXPORT_DECL1(SField, FontStyleP, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 OSG_DLLEXPORT_DECL1(MField, FontStyleP, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 #endif
-
 
 OSG_END_NAMESPACE
 

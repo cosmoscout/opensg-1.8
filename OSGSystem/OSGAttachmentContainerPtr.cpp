@@ -55,57 +55,36 @@ OSG_USING_NAMESPACE
 /*-------------------------------------------------------------------------*/
 /*                            Constructors                                 */
 
-AttachmentContainerPtr::AttachmentContainerPtr(
-    const AttachmentContainer &source) :
+AttachmentContainerPtr::AttachmentContainerPtr(const AttachmentContainer& source)
+    :
 
-    Inherited(source)
-{
+    Inherited(source) {
+}
+
+AttachmentContainerPtr::AttachmentContainerPtr(const AttachmentContainer* source)
+    :
+
+    Inherited(source) {
 }
 
 AttachmentContainerPtr::AttachmentContainerPtr(
-    const AttachmentContainer *source) :
+    const AttachmentContainer* source, const UInt16 uiSize, const UInt16 uiParentPos)
+    :
 
-    Inherited(source)
-{
-}
-
-AttachmentContainerPtr::AttachmentContainerPtr(
-    const AttachmentContainer *source,
-    const UInt16               uiSize,
-    const UInt16               uiParentPos) :
-
-    Inherited(source, uiSize, uiParentPos)
-{
+    Inherited(source, uiSize, uiParentPos) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                               Functions                                 */
 
 OSG_SYSTEMLIB_DLLMAPPING
-std::ostream &OSG::operator <<(      std::ostream            &os,
-                               const AttachmentContainerPtr  &fc)
-{
-    if(fc == NullFC)
-    {
-        os << std::hex << "NodePtr 0x" << &fc << std::dec << ":NullFC";
-    }
-    else
-    {
-        os << std::hex 
-           << "NodePtr 0x"
-           << &fc 
-           << std::dec
-           << ":" 
-           << fc->getType().getName() 
-           << "Ptr(0x"
-           << std::hex
-           << (&(*fc))
-           << std::dec
-           << ")";
-    }
+std::ostream& OSG::operator<<(std::ostream& os, const AttachmentContainerPtr& fc) {
+  if (fc == NullFC) {
+    os << std::hex << "NodePtr 0x" << &fc << std::dec << ":NullFC";
+  } else {
+    os << std::hex << "NodePtr 0x" << &fc << std::dec << ":" << fc->getType().getName() << "Ptr(0x"
+       << std::hex << (&(*fc)) << std::dec << ")";
+  }
 
-    return os;
+  return os;
 }
-
-
-

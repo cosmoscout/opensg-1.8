@@ -40,9 +40,8 @@
 #define _OSGTEXTTXFFACE_H_
 
 #ifdef _MSC_VER
-# pragma once
+#pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -59,14 +58,11 @@
 #include <map>
 #include <iosfwd>
 
-
 OSG_BEGIN_NAMESPACE
-
 
 class TextTXFGlyph;
 class TextLayoutParam;
 class TextLayoutResult;
-
 
 /**
  * Represents a TXF face. A TXF face is a texture containing a set of
@@ -117,215 +113,205 @@ class TextLayoutResult;
  *
  * @author Patrick D&auml;hne
  */
-class OSG_SYSTEMLIB_DLLMAPPING TextTXFFace: public TextFace
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING TextTXFFace : public TextFace {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /**
+   * Returns the scaling factor.
+   * @return The scaling factor
+   */
+  inline Real32 getScale() const;
 
-    /**
-     * Returns the scaling factor.
-     * @return The scaling factor
-     */
-    inline Real32 getScale() const;
+  /**
+   * Returns the parameters of the face.
+   * @return The parameters.
+   */
+  inline const TextTXFParam& getParam() const;
 
-    /**
-     * Returns the parameters of the face.
-     * @return The parameters.
-     */
-    inline const TextTXFParam &getParam() const;
+  /**
+   * Returns the texture that contains all glyphs.
+   * @return The texture. Do not modify this texture in
+   * any way!
+   */
+  inline ImagePtr getTexture() const;
 
-    /**
-     * Returns the texture that contains all glyphs.
-     * @return The texture. Do not modify this texture in
-     * any way!
-     */
-    inline ImagePtr getTexture() const;
+  /**
+   * Returns information about a glyph.
+   * @param glyphIndex The index of the glyph. Use the layout method
+   * to get the glyph indices corresponding to a character string.
+   * @return A glyph object containing information about the glyph.
+   */
+  virtual const TextGlyph& getGlyph(TextGlyph::Index glyphIndex);
 
-    /**
-     * Returns information about a glyph.
-     * @param glyphIndex The index of the glyph. Use the layout method
-     * to get the glyph indices corresponding to a character string.
-     * @return A glyph object containing information about the glyph.
-     */
-    virtual const TextGlyph &getGlyph(TextGlyph::Index glyphIndex);
+  /**
+   * Returns information about a glyph.
+   * @param glyphIndex The index of the glyph. Use the layout method
+   * to get the glyph indices corresponding to a character string.
+   * @return A glyph object containing information about the glyph.
+   */
+  const TextTXFGlyph& getTXFGlyph(TextGlyph::Index glyphIndex);
 
-    /**
-     * Returns information about a glyph.
-     * @param glyphIndex The index of the glyph. Use the layout method
-     * to get the glyph indices corresponding to a character string.
-     * @return A glyph object containing information about the glyph.
-     */
-    const TextTXFGlyph &getTXFGlyph(TextGlyph::Index glyphIndex);
+  /**
+   * Lays out one line of text.
+   * @param utf8Text The UTF8 encoded text.
+   * @param param Contains parameters that affect the layout process.
+   * @param result Gets filled with the layout results.
+   */
+  virtual void layout(
+      const std::string& utf8Text, const TextLayoutParam& param, TextLayoutResult& result);
 
-    /**
-     * Lays out one line of text.
-     * @param utf8Text The UTF8 encoded text.
-     * @param param Contains parameters that affect the layout process.
-     * @param result Gets filled with the layout results.
-     */
-    virtual void layout(const std::string &utf8Text,
-                        const TextLayoutParam &param,
-                        TextLayoutResult &result);
+  /**
+   * Lays out one line of text.
+   * @param text The text.
+   * @param param Contains parameters that affect the layout process.
+   * @param result Gets filled with the layout results.
+   */
+  virtual void layout(
+      const std::wstring& text, const TextLayoutParam& param, TextLayoutResult& result);
 
-    /**
-     * Lays out one line of text.
-     * @param text The text.
-     * @param param Contains parameters that affect the layout process.
-     * @param result Gets filled with the layout results.
-     */
-    virtual void layout(const std::wstring &text,
-                        const TextLayoutParam &param,
-                        TextLayoutResult &result);
+  /**
+   * Lays out multiple lines of text.
+   * @param lines The vector of UTF8 encoded lines.
+   * @param param Contains parameters that affect the layout process.
+   * @param result Gets filled with the layout results.
+   */
+  virtual void layout(const std::vector<std::string>& lines, const TextLayoutParam& param,
+      TextLayoutResult& result);
 
-    /**
-     * Lays out multiple lines of text.
-     * @param lines The vector of UTF8 encoded lines.
-     * @param param Contains parameters that affect the layout process.
-     * @param result Gets filled with the layout results.
-     */
-    virtual void layout(const std::vector<std::string> &lines,
-                        const TextLayoutParam &param,
-                        TextLayoutResult &result);
+  /**
+   * Lays out multiple lines of text.
+   * @param lines The vector of text lines.
+   * @param param Contains parameters that affect the layout process.
+   * @param result Gets filled with the layout results.
+   */
+  virtual void layout(const std::vector<std::wstring>& lines, const TextLayoutParam& param,
+      TextLayoutResult& result);
 
-    /**
-     * Lays out multiple lines of text.
-     * @param lines The vector of text lines.
-     * @param param Contains parameters that affect the layout process.
-     * @param result Gets filled with the layout results.
-     */
-    virtual void layout(const std::vector<std::wstring> &lines,
-                        const TextLayoutParam &param,
-                        TextLayoutResult &result);
+  /**
+   * Fills a geometry with a new text.
+   * @param geoPtr The geometry that gets filled with the new text.
+   * @param layoutResult The result of a layout operation.
+   * @param scale The size of the glyphs.
+   * @param offset Amount to offset the positions in the layout.
+   * @param color  The color to use for the text.  If not specified, then we will not add color
+   * container.
+   */
+  void fillGeo(GeometryPtr& geoPtr, const TextLayoutResult& layoutResult, Real32 scale = 1.f,
+      Vec2f offset = Vec2f(0, 0), Color3f color = Color3f(-1, -1, -1));
 
-    /**
-     * Fills a geometry with a new text.
-     * @param geoPtr The geometry that gets filled with the new text.
-     * @param layoutResult The result of a layout operation.
-     * @param scale The size of the glyphs.
-     * @param offset Amount to offset the positions in the layout.
-     * @param color  The color to use for the text.  If not specified, then we will not add color container.
-     */
-    void fillGeo(GeometryPtr &geoPtr, const TextLayoutResult &layoutResult, Real32 scale = 1.f,
-                 Vec2f offset = Vec2f(0,0), Color3f color = Color3f(-1,-1,-1));
+  /**
+   * Adds geometry for new text to an existing text geometry.
+   * @param geoPtr The geometry that gets filled with the new text.
+   * @param layoutResult The result of a layout operation.
+   * @param scale The size of the glyphs.
+   * @param offset Amount to offset the positions in the layout.
+   * @param color  The color to use for the text.
+   * @note  Iff initial fill or add call used non-default color, the color parameter will be used.
+   */
+  void addToGeom(GeometryPtr& geoPtr, const TextLayoutResult& layoutResult, Real32 scale = 1.f,
+      Vec2f offset = Vec2f(0, 0), Color3f color = Color3f(-1, -1, -1));
 
-    /**
-     * Adds geometry for new text to an existing text geometry.
-     * @param geoPtr The geometry that gets filled with the new text.
-     * @param layoutResult The result of a layout operation.
-     * @param scale The size of the glyphs.
-     * @param offset Amount to offset the positions in the layout.
-     * @param color  The color to use for the text.
-     * @note  Iff initial fill or add call used non-default color, the color parameter will be used.
-     */
-    void addToGeom(GeometryPtr &geoPtr, const TextLayoutResult &layoutResult, Real32 scale = 1.f,
-                 Vec2f offset = Vec2f(0,0), Color3f color = Color3f(-1,-1,-1));
+  /**
+   * Creates a new text geometry.
+   * @param layoutResult The result of a layout operation.
+   * @param scale The size of the glyphs.
+   * @param offset Amount to offset the positions in the layout.
+   * @param color  The color to use for the text.
+   * @return A new text geometry.
+   */
+  GeometryPtr makeGeo(const TextLayoutResult& layoutResult, Real32 scale = 1.f,
+      Vec2f offset = Vec2f(0, 0), Color3f color = Color3f(-1, -1, -1));
 
-    /**
-     * Creates a new text geometry.
-     * @param layoutResult The result of a layout operation.
-     * @param scale The size of the glyphs.
-     * @param offset Amount to offset the positions in the layout.
-     * @param color  The color to use for the text.
-     * @return A new text geometry.
-     */
-    GeometryPtr makeGeo(const TextLayoutResult &layoutResult, Real32 scale = 1.f,
-                        Vec2f offset = Vec2f(0,0), Color3f color = Color3f(-1,-1,-1));
+  /**
+   * Creates a new node with a text geometry.
+   * @param layoutResult The result of a layout operation.
+   * @param scale The size of the glyphs.
+   * @param offset Amount to offset the positions in the layout.
+   * @param color  The color to use for the text.
+   * @return A new node containing a text geometry.
+   */
+  NodePtr makeNode(const TextLayoutResult& layoutResult, Real32 scale = 1.f,
+      Vec2f offset = Vec2f(0, 0), Color3f color = Color3f(-1, -1, -1));
 
-    /**
-     * Creates a new node with a text geometry.
-     * @param layoutResult The result of a layout operation.
-     * @param scale The size of the glyphs.
-     * @param offset Amount to offset the positions in the layout.
-     * @param color  The color to use for the text.
-     * @return A new node containing a text geometry.
-     */
-    NodePtr makeNode(const TextLayoutResult &layoutResult, Real32 scale = 1.f,
-                     Vec2f offset = Vec2f(0,0), Color3f color = Color3f(-1,-1,-1));
+  /**
+   * Tries to create a TXF face.
+   * @param family The font family of the face (Arial, Courier etc.)
+   * @param style The style of the face (bold, italic etc.)
+   * @param param Parameters that affect the creation of the
+   * TXF face.
+   * @return The TXF face object or 0 in case of an error.
+   */
+  static TextTXFFace* create(const std::string& family, Style style = STYLE_PLAIN,
+      const TextTXFParam& param = TextTXFParam());
 
-    /**
-     * Tries to create a TXF face.
-     * @param family The font family of the face (Arial, Courier etc.)
-     * @param style The style of the face (bold, italic etc.)
-     * @param param Parameters that affect the creation of the
-     * TXF face.
-     * @return The TXF face object or 0 in case of an error.
-     */
-    static TextTXFFace *create(const std::string &family, Style style = STYLE_PLAIN,
-                               const TextTXFParam &param = TextTXFParam());
+  /**
+   * Reads a TXF face from an input stream.
+   * @param is The input stream.
+   * @return The TXF face or 0 in case of an error.
+   */
+  static TextTXFFace* createFromStream(
+      std::istream& is, const std::string& family = std::string(), Style style = STYLE_PLAIN);
 
-    /**
-     * Reads a TXF face from an input stream.
-     * @param is The input stream.
-     * @return The TXF face or 0 in case of an error.
-     */
-    static TextTXFFace *createFromStream(std::istream &is,
-                                         const std::string &family = std::string(),
-                                         Style style = STYLE_PLAIN);
+  /**
+   * Reads a TXF face from a file.
+   * @param filename The name of the TXF file.
+   * @return The TXF face or 0 in case of an error.
+   */
+  static TextTXFFace* createFromFile(const std::string& filename);
 
-    /**
-     * Reads a TXF face from a file.
-     * @param filename The name of the TXF file.
-     * @return The TXF face or 0 in case of an error.
-     */
-    static TextTXFFace *createFromFile(const std::string &filename);
+  /**
+   * Writes a TXF face to an output stream.
+   * @param is The output stream.
+   * @return false in case of an error.
+   */
+  bool writeToStream(std::ostream& os) const;
 
-    /**
-     * Writes a TXF face to an output stream.
-     * @param is The output stream.
-     * @return false in case of an error.
-     */
-    bool writeToStream(std::ostream &os) const;
+  /**
+   * Writes a TXF face to a TXF file.
+   * @param filename The name of the TXF file.
+   * @return false in case of an error.
+   */
+  bool writeToFile(const std::string& filename) const;
 
-    /**
-     * Writes a TXF face to a TXF file.
-     * @param filename The name of the TXF file.
-     * @return false in case of an error.
-     */
-    bool writeToFile(const std::string &filename) const;
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /** Creates a new %TextTXFFace object. */
+  inline TextTXFFace();
 
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /** Destroys the %TextTXFFace object. */
+  virtual ~TextTXFFace();
 
-    /** Creates a new %TextTXFFace object. */
-    inline TextTXFFace();
+  /** Calculates the positions of the glyphs on the texture */
+  void prepareTexture(const TextTXFParam& param);
 
-    /** Destroys the %TextTXFFace object. */
-    virtual ~TextTXFFace();
+  /** The scale factor used to scale font metrics */
+  Real32 _scale;
 
-    /** Calculates the positions of the glyphs on the texture */
-    void prepareTexture(const TextTXFParam &param);
+  /** The parameters of the face */
+  TextTXFParam _param;
 
-    /** The scale factor used to scale font metrics */
-    Real32 _scale;
+  /** The texture that contains all glyphs */
+  ImagePtr _texture;
 
-    /** The parameters of the face */
-    TextTXFParam _param;
+  /** Defines a map of glyphs */
+  typedef std::map<TextGlyph::Index, TextTXFGlyph*> GlyphMap;
 
-    /** The texture that contains all glyphs */
-    ImagePtr _texture;
+  /** The map of glyphs */
+  GlyphMap _glyphMap;
 
-    /** Defines a map of glyphs */
-    typedef std::map<TextGlyph::Index, TextTXFGlyph*> GlyphMap;
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /** Copy constructor (not implemented!) */
+  TextTXFFace(const TextTXFFace&);
 
-    /** The map of glyphs */
-    GlyphMap _glyphMap;
+  /** Copy operator (not implemented!) */
+  const TextTXFFace& operator=(const TextTXFFace&);
 
-    /*==========================  PRIVATE  ================================*/
-  private:
-
-    /** Copy constructor (not implemented!) */
-    TextTXFFace(const TextTXFFace &);
-
-    /** Copy operator (not implemented!) */
-    const TextTXFFace &operator=(const TextTXFFace &);
-
-    /** An empty glyph */
-    static TextTXFGlyph _emptyGlyph;
+  /** An empty glyph */
+  static TextTXFGlyph _emptyGlyph;
 };
 
-
 OSG_END_NAMESPACE
-
 
 #include <OSGTextTXFFace.inl>
 

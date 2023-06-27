@@ -62,95 +62,72 @@ OSG_BEGIN_NAMESPACE
 #endif
 
 template <>
-struct FieldTraitsRecurseMapper<FieldContainerPtr, false> : 
-    public FieldTraitsRecurseBase<FieldContainerPtr>
-{
-    enum                    { bHasParent = 0x00       };
+struct FieldTraitsRecurseMapper<FieldContainerPtr, false>
+    : public FieldTraitsRecurseBase<FieldContainerPtr> {
+  enum { bHasParent = 0x00 };
 
-    static UInt32 getBinSize(const FieldContainerPtr &)
-    {
-        return sizeof(UInt32);
+  static UInt32 getBinSize(const FieldContainerPtr&) {
+    return sizeof(UInt32);
+  }
+
+  static UInt32 getBinSize(const FieldContainerPtr*, UInt32 uiNumObjects) {
+    return sizeof(UInt32) * uiNumObjects;
+  }
+
+  static void copyToBin(BinaryDataHandler& pMem, const FieldContainerPtr& pObject) {
+    UInt32 fcId;
+
+    if (pObject == NullFC) {
+      // fcId=0 indicates an Null Ptr
+      fcId = 0;
+    } else {
+      fcId = pObject.getFieldContainerId();
     }
 
-    static UInt32 getBinSize(const FieldContainerPtr *,
-                                   UInt32             uiNumObjects)
-    {
-        return sizeof(UInt32) * uiNumObjects;
+    pMem.putValue(fcId);
+  }
+
+  static void copyToBin(
+      BinaryDataHandler& pMem, const FieldContainerPtr* pObjectStore, UInt32 uiNumObjects) {
+    for (UInt32 i = 0; i < uiNumObjects; i++) {
+      copyToBin(pMem, pObjectStore[i]);
     }
+  }
 
-    static void copyToBin(      BinaryDataHandler &pMem, 
-                          const FieldContainerPtr &pObject)
-    {
-        UInt32 fcId;
+  static void copyFromBin(BinaryDataHandler& pMem, FieldContainerPtr& pObject) {
+    UInt32 fcId;
 
-        if(pObject==NullFC)
-        {
-            // fcId=0 indicates an Null Ptr
-            fcId = 0;
-        }
-        else
-        {
-            fcId = pObject.getFieldContainerId();
-        }
+    pMem.getValue(fcId);
 
-        pMem.putValue(fcId);
+    if (0 != fcId) {
+      pObject = FieldContainerFactory::the()->getMappedContainer(fcId);
+    } else {
+      pObject = NullFC;
     }
+  }
 
-    static void copyToBin(      BinaryDataHandler &pMem, 
-                          const FieldContainerPtr *pObjectStore,
-                                UInt32             uiNumObjects)
-    {
-        for(UInt32 i = 0; i < uiNumObjects; i++)
-        {
-            copyToBin(pMem, pObjectStore[i]);
-        }
+  static void copyFromBin(
+      BinaryDataHandler& pMem, FieldContainerPtr* pObjectStore, UInt32 uiNumObjects) {
+    for (UInt32 i = 0; i < uiNumObjects; i++) {
+      copyFromBin(pMem, pObjectStore[i]);
     }
+  }
 
-    static void copyFromBin(BinaryDataHandler &pMem, 
-                            FieldContainerPtr &pObject)
-    {
-        UInt32 fcId;
+  static bool getFromString(
+      FieldContainerPtr& OSG_CHECK_ARG(outVal), const Char8*& OSG_CHECK_ARG(inVal)) {
+    // TO_BE_DONE
+    return false;
+  }
 
-        pMem.getValue(fcId);
+  static void putToString(const FieldContainerPtr& inVal, std::string& outVal) {
+    typedef TypeTraits<UInt16> TypeTrait;
 
-        if(0 != fcId)
-        {
-            pObject = FieldContainerFactory::the()->getMappedContainer(fcId);
-        }
-        else
-        {
-            pObject = NullFC;
-        }
-    }
+    Char8 buffer[15];
 
-    static void copyFromBin(BinaryDataHandler &pMem, 
-                            FieldContainerPtr *pObjectStore,
-                            UInt32             uiNumObjects)
-    {
-        for(UInt32 i = 0; i < uiNumObjects; i++)
-        {
-            copyFromBin(pMem, pObjectStore[i]);
-        }
-    }
+    sprintf(buffer, "%p", inVal.getBaseCPtr());
 
-    static bool      getFromString(FieldContainerPtr& OSG_CHECK_ARG(outVal),
-                                   const Char8     *& OSG_CHECK_ARG(inVal ) )
-    {
-        //TO_BE_DONE
-        return false;
-    }
-    
-    static void      putToString  (const FieldContainerPtr &inVal,
-                                         std::string       &outVal)
-    {
-        typedef TypeTraits<UInt16> TypeTrait;
-
-        Char8 buffer[15];
-
-        sprintf(buffer, "%p", inVal.getBaseCPtr());
-
-        outVal = buffer;
-    }
+    outVal = buffer;
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -165,17 +142,22 @@ struct FieldTraitsRecurseMapper<FieldContainerPtr, false> :
 #endif
 
 template <>
-struct OSG_SYSTEMLIB_DLLMAPPING FieldDataTraits<FieldContainerPtr> : 
-    public FieldTraitsRecurseMapper<FieldContainerPtr, false>
-{
-    static DataType                 _type;
+struct OSG_SYSTEMLIB_DLLMAPPING FieldDataTraits<FieldContainerPtr>
+    : public FieldTraitsRecurseMapper<FieldContainerPtr, false> {
+  static DataType _type;
 
-    enum                            { StringConvertable = ToStringConvertable};
+  enum { StringConvertable = ToStringConvertable };
 
-    static DataType &getType (void) { return _type;                          }
- 
-    static char     *getSName(void) { return "SFFieldContainerPtr";          }
-    static char     *getMName(void) { return "MFFieldContainerPtr";          }
+  static DataType& getType(void) {
+    return _type;
+  }
+
+  static char* getSName(void) {
+    return "SFFieldContainerPtr";
+  }
+  static char* getMName(void) {
+    return "MFFieldContainerPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -190,10 +172,3 @@ OSG_END_NAMESPACE
 #define OSGFIELDCONTAINERFIELDDATATYPE_HEADER_CVSID "@(#)$Id: $"
 
 #endif /* _OSG_FIELDCONTAINERDATATYPE_H_ */
-
-
-
-
-
-
-

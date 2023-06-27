@@ -5,45 +5,41 @@
 #include <OSGBaseTypes.h>
 #include <OSGSystemDef.h>
 
-OSG_BEGIN_NAMESPACE 
+OSG_BEGIN_NAMESPACE
 
-class OSG_SYSTEMLIB_DLLMAPPING FontGlyph
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING FontGlyph {
+ private:
+  FontGlyph(const FontGlyph& obj);
+  void operator=(const FontGlyph& obj);
 
-    FontGlyph(const FontGlyph &obj);
-    void operator =(const FontGlyph &obj);
+ protected:
+  bool   _valid;
+  Int32  _asciiCode;
+  Int32  _uniCode;
+  Real32 _size;
 
-  protected:
+ public:
+  FontGlyph(void);
+  FontGlyph(Int32 ascii, Int32 unicode);
 
-    bool            _valid;
-    Int32           _asciiCode;
-    Int32           _uniCode;
-    Real32          _size;
-  
-  public:
+  virtual ~FontGlyph(void);
 
-    FontGlyph(void);
-    FontGlyph(Int32 ascii, Int32 unicode);
+  virtual bool create(void) = 0;
+  virtual bool clear(void)  = 0;
 
-    virtual ~FontGlyph(void);
+  virtual bool isValid(void);
+  virtual void setInvalid(void);
 
-    virtual bool   create(void) = 0;
-    virtual bool   clear(void) = 0;
+  virtual Int32 getAsciiCode(void);
+  virtual void  setAsciiCode(Int32 asciiCode);
 
-    virtual bool   isValid     (void            );
-    virtual void   setInvalid  (void            );
+  virtual Int32 getUniCode(void);
+  virtual void  setUniCode(Int32 uniCode);
 
-    virtual Int32  getAsciiCode(void            );
-    virtual void   setAsciiCode(Int32  asciiCode);
-
-    virtual Int32  getUniCode  (void            );
-    virtual void   setUniCode  (Int32  uniCode  );
-
-    virtual void   setSize     (Real32 size     );
-    virtual Real32 getSize     (void            );
+  virtual void   setSize(Real32 size);
+  virtual Real32 getSize(void);
 };
 
-OSG_END_NAMESPACE 
+OSG_END_NAMESPACE
 
 #endif // GLYPH_H_

@@ -51,132 +51,117 @@
 
 OSG_BEGIN_NAMESPACE
 
-class OSG_SYSTEMLIB_DLLMAPPING ImageComposer : public ImageComposerBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING ImageComposer : public ImageComposerBase {
+ private:
+  typedef ImageComposerBase Inherited;
 
-    typedef ImageComposerBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name      setup                                                   */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  void setup(
+      bool isClient, UInt32 clusterId, WindowPtr localWindow, ClusterWindowPtr clusterWindow);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name      setup                                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name      composition                                             */
+  /*! \{                                                                 */
 
-    void setup(bool             isClient,
-               UInt32           clusterId,
-               WindowPtr        localWindow, 
-               ClusterWindowPtr clusterWindow);
+  virtual void open(void);
+  virtual void startFrame(void);
+  virtual void startViewport(ViewportPtr port);
+  virtual void composeViewport(ViewportPtr port);
+  virtual void composeWindow(void);
+  virtual void close(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name      composition                                             */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name      features                                                */
+  /*! \{                                                                 */
 
-    virtual void open           ( void             );
-    virtual void startFrame     ( void             );
-    virtual void startViewport  ( ViewportPtr port );
-    virtual void composeViewport( ViewportPtr port );
-    virtual void composeWindow  ( void             );
-    virtual void close          ( void             );
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name      features                                                */
-    /*! \{                                                                 */
+  virtual bool   getClientRendering(void);
+  virtual UInt32 getUsableServers(void);
 
-    virtual bool   getClientRendering(void);
-    virtual UInt32 getUsableServers  (void);
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                  protected variables                         */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  bool             _isClient;
+  UInt32           _clusterId;
+  UInt32           _clusterSize;
+  UInt32           _serverCount;
+  WindowPtr        _localWindow;
+  ClusterWindowPtr _clusterWindow;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  protected variables                         */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  get                                         */
+  /*! \{                                                                 */
 
-    bool             _isClient;
-    UInt32           _clusterId;
-    UInt32           _clusterSize;
-    UInt32           _serverCount;
-    WindowPtr        _localWindow;
-    ClusterWindowPtr _clusterWindow;
+  bool             isClient(void);
+  UInt32           clusterId(void);
+  UInt32           clusterSize(void);
+  UInt32           serverCount(void);
+  WindowPtr        localWindow(void);
+  ClusterWindowPtr clusterWindow(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                  get                                         */
-    /*! \{                                                                 */
-    
-    bool             isClient     (void);
-    UInt32           clusterId    (void);
-    UInt32           clusterSize  (void);
-    UInt32           serverCount  (void);
-    WindowPtr        localWindow  (void);
-    ClusterWindowPtr clusterWindow(void);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  helpers                                     */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  helpers                                     */
-    /*! \{                                                                 */
+  bool getScreenAlignedBBox(NodePtr root, ViewportPtr vp, UInt32& l, UInt32& b, UInt32& r,
+      UInt32& t, UInt32& front, UInt32& back);
 
-    bool getScreenAlignedBBox(NodePtr        root,
-                              ViewportPtr    vp,
-                              UInt32        &l,
-                              UInt32        &b,
-                              UInt32        &r,
-                              UInt32        &t,
-                              UInt32        &front,
-                              UInt32        &back);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  ImageComposer(void);
+  ImageComposer(const ImageComposer& source);
 
-    ImageComposer(void);
-    ImageComposer(const ImageComposer &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  virtual ~ImageComposer(void);
 
-    virtual ~ImageComposer(void); 
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class ImageComposerBase;
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  static void initMethod(void);
 
-    friend class FieldContainer;
-    friend class ImageComposerBase;
+  // prohibit default functions (move to 'public' if you need one)
 
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const ImageComposer &source);
+  void operator=(const ImageComposer& source);
 };
 
-typedef ImageComposer *ImageComposerP;
+typedef ImageComposer* ImageComposerP;
 
 OSG_END_NAMESPACE
 

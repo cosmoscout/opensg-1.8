@@ -40,9 +40,8 @@
 #define _OSGTEXTTXFGLYPH_H_
 
 #ifdef _MSC_VER
-# pragma once
+#pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -50,206 +49,199 @@
 
 #include "OSGTextGlyph.h"
 
-
 OSG_BEGIN_NAMESPACE
-
 
 /**
  * Defines a TXF glyph.
  * @author Patrick D&auml;hne
  */
-class OSG_SYSTEMLIB_DLLMAPPING TextTXFGlyph: public TextGlyph
-{
+class OSG_SYSTEMLIB_DLLMAPPING TextTXFGlyph : public TextGlyph {
 
   /** Needs access to constructor */
   friend class TextTXFFace;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /** Destroys a %TextTXFGlyph object. */
+  virtual ~TextTXFGlyph();
 
-    /** Destroys a %TextTXFGlyph object. */
-    virtual ~TextTXFGlyph();
+  /**
+   * Returns the width of the glyph.
+   * @return The width of the glyph
+   */
+  virtual Real32 getWidth() const;
 
-    /**
-     * Returns the width of the glyph.
-     * @return The width of the glyph
-     */
-    virtual Real32 getWidth() const;
+  /**
+   * Returns the height of the glyph.
+   * @return The height of the glyph
+   */
+  virtual Real32 getHeight() const;
 
-    /**
-     * Returns the height of the glyph.
-     * @return The height of the glyph
-     */
-    virtual Real32 getHeight() const;
+  /**
+   * Returns the x bearing of the glyph for horizontal layout.
+   * The x bearing is the distance from the origin to the left
+   * border of the glyph.
+   * @return The x bearing of the glyph for horizontal layout
+   */
+  virtual Real32 getHoriBearingX() const;
 
-    /**
-     * Returns the x bearing of the glyph for horizontal layout.
-     * The x bearing is the distance from the origin to the left
-     * border of the glyph.
-     * @return The x bearing of the glyph for horizontal layout
-     */
-    virtual Real32 getHoriBearingX() const;
+  /**
+   * Returns the y bearing of the glyph for horizontal layout.
+   * The y bearing is the distance from the origin to the top
+   * border of the glyph.
+   * @return The y bearing of the glyph for horizontal layout
+   */
+  virtual Real32 getHoriBearingY() const;
 
-    /**
-     * Returns the y bearing of the glyph for horizontal layout.
-     * The y bearing is the distance from the origin to the top
-     * border of the glyph.
-     * @return The y bearing of the glyph for horizontal layout
-     */
-    virtual Real32 getHoriBearingY() const;
+  /**
+   * Returns the x bearing of the glyph for vertical layout.
+   * The x bearing is the distance from the origin to the left
+   * border of the glyph.
+   * @return The x bearing of the glyph for vertical layout
+   */
+  virtual Real32 getVertBearingX() const;
 
-    /**
-     * Returns the x bearing of the glyph for vertical layout.
-     * The x bearing is the distance from the origin to the left
-     * border of the glyph.
-     * @return The x bearing of the glyph for vertical layout
-     */
-    virtual Real32 getVertBearingX() const;
+  /**
+   * Returns the y bearing of the glyph for vertical layout.
+   * The y bearing is the distance from the origin to the top
+   * border of the glyph.
+   * @return The y bearing of the glyph for vertical layout
+   */
+  virtual Real32 getVertBearingY() const;
 
-    /**
-     * Returns the y bearing of the glyph for vertical layout.
-     * The y bearing is the distance from the origin to the top
-     * border of the glyph.
-     * @return The y bearing of the glyph for vertical layout
-     */
-    virtual Real32 getVertBearingY() const;
+  /**
+   * Returns the x position of the glyph in the texture.
+   * @return The x position of the glyph in the texture
+   */
+  inline UInt32 getX() const;
 
-    /**
-     * Returns the x position of the glyph in the texture.
-     * @return The x position of the glyph in the texture
-     */
-    inline UInt32 getX() const;
+  /**
+   * Returns the y position of the glyph in the texture.
+   * @return The y position of the glyph in the texture
+   */
+  inline UInt32 getY() const;
 
-    /**
-     * Returns the y position of the glyph in the texture.
-     * @return The y position of the glyph in the texture
-     */
-    inline UInt32 getY() const;
+  /**
+   * Returns the width of the glyph in pixels.
+   * @return The width of the glyph
+   */
+  inline UInt32 getPixmapWidth() const;
 
-    /**
-     * Returns the width of the glyph in pixels.
-     * @return The width of the glyph
-     */
-    inline UInt32 getPixmapWidth() const;
+  /**
+   * Returns the height of the glyph in pixels.
+   * @return The height of the glyph
+   */
+  inline UInt32 getPixmapHeight() const;
 
-    /**
-     * Returns the height of the glyph in pixels.
-     * @return The height of the glyph
-     */
-    inline UInt32 getPixmapHeight() const;
+  /**
+   * Returns the x bearing of the glyph in pixels for horizontal layout.
+   * The x bearing is the distance from the origin to the left border
+   * of the glyph.
+   * @return The x bearing of the glyph for horizontal layout
+   */
+  inline Int32 getPixmapHoriBearingX() const;
 
-    /**
-     * Returns the x bearing of the glyph in pixels for horizontal layout.
-     * The x bearing is the distance from the origin to the left border
-     * of the glyph.
-     * @return The x bearing of the glyph for horizontal layout
-     */
-    inline Int32 getPixmapHoriBearingX() const;
+  /**
+   * Returns the y bearing of the glyph in pixels for horizontal layout.
+   * The y bearing is the distance from the origin to the top border
+   * of the glyph.
+   * @return The y bearing of the glyph for horizontal layout
+   */
+  inline Int32 getPixmapHoriBearingY() const;
 
-    /**
-     * Returns the y bearing of the glyph in pixels for horizontal layout.
-     * The y bearing is the distance from the origin to the top border
-     * of the glyph.
-     * @return The y bearing of the glyph for horizontal layout
-     */
-    inline Int32 getPixmapHoriBearingY() const;
+  /**
+   * Returns the x bearing of the glyph in pixels for vertical layout.
+   * The x bearing is the distance from the origin to the left border
+   * of the glyph.
+   * @return The x bearing of the glyph for vertical layout
+   */
+  inline Int32 getPixmapVertBearingX() const;
 
-    /**
-     * Returns the x bearing of the glyph in pixels for vertical layout.
-     * The x bearing is the distance from the origin to the left border
-     * of the glyph.
-     * @return The x bearing of the glyph for vertical layout
-     */
-    inline Int32 getPixmapVertBearingX() const;
+  /**
+   * Returns the y bearing of the glyph in pixels for vertical layout.
+   * The y bearing is the distance from the origin to the top border
+   * of the glyph.
+   * @return The y bearing of the glyph for vertical layout
+   */
+  inline Int32 getPixmapVertBearingY() const;
 
-    /**
-     * Returns the y bearing of the glyph in pixels for vertical layout.
-     * The y bearing is the distance from the origin to the top border
-     * of the glyph.
-     * @return The y bearing of the glyph for vertical layout
-     */
-    inline Int32 getPixmapVertBearingY() const;
+  /**
+   * Returns the scale factor.
+   * @return The scale factor
+   */
+  inline Real32 getScale() const;
 
-    /**
-     * Returns the scale factor.
-     * @return The scale factor
-     */
-    inline Real32 getScale() const;
+  /** Defines the coordinate indices */
+  enum CoordIndex { COORD_LEFT = 0, COORD_TOP = 1, COORD_RIGHT = 2, COORD_BOTTOM = 3 };
 
-    /** Defines the coordinate indices */
-    enum CoordIndex { COORD_LEFT = 0, COORD_TOP = 1, COORD_RIGHT = 2, COORD_BOTTOM = 3 };
+  /**
+   * Returns a texture coordinate.
+   * @param index The index of the texture coordinate (must be between 0 and 3,
+   * inclusively)
+   * @return The texture coordinate
+   */
+  inline Real32 getTexCoord(UInt32 index) const;
 
-    /**
-     * Returns a texture coordinate.
-     * @param index The index of the texture coordinate (must be between 0 and 3,
-     * inclusively)
-     * @return The texture coordinate
-     */
-    inline Real32 getTexCoord(UInt32 index) const;
+  /**
+   * Returns a coordinate.
+   * @param index The index of the coordinate (must be between 0 and 3,
+   * inclusively)
+   * @return The coordinate
+   */
+  inline Real32 getCoord(UInt32 index) const;
 
-    /**
-     * Returns a coordinate.
-     * @param index The index of the coordinate (must be between 0 and 3,
-     * inclusively)
-     * @return The coordinate
-     */
-    inline Real32 getCoord(UInt32 index) const;
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /** Creates a new %TextTXFGlyph object. */
+  TextTXFGlyph();
 
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /** The width of the glyph in pixels */
+  UInt32 _width;
 
-    /** Creates a new %TextTXFGlyph object. */
-    TextTXFGlyph();
+  /** The height of the glyph in pixels */
+  UInt32 _height;
 
-    /** The width of the glyph in pixels */
-    UInt32 _width;
+  /** The x bearing of the glyph in pixels for horizontal layout */
+  Int32 _horiBearingX;
 
-    /** The height of the glyph in pixels */
-    UInt32 _height;
+  /** The y bearing of the glyph in pixels for horizontal layout */
+  Int32 _horiBearingY;
 
-    /** The x bearing of the glyph in pixels for horizontal layout */
-    Int32 _horiBearingX;
+  /** The x bearing of the glyph in pixels for vertical layout */
+  Int32 _vertBearingX;
 
-    /** The y bearing of the glyph in pixels for horizontal layout */
-    Int32 _horiBearingY;
+  /** The y bearing of the glyph in pixels for vertical layout */
+  Int32 _vertBearingY;
 
-    /** The x bearing of the glyph in pixels for vertical layout */
-    Int32 _vertBearingX;
+  /** The x position of the glyph in the texture in pixels */
+  UInt32 _x;
 
-    /** The y bearing of the glyph in pixels for vertical layout */
-    Int32 _vertBearingY;
+  /** The y position of the glyph in the texture in pixels */
+  UInt32 _y;
 
-    /** The x position of the glyph in the texture in pixels */
-    UInt32 _x;
+  /** The scaling factor */
+  Real32 _scale;
 
-    /** The y position of the glyph in the texture in pixels */
-    UInt32 _y;
+  /** The texture coordinates */
+  Real32 _texCoord[4];
 
-    /** The scaling factor */
-    Real32 _scale;
+  /** Calculates coordinates */
+  void calculateCoordinates(UInt32 textureWidth, UInt32 textureHeight);
 
-    /** The texture coordinates */
-    Real32 _texCoord[4];
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /** Copy constructor (not implemented!) */
+  TextTXFGlyph(const TextTXFGlyph&);
 
-    /** Calculates coordinates */
-    void calculateCoordinates(UInt32 textureWidth, UInt32 textureHeight);
-
-    /*==========================  PRIVATE  ================================*/
-  private:
-
-    /** Copy constructor (not implemented!) */
-    TextTXFGlyph(const TextTXFGlyph &);
-
-    /** Copy operator (not implemented!) */
-    const TextTXFGlyph &operator=(const TextTXFGlyph &);
+  /** Copy operator (not implemented!) */
+  const TextTXFGlyph& operator=(const TextTXFGlyph&);
 };
-
 
 OSG_END_NAMESPACE
 
-
 #include <OSGTextTXFGlyph.inl>
 
-#define OSGTEXTTXFGLYPH_HEADER_CVSID "@(#)$Id: OSGTextTXFGlyph.h,v 1.1 2005/03/03 13:43:07 a-m-z Exp $"
+#define OSGTEXTTXFGLYPH_HEADER_CVSID                                                               \
+  "@(#)$Id: OSGTextTXFGlyph.h,v 1.1 2005/03/03 13:43:07 a-m-z Exp $"
 
 #endif /* _OSGTEXTTXFGLYPH_H_ */

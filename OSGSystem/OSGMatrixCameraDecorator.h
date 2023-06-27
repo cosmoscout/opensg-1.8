@@ -48,84 +48,74 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief MatrixCameraDecorator class. See \ref 
+/*! \brief MatrixCameraDecorator class. See \ref
            PageSystemCameraDecoratorsMatrix for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING MatrixCameraDecorator : public MatrixCameraDecoratorBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING MatrixCameraDecorator : public MatrixCameraDecoratorBase {
+ private:
+  typedef MatrixCameraDecoratorBase Inherited;
 
-    typedef MatrixCameraDecoratorBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    access                                    */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void getProjection(Matrix& result, UInt32 width, UInt32 height);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    access                                    */
-    /*! \{                                                                 */
+  virtual void getProjectionTranslation(Matrix& result, UInt32 width, UInt32 height);
 
-    virtual void getProjection           (Matrix        &result, 
-                                          UInt32 width, UInt32 height);
+  virtual void getViewing(Matrix& result, UInt32 width, UInt32 height);
 
-    virtual void getProjectionTranslation(Matrix        &result, 
-                                          UInt32 width, UInt32 height);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void getViewing              (Matrix        &result, 
-                                          UInt32 width, UInt32 height);
- 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in MatrixCameraDecoratorBase.
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    // Variables should all be in MatrixCameraDecoratorBase.
+  MatrixCameraDecorator(void);
+  MatrixCameraDecorator(const MatrixCameraDecorator& source);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    MatrixCameraDecorator(void);
-    MatrixCameraDecorator(const MatrixCameraDecorator &source);
+  virtual ~MatrixCameraDecorator(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    virtual ~MatrixCameraDecorator(void); 
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class MatrixCameraDecoratorBase;
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  static void initMethod(void);
 
-    friend class FieldContainer;
-    friend class MatrixCameraDecoratorBase;
+  // prohibit default functions (move to 'public' if you need one)
 
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const MatrixCameraDecorator &source);
+  void operator=(const MatrixCameraDecorator& source);
 };
 
-typedef MatrixCameraDecorator *MatrixCameraDecoratorP;
+typedef MatrixCameraDecorator* MatrixCameraDecoratorP;
 
 OSG_END_NAMESPACE
 

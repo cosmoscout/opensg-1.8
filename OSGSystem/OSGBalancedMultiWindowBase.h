@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGBALANCEDMULTIWINDOWBASE_H_
 #define _OSGBALANCEDMULTIWINDOWBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include "OSGSystemDef.h"
@@ -67,11 +65,11 @@
 
 #include <OSGMultiDisplayWindow.h> // Parent
 
-#include <OSGBoolFields.h> // Balance type
-#include <OSGBoolFields.h> // BestCut type
-#include <OSGBoolFields.h> // ShowBalancing type
+#include <OSGBoolFields.h>   // Balance type
+#include <OSGBoolFields.h>   // BestCut type
+#include <OSGBoolFields.h>   // ShowBalancing type
 #include <OSGUInt32Fields.h> // TileSize type
-#include <OSGBoolFields.h> // Short type
+#include <OSGBoolFields.h>   // Short type
 
 #include "OSGBalancedMultiWindowFields.h"
 
@@ -82,209 +80,189 @@ class BinaryDataHandler;
 
 //! \brief BalancedMultiWindow Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING BalancedMultiWindowBase : public MultiDisplayWindow
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING BalancedMultiWindowBase : public MultiDisplayWindow {
+ private:
+  typedef MultiDisplayWindow Inherited;
 
-    typedef MultiDisplayWindow    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef BalancedMultiWindowPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    BalanceFieldId       = Inherited::NextFieldId,
+    BestCutFieldId       = BalanceFieldId + 1,
+    ShowBalancingFieldId = BestCutFieldId + 1,
+    TileSizeFieldId      = ShowBalancingFieldId + 1,
+    ShortFieldId         = TileSizeFieldId + 1,
+    NextFieldId          = ShortFieldId + 1
+  };
 
-    typedef BalancedMultiWindowPtr  Ptr;
+  static const OSG::BitVector BalanceFieldMask;
+  static const OSG::BitVector BestCutFieldMask;
+  static const OSG::BitVector ShowBalancingFieldMask;
+  static const OSG::BitVector TileSizeFieldMask;
+  static const OSG::BitVector ShortFieldMask;
 
-    enum
-    {
-        BalanceFieldId       = Inherited::NextFieldId,
-        BestCutFieldId       = BalanceFieldId       + 1,
-        ShowBalancingFieldId = BestCutFieldId       + 1,
-        TileSizeFieldId      = ShowBalancingFieldId + 1,
-        ShortFieldId         = TileSizeFieldId      + 1,
-        NextFieldId          = ShortFieldId         + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector BalanceFieldMask;
-    static const OSG::BitVector BestCutFieldMask;
-    static const OSG::BitVector ShowBalancingFieldMask;
-    static const OSG::BitVector TileSizeFieldMask;
-    static const OSG::BitVector ShortFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFBool*   getSFBalance(void);
+  SFBool*   getSFBestCut(void);
+  SFBool*   getSFShowBalancing(void);
+  SFUInt32* getSFTileSize(void);
+  SFBool*   getSFShort(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  bool&         getBalance(void);
+  const bool&   getBalance(void) const;
+  bool&         getBestCut(void);
+  const bool&   getBestCut(void) const;
+  bool&         getShowBalancing(void);
+  const bool&   getShowBalancing(void) const;
+  UInt32&       getTileSize(void);
+  const UInt32& getTileSize(void) const;
+  bool&         getShort(void);
+  const bool&   getShort(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFBool              *getSFBalance        (void);
-           SFBool              *getSFBestCut        (void);
-           SFBool              *getSFShowBalancing  (void);
-           SFUInt32            *getSFTileSize       (void);
-           SFBool              *getSFShort          (void);
+  void setBalance(const bool& value);
+  void setBestCut(const bool& value);
+  void setShowBalancing(const bool& value);
+  void setTileSize(const UInt32& value);
+  void setShort(const bool& value);
 
-           bool                &getBalance        (void);
-     const bool                &getBalance        (void) const;
-           bool                &getBestCut        (void);
-     const bool                &getBestCut        (void) const;
-           bool                &getShowBalancing  (void);
-     const bool                &getShowBalancing  (void) const;
-           UInt32              &getTileSize       (void);
-     const UInt32              &getTileSize       (void) const;
-           bool                &getShort          (void);
-     const bool                &getShort          (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setBalance        ( const bool &value );
-     void setBestCut        ( const bool &value );
-     void setShowBalancing  ( const bool &value );
-     void setTileSize       ( const UInt32 &value );
-     void setShort          ( const bool &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static BalancedMultiWindowPtr create(void);
+  static BalancedMultiWindowPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  BalancedMultiWindowPtr      create          (void); 
-    static  BalancedMultiWindowPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFBool   _sfBalance;
+  SFBool   _sfBestCut;
+  SFBool   _sfShowBalancing;
+  SFUInt32 _sfTileSize;
+  SFBool   _sfShort;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  BalancedMultiWindowBase(void);
+  BalancedMultiWindowBase(const BalancedMultiWindowBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~BalancedMultiWindowBase(void);
 
-    SFBool              _sfBalance;
-    SFBool              _sfBestCut;
-    SFBool              _sfShowBalancing;
-    SFUInt32            _sfTileSize;
-    SFBool              _sfShort;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    BalancedMultiWindowBase(void);
-    BalancedMultiWindowBase(const BalancedMultiWindowBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~BalancedMultiWindowBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      BalancedMultiWindowBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(BalancedMultiWindowBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      BalancedMultiWindowBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      BalancedMultiWindowBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const BalancedMultiWindowBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const BalancedMultiWindowBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef BalancedMultiWindowBase* BalancedMultiWindowBaseP;
 
-typedef BalancedMultiWindowBase *BalancedMultiWindowBaseP;
-
-typedef osgIF<BalancedMultiWindowBase::isNodeCore,
-              CoredNodePtr<BalancedMultiWindow>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet BalancedMultiWindowNodePtr;
+typedef osgIF<BalancedMultiWindowBase::isNodeCore, CoredNodePtr<BalancedMultiWindow>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet
+    BalancedMultiWindowNodePtr;
 
 typedef RefPtr<BalancedMultiWindowPtr> BalancedMultiWindowRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGBALANCEDMULTIWINDOWBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGBALANCEDMULTIWINDOWBASE_HEADER_CVSID                                                    \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGBALANCEDMULTIWINDOWBASE_H_ */

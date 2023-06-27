@@ -52,90 +52,86 @@ OSG_BEGIN_NAMESPACE
            PageSystemTextureBackground for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING TextureBackground : public TextureBackgroundBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING TextureBackground : public TextureBackgroundBase {
+ private:
+  typedef TextureBackgroundBase Inherited;
 
-    typedef TextureBackgroundBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Clear                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Clear                                    */
-    /*! \{                                                                 */
+  virtual void clear(DrawActionBase* action, Viewport* port);
 
-    virtual void clear( DrawActionBase * action, Viewport * port );
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    virtual void changed(BitVector  whichField,
-                         UInt32     origin    );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    virtual void dump(      UInt32     uiIndent = 0,
-                      const BitVector  bvFlags  = 0) const;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in TextureBackgroundBase.
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    // Variables should all be in TextureBackgroundBase.
+  TextureBackground(void);
+  TextureBackground(const TextureBackground& source);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    TextureBackground(void);
-    TextureBackground(const TextureBackground &source);
+  virtual ~TextureBackground(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    virtual ~TextureBackground(void);
+  /*==========================  PRIVATE  ================================*/
+ private:
+  std::vector<Vec2f>  _textureCoordArray;
+  std::vector<Vec2f>  _vertexCoordArray;
+  std::vector<UInt32> _indexArray;
 
-    /*! \}                                                                 */
+  // Values for which the grid has been calculated,
+  // to check for update necessity
+  UInt16 _hor, _vert;
+  Real32 _radialDistortion;
+  Vec2f  _centerOfDistortion;
 
-    /*==========================  PRIVATE  ================================*/
-  private:
-    std::vector<Vec2f> _textureCoordArray;
-    std::vector<Vec2f> _vertexCoordArray;
-    std::vector<UInt32> _indexArray;
-    
-    // Values for which the grid has been calculated, 
-    // to check for update necessity
-    UInt16              _hor, _vert;
-    Real32              _radialDistortion;
-    Vec2f               _centerOfDistortion;
-    
-    // Helper method
-    
-    void updateGrid(void);
-    
-    friend class FieldContainer;
-    friend class TextureBackgroundBase;
+  // Helper method
 
-    static void initMethod(void);
+  void updateGrid(void);
 
-    // prohibit default functions (move to 'public' if you need one)
+  friend class FieldContainer;
+  friend class TextureBackgroundBase;
 
-    void operator =(const TextureBackground &source);
+  static void initMethod(void);
+
+  // prohibit default functions (move to 'public' if you need one)
+
+  void operator=(const TextureBackground& source);
 };
 
-typedef TextureBackground *TextureBackgroundP;
+typedef TextureBackground* TextureBackgroundP;
 
 OSG_END_NAMESPACE
 
 #include <OSGTextureBackgroundBase.inl>
 #include <OSGTextureBackground.inl>
 
-#define OSGTEXTUREBACKGROUND_HEADER_CVSID "@(#)$Id: OSGTextureBackground.h,v 1.2 2005/07/06 16:00:44 dirk Exp $"
+#define OSGTEXTUREBACKGROUND_HEADER_CVSID                                                          \
+  "@(#)$Id: OSGTextureBackground.h,v 1.2 2005/07/06 16:00:44 dirk Exp $"
 
 #endif /* _OSGTEXTUREBACKGROUND_H_ */

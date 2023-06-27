@@ -38,8 +38,8 @@
 
 #ifndef OSGIMAGEFILEHANDLER_CLASS_DECLARATION
 #define OSGIMAGEFILEHANDLER_CLASS_DECLARATION
-#ifdef  __sgi
-#pragma  once
+#ifdef __sgi
+#pragma once
 #endif
 
 #include <list>
@@ -51,7 +51,6 @@
 #include <OSGImageFileType.h>
 #include <iosfwd>
 
-
 OSG_BEGIN_NAMESPACE
 
 class PathHandler;
@@ -62,160 +61,150 @@ See \ref PageSystemImage for a detailed description.
 
 class OSG_SYSTEMLIB_DLLMAPPING ImageFileHandler {
 
-    friend class ImageFileType;
+  friend class ImageFileType;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    virtual ~ImageFileHandler (void);
+  virtual ~ImageFileHandler(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Read/Write                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Read/Write                                 */
+  /*! \{                                                                 */
 
-    virtual ImagePtr read  ( const char *fileName, const char *mimeType = 0);
+  virtual ImagePtr read(const char* fileName, const char* mimeType = 0);
 
-    virtual bool     read  ( ImagePtr &image,
-                             const char *fileName, const char *mimeType = 0);
+  virtual bool read(ImagePtr& image, const char* fileName, const char* mimeType = 0);
 
-    virtual bool    write ( const ImagePtr &image,
-                            const char *fileName, const char *mimeType = 0);
+  virtual bool write(const ImagePtr& image, const char* fileName, const char* mimeType = 0);
 
-    virtual ImagePtr read  ( std::istream &is, const std::string &mimeType);
+  virtual ImagePtr read(std::istream& is, const std::string& mimeType);
 
-    virtual bool     read  ( ImagePtr &image,
-                             std::istream &is, const std::string &mimeType);
+  virtual bool read(ImagePtr& image, std::istream& is, const std::string& mimeType);
 
-    virtual bool    write ( const ImagePtr &image,
-                            std::ostream &os, const std::string &mimeType);
+  virtual bool write(const ImagePtr& image, std::ostream& os, const std::string& mimeType);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Read Callback                              */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Read Callback                              */
+  /*! \{                                                                 */
 
-    typedef ImagePtr (*readcbfp) (const char *fileName, const char *mimeType);
-    void setReadCB(readcbfp fp);
-    readcbfp getReadCB(void);
+  typedef ImagePtr (*readcbfp)(const char* fileName, const char* mimeType);
+  void     setReadCB(readcbfp fp);
+  readcbfp getReadCB(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   PathHandler                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   PathHandler                                */
+  /*! \{                                                                 */
 
-    virtual PathHandler* getPathHandler(void                     );
-    virtual void         setPathHandler(PathHandler *pPathHandler);
+  virtual PathHandler* getPathHandler(void);
+  virtual void         setPathHandler(PathHandler* pPathHandler);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Options                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Options                                    */
+  /*! \{                                                                 */
 
-    virtual bool               setOptions(const Char8 *suffix, const Char8 *options);
-    virtual const Char8        *getOptions(const Char8 *suffix);
+  virtual bool         setOptions(const Char8* suffix, const Char8* options);
+  virtual const Char8* getOptions(const Char8* suffix);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Storage                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Storage                                  */
+  /*! \{                                                                 */
 
-    virtual UInt64 restore ( ImagePtr &image,
-                             const UChar8 *buffer, Int32 memSize = -1 );
+  virtual UInt64 restore(ImagePtr& image, const UChar8* buffer, Int32 memSize = -1);
 
-    virtual UInt64 store   ( const ImagePtr &image, const char *mimeType,
-                             UChar8 *buffer, Int32 memSize = -1 );
+  virtual UInt64 store(
+      const ImagePtr& image, const char* mimeType, UChar8* buffer, Int32 memSize = -1);
 
-    virtual UChar8* store  ( const ImagePtr &image, UInt64 &memSize,
-                             const char *mimeType = 0);
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Get Types                                  */
-    /*! \{                                                                 */
+  virtual UChar8* store(const ImagePtr& image, UInt64& memSize, const char* mimeType = 0);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Get Types                                  */
+  /*! \{                                                                 */
 
-    ImageFileType * getFileType    ( const char *mimeType,
-                                     const char *fileName = 0,
-                                     bool validateHeader = false);
+  ImageFileType* getFileType(
+      const char* mimeType, const char* fileName = 0, bool validateHeader = false);
 
-    ImageFileType * getDefaultType (void);
+  ImageFileType* getDefaultType(void);
 
-    virtual int getSuffixList(std::list<const Char8*> & suffixList,
-                            UInt32 flags = ImageFileType::OSG_READ_SUPPORTED |
-                                           ImageFileType::OSG_WRITE_SUPPORTED);
+  virtual int getSuffixList(std::list<const Char8*>& suffixList,
+      UInt32 flags = ImageFileType::OSG_READ_SUPPORTED | ImageFileType::OSG_WRITE_SUPPORTED);
 
-    std::string determineMimetypeFromName(const std::string &fileName);
+  std::string determineMimetypeFromName(const std::string& fileName);
 
-    std::string determineMimetypeFromSuffix(const std::string &suffix);
+  std::string determineMimetypeFromSuffix(const std::string& suffix);
 
-    std::string determineMimetypeFromStream(std::istream &is);
+  std::string determineMimetypeFromStream(std::istream& is);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Print                                     */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Print                                     */
+  /*! \{                                                                 */
 
-    void dump (void);
+  void dump(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Get Method                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Get Method                                  */
+  /*! \{                                                                 */
 
-    static ImageFileHandler & the (void);
+  static ImageFileHandler& the(void);
 
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*==========================  PRIVATE  ================================*/
+ private:
+  static ImageFileHandler* _the;
 
-    /*==========================  PRIVATE  ================================*/
-private:
+  std::map<std::string, ImageFileType*> _suffixTypeMap;
 
-    static ImageFileHandler             *_the;
+  typedef std::map<std::string, ImageFileType*> TypeMap;
 
-    std::map<std::string, ImageFileType *>  _suffixTypeMap;
+  TypeMap _typeMap;
 
-    typedef std::map<std::string, ImageFileType*> TypeMap;
+  static bool addImageFileType(ImageFileType& fileType);
 
-    TypeMap _typeMap;
+  static void normalizeMimetype(std::string& mimetype);
 
-    static bool addImageFileType (ImageFileType &fileType);
+  static void normalizeSuffix(std::string& suffix);
 
-    static void normalizeMimetype(std::string &mimetype);
+  PathHandler* _pPathHandler;
+  readcbfp     _readFP;
 
-    static void normalizeSuffix(std::string &suffix);
+  static const std::string _fileNameKey;
 
-    PathHandler* _pPathHandler;
-    readcbfp _readFP;
+  static const std::string _fullFilePathKey;
 
-    static const std::string _fileNameKey;
+  /*---------------------------------------------------------------------*/
+  /*! \name               Constructor                                    */
+  /*! \{                                                                 */
 
-    static const std::string _fullFilePathKey;
+  ImageFileHandler(void);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name               Constructor                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name               Copy Constructor                               */
+  /*! \{                                                                 */
 
-    ImageFileHandler (void);
+  ImageFileHandler(const ImageFileHandler& obj);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name               Copy Constructor                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name               Copy Operator                                  */
+  /*! \{                                                                 */
 
-    ImageFileHandler(const ImageFileHandler &obj);
+  const ImageFileHandler& operator=(const ImageFileHandler& obj);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name               Copy Operator                                  */
-    /*! \{                                                                 */
-
-    const ImageFileHandler & operator= (const ImageFileHandler &obj);
-
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 };
 
 typedef ImageFileHandler* ImageFileHandlerP;

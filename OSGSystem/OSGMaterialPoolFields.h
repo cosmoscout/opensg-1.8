@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGMATERIALPOOLFIELDS_H_
 #define _OSGMATERIALPOOLFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class MaterialPool;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! MaterialPoolPtr
 
 typedef FCPtr<GroupPtr, MaterialPool> MaterialPoolPtr;
@@ -81,18 +80,22 @@ typedef FCPtr<GroupPtr, MaterialPool> MaterialPoolPtr;
 #endif
 
 template <>
-struct FieldDataTraits<MaterialPoolPtr> : 
-    public FieldTraitsRecurseMapper<MaterialPoolPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<MaterialPoolPtr> : public FieldTraitsRecurseMapper<MaterialPoolPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getSName(void) { return "SFMaterialPoolPtr"; }
-    static const char *getMName(void) { return "MFMaterialPoolPtr"; }
+  static const char* getSName(void) {
+    return "SFMaterialPoolPtr";
+  }
+  static const char* getMName(void) {
+    return "MFMaterialPoolPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -102,7 +105,6 @@ struct FieldDataTraits<MaterialPoolPtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
@@ -126,6 +128,7 @@ OSG_DLLEXPORT_DECL1(MField, MaterialPoolPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 
 OSG_END_NAMESPACE
 
-#define OSGMATERIALPOOLFIELDS_HEADER_CVSID "@(#)$Id: OSGMaterialPoolFields.h,v 1.5 2006/02/20 16:54:24 dirk Exp $"
+#define OSGMATERIALPOOLFIELDS_HEADER_CVSID                                                         \
+  "@(#)$Id: OSGMaterialPoolFields.h,v 1.5 2006/02/20 16:54:24 dirk Exp $"
 
 #endif /* _OSGMATERIALPOOLFIELDS_H_ */

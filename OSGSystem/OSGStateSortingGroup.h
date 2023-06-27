@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGSTATESORTINGGROUP_H_
 #define _OSGSTATESORTINGGROUP_H_
 #ifdef __sgi
@@ -54,74 +53,67 @@ OSG_BEGIN_NAMESPACE
     \ingroup GrpSystemNodeCoresStateSortingGroups
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING StateSortingGroup : public StateSortingGroupBase
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING StateSortingGroup : public StateSortingGroupBase {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    virtual void changed(BitVector whichField,
-                         UInt32    origin   );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Dump                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Dump                                    */
-    /*! \{                                                                 */
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    virtual void dump(      UInt32    uiIndent = 0,
-                      const BitVector bvFlags  = 0) const;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  typedef StateSortingGroupBase Inherited;
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    typedef StateSortingGroupBase      Inherited;
+  StateSortingGroup(void);
+  StateSortingGroup(const StateSortingGroup& source);
 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  virtual ~StateSortingGroup(void);
 
-    StateSortingGroup(void);
-    StateSortingGroup(const StateSortingGroup &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Actions                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  // Draw action: execute the OpenGL commands to set the light's parameters.
+  Action::ResultE drawEnter(Action* action);
+  Action::ResultE drawLeave(Action* action);
 
-    virtual ~StateSortingGroup(void);
+  // generate draw tree
+  Action::ResultE renderEnter(Action* action);
+  Action::ResultE renderLeave(Action* action);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Actions                                  */
-    /*! \{                                                                 */
-   
-    // Draw action: execute the OpenGL commands to set the light's parameters.
-    Action::ResultE drawEnter  (Action *action);
-    Action::ResultE drawLeave  (Action *action);
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  bool _sorting_state;
 
-    // generate draw tree
-    Action::ResultE renderEnter(Action *action);
-    Action::ResultE renderLeave(Action *action);
+  friend class FieldContainer;
+  friend class StateSortingGroupBase;
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  static void initMethod(void);
 
-    bool _sorting_state;
-
-    friend class FieldContainer;
-    friend class StateSortingGroupBase;
-
-    static void initMethod( void );
-
-    /*! \brief prohibit default function (move to 'public' if needed) */
-    void operator =(const StateSortingGroup &source);
+  /*! \brief prohibit default function (move to 'public' if needed) */
+  void operator=(const StateSortingGroup& source);
 };
 
 OSG_END_NAMESPACE
@@ -129,6 +121,7 @@ OSG_END_NAMESPACE
 #include <OSGStateSortingGroupBase.inl>
 #include <OSGStateSortingGroup.inl>
 
-#define OSGSTATESORTINGGROUP_HEADER_CVSID "@(#)$Id: OSGStateSortingGroup.h,v 1.1 2005/04/06 09:35:00 a-m-z Exp $"
+#define OSGSTATESORTINGGROUP_HEADER_CVSID                                                          \
+  "@(#)$Id: OSGStateSortingGroup.h,v 1.1 2005/04/06 09:35:00 a-m-z Exp $"
 
 #endif /* _OSGSTATESORTINGGROUP_H_ */

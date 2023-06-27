@@ -49,167 +49,126 @@
 OSG_USING_NAMESPACE
 
 /*! \class osg::MaterialGroup
-*/
+ */
 
 /*-------------------------------------------------------------------------*/
 /*                                Sync                                     */
 
-void MaterialGroup::changed(BitVector whichField, UInt32 origin)
-{
-    if(whichField & MaterialFieldMask)
-    {
-        if(origin & ChangedOrigin::Abstract)
-        {
-            if(origin & ChangedOrigin::AbstrIncRefCount)
-            {
-                addRefCP(_sfMaterial.getValue());
-            }
-            else
-            {
-                MaterialPtr pMat = _sfMaterial.getValue();
-                
-                _sfMaterial.setValue(NullFC);
-                
-                setMaterial(pMat);
-            }
-        }
-    }
+void MaterialGroup::changed(BitVector whichField, UInt32 origin) {
+  if (whichField & MaterialFieldMask) {
+    if (origin & ChangedOrigin::Abstract) {
+      if (origin & ChangedOrigin::AbstrIncRefCount) {
+        addRefCP(_sfMaterial.getValue());
+      } else {
+        MaterialPtr pMat = _sfMaterial.getValue();
 
-    Inherited::changed(whichField, origin);
+        _sfMaterial.setValue(NullFC);
+
+        setMaterial(pMat);
+      }
+    }
+  }
+
+  Inherited::changed(whichField, origin);
 }
 
 /*-------------------------------------------------------------------------*/
 /*                                Dump                                     */
 
-void MaterialGroup::dump(      UInt32    uiIndent, 
-                         const BitVector bvFlags) const
-{
-    Inherited::dump(uiIndent, bvFlags);
+void MaterialGroup::dump(UInt32 uiIndent, const BitVector bvFlags) const {
+  Inherited::dump(uiIndent, bvFlags);
 }
 
 /*-------------------------------------------------------------------------*/
 /*                            Constructors                                 */
 
-MaterialGroup::MaterialGroup(void) :
-    Inherited()
-{
+MaterialGroup::MaterialGroup(void)
+    : Inherited() {
 }
 
-MaterialGroup::MaterialGroup(const MaterialGroup &source) :
-    Inherited(source)
-{
+MaterialGroup::MaterialGroup(const MaterialGroup& source)
+    : Inherited(source) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Destructor                                  */
 
-MaterialGroup::~MaterialGroup(void)
-{
-    subRefCP(_sfMaterial.getValue());
+MaterialGroup::~MaterialGroup(void) {
+  subRefCP(_sfMaterial.getValue());
 }
 
 /*-------------------------------------------------------------------------*/
 /*                                Draw                                     */
 
-Action::ResultE MaterialGroup::drawEnter(Action *action)
-{
-    DrawAction *da = dynamic_cast<DrawAction *>(action);
+Action::ResultE MaterialGroup::drawEnter(Action* action) {
+  DrawAction* da = dynamic_cast<DrawAction*>(action);
 
-    if(da != NULL && _sfMaterial.getValue() != NullFC &&
-       da->getMaterial() == NULL)
-    {
-        da->setMaterial(&(*(_sfMaterial.getValue())), action->getActNode());
-    }
+  if (da != NULL && _sfMaterial.getValue() != NullFC && da->getMaterial() == NULL) {
+    da->setMaterial(&(*(_sfMaterial.getValue())), action->getActNode());
+  }
 
-    da->selectVisibles();
-    
-    return Action::Continue;
+  da->selectVisibles();
+
+  return Action::Continue;
 }
 
-Action::ResultE MaterialGroup::drawLeave(Action * action)
-{
-    DrawAction *da = dynamic_cast<DrawAction *>(action);
+Action::ResultE MaterialGroup::drawLeave(Action* action) {
+  DrawAction* da = dynamic_cast<DrawAction*>(action);
 
-    if(da != NULL && da->getMaterialNode() == action->getActNode())
-    {
-        da->setMaterial(NULL, NullFC);
-    }
+  if (da != NULL && da->getMaterialNode() == action->getActNode()) {
+    da->setMaterial(NULL, NullFC);
+  }
 
-    return Action::Continue;
+  return Action::Continue;
 }
 
 /*-------------------------------------------------------------------------*/
 /*                               Render                                    */
 
-Action::ResultE MaterialGroup::renderEnter(Action * action)
-{
-    RenderAction *da = dynamic_cast<RenderAction *>(action);
+Action::ResultE MaterialGroup::renderEnter(Action* action) {
+  RenderAction* da = dynamic_cast<RenderAction*>(action);
 
-    Action::ResultE r = Group::renderEnter(action);
+  Action::ResultE r = Group::renderEnter(action);
 
-    // ok all children are culled away so we leave
-    // immediately and don't set the material!
-    if(r == Action::Skip)
-        return r;
-
-    if(da != NULL && _sfMaterial.getValue() != NullFC &&
-       da->getMaterial() == NULL)
-    {
-        da->setMaterial(&(*(_sfMaterial.getValue())), action->getActNode());
-    }
-
+  // ok all children are culled away so we leave
+  // immediately and don't set the material!
+  if (r == Action::Skip)
     return r;
+
+  if (da != NULL && _sfMaterial.getValue() != NullFC && da->getMaterial() == NULL) {
+    da->setMaterial(&(*(_sfMaterial.getValue())), action->getActNode());
+  }
+
+  return r;
 }
 
-Action::ResultE MaterialGroup::renderLeave(Action * action)
-{
-    RenderAction *da = dynamic_cast<RenderAction *>(action);
+Action::ResultE MaterialGroup::renderLeave(Action* action) {
+  RenderAction* da = dynamic_cast<RenderAction*>(action);
 
-    if(da != NULL && da->getMaterialNode() == action->getActNode())
-    {
-        da->setMaterial(NULL, NullFC);
-    }
+  if (da != NULL && da->getMaterialNode() == action->getActNode()) {
+    da->setMaterial(NULL, NullFC);
+  }
 
-    return Group::renderLeave(action);
+  return Group::renderLeave(action);
 }
 
 /*-------------------------------------------------------------------------*/
 /*                                Init                                     */
- 
-void MaterialGroup::initMethod(void)
-{
-    DrawAction::registerEnterDefault( 
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<
-            Action::ResultE,
-            MaterialGroupPtr  , 
-            CNodePtr          ,  
-            Action           *>(&MaterialGroup::drawEnter));
 
-    DrawAction::registerLeaveDefault( 
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<
-            Action::ResultE,
-            MaterialGroupPtr  , 
-            CNodePtr          ,  
-            Action           *>(&MaterialGroup::drawLeave));
+void MaterialGroup::initMethod(void) {
+  DrawAction::registerEnterDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, MaterialGroupPtr, CNodePtr, Action*>(
+          &MaterialGroup::drawEnter));
 
-    RenderAction::registerEnterDefault(
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<
-            Action::ResultE,
-            MaterialGroupPtr  , 
-            CNodePtr          ,  
-            Action           *>(&MaterialGroup::renderEnter));
+  DrawAction::registerLeaveDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, MaterialGroupPtr, CNodePtr, Action*>(
+          &MaterialGroup::drawLeave));
 
-    RenderAction::registerLeaveDefault(
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<
-            Action::ResultE,
-            MaterialGroupPtr  , 
-            CNodePtr          ,  
-            Action           *>(&MaterialGroup::renderLeave));
+  RenderAction::registerEnterDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, MaterialGroupPtr, CNodePtr, Action*>(
+          &MaterialGroup::renderEnter));
+
+  RenderAction::registerLeaveDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, MaterialGroupPtr, CNodePtr, Action*>(
+          &MaterialGroup::renderLeave));
 }
-
-
-

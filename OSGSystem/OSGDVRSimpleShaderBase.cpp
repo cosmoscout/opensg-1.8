@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEDVRSIMPLESHADERINST
 
 #include <stdlib.h>
@@ -61,169 +60,119 @@
 #include "OSGDVRSimpleShaderBase.h"
 #include "OSGDVRSimpleShader.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector DVRSimpleShaderBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
+const OSG::BitVector DVRSimpleShaderBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
+FieldContainerType DVRSimpleShaderBase::_type("DVRSimpleShader", "DVRShader", NULL,
+    (PrototypeCreateF)&DVRSimpleShaderBase::createEmpty, DVRSimpleShader::initMethod, NULL, 0);
 
-
-FieldContainerType DVRSimpleShaderBase::_type(
-    "DVRSimpleShader",
-    "DVRShader",
-    NULL,
-    (PrototypeCreateF) &DVRSimpleShaderBase::createEmpty,
-    DVRSimpleShader::initMethod,
-    NULL,
-    0);
-
-//OSG_FIELD_CONTAINER_DEF(DVRSimpleShaderBase, DVRSimpleShaderPtr)
+// OSG_FIELD_CONTAINER_DEF(DVRSimpleShaderBase, DVRSimpleShaderPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &DVRSimpleShaderBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &DVRSimpleShaderBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr DVRSimpleShaderBase::shallowCopy(void) const 
-{ 
-    DVRSimpleShaderPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const DVRSimpleShader *>(this)); 
-
-    return returnValue; 
+FieldContainerType& DVRSimpleShaderBase::getType(void) {
+  return _type;
 }
 
-UInt32 DVRSimpleShaderBase::getContainerSize(void) const 
-{ 
-    return sizeof(DVRSimpleShader); 
+const FieldContainerType& DVRSimpleShaderBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr DVRSimpleShaderBase::shallowCopy(void) const {
+  DVRSimpleShaderPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const DVRSimpleShader*>(this));
+
+  return returnValue;
+}
+
+UInt32 DVRSimpleShaderBase::getContainerSize(void) const {
+  return sizeof(DVRSimpleShader);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void DVRSimpleShaderBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((DVRSimpleShaderBase *) &other, whichField);
+void DVRSimpleShaderBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((DVRSimpleShaderBase*)&other, whichField);
 }
 #else
-void DVRSimpleShaderBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((DVRSimpleShaderBase *) &other, whichField, sInfo);
+void DVRSimpleShaderBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((DVRSimpleShaderBase*)&other, whichField, sInfo);
 }
-void DVRSimpleShaderBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void DVRSimpleShaderBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void DVRSimpleShaderBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void DVRSimpleShaderBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-DVRSimpleShaderBase::DVRSimpleShaderBase(void) :
-    Inherited() 
-{
+DVRSimpleShaderBase::DVRSimpleShaderBase(void)
+    : Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-DVRSimpleShaderBase::DVRSimpleShaderBase(const DVRSimpleShaderBase &source) :
-    Inherited                 (source)
-{
+DVRSimpleShaderBase::DVRSimpleShaderBase(const DVRSimpleShaderBase& source)
+    : Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-DVRSimpleShaderBase::~DVRSimpleShaderBase(void)
-{
+DVRSimpleShaderBase::~DVRSimpleShaderBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 DVRSimpleShaderBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 DVRSimpleShaderBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void DVRSimpleShaderBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
-
-
+void DVRSimpleShaderBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 }
 
-void DVRSimpleShaderBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
-
-
+void DVRSimpleShaderBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void DVRSimpleShaderBase::executeSyncImpl(      DVRSimpleShaderBase *pOther,
-                                        const BitVector         &whichField)
-{
+void DVRSimpleShaderBase::executeSyncImpl(
+    DVRSimpleShaderBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
-
-
+  Inherited::executeSyncImpl(pOther, whichField);
 }
 #else
-void DVRSimpleShaderBase::executeSyncImpl(      DVRSimpleShaderBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void DVRSimpleShaderBase::executeSyncImpl(
+    DVRSimpleShaderBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
-
-
-
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 }
 
-void DVRSimpleShaderBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void DVRSimpleShaderBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 OSG_BEGIN_NAMESPACE
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_DEV)
 DataType FieldDataTraits<DVRSimpleShaderPtr>::_type("DVRSimpleShaderPtr", "DVRShaderPtr");
 #endif
-
 
 OSG_END_NAMESPACE

@@ -38,8 +38,8 @@
 
 #ifndef OSGDATIMAGEFILETYPE_CLASS_DECLARATION
 #define OSGDATIMAGEFILETYPE_CLASS_DECLARATION
-#ifdef  __sgi
-#pragma  once
+#ifdef __sgi
+#pragma once
 #endif
 
 #include <OSGSystemDef.h>
@@ -52,109 +52,100 @@ OSG_BEGIN_NAMESPACE
 See \ref PageSystemImage for a detailed description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING DATImageFileType : public ImageFileType
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING DATImageFileType : public ImageFileType {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  virtual ~DATImageFileType(void);
 
-    virtual ~DATImageFileType (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Get Methods                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Get Methods                                 */
-    /*! \{                                                                 */
+  static DATImageFileType& the(void);
 
-    static DATImageFileType& the (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Read/Write                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Read/Write                                 */
-    /*! \{                                                                 */
+  virtual bool read(ImagePtr& image, const Char8* fileName);
 
-    virtual bool read  (ImagePtr &image, const Char8 *fileName);
+  virtual bool write(const ImagePtr& image, const Char8* fileName);
 
-    virtual bool write (const ImagePtr &image, const Char8 *fileName);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Buffer                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Buffer                                   */
-    /*! \{                                                                 */
+  virtual UInt64 restoreData(ImagePtr& image, const UChar8* buffer, Int32 memSize = -1);
 
-    virtual UInt64 restoreData ( ImagePtr &image, const UChar8 *buffer,
-                                 Int32 memSize = -1 );
+  virtual UInt64 storeData(const ImagePtr& image, UChar8* buffer, Int32 memSize = -1);
+  /*! \}                                                                 */
 
-    virtual UInt64 storeData   ( const ImagePtr &image, UChar8 *buffer,
-                                 Int32 memSize = -1 );
-    /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name               Default Constructor                            */
+  /*! \{                                                                 */
 
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  DATImageFileType(const Char8* mimeType, const Char8* suffixArray[], UInt16 suffixByteCount);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name               Default Constructor                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    DATImageFileType ( const Char8 *mimeType,
-                       const Char8 *suffixArray[], UInt16 suffixByteCount );
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /*---------------------------------------------------------------------*/
+  /*! \name                Copy Constructor                              */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  DATImageFileType(const DATImageFileType& obj);
 
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                Copy Operator                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                Copy Constructor                              */
-    /*! \{                                                                 */
+  const DATImageFileType& operator=(const DATImageFileType& obj);
 
-    DATImageFileType (const DATImageFileType &obj);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                Copy Operator                                 */
-    /*! \{                                                                 */
+  static DATImageFileType _the;
 
-    const DATImageFileType & operator= (const DATImageFileType &obj);
+  enum KeyType {
+    UNKNOWN_KT = 0,
 
-    /*! \}                                                                 */
-
-    static DATImageFileType _the;
-
-    enum KeyType 
-    { 
-      UNKNOWN_KT = 0,
-
-      OBJECT_FILE_NAME_KT,
-      RESOLUTION_KT,
-      SLICE_THICKNESS_KT,
-      FORMAT_KT,
-      FILE_OFFSET_KT,
-      CHANNEL_KT,
-      ENDIAN_KT
-    };
+    OBJECT_FILE_NAME_KT,
+    RESOLUTION_KT,
+    SLICE_THICKNESS_KT,
+    FORMAT_KT,
+    FILE_OFFSET_KT,
+    CHANNEL_KT,
+    ENDIAN_KT
+  };
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_DEV)
-          
-    /*! \hideinhierarchy */
 
-    struct FormatDesc 
-    {
-      bool               needConversion;
-      //FormatType         type;
-      Image::Type        type;
-      UInt32             bpv;
-      Image::PixelFormat pixelFormat;
-    };
-    
+  /*! \hideinhierarchy */
+
+  struct FormatDesc {
+    bool needConversion;
+    // FormatType         type;
+    Image::Type        type;
+    UInt32             bpv;
+    Image::PixelFormat pixelFormat;
+  };
+
 #endif
-        
-    static std::map<std::string, KeyType>    _keyStrMap;
-    static std::map<std::string, FormatDesc> _formatStrMap;
 
-    static void initTypeMap(void);
+  static std::map<std::string, KeyType>    _keyStrMap;
+  static std::map<std::string, FormatDesc> _formatStrMap;
+
+  static void initTypeMap(void);
 };
 
 typedef DATImageFileType* DATImageFileTypeP;

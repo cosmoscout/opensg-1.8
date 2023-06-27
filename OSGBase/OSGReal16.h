@@ -2,9 +2,9 @@
 //
 // Copyright (c) 2002, Industrial Light & Magic, a division of Lucas
 // Digital Ltd. LLC
-// 
+//
 // All rights reserved.
-// 
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
 // met:
@@ -16,8 +16,8 @@
 // distribution.
 // *       Neither the name of Industrial Light & Magic nor the names of
 // its contributors may be used to endorse or promote products derived
-// from this software without specific prior written permission. 
-// 
+// from this software without specific prior written permission.
+//
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 // "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 // LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -91,158 +91,142 @@
 
 OSG_BEGIN_NAMESPACE
 
-class OSG_BASE_DLLMAPPING Real16
-{
-  public:
+class OSG_BASE_DLLMAPPING Real16 {
+ public:
+  //-------------
+  // Constructors
+  //-------------
 
-    //-------------
-    // Constructors
-    //-------------
+  Real16(); // no initialization
+  Real16(float f);
 
-    Real16 ();            // no initialization
-    Real16 (float f);
+  //--------------------
+  // Conversion to float
+  //--------------------
 
+  operator float() const;
 
-    //--------------------
-    // Conversion to float
-    //--------------------
+  //------------
+  // Unary minus
+  //------------
 
-    operator        float () const;
+  Real16 operator-() const;
 
+  //-----------
+  // Assignment
+  //-----------
 
-    //------------
-    // Unary minus
-    //------------
+  Real16& operator=(Real16 h);
+  Real16& operator=(float f);
 
-    Real16        operator - () const;
+  Real16& operator+=(Real16 h);
+  Real16& operator+=(float f);
 
+  Real16& operator-=(Real16 h);
+  Real16& operator-=(float f);
 
-    //-----------
-    // Assignment
-    //-----------
+  Real16& operator*=(Real16 h);
+  Real16& operator*=(float f);
 
-    Real16 &        operator = (Real16  h);
-    Real16 &        operator = (float f);
+  Real16& operator/=(Real16 h);
+  Real16& operator/=(float f);
 
-    Real16 &        operator += (Real16  h);
-    Real16 &        operator += (float f);
+  //---------------------------------------------------------
+  // Round to n-bit precision (n should be between 0 and 10).
+  // After rounding, the significand's 10-n least significant
+  // bits will be zero.
+  //---------------------------------------------------------
 
-    Real16 &        operator -= (Real16  h);
-    Real16 &        operator -= (float f);
+  Real16 round(unsigned int n) const;
 
-    Real16 &        operator *= (Real16  h);
-    Real16 &        operator *= (float f);
+  //--------------------------------------------------------------------
+  // Classification:
+  //
+  //    h.isFinite()        returns true if h is a normalized number,
+  //                a denormalized number or zero
+  //
+  //    h.isNormalized()    returns true if h is a normalized number
+  //
+  //    h.isDenormalized()    returns true if h is a denormalized number
+  //
+  //    h.isZero()        returns true if h is zero
+  //
+  //    h.isNan()        returns true if h is a NAN
+  //
+  //    h.isInfinity()        returns true if h is a positive
+  //                or a negative infinity
+  //
+  //    h.isNegative()        returns true if the sign bit of h
+  //                is set (negative)
+  //--------------------------------------------------------------------
 
-    Real16 &        operator /= (Real16  h);
-    Real16 &        operator /= (float f);
+  bool isFinite() const;
+  bool isNormalized() const;
+  bool isDenormalized() const;
+  bool isZero() const;
+  bool isNan() const;
+  bool isInfinity() const;
+  bool isNegative() const;
 
+  //--------------------------------------------
+  // Special values
+  //
+  //    posInf()    returns +infinity
+  //
+  //    negInf()    returns +infinity
+  //
+  //    qNan()        returns a NAN with the bit
+  //            pattern 0111111111111111
+  //
+  //    sNan()        returns a NAN with the bit
+  //            pattern 0111110111111111
+  //--------------------------------------------
 
-    //---------------------------------------------------------
-    // Round to n-bit precision (n should be between 0 and 10).
-    // After rounding, the significand's 10-n least significant
-    // bits will be zero.
-    //---------------------------------------------------------
+  static Real16 posInf();
+  static Real16 negInf();
+  static Real16 qNan();
+  static Real16 sNan();
 
-    Real16        round (unsigned int n) const;
+  //--------------------------------------
+  // Access to the internal representation
+  //--------------------------------------
 
+  unsigned short bits() const;
+  void           setBits(unsigned short bits);
 
-    //--------------------------------------------------------------------
-    // Classification:
-    //
-    //    h.isFinite()        returns true if h is a normalized number,
-    //                a denormalized number or zero
-    //
-    //    h.isNormalized()    returns true if h is a normalized number
-    //
-    //    h.isDenormalized()    returns true if h is a denormalized number
-    //
-    //    h.isZero()        returns true if h is zero
-    //
-    //    h.isNan()        returns true if h is a NAN
-    //
-    //    h.isInfinity()        returns true if h is a positive
-    //                or a negative infinity
-    //
-    //    h.isNegative()        returns true if the sign bit of h
-    //                is set (negative)
-    //--------------------------------------------------------------------
-
-    bool        isFinite () const;
-    bool        isNormalized () const;
-    bool        isDenormalized () const;
-    bool        isZero () const;
-    bool        isNan () const;
-    bool        isInfinity () const;
-    bool        isNegative () const;
-
-
-    //--------------------------------------------
-    // Special values
-    //
-    //    posInf()    returns +infinity
-    //
-    //    negInf()    returns +infinity
-    //
-    //    qNan()        returns a NAN with the bit
-    //            pattern 0111111111111111
-    //
-    //    sNan()        returns a NAN with the bit
-    //            pattern 0111110111111111
-    //--------------------------------------------
-
-    static Real16        posInf ();
-    static Real16        negInf ();
-    static Real16        qNan ();
-    static Real16        sNan ();
-
-
-    //--------------------------------------
-    // Access to the internal representation
-    //--------------------------------------
-
-    unsigned short    bits () const;
-    void        setBits (unsigned short bits);
-
-
-  public:
-
-    union uif
-    {
-    unsigned int    i;
+ public:
+  union uif {
+    unsigned int i;
     float        f;
-    };
+  };
 
-  private:
+ private:
+  static short convert(int i);
+  static float overflow();
+  static bool  selftest();
 
-    static short    convert (int i);
-    static float    overflow ();
-    static bool        selftest ();
+  unsigned short _h;
 
-    unsigned short    _h;
-
-    static const uif        _toFloat[1 << 16];
-    static const unsigned short    _eLut[1 << 9];
-    static const bool        _itWorks;
+  static const uif            _toFloat[1 << 16];
+  static const unsigned short _eLut[1 << 9];
+  static const bool           _itWorks;
 };
-
 
 //-----------
 // Stream I/O
 //-----------
 
-std::ostream &        operator << (std::ostream &os, Real16  h);
-std::istream &        operator >> (std::istream &is, Real16 &h);
-
+std::ostream& operator<<(std::ostream& os, Real16 h);
+std::istream& operator>>(std::istream& is, Real16& h);
 
 //----------
 // Debugging
 //----------
 
-void            printBits   (std::ostream &os, Real16  h);
-void            printBits   (std::ostream &os, float f);
-void            printBits   (char  c[19], Real16  h);
-void            printBits   (char  c[35], float f);
-
+void printBits(std::ostream& os, Real16 h);
+void printBits(std::ostream& os, float f);
+void printBits(char c[19], Real16 h);
+void printBits(char c[35], float f);
 
 //-------
 // Limits
@@ -255,51 +239,50 @@ void            printBits   (char  c[35], float f);
 //----------------------------------------------------------------
 
 #ifdef WIN32
-#define REAL16_MIN    5.96046448e-08f    // Smallest positive half
+#define REAL16_MIN 5.96046448e-08f // Smallest positive half
 
-#define REAL16_NRM_MIN    6.10351562e-05f    // Smallest positive normalized half
+#define REAL16_NRM_MIN 6.10351562e-05f // Smallest positive normalized half
 
-#define REAL16_MAX    65504.0f    // Largest positive half
+#define REAL16_MAX 65504.0f // Largest positive half
 
-#define REAL16_EPSILON    0.00097656f    // Smallest positive e for which
-                    // half (1.0 + e) != half (1.0)
+#define REAL16_EPSILON 0.00097656f // Smallest positive e for which
+                                   // half (1.0 + e) != half (1.0)
 #else
-#define REAL16_MIN    5.96046448e-08    // Smallest positive half
+#define REAL16_MIN 5.96046448e-08 // Smallest positive half
 
-#define REAL16_NRM_MIN    6.10351562e-05    // Smallest positive normalized half
+#define REAL16_NRM_MIN 6.10351562e-05 // Smallest positive normalized half
 
-#define REAL16_MAX    65504.0        // Largest positive half
+#define REAL16_MAX 65504.0 // Largest positive half
 
-#define REAL16_EPSILON    0.00097656    // Smallest positive e for which
-                    // half (1.0 + e) != half (1.0)
-#endif // WIN32
+#define REAL16_EPSILON 0.00097656 // Smallest positive e for which
+// half (1.0 + e) != half (1.0)
+#endif                            // WIN32
 
-#define REAL16_MANT_DIG    11        // Number of digits in mantissa
-                    // (significand + hidden leading 1)
+#define REAL16_MANT_DIG 11 // Number of digits in mantissa
+                           // (significand + hidden leading 1)
 
-#define REAL16_DIG    2        // Number of base 10 digits that
-                    // can be represented without change
+#define REAL16_DIG 2 // Number of base 10 digits that
+                     // can be represented without change
 
-#define REAL16_RADIX    2        // Base of the exponent
+#define REAL16_RADIX 2 // Base of the exponent
 
-#define REAL16_MIN_EXP    -13        // Minimum negative integer such that
-                    // REAL16_RADIX raised to the power of
-                    // one less than that integer is a
-                    // normalized half
+#define REAL16_MIN_EXP -13 // Minimum negative integer such that
+                           // REAL16_RADIX raised to the power of
+                           // one less than that integer is a
+                           // normalized half
 
-#define REAL16_MAX_EXP    16        // Maximum positive integer such that
-                    // REAL16_RADIX raised to the power of
-                    // one less than that integer is a
-                    // normalized half
+#define REAL16_MAX_EXP 16 // Maximum positive integer such that
+                          // REAL16_RADIX raised to the power of
+                          // one less than that integer is a
+                          // normalized half
 
-#define REAL16_MIN_10_EXP    -4        // Minimum positive integer such
-                    // that 10 raised to that power is
-                    // a normalized half
+#define REAL16_MIN_10_EXP -4 // Minimum positive integer such
+                             // that 10 raised to that power is
+                             // a normalized half
 
-#define REAL16_MAX_10_EXP    4        // Maximum positive integer such
-                    // that 10 raised to that power is
-                    // a normalized half
-
+#define REAL16_MAX_10_EXP 4 // Maximum positive integer such
+                            // that 10 raised to that power is
+                            // a normalized half
 
 //---------------------------------------------------------------------------
 //
@@ -311,9 +294,9 @@ void            printBits   (char  c[35], float f);
 //    floating point number, whose bits are arranged as follows:
 //
 //        31 (msb)
-//        | 
+//        |
 //        | 30     23
-//        | |      | 
+//        | |      |
 //        | |      | 22                    0 (lsb)
 //        | |      | |                     |
 //        X XXXXXXXX XXXXXXXXXXXXXXXXXXXXXXX
@@ -357,7 +340,7 @@ void            printBits   (char  c[35], float f);
 //    Here is the bit-layout for a half number, h:
 //
 //        15 (msb)
-//        | 
+//        |
 //        | 14  10
 //        | |   |
 //        | |   | 9        0 (lsb)
@@ -412,36 +395,27 @@ void            printBits   (char  c[35], float f);
 //
 //---------------------------------------------------------------------------
 
-
 //--------------------
 // Simple constructors
 //--------------------
 
-inline
-Real16::Real16 ()
-{
-    // no initialization
+inline Real16::Real16() {
+  // no initialization
 }
-
 
 //----------------------------
 // Half-from-float constructor
 //----------------------------
 
-inline
-Real16::Real16 (float f)
-{
-    if (f == 0)
-    {
+inline Real16::Real16(float f) {
+  if (f == 0) {
     //
     // Common special case - zero.
     // For speed, we don't preserve the zero's sign.
     //
 
     _h = 0;
-    }
-    else
-    {
+  } else {
     //
     // We extract the combined sign and exponent, e, from our
     // floating-point number, f.  Then we convert e to the sign
@@ -466,77 +440,67 @@ Real16::Real16 (float f)
 
     e = _eLut[e];
 
-    if (e)
-    {
-        //
-        // Simple case - round the significand and
-        // combine it with the sign and exponent.
-        //
+    if (e) {
+      //
+      // Simple case - round the significand and
+      // combine it with the sign and exponent.
+      //
 
-        _h = e + (((x.i & 0x007fffff) + 0x00001000) >> 13);
-    }
-    else
-    {
-        //
-        // Difficult case - call a function.
-        //
+      _h = e + (((x.i & 0x007fffff) + 0x00001000) >> 13);
+    } else {
+      //
+      // Difficult case - call a function.
+      //
 
-        _h = convert (x.i);
+      _h = convert(x.i);
     }
-    }
+  }
 }
-
 
 //------------------------------------------
 // Half-to-float conversion via table lookup
 //------------------------------------------
 
-inline
-Real16::operator float () const
-{
-    return _toFloat[_h].f;
+inline Real16::operator float() const {
+  return _toFloat[_h].f;
 }
-
 
 //-------------------------
 // Round to n-bit precision
 //-------------------------
 
-inline Real16
-Real16::round (unsigned int n) const
-{
-    //
-    // Parameter check.
-    //
+inline Real16 Real16::round(unsigned int n) const {
+  //
+  // Parameter check.
+  //
 
-    if (n >= 10)
+  if (n >= 10)
     return *this;
 
-    //
-    // Disassemble h into the sign, s,
-    // and the combined exponent and significand, e.
-    //
+  //
+  // Disassemble h into the sign, s,
+  // and the combined exponent and significand, e.
+  //
 
-    unsigned short s = _h & 0x8000;
-    unsigned short e = _h & 0x7fff;
+  unsigned short s = _h & 0x8000;
+  unsigned short e = _h & 0x7fff;
 
-    //
-    // Round the exponent and significand to the nearest value
-    // where ones occur only in the (10-n) most significant bits.
-    // Note that the exponent adjusts automatically if rounding
-    // up causes the significand to overflow.
-    //
+  //
+  // Round the exponent and significand to the nearest value
+  // where ones occur only in the (10-n) most significant bits.
+  // Note that the exponent adjusts automatically if rounding
+  // up causes the significand to overflow.
+  //
 
-    e >>= 9 - n;
-    e  += e & 1;
-    e <<= 9 - n;
+  e >>= 9 - n;
+  e += e & 1;
+  e <<= 9 - n;
 
-    //
-    // Check for exponent overflow.
-    //
+  //
+  // Check for exponent overflow.
+  //
 
-    if (e >= 0x7c00)
-    {
+  if (e >= 0x7c00) {
     //
     // Overflow occurred -- truncate instead of rounding.
     //
@@ -544,216 +508,144 @@ Real16::round (unsigned int n) const
     e = _h;
     e >>= 10 - n;
     e <<= 10 - n;
-    }
+  }
 
-    //
-    // Put the original sign bit back.
-    //
+  //
+  // Put the original sign bit back.
+  //
 
-    Real16 h;
-    h._h = s | e;
+  Real16 h;
+  h._h = s | e;
 
-    return h;
+  return h;
 }
-
 
 //-----------------------
 // Other inline functions
 //-----------------------
 
-inline Real16    
-Real16::operator - () const
-{
-    Real16 h;
-    h._h = _h ^ 0x8000;
-    return h;
+inline Real16 Real16::operator-() const {
+  Real16 h;
+  h._h = _h ^ 0x8000;
+  return h;
 }
 
-
-inline Real16 &
-Real16::operator = (Real16 h)
-{
-    _h = h._h;
-    return *this;
+inline Real16& Real16::operator=(Real16 h) {
+  _h = h._h;
+  return *this;
 }
 
-
-inline Real16 &
-Real16::operator = (float f)
-{
-    *this = Real16 (f);
-    return *this;
+inline Real16& Real16::operator=(float f) {
+  *this = Real16(f);
+  return *this;
 }
 
-
-inline Real16 &
-Real16::operator += (Real16 h)
-{
-    *this = Real16 (float (*this) + float (h));
-    return *this;
+inline Real16& Real16::operator+=(Real16 h) {
+  *this = Real16(float(*this) + float(h));
+  return *this;
 }
 
-
-inline Real16 &
-Real16::operator += (float f)
-{
-    *this = Real16 (float (*this) + f);
-    return *this;
+inline Real16& Real16::operator+=(float f) {
+  *this = Real16(float(*this) + f);
+  return *this;
 }
 
-
-inline Real16 &
-Real16::operator -= (Real16 h)
-{
-    *this = Real16 (float (*this) - float (h));
-    return *this;
+inline Real16& Real16::operator-=(Real16 h) {
+  *this = Real16(float(*this) - float(h));
+  return *this;
 }
 
-
-inline Real16 &
-Real16::operator -= (float f)
-{
-    *this = Real16 (float (*this) - f);
-    return *this;
+inline Real16& Real16::operator-=(float f) {
+  *this = Real16(float(*this) - f);
+  return *this;
 }
 
-
-inline Real16 &
-Real16::operator *= (Real16 h)
-{
-    *this = Real16 (float (*this) * float (h));
-    return *this;
+inline Real16& Real16::operator*=(Real16 h) {
+  *this = Real16(float(*this) * float(h));
+  return *this;
 }
 
-
-inline Real16 &
-Real16::operator *= (float f)
-{
-    *this = Real16 (float (*this) * f);
-    return *this;
+inline Real16& Real16::operator*=(float f) {
+  *this = Real16(float(*this) * f);
+  return *this;
 }
 
-
-inline Real16 &
-Real16::operator /= (Real16 h)
-{
-    *this = Real16 (float (*this) / float (h));
-    return *this;
+inline Real16& Real16::operator/=(Real16 h) {
+  *this = Real16(float(*this) / float(h));
+  return *this;
 }
 
-
-inline Real16 &
-Real16::operator /= (float f)
-{
-    *this = Real16 (float (*this) / f);
-    return *this;
+inline Real16& Real16::operator/=(float f) {
+  *this = Real16(float(*this) / f);
+  return *this;
 }
 
-
-inline bool    
-Real16::isFinite () const
-{
-    unsigned short e = (_h >> 10) & 0x001f;
-    return e < 31;
+inline bool Real16::isFinite() const {
+  unsigned short e = (_h >> 10) & 0x001f;
+  return e < 31;
 }
 
-
-inline bool
-Real16::isNormalized () const
-{
-    unsigned short e = (_h >> 10) & 0x001f;
-    return e > 0 && e < 31;
+inline bool Real16::isNormalized() const {
+  unsigned short e = (_h >> 10) & 0x001f;
+  return e > 0 && e < 31;
 }
 
-
-inline bool
-Real16::isDenormalized () const
-{
-    unsigned short e = (_h >> 10) & 0x001f;
-    unsigned short m =  _h & 0x3ff;
-    return e == 0 && m != 0;
+inline bool Real16::isDenormalized() const {
+  unsigned short e = (_h >> 10) & 0x001f;
+  unsigned short m = _h & 0x3ff;
+  return e == 0 && m != 0;
 }
 
-
-inline bool
-Real16::isZero () const
-{
-    return (_h & 0x7fff) == 0;
+inline bool Real16::isZero() const {
+  return (_h & 0x7fff) == 0;
 }
 
-
-inline bool
-Real16::isNan () const
-{
-    unsigned short e = (_h >> 10) & 0x001f;
-    unsigned short m =  _h & 0x3ff;
-    return e == 31 && m != 0;
+inline bool Real16::isNan() const {
+  unsigned short e = (_h >> 10) & 0x001f;
+  unsigned short m = _h & 0x3ff;
+  return e == 31 && m != 0;
 }
 
-
-inline bool
-Real16::isInfinity () const
-{
-    unsigned short e = (_h >> 10) & 0x001f;
-    unsigned short m =  _h & 0x3ff;
-    return e == 31 && m == 0;
+inline bool Real16::isInfinity() const {
+  unsigned short e = (_h >> 10) & 0x001f;
+  unsigned short m = _h & 0x3ff;
+  return e == 31 && m == 0;
 }
 
-
-inline bool
-Real16::isNegative () const
-{
-    return (_h & 0x8000) != 0;
+inline bool Real16::isNegative() const {
+  return (_h & 0x8000) != 0;
 }
 
-
-inline Real16
-Real16::posInf ()
-{
-    Real16 h;
-    h._h = 0x7c00;
-    return h;
+inline Real16 Real16::posInf() {
+  Real16 h;
+  h._h = 0x7c00;
+  return h;
 }
 
-
-inline Real16
-Real16::negInf ()
-{
-    Real16 h;
-    h._h = 0xfc00;
-    return h;
+inline Real16 Real16::negInf() {
+  Real16 h;
+  h._h = 0xfc00;
+  return h;
 }
 
-
-inline Real16
-Real16::qNan ()
-{
-    Real16 h;
-    h._h = 0x7fff;
-    return h;
+inline Real16 Real16::qNan() {
+  Real16 h;
+  h._h = 0x7fff;
+  return h;
 }
 
-
-inline Real16
-Real16::sNan ()
-{
-    Real16 h;
-    h._h = 0x7dff;
-    return h;
+inline Real16 Real16::sNan() {
+  Real16 h;
+  h._h = 0x7dff;
+  return h;
 }
 
-
-inline unsigned short
-Real16::bits () const
-{
-    return _h;
+inline unsigned short Real16::bits() const {
+  return _h;
 }
 
-
-inline void
-Real16::setBits (unsigned short bits)
-{
-    _h = bits;
+inline void Real16::setBits(unsigned short bits) {
+  _h = bits;
 }
 
 OSG_END_NAMESPACE

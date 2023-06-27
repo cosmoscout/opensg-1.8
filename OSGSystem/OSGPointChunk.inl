@@ -42,19 +42,14 @@
 
 OSG_BEGIN_NAMESPACE
 
-inline
-UInt32 PointChunk::getStaticClassId(void)
-{
-    return getStaticClass()->getId();
+inline UInt32 PointChunk::getStaticClassId(void) {
+  return getStaticClass()->getId();
 }
 
-inline
-const StateChunkClass *PointChunk::getStaticClass(void)
-{
-    return &PointChunk::_class;
+inline const StateChunkClass* PointChunk::getStaticClass(void) {
+  return &PointChunk::_class;
 }
 
 OSG_END_NAMESPACE
 
 #define OSGPOINTCHUNK_INLINE_CVSID "@(#)$Id: $"
-

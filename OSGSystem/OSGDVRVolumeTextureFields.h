@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGDVRVOLUMETEXTUREFIELDS_H_
 #define _OSGDVRVOLUMETEXTUREFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class DVRVolumeTexture;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! DVRVolumeTexturePtr
 
 typedef FCPtr<AttachmentPtr, DVRVolumeTexture> DVRVolumeTexturePtr;
@@ -81,13 +80,12 @@ typedef FCPtr<AttachmentPtr, DVRVolumeTexture> DVRVolumeTexturePtr;
 #endif
 
 template <>
-struct FieldDataTraits<DVRVolumeTexturePtr> : 
-    public FieldTraitsRecurseMapper<DVRVolumeTexturePtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<DVRVolumeTexturePtr>
+    : public FieldTraitsRecurseMapper<DVRVolumeTexturePtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -98,10 +96,9 @@ struct FieldDataTraits<DVRVolumeTexturePtr> :
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
 
-
-
 OSG_END_NAMESPACE
 
-#define OSGDVRVOLUMETEXTUREFIELDS_HEADER_CVSID "@(#)$Id: FCFieldsTemplate_h.h,v 1.26 2006/02/20 16:55:35 dirk Exp $"
+#define OSGDVRVOLUMETEXTUREFIELDS_HEADER_CVSID                                                     \
+  "@(#)$Id: FCFieldsTemplate_h.h,v 1.26 2006/02/20 16:55:35 dirk Exp $"
 
 #endif /* _OSGDVRVOLUMETEXTUREFIELDS_H_ */

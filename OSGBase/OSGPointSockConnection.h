@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _POINTSOCKCONNECTION_H_
 #define _POINTSOCKCONNECTION_H_
 #ifdef __sgi
@@ -56,113 +55,107 @@
 
 OSG_BEGIN_NAMESPACE
 
-class OSG_BASE_DLLMAPPING PointSockConnection : public PointConnection
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_BASE_DLLMAPPING PointSockConnection : public PointConnection {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  PointSockConnection(void);
+  virtual ~PointSockConnection(void);
 
-             PointSockConnection ( void );
-    virtual ~PointSockConnection ( void ); 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   type info                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   type info                                  */
-    /*! \{                                                                 */
+  virtual const ConnectionType* getType(void);
 
-    virtual const ConnectionType *getType (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   connection                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   connection                                 */
-    /*! \{                                                                 */
+  virtual Channel     connectPoint(const std::string& address, Time timeout = -1);
+  virtual Channel     connectGroup(const std::string& address, Time timeout = -1);
+  virtual void        disconnect(void);
+  virtual Channel     acceptGroup(Time timeout = -1);
+  virtual Channel     acceptPoint(Time timeout = -1);
+  virtual std::string bind(const std::string& interf);
 
-    virtual Channel     connectPoint(const std::string &address,
-                                           Time        timeout=-1 );
-    virtual Channel     connectGroup(const std::string &address,
-                                           Time        timeout=-1 );
-    virtual void        disconnect  (      void                   );
-    virtual Channel     acceptGroup (      Time        timeout=-1 );
-    virtual Channel     acceptPoint (      Time        timeout=-1 );
-    virtual std::string bind        (const std::string &interf    );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   synchronisation                            */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   synchronisation                            */
-    /*! \{                                                                 */
+  virtual bool wait(Time timeout);
+  virtual void signal(void);
 
-    virtual bool wait  (Time timeout);
-    virtual void signal(void        );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   channel handling                           */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   channel handling                           */
-    /*! \{                                                                 */
+  virtual Channel selectChannel(Time timeout = -1);
 
-    virtual Channel selectChannel (Time timeout=-1);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   create                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   create                                     */
-    /*! \{                                                                 */
+  static PointConnection* create(void);
 
-    static PointConnection *create(void);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Types                                      */
+  /*! \{                                                                 */
 
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  struct SocketBufferHeader {
+    UInt32 size;
+  };
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Types                                      */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   IO Implementation                          */
+  /*! \{                                                                 */
 
-    struct SocketBufferHeader {
-        UInt32 size;
-    };
+  virtual void read(MemoryHandle mem, UInt32 size);
+  virtual void readBuffer(void);
+  virtual void write(MemoryHandle mem, UInt32 size);
+  virtual void writeBuffer(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   IO Implementation                          */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   members                                    */
+  /*! \{                                                                 */
 
-    virtual void read             (MemoryHandle mem, UInt32 size);
-    virtual void readBuffer       (void);
-    virtual void write            (MemoryHandle mem, UInt32 size);
-    virtual void writeBuffer      (void);
+  StreamSocket       _acceptSocket;
+  StreamSocket       _socket;
+  SocketAddress      _remoteAddress;
+  std::vector<UInt8> _socketReadBuffer;
+  std::vector<UInt8> _socketWriteBuffer;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   members                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    StreamSocket              _acceptSocket;
-    StreamSocket              _socket;
-    SocketAddress             _remoteAddress;
-    std::vector<UInt8>        _socketReadBuffer;
-    std::vector<UInt8>        _socketWriteBuffer;
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   static type                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  static ConnectionType _type;
 
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   static type                                */
-    /*! \{                                                                 */
+  typedef PointConnection Inherited;
 
-    static ConnectionType _type;
-
-    /*! \}                                                                 */
-
-    typedef PointConnection Inherited;
-
-	// prohibit default functions (move to 'public' if you need one)
-    PointSockConnection(const PointSockConnection &source);
-    PointSockConnection& operator =(const PointSockConnection &source);
+  // prohibit default functions (move to 'public' if you need one)
+  PointSockConnection(const PointSockConnection& source);
+  PointSockConnection& operator=(const PointSockConnection& source);
 };
 
 //---------------------------------------------------------------------------
@@ -171,7 +164,7 @@ class OSG_BASE_DLLMAPPING PointSockConnection : public PointConnection
 
 // class pointer
 
-typedef PointSockConnection *PointSockConnectionP;
+typedef PointSockConnection* PointSockConnectionP;
 
 OSG_END_NAMESPACE
 

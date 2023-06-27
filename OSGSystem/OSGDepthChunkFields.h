@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGDEPTHCHUNKFIELDS_H_
 #define _OSGDEPTHCHUNKFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class DepthChunk;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! DepthChunkPtr
 
 typedef FCPtr<StateChunkPtr, DepthChunk> DepthChunkPtr;
@@ -81,18 +80,22 @@ typedef FCPtr<StateChunkPtr, DepthChunk> DepthChunkPtr;
 #endif
 
 template <>
-struct FieldDataTraits<DepthChunkPtr> : 
-    public FieldTraitsRecurseMapper<DepthChunkPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<DepthChunkPtr> : public FieldTraitsRecurseMapper<DepthChunkPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getSName(void) { return "SFDepthChunkPtr"; }
-    static const char *getMName(void) { return "MFDepthChunkPtr"; }
+  static const char* getSName(void) {
+    return "SFDepthChunkPtr";
+  }
+  static const char* getMName(void) {
+    return "MFDepthChunkPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -102,7 +105,6 @@ struct FieldDataTraits<DepthChunkPtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
@@ -126,6 +128,7 @@ OSG_DLLEXPORT_DECL1(MField, DepthChunkPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 
 OSG_END_NAMESPACE
 
-#define OSGDEPTHCHUNKFIELDS_HEADER_CVSID "@(#)$Id: OSGDepthChunkFields.h,v 1.6 2006/02/20 16:54:19 dirk Exp $"
+#define OSGDEPTHCHUNKFIELDS_HEADER_CVSID                                                           \
+  "@(#)$Id: OSGDepthChunkFields.h,v 1.6 2006/02/20 16:54:19 dirk Exp $"
 
 #endif /* _OSGDEPTHCHUNKFIELDS_H_ */

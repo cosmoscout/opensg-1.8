@@ -36,13 +36,11 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGVOLRENDEF_H_
 #define _OSGVOLRENDEF_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 //---------------------------------------------------------------------------
 //  Includes
@@ -55,23 +53,23 @@
 //---------------------------------------------------------------------------
 
 #if defined(WIN32) && defined(OSG_BUILD_DLL)
-#   ifdef OSG_COMPILEVOLRENLIB
-#       define OSG_VOLRENLIB_DLLMAPPING        __declspec(dllexport)
-#       define OSG_VOLRENLIB_DLLTMPLMAPPING    __declspec(dllexport)
-#       if defined(_MSC_VER) && defined(__ICL)
-#           define OSG_MS_VOLRENLIB_DLLMAPPING 
-#       else
-#           define OSG_MS_VOLRENLIB_DLLMAPPING __declspec(dllexport)
-#       endif
-#   else
-#       define OSG_VOLRENLIB_DLLMAPPING        __declspec(dllimport)
-#       define OSG_VOLRENLIB_DLLTMPLMAPPING    __declspec(dllimport)
-#       if defined(_MSC_VER) && defined(__ICL)
-#           define OSG_MS_VOLRENLIB_DLLMAPPING 
-#       else
-#           define OSG_MS_VOLRENLIB_DLLMAPPING __declspec(dllimport)
-#       endif
-#   endif
+#ifdef OSG_COMPILEVOLRENLIB
+#define OSG_VOLRENLIB_DLLMAPPING __declspec(dllexport)
+#define OSG_VOLRENLIB_DLLTMPLMAPPING __declspec(dllexport)
+#if defined(_MSC_VER) && defined(__ICL)
+#define OSG_MS_VOLRENLIB_DLLMAPPING
+#else
+#define OSG_MS_VOLRENLIB_DLLMAPPING __declspec(dllexport)
+#endif
+#else
+#define OSG_VOLRENLIB_DLLMAPPING __declspec(dllimport)
+#define OSG_VOLRENLIB_DLLTMPLMAPPING __declspec(dllimport)
+#if defined(_MSC_VER) && defined(__ICL)
+#define OSG_MS_VOLRENLIB_DLLMAPPING
+#else
+#define OSG_MS_VOLRENLIB_DLLMAPPING __declspec(dllimport)
+#endif
+#endif
 #else
 #define OSG_VOLRENLIB_DLLMAPPING
 #define OSG_VOLRENLIB_DLLTMPLMAPPING
@@ -79,5 +77,3 @@
 #endif
 
 #endif /* _OSGVOLREN_H_ */
-
-

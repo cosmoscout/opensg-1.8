@@ -52,53 +52,39 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &FatBorderChunkBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& FatBorderChunkBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 FatBorderChunkBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 FatBorderChunkBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-FatBorderChunkPtr FatBorderChunkBase::create(void) 
-{
-    FatBorderChunkPtr fc; 
+inline FatBorderChunkPtr FatBorderChunkBase::create(void) {
+  FatBorderChunkPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = FatBorderChunkPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = FatBorderChunkPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-FatBorderChunkPtr FatBorderChunkBase::createEmpty(void) 
-{ 
-    FatBorderChunkPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline FatBorderChunkPtr FatBorderChunkBase::createEmpty(void) {
+  FatBorderChunkPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
-
-
 OSG_END_NAMESPACE
 
-#define OSGFATBORDERCHUNKBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGFATBORDERCHUNKBASE_INLINE_CVSID                                                         \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

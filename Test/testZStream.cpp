@@ -14,43 +14,40 @@
 
 OSG_USING_NAMESPACE
 
-int main (int argc, char **argv)
-{
-    std::stringstream compressed(std::stringstream::in | std::stringstream::out);
+int main(int argc, char** argv) {
+  std::stringstream compressed(std::stringstream::in | std::stringstream::out);
 
-    // with false we add no gzip header and footer.
-    zip_ostream zout(compressed, false);
-    
-    zout << std::string("Begin")
-         << " " << Int32(123456789)
-         << " " << Real32(1.41232)
-         << " " << std::string("End");
+  // with false we add no gzip header and footer.
+  zip_ostream zout(compressed, false);
 
-    // this flushes the stream and adds the gzip footer, this is
-    // done automatically in the zip_ostream destructor, but in this
-    // case we need to call it directly!
-    zout.finished();
+  zout << std::string("Begin") << " " << Int32(123456789) << " " << Real32(1.41232) << " "
+       << std::string("End");
 
-    std::cout << "Compressed  : " << "'" << compressed.str() << "' (" << compressed.str().size() << ")" << std::endl;
+  // this flushes the stream and adds the gzip footer, this is
+  // done automatically in the zip_ostream destructor, but in this
+  // case we need to call it directly!
+  zout.finished();
 
-    std::string str1;
-    Int32 v1 = 0;
-    Real32 v2 = 0.0f;
-    std::string str2;
+  std::cout << "Compressed  : "
+            << "'" << compressed.str() << "' (" << compressed.str().size() << ")" << std::endl;
 
-    zip_istream zin(compressed);
-    zin >> str1 >> v1 >> v2 >> str2;
+  std::string str1;
+  Int32       v1 = 0;
+  Real32      v2 = 0.0f;
+  std::string str2;
 
-    std::cout << "Uncompressed: " << "'" << str1 << "' " << v1 << " " << v2
-                                  << " '" << str2 << "'" << std::endl;
+  zip_istream zin(compressed);
+  zin >> str1 >> v1 >> v2 >> str2;
 
-    return 0;
+  std::cout << "Uncompressed: "
+            << "'" << str1 << "' " << v1 << " " << v2 << " '" << str2 << "'" << std::endl;
+
+  return 0;
 }
 #else
 
-int main (int argc, char **argv)
-{
-    std::cerr << "Z-Stream not supported!" << std::endl;
+int main(int argc, char** argv) {
+  std::cerr << "Z-Stream not supported!" << std::endl;
 }
 
 #endif // OSG_ZSTREAM_SUPPORTED

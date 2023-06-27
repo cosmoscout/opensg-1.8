@@ -36,25 +36,26 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 OSG_BEGIN_NAMESPACE
 
+inline TextGlyph::Index TextGlyph::getGlyphIndex() const {
+  return _glyphIndex;
+}
 
-inline TextGlyph::Index TextGlyph::getGlyphIndex() const { return _glyphIndex; }
+inline Real32 TextGlyph::getHoriAdvance() const {
+  return _horiAdvance;
+}
 
-
-inline Real32 TextGlyph::getHoriAdvance() const { return _horiAdvance; }
-
-
-inline Real32 TextGlyph::getVertAdvance() const { return _vertAdvance; }
-
+inline Real32 TextGlyph::getVertAdvance() const {
+  return _vertAdvance;
+}
 
 inline TextGlyph::TextGlyph()
-: _glyphIndex(INVALID_INDEX), _horiAdvance(0.f), _vertAdvance(0.f)
-{}
-
+    : _glyphIndex(INVALID_INDEX)
+    , _horiAdvance(0.f)
+    , _vertAdvance(0.f) {
+}
 
 OSG_END_NAMESPACE
-
 
 #define OSGTEXTGLYPH_INLINE_CVSID "@(#)$Id: OSGTextGlyph.inl,v 1.1 2005/03/03 13:43:06 a-m-z Exp $"

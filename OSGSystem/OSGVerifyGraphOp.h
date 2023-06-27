@@ -36,7 +36,6 @@
 *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGVERIFYGRAPHOP_H_
 #define _OSGVERIFYGRAPHOP_H_
 #ifdef __sgi
@@ -54,76 +53,72 @@ OSG_BEGIN_NAMESPACE
 //! \ingroup GrpSystemRenderingBackend
 //! GraphOp class
 
-class OSG_SYSTEMLIB_DLLMAPPING VerifyGraphOp : public GraphOp
-{
-    /*==========================  PUBLIC  =================================*/
-public:
+class OSG_SYSTEMLIB_DLLMAPPING VerifyGraphOp : public GraphOp {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  static const char* getClassname(void) {
+    return "VerifyGraphOp";
+  };
 
-    static const char *getClassname(void) { return "VerifyGraphOp"; };
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-    
-    VerifyGraphOp(const char* name = "Verify", bool repair = true, 
-                  bool verbose = false);
+  VerifyGraphOp(const char* name = "Verify", bool repair = true, bool verbose = false);
 
-    GraphOp *create();
+  GraphOp* create();
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    virtual ~VerifyGraphOp(void);
+  virtual ~VerifyGraphOp(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Main methods                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Main methods                               */
+  /*! \{                                                                 */
 
-    bool traverse(NodePtr& node);
-    
-    void setParams(const std::string params);
-    void setVerbose(bool verbose);    
-    void setRepair (bool repair);    
+  bool traverse(NodePtr& node);
 
-    std::string usage(void);
+  void setParams(const std::string params);
+  void setVerbose(bool verbose);
+  void setRepair(bool repair);
 
-    /*! \}                                                                 */
+  std::string usage(void);
 
-    /*=========================  PROTECTED  ===============================*/
-protected:    
+  /*! \}                                                                 */
 
-    Action::ResultE traverseEnter(NodePtr& node);
-    Action::ResultE traverseLeave(NodePtr& node, Action::ResultE res);
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  Action::ResultE traverseEnter(NodePtr& node);
+  Action::ResultE traverseLeave(NodePtr& node, Action::ResultE res);
 
-    /*==========================  PRIVATE  ================================*/
-private:
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /* Some internal helper methods */
 
-    /* Some internal helper methods */
-    
-    OSG::Action::ResultE verifyGeometry(NodePtr &node);
-    bool verifyIndexMap(GeometryPtr &geo, bool &repair);
-    bool repairGeometry(void);    
+  OSG::Action::ResultE verifyGeometry(NodePtr& node);
+  bool                 verifyIndexMap(GeometryPtr& geo, bool& repair);
+  bool                 repairGeometry(void);
 
-    /* Configuration variables */
- 
-    bool _repair;    
-    bool _verbose;    
-    
-    /* Traversal variables */
-    
-   UInt32 _numErrors;  /**< The running total of errors found. */
+  /* Configuration variables */
 
-   std::vector<OSG::GeometryPtr> _corruptedGeos;
-   std::vector<OSG::NodePtr>     _corruptedNodes;
-    
+  bool _repair;
+  bool _verbose;
+
+  /* Traversal variables */
+
+  UInt32 _numErrors; /**< The running total of errors found. */
+
+  std::vector<OSG::GeometryPtr> _corruptedGeos;
+  std::vector<OSG::NodePtr>     _corruptedNodes;
 };
 
 OSG_END_NAMESPACE

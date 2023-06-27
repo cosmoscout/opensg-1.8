@@ -38,8 +38,8 @@
 
 #ifndef OSGTGAIMAGEFILETYPE_CLASS_DECLARATION
 #define OSGTGAIMAGEFILETYPE_CLASS_DECLARATION
-#ifdef  __sgi
-#pragma  once
+#ifdef __sgi
+#pragma once
 #endif
 
 #include <OSGSystemDef.h>
@@ -53,88 +53,80 @@ OSG_BEGIN_NAMESPACE
 See \ref PageSystemImage for a detailed description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING TGAImageFileType : public ImageFileType
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING TGAImageFileType : public ImageFileType {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  virtual ~TGAImageFileType(void);
 
-    virtual ~TGAImageFileType (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Get Method                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Get Method                                  */
-    /*! \{                                                                 */
+  static TGAImageFileType& the(void);
 
-    static TGAImageFileType & the (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Read/Write                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Read/Write                                 */
-    /*! \{                                                                 */
+  virtual bool read(ImagePtr& image, std::istream& is, const std::string& mimetype);
 
-    virtual bool read (ImagePtr &image, std::istream &is, const std::string &mimetype);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name               Default Constructor                            */
+  /*! \{                                                                 */
 
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  TGAImageFileType(const Char8* mimeType, const Char8* suffixArray[], UInt16 suffixByteCount);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name               Default Constructor                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    TGAImageFileType (const Char8 *mimeType,
-                      const Char8 *suffixArray[], UInt16 suffixByteCount );
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /*---------------------------------------------------------------------*/
+  /*! \name                Copy Constructor                              */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  TGAImageFileType(const TGAImageFileType& obj);
 
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                Copy Operator                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                Copy Constructor                              */
-    /*! \{                                                                 */
+  const TGAImageFileType& operator=(const TGAImageFileType& obj);
 
-    TGAImageFileType (const TGAImageFileType &obj);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                Copy Operator                                 */
-    /*! \{                                                                 */
+  // header struct
 
-    const TGAImageFileType & operator= (const TGAImageFileType &obj);
+  typedef struct {
+    UInt8  idLength;
+    UInt8  colorMapType;
+    UInt8  imageType;
+    UInt16 cmapFirst;
+    UInt16 cmapLength;
+    UInt8  cmapEntrySize;
+    UInt16 xOrigin;
+    UInt16 yOrigin;
+    UInt16 width;
+    UInt16 height;
+    UInt8  depth;
+    UInt8  descriptor;
+  } TGAHeader;
 
-    /*! \}                                                                 */
+  bool readHeader(std::istream& in, TGAHeader& header);
 
-    // header struct
+  bool readCompressedImageData(std::istream& in, ImagePtr& image);
 
-    typedef struct 
-    {
-        UInt8   idLength;
-        UInt8   colorMapType;
-        UInt8   imageType;
-        UInt16  cmapFirst;
-        UInt16  cmapLength;
-        UInt8   cmapEntrySize;
-        UInt16  xOrigin;
-        UInt16  yOrigin;
-        UInt16  width;
-        UInt16  height;
-        UInt8   depth;
-        UInt8   descriptor;
-    } 
-    TGAHeader;
-
-    bool readHeader(std::istream &in, TGAHeader &header);
-
-    bool readCompressedImageData(std::istream &in, ImagePtr &image);
-
-    static TGAImageFileType _the;
-
+  static TGAImageFileType _the;
 };
 
 typedef TGAImageFileType* TGAImageFileTypeP;

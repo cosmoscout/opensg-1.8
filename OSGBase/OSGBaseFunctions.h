@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGBASEFUNCTIONS_H_
 #define _OSGBASEFUNCTIONS_H_
 #ifdef __sgi
@@ -70,7 +69,6 @@
 #include <cmath>
 #endif
 
-
 #include <vector>
 #include <string>
 #include <iterator>
@@ -91,137 +89,100 @@ OSG_BEGIN_NAMESPACE
 /*---------------------------------------------------------------------*/
 /*                        Base Math Runtime Functions                  */
 
-template <class FloatTypeT> inline
-typename TypeTraits<FloatTypeT>::RealReturnType
-    osgsqrt(const FloatTypeT rValue);
+template <class FloatTypeT>
+inline typename TypeTraits<FloatTypeT>::RealReturnType osgsqrt(const FloatTypeT rValue);
 
+template <class FloatTypeT>
+inline typename TypeTraits<FloatTypeT>::RealReturnType osgcos(const FloatTypeT rValue);
 
-template <class FloatTypeT> inline
-typename TypeTraits<FloatTypeT>::RealReturnType
-    osgcos(const FloatTypeT rValue);
+template <class FloatTypeT>
+inline typename TypeTraits<FloatTypeT>::RealReturnType osgsin(const FloatTypeT rValue);
 
+template <class FloatTypeT>
+inline typename TypeTraits<FloatTypeT>::RealReturnType osgtan(const FloatTypeT rValue);
 
-template <class FloatTypeT> inline
-typename TypeTraits<FloatTypeT>::RealReturnType
-    osgsin(const FloatTypeT rValue);
+template <class FloatTypeT>
+inline typename TypeTraits<FloatTypeT>::RealReturnType osgacos(const FloatTypeT rValue);
 
+template <class FloatTypeT>
+inline typename TypeTraits<FloatTypeT>::RealReturnType osgasin(const FloatTypeT rValue);
 
-template <class FloatTypeT> inline
-typename TypeTraits<FloatTypeT>::RealReturnType
-    osgtan(const FloatTypeT rValue);
+template <class FloatTypeT>
+inline typename TypeTraits<FloatTypeT>::RealReturnType osgatan(const FloatTypeT rValue);
 
+template <class FloatTypeT>
+inline typename TypeTraits<FloatTypeT>::RealReturnType osgatan2(
+    const FloatTypeT rValue1, const FloatTypeT rValue2);
 
-template <class FloatTypeT> inline
-typename TypeTraits<FloatTypeT>::RealReturnType
-    osgacos(const FloatTypeT rValue);
+template <class FloatTypeT>
+inline FloatTypeT osgabs(const FloatTypeT rValue);
 
+template <class FloatTypeT>
+inline typename TypeTraits<FloatTypeT>::RealReturnType osgpow(
+    const FloatTypeT rValue, const FloatTypeT rExp);
 
-template <class FloatTypeT> inline
-typename TypeTraits<FloatTypeT>::RealReturnType
-    osgasin(const FloatTypeT rValue);
+template <class FloatTypeT>
+inline typename TypeTraits<FloatTypeT>::RealReturnType osglog(const FloatTypeT rValue);
 
+template <class FloatTypeT>
+inline typename TypeTraits<FloatTypeT>::RealReturnType osgexp(const FloatTypeT rValue);
 
-template <class FloatTypeT> inline
-typename TypeTraits<FloatTypeT>::RealReturnType
-    osgatan(const FloatTypeT rValue);
+template <class FloatTypeT>
+inline typename TypeTraits<FloatTypeT>::RealReturnType osgfloor(const FloatTypeT rValue);
 
+template <class FloatTypeT>
+inline typename TypeTraits<FloatTypeT>::RealReturnType osgceil(const FloatTypeT rValue);
 
-template <class FloatTypeT> inline
-typename TypeTraits<FloatTypeT>::RealReturnType
-    osgatan2(const FloatTypeT rValue1,
-             const FloatTypeT rValue2);
-
-
-template <class FloatTypeT> inline
-FloatTypeT osgabs(const FloatTypeT rValue);
-
-
-template <class FloatTypeT> inline
-typename TypeTraits<FloatTypeT>::RealReturnType
-    osgpow(const FloatTypeT rValue,
-           const FloatTypeT rExp);
-
-
-template <class FloatTypeT> inline
-typename TypeTraits<FloatTypeT>::RealReturnType
-    osglog(const FloatTypeT rValue);
-
-
-template <class FloatTypeT> inline
-typename TypeTraits<FloatTypeT>::RealReturnType
-    osgexp(const FloatTypeT rValue);
-
-
-template <class FloatTypeT> inline
-typename TypeTraits<FloatTypeT>::RealReturnType
-    osgfloor(const FloatTypeT rValue);
-
-template <class FloatTypeT> inline
-typename TypeTraits<FloatTypeT>::RealReturnType
-    osgceil(const FloatTypeT rValue);
-
-
-template <class FloatTypeT> inline
-UInt32 osgfinite(const FloatTypeT rValue);
+template <class FloatTypeT>
+inline UInt32 osgfinite(const FloatTypeT rValue);
 
 /*---------------------------------------------------------------------*/
 /*                           Min / Max Functions                       */
 
-template <class TypeT> inline
-TypeT osgMin(const TypeT lVal, const TypeT rValue);
+template <class TypeT>
+inline TypeT osgMin(const TypeT lVal, const TypeT rValue);
 
+template <class TypeT>
+inline TypeT osgMax(const TypeT lVal, const TypeT rValue);
 
-template <class TypeT> inline
-TypeT osgMax(const TypeT lVal, const TypeT rValue);
-
-
-template <class TypeT> inline
-TypeT osgClamp(const TypeT minVal, const TypeT val, const TypeT maxVal);
+template <class TypeT>
+inline TypeT osgClamp(const TypeT minVal, const TypeT val, const TypeT maxVal);
 
 /*---------------------------------------------------------------------*/
 /*                               Swap Functions                        */
 
-template <class TypeT> inline
-void osgSwap(TypeT & lVal, TypeT & rValue);
+template <class TypeT>
+inline void osgSwap(TypeT& lVal, TypeT& rValue);
 
 /*---------------------------------------------------------------------*/
 /*                               Sign Functions                        */
 
-template <class TypeT> inline
-Int8 osgSgn(TypeT val);
+template <class TypeT>
+inline Int8 osgSgn(TypeT val);
 
 /*---------------------------------------------------------------------*/
 /*                           Rad / Degree Functions                    */
 
-template <class FloatTypeT> inline
-typename TypeTraits<FloatTypeT>::RealReturnType
-    osgdegree2rad(const FloatTypeT rValue);
+template <class FloatTypeT>
+inline typename TypeTraits<FloatTypeT>::RealReturnType osgdegree2rad(const FloatTypeT rValue);
 
+template <class FloatTypeT>
+inline typename TypeTraits<FloatTypeT>::RealReturnType osgrad2degree(const FloatTypeT rValue);
 
-template <class FloatTypeT> inline
-typename TypeTraits<FloatTypeT>::RealReturnType
-    osgrad2degree(const FloatTypeT rValue);
+template <class FloatTypeT>
+inline typename TypeTraits<FloatTypeT>::RealReturnType deg2rad(const FloatTypeT rValue);
 
-
-template <class FloatTypeT> inline
-typename TypeTraits<FloatTypeT>::RealReturnType
-    deg2rad(const FloatTypeT rValue);
-
-
-template <class FloatTypeT> inline
-typename TypeTraits<FloatTypeT>::RealReturnType
-    rad2deg(const FloatTypeT rValue);
+template <class FloatTypeT>
+inline typename TypeTraits<FloatTypeT>::RealReturnType rad2deg(const FloatTypeT rValue);
 
 /*---------------------------------------------------------------------*/
 /*                             Power 2 Functions                       */
 
-template <class TypeT> inline
-bool osgispower2(TypeT rValue);
+template <class TypeT>
+inline bool osgispower2(TypeT rValue);
 
-
-template <class TypeT> inline
-TypeT osgnextpower2(TypeT rValue);
-
+template <class TypeT>
+inline TypeT osgnextpower2(TypeT rValue);
 
 /*---------------------------------------------------------------------*/
 /*                   Ccompile Time Functions                           */
@@ -237,14 +198,11 @@ TypeT osgnextpower2(TypeT rValue);
  */
 
 template <Int32 uiValue1, Int32 uiValue2>
-struct OSG_BASE_DLLMAPPING osgStaticMax
-{
-    enum _iMax { iMax = uiValue1 < uiValue2 ? uiValue2 : uiValue1 };
+struct OSG_BASE_DLLMAPPING osgStaticMax {
+  enum _iMax { iMax = uiValue1 < uiValue2 ? uiValue2 : uiValue1 };
 };
 
-
-#if defined(__sgi) || defined(__GNUC__) || defined(__sun) || defined(darwin) ||\
-    defined(__hpux)
+#if defined(__sgi) || defined(__GNUC__) || defined(__sun) || defined(darwin) || defined(__hpux)
 
 /*---------------------------------------------------------------------*/
 /*! \defgroup GrpCIFTBased compile time if, type based
@@ -256,7 +214,7 @@ struct OSG_BASE_DLLMAPPING osgStaticMax
     \hideinhierarchy
  */
 
-struct TrueType  {};
+struct TrueType {};
 
 /*! \ingroup GrpBaseBaseCmpTimeFn
     \ingroup GrpCIFTBased
@@ -271,11 +229,10 @@ struct FalseType {};
     \hideinhierarchy
  */
 
-template<class IConditionV, class IThenT, class IElseT>
-struct osgTypeIF
-{
-    typedef IThenT _IRet;
-    typedef IElseT _IDummyRef;
+template <class IConditionV, class IThenT, class IElseT>
+struct osgTypeIF {
+  typedef IThenT _IRet;
+  typedef IElseT _IDummyRef;
 };
 
 /*! Compile time if, false case, type based
@@ -284,11 +241,10 @@ struct osgTypeIF
     \hideinhierarchy
  */
 
-template<class IThenT, class IElseT>
-struct osgTypeIF<FalseType, IThenT, IElseT>
-{
-    typedef IElseT _IRet;
-    typedef IThenT _IDummyRef;
+template <class IThenT, class IElseT>
+struct osgTypeIF<FalseType, IThenT, IElseT> {
+  typedef IElseT _IRet;
+  typedef IThenT _IDummyRef;
 };
 
 /*---------------------------------------------------------------------*/
@@ -302,11 +258,10 @@ struct osgTypeIF<FalseType, IThenT, IElseT>
     \hideinhierarchy
  */
 
-template<bool IConditionV, class IThenT, class IElseT>
-struct osgIF
-{
-    typedef IThenT _IRet;
-    typedef IElseT _IDummyRef;
+template <bool IConditionV, class IThenT, class IElseT>
+struct osgIF {
+  typedef IThenT _IRet;
+  typedef IElseT _IDummyRef;
 };
 
 /*! Compile time if, false case, bool based
@@ -315,11 +270,10 @@ struct osgIF
     \hideinhierarchy
  */
 
-template<class IThenT, class IElseT>
-struct osgIF<false, IThenT, IElseT>
-{
-    typedef IElseT _IRet;
-    typedef IThenT _IDummyRef;
+template <class IThenT, class IElseT>
+struct osgIF<false, IThenT, IElseT> {
+  typedef IElseT _IRet;
+  typedef IThenT _IDummyRef;
 };
 
 /*---------------------------------------------------------------------*/
@@ -336,14 +290,12 @@ struct osgIF<false, IThenT, IElseT>
  */
 
 template <bool IConditionV>
-struct osgIFGen
-{
-    template<class IThenT, class IElseT>
-    struct osgIFSwitch
-    {
-        typedef IThenT _IRet;
-        typedef IElseT _IDummyRef;
-    };
+struct osgIFGen {
+  template <class IThenT, class IElseT>
+  struct osgIFSwitch {
+    typedef IThenT _IRet;
+    typedef IElseT _IDummyRef;
+  };
 };
 
 /*! \ingroup GrpBaseBaseCmpTimeFn
@@ -351,14 +303,12 @@ struct osgIFGen
  */
 
 template <>
-struct osgIFGen<false>
-{
-    template<class IThenT, class IElseT>
-    struct osgIFSwitch
-    {
-        typedef IElseT _IRet;
-        typedef IThenT _IDummyRef;
-    };
+struct osgIFGen<false> {
+  template <class IThenT, class IElseT>
+  struct osgIFSwitch {
+    typedef IElseT _IRet;
+    typedef IThenT _IDummyRef;
+  };
 };
 
 /*! Compile time if, bool based
@@ -366,11 +316,9 @@ struct osgIFGen<false>
     \ingroup GrpCIFBBased
  */
 
-template<bool IConditionV, class IThenT, class IElseT>
-struct osgIF
-{
-    typedef typename osgIFGen<IConditionV>::osgIFSwitch<IThenT, 
-                                                        IElseT>::_IRet _IRet;
+template <bool IConditionV, class IThenT, class IElseT>
+struct osgIF {
+  typedef typename osgIFGen<IConditionV>::osgIFSwitch<IThenT, IElseT>::_IRet _IRet;
 };
 
 #endif
@@ -378,22 +326,15 @@ struct osgIF
 /*---------------------------------------------------------------------*/
 /*                   Case String Runtime Functions                     */
 
-inline
-void stringDup(const Char8 *szInput, Char8 *&szOutput);
+inline void stringDup(const Char8* szInput, Char8*& szOutput);
 
-inline
-Int32 stringncmp(const Char8 *string1, const Char8 *string2, size_t count);
+inline Int32 stringncmp(const Char8* string1, const Char8* string2, size_t count);
 
-inline
-Int32 stringlen(const Char8 *string1);
+inline Int32 stringlen(const Char8* string1);
 
+inline Int32 stringcmp(const Char8* string1, const Char8* string2);
 
-inline
-Int32 stringcmp(const Char8 *string1, const Char8 *string2);
-
-inline
-Int32 stringcasecmp(const Char8 *string1,
-                    const Char8 *string2);
+inline Int32 stringcasecmp(const Char8* string1, const Char8* string2);
 
 /*! String less than compare functor used for a STL weak ordering
     \ingroup GrpBaseSTLHelpers
@@ -401,12 +342,10 @@ Int32 stringcasecmp(const Char8 *string1,
     \hideinhierarchy
  */
 
-struct LTString
-{
-    bool operator()(const Char8 *s1, const Char8 *s2) const
-    {
-        return ::strcmp(s1, s2) < 0;
-    }
+struct LTString {
+  bool operator()(const Char8* s1, const Char8* s2) const {
+    return ::strcmp(s1, s2) < 0;
+  }
 };
 
 /*! String equal compare functor
@@ -415,34 +354,28 @@ struct LTString
     \hideinhierarchy
  */
 
-struct EQString
-{
-    bool operator()(const Char8 *s1, const Char8 *s2) const
-    {
-        return ::strcmp(s1, s2) == 0;
-    }
+struct EQString {
+  bool operator()(const Char8* s1, const Char8* s2) const {
+    return ::strcmp(s1, s2) == 0;
+  }
 };
 
 #ifdef OSG_USE_HASH_COMPARE
-struct HashCmpString : 
-    public OSG_STDEXTENSION_NAMESPACE::hash_compare<const Char8 *, LTString>
-{
-    typedef       std::hash_compare<const Char8 *, LTString>   Inherited;
-    typedef const Char8                                      *_Kty;
+struct HashCmpString : public OSG_STDEXTENSION_NAMESPACE::hash_compare<const Char8*, LTString> {
+  typedef std::hash_compare<const Char8*, LTString> Inherited;
+  typedef const Char8*                              _Kty;
 
-    HashCmpString(void) : Inherited() 
-    {
-    }
+  HashCmpString(void)
+      : Inherited() {
+  }
 
-    size_t operator()(const _Kty& _Keyval) const
-	{
-        return OSG_STDEXTENSION_NAMESPACE::hash_value<const Char8 *>(_Keyval);
-    }
+  size_t operator()(const _Kty& _Keyval) const {
+    return OSG_STDEXTENSION_NAMESPACE::hash_value<const Char8*>(_Keyval);
+  }
 
-    bool operator()(const _Kty& _Keyval1, const _Kty& _Keyval2) const
-    {
-        return Inherited::operator()(_Keyval1, _Keyval2);
-    }
+  bool operator()(const _Kty& _Keyval1, const _Kty& _Keyval2) const {
+    return Inherited::operator()(_Keyval1, _Keyval2);
+  }
 };
 #endif
 
@@ -455,165 +388,138 @@ struct OSG_BASE_DLLMAPPING string_token_iterator :
     public std::iterator<std::input_iterator_tag, std::string>
 #endif
 {
-  public:
-    string_token_iterator();
+ public:
+  string_token_iterator();
 
-    string_token_iterator(const std::string & str_,
-                          const char        * separator_ = " ");
+  string_token_iterator(const std::string& str_, const char* separator_ = " ");
 
-    string_token_iterator(const string_token_iterator & rhs);
+  string_token_iterator(const string_token_iterator& rhs);
 
-    string_token_iterator & operator++();
+  string_token_iterator& operator++();
 
-    string_token_iterator operator++(int);
+  string_token_iterator operator++(int);
 
-    std::string operator*() const;
+  std::string operator*() const;
 
-    bool operator==(const string_token_iterator & rhs) const;
+  bool operator==(const string_token_iterator& rhs) const;
 
-    bool operator!=(const string_token_iterator & rhs) const;
+  bool operator!=(const string_token_iterator& rhs) const;
 
-  private:
+ private:
+  void find_next(void);
 
-    void find_next(void);
-
-    const char                   * _separator;
-    const std::string            * _str;
-          std::string::size_type   _start;
-          std::string::size_type   _end;
+  const char*            _separator;
+  const std::string*     _str;
+  std::string::size_type _start;
+  std::string::size_type _end;
 };
-
-
 
 /*! Indirector
     \ingroup GrpBaseSTLHelpers
-    \ingroup GrpBaseBaseStringFn 
-    
+    \ingroup GrpBaseBaseStringFn
+
     Allows using an indirection field for STL algorithms, e.g. sort.
-    
+
     The idea is to sort an index field instead of the actual data, as the data
     might be large or immovable.
-    
+
     Example:<tt>
-    
+
     std::vector<float> contv;
     std::vector<int>   indv;
     indirector<std::vector<float>, int>  ind(contv);
-    
+
     std::sort(indv.begin(), indv.end(), ind);
     </tt>
  */
 
 template <class ContentT, class IndexT>
-class indirector
-{
-    public:
-    
-        indirector(ContentT cont);
-        
-        bool operator()(IndexT a, IndexT b);
-       
-    private:
-    
-        ContentT _cont;
+class indirector {
+ public:
+  indirector(ContentT cont);
+
+  bool operator()(IndexT a, IndexT b);
+
+ private:
+  ContentT _cont;
 };
-
-
 
 /*---------------------------------------------------------------------*/
 /*                    Miscellaneous Functions                          */
 
-template<class VecPntT> inline
-UInt32 getMaxIndexAbs3(const VecPntT &v);
+template <class VecPntT>
+inline UInt32 getMaxIndexAbs3(const VecPntT& v);
 
-inline
-Int32 putenv(Char8 *string);
+inline Int32 putenv(Char8* string);
 
-inline
-void osgsleep(UInt32 millisecs);
+inline void osgsleep(UInt32 millisecs);
 
-inline
-Real32 osgrand(void);
+inline Real32 osgrand(void);
 
-inline
-bool osgIsBigEndian(void);
+inline bool osgIsBigEndian(void);
 
 OSG_BASE_DLLMAPPING
-void osgGetHostname(char *szBuffer, UInt32 uiSize);
+void osgGetHostname(char* szBuffer, UInt32 uiSize);
 
-#if defined(WIN32) && defined(_MSC_VER) && _MSC_VER <= 1200  // VC6
+#if defined(WIN32) && defined(_MSC_VER) && _MSC_VER <= 1200 // VC6
 
-inline
-std::ostream &operator<<(std::ostream &os, UInt64 v);
+inline std::ostream& operator<<(std::ostream& os, UInt64 v);
 
-inline
-std::ostream &operator<<(std::ostream &os, Int64 v);
+inline std::ostream& operator<<(std::ostream& os, Int64 v);
 
-#endif 
+#endif
 
 /*---------------------------------------------------------------------*/
 /*               big/little endian conversion functions                */
 
 // host to network
 
-inline
-UInt16 osghtons(UInt16 src);
+inline UInt16 osghtons(UInt16 src);
 
-inline
-UInt32 osghtonl(UInt32 src);
+inline UInt32 osghtonl(UInt32 src);
 
-inline
-UInt64 osghtonll(UInt64 src);
+inline UInt64 osghtonll(UInt64 src);
 
-inline
-Real32 osghtonf(Real32 src);
+inline Real32 osghtonf(Real32 src);
 
-inline
-Real64 osghtond(Real64 src);
+inline Real64 osghtond(Real64 src);
 
-inline
-Real128 osghtondd(Real128 src);
+inline Real128 osghtondd(Real128 src);
 
 // network to host
 
-inline
-UInt16 osgntohs(UInt16 src);
+inline UInt16 osgntohs(UInt16 src);
 
-inline
-UInt32 osgntohl(UInt32 src);
+inline UInt32 osgntohl(UInt32 src);
 
-inline
-UInt64 osgntohll(UInt64 src);
+inline UInt64 osgntohll(UInt64 src);
 
-inline
-Real32 osgntohf(Real32 src);
+inline Real32 osgntohf(Real32 src);
 
-inline
-Real64 osgntohd(Real64 src);
+inline Real64 osgntohd(Real64 src);
 
-inline
-Real128 osgntohd(Real128 src);
+inline Real128 osgntohd(Real128 src);
 
 /*---------------------------------------------------------------------*/
 /*                MemoryObject Reference Count Functions               */
 
-template <class T> inline
-void setRefP  (T *&pObject, T *&pNewObject);
+template <class T>
+inline void setRefP(T*& pObject, T*& pNewObject);
 
-template <class T> inline
-void addRefP  (T *&pObject);
+template <class T>
+inline void addRefP(T*& pObject);
 
-template <class T> inline
-void subRefP  (T *&pObject);
+template <class T>
+inline void subRefP(T*& pObject);
 
-template <class T> inline
-void clearRefP(T *&pObject);
+template <class T>
+inline void clearRefP(T*& pObject);
 
-template <class T> inline
-void clearRefPVector (std::vector<T *> &vVector);
+template <class T>
+inline void clearRefPVector(std::vector<T*>& vVector);
 
-template <class T> inline
-void clearRefPVectorP(std::vector<T *> *pVector);
+template <class T>
+inline void clearRefPVectorP(std::vector<T*>* pVector);
 
 /*---------------------------------------------------------------------*/
 /*                           Initialization                            */
@@ -621,12 +527,7 @@ void clearRefPVectorP(std::vector<T *> *pVector);
 /*! \ingroup GrpBaseBaseInitExit
  */
 
-enum SystemState
-{
-    Startup  = 0x01,
-    Running  = 0x02,
-    Shutdown = 0x03
-};
+enum SystemState { Startup = 0x01, Running = 0x02, Shutdown = 0x03 };
 
 extern OSG_BASE_DLLMAPPING SystemState GlobalSystemState;
 
@@ -655,22 +556,20 @@ typedef bool (*InitFuncF)(void);
 
 typedef bool (*ExitFuncF)(void);
 
-
 /*! \ingroup GrpBaseBaseInitExit
     \hideinhierarchy
     InitFuncWrapper is a little wrapper class that allows calling an init
     function without an associated class.
  */
 
-struct OSG_BASE_DLLMAPPING InitFuncWrapper
-{
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Constructors                            */
-    /*! \{                                                                 */
+struct OSG_BASE_DLLMAPPING InitFuncWrapper {
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Constructors                            */
+  /*! \{                                                                 */
 
-    InitFuncWrapper(const InitFuncF func);
+  InitFuncWrapper(const InitFuncF func);
 
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 };
 
 /*! \ingroup GrpBaseBaseInitExit
@@ -679,56 +578,53 @@ struct OSG_BASE_DLLMAPPING InitFuncWrapper
     static init function without an associated class.
  */
 
-struct OSG_BASE_DLLMAPPING StaticInitFuncWrapper
-{
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Constructors                            */
-    /*! \{                                                                 */
+struct OSG_BASE_DLLMAPPING StaticInitFuncWrapper {
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Constructors                            */
+  /*! \{                                                                 */
 
-    StaticInitFuncWrapper(const InitFuncF func);
+  StaticInitFuncWrapper(const InitFuncF func);
 
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 };
 
-
 OSG_BASE_DLLMAPPING
-void addInitFunction      (InitFuncF initFunc);
+void addInitFunction(InitFuncF initFunc);
 
 OSG_BASE_DLLMAPPING
 void addSystemExitFunction(ExitFuncF exitFunc);
 
 OSG_BASE_DLLMAPPING
-void addPreMPInitFunction (InitFuncF initFunc);
+void addPreMPInitFunction(InitFuncF initFunc);
 
 OSG_BASE_DLLMAPPING
 void addPostMPExitFunction(ExitFuncF exitFunc);
 
 OSG_BASE_DLLMAPPING
-void preloadSharedObject(const Char8 *szName);
+void preloadSharedObject(const Char8* szName);
 
 OSG_BASE_DLLMAPPING
-bool osgInit(Int32 argc, Char8 **argv, 
-    UInt16 major = OSG_MAJOR_VERSION, UInt16 minor = OSG_MINOR_VERSION, 
-    UInt16 release = OSG_RELEASE_VERSION,
-    bool debug = 
-#ifdef _DEBUG  
-    true,
+bool osgInit(Int32 argc, Char8** argv, UInt16 major = OSG_MAJOR_VERSION,
+    UInt16 minor = OSG_MINOR_VERSION, UInt16 release = OSG_RELEASE_VERSION,
+    bool debug =
+#ifdef _DEBUG
+        true,
 #else
-    false,
+        false,
 #endif
-    bool dll = 
-#ifdef _DLL  
-    true,
+    bool dll =
+#ifdef _DLL
+        true,
 #else
-    false,
+        false,
 #endif
-    bool mt = 
-#ifdef _MT  
-    true
+    bool mt =
+#ifdef _MT
+        true
 #else
-    false
+        false
 #endif
-    );
+);
 
 OSG_BASE_DLLMAPPING
 bool osgExit(void);

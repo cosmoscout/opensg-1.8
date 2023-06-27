@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGABSTRACTTEXTBASE_H_
 #define _OSGABSTRACTTEXTBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -67,11 +65,11 @@
 
 #include <OSGMaterialDrawable.h> // Parent
 
-#include <OSGVec3fFields.h> // Position type
+#include <OSGVec3fFields.h>                  // Position type
 #include <OSGSharedFontStyleWrapperFields.h> // Font type
-#include <OSGStringFields.h> // Text type
-#include <OSGReal32Fields.h> // VerticalLineDistance type
-#include <OSGUInt8Fields.h> // Alignment type
+#include <OSGStringFields.h>                 // Text type
+#include <OSGReal32Fields.h>                 // VerticalLineDistance type
+#include <OSGUInt8Fields.h>                  // Alignment type
 
 #include <OSGAbstractTextFields.h>
 
@@ -82,193 +80,172 @@ class BinaryDataHandler;
 
 //! \brief AbstractText Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING AbstractTextBase : public MaterialDrawable
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING AbstractTextBase : public MaterialDrawable {
+ private:
+  typedef MaterialDrawable Inherited;
 
-    typedef MaterialDrawable    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef AbstractTextPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    PositionFieldId             = Inherited::NextFieldId,
+    FontFieldId                 = PositionFieldId + 1,
+    TextFieldId                 = FontFieldId + 1,
+    VerticalLineDistanceFieldId = TextFieldId + 1,
+    AlignmentFieldId            = VerticalLineDistanceFieldId + 1,
+    NextFieldId                 = AlignmentFieldId + 1
+  };
 
-    typedef AbstractTextPtr  Ptr;
+  static const OSG::BitVector PositionFieldMask;
+  static const OSG::BitVector FontFieldMask;
+  static const OSG::BitVector TextFieldMask;
+  static const OSG::BitVector VerticalLineDistanceFieldMask;
+  static const OSG::BitVector AlignmentFieldMask;
 
-    enum
-    {
-        PositionFieldId             = Inherited::NextFieldId,
-        FontFieldId                 = PositionFieldId             + 1,
-        TextFieldId                 = FontFieldId                 + 1,
-        VerticalLineDistanceFieldId = TextFieldId                 + 1,
-        AlignmentFieldId            = VerticalLineDistanceFieldId + 1,
-        NextFieldId                 = AlignmentFieldId            + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector PositionFieldMask;
-    static const OSG::BitVector FontFieldMask;
-    static const OSG::BitVector TextFieldMask;
-    static const OSG::BitVector VerticalLineDistanceFieldMask;
-    static const OSG::BitVector AlignmentFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFVec3f*                     getSFPosition(void);
+  SFSharedFontStyleWrapperPtr* getSFFont(void);
+  MFString*                    getMFText(void);
+  SFReal32*                    getSFVerticalLineDistance(void);
+  SFUInt8*                     getSFAlignment(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  Vec3f&                           getPosition(void);
+  const Vec3f&                     getPosition(void) const;
+  SharedFontStyleWrapperPtr&       getFont(void);
+  const SharedFontStyleWrapperPtr& getFont(void) const;
+  Real32&                          getVerticalLineDistance(void);
+  const Real32&                    getVerticalLineDistance(void) const;
+  UInt8&                           getAlignment(void);
+  const UInt8&                     getAlignment(void) const;
+  std::string&                     getText(const UInt32 index);
+  MFString&                        getText(void);
+  const MFString&                  getText(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFVec3f             *getSFPosition       (void);
-           SFSharedFontStyleWrapperPtr *getSFFont           (void);
-           MFString            *getMFText           (void);
-           SFReal32            *getSFVerticalLineDistance(void);
-           SFUInt8             *getSFAlignment      (void);
+  void setPosition(const Vec3f& value);
+  void setFont(const SharedFontStyleWrapperPtr& value);
+  void setVerticalLineDistance(const Real32& value);
+  void setAlignment(const UInt8& value);
 
-           Vec3f               &getPosition       (void);
-     const Vec3f               &getPosition       (void) const;
-           SharedFontStyleWrapperPtr &getFont           (void);
-     const SharedFontStyleWrapperPtr &getFont           (void) const;
-           Real32              &getVerticalLineDistance(void);
-     const Real32              &getVerticalLineDistance(void) const;
-           UInt8               &getAlignment      (void);
-     const UInt8               &getAlignment      (void) const;
-           std::string         &getText           (const UInt32 index);
-           MFString            &getText           (void);
-     const MFString            &getText           (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setPosition       ( const Vec3f &value );
-     void setFont           ( const SharedFontStyleWrapperPtr &value );
-     void setVerticalLineDistance( const Real32 &value );
-     void setAlignment      ( const UInt8 &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  SFVec3f                     _sfPosition;
+  SFSharedFontStyleWrapperPtr _sfFont;
+  MFString                    _mfText;
+  SFReal32                    _sfVerticalLineDistance;
+  SFUInt8                     _sfAlignment;
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
+  AbstractTextBase(void);
+  AbstractTextBase(const AbstractTextBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~AbstractTextBase(void);
 
-    SFVec3f             _sfPosition;
-    SFSharedFontStyleWrapperPtr   _sfFont;
-    MFString            _mfText;
-    SFReal32            _sfVerticalLineDistance;
-    SFUInt8             _sfAlignment;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    AbstractTextBase(void);
-    AbstractTextBase(const AbstractTextBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~AbstractTextBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      AbstractTextBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(AbstractTextBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      AbstractTextBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      AbstractTextBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const AbstractTextBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const AbstractTextBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef AbstractTextBase* AbstractTextBaseP;
 
-typedef AbstractTextBase *AbstractTextBaseP;
-
-typedef osgIF<AbstractTextBase::isNodeCore,
-              CoredNodePtr<AbstractText>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet AbstractTextNodePtr;
+typedef osgIF<AbstractTextBase::isNodeCore, CoredNodePtr<AbstractText>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet AbstractTextNodePtr;
 
 typedef RefPtr<AbstractTextPtr> AbstractTextRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGABSTRACTTEXTBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGABSTRACTTEXTBASE_HEADER_CVSID                                                           \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGABSTRACTTEXTBASE_H_ */

@@ -63,54 +63,42 @@ programs. See \ref PageSystemWindowWindowPassive for a description.
 
 /*----------------------- constructors & destructors ----------------------*/
 
-PassiveWindow::PassiveWindow(void) :
-    Inherited()
-{
+PassiveWindow::PassiveWindow(void)
+    : Inherited() {
 }
 
-PassiveWindow::PassiveWindow(const PassiveWindow &source) :
-    Inherited(source)
-{
+PassiveWindow::PassiveWindow(const PassiveWindow& source)
+    : Inherited(source) {
 }
 
-PassiveWindow::~PassiveWindow(void)
-{
+PassiveWindow::~PassiveWindow(void) {
 }
 
 /*----------------------------- class specific ----------------------------*/
 
-void PassiveWindow::initMethod (void)
-{
+void PassiveWindow::initMethod(void) {
 }
 
-void PassiveWindow::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void PassiveWindow::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
-void PassiveWindow::dump(      UInt32    , 
-                         const BitVector ) const
-{
-    SLOG << "Dump PassiveWindow NI" << std::endl;
+void PassiveWindow::dump(UInt32, const BitVector) const {
+  SLOG << "Dump PassiveWindow NI" << std::endl;
 }
 
 /*! Just call the standard OpenGL setup.
-*/
-void PassiveWindow::init( void )
-{
-    setupGL();
+ */
+void PassiveWindow::init(void) {
+  setupGL();
 }
 
 /* Do nothing, has to be setup when we come here.
-*/
-void PassiveWindow::activate( void )
-{
+ */
+void PassiveWindow::activate(void) {
 }
-    
+
 /* Do nothing, has to be done manually for this class.
-*/
-void PassiveWindow::swap( void )
-{
+ */
+void PassiveWindow::swap(void) {
 }
-
-

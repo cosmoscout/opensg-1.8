@@ -56,75 +56,73 @@ OSG_USING_NAMESPACE
 /*-------------------------------------------------------------------------*/
 /*                            Constructors                                 */
 
-FieldDescription::FieldDescription(const TypeBase          &elementType,
-                                   const Char8             *szName,
-                                   const UInt32             uiFieldId,
-                                   const BitVector          vFieldMask,
-                                   const bool               bInternal,
-                                         FieldAccessMethod  fAccessMethod,
-                                   const Char8             *defaultValue) :
+FieldDescription::FieldDescription(const TypeBase& elementType, const Char8* szName,
+    const UInt32 uiFieldId, const BitVector vFieldMask, const bool bInternal,
+    FieldAccessMethod fAccessMethod, const Char8* defaultValue)
+    :
 
-    _szName              (szName       ),
+    _szName(szName)
+    ,
 
-    _fieldType           (elementType  ),
-    _uiFieldId           (uiFieldId    ),
-    _vFieldMask          (vFieldMask   ),
+    _fieldType(elementType)
+    , _uiFieldId(uiFieldId)
+    , _vFieldMask(vFieldMask)
+    ,
 
-    _bInternal           (bInternal    ),
+    _bInternal(bInternal)
+    ,
 
-    _fAccessMethod       (fAccessMethod),
-    _fIndexedAccessMethod(NULL         ),
-    _defaultValue        (defaultValue )
-{
+    _fAccessMethod(fAccessMethod)
+    , _fIndexedAccessMethod(NULL)
+    , _defaultValue(defaultValue) {
 }
 
-FieldDescription::FieldDescription(
-    const TypeBase               &elementType,
-    const Char8                  *szName,
-    const UInt32                  uiFieldId,
-    const BitVector               vFieldMask,
-    const bool                    bInternal,
-          FieldIndexAccessMethod  fIndexedAccessMethod,
-    const Char8                  *defaultValue) :
+FieldDescription::FieldDescription(const TypeBase& elementType, const Char8* szName,
+    const UInt32 uiFieldId, const BitVector vFieldMask, const bool bInternal,
+    FieldIndexAccessMethod fIndexedAccessMethod, const Char8* defaultValue)
+    :
 
-    _szName              (szName              ),
+    _szName(szName)
+    ,
 
-    _fieldType           (elementType         ),
-    _uiFieldId           (uiFieldId           ),
-    _vFieldMask          (vFieldMask          ),
+    _fieldType(elementType)
+    , _uiFieldId(uiFieldId)
+    , _vFieldMask(vFieldMask)
+    ,
 
-    _bInternal           (bInternal           ),
+    _bInternal(bInternal)
+    ,
 
-    _fAccessMethod       (NULL                ),
-    _fIndexedAccessMethod(fIndexedAccessMethod),
+    _fAccessMethod(NULL)
+    , _fIndexedAccessMethod(fIndexedAccessMethod)
+    ,
 
-    _defaultValue        (defaultValue        )
-{
+    _defaultValue(defaultValue) {
 }
 
-FieldDescription::FieldDescription(const FieldDescription &source) :
+FieldDescription::FieldDescription(const FieldDescription& source)
+    :
 
-    _szName              (source._szName              ),
+    _szName(source._szName)
+    ,
 
-    _fieldType           (source._fieldType           ),
-    _uiFieldId           (source._uiFieldId           ),
-    _vFieldMask          (source._vFieldMask          ),
+    _fieldType(source._fieldType)
+    , _uiFieldId(source._uiFieldId)
+    , _vFieldMask(source._vFieldMask)
+    ,
 
-    _bInternal           (source._bInternal           ),
+    _bInternal(source._bInternal)
+    ,
 
-    _fAccessMethod       (source._fAccessMethod       ),
-    _fIndexedAccessMethod(source._fIndexedAccessMethod),
+    _fAccessMethod(source._fAccessMethod)
+    , _fIndexedAccessMethod(source._fIndexedAccessMethod)
+    ,
 
-    _defaultValue        (source._defaultValue        )
-{
+    _defaultValue(source._defaultValue) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Destructor                                  */
 
-FieldDescription::~FieldDescription(void)
-{
+FieldDescription::~FieldDescription(void) {
 }
-
-
-

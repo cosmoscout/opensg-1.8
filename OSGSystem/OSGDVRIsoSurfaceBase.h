@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGDVRISOSURFACEBASE_H_
 #define _OSGDVRISOSURFACEBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -71,7 +69,7 @@
 #include <OSGReal32Fields.h> // IsoThickness type
 #include <OSGReal32Fields.h> // IsoOpacity type
 #include <OSGUInt32Fields.h> // AlphaMode type
-#include <OSGBoolFields.h> // SpecularLighting type
+#include <OSGBoolFields.h>   // SpecularLighting type
 
 #include <OSGDVRIsoSurfaceFields.h>
 
@@ -82,209 +80,188 @@ class BinaryDataHandler;
 
 //! \brief DVRIsoSurface Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING DVRIsoSurfaceBase : public Attachment
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING DVRIsoSurfaceBase : public Attachment {
+ private:
+  typedef Attachment Inherited;
 
-    typedef Attachment    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef DVRIsoSurfacePtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    IsoValueFieldId         = Inherited::NextFieldId,
+    IsoThicknessFieldId     = IsoValueFieldId + 1,
+    IsoOpacityFieldId       = IsoThicknessFieldId + 1,
+    AlphaModeFieldId        = IsoOpacityFieldId + 1,
+    SpecularLightingFieldId = AlphaModeFieldId + 1,
+    NextFieldId             = SpecularLightingFieldId + 1
+  };
 
-    typedef DVRIsoSurfacePtr  Ptr;
+  static const OSG::BitVector IsoValueFieldMask;
+  static const OSG::BitVector IsoThicknessFieldMask;
+  static const OSG::BitVector IsoOpacityFieldMask;
+  static const OSG::BitVector AlphaModeFieldMask;
+  static const OSG::BitVector SpecularLightingFieldMask;
 
-    enum
-    {
-        IsoValueFieldId         = Inherited::NextFieldId,
-        IsoThicknessFieldId     = IsoValueFieldId         + 1,
-        IsoOpacityFieldId       = IsoThicknessFieldId     + 1,
-        AlphaModeFieldId        = IsoOpacityFieldId       + 1,
-        SpecularLightingFieldId = AlphaModeFieldId        + 1,
-        NextFieldId             = SpecularLightingFieldId + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector IsoValueFieldMask;
-    static const OSG::BitVector IsoThicknessFieldMask;
-    static const OSG::BitVector IsoOpacityFieldMask;
-    static const OSG::BitVector AlphaModeFieldMask;
-    static const OSG::BitVector SpecularLightingFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFReal32* getSFIsoValue(void);
+  SFReal32* getSFIsoThickness(void);
+  SFReal32* getSFIsoOpacity(void);
+  SFUInt32* getSFAlphaMode(void);
+  SFBool*   getSFSpecularLighting(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  Real32&       getIsoValue(void);
+  const Real32& getIsoValue(void) const;
+  Real32&       getIsoThickness(void);
+  const Real32& getIsoThickness(void) const;
+  Real32&       getIsoOpacity(void);
+  const Real32& getIsoOpacity(void) const;
+  UInt32&       getAlphaMode(void);
+  const UInt32& getAlphaMode(void) const;
+  bool&         getSpecularLighting(void);
+  const bool&   getSpecularLighting(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFReal32            *getSFIsoValue       (void);
-           SFReal32            *getSFIsoThickness   (void);
-           SFReal32            *getSFIsoOpacity     (void);
-           SFUInt32            *getSFAlphaMode      (void);
-           SFBool              *getSFSpecularLighting(void);
+  void setIsoValue(const Real32& value);
+  void setIsoThickness(const Real32& value);
+  void setIsoOpacity(const Real32& value);
+  void setAlphaMode(const UInt32& value);
+  void setSpecularLighting(const bool& value);
 
-           Real32              &getIsoValue       (void);
-     const Real32              &getIsoValue       (void) const;
-           Real32              &getIsoThickness   (void);
-     const Real32              &getIsoThickness   (void) const;
-           Real32              &getIsoOpacity     (void);
-     const Real32              &getIsoOpacity     (void) const;
-           UInt32              &getAlphaMode      (void);
-     const UInt32              &getAlphaMode      (void) const;
-           bool                &getSpecularLighting(void);
-     const bool                &getSpecularLighting(void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setIsoValue       ( const Real32 &value );
-     void setIsoThickness   ( const Real32 &value );
-     void setIsoOpacity     ( const Real32 &value );
-     void setAlphaMode      ( const UInt32 &value );
-     void setSpecularLighting( const bool &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static DVRIsoSurfacePtr create(void);
+  static DVRIsoSurfacePtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  DVRIsoSurfacePtr      create          (void); 
-    static  DVRIsoSurfacePtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFReal32 _sfIsoValue;
+  SFReal32 _sfIsoThickness;
+  SFReal32 _sfIsoOpacity;
+  SFUInt32 _sfAlphaMode;
+  SFBool   _sfSpecularLighting;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  DVRIsoSurfaceBase(void);
+  DVRIsoSurfaceBase(const DVRIsoSurfaceBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~DVRIsoSurfaceBase(void);
 
-    SFReal32            _sfIsoValue;
-    SFReal32            _sfIsoThickness;
-    SFReal32            _sfIsoOpacity;
-    SFUInt32            _sfAlphaMode;
-    SFBool              _sfSpecularLighting;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    DVRIsoSurfaceBase(void);
-    DVRIsoSurfaceBase(const DVRIsoSurfaceBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~DVRIsoSurfaceBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      DVRIsoSurfaceBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(DVRIsoSurfaceBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      DVRIsoSurfaceBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      DVRIsoSurfaceBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const DVRIsoSurfaceBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const DVRIsoSurfaceBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef DVRIsoSurfaceBase* DVRIsoSurfaceBaseP;
 
-typedef DVRIsoSurfaceBase *DVRIsoSurfaceBaseP;
-
-typedef osgIF<DVRIsoSurfaceBase::isNodeCore,
-              CoredNodePtr<DVRIsoSurface>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet DVRIsoSurfaceNodePtr;
+typedef osgIF<DVRIsoSurfaceBase::isNodeCore, CoredNodePtr<DVRIsoSurface>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet DVRIsoSurfaceNodePtr;
 
 typedef RefPtr<DVRIsoSurfacePtr> DVRIsoSurfaceRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGDVRISOSURFACEBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGDVRISOSURFACEBASE_HEADER_CVSID                                                          \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGDVRISOSURFACEBASE_H_ */

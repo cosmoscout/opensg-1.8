@@ -48,86 +48,74 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief ScaleManipulator class. See \ref 
+/*! \brief ScaleManipulator class. See \ref
            PageManipulatorsScaleManipulator for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING ScaleManipulator : public ScaleManipulatorBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING ScaleManipulator : public ScaleManipulatorBase {
+ private:
+  typedef ScaleManipulatorBase Inherited;
 
-    typedef ScaleManipulatorBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in ScaleManipulatorBase.
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  ScaleManipulator(void);
+  ScaleManipulator(const ScaleManipulator& source);
 
-    // Variables should all be in ScaleManipulatorBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~ScaleManipulator(void);
 
-    ScaleManipulator(void);
-    ScaleManipulator(const ScaleManipulator &source);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  virtual NodePtr makeHandleGeo();
+  virtual void    doMovement(TransformPtr t, Int32 coord, Real32 value, const Vec3f& translation,
+         const Quaternion& rotation, const Vec3f& scaleFactor, const Quaternion& scaleOrientation);
 
-    virtual ~ScaleManipulator(void); 
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class ScaleManipulatorBase;
 
-    /*! \}                                                                 */
+  static void initMethod(void);
 
-	virtual NodePtr makeHandleGeo();
-	virtual void    doMovement(TransformPtr t,
-							   Int32 coord,
-							   Real32 value,
-							   const Vec3f      &translation,
-							   const Quaternion &rotation,
-							   const Vec3f      &scaleFactor,
-							   const Quaternion &scaleOrientation );
-	
+  // prohibit default functions (move to 'public' if you need one)
 
-    /*==========================  PRIVATE  ================================*/
-  private:
-
-    friend class FieldContainer;
-    friend class ScaleManipulatorBase;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const ScaleManipulator &source);
+  void operator=(const ScaleManipulator& source);
 };
 
-typedef ScaleManipulator *ScaleManipulatorP;
+typedef ScaleManipulator* ScaleManipulatorP;
 
 OSG_END_NAMESPACE
 
 #include <OSGScaleManipulatorBase.inl>
 #include <OSGScaleManipulator.inl>
 
-#define OSGSCALEMANIPULATOR_HEADER_CVSID "@(#)$Id: OSGScaleManipulator.h,v 1.1 2005/06/26 12:44:41 a-m-z Exp $"
+#define OSGSCALEMANIPULATOR_HEADER_CVSID                                                           \
+  "@(#)$Id: OSGScaleManipulator.h,v 1.1 2005/06/26 12:44:41 a-m-z Exp $"
 
 #endif /* _OSGSCALEMANIPULATOR_H_ */

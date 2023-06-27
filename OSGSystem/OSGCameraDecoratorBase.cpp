@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILECAMERADECORATORINST
 
 #include <stdlib.h>
@@ -61,14 +60,12 @@
 #include "OSGCameraDecoratorBase.h"
 #include "OSGCameraDecorator.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  CameraDecoratorBase::DecorateeFieldMask = 
+const OSG::BitVector CameraDecoratorBase::DecorateeFieldMask =
     (TypeTraits<BitVector>::One << CameraDecoratorBase::DecorateeFieldId);
-const OSG::BitVector CameraDecoratorBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
+const OSG::BitVector CameraDecoratorBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
@@ -78,176 +75,127 @@ const OSG::BitVector CameraDecoratorBase::MTInfluenceMask =
 
 //! CameraDecorator description
 
-FieldDescription *CameraDecoratorBase::_desc[] = 
-{
-    new FieldDescription(SFCameraPtr::getClassType(), 
-                     "decoratee", 
-                     DecorateeFieldId, DecorateeFieldMask,
-                     true,
-                     (FieldAccessMethod) &CameraDecoratorBase::getSFDecoratee)
-};
-
+FieldDescription* CameraDecoratorBase::_desc[] = {
+    new FieldDescription(SFCameraPtr::getClassType(), "decoratee", DecorateeFieldId,
+        DecorateeFieldMask, true, (FieldAccessMethod)&CameraDecoratorBase::getSFDecoratee)};
 
 FieldContainerType CameraDecoratorBase::_type(
-    "CameraDecorator",
-    "Camera",
-    NULL,
-    NULL, 
-    CameraDecorator::initMethod,
-    _desc,
-    sizeof(_desc));
+    "CameraDecorator", "Camera", NULL, NULL, CameraDecorator::initMethod, _desc, sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(CameraDecoratorBase, CameraDecoratorPtr)
+// OSG_FIELD_CONTAINER_DEF(CameraDecoratorBase, CameraDecoratorPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &CameraDecoratorBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &CameraDecoratorBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-UInt32 CameraDecoratorBase::getContainerSize(void) const 
-{ 
-    return sizeof(CameraDecorator); 
+FieldContainerType& CameraDecoratorBase::getType(void) {
+  return _type;
 }
 
+const FieldContainerType& CameraDecoratorBase::getType(void) const {
+  return _type;
+}
+
+UInt32 CameraDecoratorBase::getContainerSize(void) const {
+  return sizeof(CameraDecorator);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void CameraDecoratorBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((CameraDecoratorBase *) &other, whichField);
+void CameraDecoratorBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((CameraDecoratorBase*)&other, whichField);
 }
 #else
-void CameraDecoratorBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((CameraDecoratorBase *) &other, whichField, sInfo);
+void CameraDecoratorBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((CameraDecoratorBase*)&other, whichField, sInfo);
 }
-void CameraDecoratorBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void CameraDecoratorBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void CameraDecoratorBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void CameraDecoratorBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-CameraDecoratorBase::CameraDecoratorBase(void) :
-    _sfDecoratee(),
-    Inherited() 
-{
+CameraDecoratorBase::CameraDecoratorBase(void)
+    : _sfDecoratee()
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-CameraDecoratorBase::CameraDecoratorBase(const CameraDecoratorBase &source) :
-    _sfDecoratee(source._sfDecoratee),
-    Inherited                 (source)
-{
+CameraDecoratorBase::CameraDecoratorBase(const CameraDecoratorBase& source)
+    : _sfDecoratee(source._sfDecoratee)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-CameraDecoratorBase::~CameraDecoratorBase(void)
-{
+CameraDecoratorBase::~CameraDecoratorBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 CameraDecoratorBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 CameraDecoratorBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (DecorateeFieldMask & whichField))
-    {
-        returnValue += _sfDecoratee.getBinSize();
-    }
+  if (FieldBits::NoField != (DecorateeFieldMask & whichField)) {
+    returnValue += _sfDecoratee.getBinSize();
+  }
 
-    return returnValue;
+  return returnValue;
 }
 
-void CameraDecoratorBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void CameraDecoratorBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (DecorateeFieldMask & whichField))
-    {
-        _sfDecoratee.copyToBin(pMem);
-    }
-
+  if (FieldBits::NoField != (DecorateeFieldMask & whichField)) {
+    _sfDecoratee.copyToBin(pMem);
+  }
 }
 
-void CameraDecoratorBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void CameraDecoratorBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (DecorateeFieldMask & whichField))
-    {
-        _sfDecoratee.copyFromBin(pMem);
-    }
-
+  if (FieldBits::NoField != (DecorateeFieldMask & whichField)) {
+    _sfDecoratee.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void CameraDecoratorBase::executeSyncImpl(      CameraDecoratorBase *pOther,
-                                        const BitVector         &whichField)
-{
+void CameraDecoratorBase::executeSyncImpl(
+    CameraDecoratorBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (DecorateeFieldMask & whichField))
-    {
-        _sfDecoratee.syncWith(pOther->_sfDecoratee);
-    }
-
+  if (FieldBits::NoField != (DecorateeFieldMask & whichField)) {
+    _sfDecoratee.syncWith(pOther->_sfDecoratee);
+  }
 }
 #else
-void CameraDecoratorBase::executeSyncImpl(      CameraDecoratorBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void CameraDecoratorBase::executeSyncImpl(
+    CameraDecoratorBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (DecorateeFieldMask & whichField))
-    {
-        _sfDecoratee.syncWith(pOther->_sfDecoratee);
-    }
-
+  if (FieldBits::NoField != (DecorateeFieldMask & whichField)) {
+    _sfDecoratee.syncWith(pOther->_sfDecoratee);
+  }
 }
 
-void CameraDecoratorBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void CameraDecoratorBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>
@@ -262,4 +210,3 @@ OSG_DLLEXPORT_SFIELD_DEF1(CameraDecoratorPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 OSG_DLLEXPORT_MFIELD_DEF1(CameraDecoratorPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
-

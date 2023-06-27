@@ -61,7 +61,7 @@ OSG_USING_NAMESPACE
 
 /*! \class osg::ClipPlaneChunk
     \ingroup GrpSystemState
-    
+
 See \ref PageSystemClipPlaneChunk for a description.
 
 This chunk wraps glCLipPlane() (osg::ClipPlaneChunk::_sfEquation) and
@@ -73,7 +73,7 @@ system the plane is in is defined by osg::ClipPlaneChunk::_sfBeacon.
 /***************************************************************************\
  *                           Class variables                               *
 \***************************************************************************/
-   
+
 StateChunkClass ClipPlaneChunk::_class("ClipPlane", 6);
 
 /***************************************************************************\
@@ -83,213 +83,168 @@ StateChunkClass ClipPlaneChunk::_class("ClipPlane", 6);
 /*-------------------------------------------------------------------------*\
  -  private                                                                 -
 \*-------------------------------------------------------------------------*/
-   
+
 /*----------------------- constructors & destructors ----------------------*/
 
-ClipPlaneChunk::ClipPlaneChunk(void) :
-    Inherited()
-{
+ClipPlaneChunk::ClipPlaneChunk(void)
+    : Inherited() {
 }
 
-ClipPlaneChunk::ClipPlaneChunk(const ClipPlaneChunk &source) :
-    Inherited(source)
-{
+ClipPlaneChunk::ClipPlaneChunk(const ClipPlaneChunk& source)
+    : Inherited(source) {
 }
 
-ClipPlaneChunk::~ClipPlaneChunk(void)
-{
+ClipPlaneChunk::~ClipPlaneChunk(void) {
 }
 
 /*----------------------- Chunk Class Access -----------------------------*/
 
-const StateChunkClass *ClipPlaneChunk::getClass(void) const
-{
-     return &_class;
+const StateChunkClass* ClipPlaneChunk::getClass(void) const {
+  return &_class;
 }
 
 /*------------------------------- Sync -----------------------------------*/
 
-void ClipPlaneChunk::changed(BitVector, UInt32)
-{
+void ClipPlaneChunk::changed(BitVector, UInt32) {
 }
 
 /*------------------------------ Output ----------------------------------*/
 
-void ClipPlaneChunk::dump(      UInt32    , 
-                          const BitVector) const
-{
-    SLOG << "Dump ClipPlaneChunk NI" << std::endl;
+void ClipPlaneChunk::dump(UInt32, const BitVector) const {
+  SLOG << "Dump ClipPlaneChunk NI" << std::endl;
 }
-
 
 /*------------------------------ State ------------------------------------*/
 
-void ClipPlaneChunk::activate(DrawActionBase *action, UInt32 idx)
-{
-    RenderAction *ra = dynamic_cast<RenderAction *>(action);
+void ClipPlaneChunk::activate(DrawActionBase* action, UInt32 idx) {
+  RenderAction* ra = dynamic_cast<RenderAction*>(action);
 
-    Matrix beaconMat;
+  Matrix beaconMat;
 
-    if(ra != NULL)
-    {
-        beaconMat = ra->top_matrix();
-    }
-    else
-    {
-        beaconMat = action->getActNode()->getToWorld();
-    }
+  if (ra != NULL) {
+    beaconMat = ra->top_matrix();
+  } else {
+    beaconMat = action->getActNode()->getToWorld();
+  }
 
+  Matrix cameraMat = action->getCameraToWorld();
 
-    Matrix cameraMat = action->getCameraToWorld();
+  cameraMat.invert();
 
-    cameraMat.invert();
+  if (getBeacon() != NullFC) {
+    getBeacon()->getToWorld(beaconMat);
+  } else {
+    SWARNING << "NO beacon" << std::endl;
+  }
 
-    if(getBeacon() != NullFC) 
-    {
-        getBeacon()->getToWorld(beaconMat);
-    }
-    else
-    {
-        SWARNING << "NO beacon" << std::endl;
-    }
+  cameraMat.mult(beaconMat);
 
-    cameraMat.mult(beaconMat);
+  if (getEnable()) {
+    GLdouble glEq[4];
+    Vec4f&   eq = getEquation();
+    glEq[0]     = eq[0];
+    glEq[1]     = eq[1];
+    glEq[2]     = eq[2];
+    glEq[3]     = eq[3];
 
-    if(getEnable())
-    {
-        GLdouble glEq[4];
-        Vec4f   & eq = getEquation();
-        glEq[0] = eq[0];
-        glEq[1] = eq[1];
-        glEq[2] = eq[2];
-        glEq[3] = eq[3];
-        
-        glPushMatrix();
-        glLoadMatrixf(cameraMat.getValues());
-        
-        glClipPlane( GL_CLIP_PLANE0 + idx, glEq);
-        glEnable( GL_CLIP_PLANE0 + idx);
-        
-        glPopMatrix();
-    }
+    glPushMatrix();
+    glLoadMatrixf(cameraMat.getValues());
+
+    glClipPlane(GL_CLIP_PLANE0 + idx, glEq);
+    glEnable(GL_CLIP_PLANE0 + idx);
+
+    glPopMatrix();
+  }
 }
 
+void ClipPlaneChunk::changeFrom(DrawActionBase* action, StateChunk* old_chunk, UInt32 idx) {
+  ClipPlaneChunk const* old = dynamic_cast<ClipPlaneChunk const*>(old_chunk);
 
+  // change from me to me?
+  // this assumes I haven't changed in the meantime. is that a valid assumption?
+  if (old == this)
+    return;
 
+  RenderAction* ra = dynamic_cast<RenderAction*>(action);
 
-void ClipPlaneChunk::changeFrom(DrawActionBase *action, StateChunk * old_chunk, 
-                                UInt32 idx)
-{
-    ClipPlaneChunk const *old = dynamic_cast<ClipPlaneChunk const*>(old_chunk);
+  Matrix beaconMat;
 
-    // change from me to me?
-    // this assumes I haven't changed in the meantime. is that a valid assumption?
-    if(old == this)
-        return;
+  if (ra != NULL) {
+    beaconMat = ra->top_matrix();
+  } else {
+    beaconMat = action->getActNode()->getToWorld();
+  }
 
+  Matrix cameraMat = action->getCameraToWorld();
 
-    RenderAction *ra = dynamic_cast<RenderAction *>(action);
+  cameraMat.invert();
 
-    Matrix beaconMat;
+  if (getBeacon() != NullFC) {
+    getBeacon()->getToWorld(beaconMat);
+  } else {
+    SWARNING << "ClipPlaneChunk::changeFrom: NO beacon" << std::endl;
+  }
 
-    if(ra != NULL)
-    {
-        beaconMat = ra->top_matrix();
+  cameraMat.mult(beaconMat);
+
+  if (getEnable() != old->getEnable() || getBeacon() != old->getBeacon()) {
+    if (getEnable()) {
+      GLdouble glEq[4];
+      Vec4f&   eq = getEquation();
+      glEq[0]     = eq[0];
+      glEq[1]     = eq[1];
+      glEq[2]     = eq[2];
+      glEq[3]     = eq[3];
+
+      glPushMatrix();
+      glLoadMatrixf(cameraMat.getValues());
+
+      glClipPlane(GL_CLIP_PLANE0 + idx, glEq);
+      glEnable(GL_CLIP_PLANE0 + idx);
+
+      glPopMatrix();
+    } else {
+      glDisable(GL_CLIP_PLANE0 + idx);
     }
-    else
-    {
-        beaconMat = action->getActNode()->getToWorld();
-    }
-
-
-    Matrix cameraMat = action->getCameraToWorld();
-
-    cameraMat.invert();
-
-    if (getBeacon() != NullFC) 
-    {
-        getBeacon()->getToWorld(beaconMat);
-    }
-    else
-    {
-        SWARNING << "ClipPlaneChunk::changeFrom: NO beacon" << std::endl;
-    }
-
-    cameraMat.mult(beaconMat);
-
-    if(getEnable() != old->getEnable() ||
-       getBeacon() != old->getBeacon())
-    {
-        if(getEnable())
-        {
-            GLdouble glEq[4];
-            Vec4f   & eq = getEquation();
-            glEq[0] = eq[0];
-            glEq[1] = eq[1];
-            glEq[2] = eq[2];
-            glEq[3] = eq[3];
-            
-            glPushMatrix();
-            glLoadMatrixf(cameraMat.getValues());
-        
-            glClipPlane( GL_CLIP_PLANE0 + idx, glEq);
-            glEnable( GL_CLIP_PLANE0 + idx);
-    
-            glPopMatrix();
-        }
-        else
-        {
-            glDisable( GL_CLIP_PLANE0 + idx);
-        }
-    }
-    else
-    {
-        ;//SWARNING << " - are the SAME" <<  std::endl;
-    }
+  } else {
+    ; // SWARNING << " - are the SAME" <<  std::endl;
+  }
 }
 
-
-void ClipPlaneChunk::deactivate(DrawActionBase *, UInt32 idx)
-{
-    if(getEnable())
-    {
-        glDisable( GL_CLIP_PLANE0 + idx);
-    }
+void ClipPlaneChunk::deactivate(DrawActionBase*, UInt32 idx) {
+  if (getEnable()) {
+    glDisable(GL_CLIP_PLANE0 + idx);
+  }
 }
-
 
 /*-------------------------- Comparison -----------------------------------*/
 
-Real32 ClipPlaneChunk::switchCost(StateChunk *OSG_CHECK_ARG(chunk))
-{
-    return 0;
+Real32 ClipPlaneChunk::switchCost(StateChunk* OSG_CHECK_ARG(chunk)) {
+  return 0;
 }
 
-bool ClipPlaneChunk::operator < (const StateChunk &other) const
-{
-    return this < &other;
+bool ClipPlaneChunk::operator<(const StateChunk& other) const {
+  return this < &other;
 }
 
-bool ClipPlaneChunk::operator == (const StateChunk &other) const
-{
-    ClipPlaneChunk const *tother = dynamic_cast<ClipPlaneChunk const*>(&other);
+bool ClipPlaneChunk::operator==(const StateChunk& other) const {
+  ClipPlaneChunk const* tother = dynamic_cast<ClipPlaneChunk const*>(&other);
 
-    if(!tother)
-        return false;
+  if (!tother)
+    return false;
 
-    if(getEnable() != tother->getEnable())
-        return false;
+  if (getEnable() != tother->getEnable())
+    return false;
 
-    if(getEquation() != tother->getEquation())
-        return false;
+  if (getEquation() != tother->getEquation())
+    return false;
 
-    if(getBeacon() != tother->getBeacon())
-        return false;
-    
-    return true;
+  if (getBeacon() != tother->getBeacon())
+    return false;
+
+  return true;
 }
 
-bool ClipPlaneChunk::operator != (const StateChunk &other) const
-{
-    return ! (*this == other);
+bool ClipPlaneChunk::operator!=(const StateChunk& other) const {
+  return !(*this == other);
 }

@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGSIMPLEMATERIAL_H_
 #define _OSGSIMPLEMATERIAL_H_
 #ifdef __sgi
@@ -50,103 +49,99 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief Simple Material wrapping standard OpenGL lighting.  See \ref 
+/*! \brief Simple Material wrapping standard OpenGL lighting.  See \ref
     PageSystemMaterialSimpleMaterial for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING SimpleMaterial : public SimpleMaterialBase
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING SimpleMaterial : public SimpleMaterialBase {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  static const char* getClassname(void) {
+    return "SimpleMaterial";
+  };
 
-    static const char *getClassname(void) { return "SimpleMaterial"; };
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  virtual void changed(BitVector whichField, UInt32 origin);
 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Output                                  */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector whichField,
-                         UInt32    origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Output                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Rendering                                  */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32    uiIndent = 0,
-                      const BitVector bvFlags  = 0) const;
+  virtual StatePtr makeState(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Rendering                                  */
-    /*! \{                                                                 */
+  virtual void rebuildState(void);
 
-    virtual StatePtr   makeState         (void);
+  virtual bool isTransparent(void) const;
 
-    virtual void       rebuildState      (void);
+  /*! \}                                                                 */
 
-    virtual bool       isTransparent     (void) const;
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SimpleMaterial(void);
+  SimpleMaterial(const SimpleMaterial& source);
 
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  virtual ~SimpleMaterial(void);
 
-    SimpleMaterial(void);
-    SimpleMaterial(const SimpleMaterial &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Helper                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  void prepareLocalChunks(void);
 
-    virtual ~SimpleMaterial(void);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Helper                                   */
-    /*! \{                                                                 */
+  // these chunks are used for rendering the material
 
-    void prepareLocalChunks(void);
+  MaterialChunkPtr _materialChunk;
+  BlendChunkPtr    _blendChunk;
 
-    /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  typedef SimpleMaterialBase Inherited;
 
-    // these chunks are used for rendering the material
+  friend class FieldContainer;
+  friend class SimpleMaterialBase;
 
-    MaterialChunkPtr _materialChunk;
-    BlendChunkPtr    _blendChunk;
+  static void initMethod(void);
 
-    /*==========================  PRIVATE  ================================*/
-  private:
-
-    typedef SimpleMaterialBase Inherited;
-
-    friend class FieldContainer;
-    friend class SimpleMaterialBase;
-
-    static void initMethod( void );
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const SimpleMaterial &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const SimpleMaterial& source);
 };
 
-typedef SimpleMaterial *SimpleMaterialP;
+typedef SimpleMaterial* SimpleMaterialP;
 
 OSG_END_NAMESPACE
 
 #include <OSGSimpleMaterialBase.inl>
 #include <OSGSimpleMaterial.inl>
 
-#define OSGSIMPLEMATERIAL_HEADER_CVSID "@(#)$Id: FCTemplate_h.h,v 1.15 2002/06/01 10:37:25 vossg Exp $"
+#define OSGSIMPLEMATERIAL_HEADER_CVSID                                                             \
+  "@(#)$Id: FCTemplate_h.h,v 1.15 2002/06/01 10:37:25 vossg Exp $"
 
 #endif /* _OSGSIMPLEMATERIAL_H_ */

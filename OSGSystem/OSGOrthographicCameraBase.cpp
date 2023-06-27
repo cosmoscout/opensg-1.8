@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEORTHOGRAPHICCAMERAINST
 
 #include <stdlib.h>
@@ -61,19 +60,16 @@
 #include "OSGOrthographicCameraBase.h"
 #include "OSGOrthographicCamera.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  OrthographicCameraBase::VerticalSizeFieldMask = 
+const OSG::BitVector OrthographicCameraBase::VerticalSizeFieldMask =
     (TypeTraits<BitVector>::One << OrthographicCameraBase::VerticalSizeFieldId);
 
-const OSG::BitVector  OrthographicCameraBase::AspectFieldMask = 
+const OSG::BitVector OrthographicCameraBase::AspectFieldMask =
     (TypeTraits<BitVector>::One << OrthographicCameraBase::AspectFieldId);
 
-const OSG::BitVector OrthographicCameraBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector OrthographicCameraBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
@@ -86,215 +82,157 @@ const OSG::BitVector OrthographicCameraBase::MTInfluenceMask =
 
 //! OrthographicCamera description
 
-FieldDescription *OrthographicCameraBase::_desc[] = 
-{
-    new FieldDescription(SFReal32::getClassType(), 
-                     "verticalSize", 
-                     VerticalSizeFieldId, VerticalSizeFieldMask,
-                     false,
-                     (FieldAccessMethod) &OrthographicCameraBase::getSFVerticalSize),
-    new FieldDescription(SFReal32::getClassType(), 
-                     "aspect", 
-                     AspectFieldId, AspectFieldMask,
-                     false,
-                     (FieldAccessMethod) &OrthographicCameraBase::getSFAspect)
-};
+FieldDescription* OrthographicCameraBase::_desc[] = {
+    new FieldDescription(SFReal32::getClassType(), "verticalSize", VerticalSizeFieldId,
+        VerticalSizeFieldMask, false,
+        (FieldAccessMethod)&OrthographicCameraBase::getSFVerticalSize),
+    new FieldDescription(SFReal32::getClassType(), "aspect", AspectFieldId, AspectFieldMask, false,
+        (FieldAccessMethod)&OrthographicCameraBase::getSFAspect)};
 
-
-FieldContainerType OrthographicCameraBase::_type(
-    "OrthographicCamera",
-    "Camera",
-    NULL,
-    (PrototypeCreateF) &OrthographicCameraBase::createEmpty,
-    OrthographicCamera::initMethod,
-    _desc,
+FieldContainerType OrthographicCameraBase::_type("OrthographicCamera", "Camera", NULL,
+    (PrototypeCreateF)&OrthographicCameraBase::createEmpty, OrthographicCamera::initMethod, _desc,
     sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(OrthographicCameraBase, OrthographicCameraPtr)
+// OSG_FIELD_CONTAINER_DEF(OrthographicCameraBase, OrthographicCameraPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &OrthographicCameraBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &OrthographicCameraBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr OrthographicCameraBase::shallowCopy(void) const 
-{ 
-    OrthographicCameraPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const OrthographicCamera *>(this)); 
-
-    return returnValue; 
+FieldContainerType& OrthographicCameraBase::getType(void) {
+  return _type;
 }
 
-UInt32 OrthographicCameraBase::getContainerSize(void) const 
-{ 
-    return sizeof(OrthographicCamera); 
+const FieldContainerType& OrthographicCameraBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr OrthographicCameraBase::shallowCopy(void) const {
+  OrthographicCameraPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const OrthographicCamera*>(this));
+
+  return returnValue;
+}
+
+UInt32 OrthographicCameraBase::getContainerSize(void) const {
+  return sizeof(OrthographicCamera);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void OrthographicCameraBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((OrthographicCameraBase *) &other, whichField);
+void OrthographicCameraBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((OrthographicCameraBase*)&other, whichField);
 }
 #else
-void OrthographicCameraBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((OrthographicCameraBase *) &other, whichField, sInfo);
+void OrthographicCameraBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((OrthographicCameraBase*)&other, whichField, sInfo);
 }
-void OrthographicCameraBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void OrthographicCameraBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void OrthographicCameraBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void OrthographicCameraBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-OrthographicCameraBase::OrthographicCameraBase(void) :
-    _sfVerticalSize           (), 
-    _sfAspect                 (Real32(1)), 
-    Inherited() 
-{
+OrthographicCameraBase::OrthographicCameraBase(void)
+    : _sfVerticalSize()
+    , _sfAspect(Real32(1))
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-OrthographicCameraBase::OrthographicCameraBase(const OrthographicCameraBase &source) :
-    _sfVerticalSize           (source._sfVerticalSize           ), 
-    _sfAspect                 (source._sfAspect                 ), 
-    Inherited                 (source)
-{
+OrthographicCameraBase::OrthographicCameraBase(const OrthographicCameraBase& source)
+    : _sfVerticalSize(source._sfVerticalSize)
+    , _sfAspect(source._sfAspect)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-OrthographicCameraBase::~OrthographicCameraBase(void)
-{
+OrthographicCameraBase::~OrthographicCameraBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 OrthographicCameraBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 OrthographicCameraBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (VerticalSizeFieldMask & whichField))
-    {
-        returnValue += _sfVerticalSize.getBinSize();
-    }
+  if (FieldBits::NoField != (VerticalSizeFieldMask & whichField)) {
+    returnValue += _sfVerticalSize.getBinSize();
+  }
 
-    if(FieldBits::NoField != (AspectFieldMask & whichField))
-    {
-        returnValue += _sfAspect.getBinSize();
-    }
+  if (FieldBits::NoField != (AspectFieldMask & whichField)) {
+    returnValue += _sfAspect.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void OrthographicCameraBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void OrthographicCameraBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (VerticalSizeFieldMask & whichField))
-    {
-        _sfVerticalSize.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (VerticalSizeFieldMask & whichField)) {
+    _sfVerticalSize.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (AspectFieldMask & whichField))
-    {
-        _sfAspect.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (AspectFieldMask & whichField)) {
+    _sfAspect.copyToBin(pMem);
+  }
 }
 
-void OrthographicCameraBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void OrthographicCameraBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (VerticalSizeFieldMask & whichField))
-    {
-        _sfVerticalSize.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (VerticalSizeFieldMask & whichField)) {
+    _sfVerticalSize.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (AspectFieldMask & whichField))
-    {
-        _sfAspect.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (AspectFieldMask & whichField)) {
+    _sfAspect.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void OrthographicCameraBase::executeSyncImpl(      OrthographicCameraBase *pOther,
-                                        const BitVector         &whichField)
-{
+void OrthographicCameraBase::executeSyncImpl(
+    OrthographicCameraBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (VerticalSizeFieldMask & whichField))
-        _sfVerticalSize.syncWith(pOther->_sfVerticalSize);
+  if (FieldBits::NoField != (VerticalSizeFieldMask & whichField))
+    _sfVerticalSize.syncWith(pOther->_sfVerticalSize);
 
-    if(FieldBits::NoField != (AspectFieldMask & whichField))
-        _sfAspect.syncWith(pOther->_sfAspect);
-
-
+  if (FieldBits::NoField != (AspectFieldMask & whichField))
+    _sfAspect.syncWith(pOther->_sfAspect);
 }
 #else
-void OrthographicCameraBase::executeSyncImpl(      OrthographicCameraBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void OrthographicCameraBase::executeSyncImpl(
+    OrthographicCameraBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (VerticalSizeFieldMask & whichField))
-        _sfVerticalSize.syncWith(pOther->_sfVerticalSize);
+  if (FieldBits::NoField != (VerticalSizeFieldMask & whichField))
+    _sfVerticalSize.syncWith(pOther->_sfVerticalSize);
 
-    if(FieldBits::NoField != (AspectFieldMask & whichField))
-        _sfAspect.syncWith(pOther->_sfAspect);
-
-
-
+  if (FieldBits::NoField != (AspectFieldMask & whichField))
+    _sfAspect.syncWith(pOther->_sfAspect);
 }
 
-void OrthographicCameraBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void OrthographicCameraBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>

@@ -52,129 +52,89 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &CameraDecoratorBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& CameraDecoratorBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 CameraDecoratorBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
-
+inline OSG::UInt32 CameraDecoratorBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 /*------------------------- decorator get ------------------------------*/
 
-inline
-SFCameraPtr *CameraDecoratorBase::getSFDecoratee(void)
-{
-    return &_sfDecoratee;
+inline SFCameraPtr* CameraDecoratorBase::getSFDecoratee(void) {
+  return &_sfDecoratee;
 }
 
-inline
-CameraPtr &CameraDecoratorBase::getDecoratee(void)
-{
-    return _sfDecoratee.getValue();
+inline CameraPtr& CameraDecoratorBase::getDecoratee(void) {
+  return _sfDecoratee.getValue();
 }
 
-inline
-const CameraPtr &CameraDecoratorBase::getDecoratee(void) const
-{
-    return _sfDecoratee.getValue();
+inline const CameraPtr& CameraDecoratorBase::getDecoratee(void) const {
+  return _sfDecoratee.getValue();
 }
 
-inline
-void CameraDecoratorBase::setDecoratee(const CameraPtr &value)
-{
-    _sfDecoratee.setValue(value);
+inline void CameraDecoratorBase::setDecoratee(const CameraPtr& value) {
+  _sfDecoratee.setValue(value);
 }
 
-inline
-SFNodePtr *CameraDecoratorBase::getSFBeacon(void)
-{
-    return getDecoratee()->getSFBeacon();
+inline SFNodePtr* CameraDecoratorBase::getSFBeacon(void) {
+  return getDecoratee()->getSFBeacon();
 }
 
-inline
-SFReal32 *CameraDecoratorBase::getSFNear(void)
-{
-    return getDecoratee()->getSFNear();
+inline SFReal32* CameraDecoratorBase::getSFNear(void) {
+  return getDecoratee()->getSFNear();
 }
 
-inline
-SFReal32 *CameraDecoratorBase::getSFFar(void)
-{
-    return getDecoratee()->getSFFar();
+inline SFReal32* CameraDecoratorBase::getSFFar(void) {
+  return getDecoratee()->getSFFar();
 }
 
-
-inline
-NodePtr &CameraDecoratorBase::getBeacon(void)
-{
-    return getDecoratee()->getBeacon();
+inline NodePtr& CameraDecoratorBase::getBeacon(void) {
+  return getDecoratee()->getBeacon();
 }
 
-inline
-const NodePtr &CameraDecoratorBase::getBeacon(void) const
-{
-    return getDecoratee()->getBeacon();
+inline const NodePtr& CameraDecoratorBase::getBeacon(void) const {
+  return getDecoratee()->getBeacon();
 }
 
-inline
-void CameraDecoratorBase::setBeacon(const NodePtr &value)
-{
-    beginEditCP(getDecoratee(), BeaconFieldMask);
-    getDecoratee()->setBeacon(value);
-    endEditCP  (getDecoratee(), BeaconFieldMask);
+inline void CameraDecoratorBase::setBeacon(const NodePtr& value) {
+  beginEditCP(getDecoratee(), BeaconFieldMask);
+  getDecoratee()->setBeacon(value);
+  endEditCP(getDecoratee(), BeaconFieldMask);
 }
 
-inline
-Real32 &CameraDecoratorBase::getNear(void)
-{
-    return getDecoratee()->getNear();
+inline Real32& CameraDecoratorBase::getNear(void) {
+  return getDecoratee()->getNear();
 }
 
-inline
-const Real32 &CameraDecoratorBase::getNear(void) const
-{
-    return getDecoratee()->getNear();
+inline const Real32& CameraDecoratorBase::getNear(void) const {
+  return getDecoratee()->getNear();
 }
 
-inline
-void CameraDecoratorBase::setNear(const Real32 &value)
-{
-    beginEditCP(getDecoratee(), NearFieldMask);
-    getDecoratee()->setNear(value);
-    endEditCP  (getDecoratee(), NearFieldMask);
+inline void CameraDecoratorBase::setNear(const Real32& value) {
+  beginEditCP(getDecoratee(), NearFieldMask);
+  getDecoratee()->setNear(value);
+  endEditCP(getDecoratee(), NearFieldMask);
 }
 
-inline
-Real32 &CameraDecoratorBase::getFar(void)
-{
-    return getDecoratee()->getFar();
+inline Real32& CameraDecoratorBase::getFar(void) {
+  return getDecoratee()->getFar();
 }
 
-inline
-const Real32 &CameraDecoratorBase::getFar(void) const
-{
-    return getDecoratee()->getFar();
+inline const Real32& CameraDecoratorBase::getFar(void) const {
+  return getDecoratee()->getFar();
 }
 
-inline
-void CameraDecoratorBase::setFar(const Real32 &value)
-{
-    beginEditCP(getDecoratee(), FarFieldMask);
-    getDecoratee()->setFar(value);
-    endEditCP  (getDecoratee(), FarFieldMask);
+inline void CameraDecoratorBase::setFar(const Real32& value) {
+  beginEditCP(getDecoratee(), FarFieldMask);
+  getDecoratee()->setFar(value);
+  endEditCP(getDecoratee(), FarFieldMask);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGCAMERADECORATORBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGCAMERADECORATORBASE_INLINE_CVSID                                                        \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

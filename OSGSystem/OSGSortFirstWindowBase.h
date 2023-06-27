@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGSORTFIRSTWINDOWBASE_H_
 #define _OSGSORTFIRSTWINDOWBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -69,9 +67,9 @@
 
 #include <OSGStringFields.h> // Compression type
 #include <OSGUInt32Fields.h> // SubtileSize type
-#include <OSGBoolFields.h> // Compose type
+#include <OSGBoolFields.h>   // Compose type
 #include <OSGUInt32Fields.h> // Region type
-#include <OSGBoolFields.h> // UseFaceDistribution type
+#include <OSGBoolFields.h>   // UseFaceDistribution type
 
 #include <OSGSortFirstWindowFields.h>
 
@@ -82,209 +80,189 @@ class BinaryDataHandler;
 
 //! \brief SortFirstWindow Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING SortFirstWindowBase : public ClusterWindow
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING SortFirstWindowBase : public ClusterWindow {
+ private:
+  typedef ClusterWindow Inherited;
 
-    typedef ClusterWindow    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef SortFirstWindowPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    CompressionFieldId         = Inherited::NextFieldId,
+    SubtileSizeFieldId         = CompressionFieldId + 1,
+    ComposeFieldId             = SubtileSizeFieldId + 1,
+    RegionFieldId              = ComposeFieldId + 1,
+    UseFaceDistributionFieldId = RegionFieldId + 1,
+    NextFieldId                = UseFaceDistributionFieldId + 1
+  };
 
-    typedef SortFirstWindowPtr  Ptr;
+  static const OSG::BitVector CompressionFieldMask;
+  static const OSG::BitVector SubtileSizeFieldMask;
+  static const OSG::BitVector ComposeFieldMask;
+  static const OSG::BitVector RegionFieldMask;
+  static const OSG::BitVector UseFaceDistributionFieldMask;
 
-    enum
-    {
-        CompressionFieldId         = Inherited::NextFieldId,
-        SubtileSizeFieldId         = CompressionFieldId         + 1,
-        ComposeFieldId             = SubtileSizeFieldId         + 1,
-        RegionFieldId              = ComposeFieldId             + 1,
-        UseFaceDistributionFieldId = RegionFieldId              + 1,
-        NextFieldId                = UseFaceDistributionFieldId + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector CompressionFieldMask;
-    static const OSG::BitVector SubtileSizeFieldMask;
-    static const OSG::BitVector ComposeFieldMask;
-    static const OSG::BitVector RegionFieldMask;
-    static const OSG::BitVector UseFaceDistributionFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFString* getSFCompression(void);
+  SFUInt32* getSFSubtileSize(void);
+  SFBool*   getSFCompose(void);
+  MFUInt32* getMFRegion(void);
+  SFBool*   getSFUseFaceDistribution(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  std::string&       getCompression(void);
+  const std::string& getCompression(void) const;
+  UInt32&            getSubtileSize(void);
+  const UInt32&      getSubtileSize(void) const;
+  bool&              getCompose(void);
+  const bool&        getCompose(void) const;
+  bool&              getUseFaceDistribution(void);
+  const bool&        getUseFaceDistribution(void) const;
+  UInt32&            getRegion(const UInt32 index);
+  MFUInt32&          getRegion(void);
+  const MFUInt32&    getRegion(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFString            *getSFCompression    (void);
-           SFUInt32            *getSFSubtileSize    (void);
-           SFBool              *getSFCompose        (void);
-           MFUInt32            *getMFRegion         (void);
-           SFBool              *getSFUseFaceDistribution(void);
+  void setCompression(const std::string& value);
+  void setSubtileSize(const UInt32& value);
+  void setCompose(const bool& value);
+  void setUseFaceDistribution(const bool& value);
 
-           std::string         &getCompression    (void);
-     const std::string         &getCompression    (void) const;
-           UInt32              &getSubtileSize    (void);
-     const UInt32              &getSubtileSize    (void) const;
-           bool                &getCompose        (void);
-     const bool                &getCompose        (void) const;
-           bool                &getUseFaceDistribution(void);
-     const bool                &getUseFaceDistribution(void) const;
-           UInt32              &getRegion         (const UInt32 index);
-           MFUInt32            &getRegion         (void);
-     const MFUInt32            &getRegion         (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setCompression    ( const std::string &value );
-     void setSubtileSize    ( const UInt32 &value );
-     void setCompose        ( const bool &value );
-     void setUseFaceDistribution( const bool &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static SortFirstWindowPtr create(void);
+  static SortFirstWindowPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  SortFirstWindowPtr      create          (void); 
-    static  SortFirstWindowPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFString _sfCompression;
+  SFUInt32 _sfSubtileSize;
+  SFBool   _sfCompose;
+  MFUInt32 _mfRegion;
+  SFBool   _sfUseFaceDistribution;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  SortFirstWindowBase(void);
+  SortFirstWindowBase(const SortFirstWindowBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~SortFirstWindowBase(void);
 
-    SFString            _sfCompression;
-    SFUInt32            _sfSubtileSize;
-    SFBool              _sfCompose;
-    MFUInt32            _mfRegion;
-    SFBool              _sfUseFaceDistribution;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    SortFirstWindowBase(void);
-    SortFirstWindowBase(const SortFirstWindowBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~SortFirstWindowBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      SortFirstWindowBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(SortFirstWindowBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      SortFirstWindowBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      SortFirstWindowBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const SortFirstWindowBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const SortFirstWindowBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef SortFirstWindowBase* SortFirstWindowBaseP;
 
-typedef SortFirstWindowBase *SortFirstWindowBaseP;
-
-typedef osgIF<SortFirstWindowBase::isNodeCore,
-              CoredNodePtr<SortFirstWindow>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet SortFirstWindowNodePtr;
+typedef osgIF<SortFirstWindowBase::isNodeCore, CoredNodePtr<SortFirstWindow>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet
+    SortFirstWindowNodePtr;
 
 typedef RefPtr<SortFirstWindowPtr> SortFirstWindowRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGSORTFIRSTWINDOWBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGSORTFIRSTWINDOWBASE_HEADER_CVSID                                                        \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGSORTFIRSTWINDOWBASE_H_ */

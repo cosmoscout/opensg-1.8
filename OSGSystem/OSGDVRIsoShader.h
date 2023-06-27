@@ -60,295 +60,247 @@
 
 OSG_BEGIN_NAMESPACE
 
-
-/*! \brief *put brief class description here* 
+/*! \brief *put brief class description here*
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING DVRIsoShader : public DVRIsoShaderBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING DVRIsoShader : public DVRIsoShaderBase {
+ private:
+  typedef DVRIsoShaderBase Inherited;
 
-    typedef DVRIsoShaderBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  //    static bool _initialized;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  // Callback to set up shader - register textures here
+  virtual bool initialize(DVRVolume* volume, DrawActionBase* action);
 
-    //    static bool _initialized;
+  // Callback before any slice is rendered - setup per volume
+  virtual void activate(DVRVolume* volume, DrawActionBase* action);
 
-    // Callback to set up shader - register textures here
-    virtual bool initialize       (DVRVolume      *volume, 
-                                   DrawActionBase *action      );
-    
-    // Callback before any slice is rendered - setup per volume
-    virtual void activate         (DVRVolume      *volume, 
-                                   DrawActionBase *action      );
+  // Callback before any brick - state setup per brick
+  virtual void brickActivate(DVRVolume* volume, DrawActionBase* action, Brick* brick);
 
-    // Callback before any brick - state setup per brick
-    virtual void brickActivate    (DVRVolume      *volume, 
-                                   DrawActionBase *action, 
-                                   Brick          *brick       );
+  // Callback after all rendering of the volume is done
+  virtual void deactivate(DVRVolume* volume, DrawActionBase* action);
 
-    // Callback after all rendering of the volume is done
-    virtual void deactivate       (DVRVolume      *volume, 
-                                   DrawActionBase *action      );
-    
-    // Callback to clean up shader resources
-    virtual void cleanup          (DVRVolume      *volume, 
-                                   DrawActionBase *action      );
-    
-    // Callback for rendering not clipped slices
-    virtual void renderSlice      (DVRVolume      *volume, 
-                                   DrawActionBase *action,
-                                   Real32         *data, 
-                                   UInt32          vertices, 
-                                   UInt32          values      );
+  // Callback to clean up shader resources
+  virtual void cleanup(DVRVolume* volume, DrawActionBase* action);
 
-    // Callback for rendering clipped slices
-    virtual void renderSlice      (DVRVolume      *volume, 
-                                   DrawActionBase *action,
-                                   DVRRenderSlice *clippedSlice);
-    
-    // Returns whether the shader has an implementation of 'renderSlice'
-    virtual bool hasRenderCallback(void                        );
+  // Callback for rendering not clipped slices
+  virtual void renderSlice(
+      DVRVolume* volume, DrawActionBase* action, Real32* data, UInt32 vertices, UInt32 values);
 
-    // Returns whether the shader requires multitextured slabs instead 
-    // of bricks
-    virtual bool useMTSlabs       (void                        ); 
+  // Callback for rendering clipped slices
+  virtual void renderSlice(DVRVolume* volume, DrawActionBase* action, DVRRenderSlice* clippedSlice);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  // Returns whether the shader has an implementation of 'renderSlice'
+  virtual bool hasRenderCallback(void);
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin);
+  // Returns whether the shader requires multitextured slabs instead
+  // of bricks
+  virtual bool useMTSlabs(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-  protected:
-    
-    enum ShadingMode 
-    {
-        SM_AUTO = 0,
-        SM_COLORMATRIX_2D, 
-        SM_COLORMATRIX_3D, 
-        SM_REGISTER_COMBINERS_2D, 
-        SM_REGISTER_COMBINERS_MULTI2D, 
-        SM_REGISTER_COMBINERS_3D,
-        SM_FRAGMENT_PROGRAM_2D,
-        SM_FRAGMENT_PROGRAM_3D,
-        SM_NONE
-    };
-    
-    struct DirLight 
-    {
-        Vec3f dir;
-        Color4f color;
-    };
-    
-    typedef std::vector<DirLight> DirLightList;  
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    ImagePtr                m_gradientImage;
+ protected:
+  enum ShadingMode {
+    SM_AUTO = 0,
+    SM_COLORMATRIX_2D,
+    SM_COLORMATRIX_3D,
+    SM_REGISTER_COMBINERS_2D,
+    SM_REGISTER_COMBINERS_MULTI2D,
+    SM_REGISTER_COMBINERS_3D,
+    SM_FRAGMENT_PROGRAM_2D,
+    SM_FRAGMENT_PROGRAM_3D,
+    SM_NONE
+  };
 
-    bool                    m_hasPerStageConstants;
-    GLint                   m_maxCombiners;
+  struct DirLight {
+    Vec3f   dir;
+    Color4f color;
+  };
 
-    UInt8                   m_shadingMode;
+  typedef std::vector<DirLight> DirLightList;
 
-    FragmentProgramChunkPtr m_pFragProg;
+  ImagePtr m_gradientImage;
 
-    Int32                   m_textureId; 
+  bool  m_hasPerStageConstants;
+  GLint m_maxCombiners;
 
-    GLint                   m_colorWriteMask[4];
+  UInt8 m_shadingMode;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  FragmentProgramChunkPtr m_pFragProg;
 
-    DVRIsoShader(void);
-    DVRIsoShader(const DVRIsoShader &source);
+  Int32 m_textureId;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  GLint m_colorWriteMask[4];
 
-    virtual ~DVRIsoShader(void); 
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  DVRIsoShader(void);
+  DVRIsoShader(const DVRIsoShader& source);
 
-    // compute gradient image from volume texture
-    ImagePtr createGradientImage(DVRVolumeTexturePtr volTex);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
+  virtual ~DVRIsoShader(void);
 
-    /* checks if the current OpenGL version is greater or equal to the 
-       given one
-    */
-    bool checkGLVersion                       (GLfloat         version       );
+  /*! \}                                                                 */
 
-    // Checks whether the selected mode is supported
-    bool isModeSupported                      (DVRVolume      *volume, 
-                                               DrawActionBase *action, 
-                                               UInt8           mode          );
+  // compute gradient image from volume texture
+  ImagePtr createGradientImage(DVRVolumeTexturePtr volTex);
 
-    // Automatically select the probably best shading mode
-    UInt8 selectMode                          (DVRVolume      *volume, 
-                                               DrawActionBase *action        );
+  /* checks if the current OpenGL version is greater or equal to the
+     given one
+  */
+  bool checkGLVersion(GLfloat version);
 
-    // try to select the given mode
-    bool tryMode                              (DVRVolume      *volume, 
-                                               DrawActionBase *action, 
-                                               UInt8           mode          );
+  // Checks whether the selected mode is supported
+  bool isModeSupported(DVRVolume* volume, DrawActionBase* action, UInt8 mode);
 
-    // get active light sources from current OpenGL state
-    void getLightSources                      (DirLightList   &diffuseLights, 
-                                               DirLightList   &specularLights,
-                                               Color4f        &ambientLight  );
+  // Automatically select the probably best shading mode
+  UInt8 selectMode(DVRVolume* volume, DrawActionBase* action);
 
-    void getCoveredScreenRect                 (DVRVolume      *volume, 
-                                               DrawActionBase *action, 
-                                               GLfloat         screenRect[4] );
-      
-    // setup state for color matrix shading
-    void activate_ColorMatrixShading          (DVRVolume      *volume, 
-                                               DrawActionBase *action        );
+  // try to select the given mode
+  bool tryMode(DVRVolume* volume, DrawActionBase* action, UInt8 mode);
 
-    // cleanup state for color matrix shading 
-    void deactivate_ColorMatrixShading        (DVRVolume      *volume, 
-                                               DrawActionBase *action        );
-    
-    // setup state for shading using NV_register_combiners
-    void activate_NVRegisterCombinerShading   (DVRVolume      *volume, 
-                                               DrawActionBase *action        );
+  // get active light sources from current OpenGL state
+  void getLightSources(
+      DirLightList& diffuseLights, DirLightList& specularLights, Color4f& ambientLight);
 
-    // cleanup state used for shading with NV_register_combiners
-    void deactivate_NVRegisterCombinerShading (DVRVolume      *volume, 
-                                               DrawActionBase *action        );
+  void getCoveredScreenRect(DVRVolume* volume, DrawActionBase* action, GLfloat screenRect[4]);
 
-    // setup state for shading with fragment program
-    void activate_FragmentProgramShading      (DVRVolume      *volume, 
-                                               DrawActionBase *action        );
+  // setup state for color matrix shading
+  void activate_ColorMatrixShading(DVRVolume* volume, DrawActionBase* action);
 
-    // cleanup state for shading with fragment program
-    void deactivate_FragmentProgramShading    (DVRVolume      *volume, 
-                                               DrawActionBase *action        );
+  // cleanup state for color matrix shading
+  void deactivate_ColorMatrixShading(DVRVolume* volume, DrawActionBase* action);
 
-    // render a slice for 2D multitexture register combiner shading
-    void renderSlice_NVRegisterCombinerShading(DVRVolume      *volume, 
-                                               DrawActionBase *action,
-                                               Real32         *data, 
-                                               UInt32          vertices, 
-                                               UInt32          values        );
+  // setup state for shading using NV_register_combiners
+  void activate_NVRegisterCombinerShading(DVRVolume* volume, DrawActionBase* action);
 
-    // render a clipped slice for 2D multitexture register combiner shading
-    void renderSlice_NVRegisterCombinerShading(DVRVolume *volume, 
-                                               DrawActionBase *action,
-                                               DVRRenderSlice *clippedSlice  );
+  // cleanup state used for shading with NV_register_combiners
+  void deactivate_NVRegisterCombinerShading(DVRVolume* volume, DrawActionBase* action);
 
-    // render a slice for 2D multitexture fragment program shading
-    void renderSlice_FragmentProgramShading   (DVRVolume *volume, 
-                                               DrawActionBase *action,
-                                               Real32         *data, 
-                                               UInt32          vertices, 
-                                               UInt32          values        );
+  // setup state for shading with fragment program
+  void activate_FragmentProgramShading(DVRVolume* volume, DrawActionBase* action);
 
-    // render a clipped slice for 2D multitexture fragment program shading
-    void renderSlice_FragmentProgramShading   (DVRVolume      *volume, 
-                                               DrawActionBase *action,
-                                               DVRRenderSlice *clippedSlice  );
-    
-    // setup register combiner parameters for diffuse lighted shading
-    void setupCombinerParametersDiffuse       (DVRVolume      *volume, 
-                                               DrawActionBase *action        );
+  // cleanup state for shading with fragment program
+  void deactivate_FragmentProgramShading(DVRVolume* volume, DrawActionBase* action);
 
-    // setup register combiner parameters for specular lighted shading
-    void setupCombinerParametersSpecular      (DVRVolume      *volume, 
-                                               DrawActionBase *action        );
+  // render a slice for 2D multitexture register combiner shading
+  void renderSlice_NVRegisterCombinerShading(
+      DVRVolume* volume, DrawActionBase* action, Real32* data, UInt32 vertices, UInt32 values);
 
-    // setup register combiners for diffuse lighted shading
-    void initCombiners_IsoSurfaceDiffuse      (DrawActionBase *action        );
+  // render a clipped slice for 2D multitexture register combiner shading
+  void renderSlice_NVRegisterCombinerShading(
+      DVRVolume* volume, DrawActionBase* action, DVRRenderSlice* clippedSlice);
 
-    // setup register combiners for diffuse lighted shading, if only 
-    // two general combiners are available
-    // this allows up to two diffuse light sources
-    void initCombiners_Diffuse2Combiners      (DrawActionBase *action        );
+  // render a slice for 2D multitexture fragment program shading
+  void renderSlice_FragmentProgramShading(
+      DVRVolume* volume, DrawActionBase* action, Real32* data, UInt32 vertices, UInt32 values);
 
-    // setup register combiners for diffuse lighted shading, if more
-    // than two general combiners are available
-    // this allows a arbitrary number of diffuse light sources, in fact  
-    // with 8 general register combiners (GeForce3/4) there are up to 6
-    // lightsources available
-    void initCombiners_DiffuseMultiCombiners  (DrawActionBase *action        );
+  // render a clipped slice for 2D multitexture fragment program shading
+  void renderSlice_FragmentProgramShading(
+      DVRVolume* volume, DrawActionBase* action, DVRRenderSlice* clippedSlice);
 
-    // setup register combiners for specular lighted shading
-    void initCombiners_IsoSurfaceSpecular     (DrawActionBase *action        );
+  // setup register combiner parameters for diffuse lighted shading
+  void setupCombinerParametersDiffuse(DVRVolume* volume, DrawActionBase* action);
 
-    // setup register combiners for specular lighted shading, if only 
-    // two general combiners are available
-    // this allows one diffuse and one specular white lightsource, only 
-    // the RED components of the lights colors affect the shading intensity
-    void initCombiners_Specular2Combiners     (DrawActionBase *action        );
+  // setup register combiner parameters for specular lighted shading
+  void setupCombinerParametersSpecular(DVRVolume* volume, DrawActionBase* action);
 
-    // setup register combiners for diffuse lighted shading, if more 
-    // than two general combiners are available
-    // currently uses 8 general combiners. So up to 3 diffuse and 3 specular
-    // (fullcolor) lightsources are supported
-    void initCombiners_SpecularMultiCombiners (DrawActionBase *action        );
- 
+  // setup register combiners for diffuse lighted shading
+  void initCombiners_IsoSurfaceDiffuse(DrawActionBase* action);
 
-    // fragment programs used by fragment shader mode
-    static char _fragProg2D[];	 
-    static char _fragProg3D[];
+  // setup register combiners for diffuse lighted shading, if only
+  // two general combiners are available
+  // this allows up to two diffuse light sources
+  void initCombiners_Diffuse2Combiners(DrawActionBase* action);
 
-    // extension indices for used extensions
-    static UInt32 _ARB_multitexture;
-    static UInt32 _EXT_texture3D; 
-    static UInt32 _EXT_secondary_color; 
+  // setup register combiners for diffuse lighted shading, if more
+  // than two general combiners are available
+  // this allows a arbitrary number of diffuse light sources, in fact
+  // with 8 general register combiners (GeForce3/4) there are up to 6
+  // lightsources available
+  void initCombiners_DiffuseMultiCombiners(DrawActionBase* action);
 
-    static UInt32 _NV_register_combiners;
-    static UInt32 _NV_register_combiners2;
+  // setup register combiners for specular lighted shading
+  void initCombiners_IsoSurfaceSpecular(DrawActionBase* action);
 
-    static UInt32 _SGI_color_matrix;
+  // setup register combiners for specular lighted shading, if only
+  // two general combiners are available
+  // this allows one diffuse and one specular white lightsource, only
+  // the RED components of the lights colors affect the shading intensity
+  void initCombiners_Specular2Combiners(DrawActionBase* action);
 
-    static UInt32 _ARB_fragment_program;
-    
-    // extension indices for used functions
-    static UInt32 _funcActiveTextureARB;
-    static UInt32 _funcMultiTexCoord2dARB;    
-    static UInt32 _funcTexImage3DEXT;
+  // setup register combiners for diffuse lighted shading, if more
+  // than two general combiners are available
+  // currently uses 8 general combiners. So up to 3 diffuse and 3 specular
+  // (fullcolor) lightsources are supported
+  void initCombiners_SpecularMultiCombiners(DrawActionBase* action);
 
-    static UInt32 _funcCombinerParameteriNV;
-    static UInt32 _funcCombinerParameterfvNV;
-    static UInt32 _funcCombinerStageParameterfvNV;
-    static UInt32 _funcCombinerInputNV;
-    static UInt32 _funcCombinerOutputNV;
-    static UInt32 _funcFinalCombinerInputNV;
+  // fragment programs used by fragment shader mode
+  static char _fragProg2D[];
+  static char _fragProg3D[];
 
-    static UInt32 _funcSecondaryColor3fEXT;
-    static UInt32 _funcSecondaryColor3fvEXT;
-    
-    /*==========================  PRIVATE  ================================*/
+  // extension indices for used extensions
+  static UInt32 _ARB_multitexture;
+  static UInt32 _EXT_texture3D;
+  static UInt32 _EXT_secondary_color;
 
-  private:
+  static UInt32 _NV_register_combiners;
+  static UInt32 _NV_register_combiners2;
 
-    friend class FieldContainer;
-    friend class DVRIsoShaderBase;
+  static UInt32 _SGI_color_matrix;
 
-    static void initMethod(void);
+  static UInt32 _ARB_fragment_program;
 
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const DVRIsoShader &source);
+  // extension indices for used functions
+  static UInt32 _funcActiveTextureARB;
+  static UInt32 _funcMultiTexCoord2dARB;
+  static UInt32 _funcTexImage3DEXT;
+
+  static UInt32 _funcCombinerParameteriNV;
+  static UInt32 _funcCombinerParameterfvNV;
+  static UInt32 _funcCombinerStageParameterfvNV;
+  static UInt32 _funcCombinerInputNV;
+  static UInt32 _funcCombinerOutputNV;
+  static UInt32 _funcFinalCombinerInputNV;
+
+  static UInt32 _funcSecondaryColor3fEXT;
+  static UInt32 _funcSecondaryColor3fvEXT;
+
+  /*==========================  PRIVATE  ================================*/
+
+ private:
+  friend class FieldContainer;
+  friend class DVRIsoShaderBase;
+
+  static void initMethod(void);
+
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const DVRIsoShader& source);
 };
 
-typedef DVRIsoShader *DVRIsoShaderP;
+typedef DVRIsoShader* DVRIsoShaderP;
 
 OSG_END_NAMESPACE
 

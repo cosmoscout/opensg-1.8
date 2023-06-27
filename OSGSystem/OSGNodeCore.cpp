@@ -51,83 +51,57 @@
 
 OSG_USING_NAMESPACE
 
-const BitVector
-    NodeCore::ParentsFieldMask     = (1 << NodeCore::ParentsFieldId    );
+const BitVector NodeCore::ParentsFieldMask = (1 << NodeCore::ParentsFieldId);
 
-FieldDescription *NodeCore::_desc[] =
-{
-    new FieldDescription(MFNodePtr::getClassType(),
-                         "parents",
-                         OSG_FC_FIELD_IDM_DESC(ParentsField),
-                         true,
-                         (FieldAccessMethod) &NodeCore::getMFParents)
-};
+FieldDescription* NodeCore::_desc[] = {new FieldDescription(MFNodePtr::getClassType(), "parents",
+    OSG_FC_FIELD_IDM_DESC(ParentsField), true, (FieldAccessMethod)&NodeCore::getMFParents)};
 
-FieldContainerType NodeCore::_type("NodeCore",
-                                   "AttachmentContainer",
-                                   NULL,
-                                   NULL,
-                                   NULL,
-                                   _desc,
-                                   sizeof(_desc));
-
+FieldContainerType NodeCore::_type(
+    "NodeCore", "AttachmentContainer", NULL, NULL, NULL, _desc, sizeof(_desc));
 
 OSG_ABSTR_FIELD_CONTAINER_DEF(NodeCore, NodeCorePtr)
 
 #if defined(OSG_FIXED_MFIELDSYNC)
-void NodeCore::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    _parents.terminateShare(uiAspect, this->getContainerSize());
+void NodeCore::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  _parents.terminateShare(uiAspect, this->getContainerSize());
 }
 #endif
 
 /*-------------------------------------------------------------------------*/
 /*                                Dump                                     */
 
-void NodeCore::dump(      UInt32    uiIndent,
-                    const BitVector bvFlags) const
-{
-    UInt32 i;
+void NodeCore::dump(UInt32 uiIndent, const BitVector bvFlags) const {
+  UInt32 i;
 
-    NodeCorePtr thisP = getPtr();
+  NodeCorePtr thisP = getPtr();
 
-//    thisP.dump(0, FCDumpFlags::RefCount);
+  //    thisP.dump(0, FCDumpFlags::RefCount);
 
-    indentLog(uiIndent, PLOG);
+  indentLog(uiIndent, PLOG);
 
-    PLOG << "Core"
-         << "("
-         << std::dec
-         << thisP.getFieldContainerId()
-         << ") : " << getType().getName()
-         << " "
-         << _attachmentMap.getValue().size()
-         << " attachments | "
-         << this
-         << std::endl;
+  PLOG << "Core"
+       << "(" << std::dec << thisP.getFieldContainerId() << ") : " << getType().getName() << " "
+       << _attachmentMap.getValue().size() << " attachments | " << this << std::endl;
 
-    indentLog(uiIndent, PLOG);
-    PLOG << "[" << std::endl;
+  indentLog(uiIndent, PLOG);
+  PLOG << "[" << std::endl;
 
+  indentLog(uiIndent + 4, PLOG);
+  PLOG << "Parents : " << std::endl;
+
+  for (i = 0; i < _parents.size(); i++) {
     indentLog(uiIndent + 4, PLOG);
-    PLOG << "Parents : " << std::endl;
+    PLOG << "           " << i << ") " << &(*(_parents[i])) << std::endl;
+  }
 
-    for(i = 0; i < _parents.size(); i++)
-    {
-        indentLog(uiIndent + 4, PLOG);
-        PLOG << "           " << i << ") " << &(*(_parents[i])) << std::endl;
-    }
+  indentLog(uiIndent, PLOG);
+  PLOG << "]" << std::endl;
 
-    indentLog(uiIndent, PLOG);
-    PLOG << "]" << std::endl;
+  indentLog(uiIndent, PLOG);
+  PLOG << "{" << std::endl;
 
-    indentLog(uiIndent, PLOG);
-    PLOG << "{" << std::endl;
+  Inherited::dump(uiIndent, bvFlags);
 
-    Inherited::dump(uiIndent, bvFlags);
-
-    indentLog(uiIndent, PLOG);
-    PLOG << "}" << std::endl;
+  indentLog(uiIndent, PLOG);
+  PLOG << "}" << std::endl;
 }
-
-

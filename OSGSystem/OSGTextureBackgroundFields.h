@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGTEXTUREBACKGROUNDFIELDS_H_
 #define _OSGTEXTUREBACKGROUNDFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class TextureBackground;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! TextureBackgroundPtr
 
 typedef FCPtr<BackgroundPtr, TextureBackground> TextureBackgroundPtr;
@@ -81,17 +80,20 @@ typedef FCPtr<BackgroundPtr, TextureBackground> TextureBackgroundPtr;
 #endif
 
 template <>
-struct FieldDataTraits<TextureBackgroundPtr> : 
-    public FieldTraitsRecurseMapper<TextureBackgroundPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<TextureBackgroundPtr>
+    : public FieldTraitsRecurseMapper<TextureBackgroundPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getSName(void) { return "SFTextureBackgroundPtr"; }
+  static const char* getSName(void) {
+    return "SFTextureBackgroundPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -101,7 +103,6 @@ struct FieldDataTraits<TextureBackgroundPtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
@@ -115,6 +116,7 @@ OSG_DLLEXPORT_DECL1(SField, TextureBackgroundPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 
 OSG_END_NAMESPACE
 
-#define OSGTEXTUREBACKGROUNDFIELDS_HEADER_CVSID "@(#)$Id: OSGTextureBackgroundFields.h,v 1.7 2006/09/08 13:45:30 yjung Exp $"
+#define OSGTEXTUREBACKGROUNDFIELDS_HEADER_CVSID                                                    \
+  "@(#)$Id: OSGTextureBackgroundFields.h,v 1.7 2006/09/08 13:45:30 yjung Exp $"
 
 #endif /* _OSGTEXTUREBACKGROUNDFIELDS_H_ */

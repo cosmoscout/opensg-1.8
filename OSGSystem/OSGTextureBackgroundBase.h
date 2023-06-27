@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGTEXTUREBACKGROUNDBASE_H_
 #define _OSGTEXTUREBACKGROUNDBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -67,14 +65,14 @@
 
 #include <OSGBackground.h> // Parent
 
-#include <OSGColor4fFields.h> // Color type
+#include <OSGColor4fFields.h>      // Color type
 #include <OSGTextureChunkFields.h> // Texture type
-#include <OSGPnt2fFields.h> // TexCoords type
-#include <OSGReal32Fields.h> // RadialDistortion type
-#include <OSGVec2fFields.h> // CenterOfDistortion type
-#include <OSGUInt16Fields.h> // Hor type
-#include <OSGUInt16Fields.h> // Vert type
-#include <OSGInt32Fields.h> // ClearStencilBit type
+#include <OSGPnt2fFields.h>        // TexCoords type
+#include <OSGReal32Fields.h>       // RadialDistortion type
+#include <OSGVec2fFields.h>        // CenterOfDistortion type
+#include <OSGUInt16Fields.h>       // Hor type
+#include <OSGUInt16Fields.h>       // Vert type
+#include <OSGInt32Fields.h>        // ClearStencilBit type
 
 #include <OSGTextureBackgroundFields.h>
 
@@ -85,230 +83,210 @@ class BinaryDataHandler;
 
 //! \brief TextureBackground Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING TextureBackgroundBase : public Background
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING TextureBackgroundBase : public Background {
+ private:
+  typedef Background Inherited;
 
-    typedef Background    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef TextureBackgroundPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    ColorFieldId              = Inherited::NextFieldId,
+    TextureFieldId            = ColorFieldId + 1,
+    TexCoordsFieldId          = TextureFieldId + 1,
+    RadialDistortionFieldId   = TexCoordsFieldId + 1,
+    CenterOfDistortionFieldId = RadialDistortionFieldId + 1,
+    HorFieldId                = CenterOfDistortionFieldId + 1,
+    VertFieldId               = HorFieldId + 1,
+    ClearStencilBitFieldId    = VertFieldId + 1,
+    NextFieldId               = ClearStencilBitFieldId + 1
+  };
 
-    typedef TextureBackgroundPtr  Ptr;
+  static const OSG::BitVector ColorFieldMask;
+  static const OSG::BitVector TextureFieldMask;
+  static const OSG::BitVector TexCoordsFieldMask;
+  static const OSG::BitVector RadialDistortionFieldMask;
+  static const OSG::BitVector CenterOfDistortionFieldMask;
+  static const OSG::BitVector HorFieldMask;
+  static const OSG::BitVector VertFieldMask;
+  static const OSG::BitVector ClearStencilBitFieldMask;
 
-    enum
-    {
-        ColorFieldId              = Inherited::NextFieldId,
-        TextureFieldId            = ColorFieldId              + 1,
-        TexCoordsFieldId          = TextureFieldId            + 1,
-        RadialDistortionFieldId   = TexCoordsFieldId          + 1,
-        CenterOfDistortionFieldId = RadialDistortionFieldId   + 1,
-        HorFieldId                = CenterOfDistortionFieldId + 1,
-        VertFieldId               = HorFieldId                + 1,
-        ClearStencilBitFieldId    = VertFieldId               + 1,
-        NextFieldId               = ClearStencilBitFieldId    + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector ColorFieldMask;
-    static const OSG::BitVector TextureFieldMask;
-    static const OSG::BitVector TexCoordsFieldMask;
-    static const OSG::BitVector RadialDistortionFieldMask;
-    static const OSG::BitVector CenterOfDistortionFieldMask;
-    static const OSG::BitVector HorFieldMask;
-    static const OSG::BitVector VertFieldMask;
-    static const OSG::BitVector ClearStencilBitFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFColor4f*         getSFColor(void);
+  SFTextureChunkPtr* getSFTexture(void);
+  MFPnt2f*           getMFTexCoords(void);
+  SFReal32*          getSFRadialDistortion(void);
+  SFVec2f*           getSFCenterOfDistortion(void);
+  SFUInt16*          getSFHor(void);
+  SFUInt16*          getSFVert(void);
+  SFInt32*           getSFClearStencilBit(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  Color4f&               getColor(void);
+  const Color4f&         getColor(void) const;
+  TextureChunkPtr&       getTexture(void);
+  const TextureChunkPtr& getTexture(void) const;
+  Real32&                getRadialDistortion(void);
+  const Real32&          getRadialDistortion(void) const;
+  Vec2f&                 getCenterOfDistortion(void);
+  const Vec2f&           getCenterOfDistortion(void) const;
+  UInt16&                getHor(void);
+  const UInt16&          getHor(void) const;
+  UInt16&                getVert(void);
+  const UInt16&          getVert(void) const;
+  Int32&                 getClearStencilBit(void);
+  const Int32&           getClearStencilBit(void) const;
+  Pnt2f&                 getTexCoords(const UInt32 index);
+  MFPnt2f&               getTexCoords(void);
+  const MFPnt2f&         getTexCoords(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFColor4f           *getSFColor          (void);
-           SFTextureChunkPtr   *getSFTexture        (void);
-           MFPnt2f             *getMFTexCoords      (void);
-           SFReal32            *getSFRadialDistortion(void);
-           SFVec2f             *getSFCenterOfDistortion(void);
-           SFUInt16            *getSFHor            (void);
-           SFUInt16            *getSFVert           (void);
-           SFInt32             *getSFClearStencilBit(void);
+  void setColor(const Color4f& value);
+  void setTexture(const TextureChunkPtr& value);
+  void setRadialDistortion(const Real32& value);
+  void setCenterOfDistortion(const Vec2f& value);
+  void setHor(const UInt16& value);
+  void setVert(const UInt16& value);
+  void setClearStencilBit(const Int32& value);
 
-           Color4f             &getColor          (void);
-     const Color4f             &getColor          (void) const;
-           TextureChunkPtr     &getTexture        (void);
-     const TextureChunkPtr     &getTexture        (void) const;
-           Real32              &getRadialDistortion(void);
-     const Real32              &getRadialDistortion(void) const;
-           Vec2f               &getCenterOfDistortion(void);
-     const Vec2f               &getCenterOfDistortion(void) const;
-           UInt16              &getHor            (void);
-     const UInt16              &getHor            (void) const;
-           UInt16              &getVert           (void);
-     const UInt16              &getVert           (void) const;
-           Int32               &getClearStencilBit(void);
-     const Int32               &getClearStencilBit(void) const;
-           Pnt2f               &getTexCoords      (const UInt32 index);
-           MFPnt2f             &getTexCoords      (void);
-     const MFPnt2f             &getTexCoords      (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setColor          ( const Color4f &value );
-     void setTexture        ( const TextureChunkPtr &value );
-     void setRadialDistortion( const Real32 &value );
-     void setCenterOfDistortion( const Vec2f &value );
-     void setHor            ( const UInt16 &value );
-     void setVert           ( const UInt16 &value );
-     void setClearStencilBit( const Int32 &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static TextureBackgroundPtr create(void);
+  static TextureBackgroundPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  TextureBackgroundPtr      create          (void); 
-    static  TextureBackgroundPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFColor4f         _sfColor;
+  SFTextureChunkPtr _sfTexture;
+  MFPnt2f           _mfTexCoords;
+  SFReal32          _sfRadialDistortion;
+  SFVec2f           _sfCenterOfDistortion;
+  SFUInt16          _sfHor;
+  SFUInt16          _sfVert;
+  SFInt32           _sfClearStencilBit;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  TextureBackgroundBase(void);
+  TextureBackgroundBase(const TextureBackgroundBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~TextureBackgroundBase(void);
 
-    SFColor4f           _sfColor;
-    SFTextureChunkPtr   _sfTexture;
-    MFPnt2f             _mfTexCoords;
-    SFReal32            _sfRadialDistortion;
-    SFVec2f             _sfCenterOfDistortion;
-    SFUInt16            _sfHor;
-    SFUInt16            _sfVert;
-    SFInt32             _sfClearStencilBit;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    TextureBackgroundBase(void);
-    TextureBackgroundBase(const TextureBackgroundBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~TextureBackgroundBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      TextureBackgroundBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(TextureBackgroundBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      TextureBackgroundBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      TextureBackgroundBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const TextureBackgroundBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const TextureBackgroundBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef TextureBackgroundBase* TextureBackgroundBaseP;
 
-typedef TextureBackgroundBase *TextureBackgroundBaseP;
-
-typedef osgIF<TextureBackgroundBase::isNodeCore,
-              CoredNodePtr<TextureBackground>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet TextureBackgroundNodePtr;
+typedef osgIF<TextureBackgroundBase::isNodeCore, CoredNodePtr<TextureBackground>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet
+    TextureBackgroundNodePtr;
 
 typedef RefPtr<TextureBackgroundPtr> TextureBackgroundRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGTEXTUREBACKGROUNDBASE_HEADER_CVSID "@(#)$Id: OSGTextureBackgroundBase.h,v 1.8 2006/09/08 13:45:30 yjung Exp $"
+#define OSGTEXTUREBACKGROUNDBASE_HEADER_CVSID                                                      \
+  "@(#)$Id: OSGTextureBackgroundBase.h,v 1.8 2006/09/08 13:45:30 yjung Exp $"
 
 #endif /* _OSGTEXTUREBACKGROUNDBASE_H_ */

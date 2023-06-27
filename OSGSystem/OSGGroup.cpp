@@ -60,141 +60,108 @@ OSG_USING_NAMESPACE
 /*-------------------------------------------------------------------------*/
 /*                               Sync                                      */
 
-void Group::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void Group::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
 /*-------------------------------------------------------------------------*/
 /*                               Dump                                      */
 
-void Group::dump(      UInt32    uiIndent, 
-                 const BitVector bvFlags) const
-{
-   Inherited::dump(uiIndent, bvFlags);
+void Group::dump(UInt32 uiIndent, const BitVector bvFlags) const {
+  Inherited::dump(uiIndent, bvFlags);
 }
 
 /*-------------------------------------------------------------------------*/
 /*                            Constructors                                 */
 
-Group::Group(void) :
-    Inherited()
-{
+Group::Group(void)
+    : Inherited() {
 }
 
-Group::Group(const Group &source) :
-    Inherited(source)
-{
+Group::Group(const Group& source)
+    : Inherited(source) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Destructor                                  */
 
-Group::~Group(void)
-{
+Group::~Group(void) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                               Draw                                      */
 
-Action::ResultE Group::drawEnter(Action *action)
-{
-    DrawActionBase *da = dynamic_cast<DrawActionBase *>(action);
+Action::ResultE Group::drawEnter(Action* action) {
+  DrawActionBase* da = dynamic_cast<DrawActionBase*>(action);
 
-    if(da->selectVisibles() == 0)
-        return Action::Skip;
-    
-    return Action::Continue;
+  if (da->selectVisibles() == 0)
+    return Action::Skip;
+
+  return Action::Continue;
 }
 
-Action::ResultE Group::drawLeave(Action *)
-{
-    return Action::Continue;
+Action::ResultE Group::drawLeave(Action*) {
+  return Action::Continue;
 }
 
 /*-------------------------------------------------------------------------*/
 /*                              Render                                     */
 
-Action::ResultE Group::renderEnter(Action *action)
-{
-    RenderAction *ra = dynamic_cast<RenderAction *>(action);
+Action::ResultE Group::renderEnter(Action* action) {
+  RenderAction* ra = dynamic_cast<RenderAction*>(action);
 
-    if (ra->pushVisibility())
-    {
-        if(ra->selectVisibles() == 0)
-        {
-            ra->popVisibility();
-            return Action::Skip;
-        }
+  if (ra->pushVisibility()) {
+    if (ra->selectVisibles() == 0) {
+      ra->popVisibility();
+      return Action::Skip;
     }
+  }
 
-    return Action::Continue;
+  return Action::Continue;
 }
 
-Action::ResultE Group::renderLeave(Action *action)
-{
-    RenderAction *ra = dynamic_cast<RenderAction *>(action);
+Action::ResultE Group::renderLeave(Action* action) {
+  RenderAction* ra = dynamic_cast<RenderAction*>(action);
 
-    ra->popVisibility();
-    
-    return Action::Continue;
+  ra->popVisibility();
+
+  return Action::Continue;
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Intersect                                   */
 
-Action::ResultE Group::intersect(Action *action)
-{
-          IntersectAction *ia = dynamic_cast<IntersectAction *>(action);
-    const DynamicVolume   &dv = ia->getActNode()->getVolume();
-    
-    if(dv.isValid() && ! dv.intersect(ia->getLine()))
-    {
-        return Action::Skip;  //bv missed -> can not hit children
-    }
-    
-    return Action::Continue;
+Action::ResultE Group::intersect(Action* action) {
+  IntersectAction*     ia = dynamic_cast<IntersectAction*>(action);
+  const DynamicVolume& dv = ia->getActNode()->getVolume();
+
+  if (dv.isValid() && !dv.intersect(ia->getLine())) {
+    return Action::Skip; // bv missed -> can not hit children
+  }
+
+  return Action::Continue;
 }
 
 /*-------------------------------------------------------------------------*/
 /*                                Init                                     */
 
-void Group::initMethod (void)
-{
-    DrawAction::registerEnterDefault( 
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE,
-                                          GroupPtr  , 
-                                          CNodePtr  ,  
-                                          Action   *>(&Group::drawEnter));
-    DrawAction::registerLeaveDefault( 
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE,
-                                          GroupPtr  , 
-                                          CNodePtr  ,  
-                                          Action   *>(&Group::drawLeave));
+void Group::initMethod(void) {
+  DrawAction::registerEnterDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, GroupPtr, CNodePtr, Action*>(
+          &Group::drawEnter));
+  DrawAction::registerLeaveDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, GroupPtr, CNodePtr, Action*>(
+          &Group::drawLeave));
 
-    RenderAction::registerEnterDefault( 
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE,
-                                          GroupPtr  , 
-                                          CNodePtr  ,  
-                                          Action   *>(&Group::renderEnter));
+  RenderAction::registerEnterDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, GroupPtr, CNodePtr, Action*>(
+          &Group::renderEnter));
 
-    RenderAction::registerLeaveDefault( 
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE,
-                                          GroupPtr  , 
-                                          CNodePtr  ,  
-                                          Action   *>(&Group::renderLeave));
-    
-    IntersectAction::registerEnterDefault( 
-        getClassType(),
-        osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE,
-                                          GroupPtr  ,
-                                          CNodePtr  ,
-                                          Action   *>(&Group::intersect));
+  RenderAction::registerLeaveDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, GroupPtr, CNodePtr, Action*>(
+          &Group::renderLeave));
+
+  IntersectAction::registerEnterDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, GroupPtr, CNodePtr, Action*>(
+          &Group::intersect));
 }
-
-
-

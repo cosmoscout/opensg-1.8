@@ -52,109 +52,79 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &ShearedStereoCameraDecoratorBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& ShearedStereoCameraDecoratorBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 ShearedStereoCameraDecoratorBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 ShearedStereoCameraDecoratorBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-ShearedStereoCameraDecoratorPtr ShearedStereoCameraDecoratorBase::create(void) 
-{
-    ShearedStereoCameraDecoratorPtr fc; 
+inline ShearedStereoCameraDecoratorPtr ShearedStereoCameraDecoratorBase::create(void) {
+  ShearedStereoCameraDecoratorPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = ShearedStereoCameraDecoratorPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = ShearedStereoCameraDecoratorPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-ShearedStereoCameraDecoratorPtr ShearedStereoCameraDecoratorBase::createEmpty(void) 
-{ 
-    ShearedStereoCameraDecoratorPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline ShearedStereoCameraDecoratorPtr ShearedStereoCameraDecoratorBase::createEmpty(void) {
+  ShearedStereoCameraDecoratorPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the ShearedStereoCameraDecorator::_sfZeroParallaxDistance field.
-inline
-SFReal32 *ShearedStereoCameraDecoratorBase::getSFZeroParallaxDistance(void)
-{
-    return &_sfZeroParallaxDistance;
+inline SFReal32* ShearedStereoCameraDecoratorBase::getSFZeroParallaxDistance(void) {
+  return &_sfZeroParallaxDistance;
 }
 
 //! Get the ShearedStereoCameraDecorator::_sfOverlap field.
-inline
-SFReal32 *ShearedStereoCameraDecoratorBase::getSFOverlap(void)
-{
-    return &_sfOverlap;
-}
-
-
-//! Get the value of the ShearedStereoCameraDecorator::_sfZeroParallaxDistance field.
-inline
-Real32 &ShearedStereoCameraDecoratorBase::getZeroParallaxDistance(void)
-{
-    return _sfZeroParallaxDistance.getValue();
+inline SFReal32* ShearedStereoCameraDecoratorBase::getSFOverlap(void) {
+  return &_sfOverlap;
 }
 
 //! Get the value of the ShearedStereoCameraDecorator::_sfZeroParallaxDistance field.
-inline
-const Real32 &ShearedStereoCameraDecoratorBase::getZeroParallaxDistance(void) const
-{
-    return _sfZeroParallaxDistance.getValue();
+inline Real32& ShearedStereoCameraDecoratorBase::getZeroParallaxDistance(void) {
+  return _sfZeroParallaxDistance.getValue();
+}
+
+//! Get the value of the ShearedStereoCameraDecorator::_sfZeroParallaxDistance field.
+inline const Real32& ShearedStereoCameraDecoratorBase::getZeroParallaxDistance(void) const {
+  return _sfZeroParallaxDistance.getValue();
 }
 
 //! Set the value of the ShearedStereoCameraDecorator::_sfZeroParallaxDistance field.
-inline
-void ShearedStereoCameraDecoratorBase::setZeroParallaxDistance(const Real32 &value)
-{
-    _sfZeroParallaxDistance.setValue(value);
+inline void ShearedStereoCameraDecoratorBase::setZeroParallaxDistance(const Real32& value) {
+  _sfZeroParallaxDistance.setValue(value);
 }
 
 //! Get the value of the ShearedStereoCameraDecorator::_sfOverlap field.
-inline
-Real32 &ShearedStereoCameraDecoratorBase::getOverlap(void)
-{
-    return _sfOverlap.getValue();
+inline Real32& ShearedStereoCameraDecoratorBase::getOverlap(void) {
+  return _sfOverlap.getValue();
 }
 
 //! Get the value of the ShearedStereoCameraDecorator::_sfOverlap field.
-inline
-const Real32 &ShearedStereoCameraDecoratorBase::getOverlap(void) const
-{
-    return _sfOverlap.getValue();
+inline const Real32& ShearedStereoCameraDecoratorBase::getOverlap(void) const {
+  return _sfOverlap.getValue();
 }
 
 //! Set the value of the ShearedStereoCameraDecorator::_sfOverlap field.
-inline
-void ShearedStereoCameraDecoratorBase::setOverlap(const Real32 &value)
-{
-    _sfOverlap.setValue(value);
+inline void ShearedStereoCameraDecoratorBase::setOverlap(const Real32& value) {
+  _sfOverlap.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGSHEAREDSTEREOCAMERADECORATORBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGSHEAREDSTEREOCAMERADECORATORBASE_INLINE_CVSID                                           \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

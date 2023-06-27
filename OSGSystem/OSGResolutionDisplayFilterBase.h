@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGRESOLUTIONDISPLAYFILTERBASE_H_
 #define _OSGRESOLUTIONDISPLAYFILTERBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -78,181 +76,158 @@ class BinaryDataHandler;
 
 //! \brief ResolutionDisplayFilter Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING ResolutionDisplayFilterBase : public DisplayFilter
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING ResolutionDisplayFilterBase : public DisplayFilter {
+ private:
+  typedef DisplayFilter Inherited;
 
-    typedef DisplayFilter    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef ResolutionDisplayFilterPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum { DownScaleFieldId = Inherited::NextFieldId, NextFieldId = DownScaleFieldId + 1 };
 
-    typedef ResolutionDisplayFilterPtr  Ptr;
+  static const OSG::BitVector DownScaleFieldMask;
 
-    enum
-    {
-        DownScaleFieldId = Inherited::NextFieldId,
-        NextFieldId      = DownScaleFieldId + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector DownScaleFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFReal32* getSFDownScale(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  Real32&       getDownScale(void);
+  const Real32& getDownScale(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFReal32            *getSFDownScale      (void);
+  void setDownScale(const Real32& value);
 
-           Real32              &getDownScale      (void);
-     const Real32              &getDownScale      (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setDownScale      ( const Real32 &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static ResolutionDisplayFilterPtr create(void);
+  static ResolutionDisplayFilterPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  ResolutionDisplayFilterPtr      create          (void); 
-    static  ResolutionDisplayFilterPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFReal32 _sfDownScale;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  ResolutionDisplayFilterBase(void);
+  ResolutionDisplayFilterBase(const ResolutionDisplayFilterBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~ResolutionDisplayFilterBase(void);
 
-    SFReal32            _sfDownScale;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    ResolutionDisplayFilterBase(void);
-    ResolutionDisplayFilterBase(const ResolutionDisplayFilterBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~ResolutionDisplayFilterBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      ResolutionDisplayFilterBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(ResolutionDisplayFilterBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      ResolutionDisplayFilterBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      ResolutionDisplayFilterBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const ResolutionDisplayFilterBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const ResolutionDisplayFilterBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef ResolutionDisplayFilterBase* ResolutionDisplayFilterBaseP;
 
-typedef ResolutionDisplayFilterBase *ResolutionDisplayFilterBaseP;
-
-typedef osgIF<ResolutionDisplayFilterBase::isNodeCore,
-              CoredNodePtr<ResolutionDisplayFilter>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet ResolutionDisplayFilterNodePtr;
+typedef osgIF<ResolutionDisplayFilterBase::isNodeCore, CoredNodePtr<ResolutionDisplayFilter>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet
+    ResolutionDisplayFilterNodePtr;
 
 typedef RefPtr<ResolutionDisplayFilterPtr> ResolutionDisplayFilterRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGRESOLUTIONDISPLAYFILTERBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.38 2005/07/08 06:37:35 vossg Exp $"
+#define OSGRESOLUTIONDISPLAYFILTERBASE_HEADER_CVSID                                                \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.38 2005/07/08 06:37:35 vossg Exp $"
 
 #endif /* _OSGRESOLUTIONDISPLAYFILTERBASE_H_ */

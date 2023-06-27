@@ -36,7 +36,6 @@
 *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGSPLITGRAPHOP_H_
 #define _OSGSPLITGRAPHOP_H_
 #ifdef __sgi
@@ -54,89 +53,89 @@ OSG_BEGIN_NAMESPACE
 //! \ingroup GrpSystemRenderingBackend
 //! SplitGraphOp class
 
-class OSG_SYSTEMLIB_DLLMAPPING SplitGraphOp : public GraphOp
-{
-    /*==========================  PUBLIC  =================================*/
-public:
+class OSG_SYSTEMLIB_DLLMAPPING SplitGraphOp : public GraphOp {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  static const char* getClassname(void) {
+    return "SplitGraphOp";
+  };
 
-    static const char *getClassname(void) { return "SplitGraphOp"; };
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-    
-    SplitGraphOp(const char* name = "Split", UInt16 max_polygons = 1000);
+  SplitGraphOp(const char* name = "Split", UInt16 max_polygons = 1000);
 
-    GraphOp* create();
+  GraphOp* create();
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    virtual ~SplitGraphOp(void);
+  virtual ~SplitGraphOp(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Main methods                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Main methods                               */
+  /*! \{                                                                 */
 
-    bool traverse(NodePtr& root);
+  bool traverse(NodePtr& root);
 
-    //virtual const std::string getName(void) { return _name; };
+  // virtual const std::string getName(void) { return _name; };
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Parameters                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Parameters                                */
+  /*! \{                                                                 */
 
-    void setParams(const std::string params);
-    void setMaxPolygons(UInt16 max_polygons);
+  void setParams(const std::string params);
+  void setMaxPolygons(UInt16 max_polygons);
 
-    std::string usage(void);
+  std::string usage(void);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-protected:    
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*==========================  PRIVATE  ================================*/
+ private:
+  UInt16 _max_polygons;
 
-    /*==========================  PRIVATE  ================================*/
-private:
-    UInt16 _max_polygons;
+  bool isLeaf(NodePtr& node);
+  bool isGroup(NodePtr& node);
+  bool splitNode(NodePtr& node, std::vector<NodePtr>& split);
 
-    bool isLeaf        (NodePtr& node);
-    bool isGroup       (NodePtr& node);
-    bool splitNode     (NodePtr& node, std::vector<NodePtr> &split);
-
-    Action::ResultE traverseEnter(NodePtr& node);
-    Action::ResultE traverseLeave(NodePtr& node, Action::ResultE res);
+  Action::ResultE traverseEnter(NodePtr& node);
+  Action::ResultE traverseLeave(NodePtr& node, Action::ResultE res);
 };
 
-typedef SplitGraphOp *SplitGraphOpP;
+typedef SplitGraphOp* SplitGraphOpP;
 
-class OSG_SYSTEMLIB_DLLMAPPING Pnt3fComparator : public std::binary_function<int,int,bool> 
-{
-    const std::vector<Pnt3f>    &_vec;
-public:
-    Pnt3fComparator( const std::vector<Pnt3f>   &vec ) : _vec(vec) {}
+class OSG_SYSTEMLIB_DLLMAPPING Pnt3fComparator : public std::binary_function<int, int, bool> {
+  const std::vector<Pnt3f>& _vec;
 
-    bool operator()(int a, int b) const
-    {
-        if (_vec[a][0] < _vec[b][0])
-            return true;
-        if (_vec[a][0] == _vec[b][0])
-            if (_vec[a][1] < _vec[b][1])
-                return true;
-            else if (_vec[a][1] == _vec[b][1])
-                if (_vec[a][2] < _vec[b][2])
-                    return true;
+ public:
+  Pnt3fComparator(const std::vector<Pnt3f>& vec)
+      : _vec(vec) {
+  }
 
-        return false;
-    }
+  bool operator()(int a, int b) const {
+    if (_vec[a][0] < _vec[b][0])
+      return true;
+    if (_vec[a][0] == _vec[b][0])
+      if (_vec[a][1] < _vec[b][1])
+        return true;
+      else if (_vec[a][1] == _vec[b][1])
+        if (_vec[a][2] < _vec[b][2])
+          return true;
+
+    return false;
+  }
 };
 
 OSG_END_NAMESPACE

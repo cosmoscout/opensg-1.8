@@ -37,31 +37,24 @@
 \*---------------------------------------------------------------------------*/
 
 #ifdef _MSC_VER
-# pragma warning (disable: 4786)
+#pragma warning(disable : 4786)
 #endif
 
 #include "OSGTextLayoutResult.h"
 
-
 using namespace std;
 
-
 OSG_BEGIN_NAMESPACE
-
 
 //----------------------------------------------------------------------
 // Clears the TextLayoutResult object
 // Author: pdaehne
 //----------------------------------------------------------------------
-void TextLayoutResult::clear()
-{
-    indices.clear();
-    positions.clear();
-    lineBounds.clear();
-    textBounds.setValues(0.f, 0.f);
+void TextLayoutResult::clear() {
+  indices.clear();
+  positions.clear();
+  lineBounds.clear();
+  textBounds.setValues(0.f, 0.f);
 }
 
-
 OSG_END_NAMESPACE
-
-

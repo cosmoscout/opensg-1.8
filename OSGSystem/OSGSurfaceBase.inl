@@ -52,501 +52,359 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &SurfaceBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& SurfaceBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 SurfaceBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 SurfaceBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-SurfacePtr SurfaceBase::create(void) 
-{
-    SurfacePtr fc; 
+inline SurfacePtr SurfaceBase::create(void) {
+  SurfacePtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = SurfacePtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = SurfacePtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-SurfacePtr SurfaceBase::createEmpty(void) 
-{ 
-    SurfacePtr returnValue; 
-    
-    newPtr(returnValue); 
+inline SurfacePtr SurfaceBase::createEmpty(void) {
+  SurfacePtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the Surface::_sfDimU field.
-inline
-SFUInt32 *SurfaceBase::getSFDimU(void)
-{
-    return &_sfDimU;
+inline SFUInt32* SurfaceBase::getSFDimU(void) {
+  return &_sfDimU;
 }
 
 //! Get the Surface::_sfDimV field.
-inline
-SFUInt32 *SurfaceBase::getSFDimV(void)
-{
-    return &_sfDimV;
+inline SFUInt32* SurfaceBase::getSFDimV(void) {
+  return &_sfDimV;
 }
 
 //! Get the Surface::_mfKnotsU field.
-inline
-MFReal32 *SurfaceBase::getMFKnotsU(void)
-{
-    return &_mfKnotsU;
+inline MFReal32* SurfaceBase::getMFKnotsU(void) {
+  return &_mfKnotsU;
 }
 
 //! Get the Surface::_mfKnotsV field.
-inline
-MFReal32 *SurfaceBase::getMFKnotsV(void)
-{
-    return &_mfKnotsV;
+inline MFReal32* SurfaceBase::getMFKnotsV(void) {
+  return &_mfKnotsV;
 }
 
 //! Get the Surface::_sfControlPoints field.
-inline
-SFGeoPositionsPtr *SurfaceBase::getSFControlPoints(void)
-{
-    return &_sfControlPoints;
+inline SFGeoPositionsPtr* SurfaceBase::getSFControlPoints(void) {
+  return &_sfControlPoints;
 }
 
 //! Get the Surface::_sfError field.
-inline
-SFReal32 *SurfaceBase::getSFError(void)
-{
-    return &_sfError;
+inline SFReal32* SurfaceBase::getSFError(void) {
+  return &_sfError;
 }
 
 //! Get the Surface::_sfNumCurves field.
-inline
-SFUInt32 *SurfaceBase::getSFNumCurves(void)
-{
-    return &_sfNumCurves;
+inline SFUInt32* SurfaceBase::getSFNumCurves(void) {
+  return &_sfNumCurves;
 }
 
 //! Get the Surface::_mfKnotLengths field.
-inline
-MFUInt32 *SurfaceBase::getMFKnotLengths(void)
-{
-    return &_mfKnotLengths;
+inline MFUInt32* SurfaceBase::getMFKnotLengths(void) {
+  return &_mfKnotLengths;
 }
 
 //! Get the Surface::_mfDimensions field.
-inline
-MFUInt32 *SurfaceBase::getMFDimensions(void)
-{
-    return &_mfDimensions;
+inline MFUInt32* SurfaceBase::getMFDimensions(void) {
+  return &_mfDimensions;
 }
 
 //! Get the Surface::_mfCurveControlPoints field.
-inline
-MFPnt3f *SurfaceBase::getMFCurveControlPoints(void)
-{
-    return &_mfCurveControlPoints;
+inline MFPnt3f* SurfaceBase::getMFCurveControlPoints(void) {
+  return &_mfCurveControlPoints;
 }
 
 //! Get the Surface::_mfKnots field.
-inline
-MFReal32 *SurfaceBase::getMFKnots(void)
-{
-    return &_mfKnots;
+inline MFReal32* SurfaceBase::getMFKnots(void) {
+  return &_mfKnots;
 }
 
 //! Get the Surface::_mfCurvesPerLoop field.
-inline
-MFUInt32 *SurfaceBase::getMFCurvesPerLoop(void)
-{
-    return &_mfCurvesPerLoop;
+inline MFUInt32* SurfaceBase::getMFCurvesPerLoop(void) {
+  return &_mfCurvesPerLoop;
 }
 
 //! Get the Surface::_sfIsDelaunay field.
-inline
-SFBool *SurfaceBase::getSFIsDelaunay(void)
-{
-    return &_sfIsDelaunay;
+inline SFBool* SurfaceBase::getSFIsDelaunay(void) {
+  return &_sfIsDelaunay;
 }
 
 //! Get the Surface::_sfTextureControlPoints field.
-inline
-SFGeoTexCoordsPtr *SurfaceBase::getSFTextureControlPoints(void)
-{
-    return &_sfTextureControlPoints;
+inline SFGeoTexCoordsPtr* SurfaceBase::getSFTextureControlPoints(void) {
+  return &_sfTextureControlPoints;
 }
 
 //! Get the Surface::_sfDirtyMask field.
-inline
-SFUInt32 *SurfaceBase::getSFDirtyMask(void)
-{
-    return &_sfDirtyMask;
+inline SFUInt32* SurfaceBase::getSFDirtyMask(void) {
+  return &_sfDirtyMask;
 }
 
 //! Get the Surface::_sfSurfaceGLId field.
-inline
-SFInt32 *SurfaceBase::getSFSurfaceGLId(void)
-{
-    return &_sfSurfaceGLId;
-}
-
-
-//! Get the value of the Surface::_sfDimU field.
-inline
-UInt32 &SurfaceBase::getDimU(void)
-{
-    return _sfDimU.getValue();
+inline SFInt32* SurfaceBase::getSFSurfaceGLId(void) {
+  return &_sfSurfaceGLId;
 }
 
 //! Get the value of the Surface::_sfDimU field.
-inline
-const UInt32 &SurfaceBase::getDimU(void) const
-{
-    return _sfDimU.getValue();
+inline UInt32& SurfaceBase::getDimU(void) {
+  return _sfDimU.getValue();
+}
+
+//! Get the value of the Surface::_sfDimU field.
+inline const UInt32& SurfaceBase::getDimU(void) const {
+  return _sfDimU.getValue();
 }
 
 //! Set the value of the Surface::_sfDimU field.
-inline
-void SurfaceBase::setDimU(const UInt32 &value)
-{
-    _sfDimU.setValue(value);
+inline void SurfaceBase::setDimU(const UInt32& value) {
+  _sfDimU.setValue(value);
 }
 
 //! Get the value of the Surface::_sfDimV field.
-inline
-UInt32 &SurfaceBase::getDimV(void)
-{
-    return _sfDimV.getValue();
+inline UInt32& SurfaceBase::getDimV(void) {
+  return _sfDimV.getValue();
 }
 
 //! Get the value of the Surface::_sfDimV field.
-inline
-const UInt32 &SurfaceBase::getDimV(void) const
-{
-    return _sfDimV.getValue();
+inline const UInt32& SurfaceBase::getDimV(void) const {
+  return _sfDimV.getValue();
 }
 
 //! Set the value of the Surface::_sfDimV field.
-inline
-void SurfaceBase::setDimV(const UInt32 &value)
-{
-    _sfDimV.setValue(value);
+inline void SurfaceBase::setDimV(const UInt32& value) {
+  _sfDimV.setValue(value);
 }
 
 //! Get the value of the Surface::_sfControlPoints field.
-inline
-GeoPositionsPtr &SurfaceBase::getControlPoints(void)
-{
-    return _sfControlPoints.getValue();
+inline GeoPositionsPtr& SurfaceBase::getControlPoints(void) {
+  return _sfControlPoints.getValue();
 }
 
 //! Get the value of the Surface::_sfControlPoints field.
-inline
-const GeoPositionsPtr &SurfaceBase::getControlPoints(void) const
-{
-    return _sfControlPoints.getValue();
+inline const GeoPositionsPtr& SurfaceBase::getControlPoints(void) const {
+  return _sfControlPoints.getValue();
 }
 
 //! Set the value of the Surface::_sfControlPoints field.
-inline
-void SurfaceBase::setControlPoints(const GeoPositionsPtr &value)
-{
-    _sfControlPoints.setValue(value);
+inline void SurfaceBase::setControlPoints(const GeoPositionsPtr& value) {
+  _sfControlPoints.setValue(value);
 }
 
 //! Get the value of the Surface::_sfError field.
-inline
-Real32 &SurfaceBase::getError(void)
-{
-    return _sfError.getValue();
+inline Real32& SurfaceBase::getError(void) {
+  return _sfError.getValue();
 }
 
 //! Get the value of the Surface::_sfError field.
-inline
-const Real32 &SurfaceBase::getError(void) const
-{
-    return _sfError.getValue();
+inline const Real32& SurfaceBase::getError(void) const {
+  return _sfError.getValue();
 }
 
 //! Set the value of the Surface::_sfError field.
-inline
-void SurfaceBase::setError(const Real32 &value)
-{
-    _sfError.setValue(value);
+inline void SurfaceBase::setError(const Real32& value) {
+  _sfError.setValue(value);
 }
 
 //! Get the value of the Surface::_sfNumCurves field.
-inline
-UInt32 &SurfaceBase::getNumCurves(void)
-{
-    return _sfNumCurves.getValue();
+inline UInt32& SurfaceBase::getNumCurves(void) {
+  return _sfNumCurves.getValue();
 }
 
 //! Get the value of the Surface::_sfNumCurves field.
-inline
-const UInt32 &SurfaceBase::getNumCurves(void) const
-{
-    return _sfNumCurves.getValue();
+inline const UInt32& SurfaceBase::getNumCurves(void) const {
+  return _sfNumCurves.getValue();
 }
 
 //! Set the value of the Surface::_sfNumCurves field.
-inline
-void SurfaceBase::setNumCurves(const UInt32 &value)
-{
-    _sfNumCurves.setValue(value);
+inline void SurfaceBase::setNumCurves(const UInt32& value) {
+  _sfNumCurves.setValue(value);
 }
 
 //! Get the value of the Surface::_sfIsDelaunay field.
-inline
-bool &SurfaceBase::getIsDelaunay(void)
-{
-    return _sfIsDelaunay.getValue();
+inline bool& SurfaceBase::getIsDelaunay(void) {
+  return _sfIsDelaunay.getValue();
 }
 
 //! Get the value of the Surface::_sfIsDelaunay field.
-inline
-const bool &SurfaceBase::getIsDelaunay(void) const
-{
-    return _sfIsDelaunay.getValue();
+inline const bool& SurfaceBase::getIsDelaunay(void) const {
+  return _sfIsDelaunay.getValue();
 }
 
 //! Set the value of the Surface::_sfIsDelaunay field.
-inline
-void SurfaceBase::setIsDelaunay(const bool &value)
-{
-    _sfIsDelaunay.setValue(value);
+inline void SurfaceBase::setIsDelaunay(const bool& value) {
+  _sfIsDelaunay.setValue(value);
 }
 
 //! Get the value of the Surface::_sfTextureControlPoints field.
-inline
-GeoTexCoordsPtr &SurfaceBase::getTextureControlPoints(void)
-{
-    return _sfTextureControlPoints.getValue();
+inline GeoTexCoordsPtr& SurfaceBase::getTextureControlPoints(void) {
+  return _sfTextureControlPoints.getValue();
 }
 
 //! Get the value of the Surface::_sfTextureControlPoints field.
-inline
-const GeoTexCoordsPtr &SurfaceBase::getTextureControlPoints(void) const
-{
-    return _sfTextureControlPoints.getValue();
+inline const GeoTexCoordsPtr& SurfaceBase::getTextureControlPoints(void) const {
+  return _sfTextureControlPoints.getValue();
 }
 
 //! Set the value of the Surface::_sfTextureControlPoints field.
-inline
-void SurfaceBase::setTextureControlPoints(const GeoTexCoordsPtr &value)
-{
-    _sfTextureControlPoints.setValue(value);
+inline void SurfaceBase::setTextureControlPoints(const GeoTexCoordsPtr& value) {
+  _sfTextureControlPoints.setValue(value);
 }
 
 //! Get the value of the Surface::_sfDirtyMask field.
-inline
-UInt32 &SurfaceBase::getDirtyMask(void)
-{
-    return _sfDirtyMask.getValue();
+inline UInt32& SurfaceBase::getDirtyMask(void) {
+  return _sfDirtyMask.getValue();
 }
 
 //! Get the value of the Surface::_sfDirtyMask field.
-inline
-const UInt32 &SurfaceBase::getDirtyMask(void) const
-{
-    return _sfDirtyMask.getValue();
+inline const UInt32& SurfaceBase::getDirtyMask(void) const {
+  return _sfDirtyMask.getValue();
 }
 
 //! Set the value of the Surface::_sfDirtyMask field.
-inline
-void SurfaceBase::setDirtyMask(const UInt32 &value)
-{
-    _sfDirtyMask.setValue(value);
+inline void SurfaceBase::setDirtyMask(const UInt32& value) {
+  _sfDirtyMask.setValue(value);
 }
 
 //! Get the value of the Surface::_sfSurfaceGLId field.
-inline
-Int32 &SurfaceBase::getSurfaceGLId(void)
-{
-    return _sfSurfaceGLId.getValue();
+inline Int32& SurfaceBase::getSurfaceGLId(void) {
+  return _sfSurfaceGLId.getValue();
 }
 
 //! Get the value of the Surface::_sfSurfaceGLId field.
-inline
-const Int32 &SurfaceBase::getSurfaceGLId(void) const
-{
-    return _sfSurfaceGLId.getValue();
+inline const Int32& SurfaceBase::getSurfaceGLId(void) const {
+  return _sfSurfaceGLId.getValue();
 }
 
 //! Set the value of the Surface::_sfSurfaceGLId field.
-inline
-void SurfaceBase::setSurfaceGLId(const Int32 &value)
-{
-    _sfSurfaceGLId.setValue(value);
+inline void SurfaceBase::setSurfaceGLId(const Int32& value) {
+  _sfSurfaceGLId.setValue(value);
 }
-
 
 //! Get the value of the \a index element the Surface::_mfKnotsU field.
-inline
-Real32 &SurfaceBase::getKnotsU(const UInt32 index)
-{
-    return _mfKnotsU[index];
+inline Real32& SurfaceBase::getKnotsU(const UInt32 index) {
+  return _mfKnotsU[index];
 }
 
 //! Get the Surface::_mfKnotsU field.
-inline
-MFReal32 &SurfaceBase::getKnotsU(void)
-{
-    return _mfKnotsU;
+inline MFReal32& SurfaceBase::getKnotsU(void) {
+  return _mfKnotsU;
 }
 
 //! Get the Surface::_mfKnotsU field.
-inline
-const MFReal32 &SurfaceBase::getKnotsU(void) const
-{
-    return _mfKnotsU;
+inline const MFReal32& SurfaceBase::getKnotsU(void) const {
+  return _mfKnotsU;
 }
 
 //! Get the value of the \a index element the Surface::_mfKnotsV field.
-inline
-Real32 &SurfaceBase::getKnotsV(const UInt32 index)
-{
-    return _mfKnotsV[index];
+inline Real32& SurfaceBase::getKnotsV(const UInt32 index) {
+  return _mfKnotsV[index];
 }
 
 //! Get the Surface::_mfKnotsV field.
-inline
-MFReal32 &SurfaceBase::getKnotsV(void)
-{
-    return _mfKnotsV;
+inline MFReal32& SurfaceBase::getKnotsV(void) {
+  return _mfKnotsV;
 }
 
 //! Get the Surface::_mfKnotsV field.
-inline
-const MFReal32 &SurfaceBase::getKnotsV(void) const
-{
-    return _mfKnotsV;
+inline const MFReal32& SurfaceBase::getKnotsV(void) const {
+  return _mfKnotsV;
 }
 
 //! Get the value of the \a index element the Surface::_mfKnotLengths field.
-inline
-UInt32 &SurfaceBase::getKnotLengths(const UInt32 index)
-{
-    return _mfKnotLengths[index];
+inline UInt32& SurfaceBase::getKnotLengths(const UInt32 index) {
+  return _mfKnotLengths[index];
 }
 
 //! Get the Surface::_mfKnotLengths field.
-inline
-MFUInt32 &SurfaceBase::getKnotLengths(void)
-{
-    return _mfKnotLengths;
+inline MFUInt32& SurfaceBase::getKnotLengths(void) {
+  return _mfKnotLengths;
 }
 
 //! Get the Surface::_mfKnotLengths field.
-inline
-const MFUInt32 &SurfaceBase::getKnotLengths(void) const
-{
-    return _mfKnotLengths;
+inline const MFUInt32& SurfaceBase::getKnotLengths(void) const {
+  return _mfKnotLengths;
 }
 
 //! Get the value of the \a index element the Surface::_mfDimensions field.
-inline
-UInt32 &SurfaceBase::getDimensions(const UInt32 index)
-{
-    return _mfDimensions[index];
+inline UInt32& SurfaceBase::getDimensions(const UInt32 index) {
+  return _mfDimensions[index];
 }
 
 //! Get the Surface::_mfDimensions field.
-inline
-MFUInt32 &SurfaceBase::getDimensions(void)
-{
-    return _mfDimensions;
+inline MFUInt32& SurfaceBase::getDimensions(void) {
+  return _mfDimensions;
 }
 
 //! Get the Surface::_mfDimensions field.
-inline
-const MFUInt32 &SurfaceBase::getDimensions(void) const
-{
-    return _mfDimensions;
+inline const MFUInt32& SurfaceBase::getDimensions(void) const {
+  return _mfDimensions;
 }
 
 //! Get the value of the \a index element the Surface::_mfCurveControlPoints field.
-inline
-Pnt3f &SurfaceBase::getCurveControlPoints(const UInt32 index)
-{
-    return _mfCurveControlPoints[index];
+inline Pnt3f& SurfaceBase::getCurveControlPoints(const UInt32 index) {
+  return _mfCurveControlPoints[index];
 }
 
 //! Get the Surface::_mfCurveControlPoints field.
-inline
-MFPnt3f &SurfaceBase::getCurveControlPoints(void)
-{
-    return _mfCurveControlPoints;
+inline MFPnt3f& SurfaceBase::getCurveControlPoints(void) {
+  return _mfCurveControlPoints;
 }
 
 //! Get the Surface::_mfCurveControlPoints field.
-inline
-const MFPnt3f &SurfaceBase::getCurveControlPoints(void) const
-{
-    return _mfCurveControlPoints;
+inline const MFPnt3f& SurfaceBase::getCurveControlPoints(void) const {
+  return _mfCurveControlPoints;
 }
 
 //! Get the value of the \a index element the Surface::_mfKnots field.
-inline
-Real32 &SurfaceBase::getKnots(const UInt32 index)
-{
-    return _mfKnots[index];
+inline Real32& SurfaceBase::getKnots(const UInt32 index) {
+  return _mfKnots[index];
 }
 
 //! Get the Surface::_mfKnots field.
-inline
-MFReal32 &SurfaceBase::getKnots(void)
-{
-    return _mfKnots;
+inline MFReal32& SurfaceBase::getKnots(void) {
+  return _mfKnots;
 }
 
 //! Get the Surface::_mfKnots field.
-inline
-const MFReal32 &SurfaceBase::getKnots(void) const
-{
-    return _mfKnots;
+inline const MFReal32& SurfaceBase::getKnots(void) const {
+  return _mfKnots;
 }
 
 //! Get the value of the \a index element the Surface::_mfCurvesPerLoop field.
-inline
-UInt32 &SurfaceBase::getCurvesPerLoop(const UInt32 index)
-{
-    return _mfCurvesPerLoop[index];
+inline UInt32& SurfaceBase::getCurvesPerLoop(const UInt32 index) {
+  return _mfCurvesPerLoop[index];
 }
 
 //! Get the Surface::_mfCurvesPerLoop field.
-inline
-MFUInt32 &SurfaceBase::getCurvesPerLoop(void)
-{
-    return _mfCurvesPerLoop;
+inline MFUInt32& SurfaceBase::getCurvesPerLoop(void) {
+  return _mfCurvesPerLoop;
 }
 
 //! Get the Surface::_mfCurvesPerLoop field.
-inline
-const MFUInt32 &SurfaceBase::getCurvesPerLoop(void) const
-{
-    return _mfCurvesPerLoop;
+inline const MFUInt32& SurfaceBase::getCurvesPerLoop(void) const {
+  return _mfCurvesPerLoop;
 }
 
 OSG_END_NAMESPACE
 
-#define OSGSURFACEBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGSURFACEBASE_INLINE_CVSID                                                                \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

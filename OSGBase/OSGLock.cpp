@@ -62,28 +62,22 @@ OSG_USING_NAMESPACE
 
 /*--------------------------- Constructors --------------------------------*/
 
-LockCommonBase::LockCommonBase(void) :
-     Inherited(NULL),
-    _uiLockId (0   )
-{
+LockCommonBase::LockCommonBase(void)
+    : Inherited(NULL)
+    , _uiLockId(0) {
 }
 
-LockCommonBase::LockCommonBase(const Char8  *szName,
-                                     UInt32  uiId  ):
-     Inherited(szName),
-    _uiLockId (uiId  )
-{
+LockCommonBase::LockCommonBase(const Char8* szName, UInt32 uiId)
+    : Inherited(szName)
+    , _uiLockId(uiId) {
 }
 
 /*---------------------------- Destructor ---------------------------------*/
 
-LockCommonBase::~LockCommonBase(void)
-{
+LockCommonBase::~LockCommonBase(void) {
 }
 
-
-
-#if defined (OSG_USE_PTHREADS)
+#if defined(OSG_USE_PTHREADS)
 
 //---------------------------------------------------------------------------
 //  Class
@@ -91,70 +85,58 @@ LockCommonBase::~LockCommonBase(void)
 
 /*--------------------------- Constructors --------------------------------*/
 
-PThreadLockBase::PThreadLockBase(void):
-     Inherited    (),
-    _pLowLevelLock()
-{
+PThreadLockBase::PThreadLockBase(void)
+    : Inherited()
+    , _pLowLevelLock() {
 }
 
-PThreadLockBase::PThreadLockBase(const Char8  *szName,
-                                       UInt32  uiId  ) :
-     Inherited    (szName, uiId),
-    _pLowLevelLock()
-{
+PThreadLockBase::PThreadLockBase(const Char8* szName, UInt32 uiId)
+    : Inherited(szName, uiId)
+    , _pLowLevelLock() {
 }
 
 /*---------------------------- Destructor ---------------------------------*/
 
-PThreadLockBase::~PThreadLockBase(void)
-{
+PThreadLockBase::~PThreadLockBase(void) {
 }
 
 /*--------------------------- Construction --------------------------------*/
 
-bool PThreadLockBase::init(void)
-{
-    pthread_mutexattr_t lockAttr;
+bool PThreadLockBase::init(void) {
+  pthread_mutexattr_t lockAttr;
 
-    pthread_mutexattr_init(&lockAttr);
+  pthread_mutexattr_init(&lockAttr);
 
-    pthread_mutexattr_settype(&lockAttr, PTHREAD_MUTEX_RECURSIVE);
-        
-    pthread_mutex_init(&(_pLowLevelLock), &lockAttr);
+  pthread_mutexattr_settype(&lockAttr, PTHREAD_MUTEX_RECURSIVE);
 
-    return true;
+  pthread_mutex_init(&(_pLowLevelLock), &lockAttr);
+
+  return true;
 }
 
 /*--------------------------- Destruction ---------------------------------*/
 
-void PThreadLockBase::shutdown(void)
-{
-    pthread_mutex_destroy(&(_pLowLevelLock));
+void PThreadLockBase::shutdown(void) {
+  pthread_mutex_destroy(&(_pLowLevelLock));
 }
 
 /*------------------------------- Lock ------------------------------------*/
 
-void PThreadLockBase::aquire(void)
-{
-    pthread_mutex_lock(&(_pLowLevelLock));
+void PThreadLockBase::aquire(void) {
+  pthread_mutex_lock(&(_pLowLevelLock));
 }
 
-void PThreadLockBase::release(void)
-{
-    pthread_mutex_unlock(&(_pLowLevelLock));
+void PThreadLockBase::release(void) {
+  pthread_mutex_unlock(&(_pLowLevelLock));
 }
 
-bool PThreadLockBase::request(void)
-{
-    return (pthread_mutex_trylock(&(_pLowLevelLock)) != EBUSY);
+bool PThreadLockBase::request(void) {
+  return (pthread_mutex_trylock(&(_pLowLevelLock)) != EBUSY);
 }
 
 #endif /* OSG_USE_PTHREADS */
 
-
-
-
-#if defined (OSG_USE_SPROC)
+#if defined(OSG_USE_SPROC)
 
 //---------------------------------------------------------------------------
 //  Class
@@ -162,8 +144,9 @@ bool PThreadLockBase::request(void)
 
 /*--------------------------- Constructors --------------------------------*/
 
-SprocLockBase::SprocLockBase(void):
-     Inherited    (    ),
+SprocLockBase::SprocLockBase(void)
+    : Inherited()
+    ,
 #ifdef OSG_SPROC_USE_LOCK
     _pLowLevelLock(NULL)
 #else
@@ -172,133 +155,122 @@ SprocLockBase::SprocLockBase(void):
 {
 }
 
-SprocLockBase::SprocLockBase(const Char8  *szName,
-                                   UInt32  uiId  ):
-     Inherited    (szName, uiId),
+SprocLockBase::SprocLockBase(const Char8* szName, UInt32 uiId)
+    : Inherited(szName, uiId)
+    ,
 #ifdef OSG_SPROC_USE_LOCK
-    _pLowLevelLock(NULL        )
+    _pLowLevelLock(NULL)
 #else
-    _pLowLevelSema(NULL        )
+    _pLowLevelSema(NULL)
 #endif
 {
 }
 
 /*---------------------------- Destructor ---------------------------------*/
 
-SprocLockBase::~SprocLockBase(void)
-{
+SprocLockBase::~SprocLockBase(void) {
 }
 
 /*--------------------------- Construction --------------------------------*/
 
-bool SprocLockBase::init(void)
-{
-    ThreadManager *pThreadManager = ThreadManager::the();
+bool SprocLockBase::init(void) {
+  ThreadManager* pThreadManager = ThreadManager::the();
 
-    if(pThreadManager == NULL)
-        return false;
+  if (pThreadManager == NULL)
+    return false;
 
-    if(pThreadManager->getArena() == NULL)
-        return false;
+  if (pThreadManager->getArena() == NULL)
+    return false;
 
 #ifdef OSG_SPROC_USE_LOCK
-    _pLowLevelLock = usnewlock(pThreadManager->getArena());
+  _pLowLevelLock = usnewlock(pThreadManager->getArena());
 
-    if(_pLowLevelLock == NULL)
-        return false;
+  if (_pLowLevelLock == NULL)
+    return false;
 
-    usinitlock(_pLowLevelLock);
+  usinitlock(_pLowLevelLock);
 
 #else
-    _pLowLevelSema = usnewsema(pThreadManager->getArena(), 1);
+  _pLowLevelSema = usnewsema(pThreadManager->getArena(), 1);
 
-    if(_pLowLevelSema == NULL)
-        return false;
+  if (_pLowLevelSema == NULL)
+    return false;
 
-    usinitsema(_pLowLevelSema, 1);
-    usctlsema (_pLowLevelSema, CS_RECURSIVEON, NULL);
+  usinitsema(_pLowLevelSema, 1);
+  usctlsema(_pLowLevelSema, CS_RECURSIVEON, NULL);
 #endif
 
-    return true;
+  return true;
 }
 
 /*--------------------------- Destruction ---------------------------------*/
 
-void SprocLockBase::shutdown(void)
-{
-    ThreadManager *pThreadManager = ThreadManager::the();
+void SprocLockBase::shutdown(void) {
+  ThreadManager* pThreadManager = ThreadManager::the();
 
-    if(pThreadManager == NULL)
-        return;
+  if (pThreadManager == NULL)
+    return;
 
-    if(pThreadManager->getArena() == NULL)
-        return;
+  if (pThreadManager->getArena() == NULL)
+    return;
 
 #ifdef OSG_SPROC_USE_LOCK
-    if(_pLowLevelLock != NULL)
-    {
-        usfreelock(_pLowLevelLock, pThreadManager->getArena());
-    
-        _pLowLevelLock = NULL;
-    }
+  if (_pLowLevelLock != NULL) {
+    usfreelock(_pLowLevelLock, pThreadManager->getArena());
+
+    _pLowLevelLock = NULL;
+  }
 #else
-    if(_pLowLevelSema != NULL)
-    {
-        usfreesema(_pLowLevelSema, pThreadManager->getArena());
+  if (_pLowLevelSema != NULL) {
+    usfreesema(_pLowLevelSema, pThreadManager->getArena());
 
-        _pLowLevelSema = NULL;
-    }
+    _pLowLevelSema = NULL;
+  }
 #endif
-
 }
 
 /*------------------------------- Lock ------------------------------------*/
 
-void SprocLockBase::aquire(void)
-{
+void SprocLockBase::aquire(void) {
 #ifdef OSG_SPROC_USE_LOCK
-    if(_pLowLevelLock != NULL)
-        ussetlock(_pLowLevelLock);
+  if (_pLowLevelLock != NULL)
+    ussetlock(_pLowLevelLock);
 #else
-    if(_pLowLevelSema != NULL)
-        uspsema(_pLowLevelSema);
+  if (_pLowLevelSema != NULL)
+    uspsema(_pLowLevelSema);
 #endif
 }
 
-void SprocLockBase::release(void)
-{
+void SprocLockBase::release(void) {
 #ifdef OSG_SPROC_USE_LOCK
-    if(_pLowLevelLock != NULL)
-        usunsetlock(_pLowLevelLock);
+  if (_pLowLevelLock != NULL)
+    usunsetlock(_pLowLevelLock);
 #else
-    if(_pLowLevelSema != NULL)
-        usvsema(_pLowLevelSema);
+  if (_pLowLevelSema != NULL)
+    usvsema(_pLowLevelSema);
 #endif
 }
 
-bool SprocLockBase::request(void)
-{
-    bool  returnValue = false;
-    Int32 rc          = 0;
+bool SprocLockBase::request(void) {
+  bool  returnValue = false;
+  Int32 rc          = 0;
 
 #ifdef OSG_SPROC_USE_LOCK
-    if(_pLowLevelLock != NULL)
-        rc = uscsetlock(_pLowLevelLock, 0);
+  if (_pLowLevelLock != NULL)
+    rc = uscsetlock(_pLowLevelLock, 0);
 #else
-    if(_pLowLevelSema != NULL)
-        rc = uscpsema(_pLowLevelSema);
+  if (_pLowLevelSema != NULL)
+    rc = uscpsema(_pLowLevelSema);
 #endif
 
-    returnValue = (rc == 1);
+  returnValue = (rc == 1);
 
-    return returnValue;
+  return returnValue;
 }
 
 #endif /* OSG_USE_SPROC */
 
-
-
-#if defined (OSG_USE_WINTHREADS)
+#if defined(OSG_USE_WINTHREADS)
 
 //---------------------------------------------------------------------------
 //  Class
@@ -306,115 +278,101 @@ bool SprocLockBase::request(void)
 
 /*--------------------------- Constructors --------------------------------*/
 
-WinThreadLockBase::WinThreadLockBase(void) :
-       Inherited(    )
+WinThreadLockBase::WinThreadLockBase(void)
+    : Inherited()
 #ifdef OSG_WINLOCK_USE_MUTEX
-    , _pMutex   (NULL)
+    , _pMutex(NULL)
 #endif
 {
 }
 
-WinThreadLockBase::WinThreadLockBase(const Char8  *szName,
-                                           UInt32  uiId  ) :
-       Inherited(szName, uiId)
+WinThreadLockBase::WinThreadLockBase(const Char8* szName, UInt32 uiId)
+    : Inherited(szName, uiId)
 #ifdef OSG_WINLOCK_USE_MUTEX
-    , _pMutex   (NULL        )
+    , _pMutex(NULL)
 #endif
 {
 }
 
 /*---------------------------- Destructor ---------------------------------*/
 
-WinThreadLockBase::~WinThreadLockBase(void)
-{
+WinThreadLockBase::~WinThreadLockBase(void) {
 }
 
 /*-------------------------- Construction ---------------------------------*/
 
-bool WinThreadLockBase::init(void)
-{
+bool WinThreadLockBase::init(void) {
 #ifdef OSG_WINLOCK_USE_MUTEX
-    _pMutex = CreateMutex( NULL,     // no security attributes
-                           FALSE,    // initially not owned
-                          _szName);  // name of mutex
+  _pMutex = CreateMutex(NULL, // no security attributes
+      FALSE,                  // initially not owned
+      _szName);               // name of mutex
 
-    if(_pMutex == NULL)
-    {
-        return false;
-    }
+  if (_pMutex == NULL) {
+    return false;
+  }
 
-    return true;
+  return true;
 #else
-    InitializeCriticalSection(&_pCriticalSection);
+  InitializeCriticalSection(&_pCriticalSection);
 
-    return true;
+  return true;
 #endif
 }
 
 /*-------------------------- Destruction ----------------------------------*/
 
-void WinThreadLockBase::shutdown(void)
-{
+void WinThreadLockBase::shutdown(void) {
 #ifdef OSG_WINLOCK_USE_MUTEX
-    if(_pMutex != NULL)
-    {
-        CloseHandle(_pMutex);
-    }
+  if (_pMutex != NULL) {
+    CloseHandle(_pMutex);
+  }
 #else
-    DeleteCriticalSection(&_pCriticalSection);
+  DeleteCriticalSection(&_pCriticalSection);
 #endif
 }
 
 /*------------------------------- Lock ------------------------------------*/
 
-void WinThreadLockBase::aquire(void)
-{
+void WinThreadLockBase::aquire(void) {
 #if defined(OSG_GV_BETA) && defined(OSG_DBG_LCK)
-    fprintf(stderr, "Lock::aquire %p\n", this);
+  fprintf(stderr, "Lock::aquire %p\n", this);
 #endif
 
 #ifdef OSG_WINLOCK_USE_MUTEX
-    WaitForSingleObject(_pMutex, INFINITE);
+  WaitForSingleObject(_pMutex, INFINITE);
 #else
-    EnterCriticalSection(&_pCriticalSection);
+  EnterCriticalSection(&_pCriticalSection);
 #endif
 }
 
-void WinThreadLockBase::release(void)
-{
+void WinThreadLockBase::release(void) {
 #if defined(OSG_GV_BETA) && defined(OSG_DBG_LCK)
-    fprintf(stderr, "Lock::release %p\n", this);
+  fprintf(stderr, "Lock::release %p\n", this);
 #endif
 
 #ifdef OSG_WINLOCK_USE_MUTEX
-    ReleaseMutex(_pMutex);
+  ReleaseMutex(_pMutex);
 #else
-    LeaveCriticalSection(&_pCriticalSection);
+  LeaveCriticalSection(&_pCriticalSection);
 #endif
 }
 
-bool WinThreadLockBase::request(void)
-{
+bool WinThreadLockBase::request(void) {
 #ifdef OSG_WINLOCK_USE_MUTEX
-    DWORD rc;
-    rc = WaitForSingleObject(_pMutex, 0);
+  DWORD rc;
+  rc = WaitForSingleObject(_pMutex, 0);
 
-    if(rc == WAIT_OBJECT_0)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+  if (rc == WAIT_OBJECT_0) {
+    return true;
+  } else {
+    return false;
+  }
 #else
-    return (TryEnterCriticalSection(&_pCriticalSection) != FALSE);
+  return (TryEnterCriticalSection(&_pCriticalSection) != FALSE);
 #endif
 }
 
 #endif /* OSG_USE_WINTHREADS */
-
-
 
 //---------------------------------------------------------------------------
 //  Class
@@ -424,82 +382,68 @@ MPLockType Lock::_type("OSGLock", "OSGMPBase", &Lock::create);
 
 /*------------------------------- Get -------------------------------------*/
 
-Lock *Lock::get(const Char8 *szName)
-{
-    return ThreadManager::the()->getLock(szName, "OSGLock");
+Lock* Lock::get(const Char8* szName) {
+  return ThreadManager::the()->getLock(szName, "OSGLock");
 }
 
-Lock *Lock::find(const Char8 *szName)
-{
-    return ThreadManager::the()->findLock(szName);
+Lock* Lock::find(const Char8* szName) {
+  return ThreadManager::the()->findLock(szName);
 }
 
-Lock *Lock::create(void)
-{
-    return Lock::get(NULL);
+Lock* Lock::create(void) {
+  return Lock::get(NULL);
 }
 
-const MPLockType &Lock::getClassType(void)
-{
-    return _type;
+const MPLockType& Lock::getClassType(void) {
+  return _type;
 }
 
 /*------------------------------- Lock ------------------------------------*/
 
-void Lock::aquire(void)
-{
-    Inherited::aquire();
+void Lock::aquire(void) {
+  Inherited::aquire();
 }
 
-void Lock::release(void)
-{
-    Inherited::release();
+void Lock::release(void) {
+  Inherited::release();
 }
 
-bool Lock::request(void)
-{
-    return Inherited::request();
+bool Lock::request(void) {
+  return Inherited::request();
 }
 
 /*------------------------------ Create -----------------------------------*/
 
-Lock *Lock::create(const Char8 *szName, UInt32 uiId)
-{
-    Lock *returnValue = NULL;
+Lock* Lock::create(const Char8* szName, UInt32 uiId) {
+  Lock* returnValue = NULL;
 
-    returnValue = new Lock(szName, uiId);
+  returnValue = new Lock(szName, uiId);
 
-    if(returnValue->init() == false)
-    {
-        delete returnValue;
-        returnValue = NULL;
-    }
+  if (returnValue->init() == false) {
+    delete returnValue;
+    returnValue = NULL;
+  }
 
-    return returnValue;
+  return returnValue;
 }
 
 /*--------------------------- Constructors --------------------------------*/
 
-Lock::Lock(void) :
-    Inherited()
-{
+Lock::Lock(void)
+    : Inherited() {
 }
 
-Lock::Lock(const Char8 *szName, UInt32 uiId) :
-    Inherited(szName, uiId)
-{
+Lock::Lock(const Char8* szName, UInt32 uiId)
+    : Inherited(szName, uiId) {
 }
 
 /*---------------------------- Destructor ---------------------------------*/
 
-Lock::~Lock(void)
-{
-    ThreadManager::the()->removeLock(this);
+Lock::~Lock(void) {
+  ThreadManager::the()->removeLock(this);
 
-    shutdown();
+  shutdown();
 }
-
-
 
 //---------------------------------------------------------------------------
 //  Class
@@ -510,115 +454,97 @@ MPLockPoolType LockPool::_type("OSGLockPool", "OSGMPBase", &LockPool::create);
 /*-------------------------------------------------------------------------*/
 /*                                Get                                      */
 
-LockPool *LockPool::get(const Char8 *szName)
-{
-    return ThreadManager::the()->getLockPool(szName, "OSGLockPool");
+LockPool* LockPool::get(const Char8* szName) {
+  return ThreadManager::the()->getLockPool(szName, "OSGLockPool");
 }
 
-LockPool *LockPool::find(const Char8 *szName)
-{
-    return ThreadManager::the()->findLockPool(szName);
+LockPool* LockPool::find(const Char8* szName) {
+  return ThreadManager::the()->findLockPool(szName);
 }
 
-LockPool *LockPool::create(void)
-{
-    return LockPool::get(NULL);
+LockPool* LockPool::create(void) {
+  return LockPool::get(NULL);
 }
 
 /*------------------------------ Lock -------------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 171)
+#pragma warning(disable : 171)
 #endif
 
-void LockPool::aquire(void *keyP)
-{
-    _pLocks[(UInt64(keyP) & uiLockPoolMask) >> 7].aquire();
+void LockPool::aquire(void* keyP) {
+  _pLocks[(UInt64(keyP) & uiLockPoolMask) >> 7].aquire();
 }
 
-void LockPool::release(void *keyP)
-{
-    _pLocks[(UInt64(keyP) & uiLockPoolMask) >> 7].release();
+void LockPool::release(void* keyP) {
+  _pLocks[(UInt64(keyP) & uiLockPoolMask) >> 7].release();
 }
 
-bool LockPool::request(void *keyP)
-{
-    return _pLocks[(UInt64(keyP) & uiLockPoolMask) >> 7].request();
+bool LockPool::request(void* keyP) {
+  return _pLocks[(UInt64(keyP) & uiLockPoolMask) >> 7].request();
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (error : 171)
+#pragma warning(error : 171)
 #endif
 
 /*------------------------------ Create -----------------------------------*/
 
-LockPool *LockPool::create(const Char8 *szName, UInt32 uiId)
-{
-    LockPool *returnValue = NULL;
+LockPool* LockPool::create(const Char8* szName, UInt32 uiId) {
+  LockPool* returnValue = NULL;
 
-    returnValue = new LockPool(szName, uiId);
+  returnValue = new LockPool(szName, uiId);
 
-    if(returnValue->init() == false)
-    {
-        delete returnValue;
-        returnValue = NULL;
-    }
+  if (returnValue->init() == false) {
+    delete returnValue;
+    returnValue = NULL;
+  }
 
-    return returnValue;
+  return returnValue;
 }
 
 /*--------------------------- Constructors --------------------------------*/
 
-LockPool::LockPool(const Char8  *szName,
-                         UInt32  uiId  ) :
-    Inherited(szName, uiId)
-{
+LockPool::LockPool(const Char8* szName, UInt32 uiId)
+    : Inherited(szName, uiId) {
 }
 
 /*---------------------------- Destructor ---------------------------------*/
 
-LockPool::~LockPool(void)
-{
-    ThreadManager::the()->removeLockPool(this);
+LockPool::~LockPool(void) {
+  ThreadManager::the()->removeLockPool(this);
 
-    shutdown();
+  shutdown();
 }
 
 /*--------------------------- Construction --------------------------------*/
 
-bool LockPool::init(void)
-{
-    bool   returnValue = true;
-    Char8 *pTmp;
+bool LockPool::init(void) {
+  bool   returnValue = true;
+  Char8* pTmp;
 
-    pTmp = new Char8[strlen(_szName) + 6];
+  pTmp = new Char8[strlen(_szName) + 6];
 
-    for(UInt32 i = 0; i < uiLockPoolSize; i++)
-    {
+  for (UInt32 i = 0; i < uiLockPoolSize; i++) {
 #ifdef OSG_DEBUG_LOCK_STAT
-        _pLockStats[i] = 0;
+    _pLockStats[i] = 0;
 #endif
-        sprintf(pTmp, "%s%u\n", _szName, i);
+    sprintf(pTmp, "%s%u\n", _szName, i);
 
-        stringDup(pTmp, _pLocks[i]._szName);
+    stringDup(pTmp, _pLocks[i]._szName);
 
-        returnValue &= _pLocks[i].init();
-    }
+    returnValue &= _pLocks[i].init();
+  }
 
-    delete [] pTmp;
+  delete[] pTmp;
 
-    return returnValue;
+  return returnValue;
 }
 
 /*--------------------------- Destruction ---------------------------------*/
 
-void LockPool::shutdown(void)
-{
-    for(UInt32 i = 0; i < uiLockPoolSize; i++)
-    {
-        _pLocks[i].shutdown();
-    }
+void LockPool::shutdown(void) {
+  for (UInt32 i = 0; i < uiLockPoolSize; i++) {
+    _pLocks[i].shutdown();
+  }
 }
-
-
-

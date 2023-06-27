@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGCLIPPLANE_H_
 #define _OSGCLIPPLANE_H_
 #ifdef __sgi
@@ -55,85 +54,79 @@ OSG_BEGIN_NAMESPACE
     \ingroup GrpSystemNodeCoresClipPlanes
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING ClipPlane : public ClipPlaneBase
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING ClipPlane : public ClipPlaneBase {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Set                                    */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Set                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Chunk                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Chunk                                   */
-    /*! \{                                                                 */
+  SClipPlaneChunkPtr getChunk(void);
+  virtual void       makeChunk(void);
 
-            SClipPlaneChunkPtr getChunk (void);
-    virtual void          makeChunk(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    virtual void changed(BitVector whichField,
-                         UInt32    origin   );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Dump                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Dump                                    */
-    /*! \{                                                                 */
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    virtual void dump(      UInt32    uiIndent = 0,
-                      const BitVector bvFlags  = 0) const;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  typedef ClipPlaneBase Inherited;
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  SClipPlaneChunkPtr _pChunk;
 
-    typedef ClipPlaneBase      Inherited;
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-            SClipPlaneChunkPtr _pChunk;
+  ClipPlane(void);
+  ClipPlane(const ClipPlane& source);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    ClipPlane(void);
-    ClipPlane(const ClipPlane &source);
+  virtual ~ClipPlane(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Actions                                  */
+  /*! \{                                                                 */
 
-    virtual ~ClipPlane(void);
+  // Draw action: execute the OpenGL commands to set the light's parameters.
+  // Action::ResultE drawEnter  (Action *action);
+  // Action::ResultE drawLeave  (Action *action);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Actions                                  */
-    /*! \{                                                                 */
-   
-    // Draw action: execute the OpenGL commands to set the light's parameters.
-    //Action::ResultE drawEnter  (Action *action);
-    //Action::ResultE drawLeave  (Action *action);
+  // generate draw tree
+  Action::ResultE renderEnter(Action* action);
+  Action::ResultE renderLeave(Action* action);
 
-    // generate draw tree
-    Action::ResultE renderEnter(Action *action);
-    Action::ResultE renderLeave(Action *action);
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class ClipPlaneBase;
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  static void initMethod(void);
 
-    friend class FieldContainer;
-    friend class ClipPlaneBase;
-
-    static void initMethod( void );
-
-    /*! \brief prohibit default function (move to 'public' if needed) */
-    void operator =(const ClipPlane &source);
+  /*! \brief prohibit default function (move to 'public' if needed) */
+  void operator=(const ClipPlane& source);
 };
 
 OSG_END_NAMESPACE

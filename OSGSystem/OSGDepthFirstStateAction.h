@@ -60,214 +60,202 @@ OSG_BEGIN_NAMESPACE
 class ExtendActorBase;
 class BasicActorBase;
 
-class OSG_SYSTEMLIB_DLLMAPPING DepthFirstStateAction : public NewActionBase
-{
-    /*==== PUBLIC ===========================================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING DepthFirstStateAction : public NewActionBase {
+  /*==== PUBLIC ===========================================================*/
+ public:
 #ifdef OSG_NEWACTION_STATISTICS
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Statistics                                                  */
-    /*! \{                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Statistics                                                  */
+  /*! \{                                                                   */
 
-    static StatElemDesc<StatIntElem> statStateClones;
-    static StatElemDesc<StatIntElem> statStateRestores;
+  static StatElemDesc<StatIntElem> statStateClones;
+  static StatElemDesc<StatIntElem> statStateRestores;
 
-    /*! \}                                                                   */
+  /*! \}                                                                   */
 #endif /* OSG_NEWACTION_STATISTICS */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Destructor                                                  */
-    /*! \{                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Destructor                                                  */
+  /*! \{                                                                   */
 
-    virtual ~DepthFirstStateAction(void);
+  virtual ~DepthFirstStateAction(void);
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Create                                                      */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Create                                                      */
+  /*! \{                                                                   */
 
-    static DepthFirstStateAction *create(void);
+  static DepthFirstStateAction* create(void);
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Apply                                                       */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Apply                                                       */
+  /*! \{                                                                   */
 
-    virtual ResultE apply(NodePtr pRoot);
+  virtual ResultE apply(NodePtr pRoot);
 
-    /*! \}                                                                   */
-    /*==== PROTECTED ========================================================*/
-  protected:
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Constructors                                                */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*==== PROTECTED ========================================================*/
+ protected:
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Constructors                                                */
+  /*! \{                                                                   */
 
-    DepthFirstStateAction(void);
+  DepthFirstStateAction(void);
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Events                                                      */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Events                                                      */
+  /*! \{                                                                   */
 
-    virtual void addExtendEvent     (ExtendActorBase *pActor,
-                                     UInt32           actorIndex);
-    virtual void subExtendEvent     (ExtendActorBase *pActor,
-                                     UInt32           actorIndex);
+  virtual void addExtendEvent(ExtendActorBase* pActor, UInt32 actorIndex);
+  virtual void subExtendEvent(ExtendActorBase* pActor, UInt32 actorIndex);
 
-    virtual void addBasicEvent      (BasicActorBase  *pActor,
-                                     UInt32           actorIndex);
-    virtual void subBasicEvent      (BasicActorBase  *pActor,
-                                     UInt32           actorIndex);
+  virtual void addBasicEvent(BasicActorBase* pActor, UInt32 actorIndex);
+  virtual void subBasicEvent(BasicActorBase* pActor, UInt32 actorIndex);
 
-    virtual void startEvent         (void                       );
-    virtual void stopEvent          (void                       );
+  virtual void startEvent(void);
+  virtual void stopEvent(void);
 
-    virtual void beginEditStateEvent(ActorBase       *pActor,
-                                     UInt32           actorId   );
-    virtual void endEditStateEvent  (ActorBase       *pActor,
-                                     UInt32           actorId   );
+  virtual void beginEditStateEvent(ActorBase* pActor, UInt32 actorId);
+  virtual void endEditStateEvent(ActorBase* pActor, UInt32 actorId);
 
-    /*! \}                                                                   */
-    /*==== PRIVATE ==========================================================*/
-  private:
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Types                                                       */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*==== PRIVATE ==========================================================*/
+ private:
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Types                                                       */
+  /*! \{                                                                   */
 
-    typedef NewActionBase             Inherited;
-    typedef ActorBase::ActorBaseState ActorBaseState;
+  typedef NewActionBase             Inherited;
+  typedef ActorBase::ActorBaseState ActorBaseState;
 
 #ifdef OSG_NEWACTION_STATESLOTINTERFACE
 
-    class StateRefCount
-    {
-      public:
-        inline          StateRefCount(const StateRefCount &source    );
+  class StateRefCount {
+   public:
+    inline StateRefCount(const StateRefCount& source);
 
-        inline explicit StateRefCount(      UInt32         stateSlot );
-        inline explicit StateRefCount(      UInt32         stateSlot,
-                                            Int32          refCount  );
+    inline explicit StateRefCount(UInt32 stateSlot);
+    inline explicit StateRefCount(UInt32 stateSlot, Int32 refCount);
 
-        inline UInt32 getStateSlot(void            ) const;
-        inline void   setStateSlot(UInt32 stateSlot);
+    inline UInt32 getStateSlot(void) const;
+    inline void   setStateSlot(UInt32 stateSlot);
 
-        inline Int32  getRefCount (void            ) const;
-        inline void   incRefCount (Int32  inc      );
-        inline void   decRefCount (Int32  dec      );
+    inline Int32 getRefCount(void) const;
+    inline void  incRefCount(Int32 inc);
+    inline void  decRefCount(Int32 dec);
 
-      private:
-        UInt32 _stateSlot;
-        Int32  _refCount;
-    };
+   private:
+    UInt32 _stateSlot;
+    Int32  _refCount;
+  };
 
 #else /* OSG_NEWACTION_STATESLOTINTERFACE */
 
-    typedef std::list<ActorBaseState *> StateStore;
-    typedef StateStore::iterator        StateStoreIt;
-    typedef StateStore::const_iterator  StateStoreConstIt;
+  typedef std::list<ActorBaseState*> StateStore;
+  typedef StateStore::iterator       StateStoreIt;
+  typedef StateStore::const_iterator StateStoreConstIt;
 
-    class StateRefCount;
-    class NodeStackEntry;
-    friend class StateRefCount;
-    friend class NodeStackEntry;
-    
-    class StateRefCount
-    {
-      public:
-        inline          StateRefCount(const StateRefCount &source  );
+  class StateRefCount;
+  class NodeStackEntry;
+  friend class StateRefCount;
+  friend class NodeStackEntry;
 
-        inline explicit StateRefCount(const StateStoreIt  &itState );
-        inline explicit StateRefCount(const StateStoreIt  &itState,
-                                            Int32          refCount);
+  class StateRefCount {
+   public:
+    inline StateRefCount(const StateRefCount& source);
 
-        inline StateStoreIt getState(      void                 ) const;
-        inline void         setState(const StateStoreIt &itState);
+    inline explicit StateRefCount(const StateStoreIt& itState);
+    inline explicit StateRefCount(const StateStoreIt& itState, Int32 refCount);
 
-        inline Int32        getRefCount(void         ) const;
-        inline void         incRefCount(Int32 inc = 1);
-        inline void         decRefCount(Int32 dec = 1);
+    inline StateStoreIt getState(void) const;
+    inline void         setState(const StateStoreIt& itState);
 
-      private:
-        StateStoreIt _itState;
-        Int32        _refCount;
-    };
+    inline Int32 getRefCount(void) const;
+    inline void  incRefCount(Int32 inc = 1);
+    inline void  decRefCount(Int32 dec = 1);
+
+   private:
+    StateStoreIt _itState;
+    Int32        _refCount;
+  };
 
 #endif /* OSG_NEWACTION_STATESLOTINTERFACE */
 
-    typedef std::list<StateRefCount>           StateRefCountStore;
-    typedef StateRefCountStore::iterator       StateRefCountStoreIt;
-    typedef StateRefCountStore::const_iterator StateRefCountStoreConstIt;
+  typedef std::list<StateRefCount>           StateRefCountStore;
+  typedef StateRefCountStore::iterator       StateRefCountStoreIt;
+  typedef StateRefCountStore::const_iterator StateRefCountStoreConstIt;
 
-    class NodeStackEntry
-    {
-      public:
-        inline NodeStackEntry(      void                                  );
-        inline NodeStackEntry(const NodeStackEntry       &source          );
-        inline NodeStackEntry(const NodePtr              &pNode,
-                              const StateRefCountStoreIt &itStateRefCount,
-                                    Int32                 passCount       );
+  class NodeStackEntry {
+   public:
+    inline NodeStackEntry(void);
+    inline NodeStackEntry(const NodeStackEntry& source);
+    inline NodeStackEntry(
+        const NodePtr& pNode, const StateRefCountStoreIt& itStateRefCount, Int32 passCount);
 
-        inline NodePtr getNode     (void           ) const;
+    inline NodePtr getNode(void) const;
 
-        inline Int32   getPassCount(void           ) const;
-        inline void    setPassCount(Int32 passCount);
+    inline Int32 getPassCount(void) const;
+    inline void  setPassCount(Int32 passCount);
 
-        inline StateRefCountStoreIt getStateRefCount(void          ) const;
-        inline void setStateRefCount(const StateRefCountStoreIt &itStateRefCount);
+    inline StateRefCountStoreIt getStateRefCount(void) const;
+    inline void                 setStateRefCount(const StateRefCountStoreIt& itStateRefCount);
 
-      private:
-        NodePtr              _pNode;
-        StateRefCountStoreIt _itStateRefCount;
-        Int32                _passCount;
-    };
+   private:
+    NodePtr              _pNode;
+    StateRefCountStoreIt _itStateRefCount;
+    Int32                _passCount;
+  };
 
-    typedef std::deque<NodeStackEntry> NodeStack;
+  typedef std::deque<NodeStackEntry> NodeStack;
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Helper Methods                                              */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Helper Methods                                              */
+  /*! \{                                                                   */
 
-           ResultE traverseEnter     (      void                          );
-           ResultE traverseEnterLeave(      void                          );
+  ResultE traverseEnter(void);
+  ResultE traverseEnterLeave(void);
 
-           void    pushChildren      (const NodePtr &pNode, ResultE result);
+  void pushChildren(const NodePtr& pNode, ResultE result);
 
-    inline ResultE enterNode         (const NodePtr &pNode, UInt32  pass  );
-    inline ResultE leaveNode         (const NodePtr &pNode, UInt32  pass  );
+  inline ResultE enterNode(const NodePtr& pNode, UInt32 pass);
+  inline ResultE leaveNode(const NodePtr& pNode, UInt32 pass);
 
-    inline StateRefCountStoreIt cloneState(void                                );
-    inline StateRefCountStoreIt getState  (void                                );
-    inline void                 setState  (StateRefCountStoreIt itStateRefCount);
+  inline StateRefCountStoreIt cloneState(void);
+  inline StateRefCountStoreIt getState(void);
+  inline void                 setState(StateRefCountStoreIt itStateRefCount);
 
-    inline void incRefCount(StateRefCountStoreIt itStateRefCount, Int32 inc = 1);
-    inline void decRefCount(StateRefCountStoreIt itStateRefCount, Int32 dec = 1);
+  inline void incRefCount(StateRefCountStoreIt itStateRefCount, Int32 inc = 1);
+  inline void decRefCount(StateRefCountStoreIt itStateRefCount, Int32 dec = 1);
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
 
-    NodeStack            _nodeStack;
-    StateRefCountStore   _stateRefCountStore;
+  NodeStack          _nodeStack;
+  StateRefCountStore _stateRefCountStore;
 
 #ifndef OSG_NEWACTION_STATESLOTINTERFACE
-    StateStore           _stateStore;
+  StateStore _stateStore;
 #endif
 
-    StateRefCountStoreIt _itInitialState;
-    StateRefCountStoreIt _itActiveState;
+  StateRefCountStoreIt _itInitialState;
+  StateRefCountStoreIt _itActiveState;
 
-    bool                 _stateClonedFlag;
+  bool _stateClonedFlag;
 
-    ExtendActorStore     _extendEnterActors;
-    ExtendActorStore     _extendLeaveActors;
+  ExtendActorStore _extendEnterActors;
+  ExtendActorStore _extendLeaveActors;
 
-    BasicActorStore      _basicEnterActors;
-    BasicActorStore      _basicLeaveActors;
+  BasicActorStore _basicEnterActors;
+  BasicActorStore _basicLeaveActors;
 };
 
 OSG_END_NAMESPACE
 
 #include "OSGDepthFirstStateAction.inl"
 
-#define OSGDEPTHFIRSTSTATEACTION_HEADER_CVSID "@(#)$Id: OSGDepthFirstStateAction.h,v 1.3 2005/08/30 18:21:56 dirk Exp $"
+#define OSGDEPTHFIRSTSTATEACTION_HEADER_CVSID                                                      \
+  "@(#)$Id: OSGDepthFirstStateAction.h,v 1.3 2005/08/30 18:21:56 dirk Exp $"
 
 #endif /* _OSGDEPTHFIRSTSTATEACTION_H_ */

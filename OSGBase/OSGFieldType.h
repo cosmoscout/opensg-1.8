@@ -61,88 +61,73 @@ class Field;
 /*! \ingroup GrpBaseField
  */
 
-class OSG_BASE_DLLMAPPING FieldType : public DataType
-{
-    /*==========================  PUBLIC  =================================*/
+class OSG_BASE_DLLMAPPING FieldType : public DataType {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  enum Cardinality { SINGLE_FIELD, MULTI_FIELD };
 
-    enum Cardinality 
-    { 
-        SINGLE_FIELD, 
-        MULTI_FIELD 
-    };
+  typedef Field* (*CreateFieldMethod)(void);
 
-    typedef Field *(*CreateFieldMethod)(void);
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  FieldType(const Char8* szName, const Char8* szParentName, const DataType& contentType,
+      CreateFieldMethod createMethod, Cardinality cardinality);
 
-    FieldType(const Char8             *szName, 
-              const Char8             *szParentName,
-              const DataType          &contentType,
-                    CreateFieldMethod  createMethod,
-                    Cardinality        cardinality);
+  FieldType(const Char8* szName, const Char8* szParentName, const DataType& contentType,
+      CreateFieldMethod createMethod, Cardinality cardinality, const FieldType& pScanAsType);
 
-    FieldType(const Char8             *szName, 
-              const Char8             *szParentName,
-              const DataType          &contentType ,
-                    CreateFieldMethod  createMethod,
-                    Cardinality        cardinality ,
-              const FieldType         &pScanAsType );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  virtual ~FieldType(void);
 
-    virtual ~FieldType(void);
-
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 
 #if defined(OSG_MICROSOFT_COMPILER_ALERT)
-    FieldType(const FieldType &source);
-    FieldType &operator =(const FieldType &obj);
+  FieldType(const FieldType& source);
+  FieldType& operator=(const FieldType& obj);
 #endif
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Get                                     */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Get                                     */
+  /*! \{                                                                 */
 
-    const DataType    &getContentType(void) const;
-          Cardinality  getCardinality(void) const;
+  const DataType& getContentType(void) const;
+  Cardinality     getCardinality(void) const;
 
-          UInt32       getScanTypeId (void) const;
+  UInt32 getScanTypeId(void) const;
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-  protected:
+ protected:
+  typedef DataType Inherited;
 
-    typedef DataType Inherited;
+  /*---------------------------------------------------------------------*/
+  /*                             Member                                  */
 
-    /*---------------------------------------------------------------------*/
-    /*                             Member                                  */
+  Cardinality _cardinality;
+  UInt32      _uiLoadTypeId;
 
-          Cardinality        _cardinality;
-          UInt32             _uiLoadTypeId;
+  const DataType&  _contentType;
+  const FieldType* _pScanAsType;
 
-    const DataType          &_contentType;
-    const FieldType         *_pScanAsType;
+  const CreateFieldMethod _createMethod;
 
-    const CreateFieldMethod  _createMethod;
-
-    /*==========================  PRIVATE  ================================*/
-  private:
-
-    friend class FieldFactory;
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldFactory;
 
 #if !defined(OSG_MICROSOFT_COMPILER_ALERT)
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    FieldType(const FieldType &source);
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    FieldType &operator =(const FieldType &obj);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  FieldType(const FieldType& source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  FieldType& operator=(const FieldType& obj);
 #endif
 };
 
@@ -151,6 +136,3 @@ OSG_END_NAMESPACE
 #define OSGFIELDTYPE_HEADER_CVSID "@(#)$Id: $"
 
 #endif /* _OSGFIELDTYPE_H_ */
-
-
-

@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGSTENCILCHUNKBASE_H_
 #define _OSGSTENCILCHUNKBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -68,12 +66,12 @@
 #include <OSGStateChunk.h> // Parent
 
 #include <OSGGLenumFields.h> // StencilFunc type
-#include <OSGInt32Fields.h> // StencilValue type
+#include <OSGInt32Fields.h>  // StencilValue type
 #include <OSGUInt32Fields.h> // StencilMask type
 #include <OSGGLenumFields.h> // StencilOpFail type
 #include <OSGGLenumFields.h> // StencilOpZFail type
 #include <OSGGLenumFields.h> // StencilOpZPass type
-#include <OSGInt32Fields.h> // ClearBuffer type
+#include <OSGInt32Fields.h>  // ClearBuffer type
 #include <OSGUInt32Fields.h> // BitMask type
 
 #include <OSGStencilChunkFields.h>
@@ -85,230 +83,209 @@ class BinaryDataHandler;
 
 //! \brief StencilChunk Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING StencilChunkBase : public StateChunk
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING StencilChunkBase : public StateChunk {
+ private:
+  typedef StateChunk Inherited;
 
-    typedef StateChunk    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef StencilChunkPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    StencilFuncFieldId    = Inherited::NextFieldId,
+    StencilValueFieldId   = StencilFuncFieldId + 1,
+    StencilMaskFieldId    = StencilValueFieldId + 1,
+    StencilOpFailFieldId  = StencilMaskFieldId + 1,
+    StencilOpZFailFieldId = StencilOpFailFieldId + 1,
+    StencilOpZPassFieldId = StencilOpZFailFieldId + 1,
+    ClearBufferFieldId    = StencilOpZPassFieldId + 1,
+    BitMaskFieldId        = ClearBufferFieldId + 1,
+    NextFieldId           = BitMaskFieldId + 1
+  };
 
-    typedef StencilChunkPtr  Ptr;
+  static const OSG::BitVector StencilFuncFieldMask;
+  static const OSG::BitVector StencilValueFieldMask;
+  static const OSG::BitVector StencilMaskFieldMask;
+  static const OSG::BitVector StencilOpFailFieldMask;
+  static const OSG::BitVector StencilOpZFailFieldMask;
+  static const OSG::BitVector StencilOpZPassFieldMask;
+  static const OSG::BitVector ClearBufferFieldMask;
+  static const OSG::BitVector BitMaskFieldMask;
 
-    enum
-    {
-        StencilFuncFieldId    = Inherited::NextFieldId,
-        StencilValueFieldId   = StencilFuncFieldId    + 1,
-        StencilMaskFieldId    = StencilValueFieldId   + 1,
-        StencilOpFailFieldId  = StencilMaskFieldId    + 1,
-        StencilOpZFailFieldId = StencilOpFailFieldId  + 1,
-        StencilOpZPassFieldId = StencilOpZFailFieldId + 1,
-        ClearBufferFieldId    = StencilOpZPassFieldId + 1,
-        BitMaskFieldId        = ClearBufferFieldId    + 1,
-        NextFieldId           = BitMaskFieldId        + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector StencilFuncFieldMask;
-    static const OSG::BitVector StencilValueFieldMask;
-    static const OSG::BitVector StencilMaskFieldMask;
-    static const OSG::BitVector StencilOpFailFieldMask;
-    static const OSG::BitVector StencilOpZFailFieldMask;
-    static const OSG::BitVector StencilOpZPassFieldMask;
-    static const OSG::BitVector ClearBufferFieldMask;
-    static const OSG::BitVector BitMaskFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFGLenum* getSFStencilFunc(void);
+  SFInt32*  getSFStencilValue(void);
+  SFUInt32* getSFStencilMask(void);
+  SFGLenum* getSFStencilOpFail(void);
+  SFGLenum* getSFStencilOpZFail(void);
+  SFGLenum* getSFStencilOpZPass(void);
+  SFInt32*  getSFClearBuffer(void);
+  SFUInt32* getSFBitMask(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  GLenum&       getStencilFunc(void);
+  const GLenum& getStencilFunc(void) const;
+  Int32&        getStencilValue(void);
+  const Int32&  getStencilValue(void) const;
+  UInt32&       getStencilMask(void);
+  const UInt32& getStencilMask(void) const;
+  GLenum&       getStencilOpFail(void);
+  const GLenum& getStencilOpFail(void) const;
+  GLenum&       getStencilOpZFail(void);
+  const GLenum& getStencilOpZFail(void) const;
+  GLenum&       getStencilOpZPass(void);
+  const GLenum& getStencilOpZPass(void) const;
+  Int32&        getClearBuffer(void);
+  const Int32&  getClearBuffer(void) const;
+  UInt32&       getBitMask(void);
+  const UInt32& getBitMask(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFGLenum            *getSFStencilFunc    (void);
-           SFInt32             *getSFStencilValue   (void);
-           SFUInt32            *getSFStencilMask    (void);
-           SFGLenum            *getSFStencilOpFail  (void);
-           SFGLenum            *getSFStencilOpZFail (void);
-           SFGLenum            *getSFStencilOpZPass (void);
-           SFInt32             *getSFClearBuffer    (void);
-           SFUInt32            *getSFBitMask        (void);
+  void setStencilFunc(const GLenum& value);
+  void setStencilValue(const Int32& value);
+  void setStencilMask(const UInt32& value);
+  void setStencilOpFail(const GLenum& value);
+  void setStencilOpZFail(const GLenum& value);
+  void setStencilOpZPass(const GLenum& value);
+  void setClearBuffer(const Int32& value);
+  void setBitMask(const UInt32& value);
 
-           GLenum              &getStencilFunc    (void);
-     const GLenum              &getStencilFunc    (void) const;
-           Int32               &getStencilValue   (void);
-     const Int32               &getStencilValue   (void) const;
-           UInt32              &getStencilMask    (void);
-     const UInt32              &getStencilMask    (void) const;
-           GLenum              &getStencilOpFail  (void);
-     const GLenum              &getStencilOpFail  (void) const;
-           GLenum              &getStencilOpZFail (void);
-     const GLenum              &getStencilOpZFail (void) const;
-           GLenum              &getStencilOpZPass (void);
-     const GLenum              &getStencilOpZPass (void) const;
-           Int32               &getClearBuffer    (void);
-     const Int32               &getClearBuffer    (void) const;
-           UInt32              &getBitMask        (void);
-     const UInt32              &getBitMask        (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setStencilFunc    ( const GLenum &value );
-     void setStencilValue   ( const Int32 &value );
-     void setStencilMask    ( const UInt32 &value );
-     void setStencilOpFail  ( const GLenum &value );
-     void setStencilOpZFail ( const GLenum &value );
-     void setStencilOpZPass ( const GLenum &value );
-     void setClearBuffer    ( const Int32 &value );
-     void setBitMask        ( const UInt32 &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static StencilChunkPtr create(void);
+  static StencilChunkPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  StencilChunkPtr      create          (void); 
-    static  StencilChunkPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFGLenum _sfStencilFunc;
+  SFInt32  _sfStencilValue;
+  SFUInt32 _sfStencilMask;
+  SFGLenum _sfStencilOpFail;
+  SFGLenum _sfStencilOpZFail;
+  SFGLenum _sfStencilOpZPass;
+  SFInt32  _sfClearBuffer;
+  SFUInt32 _sfBitMask;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  StencilChunkBase(void);
+  StencilChunkBase(const StencilChunkBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~StencilChunkBase(void);
 
-    SFGLenum            _sfStencilFunc;
-    SFInt32             _sfStencilValue;
-    SFUInt32            _sfStencilMask;
-    SFGLenum            _sfStencilOpFail;
-    SFGLenum            _sfStencilOpZFail;
-    SFGLenum            _sfStencilOpZPass;
-    SFInt32             _sfClearBuffer;
-    SFUInt32            _sfBitMask;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    StencilChunkBase(void);
-    StencilChunkBase(const StencilChunkBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~StencilChunkBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      StencilChunkBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(StencilChunkBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      StencilChunkBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      StencilChunkBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const StencilChunkBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const StencilChunkBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef StencilChunkBase* StencilChunkBaseP;
 
-typedef StencilChunkBase *StencilChunkBaseP;
-
-typedef osgIF<StencilChunkBase::isNodeCore,
-              CoredNodePtr<StencilChunk>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet StencilChunkNodePtr;
+typedef osgIF<StencilChunkBase::isNodeCore, CoredNodePtr<StencilChunk>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet StencilChunkNodePtr;
 
 typedef RefPtr<StencilChunkPtr> StencilChunkRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGSTENCILCHUNKBASE_HEADER_CVSID "@(#)$Id: OSGStencilChunkBase.h,v 1.7 2006/09/08 13:45:30 yjung Exp $"
+#define OSGSTENCILCHUNKBASE_HEADER_CVSID                                                           \
+  "@(#)$Id: OSGStencilChunkBase.h,v 1.7 2006/09/08 13:45:30 yjung Exp $"
 
 #endif /* _OSGSTENCILCHUNKBASE_H_ */

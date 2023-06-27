@@ -37,7 +37,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 //---------------------------------------------------------------------------
 //  Includes
 //---------------------------------------------------------------------------
@@ -57,7 +56,6 @@ OSG_BEGIN_NAMESPACE
  *                           Class variables                               *
 \***************************************************************************/
 
-
 /***************************************************************************\
  *                           Class methods                                 *
 \***************************************************************************/
@@ -65,144 +63,120 @@ OSG_BEGIN_NAMESPACE
 /*------------------------------ feature ----------------------------------*/
 
 /// set method
-void PolytopeVolume::setPlane(const Plane& p, const UInt16 i)
-{
-    if(i>=_numPlanes)
-    {
-        std::cerr << "\nARGL!\n\n";
-        return;
-    }
-    _planes[i]=p;
+void PolytopeVolume::setPlane(const Plane& p, const UInt16 i) {
+  if (i >= _numPlanes) {
+    std::cerr << "\nARGL!\n\n";
+    return;
+  }
+  _planes[i] = p;
 }
 
 /// Returns the center of a box
-void PolytopeVolume::getCenter(Pnt3f &OSG_CHECK_ARG(center)) const
-{
-    // not implemented
-    return;
+void PolytopeVolume::getCenter(Pnt3f& OSG_CHECK_ARG(center)) const {
+  // not implemented
+  return;
 }
 
 /// Gives the volume of the frustum
-Real32 PolytopeVolume::getScalarVolume() const
-{
-    // not implemented
-    return 0.0;
+Real32 PolytopeVolume::getScalarVolume() const {
+  // not implemented
+  return 0.0;
 }
 
 /// Gives the boundaries of the volume
-void PolytopeVolume::getBounds(Pnt3f &OSG_CHECK_ARG(minPnt), 
-                              Pnt3f &OSG_CHECK_ARG(maxPnt)) const
-{
-    // not implemented !!!
-    return;
+void PolytopeVolume::getBounds(Pnt3f& OSG_CHECK_ARG(minPnt), Pnt3f& OSG_CHECK_ARG(maxPnt)) const {
+  // not implemented !!!
+  return;
 }
 
 /*-------------------------- extending ------------------------------------*/
 
 /// Extends Frustum3f (if necessary) to contain given 3D point
-void PolytopeVolume::extendBy(const Pnt3f &OSG_CHECK_ARG(pt))
-{
-    // not implemented !!!
-    return;
+void PolytopeVolume::extendBy(const Pnt3f& OSG_CHECK_ARG(pt)) {
+  // not implemented !!!
+  return;
 }
 
 /*-------------------------- intersection ---------------------------------*/
 
 /// Returns true if intersection of given point and Frustum3f is not empty
-bool PolytopeVolume::intersect(const Pnt3f &point) const
-{
-    int i;
-    bool retCode = true;
+bool PolytopeVolume::intersect(const Pnt3f& point) const {
+  int  i;
+  bool retCode = true;
 
-    for (i = 0; i < _numPlanes; i++)
-    {
-      /*
-    if ( ( _planes[i].getNormal().x() * point.x() +
-                     _planes[i].getNormal().y() * point.x() +
-                     _planes[i].getNormal().z() * point.x() +
-                     _planes[i].getDistanceFromOrigin()) < 0 ) {
+  for (i = 0; i < _numPlanes; i++) {
+    /*
+  if ( ( _planes[i].getNormal().x() * point.x() +
+                   _planes[i].getNormal().y() * point.x() +
+                   _planes[i].getNormal().z() * point.x() +
+                   _planes[i].getDistanceFromOrigin()) < 0 ) {
+    retCode = false;
+    break;
+  }
+ */
+    if (_planes[i].isInHalfSpace(point) == false) {
       retCode = false;
       break;
     }
-   */
-        if(_planes[i].isInHalfSpace(point)==false)
-        {
-            retCode = false;
-            break;
-        }
   }
 
   return retCode;
 }
 
+/** intersect the box with the given Line */
+bool PolytopeVolume::intersect(const Line& OSG_CHECK_ARG(line)) const {
+  // not implented
+  return 0;
+}
 
 /** intersect the box with the given Line */
-bool PolytopeVolume::intersect (const Line &OSG_CHECK_ARG(line)) const
-{
-    // not implented
-    return 0;
+bool PolytopeVolume::intersect(const Line& OSG_CHECK_ARG(line), Real32& OSG_CHECK_ARG(minDist),
+    Real32& OSG_CHECK_ARG(maxDist)) const {
+  // not implented
+  return 0;
 }
 
-
-
-/** intersect the box with the given Line */
-bool PolytopeVolume::intersect (const Line &OSG_CHECK_ARG(line),
-                                Real32 &OSG_CHECK_ARG(minDist),
-                                Real32 &OSG_CHECK_ARG(maxDist)) const
-{
-    // not implented
-    return 0;
+bool PolytopeVolume::isOnSurface(const Pnt3f& OSG_CHECK_ARG(point)) const {
+  // not implemented
+  return false;
 }
-
-bool PolytopeVolume::isOnSurface (const Pnt3f &OSG_CHECK_ARG(point)) const
-{
-    // not implemented
-    return false;
-}
-
 
 /// Transforms Frustum3f by matrix, enlarging Frustum3f to contain result
-void PolytopeVolume::transform(const Matrix &OSG_CHECK_ARG(m))
-{
-    // not implemented
-    return;
+void PolytopeVolume::transform(const Matrix& OSG_CHECK_ARG(m)) {
+  // not implemented
+  return;
 }
 
 /// Assignment operator
-const PolytopeVolume &PolytopeVolume::operator =(const PolytopeVolume &b1)
-{
-    for (int i = 0; i < _numPlanes; i++)
-        _planes[i] = b1._planes[i];
+const PolytopeVolume& PolytopeVolume::operator=(const PolytopeVolume& b1) {
+  for (int i = 0; i < _numPlanes; i++)
+    _planes[i] = b1._planes[i];
 
-    return *this;
+  return *this;
 }
 
 /// print the volume */
-void PolytopeVolume::dump(      UInt32    OSG_CHECK_ARG(uiIndent), 
-                         const BitVector OSG_CHECK_ARG(bvFlags )) const
-{
-    // not implemented...
+void PolytopeVolume::dump(
+    UInt32 OSG_CHECK_ARG(uiIndent), const BitVector OSG_CHECK_ARG(bvFlags)) const {
+  // not implemented...
 }
 
 /// Equality comparisons
 OSG_BASE_DLLMAPPING
-bool operator ==(const PolytopeVolume &OSG_CHECK_ARG(b1),
-                 const PolytopeVolume &OSG_CHECK_ARG(b2))
-{
-    FWARNING(("PolytopeVolume == NIY!\n"));
-    // not implemented...
-    /*
-    if(b1._numPlanes == b2._numPlanes){
-        for(int i=0; i<b1._numPlanes; i++){
-            if(b1.planes[i]!=b2.planes[i])
-                return(false);
-        }
-        return(true);
-    }
-    */
-    return(false);
+bool operator==(const PolytopeVolume& OSG_CHECK_ARG(b1), const PolytopeVolume& OSG_CHECK_ARG(b2)) {
+  FWARNING(("PolytopeVolume == NIY!\n"));
+  // not implemented...
+  /*
+  if(b1._numPlanes == b2._numPlanes){
+      for(int i=0; i<b1._numPlanes; i++){
+          if(b1.planes[i]!=b2.planes[i])
+              return(false);
+      }
+      return(true);
+  }
+  */
+  return (false);
 }
-
 
 /***************************************************************************\
  *                           Instance methods                              *

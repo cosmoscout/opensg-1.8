@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGSTATELEM_H_
 #define _OSGSTATELEM_H_
 #ifdef __sgi
@@ -53,85 +52,82 @@ OSG_BEGIN_NAMESPACE
 class StatElemDescBase;
 
 /*! \brief Single Statistics element, see \ref PageSystemStatistics for details.
-*/
-class OSG_SYSTEMLIB_DLLMAPPING StatElem
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+ */
+class OSG_SYSTEMLIB_DLLMAPPING StatElem {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  static const char* getClassname(void) {
+    return "StatElem";
+  }
 
-    static const char *getClassname(void) { return "StatElem"; }
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Instance                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Instance                                 */
-    /*! \{                                                                 */
+  inline bool isOn(void) const;
+  inline void setOn(bool on);
 
-    inline  bool               isOn         (void               ) const;
-    inline  void               setOn        (bool on            );
+  inline StatElemDescBase* getDesc(void) const;
 
-    inline  StatElemDescBase * getDesc      (void               ) const;
+  virtual void putToString(std::string& str, const char* format = NULL) const = 0;
 
-    virtual void               putToString  (      std::string &str, 
-                                             const char        *format = NULL) 
-                                                const = 0;
-                                                
-    virtual bool               getFromString(const Char8 *&inVal)       = 0;
-    virtual Real64             getValue     (void               ) const = 0; 
+  virtual bool   getFromString(const Char8*& inVal) = 0;
+  virtual Real64 getValue(void) const               = 0;
 
-    virtual void               reset        (void               )       = 0; 
+  virtual void reset(void) = 0;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                */
+  /*! \{                                                                 */
 
-    virtual ~StatElem(void);
+  virtual ~StatElem(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Comparison                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Comparison                                  */
+  /*! \{                                                                 */
 
-    bool operator <  (const StatElem &other) const;
+  bool operator<(const StatElem& other) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Creation                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Creation                                   */
+  /*! \{                                                                 */
 
-    virtual StatElem *clone(void) const = 0;
+  virtual StatElem* clone(void) const = 0;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Operators                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Operators                                */
+  /*! \{                                                                 */
 
-    virtual StatElem &operator += (const StatElem &other) = 0;
+  virtual StatElem& operator+=(const StatElem& other) = 0;
 
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  StatElem(StatElemDescBase* desc);
 
-    StatElem (StatElemDescBase *desc);
+  /*==========================  PRIVATE  ================================*/
+ private:
+  bool _on;
 
-    /*==========================  PRIVATE  ================================*/
-  private:
-    bool _on;
+  StatElemDescBase* _desc;
 
-    StatElemDescBase *_desc;
+  // prohibit default functions (move to 'public' if you need one)
 
-    // prohibit default functions (move to 'public' if you need one)
-
-    StatElem            (const StatElem &source);
-    StatElem& operator =(const StatElem &source);
+  StatElem(const StatElem& source);
+  StatElem& operator=(const StatElem& source);
 };
 
-typedef StatElem *StatElemP;
+typedef StatElem* StatElemP;
 
 OSG_END_NAMESPACE
 

@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGPARALLELCOMPOSERFIELDS_H_
 #define _OSGPARALLELCOMPOSERFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class ParallelComposer;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! ParallelComposerPtr
 
 typedef FCPtr<ImageComposerPtr, ParallelComposer> ParallelComposerPtr;
@@ -81,13 +80,12 @@ typedef FCPtr<ImageComposerPtr, ParallelComposer> ParallelComposerPtr;
 #endif
 
 template <>
-struct FieldDataTraits<ParallelComposerPtr> : 
-    public FieldTraitsRecurseMapper<ParallelComposerPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<ParallelComposerPtr>
+    : public FieldTraitsRecurseMapper<ParallelComposerPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -98,10 +96,9 @@ struct FieldDataTraits<ParallelComposerPtr> :
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
 
-
-
 OSG_END_NAMESPACE
 
-#define OSGPARALLELCOMPOSERFIELDS_HEADER_CVSID "@(#)$Id: OSGParallelComposerFields.h,v 1.1 2006/05/08 04:00:01 eysquared Exp $"
+#define OSGPARALLELCOMPOSERFIELDS_HEADER_CVSID                                                     \
+  "@(#)$Id: OSGParallelComposerFields.h,v 1.1 2006/05/08 04:00:01 eysquared Exp $"
 
 #endif /* _OSGPARALLELCOMPOSERFIELDS_H_ */

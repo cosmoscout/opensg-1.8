@@ -50,7 +50,6 @@
 
 OSG_USING_NAMESPACE
 
-
 /***************************************************************************\
  *                            Description                                  *
 \***************************************************************************/
@@ -59,7 +58,7 @@ OSG_USING_NAMESPACE
     \ingroup GrpSystemStatistics
 
     The StatIntElem keeps an Int32 counter, see \ref PageSystemStatistics for
-    details. 
+    details.
 */
 
 /***************************************************************************\
@@ -68,93 +67,76 @@ OSG_USING_NAMESPACE
 
 /*------------- constructors & destructors --------------------------------*/
 
-StatIntElem::StatIntElem(StatElemDescBase *desc)
-  : StatElem(desc), _value(0)
-{
+StatIntElem::StatIntElem(StatElemDescBase* desc)
+    : StatElem(desc)
+    , _value(0) {
 }
 
-StatElem *StatIntElem::create ( StatElemDescBase *desc)
-{
+StatElem* StatIntElem::create(StatElemDescBase* desc) {
   return new StatIntElem(desc);
 }
 
-StatIntElem::~StatIntElem(void)
-{
+StatIntElem::~StatIntElem(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-void StatIntElem::putToString(std::string &str, const char *format) const
-{
-    if(!format)
-    {
-        FieldDataTraits<Int32>::putToString(_value, str);
-    }
-    else
-    {
-        char *temp = new char [strlen(format) + 40];
-        sprintf(temp, format, _value);
-        str = temp;
-        delete [] temp;
-    }
+void StatIntElem::putToString(std::string& str, const char* format) const {
+  if (!format) {
+    FieldDataTraits<Int32>::putToString(_value, str);
+  } else {
+    char* temp = new char[strlen(format) + 40];
+    sprintf(temp, format, _value);
+    str = temp;
+    delete[] temp;
+  }
 }
 
-bool StatIntElem::getFromString(const Char8 *&inVal)
-{
-    return FieldDataTraits<Int32>::getFromString(_value, inVal);
+bool StatIntElem::getFromString(const Char8*& inVal) {
+  return FieldDataTraits<Int32>::getFromString(_value, inVal);
 }
 
-Real64 StatIntElem::getValue(void) const
-{
-    return static_cast<Real64>(get());
+Real64 StatIntElem::getValue(void) const {
+  return static_cast<Real64>(get());
 }
 
-
-void StatIntElem::reset(void) 
-{ 
-    _value = 0; 
+void StatIntElem::reset(void) {
+  _value = 0;
 }
 
 /*-------------------------- assignment -----------------------------------*/
 
-StatIntElem& StatIntElem::operator = (const StatIntElem &source)
-{
-    if (this == &source)
-        return *this;
-
-    set(source.get());
-
+StatIntElem& StatIntElem::operator=(const StatIntElem& source) {
+  if (this == &source)
     return *this;
+
+  set(source.get());
+
+  return *this;
 }
 
 /*-------------------------- comparison -----------------------------------*/
 
-bool StatIntElem::operator < (const StatIntElem &other) const
-{
-    return this->get() < other.get();
+bool StatIntElem::operator<(const StatIntElem& other) const {
+  return this->get() < other.get();
 }
 
 /*--------------------------- creation ------------------------------------*/
 
-StatElem *StatIntElem::clone(void) const
-{
-    StatIntElem *e = new StatIntElem(getDesc());
-    
-    *e = *this;
-    
-    return e;
+StatElem* StatIntElem::clone(void) const {
+  StatIntElem* e = new StatIntElem(getDesc());
+
+  *e = *this;
+
+  return e;
 }
 
 /*--------------------------- operators ------------------------------------*/
 
-StatElem &StatIntElem::operator += (const StatElem &other)
-{
-    const StatIntElem *o = dynamic_cast<const StatIntElem *>(&other);
-    
-    _value += o->_value;
-    
-    return *this;
+StatElem& StatIntElem::operator+=(const StatElem& other) {
+  const StatIntElem* o = dynamic_cast<const StatIntElem*>(&other);
+
+  _value += o->_value;
+
+  return *this;
 }
-
-
-

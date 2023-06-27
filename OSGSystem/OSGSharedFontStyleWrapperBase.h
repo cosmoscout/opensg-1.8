@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGSHAREDFONTSTYLEWRAPPERBASE_H_
 #define _OSGSHAREDFONTSTYLEWRAPPERBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -78,181 +76,161 @@ class BinaryDataHandler;
 
 //! \brief SharedFontStyleWrapper Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING SharedFontStyleWrapperBase : public FieldContainer
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING SharedFontStyleWrapperBase : public FieldContainer {
+ private:
+  typedef FieldContainer Inherited;
 
-    typedef FieldContainer    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef SharedFontStyleWrapperPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    FStyleContainerFieldId = Inherited::NextFieldId,
+    NextFieldId            = FStyleContainerFieldId + 1
+  };
 
-    typedef SharedFontStyleWrapperPtr  Ptr;
+  static const OSG::BitVector FStyleContainerFieldMask;
 
-    enum
-    {
-        FStyleContainerFieldId = Inherited::NextFieldId,
-        NextFieldId            = FStyleContainerFieldId + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector FStyleContainerFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFSharedFontStylePtr* getSFFStyleContainer(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  SharedFontStylePtr&       getFStyleContainer(void);
+  const SharedFontStylePtr& getFStyleContainer(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFSharedFontStylePtr *getSFFStyleContainer(void);
+  void setFStyleContainer(const SharedFontStylePtr& value);
 
-           SharedFontStylePtr  &getFStyleContainer(void);
-     const SharedFontStylePtr  &getFStyleContainer(void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setFStyleContainer( const SharedFontStylePtr &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static SharedFontStyleWrapperPtr create(void);
+  static SharedFontStyleWrapperPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  SharedFontStyleWrapperPtr      create          (void); 
-    static  SharedFontStyleWrapperPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFSharedFontStylePtr _sfFStyleContainer;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  SharedFontStyleWrapperBase(void);
+  SharedFontStyleWrapperBase(const SharedFontStyleWrapperBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~SharedFontStyleWrapperBase(void);
 
-    SFSharedFontStylePtr   _sfFStyleContainer;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    SharedFontStyleWrapperBase(void);
-    SharedFontStyleWrapperBase(const SharedFontStyleWrapperBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~SharedFontStyleWrapperBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      SharedFontStyleWrapperBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(SharedFontStyleWrapperBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      SharedFontStyleWrapperBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      SharedFontStyleWrapperBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const SharedFontStyleWrapperBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const SharedFontStyleWrapperBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef SharedFontStyleWrapperBase* SharedFontStyleWrapperBaseP;
 
-typedef SharedFontStyleWrapperBase *SharedFontStyleWrapperBaseP;
-
-typedef osgIF<SharedFontStyleWrapperBase::isNodeCore,
-              CoredNodePtr<SharedFontStyleWrapper>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet SharedFontStyleWrapperNodePtr;
+typedef osgIF<SharedFontStyleWrapperBase::isNodeCore, CoredNodePtr<SharedFontStyleWrapper>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet
+    SharedFontStyleWrapperNodePtr;
 
 typedef RefPtr<SharedFontStyleWrapperPtr> SharedFontStyleWrapperRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGSHAREDFONTSTYLEWRAPPERBASE_HEADER_CVSID "@(#)$Id: OSGSharedFontStyleWrapperBase.h,v 1.8 2006/02/20 17:04:42 dirk Exp $"
+#define OSGSHAREDFONTSTYLEWRAPPERBASE_HEADER_CVSID                                                 \
+  "@(#)$Id: OSGSharedFontStyleWrapperBase.h,v 1.8 2006/02/20 17:04:42 dirk Exp $"
 
 #endif /* _OSGSHAREDFONTSTYLEWRAPPERBASE_H_ */

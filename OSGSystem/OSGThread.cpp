@@ -55,7 +55,7 @@
 #include "OSGThreadManager.h"
 #include "OSGLog.h"
 
-#if ! defined (OSG_USE_PTHREADS) && ! defined (OSG_USE_WINTHREADS)
+#if !defined(OSG_USE_PTHREADS) && !defined(OSG_USE_WINTHREADS)
 #include <sys/types.h>
 #include <sys/prctl.h>
 #include <errno.h>
@@ -68,60 +68,51 @@
 
 OSG_USING_NAMESPACE
 
-const UInt32 ThreadCommonBase::InvalidAspect = 
-    TypeTraits<UInt32>::BitsSet;
+const UInt32 ThreadCommonBase::InvalidAspect = TypeTraits<UInt32>::BitsSet;
 
 /*-------------------------------------------------------------------------*/
 /*                                Get                                      */
 
-ChangeList *ThreadCommonBase::getChangeList(void)
-{
-    return _pChangeList;
+ChangeList* ThreadCommonBase::getChangeList(void) {
+  return _pChangeList;
 }
 
 /*-------------------------------------------------------------------------*/
 /*                            Constructors                                 */
 
-ThreadCommonBase::ThreadCommonBase(const Char8  *szName,
-                                         UInt32  uiId) :
-    
-     Inherited  (szName, 
-                 uiId  ),
+ThreadCommonBase::ThreadCommonBase(const Char8* szName, UInt32 uiId)
+    :
 
-    _uiAspectId (0     ),
-    _pChangeList(NULL  )
-{
+    Inherited(szName, uiId)
+    ,
+
+    _uiAspectId(0)
+    , _pChangeList(NULL) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Destructor                                  */
 
-ThreadCommonBase::~ThreadCommonBase(void)
-{
-    subRefP(_pChangeList);
+ThreadCommonBase::~ThreadCommonBase(void) {
+  subRefP(_pChangeList);
 }
 
 /*-------------------------------------------------------------------------*/
 /*                                 Set                                     */
 
-void ThreadCommonBase::setAspect(UInt32 uiAspectId)
-{
-    _uiAspectId = uiAspectId;
+void ThreadCommonBase::setAspect(UInt32 uiAspectId) {
+  _uiAspectId = uiAspectId;
 }
 
-void ThreadCommonBase::setChangeList(ChangeList *pChangeList)
-{
-    setRefP(_pChangeList, pChangeList);
+void ThreadCommonBase::setChangeList(ChangeList* pChangeList) {
+  setRefP(_pChangeList, pChangeList);
 }
 
-
-
-
-#if defined (OSG_USE_PTHREADS)
+#if defined(OSG_USE_PTHREADS)
 
 #if defined(OSG_PTHREAD_ELF_TLS)
 __thread UInt32      PThreadBase::_uiTLSAspectId  = 0;
-__thread ChangeList *PThreadBase::_pTLSChangeList = NULL;
+__thread ChangeList* PThreadBase::_pTLSChangeList = NULL;
 #else
 pthread_key_t PThreadBase::_aspectKey;
 pthread_key_t PThreadBase::_changeListKey;
@@ -130,30 +121,27 @@ pthread_key_t PThreadBase::_changeListKey;
 /*-------------------------------------------------------------------------*/
 /*                                Get                                      */
 
-UInt32 PThreadBase::getAspect(void)
-{
+UInt32 PThreadBase::getAspect(void) {
 #if defined(OSG_PTHREAD_ELF_TLS)
-    return _uiTLSAspectId;
+  return _uiTLSAspectId;
 #else
-    UInt32 *pUint;
+  UInt32* pUint;
 
-    pUint = (UInt32 *) pthread_getspecific(_aspectKey);
+  pUint = (UInt32*)pthread_getspecific(_aspectKey);
 
-    return *pUint;
+  return *pUint;
 #endif
-
 }
 
-ChangeList *PThreadBase::getCurrentChangeList(void)
-{
+ChangeList* PThreadBase::getCurrentChangeList(void) {
 #if defined(OSG_PTHREAD_ELF_TLS)
-    return _pTLSChangeList;
+  return _pTLSChangeList;
 #else
-    ChangeList **pCList;
+  ChangeList** pCList;
 
-    pCList = (ChangeList **) pthread_getspecific(_changeListKey);
+  pCList = (ChangeList**)pthread_getspecific(_changeListKey);
 
-    return *pCList;
+  return *pCList;
 #endif
 }
 
@@ -162,146 +150,121 @@ ChangeList *PThreadBase::getCurrentChangeList(void)
 
 // This workaround was brought to you by gcc 2.95.3
 
-bool PThreadBase::runFunction(ThreadFuncF  fThreadFunc, 
-                              UInt32       uiAspectId,
-                              void        *pThreadArg)
-{
-    if(uiAspectId >= ThreadManager::getNumAspects())
-    {
-        SFATAL << "OSGPTB : invalid aspect id" << std::endl;
-        return false;
-    }
+bool PThreadBase::runFunction(ThreadFuncF fThreadFunc, UInt32 uiAspectId, void* pThreadArg) {
+  if (uiAspectId >= ThreadManager::getNumAspects()) {
+    SFATAL << "OSGPTB : invalid aspect id" << std::endl;
+    return false;
+  }
 
-    Inherited::setAspect(uiAspectId);
+  Inherited::setAspect(uiAspectId);
 
-    return Inherited::runFunction(fThreadFunc, pThreadArg);
+  return Inherited::runFunction(fThreadFunc, pThreadArg);
 }
 
 /*-------------------------------------------------------------------------*/
 /*                               Free                                      */
 
 #if !defined(OSG_PTHREAD_ELF_TLS)
-void PThreadBase::freeAspect(void *pAspect)
-{
-    UInt32 *pUint = (UInt32 *) pAspect;
+void PThreadBase::freeAspect(void* pAspect) {
+  UInt32* pUint = (UInt32*)pAspect;
 
-    if(pUint != NULL)
-        delete pUint;
+  if (pUint != NULL)
+    delete pUint;
 }
 
-void PThreadBase::freeChangeList(void *pChangeList)
-{
-    ChangeList **pCl = (ChangeList **) pChangeList;
+void PThreadBase::freeChangeList(void* pChangeList) {
+  ChangeList** pCl = (ChangeList**)pChangeList;
 
-    if(pCl != NULL)
-        delete pCl;
+  if (pCl != NULL)
+    delete pCl;
 }
 #endif
 
 /*-------------------------------------------------------------------------*/
 /*                            Constructors                                 */
 
-PThreadBase::PThreadBase(const Char8   *szName, 
-                               UInt32   uiId) :
-    Inherited(szName, uiId)
-{
+PThreadBase::PThreadBase(const Char8* szName, UInt32 uiId)
+    : Inherited(szName, uiId) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Destructor                                  */
 
-PThreadBase::~PThreadBase(void)
-{
+PThreadBase::~PThreadBase(void) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                               Setup                                     */
 
-void PThreadBase::init(void)
-{
-    if(_bInitialized == true)
-        return;
+void PThreadBase::init(void) {
+  if (_bInitialized == true)
+    return;
 
-    Inherited::init();
+  Inherited::init();
 
-    if(_bInitialized == true)
-    {
-        setupAspect    ();        
-        setupChangeList();        
-    }
+  if (_bInitialized == true) {
+    setupAspect();
+    setupChangeList();
+  }
 }
 
-
-void PThreadBase::setupAspect(void)
-{
+void PThreadBase::setupAspect(void) {
 
 #if defined(OSG_PTHREAD_ELF_TLS)
-    _uiTLSAspectId  = Inherited::_uiAspectId;
+  _uiTLSAspectId = Inherited::_uiAspectId;
 #else
-    UInt32 *pUint = new UInt32;
+  UInt32* pUint = new UInt32;
 
-    *pUint = Inherited::_uiAspectId;
+  *pUint = Inherited::_uiAspectId;
 
-    pthread_setspecific(_aspectKey, (void *) pUint);  
+  pthread_setspecific(_aspectKey, (void*)pUint);
 #endif
 }
 
-void PThreadBase::setupChangeList(void)
-{
+void PThreadBase::setupChangeList(void) {
 #if defined(OSG_PTHREAD_ELF_TLS)
-    if(Inherited::_pChangeList == NULL)
-    {
-        _pTLSChangeList = new ChangeList;
+  if (Inherited::_pChangeList == NULL) {
+    _pTLSChangeList = new ChangeList;
 
-        Inherited::setChangeList(_pTLSChangeList);
-    }
-    else
-    {
-        _pTLSChangeList = Inherited::_pChangeList;
-        
-        _pTLSChangeList->clearAll();
-    }
-    
-    _pTLSChangeList->setAspect(Inherited::_uiAspectId);
+    Inherited::setChangeList(_pTLSChangeList);
+  } else {
+    _pTLSChangeList = Inherited::_pChangeList;
+
+    _pTLSChangeList->clearAll();
+  }
+
+  _pTLSChangeList->setAspect(Inherited::_uiAspectId);
 #else
-    ChangeList **pChangeList = new ChangeList *;
+  ChangeList** pChangeList = new ChangeList*;
 
-    if(Inherited::_pChangeList == NULL)
-    {
-        *pChangeList = new ChangeList;
+  if (Inherited::_pChangeList == NULL) {
+    *pChangeList = new ChangeList;
 
-        Inherited::setChangeList(*pChangeList);
-    }
-    else
-    {
-        *pChangeList = Inherited::_pChangeList;
-        
-        (*pChangeList)->clearAll();
-    }
+    Inherited::setChangeList(*pChangeList);
+  } else {
+    *pChangeList = Inherited::_pChangeList;
 
-    (*pChangeList)->setAspect(Inherited::_uiAspectId);
-    pthread_setspecific(_changeListKey, (void *) pChangeList);  
+    (*pChangeList)->clearAll();
+  }
+
+  (*pChangeList)->setAspect(Inherited::_uiAspectId);
+  pthread_setspecific(_changeListKey, (void*)pChangeList);
 #endif
 }
 
 #endif /* OSG_USE_PTHREADS */
 
-
-
-
-#if defined (OSG_USE_SPROC)
+#if defined(OSG_USE_SPROC)
 
 /*-------------------------------------------------------------------------*/
 /*                                Get                                      */
 
-UInt32 SprocBase::getAspect(void)
-{
-    return ((OSGProcessData *) PRDA->usr_prda.fill)->_uiAspectId;
+UInt32 SprocBase::getAspect(void) {
+  return ((OSGProcessData*)PRDA->usr_prda.fill)->_uiAspectId;
 }
 
-ChangeList *SprocBase::getCurrentChangeList(void)
-{
-    return ((OSGProcessData *) PRDA->usr_prda.fill)->_pChangeList;
+ChangeList* SprocBase::getCurrentChangeList(void) {
+  return ((OSGProcessData*)PRDA->usr_prda.fill)->_pChangeList;
 }
 
 /*-------------------------------------------------------------------------*/
@@ -309,89 +272,69 @@ ChangeList *SprocBase::getCurrentChangeList(void)
 
 // This workaround was brought to you by gcc 2.95.3
 
-bool SprocBase::runFunction(ThreadFuncF  fThreadFunc, 
-                            UInt32       uiAspectId,
-                            void        *pThreadArg)
-{
-    if(uiAspectId >= ThreadManager::getNumAspects())
-    {
-        SFATAL << "OSGPTB : invalid aspect id" << std::endl;
-        return false;
-    }
+bool SprocBase::runFunction(ThreadFuncF fThreadFunc, UInt32 uiAspectId, void* pThreadArg) {
+  if (uiAspectId >= ThreadManager::getNumAspects()) {
+    SFATAL << "OSGPTB : invalid aspect id" << std::endl;
+    return false;
+  }
 
-    Inherited::setAspect(uiAspectId);
+  Inherited::setAspect(uiAspectId);
 
-    return Inherited::runFunction(fThreadFunc, pThreadArg);
+  return Inherited::runFunction(fThreadFunc, pThreadArg);
 }
 
 /*-------------------------------------------------------------------------*/
 /*                            Constructors                                 */
 
-SprocBase::SprocBase(const Char8  *szName,
-                           UInt32  uiId) :    
-    Inherited(szName, uiId)
-{
+SprocBase::SprocBase(const Char8* szName, UInt32 uiId)
+    : Inherited(szName, uiId) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Destructor                                  */
 
-SprocBase::~SprocBase(void)
-{
+SprocBase::~SprocBase(void) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                                Set                                      */
 
-void SprocBase::setAspectInternal(UInt32 uiAspect)
-{
-    ((OSGProcessData *) PRDA->usr_prda.fill)->_uiAspectId = uiAspect;
+void SprocBase::setAspectInternal(UInt32 uiAspect) {
+  ((OSGProcessData*)PRDA->usr_prda.fill)->_uiAspectId = uiAspect;
 }
 
 /*-------------------------------------------------------------------------*/
 /*                               Setup                                     */
 
-void SprocBase::init(void)
-{
-    if(_bInitialized == true)
-        return; 
+void SprocBase::init(void) {
+  if (_bInitialized == true)
+    return;
 
-   Inherited::init();
+  Inherited::init();
 
-    if(_bInitialized == true)
-    {
-        setAspectInternal      (this->_uiAspectId);
-        setupChangeListInternal();
-    }
+  if (_bInitialized == true) {
+    setAspectInternal(this->_uiAspectId);
+    setupChangeListInternal();
+  }
 }
 
-void SprocBase::setupChangeListInternal(void)
-{
-    if(Inherited::_pChangeList == NULL)
-    {
-        ((OSGProcessData *) PRDA->usr_prda.fill)->_pChangeList = 
-            new ChangeList();
+void SprocBase::setupChangeListInternal(void) {
+  if (Inherited::_pChangeList == NULL) {
+    ((OSGProcessData*)PRDA->usr_prda.fill)->_pChangeList = new ChangeList();
 
-        Inherited::setChangeList(
-            ((OSGProcessData *) PRDA->usr_prda.fill)->_pChangeList);
-    }
-    else
-    {
-        ((OSGProcessData *) PRDA->usr_prda.fill)->_pChangeList = 
-            Inherited::_pChangeList;
+    Inherited::setChangeList(((OSGProcessData*)PRDA->usr_prda.fill)->_pChangeList);
+  } else {
+    ((OSGProcessData*)PRDA->usr_prda.fill)->_pChangeList = Inherited::_pChangeList;
 
-        Inherited::_pChangeList->clearAll();
-    }
+    Inherited::_pChangeList->clearAll();
+  }
 
-    Inherited::_pChangeList->setAspect(Inherited::_uiAspectId);
+  Inherited::_pChangeList->setAspect(Inherited::_uiAspectId);
 }
 
 #endif /* OSG_USE_SPROC */
 
-
-
-
-#if defined (OSG_USE_WINTHREADS)
+#if defined(OSG_USE_WINTHREADS)
 
 #if defined(OSG_ASPECT_USE_LOCALSTORAGE)
 UInt32 WinThreadBase::_aspectKey     = 0;
@@ -399,38 +342,36 @@ UInt32 WinThreadBase::_changeListKey = 0;
 #endif
 
 #if defined(OSG_ASPECT_USE_DECLSPEC)
-__declspec (thread) UInt32      WinThreadBase::_uiAspectLocal    = 0;
-__declspec (thread) ChangeList *WinThreadBase::_pChangeListLocal = NULL;
+__declspec(thread) UInt32 WinThreadBase::_uiAspectLocal         = 0;
+__declspec(thread) ChangeList* WinThreadBase::_pChangeListLocal = NULL;
 #endif
 
 /*-------------------------------------------------------------------------*/
 /*                                Get                                      */
 
-UInt32 WinThreadBase::getAspect(void)
-{
+UInt32 WinThreadBase::getAspect(void) {
 #ifdef OSG_ASPECT_USE_LOCALSTORAGE
-    UInt32 *pUint;
+  UInt32* pUint;
 
-    pUint = (UInt32 *) TlsGetValue(_aspectKey);
+  pUint = (UInt32*)TlsGetValue(_aspectKey);
 
-    return *pUint;
+  return *pUint;
 #endif
 #ifdef OSG_ASPECT_USE_DECLSPEC
-    return _uiAspectLocal;
+  return _uiAspectLocal;
 #endif
 }
 
-ChangeList *WinThreadBase::getCurrentChangeList(void)
-{
+ChangeList* WinThreadBase::getCurrentChangeList(void) {
 #ifdef OSG_ASPECT_USE_LOCALSTORAGE
-    ChangeList **pCList;
+  ChangeList** pCList;
 
-    pCList = (ChangeList **) TlsGetValue(_changeListKey);
+  pCList = (ChangeList**)TlsGetValue(_changeListKey);
 
-    return *pCList;
+  return *pCList;
 #endif
 #ifdef OSG_ASPECT_USE_DECLSPEC
-    return _pChangeListLocal;
+  return _pChangeListLocal;
 #endif
 }
 
@@ -439,272 +380,225 @@ ChangeList *WinThreadBase::getCurrentChangeList(void)
 
 // This workaround was brought to you by gcc 2.95.3
 
-bool WinThreadBase::runFunction(ThreadFuncF  fThreadFunc, 
-                                UInt32       uiAspectId,
-                                void        *pThreadArg)
-{
-    if(uiAspectId >= ThreadManager::getNumAspects())
-    {
-        SFATAL << "OSGPTB : invalid aspect id" << std::endl;
-        return false;
-    }
+bool WinThreadBase::runFunction(ThreadFuncF fThreadFunc, UInt32 uiAspectId, void* pThreadArg) {
+  if (uiAspectId >= ThreadManager::getNumAspects()) {
+    SFATAL << "OSGPTB : invalid aspect id" << std::endl;
+    return false;
+  }
 
-    Inherited::setAspect(uiAspectId);
+  Inherited::setAspect(uiAspectId);
 
-    return Inherited::runFunction(fThreadFunc, pThreadArg);
+  return Inherited::runFunction(fThreadFunc, pThreadArg);
 }
 
 /*-------------------------------------------------------------------------*/
 /*                               Free                                      */
 
-#if defined (OSG_ASPECT_USE_LOCALSTORAGE)
-void WinThreadBase::freeAspect(void)
-{
-    UInt32 *pUint;
+#if defined(OSG_ASPECT_USE_LOCALSTORAGE)
+void WinThreadBase::freeAspect(void) {
+  UInt32* pUint;
 
-    pUint = (UInt32 *) TlsGetValue(_aspectKey);
+  pUint = (UInt32*)TlsGetValue(_aspectKey);
 
-    delete pUint;
+  delete pUint;
 }
 
-void WinThreadBase::freeChangeList(void)
-{
-    ChangeList **pCList;
+void WinThreadBase::freeChangeList(void) {
+  ChangeList** pCList;
 
-    pCList = (ChangeList **) TlsGetValue(_changeListKey);
+  pCList = (ChangeList**)TlsGetValue(_changeListKey);
 
-    delete pCList;
+  delete pCList;
 }
 #endif
 
 /*-------------------------------------------------------------------------*/
 /*                            Constructors                                 */
 
-WinThreadBase::WinThreadBase(const Char8  *szName,
-                                   UInt32  uiId) :
-    Inherited(szName, uiId)
-{
+WinThreadBase::WinThreadBase(const Char8* szName, UInt32 uiId)
+    : Inherited(szName, uiId) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Destructor                                  */
 
-WinThreadBase::~WinThreadBase(void)
-{
+WinThreadBase::~WinThreadBase(void) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                               Setup                                     */
 
-void WinThreadBase::init(void)
-{
-    if(_bInitialized == true)
-        return;
+void WinThreadBase::init(void) {
+  if (_bInitialized == true)
+    return;
 
-    Inherited::init();
+  Inherited::init();
 
-    if(_bInitialized == true)
-    {
-        setupAspect    ();
-        setupChangeList();        
-    }
+  if (_bInitialized == true) {
+    setupAspect();
+    setupChangeList();
+  }
 }
 
-void WinThreadBase::setupAspect(void)
-{
+void WinThreadBase::setupAspect(void) {
 #ifdef OSG_ASPECT_USE_LOCALSTORAGE
-    UInt32 *pUint = new UInt32;
+  UInt32* pUint = new UInt32;
 
-    *pUint = Inherited::_uiAspectId;
+  *pUint = Inherited::_uiAspectId;
 
-    TlsSetValue(_aspectKey, pUint);
+  TlsSetValue(_aspectKey, pUint);
 #endif
 
 #ifdef OSG_ASPECT_USE_DECLSPEC
-    _uiAspectLocal = Inherited::_uiAspectId;
+  _uiAspectLocal = Inherited::_uiAspectId;
 #endif
 }
 
-void WinThreadBase::setupChangeList(void)
-{
-#if defined (OSG_ASPECT_USE_LOCALSTORAGE)
-    ChangeList **pChangeList = new ChangeList *;
+void WinThreadBase::setupChangeList(void) {
+#if defined(OSG_ASPECT_USE_LOCALSTORAGE)
+  ChangeList** pChangeList = new ChangeList*;
 
-   if(Inherited::_pChangeList == NULL)
-    {
-        *pChangeList = new ChangeList;
+  if (Inherited::_pChangeList == NULL) {
+    *pChangeList = new ChangeList;
 
-        Inherited::setChangeList(*pChangeList);
-    }
-    else
-    {
-        *pChangeList = Inherited::_pChangeList;
-        
-        (*pChangeList)->clearAll();
-    }
+    Inherited::setChangeList(*pChangeList);
+  } else {
+    *pChangeList = Inherited::_pChangeList;
 
-    (*pChangeList)->setAspect(Inherited::_uiAspectId);
-    TlsSetValue(_changeListKey, pChangeList);
+    (*pChangeList)->clearAll();
+  }
+
+  (*pChangeList)->setAspect(Inherited::_uiAspectId);
+  TlsSetValue(_changeListKey, pChangeList);
 #endif
 
-#if defined (OSG_ASPECT_USE_DECLSPEC)
-    if(Inherited::_pChangeList == NULL)
-    {
-        _pChangeListLocal = new ChangeList;
-        Inherited::setChangeList(_pChangeListLocal);
-    }
-    else
-    {
-        _pChangeListLocal = Inherited::_pChangeList;
+#if defined(OSG_ASPECT_USE_DECLSPEC)
+  if (Inherited::_pChangeList == NULL) {
+    _pChangeListLocal = new ChangeList;
+    Inherited::setChangeList(_pChangeListLocal);
+  } else {
+    _pChangeListLocal = Inherited::_pChangeList;
 
-        _pChangeListLocal->clearAll();
-    }
+    _pChangeListLocal->clearAll();
+  }
 
-    _pChangeListLocal->setAspect(Inherited::_uiAspectId);
+  _pChangeListLocal->setAspect(Inherited::_uiAspectId);
 #endif
 }
 
 #endif /* OSG_USE_WINTHREADS */
 
-
-
-
-MPThreadType Thread::_type("OSGThread", 
-                           "OSGBaseThread", 
-                           (CreateThreadF)  Thread::create,
-                           (InitThreadingF) Thread::initThreading);
+MPThreadType Thread::_type("OSGThread", "OSGBaseThread", (CreateThreadF)Thread::create,
+    (InitThreadingF)Thread::initThreading);
 
 /*-------------------------------------------------------------------------*/
 /*                                Get                                      */
 
-ThreadBase *Thread::getCurrent(void)
-{
-    return static_cast<ThreadBase *>(Inherited::getCurrent());
+ThreadBase* Thread::getCurrent(void) {
+  return static_cast<ThreadBase*>(Inherited::getCurrent());
 }
 
-Thread *Thread::get(const Char8 *szName)
-{
-    BaseThread *pThread = ThreadManager::the()->getThread(szName, "OSGThread");
+Thread* Thread::get(const Char8* szName) {
+  BaseThread* pThread = ThreadManager::the()->getThread(szName, "OSGThread");
 
-    return dynamic_cast<Thread *>(pThread);
+  return dynamic_cast<Thread*>(pThread);
 }
 
-Thread *Thread::find(const Char8 *szName)
-{
-    BaseThread *pThread = ThreadManager::the()->findThread(szName);
+Thread* Thread::find(const Char8* szName) {
+  BaseThread* pThread = ThreadManager::the()->findThread(szName);
 
-    return dynamic_cast<Thread *>(pThread);
+  return dynamic_cast<Thread*>(pThread);
 }
 
-void Thread::run(UInt32 uiAspectId)
-{
-    Inherited::runFunction(runWorkProc, uiAspectId, this);
+void Thread::run(UInt32 uiAspectId) {
+  Inherited::runFunction(runWorkProc, uiAspectId, this);
 }
 
 /*-------------------------------------------------------------------------*/
 /*                               Setup                                     */
 
-Thread *Thread::create(const Char8 *szName, UInt32 uiId)
-{
-    return new Thread(szName, uiId);
+Thread* Thread::create(const Char8* szName, UInt32 uiId) {
+  return new Thread(szName, uiId);
 }
 
-void Thread::initThreading(void)
-{
-    FINFO(("Thread::initThreading\n"))
+void Thread::initThreading(void) {
+  FINFO(("Thread::initThreading\n"))
 
 #if defined(OSG_USE_PTHREADS) && !defined(OSG_PTHREAD_ELF_TLS)
-    int rc; 
+  int rc;
 
-    rc = pthread_key_create(&(Thread::_aspectKey), 
-                              Thread::freeAspect);
+  rc = pthread_key_create(&(Thread::_aspectKey), Thread::freeAspect);
 
-    FFASSERT((rc == 0), 1, ("Failed to create pthread aspect key\n");)
+  FFASSERT((rc == 0), 1, ("Failed to create pthread aspect key\n");)
 
-    rc = pthread_key_create(&(Thread::_changeListKey), 
-                              Thread::freeChangeList);
+  rc = pthread_key_create(&(Thread::_changeListKey), Thread::freeChangeList);
 
-    FFASSERT((rc == 0), 1, ("Failed to create pthread changelist key\n");)
+  FFASSERT((rc == 0), 1, ("Failed to create pthread changelist key\n");)
 #endif
 
-#if defined(OSG_USE_WINTHREADS) && defined(OSG_ASPECT_USE_LOCALSTORAGE)       
-    Thread::_aspectKey     = TlsAlloc();
+#if defined(OSG_USE_WINTHREADS) && defined(OSG_ASPECT_USE_LOCALSTORAGE)
+  Thread::_aspectKey = TlsAlloc();
 
-    FFASSERT((Thread::_aspectKey != 0xFFFFFFFF), 1, 
-             ("Failed to alloc aspect key local storage\n");)
+  FFASSERT((Thread::_aspectKey != 0xFFFFFFFF), 1, ("Failed to alloc aspect key local storage\n");)
 
-    Thread::_changeListKey = TlsAlloc();
+  Thread::_changeListKey = TlsAlloc();
 
-    FFASSERT((Thread::_changeListKey != 0xFFFFFFFF), 1, 
-             ("Failed to alloc changelist key local storage\n");)
+  FFASSERT((Thread::_changeListKey != 0xFFFFFFFF), 1,
+           ("Failed to alloc changelist key local storage\n");)
 #endif
 
-    ThreadManager::setAppThreadType("OSGThread");
+  ThreadManager::setAppThreadType("OSGThread");
 }
 
 /*-------------------------------------------------------------------------*/
 /*                            Constructors                                 */
 
-Thread::Thread(const Char8 *szName, UInt32 uiId) :
-    Inherited(szName, uiId)
-{
+Thread::Thread(const Char8* szName, UInt32 uiId)
+    : Inherited(szName, uiId) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Destructor                                  */
 
-Thread::~Thread(void)
-{
+Thread::~Thread(void) {
 }
 
-
-
-
-MPThreadType ExternalThread::_type("OSGExternalThread", 
-                                   "OSGMPBase", 
-                                   (CreateThreadF)  ExternalThread::create,
-                                   NULL);
+MPThreadType ExternalThread::_type(
+    "OSGExternalThread", "OSGMPBase", (CreateThreadF)ExternalThread::create, NULL);
 
 /*-------------------------------------------------------------------------*/
 /*                                Get                                      */
 
-ThreadBase *ExternalThread::getCurrent(void)
-{
-    return static_cast<ThreadBase *>(Inherited::getCurrent());
+ThreadBase* ExternalThread::getCurrent(void) {
+  return static_cast<ThreadBase*>(Inherited::getCurrent());
 }
 
-ExternalThread *ExternalThread::get(const Char8 *szName)
-{
-    BaseThread *pThread = ThreadManager::the()->getThread(szName, 
-                                                          "OSGExternalThread");
+ExternalThread* ExternalThread::get(const Char8* szName) {
+  BaseThread* pThread = ThreadManager::the()->getThread(szName, "OSGExternalThread");
 
-    return dynamic_cast<ExternalThread *>(pThread);
+  return dynamic_cast<ExternalThread*>(pThread);
 }
 
-ExternalThread *ExternalThread::find(const Char8 *szName)
-{
-    BaseThread *pThread = ThreadManager::the()->findThread(szName);
+ExternalThread* ExternalThread::find(const Char8* szName) {
+  BaseThread* pThread = ThreadManager::the()->findThread(szName);
 
-    return dynamic_cast<ExternalThread *>(pThread);
+  return dynamic_cast<ExternalThread*>(pThread);
 }
 
-void ExternalThread::initialize(UInt32 uiAspectId)
-{
-    if(_bInitialized == true)
-        return;
+void ExternalThread::initialize(UInt32 uiAspectId) {
+  if (_bInitialized == true)
+    return;
 
-    Inherited::setAspect(uiAspectId);
-    
-    this->init();    
+  Inherited::setAspect(uiAspectId);
+
+  this->init();
 }
 
 /*-------------------------------------------------------------------------*/
 /*                               Setup                                     */
 
-ExternalThread *ExternalThread::create(const Char8 *szName, 
-                                             UInt32 uiId)
-{
-    return new ExternalThread(szName, uiId);
+ExternalThread* ExternalThread::create(const Char8* szName, UInt32 uiId) {
+  return new ExternalThread(szName, uiId);
 }
 
 #if 0
@@ -738,7 +632,7 @@ void ExternalThread::initThreading(void)
     }
 #endif
 
-#if defined (OSG_ASPECT_USE_LOCALSTORAGE)       
+#if defined(OSG_ASPECT_USE_LOCALSTORAGE)       
     Thread::_aspectKey     = TlsAlloc();
 
     FFASSERT((Thread::_aspectKey != 0xFFFFFFFF), 1, 
@@ -757,17 +651,12 @@ void ExternalThread::initThreading(void)
 /*-------------------------------------------------------------------------*/
 /*                            Constructors                                 */
 
-ExternalThread::ExternalThread(const Char8 *szName, UInt32 uiId) :
-    Inherited(szName, uiId)
-{
+ExternalThread::ExternalThread(const Char8* szName, UInt32 uiId)
+    : Inherited(szName, uiId) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Destructor                                  */
 
-ExternalThread::~ExternalThread(void)
-{
+ExternalThread::~ExternalThread(void) {
 }
-
-
-

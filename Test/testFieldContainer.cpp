@@ -15,335 +15,296 @@
 #include <OSGFieldContainerPtr.h>
 #include <OSGSimpleAttachments.h>
 
-int main (int argc, char **argv)
-{
-    OSG::ChangeList::setReadWriteDefault();
-    OSG::osgInit(argc, argv);
+int main(int argc, char** argv) {
+  OSG::ChangeList::setReadWriteDefault();
+  OSG::osgInit(argc, argv);
 
-    OSG::Thread::getCurrent()->getChangeList()->dump();
-    OSG::Thread::getCurrent()->getChangeList()->clearAll();
-    OSG::Thread::getCurrent()->getChangeList()->dump();
+  OSG::Thread::getCurrent()->getChangeList()->dump();
+  OSG::Thread::getCurrent()->getChangeList()->clearAll();
+  OSG::Thread::getCurrent()->getChangeList()->dump();
 
-    PLOG << "Num types : "
-         << OSG::FieldContainerFactory::the()->getNumTypes()
-         << std::endl;
+  PLOG << "Num types : " << OSG::FieldContainerFactory::the()->getNumTypes() << std::endl;
 
-    OSG::FieldContainerPtr pFC;
+  OSG::FieldContainerPtr pFC;
 
-    pFC.dump(0, OSG::FCDumpFlags::RefCount);
+  pFC.dump(0, OSG::FCDumpFlags::RefCount);
 
-    pFC = OSG::FieldContainerFactory::the()->createNode("Node");
+  pFC = OSG::FieldContainerFactory::the()->createNode("Node");
 
-    pFC.dump(0, OSG::FCDumpFlags::RefCount);
+  pFC.dump(0, OSG::FCDumpFlags::RefCount);
 
-    OSG::addRefCP(pFC);
+  OSG::addRefCP(pFC);
 
-    pFC.dump(0, OSG::FCDumpFlags::RefCount);
+  pFC.dump(0, OSG::FCDumpFlags::RefCount);
 
-    OSG::Thread::getCurrent()->getChangeList()->dump();
+  OSG::Thread::getCurrent()->getChangeList()->dump();
 
-    pFC->dump();
+  pFC->dump();
 
-    OSG::subRefCP(pFC);
+  OSG::subRefCP(pFC);
 
-    pFC.dump(0, OSG::FCDumpFlags::RefCount);
+  pFC.dump(0, OSG::FCDumpFlags::RefCount);
 
-    OSG::Thread::getCurrent()->getChangeList()->dump();
-    OSG::Thread::getCurrent()->getChangeList()->clearAll();
+  OSG::Thread::getCurrent()->getChangeList()->dump();
+  OSG::Thread::getCurrent()->getChangeList()->clearAll();
 
-    // operator check
-    
-    pFC = OSG::NullFC;
-    
-    if(pFC)
-    {
-        std::cerr << "pFC set?!?" << std::endl;
-    }
-    else
-    {
-        std::cerr << "pFC not set" << std::endl;
-    }
+  // operator check
 
-    pFC = OSG::FieldContainerFactory::the()->createNode("Node");
-    
-    if(pFC)
-    {
-        std::cerr << "pFC set" << std::endl;
-    }
-    else
-    {
-        std::cerr << "pFC not set?!?" << std::endl;
-    }
-    
-    OSG::subRefCP(pFC);
-    
-    // child management
+  pFC = OSG::NullFC;
 
+  if (pFC) {
+    std::cerr << "pFC set?!?" << std::endl;
+  } else {
+    std::cerr << "pFC not set" << std::endl;
+  }
 
-    OSG::NodePtr           p1  = OSG::Node::create();
-    OSG::FieldContainerPtr pb1 = p1;
+  pFC = OSG::FieldContainerFactory::the()->createNode("Node");
 
-    OSG::addRefCP(p1);
+  if (pFC) {
+    std::cerr << "pFC set" << std::endl;
+  } else {
+    std::cerr << "pFC not set?!?" << std::endl;
+  }
 
-    p1.dump (0, OSG::FCDumpFlags::RefCount);
-    pb1.dump(0, OSG::FCDumpFlags::RefCount);
+  OSG::subRefCP(pFC);
 
-    std::cerr << " N : " << p1->getType().getId()              << std::endl;
-    std::cerr << " N : " << OSG::Node::getClassType().getId() << std::endl;
+  // child management
 
-    OSG::NodePtr p2 = OSG::Node::create();
-    OSG::NodePtr p3 = OSG::Node::create();
-    OSG::NodePtr p4 = OSG::Node::create();
-    OSG::NodePtr p5 = OSG::Node::create();
-    OSG::NodePtr p6 = OSG::Node::create();
+  OSG::NodePtr           p1  = OSG::Node::create();
+  OSG::FieldContainerPtr pb1 = p1;
 
-    p1->dump (0, OSG::FCDumpFlags::RefCount);
-    p2->dump (0, OSG::FCDumpFlags::RefCount);
-    p3->dump (0, OSG::FCDumpFlags::RefCount);
-    p4->dump (0, OSG::FCDumpFlags::RefCount);
-    p5->dump (0, OSG::FCDumpFlags::RefCount);
-    p6->dump (0, OSG::FCDumpFlags::RefCount);
+  OSG::addRefCP(p1);
 
-    OSG::addRefCP(p6);
+  p1.dump(0, OSG::FCDumpFlags::RefCount);
+  pb1.dump(0, OSG::FCDumpFlags::RefCount);
 
-    OSG::beginEditCP(p1);
+  std::cerr << " N : " << p1->getType().getId() << std::endl;
+  std::cerr << " N : " << OSG::Node::getClassType().getId() << std::endl;
 
-    std::cerr << "add p2" << std::endl;
+  OSG::NodePtr p2 = OSG::Node::create();
+  OSG::NodePtr p3 = OSG::Node::create();
+  OSG::NodePtr p4 = OSG::Node::create();
+  OSG::NodePtr p5 = OSG::Node::create();
+  OSG::NodePtr p6 = OSG::Node::create();
 
-    p1->addChild(p2);
-    p1->dump (0, OSG::FCDumpFlags::RefCount);
-    p1.dump(0, OSG::FCDumpFlags::RefCount);
+  p1->dump(0, OSG::FCDumpFlags::RefCount);
+  p2->dump(0, OSG::FCDumpFlags::RefCount);
+  p3->dump(0, OSG::FCDumpFlags::RefCount);
+  p4->dump(0, OSG::FCDumpFlags::RefCount);
+  p5->dump(0, OSG::FCDumpFlags::RefCount);
+  p6->dump(0, OSG::FCDumpFlags::RefCount);
 
-    std::cerr << "add p3" << std::endl;
+  OSG::addRefCP(p6);
 
-    OSG::addRefCP(p3);
-    p1->addChild(p3);
-    p1->dump (0, OSG::FCDumpFlags::RefCount);
-    p1.dump  (0, OSG::FCDumpFlags::RefCount);
-    p3.dump  (0, OSG::FCDumpFlags::RefCount);
+  OSG::beginEditCP(p1);
 
-    std::cerr << "insert p4" << std::endl;
+  std::cerr << "add p2" << std::endl;
 
-    p1->insertChild(1, p4);
-    p1->dump (0, OSG::FCDumpFlags::RefCount);
-    p1.dump  (0, OSG::FCDumpFlags::RefCount);
+  p1->addChild(p2);
+  p1->dump(0, OSG::FCDumpFlags::RefCount);
+  p1.dump(0, OSG::FCDumpFlags::RefCount);
 
-    std::cerr << "replace p3 -> p5" << std::endl;
+  std::cerr << "add p3" << std::endl;
 
-    p1->replaceChild(2, p5);
-    p1->dump (0, OSG::FCDumpFlags::RefCount);
-    p1.dump  (0, OSG::FCDumpFlags::RefCount);
+  OSG::addRefCP(p3);
+  p1->addChild(p3);
+  p1->dump(0, OSG::FCDumpFlags::RefCount);
+  p1.dump(0, OSG::FCDumpFlags::RefCount);
+  p3.dump(0, OSG::FCDumpFlags::RefCount);
 
-    OSG::Thread::getCurrent()->getChangeList()->dump();
+  std::cerr << "insert p4" << std::endl;
 
-    p3.dump (0, OSG::FCDumpFlags::RefCount);
-    p3->dump(0, OSG::FCDumpFlags::RefCount);
-    p1.dump (0, OSG::FCDumpFlags::RefCount);
+  p1->insertChild(1, p4);
+  p1->dump(0, OSG::FCDumpFlags::RefCount);
+  p1.dump(0, OSG::FCDumpFlags::RefCount);
 
-    std::cerr << "replace p5 -> p3" << std::endl;
+  std::cerr << "replace p3 -> p5" << std::endl;
 
-    p1->replaceChildBy(p5, p3);
-    p1->dump(0, OSG::FCDumpFlags::RefCount);
-    p1.dump (0, OSG::FCDumpFlags::RefCount);
+  p1->replaceChild(2, p5);
+  p1->dump(0, OSG::FCDumpFlags::RefCount);
+  p1.dump(0, OSG::FCDumpFlags::RefCount);
 
-    std::cerr << "sub p2" << std::endl;
+  OSG::Thread::getCurrent()->getChangeList()->dump();
 
-    p2.dump (0, OSG::FCDumpFlags::RefCount);
-    p1->subChild(p2);
-    p1->dump(0, OSG::FCDumpFlags::RefCount);
-    p1.dump (0, OSG::FCDumpFlags::RefCount);
+  p3.dump(0, OSG::FCDumpFlags::RefCount);
+  p3->dump(0, OSG::FCDumpFlags::RefCount);
+  p1.dump(0, OSG::FCDumpFlags::RefCount);
 
-    std::cerr << "sub p6" << std::endl;
+  std::cerr << "replace p5 -> p3" << std::endl;
 
-    p1->subChild(p6);
-    p1->dump(0, OSG::FCDumpFlags::RefCount);
-    p1.dump (0, OSG::FCDumpFlags::RefCount);
+  p1->replaceChildBy(p5, p3);
+  p1->dump(0, OSG::FCDumpFlags::RefCount);
+  p1.dump(0, OSG::FCDumpFlags::RefCount);
 
-    std::cerr << "sub child 1" << std::endl;
+  std::cerr << "sub p2" << std::endl;
 
-    p1->subChild(1);
-    p1->dump(0, OSG::FCDumpFlags::RefCount);
-    p1.dump (0, OSG::FCDumpFlags::RefCount);
+  p2.dump(0, OSG::FCDumpFlags::RefCount);
+  p1->subChild(p2);
+  p1->dump(0, OSG::FCDumpFlags::RefCount);
+  p1.dump(0, OSG::FCDumpFlags::RefCount);
 
-    std::cerr << "sub child 0" << std::endl;
+  std::cerr << "sub p6" << std::endl;
 
-    p1->subChild(0);
-    p1->dump(0, OSG::FCDumpFlags::RefCount);
-    p1.dump (0, OSG::FCDumpFlags::RefCount);
+  p1->subChild(p6);
+  p1->dump(0, OSG::FCDumpFlags::RefCount);
+  p1.dump(0, OSG::FCDumpFlags::RefCount);
 
-    OSG::endEditCP(p1);
+  std::cerr << "sub child 1" << std::endl;
 
+  p1->subChild(1);
+  p1->dump(0, OSG::FCDumpFlags::RefCount);
+  p1.dump(0, OSG::FCDumpFlags::RefCount);
 
+  std::cerr << "sub child 0" << std::endl;
 
-    p1.dump (0, OSG::FCDumpFlags::RefCount);
-    p2.dump (0, OSG::FCDumpFlags::RefCount);
-    p3.dump (0, OSG::FCDumpFlags::RefCount);
-    p4.dump (0, OSG::FCDumpFlags::RefCount);
-    p5.dump (0, OSG::FCDumpFlags::RefCount);
-    p6.dump (0, OSG::FCDumpFlags::RefCount);
+  p1->subChild(0);
+  p1->dump(0, OSG::FCDumpFlags::RefCount);
+  p1.dump(0, OSG::FCDumpFlags::RefCount);
 
-    std::cerr << std::endl << std::endl << "Core test" << std::endl;
+  OSG::endEditCP(p1);
 
-    p1.dump (0, OSG::FCDumpFlags::RefCount);
+  p1.dump(0, OSG::FCDumpFlags::RefCount);
+  p2.dump(0, OSG::FCDumpFlags::RefCount);
+  p3.dump(0, OSG::FCDumpFlags::RefCount);
+  p4.dump(0, OSG::FCDumpFlags::RefCount);
+  p5.dump(0, OSG::FCDumpFlags::RefCount);
+  p6.dump(0, OSG::FCDumpFlags::RefCount);
 
-    OSG::GroupPtr g1 = OSG::Group::create();
+  std::cerr << std::endl << std::endl << "Core test" << std::endl;
 
-    p1->setCore(g1);
+  p1.dump(0, OSG::FCDumpFlags::RefCount);
 
-    p1.dump (0, OSG::FCDumpFlags::RefCount);
-    p1->dump(0, OSG::FCDumpFlags::RefCount);
-    g1.dump (0, OSG::FCDumpFlags::RefCount);
+  OSG::GroupPtr g1 = OSG::Group::create();
 
-    p1->setCore(OSG::NullFC);
+  p1->setCore(g1);
 
-    p1.dump (0, OSG::FCDumpFlags::RefCount);
-    p1->dump(0, OSG::FCDumpFlags::RefCount);
-    g1.dump (0, OSG::FCDumpFlags::RefCount);
+  p1.dump(0, OSG::FCDumpFlags::RefCount);
+  p1->dump(0, OSG::FCDumpFlags::RefCount);
+  g1.dump(0, OSG::FCDumpFlags::RefCount);
 
-    g1 = OSG::Group::create();
+  p1->setCore(OSG::NullFC);
 
-    p1->setCore(g1);
-    g1.dump (0, OSG::FCDumpFlags::RefCount);
+  p1.dump(0, OSG::FCDumpFlags::RefCount);
+  p1->dump(0, OSG::FCDumpFlags::RefCount);
+  g1.dump(0, OSG::FCDumpFlags::RefCount);
 
-    p2 = OSG::NodePtr::dcast(p1->shallowCopy());
-//    OSG::addRefCP(p2);
+  g1 = OSG::Group::create();
 
-    g1.dump (0, OSG::FCDumpFlags::RefCount);
+  p1->setCore(g1);
+  g1.dump(0, OSG::FCDumpFlags::RefCount);
 
-    p1->dump(0, OSG::FCDumpFlags::RefCount);
-    p2->dump(0, OSG::FCDumpFlags::RefCount);
+  p2 = OSG::NodePtr::dcast(p1->shallowCopy());
+  //    OSG::addRefCP(p2);
 
-    p1->setCore(g1);
-    g1.dump (0, OSG::FCDumpFlags::RefCount);
-    p1.dump (0, OSG::FCDumpFlags::RefCount);
-    p1->dump(0, OSG::FCDumpFlags::RefCount);
-    p2->dump(0, OSG::FCDumpFlags::RefCount);
+  g1.dump(0, OSG::FCDumpFlags::RefCount);
 
-    std::cerr << std::endl << std::endl << "Indirect Del" << std::endl;
+  p1->dump(0, OSG::FCDumpFlags::RefCount);
+  p2->dump(0, OSG::FCDumpFlags::RefCount);
 
-    p2->setCore(OSG::NullFC);
+  p1->setCore(g1);
+  g1.dump(0, OSG::FCDumpFlags::RefCount);
+  p1.dump(0, OSG::FCDumpFlags::RefCount);
+  p1->dump(0, OSG::FCDumpFlags::RefCount);
+  p2->dump(0, OSG::FCDumpFlags::RefCount);
 
-    p1->dump(0, OSG::FCDumpFlags::RefCount);
-    p2.dump(0, OSG::FCDumpFlags::RefCount);
+  std::cerr << std::endl << std::endl << "Indirect Del" << std::endl;
 
+  p2->setCore(OSG::NullFC);
 
-    std::cerr << std::endl << std::endl << "Attachment test" << std::endl;
+  p1->dump(0, OSG::FCDumpFlags::RefCount);
+  p2.dump(0, OSG::FCDumpFlags::RefCount);
 
-    OSG::NamePtr n1 = OSG::Name::create();
-    OSG::NamePtr n2 = OSG::Name::create();
+  std::cerr << std::endl << std::endl << "Attachment test" << std::endl;
 
-    p1->addAttachment(n1);
+  OSG::NamePtr n1 = OSG::Name::create();
+  OSG::NamePtr n2 = OSG::Name::create();
 
-    p1.dump (0, OSG::FCDumpFlags::RefCount);
-    p1->dump(0, OSG::FCDumpFlags::RefCount);
-    n1.dump (0, OSG::FCDumpFlags::RefCount);
+  p1->addAttachment(n1);
 
-    p1->subAttachment(n1);
+  p1.dump(0, OSG::FCDumpFlags::RefCount);
+  p1->dump(0, OSG::FCDumpFlags::RefCount);
+  n1.dump(0, OSG::FCDumpFlags::RefCount);
 
-    p1.dump (0, OSG::FCDumpFlags::RefCount);
-    p1->dump(0, OSG::FCDumpFlags::RefCount);
-    n1.dump (0, OSG::FCDumpFlags::RefCount);
+  p1->subAttachment(n1);
 
-    n1 = OSG::Name::create();
+  p1.dump(0, OSG::FCDumpFlags::RefCount);
+  p1->dump(0, OSG::FCDumpFlags::RefCount);
+  n1.dump(0, OSG::FCDumpFlags::RefCount);
 
-    p1->addAttachment(n1);
+  n1 = OSG::Name::create();
 
-    p1.dump (0, OSG::FCDumpFlags::RefCount);
-    p1->dump(0, OSG::FCDumpFlags::RefCount);
-    n1.dump (0, OSG::FCDumpFlags::RefCount);
+  p1->addAttachment(n1);
 
-    p1->addAttachment(n2);
+  p1.dump(0, OSG::FCDumpFlags::RefCount);
+  p1->dump(0, OSG::FCDumpFlags::RefCount);
+  n1.dump(0, OSG::FCDumpFlags::RefCount);
 
-    p1.dump (0, OSG::FCDumpFlags::RefCount);
-    p1->dump(0, OSG::FCDumpFlags::RefCount);
-    n1.dump (0, OSG::FCDumpFlags::RefCount);
-    n2.dump (0, OSG::FCDumpFlags::RefCount);
+  p1->addAttachment(n2);
 
-    p2 = OSG::NodePtr::dcast(p1->shallowCopy());
+  p1.dump(0, OSG::FCDumpFlags::RefCount);
+  p1->dump(0, OSG::FCDumpFlags::RefCount);
+  n1.dump(0, OSG::FCDumpFlags::RefCount);
+  n2.dump(0, OSG::FCDumpFlags::RefCount);
 
-    p1.dump (0, OSG::FCDumpFlags::RefCount);
-    p2.dump (0, OSG::FCDumpFlags::RefCount);
+  p2 = OSG::NodePtr::dcast(p1->shallowCopy());
 
-    p1->dump(0, OSG::FCDumpFlags::RefCount);
-    p2->dump(0, OSG::FCDumpFlags::RefCount);
+  p1.dump(0, OSG::FCDumpFlags::RefCount);
+  p2.dump(0, OSG::FCDumpFlags::RefCount);
 
-    fprintf(stderr, "%p %p %p\n",
-            p1.getBaseCPtr(),
-            p1.getAspectCPtr(0),
-            p1.getAspectCPtr(1));
+  p1->dump(0, OSG::FCDumpFlags::RefCount);
+  p2->dump(0, OSG::FCDumpFlags::RefCount);
 
-    // test name convenience functions
-    
-    std::cerr << "Name convenience" << std::endl;
-    
-    if(OSG::getName(p3) == NULL)
-    {
-        std::cerr << "No name: (NULL)" << std::endl;
-    }
-    else
-    {
-        std::cerr << "Strange No name not NULL: " 
-                  << OSG::getName(p3)  
-                  << std::endl;
-    }
+  fprintf(stderr, "%p %p %p\n", p1.getBaseCPtr(), p1.getAspectCPtr(0), p1.getAspectCPtr(1));
 
-    OSG::setName(p3, "Hugo");
-    
-    std::cerr << "Name: " << OSG::getName(p3) << std::endl;
-    
-    OSG::setName(p3, std::string("Hugo"));
-    
-    std::cerr << "String Name: " << OSG::getName(p3) << std::endl;
-     
-    OSG::setName(p3, NULL);
-    
-    if(OSG::getName(p3) == NULL)
-    {
-        std::cerr << "Removed name: (NULL)" << std::endl;
-    }
-    else
-    {
-        std::cerr << "Removed name not NULL: " 
-                  << OSG::getName(p3)  
-                  << std::endl;
-    }
+  // test name convenience functions
 
-    if(OSG::getVoidP(p3) == NULL)
-    {
-        std::cerr << "No VoidPAttachent: (NULL)" << std::endl;
-    }
-    else
-    {
-        std::cerr << "Strange No VoidPAttachent not NULL: " 
-                  << OSG::getVoidP(p3) 
-                  << std::endl;
-    }
+  std::cerr << "Name convenience" << std::endl;
 
-    double d;
+  if (OSG::getName(p3) == NULL) {
+    std::cerr << "No name: (NULL)" << std::endl;
+  } else {
+    std::cerr << "Strange No name not NULL: " << OSG::getName(p3) << std::endl;
+  }
 
-    OSG::setVoidP(p3, &d);
-    std::cerr << "VoidPAttachent: " 
-              << (&d) 
-              << " | "
-              << OSG::getVoidP(p3) << std::endl;
+  OSG::setName(p3, "Hugo");
 
-    OSG::setVoidP(p3, NULL);
+  std::cerr << "Name: " << OSG::getName(p3) << std::endl;
 
-    if(OSG::getVoidP(p3) == NULL)
-    {
-        std::cerr << "Removed VoidPAttachent: (NULL)" << std::endl;
-    }
-    else
-    {
-        std::cerr << "Strange Removed VoidPAttachent not NULL: " 
-                  << OSG::getVoidP(p3) 
-                  << std::endl;
-    }
+  OSG::setName(p3, std::string("Hugo"));
 
-    OSG::subRefCP(p3);
-    OSG::subRefCP(p1);
+  std::cerr << "String Name: " << OSG::getName(p3) << std::endl;
 
-    OSG::osgExit();
+  OSG::setName(p3, NULL);
+
+  if (OSG::getName(p3) == NULL) {
+    std::cerr << "Removed name: (NULL)" << std::endl;
+  } else {
+    std::cerr << "Removed name not NULL: " << OSG::getName(p3) << std::endl;
+  }
+
+  if (OSG::getVoidP(p3) == NULL) {
+    std::cerr << "No VoidPAttachent: (NULL)" << std::endl;
+  } else {
+    std::cerr << "Strange No VoidPAttachent not NULL: " << OSG::getVoidP(p3) << std::endl;
+  }
+
+  double d;
+
+  OSG::setVoidP(p3, &d);
+  std::cerr << "VoidPAttachent: " << (&d) << " | " << OSG::getVoidP(p3) << std::endl;
+
+  OSG::setVoidP(p3, NULL);
+
+  if (OSG::getVoidP(p3) == NULL) {
+    std::cerr << "Removed VoidPAttachent: (NULL)" << std::endl;
+  } else {
+    std::cerr << "Strange Removed VoidPAttachent not NULL: " << OSG::getVoidP(p3) << std::endl;
+  }
+
+  OSG::subRefCP(p3);
+  OSG::subRefCP(p1);
+
+  OSG::osgExit();
 }
 
 #if 0
@@ -382,7 +343,6 @@ typedef SimpleAttachment<SimpleAttDesc> GeoPoints;
 template class SimpleAttachment<SimpleAttDesc>;
 
 typedef FCPtr<AttachmentPtr,  GeoPoints> GeoPointsPtr;
-
 
 #if 0
 class NewNode;

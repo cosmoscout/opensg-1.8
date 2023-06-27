@@ -10,84 +10,76 @@
 OSG_BEGIN_NAMESPACE
 
 //! A single Vertex of the triangled clip geometry
-class DVRVertex 
-{
+class DVRVertex {
 
-public: // public methods
-  
-    //! Construct a new vertex 
-    DVRVertex(void);
-  
-    //! Copy
-    DVRVertex(const DVRVertex &vertex);
+ public: // public methods
+  //! Construct a new vertex
+  DVRVertex(void);
 
-    //! Destructor
-    ~DVRVertex(void);
-  
-    //! calculates the distance of the vertex to a reference plane.
-    /*!
-      uses the vertex position 
-    */
-    void calculatePlaneDistance(const Plane &plane);
-  
-    //! calculates the distance of the vertex to a reference plane.
-    /*!
-      uses the transformed vertex position
-    */
-    void calculatePlaneDistanceTransformed(const Plane &plane);
+  //! Copy
+  DVRVertex(const DVRVertex& vertex);
 
-    //! calculates the distance of the vertex to a reference plane.
-    /*!
-      uses the vertex position transformed with 'transform'
-    */
-    void calculatePlaneDistance(const Plane &plane, const Matrix &transform);
+  //! Destructor
+  ~DVRVertex(void);
 
-    //! returns true, iff dist2RefPlane ist bigger than this->refPlaneDistance
-    //! switched will be set, if the vertex was till yet in front of each of 
-    //! the tested planes 
-    bool isBehindPlane(float dist2RefPlane, bool &switched);
+  //! calculates the distance of the vertex to a reference plane.
+  /*!
+    uses the vertex position
+  */
+  void calculatePlaneDistance(const Plane& plane);
 
-    //! returns true, iff dist2RefPlane ist bigger than this->refPlaneDistance
-    bool isBehindPlane(float dist2RefPlane);
+  //! calculates the distance of the vertex to a reference plane.
+  /*!
+    uses the transformed vertex position
+  */
+  void calculatePlaneDistanceTransformed(const Plane& plane);
 
-    //! Returns true, if the vertex is closer to the ref plane 
-    //! than (distance). If not, the notMinimumValue flag is set 
-    //! to true.
-    /*!
-      One of the calculatePlaneDistance(..) functions has to be called before!
-    */
-    bool isCloser(float distance);
+  //! calculates the distance of the vertex to a reference plane.
+  /*!
+    uses the vertex position transformed with 'transform'
+  */
+  void calculatePlaneDistance(const Plane& plane, const Matrix& transform);
 
-    //! Usefull for debugging
-    void dump(void) const;
+  //! returns true, iff dist2RefPlane ist bigger than this->refPlaneDistance
+  //! switched will be set, if the vertex was till yet in front of each of
+  //! the tested planes
+  bool isBehindPlane(float dist2RefPlane, bool& switched);
 
-  public: // public attributes
+  //! returns true, iff dist2RefPlane ist bigger than this->refPlaneDistance
+  bool isBehindPlane(float dist2RefPlane);
 
-    //! The vertex index in the parent geometry. 
-    Pnt3f pos;
+  //! Returns true, if the vertex is closer to the ref plane
+  //! than (distance). If not, the notMinimumValue flag is set
+  //! to true.
+  /*!
+    One of the calculatePlaneDistance(..) functions has to be called before!
+  */
+  bool isCloser(float distance);
 
-    //! The adjacent triangles of this vertex
-    std::vector<Int32> adjacentTriangles;
+  //! Usefull for debugging
+  void dump(void) const;
 
-  public: // local public attributes
+ public: // public attributes
+  //! The vertex index in the parent geometry.
+  Pnt3f pos;
 
-    //! 
-    bool behindPlane;
+  //! The adjacent triangles of this vertex
+  std::vector<Int32> adjacentTriangles;
 
-    //!
-    //bool notMinimumValue;
+ public: // local public attributes
+  //!
+  bool behindPlane;
 
-    //!
-    Real32 refPlaneDistance;
+  //!
+  // bool notMinimumValue;
 
-    //! The position of this vertex in volume coords
-    Pnt3f transformedPos;
+  //!
+  Real32 refPlaneDistance;
+
+  //! The position of this vertex in volume coords
+  Pnt3f transformedPos;
 };
 
 OSG_END_NAMESPACE
 
 #endif
-
-
-
-

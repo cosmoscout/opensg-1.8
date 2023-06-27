@@ -52,109 +52,79 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &GrabForegroundBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& GrabForegroundBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 GrabForegroundBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 GrabForegroundBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-GrabForegroundPtr GrabForegroundBase::create(void) 
-{
-    GrabForegroundPtr fc; 
+inline GrabForegroundPtr GrabForegroundBase::create(void) {
+  GrabForegroundPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = GrabForegroundPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = GrabForegroundPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-GrabForegroundPtr GrabForegroundBase::createEmpty(void) 
-{ 
-    GrabForegroundPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline GrabForegroundPtr GrabForegroundBase::createEmpty(void) {
+  GrabForegroundPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the GrabForeground::_sfImage field.
-inline
-SFImagePtr *GrabForegroundBase::getSFImage(void)
-{
-    return &_sfImage;
+inline SFImagePtr* GrabForegroundBase::getSFImage(void) {
+  return &_sfImage;
 }
 
 //! Get the GrabForeground::_sfAutoResize field.
-inline
-SFBool *GrabForegroundBase::getSFAutoResize(void)
-{
-    return &_sfAutoResize;
-}
-
-
-//! Get the value of the GrabForeground::_sfImage field.
-inline
-ImagePtr &GrabForegroundBase::getImage(void)
-{
-    return _sfImage.getValue();
+inline SFBool* GrabForegroundBase::getSFAutoResize(void) {
+  return &_sfAutoResize;
 }
 
 //! Get the value of the GrabForeground::_sfImage field.
-inline
-const ImagePtr &GrabForegroundBase::getImage(void) const
-{
-    return _sfImage.getValue();
+inline ImagePtr& GrabForegroundBase::getImage(void) {
+  return _sfImage.getValue();
+}
+
+//! Get the value of the GrabForeground::_sfImage field.
+inline const ImagePtr& GrabForegroundBase::getImage(void) const {
+  return _sfImage.getValue();
 }
 
 //! Set the value of the GrabForeground::_sfImage field.
-inline
-void GrabForegroundBase::setImage(const ImagePtr &value)
-{
-    _sfImage.setValue(value);
+inline void GrabForegroundBase::setImage(const ImagePtr& value) {
+  _sfImage.setValue(value);
 }
 
 //! Get the value of the GrabForeground::_sfAutoResize field.
-inline
-bool &GrabForegroundBase::getAutoResize(void)
-{
-    return _sfAutoResize.getValue();
+inline bool& GrabForegroundBase::getAutoResize(void) {
+  return _sfAutoResize.getValue();
 }
 
 //! Get the value of the GrabForeground::_sfAutoResize field.
-inline
-const bool &GrabForegroundBase::getAutoResize(void) const
-{
-    return _sfAutoResize.getValue();
+inline const bool& GrabForegroundBase::getAutoResize(void) const {
+  return _sfAutoResize.getValue();
 }
 
 //! Set the value of the GrabForeground::_sfAutoResize field.
-inline
-void GrabForegroundBase::setAutoResize(const bool &value)
-{
-    _sfAutoResize.setValue(value);
+inline void GrabForegroundBase::setAutoResize(const bool& value) {
+  _sfAutoResize.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGGRABFOREGROUNDBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGGRABFOREGROUNDBASE_INLINE_CVSID                                                         \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

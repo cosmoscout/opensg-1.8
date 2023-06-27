@@ -34,7 +34,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -44,5 +43,5 @@ OSG_BEGIN_NAMESPACE
 
 OSG_END_NAMESPACE
 
-#define OSGPHONGMATERIAL_INLINE_CVSID "@(#)$Id: OSGPhongMaterial.inl,v 1.1 2003/10/02 15:03:47 a-m-z Exp $"
-
+#define OSGPHONGMATERIAL_INLINE_CVSID                                                              \
+  "@(#)$Id: OSGPhongMaterial.inl,v 1.1 2003/10/02 15:03:47 a-m-z Exp $"

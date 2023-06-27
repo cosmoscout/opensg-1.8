@@ -43,7 +43,6 @@
 #pragma once
 #endif
 
-
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
 

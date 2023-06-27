@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGSTATSTRINGELEM_H_
 #define _OSGSTATSTRINGELEM_H_
 #ifdef __sgi
@@ -53,91 +52,89 @@ OSG_BEGIN_NAMESPACE
 class StatElemDescBase;
 
 /*! \brief String Statistics element, see \ref PageSystemStatistics for details.
-*/
+ */
 class OSG_SYSTEMLIB_DLLMAPPING StatStringElem : public StatElem {
 
-     /*==========================  PUBLIC  =================================*/
+  /*==========================  PUBLIC  =================================*/
  public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
-    
-    static const char *getClassname(void) { return "StatStringElem"; }
+  static const char* getClassname(void) {
+    return "StatStringElem";
+  }
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    your_category                             */
-    /*! \{                                                                 */
-    
-    static StatElem *create ( StatElemDescBase *desc );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    your_category                             */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    instance                                  */
-    /*! \{                                                                 */
-    
-    inline  const std::string & get          (void) const;
-    
-    inline  void                set          (const std::string & value);
+  static StatElem* create(StatElemDescBase* desc);
 
-    inline  void                set          (const Char8 * value);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    instance                                  */
+  /*! \{                                                                 */
 
-    virtual void                reset        (void);
+  inline const std::string& get(void) const;
 
-    virtual void                putToString  (std::string &str, 
-                                              const char *format = NULL) const;
+  inline void set(const std::string& value);
 
-    virtual bool                getFromString(const Char8 *&inVal);
+  inline void set(const Char8* value);
 
-    virtual Real64              getValue     (void) const;
+  virtual void reset(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   comparison                                 */
-    /*! \{                                                                 */
- 
-    bool operator < (const StatStringElem &other) const;
+  virtual void putToString(std::string& str, const char* format = NULL) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Creation                                   */
-    /*! \{                                                                 */
+  virtual bool getFromString(const Char8*& inVal);
 
-    virtual StatElem *clone(void) const;
+  virtual Real64 getValue(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Operators                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   comparison                                 */
+  /*! \{                                                                 */
 
-    virtual StatElem &operator += (const StatElem &other);
+  bool operator<(const StatStringElem& other) const;
 
-    /*! \}                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Creation                                   */
+  /*! \{                                                                 */
 
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  virtual StatElem* clone(void) const;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Operators                                */
+  /*! \{                                                                 */
 
-    StatStringElem(StatElemDescBase *desc);
+  virtual StatElem& operator+=(const StatElem& other);
 
-    virtual ~StatStringElem(void); 
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*=========================  PRIVATE    ===============================*/
-  private:
+  StatStringElem(StatElemDescBase* desc);
 
-    typedef StatElem Inherited;
-    
-    std::string _value;
+  virtual ~StatStringElem(void);
 
-    StatStringElem(const StatStringElem &source);
+  /*! \}                                                                 */
 
-    StatStringElem& operator =(const StatStringElem &source);
+  /*=========================  PRIVATE    ===============================*/
+ private:
+  typedef StatElem Inherited;
+
+  std::string _value;
+
+  StatStringElem(const StatStringElem& source);
+
+  StatStringElem& operator=(const StatStringElem& source);
 };
 
 //---------------------------------------------------------------------------
@@ -146,12 +143,13 @@ class OSG_SYSTEMLIB_DLLMAPPING StatStringElem : public StatElem {
 
 // class pointer
 
-typedef StatStringElem *StatStringElemP;
+typedef StatStringElem* StatStringElemP;
 
 OSG_END_NAMESPACE
 
 #include <OSGStatStringElem.inl>
 
-#define OSGSTATSTRINGELEM_HEADER_CVSID "@(#)$Id: OSGStatStringElem.h,v 1.2 2002/05/23 12:58:24 dirk Exp $"
+#define OSGSTATSTRINGELEM_HEADER_CVSID                                                             \
+  "@(#)$Id: OSGStatStringElem.h,v 1.2 2002/05/23 12:58:24 dirk Exp $"
 
 #endif /* _OSGSTATSTRINGELEM_H_ */

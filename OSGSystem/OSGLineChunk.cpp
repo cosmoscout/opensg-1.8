@@ -69,7 +69,6 @@ osg::LineChunk::_sfStipplePattern), glEnable(GL_LINE_SMOOTH)
 (osg::LineChunk::_sfSmooth).
 */
 
-
 /***************************************************************************\
  *                           Class variables                               *
 \***************************************************************************/
@@ -80,9 +79,8 @@ StateChunkClass LineChunk::_class("Line");
  *                           Class methods                                 *
 \***************************************************************************/
 
-void LineChunk::initMethod (void)
-{
-    Inherited::initMethod();
+void LineChunk::initMethod(void) {
+  Inherited::initMethod();
 }
 
 /***************************************************************************\
@@ -95,133 +93,106 @@ void LineChunk::initMethod (void)
 
 /*------------- constructors & destructors --------------------------------*/
 
-
-LineChunk::LineChunk(void) :
-    Inherited()
-{
+LineChunk::LineChunk(void)
+    : Inherited() {
 }
 
-LineChunk::LineChunk(const LineChunk &source) :
-    Inherited(source)
-{
+LineChunk::LineChunk(const LineChunk& source)
+    : Inherited(source) {
 }
 
-LineChunk::~LineChunk(void)
-{
+LineChunk::~LineChunk(void) {
 }
 
 /*------------------------- Chunk Class Access ---------------------------*/
 
-const StateChunkClass *LineChunk::getClass(void) const
-{
-    return &_class;
+const StateChunkClass* LineChunk::getClass(void) const {
+  return &_class;
 }
 
 /*------------------------------- Sync -----------------------------------*/
 
-void LineChunk::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void LineChunk::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
 /*------------------------------ Output ----------------------------------*/
 
-void LineChunk::dump(      UInt32    , 
-                         const BitVector ) const
-{
-    SLOG << "Dump LineChunk NI" << std::endl;
+void LineChunk::dump(UInt32, const BitVector) const {
+  SLOG << "Dump LineChunk NI" << std::endl;
 }
-
 
 /*------------------------------ State ------------------------------------*/
 
-void LineChunk::activate(DrawActionBase *, UInt32)
-{
-    if(_sfWidth.getValue() != 1)
-    {
-        glLineWidth(_sfWidth.getValue());
-    }
-    
-    if(_sfStipplePattern.getValue() != 0xffffu)
-    {
-        glLineStipple(_sfStippleRepeat.getValue(), 
-                      _sfStipplePattern.getValue());
-        glEnable(GL_LINE_STIPPLE);
-    }
-    
-    if(_sfSmooth.getValue())
-    {
-        glEnable(GL_LINE_SMOOTH);
-    }
+void LineChunk::activate(DrawActionBase*, UInt32) {
+  if (_sfWidth.getValue() != 1) {
+    glLineWidth(_sfWidth.getValue());
+  }
+
+  if (_sfStipplePattern.getValue() != 0xffffu) {
+    glLineStipple(_sfStippleRepeat.getValue(), _sfStipplePattern.getValue());
+    glEnable(GL_LINE_STIPPLE);
+  }
+
+  if (_sfSmooth.getValue()) {
+    glEnable(GL_LINE_SMOOTH);
+  }
 }
 
-void LineChunk::changeFrom( DrawActionBase *act, StateChunk * old_chunk, UInt32 index )
-{
-    old_chunk->deactivate( act, index );
-    activate( act, index );
+void LineChunk::changeFrom(DrawActionBase* act, StateChunk* old_chunk, UInt32 index) {
+  old_chunk->deactivate(act, index);
+  activate(act, index);
 }
 
-void LineChunk::deactivate ( DrawActionBase *, UInt32 )
-{
-    if(_sfWidth.getValue() != 1)
-    {
-        glLineWidth(1);
-    }
-    
-    if(_sfStipplePattern.getValue() != 0xffffu)
-    {
-        glDisable(GL_LINE_STIPPLE);
-    }
-    
-    if(_sfSmooth.getValue())
-    {
-        glDisable(GL_LINE_SMOOTH);
-    }
+void LineChunk::deactivate(DrawActionBase*, UInt32) {
+  if (_sfWidth.getValue() != 1) {
+    glLineWidth(1);
+  }
+
+  if (_sfStipplePattern.getValue() != 0xffffu) {
+    glDisable(GL_LINE_STIPPLE);
+  }
+
+  if (_sfSmooth.getValue()) {
+    glDisable(GL_LINE_SMOOTH);
+  }
 }
 
 /*-------------------------- Comparison -----------------------------------*/
 
-Real32 LineChunk::switchCost(StateChunk *)
-{
-    return 0;
+Real32 LineChunk::switchCost(StateChunk*) {
+  return 0;
 }
 
 /** \brief assignment
  */
 
-bool LineChunk::operator < (const StateChunk &other) const
-{
-    return this < &other;
+bool LineChunk::operator<(const StateChunk& other) const {
+  return this < &other;
 }
 
 /** \brief equal
  */
 
-bool LineChunk::operator == (const StateChunk &other) const
-{
-    LineChunk const *tother = dynamic_cast<LineChunk const*>(&other);
+bool LineChunk::operator==(const StateChunk& other) const {
+  LineChunk const* tother = dynamic_cast<LineChunk const*>(&other);
 
-    if(!tother)
-        return false;
+  if (!tother)
+    return false;
 
-    if(tother == this)
-        return true;
-
-    if(getWidth()          != tother->getWidth()          ||
-       getStipplePattern() != tother->getStipplePattern() ||
-       getSmooth()         != tother->getSmooth()           )
-        return false;
-
+  if (tother == this)
     return true;
+
+  if (getWidth() != tother->getWidth() || getStipplePattern() != tother->getStipplePattern() ||
+      getSmooth() != tother->getSmooth())
+    return false;
+
+  return true;
 }
 
 /** \brief unequal
  */
 
-bool LineChunk::operator != (const StateChunk &other) const
-{
-    return ! (*this == other);
+bool LineChunk::operator!=(const StateChunk& other) const {
+  return !(*this == other);
 }
-
-
-

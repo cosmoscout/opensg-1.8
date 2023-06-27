@@ -69,101 +69,75 @@ void SphereVolume::circumscribe(const BoxVolume &box)
 
 /*! Returns the center */
 
-void SphereVolume::getCenter(Pnt3f &center) const
-{
-    center = _center;
+void SphereVolume::getCenter(Pnt3f& center) const {
+  center = _center;
 }
 
-
-Real32 SphereVolume::getScalarVolume (void) const
-{
-    return isEmpty() ? 0.0f : (4.f / 3.f * Pi * _radius * _radius * _radius);
+Real32 SphereVolume::getScalarVolume(void) const {
+  return isEmpty() ? 0.0f : (4.f / 3.f * Pi * _radius * _radius * _radius);
 }
 
-
-void SphereVolume::getBounds(Pnt3f &min, Pnt3f &max) const
-{
-    min.setValues(_center[0] - _radius,
-                  _center[1] - _radius,
-                  _center[2] - _radius);
-    max.setValues(_center[0] + _radius,
-                  _center[1] + _radius,
-                  _center[2] + _radius);
+void SphereVolume::getBounds(Pnt3f& min, Pnt3f& max) const {
+  min.setValues(_center[0] - _radius, _center[1] - _radius, _center[2] - _radius);
+  max.setValues(_center[0] + _radius, _center[1] + _radius, _center[2] + _radius);
 }
 
+void SphereVolume::extendBy(const Pnt3f& pt) {
+  if (isUntouchable() == true)
+    return;
 
-void SphereVolume::extendBy(const Pnt3f &pt)
-{
-    if(isUntouchable() == true)
-        return;
-    
-    if(isEmpty() == true)
-    {
-        _center = pt;
-        _radius = 0.f;
-        
-        setEmpty(false);
-    }
-    else
-    {
-        Real32 d = (_center - pt).length();
-        
-        if(d > _radius)
-            _radius = d;
-    }
+  if (isEmpty() == true) {
+    _center = pt;
+    _radius = 0.f;
+
+    setEmpty(false);
+  } else {
+    Real32 d = (_center - pt).length();
+
+    if (d > _radius)
+      _radius = d;
+  }
 }
 
-
-void SphereVolume::extendBy(const Volume &volume)
-{
-    OSG::extend(*this, volume);
+void SphereVolume::extendBy(const Volume& volume) {
+  OSG::extend(*this, volume);
 }
 
 /*------------------------- intersection ------------------------------*/
 
 /*! Returns true if intersection of given point and Volume is not empty */
 
-bool SphereVolume::intersect(const Pnt3f &point) const
-{
-    Real32 d = (_center - point).length();
+bool SphereVolume::intersect(const Pnt3f& point) const {
+  Real32 d = (_center - point).length();
 
-    if(d <= _radius)
-        return true;
-    else
-        return false;
+  if (d <= _radius)
+    return true;
+  else
+    return false;
 }
 
 /*! intersect the SphereVolume with the given Line */
 
-bool SphereVolume::intersect(const Line &line) const
-{
-    return line.intersect(*this);
+bool SphereVolume::intersect(const Line& line) const {
+  return line.intersect(*this);
 }
 
 /*! intersect the SphereVolume with the given Line */
 
-bool SphereVolume::intersect(const Line   &line,
-                                   Real32 &enter, 
-                                   Real32 &exit ) const
-{
-    return line.intersect(*this, enter, exit);
+bool SphereVolume::intersect(const Line& line, Real32& enter, Real32& exit) const {
+  return line.intersect(*this, enter, exit);
 }
 
-
-bool SphereVolume::intersect(const Volume &volume) const
-{
-    return OSG::intersect(*this, volume);
+bool SphereVolume::intersect(const Volume& volume) const {
+  return OSG::intersect(*this, volume);
 }
 
-
-bool SphereVolume::isOnSurface (const Pnt3f &point) const
-{
-    if(osgabs((point - _center).length() - _radius) < Eps)
-        return true;
-    else
-        return false;
+bool SphereVolume::isOnSurface(const Pnt3f& point) const {
+  if (osgabs((point - _center).length() - _radius) < Eps)
+    return true;
+  else
+    return false;
 }
-
 
 /*-------------------------- transformation -------------------------------*/
 
@@ -171,24 +145,23 @@ bool SphereVolume::isOnSurface (const Pnt3f &point) const
 #pragma set woff 1209
 #endif
 
-void SphereVolume::transform(const Matrix &mat)
-{
-    // assume uniform scaling, otherways we get an ellipsoid
-    Pnt3f hull(_center);
-    hull += Vec3f(0, _radius, 0);
+void SphereVolume::transform(const Matrix& mat) {
+  // assume uniform scaling, otherways we get an ellipsoid
+  Pnt3f hull(_center);
+  hull += Vec3f(0, _radius, 0);
 
-    mat.mult(_center);
-    mat.mult(hull);
-    _radius = (hull - _center).length();
+  mat.mult(_center);
+  mat.mult(hull);
+  _radius = (hull - _center).length();
 
-/*
-    Vec3f translation, scaleFactor;
-    Quaternion rotation, scaleOrientation;
-    
-    mat.mult(_center);
-    mat.getTransform(translation, rotation, scaleFactor, scaleOrientation);
-    _radius *= scaleFactor[0];
-*/
+  /*
+      Vec3f translation, scaleFactor;
+      Quaternion rotation, scaleOrientation;
+
+      mat.mult(_center);
+      mat.getTransform(translation, rotation, scaleFactor, scaleOrientation);
+      _radius *= scaleFactor[0];
+  */
 }
 
 #ifdef __sgi
@@ -196,8 +169,7 @@ void SphereVolume::transform(const Matrix &mat)
 #endif
 
 /*! print the volume */
-void SphereVolume::dump(      UInt32    OSG_CHECK_ARG(uiIndent), 
-                        const BitVector OSG_CHECK_ARG(bvFlags)) const
-{
-    PLOG << "Sphere(" << _center << "|" << _radius << ")";
+void SphereVolume::dump(
+    UInt32 OSG_CHECK_ARG(uiIndent), const BitVector OSG_CHECK_ARG(bvFlags)) const {
+  PLOG << "Sphere(" << _center << "|" << _radius << ")";
 }

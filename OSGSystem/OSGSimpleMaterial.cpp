@@ -1,13 +1,13 @@
- /*---------------------------------------------------------------------------*\
- *                                OpenSG                                     *
- *                                                                           *
- *                                                                           *
- *             Copyright (C) 2000-2002 by the OpenSG Forum                   *
- *                                                                           *
- *                            www.opensg.org                                 *
- *                                                                           *
- *   contact: dirk@opensg.org, gerrit.voss@vossg.org, jbehr@zgdv.de          *
- *                                                                           *
+/*---------------------------------------------------------------------------*\
+*                                OpenSG                                     *
+*                                                                           *
+*                                                                           *
+*             Copyright (C) 2000-2002 by the OpenSG Forum                   *
+*                                                                           *
+*                            www.opensg.org                                 *
+*                                                                           *
+*   contact: dirk@opensg.org, gerrit.voss@vossg.org, jbehr@zgdv.de          *
+*                                                                           *
 \*---------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------*\
  *                                License                                    *
@@ -59,7 +59,6 @@
 
 OSG_USING_NAMESPACE
 
-
 /***************************************************************************\
  *                            Description                                  *
 \***************************************************************************/
@@ -71,11 +70,11 @@ The simple material class. See \ref PageSystemMaterialSimpleMaterial for a
 description.
 
 This material wraps the standard calls to glMaterial() in
-osg::SimpleMaterial::_sfAmbient, osg::SimpleMaterial::_sfDiffuse, 
-osg::SimpleMaterial::_sfEmission, osg::SimpleMaterial::_sfSpecular, 
-osg::SimpleMaterial::_sfShininess. In addition it supports transparency 
-(osg::SimpleMaterial::_sfTransparency), can switch lighting 
-(osg::SimpleMaterial::_sfLit) and the color material 
+osg::SimpleMaterial::_sfAmbient, osg::SimpleMaterial::_sfDiffuse,
+osg::SimpleMaterial::_sfEmission, osg::SimpleMaterial::_sfSpecular,
+osg::SimpleMaterial::_sfShininess. In addition it supports transparency
+(osg::SimpleMaterial::_sfTransparency), can switch lighting
+(osg::SimpleMaterial::_sfLit) and the color material
 (osg::SimpleMaterial::_sfColorMaterial).
 
 */
@@ -92,36 +91,32 @@ osg::SimpleMaterial::_sfShininess. In addition it supports transparency
    one for the optional transparency blending.
 */
 
-void SimpleMaterial::prepareLocalChunks(void)
-{
-    if(_materialChunk == NullFC)
+void SimpleMaterial::prepareLocalChunks(void) {
+  if (_materialChunk == NullFC) {
+    _materialChunk = MaterialChunk::create();
+
+    addRefCP(_materialChunk);
+  }
+
+  if (_blendChunk == NullFC) {
+    _blendChunk = BlendChunk ::create();
+
+    beginEditCP(_blendChunk);
     {
-        _materialChunk = MaterialChunk::create();
-
-        addRefCP(_materialChunk);
+      _blendChunk->setSrcFactor(GL_SRC_ALPHA);
+      _blendChunk->setDestFactor(GL_ONE_MINUS_SRC_ALPHA);
     }
+    endEditCP(_blendChunk);
 
-    if(_blendChunk == NullFC)
-    {
-        _blendChunk    = BlendChunk   ::create();
-
-        beginEditCP(_blendChunk);
-        {
-            _blendChunk->setSrcFactor (GL_SRC_ALPHA);
-            _blendChunk->setDestFactor(GL_ONE_MINUS_SRC_ALPHA);
-        }
-        endEditCP  (_blendChunk);
-
-        addRefCP   (_blendChunk);
-    }
+    addRefCP(_blendChunk);
+  }
 }
 
 /*-------------------------------------------------------------------------*\
  -  private                                                                -
 \*-------------------------------------------------------------------------*/
 
-void SimpleMaterial::initMethod (void)
-{
+void SimpleMaterial::initMethod(void) {
 }
 
 /***************************************************************************\
@@ -134,187 +129,171 @@ void SimpleMaterial::initMethod (void)
 
 /*------------- constructors & destructors --------------------------------*/
 
-SimpleMaterial::SimpleMaterial(void) :
-    Inherited(),
-    _materialChunk(NullFC),
-    _blendChunk   (NullFC)
-{
+SimpleMaterial::SimpleMaterial(void)
+    : Inherited()
+    , _materialChunk(NullFC)
+    , _blendChunk(NullFC) {
 }
 
-SimpleMaterial::SimpleMaterial(const SimpleMaterial &source) :
-     Inherited    (source               ),
-    _materialChunk(source._materialChunk),
-    _blendChunk   (source._blendChunk   )
-{
+SimpleMaterial::SimpleMaterial(const SimpleMaterial& source)
+    : Inherited(source)
+    , _materialChunk(source._materialChunk)
+    , _blendChunk(source._blendChunk) {
 }
 
-SimpleMaterial::~SimpleMaterial(void)
-{
-    subRefCP(_materialChunk);
-    subRefCP(_blendChunk   );    
+SimpleMaterial::~SimpleMaterial(void) {
+  subRefCP(_materialChunk);
+  subRefCP(_blendChunk);
 }
 
-void SimpleMaterial::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void SimpleMaterial::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
 /*-------------------------- your_category---------------------------------*/
 
-StatePtr SimpleMaterial::makeState(void)
-{
-    StatePtr state = State::create();
+StatePtr SimpleMaterial::makeState(void) {
+  StatePtr state = State::create();
 
-    Color3f v3;
-    Color4f v4;
-    float alpha = 1.f - getTransparency();
+  Color3f v3;
+  Color4f v4;
+  float   alpha = 1.f - getTransparency();
 
-    prepareLocalChunks();
+  prepareLocalChunks();
 
-    beginEditCP(_materialChunk);
-    {
-         v3 = getAmbient(); 
-         v4.setValuesRGBA(v3[0], v3[1], v3[2], alpha);
-        _materialChunk->setAmbient(v4);
+  beginEditCP(_materialChunk);
+  {
+    v3 = getAmbient();
+    v4.setValuesRGBA(v3[0], v3[1], v3[2], alpha);
+    _materialChunk->setAmbient(v4);
 
-         v3 = getDiffuse(); 
-         v4.setValuesRGBA(v3[0], v3[1], v3[2], alpha);
-        _materialChunk->setDiffuse(v4);
+    v3 = getDiffuse();
+    v4.setValuesRGBA(v3[0], v3[1], v3[2], alpha);
+    _materialChunk->setDiffuse(v4);
 
-         v3 = getSpecular(); 
-         v4.setValuesRGBA(v3[0], v3[1], v3[2], alpha);
-        _materialChunk->setSpecular(v4);
+    v3 = getSpecular();
+    v4.setValuesRGBA(v3[0], v3[1], v3[2], alpha);
+    _materialChunk->setSpecular(v4);
 
-        _materialChunk->setShininess(getShininess());
+    _materialChunk->setShininess(getShininess());
 
-         v3 = getEmission(); 
-         v4.setValuesRGBA(v3[0], v3[1], v3[2], alpha);
-        _materialChunk->setEmission(v4);
-        
-        _materialChunk->setLit(getLit());
-        _materialChunk->setColorMaterial(getColorMaterial());
-    }
-    endEditCP  (_materialChunk);
+    v3 = getEmission();
+    v4.setValuesRGBA(v3[0], v3[1], v3[2], alpha);
+    _materialChunk->setEmission(v4);
 
-    state->addChunk(_materialChunk);
+    _materialChunk->setLit(getLit());
+    _materialChunk->setColorMaterial(getColorMaterial());
+  }
+  endEditCP(_materialChunk);
 
-    if(isTransparent())
-    {
-        state->addChunk(_blendChunk);
-    }
+  state->addChunk(_materialChunk);
 
-    addChunks(state); // XXX DR This is a hack. Should call Inherited
+  if (isTransparent()) {
+    state->addChunk(_blendChunk);
+  }
 
-    return state;
+  addChunks(state); // XXX DR This is a hack. Should call Inherited
+
+  return state;
 }
 
-void SimpleMaterial::rebuildState(void)
-{
-    Color3f v3;
-    Color4f v4;
-    Real32  alpha = 1.f - getTransparency();
+void SimpleMaterial::rebuildState(void) {
+  Color3f v3;
+  Color4f v4;
+  Real32  alpha = 1.f - getTransparency();
 
-    if(_pState != NullFC)
-    {
-        _pState->clearChunks();
-    }
-    else
-    {
-        _pState = State::create();
+  if (_pState != NullFC) {
+    _pState->clearChunks();
+  } else {
+    _pState = State::create();
 
-        addRefCP(_pState);
-    }
+    addRefCP(_pState);
+  }
 
-    prepareLocalChunks();
+  prepareLocalChunks();
 
-    beginEditCP(_materialChunk);
-    {
-        v3 = getAmbient();
-        v4.setValuesRGBA(v3[0], v3[1], v3[2], alpha);
+  beginEditCP(_materialChunk);
+  {
+    v3 = getAmbient();
+    v4.setValuesRGBA(v3[0], v3[1], v3[2], alpha);
 
-        _materialChunk->setAmbient(v4);
+    _materialChunk->setAmbient(v4);
 
-        v3 = getDiffuse();
-        v4.setValuesRGBA(v3[0], v3[1], v3[2], alpha);
-        
-        _materialChunk->setDiffuse(v4);
-        
-        v3 = getSpecular();
-        v4.setValuesRGBA(v3[0], v3[1], v3[2], alpha);
-        
-        _materialChunk->setSpecular(v4);
-        
-        _materialChunk->setShininess(getShininess());
-        
-        v3 = getEmission();
-        v4.setValuesRGBA(v3[0], v3[1], v3[2], alpha);
-        
-        _materialChunk->setEmission(v4);
-        
-        _materialChunk->setLit(getLit());
-        _materialChunk->setColorMaterial(getColorMaterial());
-    }
-    endEditCP  (_materialChunk);
+    v3 = getDiffuse();
+    v4.setValuesRGBA(v3[0], v3[1], v3[2], alpha);
 
-    _pState->addChunk(_materialChunk);
+    _materialChunk->setDiffuse(v4);
 
-    if(isTransparent())
-    {
-        _pState->addChunk(_blendChunk);
-    }
+    v3 = getSpecular();
+    v4.setValuesRGBA(v3[0], v3[1], v3[2], alpha);
 
-    addChunks(_pState); // XXX DR This is a hack. Should call Inherited
+    _materialChunk->setSpecular(v4);
+
+    _materialChunk->setShininess(getShininess());
+
+    v3 = getEmission();
+    v4.setValuesRGBA(v3[0], v3[1], v3[2], alpha);
+
+    _materialChunk->setEmission(v4);
+
+    _materialChunk->setLit(getLit());
+    _materialChunk->setColorMaterial(getColorMaterial());
+  }
+  endEditCP(_materialChunk);
+
+  _pState->addChunk(_materialChunk);
+
+  if (isTransparent()) {
+    _pState->addChunk(_blendChunk);
+  }
+
+  addChunks(_pState); // XXX DR This is a hack. Should call Inherited
 }
 
-bool SimpleMaterial::isTransparent(void) const
-{
-    return ((getTransparency() > Eps) || (Inherited::isTransparent()));
+bool SimpleMaterial::isTransparent(void) const {
+  return ((getTransparency() > Eps) || (Inherited::isTransparent()));
 }
 
 /*------------------------------- dump ----------------------------------*/
 
-void SimpleMaterial::dump(      UInt32    uiIndent,
-                          const BitVector OSG_CHECK_ARG(bvFlags )) const
-{
+void SimpleMaterial::dump(UInt32 uiIndent, const BitVector OSG_CHECK_ARG(bvFlags)) const {
 
-    SimpleMaterialPtr thisP(*this);
+  SimpleMaterialPtr thisP(*this);
 
-    thisP.dump(uiIndent, FCDumpFlags::RefCount);
+  thisP.dump(uiIndent, FCDumpFlags::RefCount);
 
+  indentLog(uiIndent, PLOG);
+  PLOG << "SimpleMaterial at " << this << std::endl;
+
+  indentLog(uiIndent, PLOG);
+  PLOG << "\tambient: " << getAmbient() << std::endl;
+
+  indentLog(uiIndent, PLOG);
+  PLOG << "\tdiffuse: " << getDiffuse() << std::endl;
+
+  indentLog(uiIndent, PLOG);
+  PLOG << "\tspecular: " << getSpecular() << std::endl;
+
+  indentLog(uiIndent, PLOG);
+  PLOG << "\tshininess: " << getShininess() << std::endl;
+
+  indentLog(uiIndent, PLOG);
+  PLOG << "\temission: " << getEmission() << std::endl;
+
+  indentLog(uiIndent, PLOG);
+  PLOG << "\ttransparency: " << getTransparency() << std::endl;
+
+  indentLog(uiIndent, PLOG);
+  PLOG << "\tlit: " << getLit() << std::endl;
+
+  indentLog(uiIndent, PLOG);
+  PLOG << "\tChunks: " << std::endl;
+
+  for (MFStateChunkPtr::const_iterator i = _mfChunks.begin(); i != _mfChunks.end(); i++) {
     indentLog(uiIndent, PLOG);
-    PLOG << "SimpleMaterial at " << this << std::endl;
+    PLOG << "\t" << *i << std::endl;
+  }
 
-    indentLog(uiIndent, PLOG);
-    PLOG << "\tambient: " << getAmbient() << std::endl;
-
-    indentLog(uiIndent, PLOG);
-    PLOG << "\tdiffuse: " << getDiffuse()  << std::endl;
-
-    indentLog(uiIndent, PLOG);
-    PLOG << "\tspecular: " << getSpecular()  << std::endl;
-
-    indentLog(uiIndent, PLOG);
-    PLOG << "\tshininess: " << getShininess()  << std::endl;
-
-    indentLog(uiIndent, PLOG);
-    PLOG << "\temission: " << getEmission()  << std::endl;
-
-    indentLog(uiIndent, PLOG);
-    PLOG << "\ttransparency: " << getTransparency()  << std::endl;
-
-    indentLog(uiIndent, PLOG);
-    PLOG << "\tlit: " << getLit() << std::endl;
-
-    indentLog(uiIndent, PLOG);
-    PLOG << "\tChunks: " << std::endl;
-
-    for(MFStateChunkPtr::const_iterator i = _mfChunks.begin();
-            i != _mfChunks.end(); i++)
-    {
-        indentLog(uiIndent, PLOG);
-        PLOG << "\t" << *i << std::endl;
-    }
-
-    indentLog(uiIndent, PLOG);
-    PLOG << "SimpleMaterial end " << this << std::endl;
+  indentLog(uiIndent, PLOG);
+  PLOG << "SimpleMaterial end " << this << std::endl;
 }

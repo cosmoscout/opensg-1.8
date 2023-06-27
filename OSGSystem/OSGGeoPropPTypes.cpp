@@ -37,7 +37,7 @@
 \*---------------------------------------------------------------------------*/
 
 //---------------------------------------------------------------------------
- //  Includes
+//  Includes
 //---------------------------------------------------------------------------
 
 #define OSG_COMPILEGEOPROPPTYPEINST
@@ -51,19 +51,13 @@
 
 OSG_USING_NAMESPACE
 
-FieldDescription *GeoPTypesUI8PropertyDesc::_desc[] =
-{
-    new FieldDescription(
-        StoredFieldType::getClassType(), 
-        getFieldName(), 
-        OSG_FC_FIELD_IDM_DESC(GeoProperty<
-                                  GeoPTypesUI8PropertyDesc>::GeoPropDataField),
-        false,
+FieldDescription* GeoPTypesUI8PropertyDesc::_desc[] = {
+    new FieldDescription(StoredFieldType::getClassType(), getFieldName(),
+        OSG_FC_FIELD_IDM_DESC(GeoProperty<GeoPTypesUI8PropertyDesc>::GeoPropDataField), false,
 #ifdef OSG_MICROSOFT_COMPILER_HACKS
         GeoProperty<GeoPTypesUI8PropertyDesc>::getFPtrAccessMethod())
 #else
-        (FieldAccessMethod) &GeoProperty<
-                                  GeoPTypesUI8PropertyDesc>::getFieldPtr)
+        (FieldAccessMethod)&GeoProperty<GeoPTypesUI8PropertyDesc>::getFieldPtr)
 #endif
 };
 
@@ -71,7 +65,5 @@ OSG_GEO_PROP_TYPE_TMPL_DEF(GeoProperty, GeoPropertyDesc, PtrType)
 
 OSG_BEGIN_NAMESPACE
 
-OSG_GEOPROP_DLLEXPORT_DEF (GeoProperty        ,
-                           GeoPTypesUI8PropertyDesc, 
-                           OSG_SYSTEMLIB_DLLTMPLMAPPING);
+OSG_GEOPROP_DLLEXPORT_DEF(GeoProperty, GeoPTypesUI8PropertyDesc, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 OSG_END_NAMESPACE

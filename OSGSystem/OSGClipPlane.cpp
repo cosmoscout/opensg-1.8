@@ -51,67 +51,57 @@ OSG_USING_NAMESPACE
 
 /*! \class osg::ClipPlane
     \ingroup GrpSystemNodeCoresClipPlanes
-    
+
 */
 
 /*-------------------------------------------------------------------------*/
 /*                             Chunk                                       */
 
-SClipPlaneChunkPtr ClipPlane::getChunk(void)
-{
-    return _pChunk;
+SClipPlaneChunkPtr ClipPlane::getChunk(void) {
+  return _pChunk;
 }
 
-void ClipPlane::makeChunk(void)
-{
-    if(_pChunk == NullFC)
-    {
-        _pChunk = SClipPlaneChunk::create();
-    }
+void ClipPlane::makeChunk(void) {
+  if (_pChunk == NullFC) {
+    _pChunk = SClipPlaneChunk::create();
+  }
 
-    _pChunk->setEquation(getEquation());
+  _pChunk->setEquation(getEquation());
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Sync                                     */
 
-void ClipPlane::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void ClipPlane::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
-
 
 /*-------------------------------------------------------------------------*/
 /*                                Dump                                     */
 
-void ClipPlane::dump(      UInt32    uiIndent, 
-                     const BitVector bvFlags) const
-{
-   Inherited::dump(uiIndent, bvFlags);
+void ClipPlane::dump(UInt32 uiIndent, const BitVector bvFlags) const {
+  Inherited::dump(uiIndent, bvFlags);
 }
 
 /*-------------------------------------------------------------------------*/
 /*                            Constructors                                 */
 
-ClipPlane::ClipPlane(void) :
-     Inherited(),
-    _pChunk   (NullFC)
-{
+ClipPlane::ClipPlane(void)
+    : Inherited()
+    , _pChunk(NullFC) {
 }
 
-ClipPlane::ClipPlane(const ClipPlane &source) :
-     Inherited(source),
-    _pChunk   (source._pChunk)
-{
+ClipPlane::ClipPlane(const ClipPlane& source)
+    : Inherited(source)
+    , _pChunk(source._pChunk) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Destructor                                  */
 
-ClipPlane::~ClipPlane(void)
-{
-    if(_pChunk != NullFC)
-        subRefCP(_pChunk);
+ClipPlane::~ClipPlane(void) {
+  if (_pChunk != NullFC)
+    subRefCP(_pChunk);
 }
 
 /*-------------------------------------------------------------------------*/
@@ -189,40 +179,36 @@ Action::ResultE ClipPlane::drawLeave(Action *action)
 /*-------------------------------------------------------------------------*/
 /*                             Rendering                                   */
 
-Action::ResultE ClipPlane::renderEnter(Action *action)
-{
-    if(getOn() == false)
-        return Action::Continue;
-
-    RenderAction *pAction = dynamic_cast<RenderAction *>(action);
-
-    // ok we can cull the clipping plane only when it is invisible.
-    if (pAction->pushVisibility())
-    {
-        if(pAction->selectVisibles() == 0)
-        {
-            pAction->popVisibility();
-            return Action::Skip;
-        }
-    }
-
-    pAction->dropClipPlane(this);
-
+Action::ResultE ClipPlane::renderEnter(Action* action) {
+  if (getOn() == false)
     return Action::Continue;
+
+  RenderAction* pAction = dynamic_cast<RenderAction*>(action);
+
+  // ok we can cull the clipping plane only when it is invisible.
+  if (pAction->pushVisibility()) {
+    if (pAction->selectVisibles() == 0) {
+      pAction->popVisibility();
+      return Action::Skip;
+    }
+  }
+
+  pAction->dropClipPlane(this);
+
+  return Action::Continue;
 }
 
-Action::ResultE ClipPlane::renderLeave(Action *action)
-{
-    if(getOn() == false)
-        return Action::Continue;
-
-    RenderAction *pAction = dynamic_cast<RenderAction *>(action);
-
-    pAction->undropClipPlane(this);
-
-    pAction->popVisibility();
-
+Action::ResultE ClipPlane::renderLeave(Action* action) {
+  if (getOn() == false)
     return Action::Continue;
+
+  RenderAction* pAction = dynamic_cast<RenderAction*>(action);
+
+  pAction->undropClipPlane(this);
+
+  pAction->popVisibility();
+
+  return Action::Continue;
 }
 
 /*-------------------------------------------------------------------------*/
@@ -230,24 +216,12 @@ Action::ResultE ClipPlane::renderLeave(Action *action)
 
 //! initialize the static features of the class, e.g. action callbacks
 
-void ClipPlane::initMethod(void)
-{
-    RenderAction::registerEnterDefault( 
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<
-            Action::ResultE,
-            ClipPlanePtr  , 
-            CNodePtr             ,  
-            Action              *>(&ClipPlane::renderEnter));
+void ClipPlane::initMethod(void) {
+  RenderAction::registerEnterDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, ClipPlanePtr, CNodePtr, Action*>(
+          &ClipPlane::renderEnter));
 
-    RenderAction::registerLeaveDefault(
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<
-            OSG::Action::ResultE,
-            ClipPlanePtr  , 
-            CNodePtr             ,  
-            Action              *>(&ClipPlane::renderLeave));
+  RenderAction::registerLeaveDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<OSG::Action::ResultE, ClipPlanePtr, CNodePtr, Action*>(
+          &ClipPlane::renderLeave));
 }
-
-
-

@@ -53,152 +53,136 @@
 
 OSG_BEGIN_NAMESPACE
 
-class OSG_SYSTEMLIB_DLLMAPPING SortLastWindow : public SortLastWindowBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING SortLastWindow : public SortLastWindowBase {
+ private:
+  typedef SortLastWindowBase Inherited;
 
-    typedef SortLastWindowBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  enum {
+    BALANCE_GEOMETRY_STATIC         = 0,
+    BALANCE_GEOMETRY_VIEW_DEOENDENT = 1,
+    BALANCE_PROXYGROUPS             = 2
+  };
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    enum { BALANCE_GEOMETRY_STATIC          =0,
-           BALANCE_GEOMETRY_VIEW_DEOENDENT  =1,
-           BALANCE_PROXYGROUPS              =2 };
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   static partition functions                 */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  virtual void buildGroups(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   static partition functions                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  struct DrawableInfo {
+    NodePtr node;
+    Vec3f   bMin;
+    Vec3f   bMax;
+    Real32  load;
 
-    virtual void buildGroups              (void);
+    DrawableInfo();
+    DrawableInfo(const DrawableInfo& source);
+    const DrawableInfo& operator=(const DrawableInfo& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
-
-    struct DrawableInfo
-    {
-        NodePtr  node;
-        Vec3f    bMin;
-        Vec3f    bMax;
-        Real32   load;
-        
-        DrawableInfo();
-        DrawableInfo(const DrawableInfo &source);
-        const DrawableInfo &operator =(const DrawableInfo &source);
-
-        struct MaxXOrder : public 
-        std::binary_function<const DrawableInfo&,const DrawableInfo&, bool>
-        {
-            bool operator() (const DrawableInfo &a, const DrawableInfo &b);
-        };
-        struct MaxYOrder : public 
-        std::binary_function<const DrawableInfo&,const DrawableInfo&, bool>
-        {
-            bool operator() (const DrawableInfo &a, const DrawableInfo &b);
-        };
-        struct MaxZOrder : public 
-        std::binary_function<const DrawableInfo&,const DrawableInfo&, bool>
-        {
-            bool operator() (const DrawableInfo &a, const DrawableInfo &b);
-        };
+    struct MaxXOrder : public std::binary_function<const DrawableInfo&, const DrawableInfo&, bool> {
+      bool operator()(const DrawableInfo& a, const DrawableInfo& b);
     };
-    typedef std::vector<DrawableInfo> DrawableListT;
-
-    friend struct DrawableInfo;
-
-    /*---------------------------------------------------------------------*/
-    /*! \name      protected types                                         */
-    /*! \{                                                                 */
-/*
-    typedef std::pair<UInt32,Real32> ServerLoad;
-    typedef std::vector<ServerLoad>  ServerLoadSequence;
-    struct ServerLoadCompate
-    {
-        bool operator()(const ServerLoad &a,const ServerLoad &b);
+    struct MaxYOrder : public std::binary_function<const DrawableInfo&, const DrawableInfo&, bool> {
+      bool operator()(const DrawableInfo& a, const DrawableInfo& b);
     };
-    typedef std::priority_queue< ServerLoad, 
-                                 ServerLoadSequence,
-                                 ServerLoadCompate > ServerPQueue;
-*/
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name      client window funcitons                                 */
-    /*! \{                                                                 */
+    struct MaxZOrder : public std::binary_function<const DrawableInfo&, const DrawableInfo&, bool> {
+      bool operator()(const DrawableInfo& a, const DrawableInfo& b);
+    };
+  };
+  typedef std::vector<DrawableInfo> DrawableListT;
 
-    virtual void clientInit              ( void                        );
-    virtual void clientPreSync           ( void                        );
-    virtual void clientRender            ( RenderActionBase *action    );
-    virtual void clientSwap              ( void                        );
+  friend struct DrawableInfo;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name      server window funcitons                                 */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name      protected types                                         */
+  /*! \{                                                                 */
+  /*
+      typedef std::pair<UInt32,Real32> ServerLoad;
+      typedef std::vector<ServerLoad>  ServerLoadSequence;
+      struct ServerLoadCompate
+      {
+          bool operator()(const ServerLoad &a,const ServerLoad &b);
+      };
+      typedef std::priority_queue< ServerLoad,
+                                   ServerLoadSequence,
+                                   ServerLoadCompate > ServerPQueue;
+  */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name      client window funcitons                                 */
+  /*! \{                                                                 */
 
-    virtual void serverInit              ( WindowPtr window,UInt32 id  );
-    virtual void serverRender            ( WindowPtr window,UInt32 id,
-                                           RenderActionBase *action    );
-    virtual void serverSwap              ( WindowPtr window,UInt32 id  );
+  virtual void clientInit(void);
+  virtual void clientPreSync(void);
+  virtual void clientRender(RenderActionBase* action);
+  virtual void clientSwap(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name      server window funcitons                                 */
+  /*! \{                                                                 */
 
-    SortLastWindow(void);
-    SortLastWindow(const SortLastWindow &source);
+  virtual void serverInit(WindowPtr window, UInt32 id);
+  virtual void serverRender(WindowPtr window, UInt32 id, RenderActionBase* action);
+  virtual void serverSwap(WindowPtr window, UInt32 id);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    virtual ~SortLastWindow(void); 
+  SortLastWindow(void);
+  SortLastWindow(const SortLastWindow& source);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   load balancing                             */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    void collectDrawables  (NodePtr       &node,
-                            DrawableListT &drawables);
-    void splitDrawables    (DrawableListT &src,
-                            UInt32         groups,
-                            bool           cut=false);
-    void setupNodes        (UInt32         groupId  );
-    
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  virtual ~SortLastWindow(void);
 
-    friend class FieldContainer;
-    friend class SortLastWindowBase;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   load balancing                             */
+  /*! \{                                                                 */
 
-    static void initMethod(void);
+  void collectDrawables(NodePtr& node, DrawableListT& drawables);
+  void splitDrawables(DrawableListT& src, UInt32 groups, bool cut = false);
+  void setupNodes(UInt32 groupId);
 
-    // prohibit default functions (move to 'public' if you need one)
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class SortLastWindowBase;
 
-    void operator =(const SortLastWindow &source);
+  static void initMethod(void);
+
+  // prohibit default functions (move to 'public' if you need one)
+
+  void operator=(const SortLastWindow& source);
 };
 
-typedef SortLastWindow *SortLastWindowP;
+typedef SortLastWindow* SortLastWindowP;
 
 OSG_END_NAMESPACE
 

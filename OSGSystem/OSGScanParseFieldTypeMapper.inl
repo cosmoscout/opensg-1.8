@@ -48,83 +48,65 @@ OSG_BEGIN_NAMESPACE
 /*-------------------------------------------------------------------------*/
 /*                            Constructors                                 */
 
-template <class BaseT> inline
-ScanParseFieldTypeMapper<BaseT>::ScanParseFieldTypeMapper(void) :
-    Inherited(),
-    _mIntExt (),
-    _mExtInt ()
+template <class BaseT>
+inline ScanParseFieldTypeMapper<BaseT>::ScanParseFieldTypeMapper(void)
+    : Inherited()
+    , _mIntExt()
+    , _mExtInt()
 
 {
-    Inherited::setMapTypeIds(true);
+  Inherited::setMapTypeIds(true);
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Destructor                                  */
 
-template <class BaseT> inline
-ScanParseFieldTypeMapper<BaseT>::~ScanParseFieldTypeMapper(void)
-{
+template <class BaseT>
+inline ScanParseFieldTypeMapper<BaseT>::~ScanParseFieldTypeMapper(void) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                                Set                                      */
 
-template <class BaseT> inline
-void ScanParseFieldTypeMapper<BaseT>::setIntExtMapping(
-    UInt32            uiMappedType,
-    BuildInFieldTypes eBuildInType)
-{
-    _mExtInt[uiMappedType] = eBuildInType;
+template <class BaseT>
+inline void ScanParseFieldTypeMapper<BaseT>::setIntExtMapping(
+    UInt32 uiMappedType, BuildInFieldTypes eBuildInType) {
+  _mExtInt[uiMappedType] = eBuildInType;
 }
 
-template <class BaseT> inline
-void ScanParseFieldTypeMapper<BaseT>::setExtIntMapping(
-    BuildInFieldTypes eBuildInType,
-    UInt32            uiMappedType)
-{
-    _mIntExt[eBuildInType] = uiMappedType;
+template <class BaseT>
+inline void ScanParseFieldTypeMapper<BaseT>::setExtIntMapping(
+    BuildInFieldTypes eBuildInType, UInt32 uiMappedType) {
+  _mIntExt[eBuildInType] = uiMappedType;
 }
 
 /*-------------------------------------------------------------------------*/
 /*                                Map                                      */
 
-template <class BaseT> inline
-Int32 ScanParseFieldTypeMapper<BaseT>::mapExtIntFieldType(
-    const Char8 *,
-    const Int32  iFieldTypeId)
-{
-    typename ExtIntMap::iterator gMIt = _mExtInt.find(iFieldTypeId);
+template <class BaseT>
+inline Int32 ScanParseFieldTypeMapper<BaseT>::mapExtIntFieldType(
+    const Char8*, const Int32 iFieldTypeId) {
+  typename ExtIntMap::iterator gMIt = _mExtInt.find(iFieldTypeId);
 
-    if(gMIt != _mExtInt.end())
-    {
-        return gMIt->second;
-    }
-    else
-    {
-        return -iFieldTypeId;
-    }
+  if (gMIt != _mExtInt.end()) {
+    return gMIt->second;
+  } else {
+    return -iFieldTypeId;
+  }
 }
 
-template <class BaseT> inline
-Int32 ScanParseFieldTypeMapper<BaseT>::mapIntExtFieldType(
-    const Char8 *,
-    const Int32  iFieldTypeId)
-{
-    typename IntExtMap::iterator gMIt = _mIntExt.find(
-        (BuildInFieldTypes) iFieldTypeId);
+template <class BaseT>
+inline Int32 ScanParseFieldTypeMapper<BaseT>::mapIntExtFieldType(
+    const Char8*, const Int32 iFieldTypeId) {
+  typename IntExtMap::iterator gMIt = _mIntExt.find((BuildInFieldTypes)iFieldTypeId);
 
-    if(gMIt != _mIntExt.end())
-    {
-        return gMIt->second;
-    }
-    else
-    {
-        return -iFieldTypeId;
-    }
+  if (gMIt != _mIntExt.end()) {
+    return gMIt->second;
+  } else {
+    return -iFieldTypeId;
+  }
 }
 
 OSG_END_NAMESPACE
 
 #define OSGSCANPARSEFIELDTYPEMAPPER_INLINE_CVSID "@(#)$Id: $"
-
-

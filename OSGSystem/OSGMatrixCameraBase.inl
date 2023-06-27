@@ -52,109 +52,79 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &MatrixCameraBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& MatrixCameraBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 MatrixCameraBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 MatrixCameraBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-MatrixCameraPtr MatrixCameraBase::create(void) 
-{
-    MatrixCameraPtr fc; 
+inline MatrixCameraPtr MatrixCameraBase::create(void) {
+  MatrixCameraPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = MatrixCameraPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = MatrixCameraPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-MatrixCameraPtr MatrixCameraBase::createEmpty(void) 
-{ 
-    MatrixCameraPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline MatrixCameraPtr MatrixCameraBase::createEmpty(void) {
+  MatrixCameraPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the MatrixCamera::_sfProjectionMatrix field.
-inline
-SFMatrix *MatrixCameraBase::getSFProjectionMatrix(void)
-{
-    return &_sfProjectionMatrix;
+inline SFMatrix* MatrixCameraBase::getSFProjectionMatrix(void) {
+  return &_sfProjectionMatrix;
 }
 
 //! Get the MatrixCamera::_sfModelviewMatrix field.
-inline
-SFMatrix *MatrixCameraBase::getSFModelviewMatrix(void)
-{
-    return &_sfModelviewMatrix;
-}
-
-
-//! Get the value of the MatrixCamera::_sfProjectionMatrix field.
-inline
-Matrix &MatrixCameraBase::getProjectionMatrix(void)
-{
-    return _sfProjectionMatrix.getValue();
+inline SFMatrix* MatrixCameraBase::getSFModelviewMatrix(void) {
+  return &_sfModelviewMatrix;
 }
 
 //! Get the value of the MatrixCamera::_sfProjectionMatrix field.
-inline
-const Matrix &MatrixCameraBase::getProjectionMatrix(void) const
-{
-    return _sfProjectionMatrix.getValue();
+inline Matrix& MatrixCameraBase::getProjectionMatrix(void) {
+  return _sfProjectionMatrix.getValue();
+}
+
+//! Get the value of the MatrixCamera::_sfProjectionMatrix field.
+inline const Matrix& MatrixCameraBase::getProjectionMatrix(void) const {
+  return _sfProjectionMatrix.getValue();
 }
 
 //! Set the value of the MatrixCamera::_sfProjectionMatrix field.
-inline
-void MatrixCameraBase::setProjectionMatrix(const Matrix &value)
-{
-    _sfProjectionMatrix.setValue(value);
+inline void MatrixCameraBase::setProjectionMatrix(const Matrix& value) {
+  _sfProjectionMatrix.setValue(value);
 }
 
 //! Get the value of the MatrixCamera::_sfModelviewMatrix field.
-inline
-Matrix &MatrixCameraBase::getModelviewMatrix(void)
-{
-    return _sfModelviewMatrix.getValue();
+inline Matrix& MatrixCameraBase::getModelviewMatrix(void) {
+  return _sfModelviewMatrix.getValue();
 }
 
 //! Get the value of the MatrixCamera::_sfModelviewMatrix field.
-inline
-const Matrix &MatrixCameraBase::getModelviewMatrix(void) const
-{
-    return _sfModelviewMatrix.getValue();
+inline const Matrix& MatrixCameraBase::getModelviewMatrix(void) const {
+  return _sfModelviewMatrix.getValue();
 }
 
 //! Set the value of the MatrixCamera::_sfModelviewMatrix field.
-inline
-void MatrixCameraBase::setModelviewMatrix(const Matrix &value)
-{
-    _sfModelviewMatrix.setValue(value);
+inline void MatrixCameraBase::setModelviewMatrix(const Matrix& value) {
+  _sfModelviewMatrix.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGMATRIXCAMERABASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGMATRIXCAMERABASE_INLINE_CVSID                                                           \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

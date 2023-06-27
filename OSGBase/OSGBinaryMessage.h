@@ -50,104 +50,100 @@
 
 OSG_BEGIN_NAMESPACE
 
-class OSG_BASE_DLLMAPPING BinaryMessage : public NetworkMessage
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_BASE_DLLMAPPING BinaryMessage : public NetworkMessage {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef std::vector<UInt8> BufferType;
 
-    typedef std::vector<UInt8> BufferType;
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  BinaryMessage(void);
+  BinaryMessage(const BinaryMessage& source);
 
-    BinaryMessage                  (      void                 );
-    BinaryMessage                  (const BinaryMessage &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  virtual ~BinaryMessage(void);
 
-    virtual ~BinaryMessage         (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Get                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Get                                     */
-    /*! \{                                                                 */
+  virtual UInt32       getSize(void);
+  virtual MemoryHandle getBuffer(void);
 
-    virtual UInt32       getSize   (void);
-    virtual MemoryHandle getBuffer (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Misc                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Misc                                    */
-    /*! \{                                                                 */
+  virtual void setSize(UInt32 size);
+  void         clear(void);
+  void         reset(void);
 
-    virtual void setSize           (UInt32 size);
-            void clear             (void       );
-            void reset             (void       );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name               write message                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name               write message                                  */
-    /*! \{                                                                 */
+  void putUInt32(const UInt32 value);
+  void putInt32(const Int32 value);
+  void putUInt16(const UInt16 value);
+  void putInt16(const Int16 value);
+  void putUInt8(const UInt8 value);
+  void putInt8(const Int8 value);
+  void putString(const std::string& value);
+  void putReal32(const Real32 value);
 
-    void putUInt32           (const UInt32       value);
-    void putInt32            (const Int32        value);
-    void putUInt16           (const UInt16       value);
-    void putInt16            (const Int16        value);
-    void putUInt8            (const UInt8        value);
-    void putInt8             (const Int8         value);
-    void putString           (const std::string &value);
-    void putReal32           (const Real32       value);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name               read message                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name               read message                                   */
-    /*! \{                                                                 */
+  void getUInt32(UInt32& value);
+  void getInt32(Int32& value);
+  void getUInt16(UInt16& value);
+  void getInt16(Int16& value);
+  void getUInt8(UInt8& value);
+  void getInt8(Int8& value);
+  void getString(std::string& value);
+  void getReal32(Real32& value);
 
-    void        getUInt32           (UInt32      &value);
-    void        getInt32            (Int32       &value);
-    void        getUInt16           (UInt16      &value);
-    void        getInt16            (Int16       &value);
-    void        getUInt8            (UInt8       &value);
-    void        getInt8             (Int8        &value);
-    void        getString           (std::string &value);
-    void        getReal32           (Real32      &value);
+  UInt32      getUInt32(void);
+  Int32       getInt32(void);
+  UInt16      getUInt16(void);
+  Int16       getInt16(void);
+  UInt8       getUInt8(void);
+  Int8        getInt8(void);
+  std::string getString(void);
+  Real32      getReal32(void);
 
-    UInt32      getUInt32           (void              );
-    Int32       getInt32            (void              );
-    UInt16      getUInt16           (void              );
-    Int16       getInt16            (void              );
-    UInt8       getUInt8            (void              );
-    Int8        getInt8             (void              );
-    std::string getString           (void              );
-    Real32      getReal32           (void              );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Assignment                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Assignment                                */
-    /*! \{                                                                 */
+  BinaryMessage& operator=(const BinaryMessage& source);
 
-    BinaryMessage& operator =(const BinaryMessage &source);
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Member                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  BufferType _buffer;
+  UInt32     _pos;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Member                                  */
-    /*! \{                                                                 */
-
-    BufferType               _buffer;
-    UInt32                   _pos;
-
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
-
-    typedef NetworkMessage Inherited;
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  typedef NetworkMessage Inherited;
 };
 
 //---------------------------------------------------------------------------
@@ -156,7 +152,7 @@ class OSG_BASE_DLLMAPPING BinaryMessage : public NetworkMessage
 
 // class pointer
 
-typedef BinaryMessage *BinaryMessageP;
+typedef BinaryMessage* BinaryMessageP;
 
 OSG_END_NAMESPACE
 

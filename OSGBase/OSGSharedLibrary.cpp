@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -57,163 +56,136 @@ OSG_USING_NAMESPACE
 
 Char8 SharedLibrary::_szApplicationName[] = "Application";
 
-
 /*--------------------------- Constructors --------------------------------*/
 
-SharedLibrary::SharedLibrary(void) :
-    _szName (NULL   ),
-    _pHandle(NULL   ),
-    _type   (Invalid)
-{
+SharedLibrary::SharedLibrary(void)
+    : _szName(NULL)
+    , _pHandle(NULL)
+    , _type(Invalid) {
 }
 
-SharedLibrary::SharedLibrary(const Char8 *szName) :
-    _szName (NULL   ),
-    _pHandle(NULL   ),
-    _type   (Invalid)
-{
-    if(szName == NULL)
-    {
-        stringDup(_szApplicationName, _szName);
+SharedLibrary::SharedLibrary(const Char8* szName)
+    : _szName(NULL)
+    , _pHandle(NULL)
+    , _type(Invalid) {
+  if (szName == NULL) {
+    stringDup(_szApplicationName, _szName);
 
-        _type = Application;
-    }
-    else
-    {
-        stringDup(szName, _szName);
+    _type = Application;
+  } else {
+    stringDup(szName, _szName);
 
-        _type = SharedLib;
-    }    
+    _type = SharedLib;
+  }
 
-    this->open();
+  this->open();
 }
 
 /*---------------------------- Destructor ---------------------------------*/
 
-SharedLibrary::~SharedLibrary(void)
-{
-    close();
+SharedLibrary::~SharedLibrary(void) {
+  close();
 }
 
 /*---------------------------- Class Specific -----------------------------*/
 
-bool SharedLibrary::open(const Char8 *szName)
-{
-    if(isOpen() == true)
-    {
-        close();
-    }
+bool SharedLibrary::open(const Char8* szName) {
+  if (isOpen() == true) {
+    close();
+  }
 
-    if(szName == NULL)
-    {
-        stringDup(_szApplicationName, _szName);
+  if (szName == NULL) {
+    stringDup(_szApplicationName, _szName);
 
-        _type = Application;
-    }
-    else
-    {
-        stringDup(szName, _szName);
+    _type = Application;
+  } else {
+    stringDup(szName, _szName);
 
-        _type = SharedLib;
-    }    
+    _type = SharedLib;
+  }
 
-    return this->open();
+  return this->open();
 }
 
-bool SharedLibrary::close(void)
-{
-    bool returnValue = false;
+bool SharedLibrary::close(void) {
+  bool returnValue = false;
 
-    if(_pHandle != NULL)
-    {
+  if (_pHandle != NULL) {
 #ifndef WIN32
-        returnValue = (dlclose(_pHandle) == 0);
+    returnValue = (dlclose(_pHandle) == 0);
 #else
-        returnValue = (FreeLibrary(_pHandle)) != FALSE;
+    returnValue = (FreeLibrary(_pHandle)) != FALSE;
 #endif
-        _pHandle    = NULL;
-    }
+    _pHandle = NULL;
+  }
 
-    return returnValue;
+  return returnValue;
 }
 
-AnonSymbolHandle SharedLibrary::getSymbol(const Char8 *szSymbolName)
-{
-    AnonSymbolHandle returnValue = NULL;
+AnonSymbolHandle SharedLibrary::getSymbol(const Char8* szSymbolName) {
+  AnonSymbolHandle returnValue = NULL;
 
-    if(isOpen() == false)
-    {
-        if(open() == false)
-        {
-            return returnValue;
-        }
+  if (isOpen() == false) {
+    if (open() == false) {
+      return returnValue;
     }
+  }
 
-    if(_pHandle != NULL && szSymbolName != NULL)
-    {
+  if (_pHandle != NULL && szSymbolName != NULL) {
 #ifndef WIN32
-        returnValue = dlsym(_pHandle, szSymbolName);
+    returnValue = dlsym(_pHandle, szSymbolName);
 #else
-        returnValue = (void*)GetProcAddress(_pHandle, szSymbolName);
+    returnValue = (void*)GetProcAddress(_pHandle, szSymbolName);
 #endif
-    }
+  }
 
 #ifndef WIN32
-    if(returnValue == NULL)
-        fprintf(stderr, "%s\n", dlerror());
+  if (returnValue == NULL)
+    fprintf(stderr, "%s\n", dlerror());
 #else
 #endif
 
-    fprintf(stderr, "Got Symbol : %s %p %p\n", 
-            szSymbolName, 
-            _pHandle, 
-            returnValue);
+  fprintf(stderr, "Got Symbol : %s %p %p\n", szSymbolName, _pHandle, returnValue);
 
-    return returnValue;
+  return returnValue;
 }
 
-bool SharedLibrary::isOpen(void)
-{
-    return _pHandle != NULL;
+bool SharedLibrary::isOpen(void) {
+  return _pHandle != NULL;
 }
 
-const Char8 *SharedLibrary::getName(void)
-{
-    return _szName;
+const Char8* SharedLibrary::getName(void) {
+  return _szName;
 }
 
 /*------------------------------- Helper ----------------------------------*/
 
-bool SharedLibrary::open(void)
-{
-    Char8 *libName = NULL;
+bool SharedLibrary::open(void) {
+  Char8* libName = NULL;
 
-    if(_pHandle != NULL)
-    {
-        return true;
-    }
+  if (_pHandle != NULL) {
+    return true;
+  }
 
-    if(_type == SharedLib)
-    {
-        libName = _szName;
-    }
+  if (_type == SharedLib) {
+    libName = _szName;
+  }
 
 #ifndef WIN32
 #ifdef OSG_DLOPEN_LAZY
-    _pHandle = dlopen(libName, RTLD_LAZY | RTLD_GLOBAL);
+  _pHandle = dlopen(libName, RTLD_LAZY | RTLD_GLOBAL);
 #else
-    _pHandle = dlopen(libName, RTLD_NOW  | RTLD_GLOBAL);
+  _pHandle = dlopen(libName, RTLD_NOW | RTLD_GLOBAL);
 #endif
 
-    if(_pHandle == NULL)
-    {
-        fprintf(stderr, "%s\n", dlerror());
-    }
+  if (_pHandle == NULL) {
+    fprintf(stderr, "%s\n", dlerror());
+  }
 #else
-    _pHandle = LoadLibrary(libName);
+  _pHandle = LoadLibrary(libName);
 #endif
 
-    return (_pHandle != NULL);
+  return (_pHandle != NULL);
 }
 
 #endif

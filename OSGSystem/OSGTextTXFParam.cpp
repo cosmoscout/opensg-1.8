@@ -37,49 +37,42 @@
 \*---------------------------------------------------------------------------*/
 
 #ifdef _MSC_VER
-# pragma warning (disable: 4786)
+#pragma warning(disable : 4786)
 #endif
 
 #include "OSGTextTXFParam.h"
 
 #include <algorithm>
 
-
 using namespace std;
 
-
 OSG_BEGIN_NAMESPACE
-
 
 //----------------------------------------------------------------------
 // Static Class Variable implementations
 // Author: pdaehne
 //----------------------------------------------------------------------
 wstring TextTXFParam::_defaultCharacters =
-    L" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
-
+    L" !\"#$%&'()*+,-./"
+    L"0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
 
 //----------------------------------------------------------------------
 // Compares the Param object with another Param object
 // Author: pdaehne
 //----------------------------------------------------------------------
-bool TextTXFParam::operator==(const TextTXFParam &other) const
-{
-    return (size == other.size) && (gap == other.gap) &&
-           (textureWidth == other.textureWidth) && (_characters == other._characters);
+bool TextTXFParam::operator==(const TextTXFParam& other) const {
+  return (size == other.size) && (gap == other.gap) && (textureWidth == other.textureWidth) &&
+         (_characters == other._characters);
 }
-
 
 //----------------------------------------------------------------------
 // Sorts the characters in the character string and removes duplicates
 // Author: pdaehne
 //----------------------------------------------------------------------
-void TextTXFParam::normalizeCharacters()
-{
-    sort(_characters.begin(),  _characters.end());
-    wstring::iterator newEnd = unique(_characters.begin(),  _characters.end());
-    _characters.erase(newEnd, _characters.end());
+void TextTXFParam::normalizeCharacters() {
+  sort(_characters.begin(), _characters.end());
+  wstring::iterator newEnd = unique(_characters.begin(), _characters.end());
+  _characters.erase(newEnd, _characters.end());
 }
-
 
 OSG_END_NAMESPACE

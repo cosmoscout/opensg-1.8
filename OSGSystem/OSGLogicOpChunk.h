@@ -48,118 +48,111 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief LogicOpChunk class. See \ref 
+/*! \brief LogicOpChunk class. See \ref
            PageSystemLogicOpChunk for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING LogicOpChunk : public LogicOpChunkBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING LogicOpChunk : public LogicOpChunkBase {
+ private:
+  typedef LogicOpChunkBase Inherited;
 
-    typedef LogicOpChunkBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                 Chunk Class Access                           */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual const StateChunkClass* getClass(void) const;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                 Chunk Class Access                           */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name              Static Chunk Class Access                       */
+  /*! \{                                                                 */
 
-           virtual const StateChunkClass * getClass         (void) const;
+  inline static UInt32                 getStaticClassId(void);
+  inline static const StateChunkClass* getStaticClass(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name              Static Chunk Class Access                       */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    inline static        UInt32            getStaticClassId (void);
-    inline static  const StateChunkClass * getStaticClass   (void);
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    State Commands                            */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    State Commands                            */
-    /*! \{                                                                 */
+  virtual void activate(DrawActionBase* action, UInt32 index = 0);
 
-    virtual void activate   ( DrawActionBase * action, UInt32 index = 0 );
+  virtual void changeFrom(DrawActionBase* action, StateChunk* old, UInt32 index = 0);
 
-    virtual void changeFrom ( DrawActionBase * action, StateChunk * old,
-                             UInt32 index = 0 );
+  virtual void deactivate(DrawActionBase* action, UInt32 index = 0);
 
-    virtual void deactivate ( DrawActionBase * action, UInt32 index = 0 );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Comparison                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Comparison                                 */
-    /*! \{                                                                 */
+  virtual Real32 switchCost(StateChunk* chunk);
 
-    virtual Real32 switchCost  ( StateChunk * chunk );
+  virtual bool operator<(const StateChunk& other) const;
 
-    virtual bool   operator <  (const StateChunk &other) const;
+  virtual bool operator==(const StateChunk& other) const;
+  virtual bool operator!=(const StateChunk& other) const;
 
-    virtual bool   operator == (const StateChunk &other) const;
-    virtual bool   operator != (const StateChunk &other) const;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in LogicOpChunkBase.
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    // Variables should all be in LogicOpChunkBase.
+  LogicOpChunk(void);
+  LogicOpChunk(const LogicOpChunk& source);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    LogicOpChunk(void);
-    LogicOpChunk(const LogicOpChunk &source);
+  virtual ~LogicOpChunk(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    virtual ~LogicOpChunk(void); 
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class LogicOpChunkBase;
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  static void initMethod(void);
 
-    friend class FieldContainer;
-    friend class LogicOpChunkBase;
+  // class. Used for indexing in State
+  static StateChunkClass _class;
 
-    static void initMethod(void);
+  // prohibit default functions (move to 'public' if you need one)
 
-    // class. Used for indexing in State
-    static StateChunkClass _class;
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const LogicOpChunk &source);
+  void operator=(const LogicOpChunk& source);
 };
 
-typedef LogicOpChunk *LogicOpChunkP;
+typedef LogicOpChunk* LogicOpChunkP;
 
 OSG_END_NAMESPACE
 
 #include <OSGLogicOpChunkBase.inl>
 #include <OSGLogicOpChunk.inl>
 
-#define OSGLOGICOPCHUNK_HEADER_CVSID "@(#)$Id: OSGLogicOpChunk.h,v 1.1 2007/06/25 14:32:45 neumannc Exp $"
+#define OSGLOGICOPCHUNK_HEADER_CVSID                                                               \
+  "@(#)$Id: OSGLogicOpChunk.h,v 1.1 2007/06/25 14:32:45 neumannc Exp $"
 
 #endif /* _OSGLOGICOPCHUNK_H_ */

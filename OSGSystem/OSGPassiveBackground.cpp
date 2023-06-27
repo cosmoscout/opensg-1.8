@@ -59,7 +59,6 @@
 
 OSG_USING_NAMESPACE
 
-
 /***************************************************************************\
  *                            Description                                  *
 \***************************************************************************/
@@ -79,43 +78,36 @@ description.
  -  private                                                                -
 \*-------------------------------------------------------------------------*/
 
-void PassiveBackground::initMethod (void)
-{
+void PassiveBackground::initMethod(void) {
 }
 
 /***************************************************************************\
  *                           Instance methods                              *
 \***************************************************************************/
 
-PassiveBackground::PassiveBackground(void) :
-    Inherited()
-{
+PassiveBackground::PassiveBackground(void)
+    : Inherited() {
 }
 
-PassiveBackground::PassiveBackground(const PassiveBackground &source) :
-    Inherited(source)
-{
+PassiveBackground::PassiveBackground(const PassiveBackground& source)
+    : Inherited(source) {
 }
 
-PassiveBackground::~PassiveBackground(void)
-{
+PassiveBackground::~PassiveBackground(void) {
 }
 
-void PassiveBackground::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void PassiveBackground::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
 /*-------------------------- your_category---------------------------------*/
 
-void PassiveBackground::clear(DrawActionBase *, Viewport *)
-{
+void PassiveBackground::clear(DrawActionBase*, Viewport*) {
 }
 
 /*------------------------------- dump ----------------------------------*/
 
-void PassiveBackground::dump(      UInt32    OSG_CHECK_ARG(uiIndent), 
-                             const BitVector OSG_CHECK_ARG(bvFlags )) const
-{
-    SLOG << "Dump PassiveBackground NI" << std::endl;
+void PassiveBackground::dump(
+    UInt32 OSG_CHECK_ARG(uiIndent), const BitVector OSG_CHECK_ARG(bvFlags)) const {
+  SLOG << "Dump PassiveBackground NI" << std::endl;
 }

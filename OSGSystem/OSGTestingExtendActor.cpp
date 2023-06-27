@@ -51,10 +51,8 @@ OSG_USING_NAMESPACE
 /*! Create a new instance of this actor.
  */
 
-TestingExtendActor *
-TestingExtendActor::create(void)
-{
-    return new TestingExtendActor();
+TestingExtendActor* TestingExtendActor::create(void) {
+  return new TestingExtendActor();
 }
 
 //----------------------------------------------------------------------------
@@ -64,15 +62,12 @@ TestingExtendActor::create(void)
 /*! Destructor.
  */
 
-TestingExtendActor::~TestingExtendActor(void)
-{
+TestingExtendActor::~TestingExtendActor(void) {
 }
 
 //----------------------------------------------------------------------------
 //    Enter/Leave
 //----------------------------------------------------------------------------
-
-
 
 //----------------------------------------------------------------------------
 //    Constructors
@@ -82,6 +77,5 @@ TestingExtendActor::~TestingExtendActor(void)
  */
 
 TestingExtendActor::TestingExtendActor(void)
-    : Inherited()
-{
+    : Inherited() {
 }

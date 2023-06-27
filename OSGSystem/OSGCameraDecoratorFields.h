@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGCAMERADECORATORFIELDS_H_
 #define _OSGCAMERADECORATORFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class CameraDecorator;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! CameraDecoratorPtr
 
 typedef FCPtr<CameraPtr, CameraDecorator> CameraDecoratorPtr;
@@ -81,18 +80,23 @@ typedef FCPtr<CameraPtr, CameraDecorator> CameraDecoratorPtr;
 #endif
 
 template <>
-struct FieldDataTraits<CameraDecoratorPtr> : 
-    public FieldTraitsRecurseMapper<CameraDecoratorPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<CameraDecoratorPtr>
+    : public FieldTraitsRecurseMapper<CameraDecoratorPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getSName(void) { return "SFCameraDecoratorPtr"; }
-    static const char *getMName(void) { return "MFCameraDecoratorPtr"; }
+  static const char* getSName(void) {
+    return "SFCameraDecoratorPtr";
+  }
+  static const char* getMName(void) {
+    return "MFCameraDecoratorPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -102,7 +106,6 @@ struct FieldDataTraits<CameraDecoratorPtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
@@ -126,6 +129,7 @@ OSG_DLLEXPORT_DECL1(MField, CameraDecoratorPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 
 OSG_END_NAMESPACE
 
-#define OSGCAMERADECORATORFIELDS_HEADER_CVSID "@(#)$Id: FCFieldsTemplate_h.h,v 1.25 2005/04/04 14:51:48 dirk Exp $"
+#define OSGCAMERADECORATORFIELDS_HEADER_CVSID                                                      \
+  "@(#)$Id: FCFieldsTemplate_h.h,v 1.25 2005/04/04 14:51:48 dirk Exp $"
 
 #endif /* _OSGCAMERADECORATORFIELDS_H_ */

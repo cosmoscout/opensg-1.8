@@ -36,26 +36,28 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 OSG_BEGIN_NAMESPACE
 
-
 inline TextLayoutParam::TextLayoutParam()
-: horizontal(true), leftToRight(true), topToBottom(true),
-  majorAlignment(ALIGN_FIRST), minorAlignment(ALIGN_FIRST), spacing(1.f),
-  length(), maxExtend(0.f)
-{}
+    : horizontal(true)
+    , leftToRight(true)
+    , topToBottom(true)
+    , majorAlignment(ALIGN_FIRST)
+    , minorAlignment(ALIGN_FIRST)
+    , spacing(1.f)
+    , length()
+    , maxExtend(0.f) {
+}
 
+inline void TextLayoutParam::setLength(Real32 l) {
+  length.assign(1, l);
+}
 
-inline void TextLayoutParam::setLength(Real32 l)
-{ length.assign(1, l); }
-
-
-inline Real32 TextLayoutParam::getLength(UInt32 index) const
-{ return index >= length.size() ? 0.f : length[index]; }
-
+inline Real32 TextLayoutParam::getLength(UInt32 index) const {
+  return index >= length.size() ? 0.f : length[index];
+}
 
 OSG_END_NAMESPACE
 
-
-#define OSGTEXTLAYOUTPARAM_INLINE_CVSID "@(#)$Id: OSGTextLayoutParam.inl,v 1.1 2005/03/03 13:43:06 a-m-z Exp $"
+#define OSGTEXTLAYOUTPARAM_INLINE_CVSID                                                            \
+  "@(#)$Id: OSGTextLayoutParam.inl,v 1.1 2005/03/03 13:43:06 a-m-z Exp $"

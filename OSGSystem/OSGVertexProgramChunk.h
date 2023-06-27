@@ -48,120 +48,112 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief VertexProgramChunk class. See \ref 
+/*! \brief VertexProgramChunk class. See \ref
            PageSystemVertexProgramChunk for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING VertexProgramChunk : public VertexProgramChunkBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING VertexProgramChunk : public VertexProgramChunkBase {
+ private:
+  typedef VertexProgramChunkBase Inherited;
 
-    typedef VertexProgramChunkBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                 Chunk Class Access                           */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual const StateChunkClass* getClass(void) const;
 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name              Static Chunk Class Access                       */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                 Chunk Class Access                           */
-    /*! \{                                                                 */
+  inline static UInt32                 getStaticClassId(void);
+  inline static const StateChunkClass* getStaticClass(void);
 
-           virtual const StateChunkClass * getClass         (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name              Static Chunk Class Access                       */
-    /*! \{                                                                 */
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    inline static        UInt32            getStaticClassId (void);
-    inline static  const StateChunkClass * getStaticClass   (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in VertexProgramChunkBase.
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Init                                   */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  void onCreate(const VertexProgramChunk* source = NULL);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    // Variables should all be in VertexProgramChunkBase.
+  VertexProgramChunk(void);
+  VertexProgramChunk(const VertexProgramChunk& source);
 
-     /*---------------------------------------------------------------------*/
-    /*! \name                       Init                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    void onCreate(const VertexProgramChunk *source = NULL);
+  virtual ~VertexProgramChunk(void);
 
-    /*! \}                                                                 */
-   /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name             Program-Specific Methods                         */
+  /*! \{                                                                 */
 
-    VertexProgramChunk(void);
-    VertexProgramChunk(const VertexProgramChunk &source);
+  virtual UInt32      getExtension(void) const;
+  virtual GLenum      getTarget(void) const;
+  virtual const char* getTargetName(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    virtual ~VertexProgramChunk(void); 
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class VertexProgramChunkBase;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name             Program-Specific Methods                         */
-    /*! \{                                                                 */
+  static StateChunkClass _class;
 
-    virtual       UInt32  getExtension(void)  const; 
-    virtual       GLenum  getTarget(void)     const; 
-    virtual const char   *getTargetName(void) const; 
+  /*---------------------------------------------------------------------*/
+  /*! \name            OpenGL Extension Handling                         */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  static UInt32 _arbVertexProgram;
 
-    friend class FieldContainer;
-    friend class VertexProgramChunkBase;
+  /*! \}                                                                 */
 
-    static StateChunkClass _class;
+  static void initMethod(void);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name            OpenGL Extension Handling                         */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                         GL                                   */
+  /*! \{                                                                 */
 
-    static UInt32 _arbVertexProgram;
+  void handleGL(Window* win, UInt32 id);
 
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 
-    static void initMethod(void);
+  // prohibit default functions (move to 'public' if you need one)
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                         GL                                   */
-    /*! \{                                                                 */
-
-    void handleGL(Window *win, UInt32 id);
-    
-    /*! \}                                                                 */
-    
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const VertexProgramChunk &source);
+  void operator=(const VertexProgramChunk& source);
 };
 
-typedef VertexProgramChunk *VertexProgramChunkP;
+typedef VertexProgramChunk* VertexProgramChunkP;
 
 OSG_END_NAMESPACE
 

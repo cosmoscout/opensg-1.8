@@ -48,99 +48,86 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief *put brief class description here* 
+/*! \brief *put brief class description here*
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING DVRSimpleShader : public DVRSimpleShaderBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING DVRSimpleShader : public DVRSimpleShaderBase {
+ private:
+  typedef DVRSimpleShaderBase Inherited;
 
-    typedef DVRSimpleShaderBase Inherited;
+  /*==========================  PUBLIC  =================================*/
 
-    /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-  public:
+  virtual void changed(BitVector whichField, UInt32 from);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     from);
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                 Volume Rendering                             */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  // Callback to set up shader - register textures here
+  virtual bool initialize(DVRVolume* volume, DrawActionBase* action);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                 Volume Rendering                             */
-    /*! \{                                                                 */
+  // Callback before any slice is rendered - setup per volume
+  virtual void activate(DVRVolume* volume, DrawActionBase* action);
 
-    // Callback to set up shader - register textures here
-    virtual bool initialize   (DVRVolume      *volume, 
-                               DrawActionBase *action);
-    
-    // Callback before any slice is rendered - setup per volume
-    virtual void activate     (DVRVolume      *volume, 
-                               DrawActionBase *action);
+  // Callback before any brick - state setup per brick
+  virtual void brickActivate(DVRVolume* volume, DrawActionBase* action, Brick* brick);
 
-    // Callback before any brick - state setup per brick
-    virtual void brickActivate(DVRVolume      *volume, 
-                               DrawActionBase *action, 
-                               Brick          *brick );
+  // Callback after all rendering of the volume is done
+  virtual void deactivate(DVRVolume* volume, DrawActionBase* action);
 
-    // Callback after all rendering of the volume is done
-    virtual void deactivate   (DVRVolume      *volume, 
-                               DrawActionBase *action);
+  // Callback to clean up shader resources
+  virtual void cleanup(DVRVolume* volume, DrawActionBase* action);
 
-    // Callback to clean up shader resources
-    virtual void cleanup      (DVRVolume      *volume, 
-                               DrawActionBase *action);
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in DVRSimpleShaderBase.
 
-  protected:
+  Int32 m_nTextureId;
 
-    // Variables should all be in DVRSimpleShaderBase.
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    Int32 m_nTextureId;
-	 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  DVRSimpleShader(void);
+  DVRSimpleShader(const DVRSimpleShader& source);
 
-    DVRSimpleShader(void);
-    DVRSimpleShader(const DVRSimpleShader &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  virtual ~DVRSimpleShader(void);
 
-    virtual ~DVRSimpleShader(void); 
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
+  /*==========================  PRIVATE  ================================*/
 
-  private:
+ private:
+  friend class FieldContainer;
+  friend class DVRSimpleShaderBase;
 
-    friend class FieldContainer;
-    friend class DVRSimpleShaderBase;
+  static void initMethod(void);
 
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const DVRSimpleShader &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const DVRSimpleShader& source);
 };
 
-typedef DVRSimpleShader *DVRSimpleShaderP;
+typedef DVRSimpleShader* DVRSimpleShaderP;
 
 OSG_END_NAMESPACE
 

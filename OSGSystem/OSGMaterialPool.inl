@@ -41,20 +41,17 @@
 
 OSG_BEGIN_NAMESPACE
 
-inline
-UInt32 MaterialPool::getCount(void) const
-{
-    return _mfMaterials.size();
+inline UInt32 MaterialPool::getCount(void) const {
+  return _mfMaterials.size();
 }
- 
-inline
-MaterialPtr MaterialPool::get(UInt32 index)
-{
-    OSG_ASSERT((index < _mfMaterials.size()));
 
-    return _mfMaterials[index];
+inline MaterialPtr MaterialPool::get(UInt32 index) {
+  OSG_ASSERT((index < _mfMaterials.size()));
+
+  return _mfMaterials[index];
 }
 
 OSG_END_NAMESPACE
 
-#define OSGMATERIALPOOL_INLINE_CVSID "@(#)$Id: OSGMaterialPool.inl,v 1.1 2005/04/30 15:03:20 a-m-z Exp $"
+#define OSGMATERIALPOOL_INLINE_CVSID                                                               \
+  "@(#)$Id: OSGMaterialPool.inl,v 1.1 2005/04/30 15:03:20 a-m-z Exp $"

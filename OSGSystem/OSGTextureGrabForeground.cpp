@@ -63,8 +63,8 @@ OSG_USING_NAMESPACE
 
 /*! \class osg::TextureGrabForeground
     \ingroup GrpSystemWindowForegrounds
-    
-The GrabForeground is used for grabbing a rendered viewport into a Texture. 
+
+The GrabForeground is used for grabbing a rendered viewport into a Texture.
 See \ref PageSystemWindowForegroundGrabTexture for a description.
 
 */
@@ -77,10 +77,8 @@ See \ref PageSystemWindowForegroundGrabTexture for a description.
  *                           Class methods                                 *
 \***************************************************************************/
 
-void TextureGrabForeground::initMethod (void)
-{
+void TextureGrabForeground::initMethod(void) {
 }
-
 
 /***************************************************************************\
  *                           Instance methods                              *
@@ -92,119 +90,95 @@ void TextureGrabForeground::initMethod (void)
 
 /*----------------------- constructors & destructors ----------------------*/
 
-TextureGrabForeground::TextureGrabForeground(void) :
-    Inherited()
-{
+TextureGrabForeground::TextureGrabForeground(void)
+    : Inherited() {
 }
 
-TextureGrabForeground::TextureGrabForeground(const TextureGrabForeground &source) :
-    Inherited(source)
-{
+TextureGrabForeground::TextureGrabForeground(const TextureGrabForeground& source)
+    : Inherited(source) {
 }
 
-TextureGrabForeground::~TextureGrabForeground(void)
-{
+TextureGrabForeground::~TextureGrabForeground(void) {
 }
 
 /*----------------------------- class specific ----------------------------*/
 
-void TextureGrabForeground::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void TextureGrabForeground::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
-void TextureGrabForeground::dump(      UInt32    , 
-                         const BitVector ) const
-{
-    SLOG << "Dump TextureGrabForeground NI" << std::endl;
+void TextureGrabForeground::dump(UInt32, const BitVector) const {
+  SLOG << "Dump TextureGrabForeground NI" << std::endl;
 }
-
 
 /*! Grab the image to the texture.
-*/   
-void TextureGrabForeground::draw(DrawActionBase *action, Viewport *port)
-{
-    if(getActive() == false)
-        return;
-	
-    TextureChunkPtr t = getTexture();
-    
-    if(t == NullFC)       // No texture, no grab.
-        return;
-    
-    Int32  pw = port->getPixelWidth(),
-           ph = port->getPixelHeight();
-    
-    // Ignore empty viewports
-    if(pw < 1 || ph < 1)
-        return;
- 
-    ImagePtr i = t->getImage();
-             
-    // If image is smaller than 2x2, resize it to vp size
-    // the 2x2 is because you can't create 0x0 images
-    if((i->getWidth() <= 1 && i->getHeight() <= 1) ||
-       (getAutoResize() && (osgabs(i->getWidth()  - pw) > 1 ||
-                            osgabs(i->getHeight() - ph) > 1 )
-       )
-      )
-    {
-        i->set(i->getPixelFormat(), pw, ph);
-        // Tell the texture...
-        beginEditCP(t, TextureChunk::ImageFieldMask);
-        endEditCP  (t, TextureChunk::ImageFieldMask);
-    }
-    
-    UInt32 w = osgMin((Int32)i->getWidth(),  pw);
-    UInt32 h = osgMin((Int32)i->getHeight(), ph);
+ */
+void TextureGrabForeground::draw(DrawActionBase* action, Viewport* port) {
+  if (getActive() == false)
+    return;
 
-    glErr("TextureGrabForeground::activate precheck");
-    
-    action->getWindow()->validateGLObject(t->getGLId());
+  TextureChunkPtr t = getTexture();
 
-    glErr("TextureGrabForeground::bind precheck");
-    
-    GLenum bindTarget = getBindTarget(), copyTarget = getCopyTarget();
-    
-    if(bindTarget == GL_NONE)
-    {
-       if(i->getDepth() > 1)
-       {
-            FWARNING(("TextureGrabBackground:: 3D textures not "
-                        "supported for this window!\n"));
-            return;
-       }
-       else if(h > 1)        bindTarget = GL_TEXTURE_2D;
-       else                  bindTarget = GL_TEXTURE_1D;        
-    }
-    
-    if(copyTarget == GL_NONE)
-        copyTarget = bindTarget;
-    
-    glBindTexture(bindTarget,
-                  action->getWindow()->getGLObjectId(t->getGLId()));
+  if (t == NullFC) // No texture, no grab.
+    return;
 
-    glErr("TextureGrabForeground::copy precheck");
+  Int32 pw = port->getPixelWidth(), ph = port->getPixelHeight();
 
-    if(copyTarget == GL_TEXTURE_3D)
-    {
-        FWARNING(("TextureGrabForeground:: grabbing to 3D textures not "
-                  "supported yet!\n"));      
-    }
-    else if(copyTarget == GL_TEXTURE_1D)
-    {
-        glCopyTexSubImage1D(copyTarget, 0, 0, 
-                            port->getPixelLeft(), port->getPixelBottom(), 
-                            w);
-    }
+  // Ignore empty viewports
+  if (pw < 1 || ph < 1)
+    return;
+
+  ImagePtr i = t->getImage();
+
+  // If image is smaller than 2x2, resize it to vp size
+  // the 2x2 is because you can't create 0x0 images
+  if ((i->getWidth() <= 1 && i->getHeight() <= 1) ||
+      (getAutoResize() && (osgabs(i->getWidth() - pw) > 1 || osgabs(i->getHeight() - ph) > 1))) {
+    i->set(i->getPixelFormat(), pw, ph);
+    // Tell the texture...
+    beginEditCP(t, TextureChunk::ImageFieldMask);
+    endEditCP(t, TextureChunk::ImageFieldMask);
+  }
+
+  UInt32 w = osgMin((Int32)i->getWidth(), pw);
+  UInt32 h = osgMin((Int32)i->getHeight(), ph);
+
+  glErr("TextureGrabForeground::activate precheck");
+
+  action->getWindow()->validateGLObject(t->getGLId());
+
+  glErr("TextureGrabForeground::bind precheck");
+
+  GLenum bindTarget = getBindTarget(), copyTarget = getCopyTarget();
+
+  if (bindTarget == GL_NONE) {
+    if (i->getDepth() > 1) {
+      FWARNING(("TextureGrabBackground:: 3D textures not "
+                "supported for this window!\n"));
+      return;
+    } else if (h > 1)
+      bindTarget = GL_TEXTURE_2D;
     else
-    {
-        glCopyTexSubImage2D(copyTarget, 0, 0, 0, 
-                            port->getPixelLeft(), port->getPixelBottom(), 
-                            w, h);
-    }
-    
-    glErr("TextureGrabForeground::copy postcheck");
-   
-    glBindTexture(bindTarget, 0);
+      bindTarget = GL_TEXTURE_1D;
+  }
+
+  if (copyTarget == GL_NONE)
+    copyTarget = bindTarget;
+
+  glBindTexture(bindTarget, action->getWindow()->getGLObjectId(t->getGLId()));
+
+  glErr("TextureGrabForeground::copy precheck");
+
+  if (copyTarget == GL_TEXTURE_3D) {
+    FWARNING(("TextureGrabForeground:: grabbing to 3D textures not "
+              "supported yet!\n"));
+  } else if (copyTarget == GL_TEXTURE_1D) {
+    glCopyTexSubImage1D(copyTarget, 0, 0, port->getPixelLeft(), port->getPixelBottom(), w);
+  } else {
+    glCopyTexSubImage2D(copyTarget, 0, 0, 0, port->getPixelLeft(), port->getPixelBottom(), w, h);
+  }
+
+  glErr("TextureGrabForeground::copy postcheck");
+
+  glBindTexture(bindTarget, 0);
 }

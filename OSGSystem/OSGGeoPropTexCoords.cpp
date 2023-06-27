@@ -37,7 +37,7 @@
 \*---------------------------------------------------------------------------*/
 
 //---------------------------------------------------------------------------
- //  Includes
+//  Includes
 //---------------------------------------------------------------------------
 
 #define OSG_COMPILEGEOPROPTEXCOORDSINST
@@ -51,131 +51,83 @@
 
 OSG_USING_NAMESPACE
 
-FieldDescription *GeoTexCoords1fPropertyDesc::_desc[] =
-{
-    new FieldDescription(
-        StoredFieldType::getClassType(), 
-        getFieldName(), 
-        OSG_FC_FIELD_IDM_DESC(GeoProperty<
-                                GeoTexCoords1fPropertyDesc>::GeoPropDataField),
-        false,
+FieldDescription* GeoTexCoords1fPropertyDesc::_desc[] = {
+    new FieldDescription(StoredFieldType::getClassType(), getFieldName(),
+        OSG_FC_FIELD_IDM_DESC(GeoProperty<GeoTexCoords1fPropertyDesc>::GeoPropDataField), false,
 #ifdef OSG_MICROSOFT_COMPILER_HACKS
         GeoProperty<GeoTexCoords1fPropertyDesc>::getFPtrAccessMethod())
 #else
-        (FieldAccessMethod) &GeoProperty<
-                                GeoTexCoords1fPropertyDesc>::getFieldPtr)
+        (FieldAccessMethod)&GeoProperty<GeoTexCoords1fPropertyDesc>::getFieldPtr)
 #endif
 };
 
-FieldDescription *GeoTexCoords2fPropertyDesc::_desc[] =
-{
-    new FieldDescription(
-        StoredFieldType::getClassType(), 
-        getFieldName(), 
-        OSG_FC_FIELD_IDM_DESC(GeoProperty<
-                                GeoTexCoords2fPropertyDesc>::GeoPropDataField),
-        false,
+FieldDescription* GeoTexCoords2fPropertyDesc::_desc[] = {
+    new FieldDescription(StoredFieldType::getClassType(), getFieldName(),
+        OSG_FC_FIELD_IDM_DESC(GeoProperty<GeoTexCoords2fPropertyDesc>::GeoPropDataField), false,
 #ifdef OSG_MICROSOFT_COMPILER_HACKS
         GeoProperty<GeoTexCoords2fPropertyDesc>::getFPtrAccessMethod())
 #else
-        (FieldAccessMethod) &GeoProperty<
-                                GeoTexCoords2fPropertyDesc>::getFieldPtr)
+        (FieldAccessMethod)&GeoProperty<GeoTexCoords2fPropertyDesc>::getFieldPtr)
 #endif
 };
 
-FieldDescription *GeoTexCoords3fPropertyDesc::_desc[] =
-{
-    new FieldDescription(
-        StoredFieldType::getClassType(), 
-        getFieldName(), 
-        OSG_FC_FIELD_IDM_DESC(GeoProperty<
-                                GeoTexCoords3fPropertyDesc>::GeoPropDataField),
-        false,
+FieldDescription* GeoTexCoords3fPropertyDesc::_desc[] = {
+    new FieldDescription(StoredFieldType::getClassType(), getFieldName(),
+        OSG_FC_FIELD_IDM_DESC(GeoProperty<GeoTexCoords3fPropertyDesc>::GeoPropDataField), false,
 #ifdef OSG_MICROSOFT_COMPILER_HACKS
         GeoProperty<GeoTexCoords3fPropertyDesc>::getFPtrAccessMethod())
 #else
-        (FieldAccessMethod) &GeoProperty<
-                                GeoTexCoords3fPropertyDesc>::getFieldPtr)
+        (FieldAccessMethod)&GeoProperty<GeoTexCoords3fPropertyDesc>::getFieldPtr)
 #endif
 };
 
-FieldDescription *GeoTexCoords4fPropertyDesc::_desc[] =
-{
-    new FieldDescription(
-        StoredFieldType::getClassType(), 
-        getFieldName(), 
-        OSG_FC_FIELD_IDM_DESC(GeoProperty<
-                                GeoTexCoords4fPropertyDesc>::GeoPropDataField),
-        false,
+FieldDescription* GeoTexCoords4fPropertyDesc::_desc[] = {
+    new FieldDescription(StoredFieldType::getClassType(), getFieldName(),
+        OSG_FC_FIELD_IDM_DESC(GeoProperty<GeoTexCoords4fPropertyDesc>::GeoPropDataField), false,
 #ifdef OSG_MICROSOFT_COMPILER_HACKS
         GeoProperty<GeoTexCoords4fPropertyDesc>::getFPtrAccessMethod())
 #else
-        (FieldAccessMethod) &GeoProperty<
-                                GeoTexCoords4fPropertyDesc>::getFieldPtr)
+        (FieldAccessMethod)&GeoProperty<GeoTexCoords4fPropertyDesc>::getFieldPtr)
 #endif
 };
 
-FieldDescription *GeoTexCoords1dPropertyDesc::_desc[] =
-{
-    new FieldDescription(
-        StoredFieldType::getClassType(), 
-        getFieldName(), 
-        OSG_FC_FIELD_IDM_DESC(GeoProperty<
-                                GeoTexCoords1dPropertyDesc>::GeoPropDataField),
-        false,
+FieldDescription* GeoTexCoords1dPropertyDesc::_desc[] = {
+    new FieldDescription(StoredFieldType::getClassType(), getFieldName(),
+        OSG_FC_FIELD_IDM_DESC(GeoProperty<GeoTexCoords1dPropertyDesc>::GeoPropDataField), false,
 #ifdef OSG_MICROSOFT_COMPILER_HACKS
         GeoProperty<GeoTexCoords1dPropertyDesc>::getFPtrAccessMethod())
 #else
-        (FieldAccessMethod) &GeoProperty<
-                                GeoTexCoords1dPropertyDesc>::getFieldPtr)
+        (FieldAccessMethod)&GeoProperty<GeoTexCoords1dPropertyDesc>::getFieldPtr)
 #endif
 };
 
-FieldDescription *GeoTexCoords2dPropertyDesc::_desc[] =
-{
-    new FieldDescription(
-        StoredFieldType::getClassType(), 
-        getFieldName(), 
-        OSG_FC_FIELD_IDM_DESC(GeoProperty<
-                                GeoTexCoords2dPropertyDesc>::GeoPropDataField),
-        false,
+FieldDescription* GeoTexCoords2dPropertyDesc::_desc[] = {
+    new FieldDescription(StoredFieldType::getClassType(), getFieldName(),
+        OSG_FC_FIELD_IDM_DESC(GeoProperty<GeoTexCoords2dPropertyDesc>::GeoPropDataField), false,
 #ifdef OSG_MICROSOFT_COMPILER_HACKS
         GeoProperty<GeoTexCoords2dPropertyDesc>::getFPtrAccessMethod())
 #else
-        (FieldAccessMethod) &GeoProperty<
-                                GeoTexCoords2dPropertyDesc>::getFieldPtr)
+        (FieldAccessMethod)&GeoProperty<GeoTexCoords2dPropertyDesc>::getFieldPtr)
 #endif
 };
 
-FieldDescription *GeoTexCoords3dPropertyDesc::_desc[] =
-{
-    new FieldDescription(
-        StoredFieldType::getClassType(), 
-        getFieldName(), 
-        OSG_FC_FIELD_IDM_DESC(GeoProperty<
-                                GeoTexCoords3dPropertyDesc>::GeoPropDataField),
-        false,
+FieldDescription* GeoTexCoords3dPropertyDesc::_desc[] = {
+    new FieldDescription(StoredFieldType::getClassType(), getFieldName(),
+        OSG_FC_FIELD_IDM_DESC(GeoProperty<GeoTexCoords3dPropertyDesc>::GeoPropDataField), false,
 #ifdef OSG_MICROSOFT_COMPILER_HACKS
         GeoProperty<GeoTexCoords3dPropertyDesc>::getFPtrAccessMethod())
 #else
-        (FieldAccessMethod) &GeoProperty<
-                                GeoTexCoords3dPropertyDesc>::getFieldPtr)
+        (FieldAccessMethod)&GeoProperty<GeoTexCoords3dPropertyDesc>::getFieldPtr)
 #endif
 };
 
-FieldDescription *GeoTexCoords4dPropertyDesc::_desc[] =
-{
-    new FieldDescription(
-        StoredFieldType::getClassType(), 
-        getFieldName(), 
-        OSG_FC_FIELD_IDM_DESC(GeoProperty<
-                                GeoTexCoords4dPropertyDesc>::GeoPropDataField),
-        false,
+FieldDescription* GeoTexCoords4dPropertyDesc::_desc[] = {
+    new FieldDescription(StoredFieldType::getClassType(), getFieldName(),
+        OSG_FC_FIELD_IDM_DESC(GeoProperty<GeoTexCoords4dPropertyDesc>::GeoPropDataField), false,
 #ifdef OSG_MICROSOFT_COMPILER_HACKS
         GeoProperty<GeoTexCoords4dPropertyDesc>::getFPtrAccessMethod())
 #else
-        (FieldAccessMethod) &GeoProperty<
-                                GeoTexCoords4dPropertyDesc>::getFieldPtr)
+        (FieldAccessMethod)&GeoProperty<GeoTexCoords4dPropertyDesc>::getFieldPtr)
 #endif
 };
 
@@ -183,36 +135,20 @@ OSG_GEO_PROP_TYPE_TMPL_DEF(GeoProperty, GeoPropertyDesc, PtrType)
 
 OSG_BEGIN_NAMESPACE
 
-OSG_GEOPROP_DLLEXPORT_DEF (GeoProperty,
-                           GeoTexCoords1fPropertyDesc, 
-                           OSG_SYSTEMLIB_DLLTMPLMAPPING);
+OSG_GEOPROP_DLLEXPORT_DEF(GeoProperty, GeoTexCoords1fPropertyDesc, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
-OSG_GEOPROP_DLLEXPORT_DEF (GeoProperty,
-                           GeoTexCoords2fPropertyDesc, 
-                           OSG_SYSTEMLIB_DLLTMPLMAPPING);
+OSG_GEOPROP_DLLEXPORT_DEF(GeoProperty, GeoTexCoords2fPropertyDesc, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
-OSG_GEOPROP_DLLEXPORT_DEF (GeoProperty,
-                           GeoTexCoords3fPropertyDesc, 
-                           OSG_SYSTEMLIB_DLLTMPLMAPPING);
+OSG_GEOPROP_DLLEXPORT_DEF(GeoProperty, GeoTexCoords3fPropertyDesc, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
-OSG_GEOPROP_DLLEXPORT_DEF (GeoProperty,
-                           GeoTexCoords4fPropertyDesc, 
-                           OSG_SYSTEMLIB_DLLTMPLMAPPING);
+OSG_GEOPROP_DLLEXPORT_DEF(GeoProperty, GeoTexCoords4fPropertyDesc, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
-OSG_GEOPROP_DLLEXPORT_DEF (GeoProperty,
-                           GeoTexCoords1dPropertyDesc, 
-                           OSG_SYSTEMLIB_DLLTMPLMAPPING);
+OSG_GEOPROP_DLLEXPORT_DEF(GeoProperty, GeoTexCoords1dPropertyDesc, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
-OSG_GEOPROP_DLLEXPORT_DEF (GeoProperty,
-                           GeoTexCoords2dPropertyDesc, 
-                           OSG_SYSTEMLIB_DLLTMPLMAPPING);
+OSG_GEOPROP_DLLEXPORT_DEF(GeoProperty, GeoTexCoords2dPropertyDesc, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
-OSG_GEOPROP_DLLEXPORT_DEF (GeoProperty,
-                           GeoTexCoords3dPropertyDesc, 
-                           OSG_SYSTEMLIB_DLLTMPLMAPPING);
+OSG_GEOPROP_DLLEXPORT_DEF(GeoProperty, GeoTexCoords3dPropertyDesc, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
-OSG_GEOPROP_DLLEXPORT_DEF (GeoProperty,
-                           GeoTexCoords4dPropertyDesc, 
-                           OSG_SYSTEMLIB_DLLTMPLMAPPING);
+OSG_GEOPROP_DLLEXPORT_DEF(GeoProperty, GeoTexCoords4dPropertyDesc, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE

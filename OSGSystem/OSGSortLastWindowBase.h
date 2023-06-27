@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGSORTLASTWINDOWBASE_H_
 #define _OSGSORTLASTWINDOWBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -67,9 +65,9 @@
 
 #include <OSGClusterWindow.h> // Parent
 
-#include <OSGNodeFields.h> // GroupNodes type
+#include <OSGNodeFields.h>   // GroupNodes type
 #include <OSGUInt32Fields.h> // GroupLengths type
-#include <OSGBoolFields.h> // GroupsChanged type
+#include <OSGBoolFields.h>   // GroupsChanged type
 
 #include <OSGSortLastWindowFields.h>
 
@@ -80,195 +78,174 @@ class BinaryDataHandler;
 
 //! \brief SortLastWindow Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING SortLastWindowBase : public ClusterWindow
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING SortLastWindowBase : public ClusterWindow {
+ private:
+  typedef ClusterWindow Inherited;
 
-    typedef ClusterWindow    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef SortLastWindowPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    GroupNodesFieldId    = Inherited::NextFieldId,
+    GroupLengthsFieldId  = GroupNodesFieldId + 1,
+    GroupsChangedFieldId = GroupLengthsFieldId + 1,
+    NextFieldId          = GroupsChangedFieldId + 1
+  };
 
-    typedef SortLastWindowPtr  Ptr;
+  static const OSG::BitVector GroupNodesFieldMask;
+  static const OSG::BitVector GroupLengthsFieldMask;
+  static const OSG::BitVector GroupsChangedFieldMask;
 
-    enum
-    {
-        GroupNodesFieldId    = Inherited::NextFieldId,
-        GroupLengthsFieldId  = GroupNodesFieldId    + 1,
-        GroupsChangedFieldId = GroupLengthsFieldId  + 1,
-        NextFieldId          = GroupsChangedFieldId + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector GroupNodesFieldMask;
-    static const OSG::BitVector GroupLengthsFieldMask;
-    static const OSG::BitVector GroupsChangedFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  MFNodePtr* getMFGroupNodes(void);
+  MFUInt32*  getMFGroupLengths(void);
+  SFBool*    getSFGroupsChanged(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  bool&            getGroupsChanged(void);
+  const bool&      getGroupsChanged(void) const;
+  NodePtr&         getGroupNodes(const UInt32 index);
+  MFNodePtr&       getGroupNodes(void);
+  const MFNodePtr& getGroupNodes(void) const;
+  UInt32&          getGroupLengths(const UInt32 index);
+  MFUInt32&        getGroupLengths(void);
+  const MFUInt32&  getGroupLengths(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           MFNodePtr           *getMFGroupNodes     (void);
-           MFUInt32            *getMFGroupLengths   (void);
-           SFBool              *getSFGroupsChanged  (void);
+  void setGroupsChanged(const bool& value);
 
-           bool                &getGroupsChanged  (void);
-     const bool                &getGroupsChanged  (void) const;
-           NodePtr             &getGroupNodes     (const UInt32 index);
-           MFNodePtr           &getGroupNodes     (void);
-     const MFNodePtr           &getGroupNodes     (void) const;
-           UInt32              &getGroupLengths   (const UInt32 index);
-           MFUInt32            &getGroupLengths   (void);
-     const MFUInt32            &getGroupLengths   (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setGroupsChanged  ( const bool &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static SortLastWindowPtr create(void);
+  static SortLastWindowPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  SortLastWindowPtr      create          (void); 
-    static  SortLastWindowPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  MFNodePtr _mfGroupNodes;
+  MFUInt32  _mfGroupLengths;
+  SFBool    _sfGroupsChanged;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  SortLastWindowBase(void);
+  SortLastWindowBase(const SortLastWindowBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~SortLastWindowBase(void);
 
-    MFNodePtr           _mfGroupNodes;
-    MFUInt32            _mfGroupLengths;
-    SFBool              _sfGroupsChanged;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    SortLastWindowBase(void);
-    SortLastWindowBase(const SortLastWindowBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~SortLastWindowBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      SortLastWindowBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(SortLastWindowBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      SortLastWindowBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      SortLastWindowBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const SortLastWindowBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const SortLastWindowBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef SortLastWindowBase* SortLastWindowBaseP;
 
-typedef SortLastWindowBase *SortLastWindowBaseP;
-
-typedef osgIF<SortLastWindowBase::isNodeCore,
-              CoredNodePtr<SortLastWindow>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet SortLastWindowNodePtr;
+typedef osgIF<SortLastWindowBase::isNodeCore, CoredNodePtr<SortLastWindow>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet SortLastWindowNodePtr;
 
 typedef RefPtr<SortLastWindowPtr> SortLastWindowRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGSORTLASTWINDOWBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGSORTLASTWINDOWBASE_HEADER_CVSID                                                         \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGSORTLASTWINDOWBASE_H_ */

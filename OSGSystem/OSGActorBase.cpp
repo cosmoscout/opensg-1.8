@@ -76,13 +76,11 @@ that takes care of the management of functors and state.
     This method will be called by an action, when "leaving" a node.
 */
 
-
 //----------------------------------------------------------------------------
 //    Types
 //----------------------------------------------------------------------------
 
-ActorBase::ActorBaseState::~ActorBaseState(void)
-{
+ActorBase::ActorBaseState::~ActorBaseState(void) {
 }
 
 //----------------------------------------------------------------------------
@@ -92,10 +90,8 @@ ActorBase::ActorBaseState::~ActorBaseState(void)
 /*! Destructor
  */
 
-ActorBase::~ActorBase(void)
-{
+ActorBase::~ActorBase(void) {
 }
-
 
 //----------------------------------------------------------------------------
 //    Start/Stop
@@ -105,28 +101,24 @@ ActorBase::~ActorBase(void)
     \warning When overriding this method, you must call the inherited version.
  */
 
-ActorBase::ResultE
-ActorBase::start(void)
-{
+ActorBase::ResultE ActorBase::start(void) {
 #ifdef OSG_NEWACTION_STATESLOTINTERFACE
-    _stateSlotMap.clear();
+  _stateSlotMap.clear();
 #endif
 
-    return NewActionTypes::Continue;
+  return NewActionTypes::Continue;
 }
 
 /*! Called by an action after a traversal.
     \warning When overriding this method, you must call the inherited version.
  */
 
-ActorBase::ResultE
-ActorBase::stop(void)
-{
+ActorBase::ResultE ActorBase::stop(void) {
 #ifdef OSG_NEWACTION_STATESLOTINTERFACE
-    _stateSlotMap.clear();
+  _stateSlotMap.clear();
 #endif
 
-    return NewActionTypes::Continue;
+  return NewActionTypes::Continue;
 }
 
 //----------------------------------------------------------------------------
@@ -137,15 +129,16 @@ ActorBase::stop(void)
  */
 
 ActorBase::ActorBase(void)
-    : _pAction      (NULL                        ),
-      _actorId      (TypeTraits<UInt32>::getMax()),
-      _enterNodeFlag(false                       ),
-      _leaveNodeFlag(false                       ),
+    : _pAction(NULL)
+    , _actorId(TypeTraits<UInt32>::getMax())
+    , _enterNodeFlag(false)
+    , _leaveNodeFlag(false)
+    ,
 #ifdef OSG_NEWACTION_STATESLOTINTERFACE
-      _stateSlotMap (                            ),
+    _stateSlotMap()
+    ,
 #endif
-      _pState       (NULL                        )
-{
+    _pState(NULL) {
 }
 
 //----------------------------------------------------------------------------
@@ -156,37 +149,28 @@ ActorBase::ActorBase(void)
     \warning When overriding this method, you must call the inherited version.
  */
 
-void
-ActorBase::addEvent(NewActionBase *pAction, UInt32 actorId)
-{
-    if((_pAction != NULL) || (_actorId != TypeTraits<UInt32>::getMax()))
-    {
-        SWARNING << "ActorBase::attachEvent: Actor already attached."
-                 << endLog;
-    }
+void ActorBase::addEvent(NewActionBase* pAction, UInt32 actorId) {
+  if ((_pAction != NULL) || (_actorId != TypeTraits<UInt32>::getMax())) {
+    SWARNING << "ActorBase::attachEvent: Actor already attached." << endLog;
+  }
 
-    createInitialState();
+  createInitialState();
 
-    _pAction = pAction;
-    _actorId = actorId;
+  _pAction = pAction;
+  _actorId = actorId;
 }
 
 /*! Notifies the actor, that it was removed from an action.
     \warning When overriding this method, you must call the inherited version.
  */
 
-void
-ActorBase::subEvent(NewActionBase *pAction, UInt32 actorId)
-{
-    if((_pAction != pAction) || (_actorId != actorId))
-    {
-        SWARNING << "ActorBase::detachEvent: Inconsistency detected."
-                 << endLog;
-    }
+void ActorBase::subEvent(NewActionBase* pAction, UInt32 actorId) {
+  if ((_pAction != pAction) || (_actorId != actorId)) {
+    SWARNING << "ActorBase::detachEvent: Inconsistency detected." << endLog;
+  }
 
-    deleteInitialState();
+  deleteInitialState();
 
-    _pAction = NULL;
-    _actorId = TypeTraits<UInt32>::getMax();
+  _pAction = NULL;
+  _actorId = TypeTraits<UInt32>::getMax();
 }
-

@@ -56,47 +56,44 @@ OSG_BEGIN_NAMESPACE
 
 class ActorBase;
 
-namespace NewActionTypes
-{
-    class OSG_SYSTEMLIB_DLLMAPPING FunctorArgumentType
-    {
-        /*==== PUBLIC =======================================================*/
-      public:
-        /*-------------------------------------------------------------------*/
-        /*! \name    Constructors                                            */
-        /*! \{                                                               */
+namespace NewActionTypes {
+class OSG_SYSTEMLIB_DLLMAPPING FunctorArgumentType {
+  /*==== PUBLIC =======================================================*/
+ public:
+  /*-------------------------------------------------------------------*/
+  /*! \name    Constructors                                            */
+  /*! \{                                                               */
 
-        inline FunctorArgumentType(      ActorBase           *pActor,
-                                   const NodePtr             &pNode,
-                                   UInt32     pass                   );
+  inline FunctorArgumentType(ActorBase* pActor, const NodePtr& pNode, UInt32 pass);
 
-        /*! \}                                                               */
-        /*-------------------------------------------------------------------*/
-        /*! \name    Get/Set                                                 */
-        /*! \{                                                               */
+  /*! \}                                                               */
+  /*-------------------------------------------------------------------*/
+  /*! \name    Get/Set                                                 */
+  /*! \{                                                               */
 
-        inline ActorBase *getActor(      void             ) const;
-        inline void       setActor(      ActorBase *pActor);
-        
-        inline NodePtr    getNode (      void             ) const;
-        inline void       setNode (const NodePtr   &pNode );
-        
-        inline UInt32     getPass (      void             ) const;
-        inline void       setPass (      UInt32     pass  );
+  inline ActorBase* getActor(void) const;
+  inline void       setActor(ActorBase* pActor);
 
-        /*! \}                                                               */
-        /*==== PRIVATE ======================================================*/
-      private:
-        ActorBase *_pActor;
-        NodePtr    _pNode;
-        UInt32     _pass;
-    };
-}
+  inline NodePtr getNode(void) const;
+  inline void    setNode(const NodePtr& pNode);
+
+  inline UInt32 getPass(void) const;
+  inline void   setPass(UInt32 pass);
+
+  /*! \}                                                               */
+  /*==== PRIVATE ======================================================*/
+ private:
+  ActorBase* _pActor;
+  NodePtr    _pNode;
+  UInt32     _pass;
+};
+} // namespace NewActionTypes
 
 OSG_END_NAMESPACE
 
 #include "OSGFunctorArgumentType.inl"
 
-#define OSGFUNCTORARGUMENTTYPE_HEADER_CVSID "@(#)$Id: OSGFunctorArgumentType.h,v 1.1 2004/09/17 14:09:43 neumannc Exp $"
+#define OSGFUNCTORARGUMENTTYPE_HEADER_CVSID                                                        \
+  "@(#)$Id: OSGFunctorArgumentType.h,v 1.1 2004/09/17 14:09:43 neumannc Exp $"
 
 #endif /* _OSGFUNCTORARGUMENTTYPE_H_ */

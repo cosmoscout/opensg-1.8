@@ -56,87 +56,81 @@ OSG_BEGIN_NAMESPACE
            PageKernelPhongMaterial for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING PhongMaterial : public PhongMaterialBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING PhongMaterial : public PhongMaterialBase {
+ private:
+  typedef PhongMaterialBase Inherited;
 
-    typedef PhongMaterialBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField,
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  virtual StatePtr makeState(void);
+  virtual void     rebuildState(void);
+  virtual bool     isTransparent(void) const;
 
-    virtual void dump(      UInt32     uiIndent = 0,
-                      const BitVector  bvFlags  = 0) const;
+  static ChunkMaterialPtr createChunkMaterial(void);
 
-    virtual StatePtr    makeState       (void);
-    virtual void        rebuildState    (void);
-    virtual bool        isTransparent   (void) const;
-  
-    static ChunkMaterialPtr createChunkMaterial(void);
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in PhongMaterialBase.
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    // Variables should all be in PhongMaterialBase.
+  PhongMaterial(void);
+  PhongMaterial(const PhongMaterial& source);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    PhongMaterial(void);
-    PhongMaterial(const PhongMaterial &source);
+  virtual ~PhongMaterial(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    virtual ~PhongMaterial(void);
+  /*==========================  PRIVATE  ================================*/
+ private:
+  void prepareLocalChunks(void);
+  void createFragmentProgram(void);
 
-    /*! \}                                                                 */
+  friend class FieldContainer;
+  friend class PhongMaterialBase;
 
-    /*==========================  PRIVATE  ================================*/
-  private:
+  static void initMethod(void);
 
-    void prepareLocalChunks(void);
-    void createFragmentProgram(void);
+  static UInt32 _arbFragmentProgram;
 
-    friend class FieldContainer;
-    friend class PhongMaterialBase;
+  MaterialChunkPtr        _materialChunk;
+  BlendChunkPtr           _blendChunk;
+  VertexProgramChunkPtr   _vpChunk;
+  FragmentProgramChunkPtr _fpChunk;
 
-    static void initMethod(void);
-    
-    static UInt32 _arbFragmentProgram;
-
-    MaterialChunkPtr        _materialChunk;
-    BlendChunkPtr           _blendChunk;
-    VertexProgramChunkPtr   _vpChunk;
-    FragmentProgramChunkPtr _fpChunk;
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const PhongMaterial &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const PhongMaterial& source);
 };
 
-typedef PhongMaterial *PhongMaterialP;
+typedef PhongMaterial* PhongMaterialP;
 
 OSG_END_NAMESPACE
 
 #include <OSGPhongMaterialBase.inl>
 #include <OSGPhongMaterial.inl>
 
-#define OSGPHONGMATERIAL_HEADER_CVSID "@(#)$Id: OSGPhongMaterial.h,v 1.4 2003/10/10 15:38:50 a-m-z Exp $"
+#define OSGPHONGMATERIAL_HEADER_CVSID                                                              \
+  "@(#)$Id: OSGPhongMaterial.h,v 1.4 2003/10/10 15:38:50 a-m-z Exp $"
 
 #endif /* _OSGPHONGMATERIAL_H_ */

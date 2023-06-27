@@ -44,7 +44,6 @@
 #include <OSGSystemDef.h>
 #include <OSGConfig.h>
 
-
 #include <math.h>
 #include <vector>
 #include <stdlib.h>
@@ -58,39 +57,41 @@ class ParSpaceTrimmer;
 
 class OSG_SYSTEMLIB_DLLMAPPING QuadTreeCreator {
 
-	friend class ParSpaceTrimmer;
+  friend class ParSpaceTrimmer;
 
-//this class contains the algorithm to create a quadtree for the triangulation
-//of a BezierTensorSurface matrix
-//there is a constraint on the letters of the quadtree: their depth level should
-//not differ more than 1 (it's a constraint to be able to triangulate easily)
-protected:
-    DCTPMesh *qtm; //quadtreemesh
-//	bool	m_bForTrimming;
+  // this class contains the algorithm to create a quadtree for the triangulation
+  // of a BezierTensorSurface matrix
+  // there is a constraint on the letters of the quadtree: their depth level should
+  // not differ more than 1 (it's a constraint to be able to triangulate easily)
+ protected:
+  DCTPMesh* qtm; // quadtreemesh
+  //	bool	m_bForTrimming;
 
-    double error_epsilon;
-    double computeApproximationError( DCTPFace *f );
-      //returns error of triangualtion when creating an approximation of
-      //a B.TensorSurf. with two triangles
-    double computeBilinearNorm( DCTPFace *face );
-    int finishSubdivisions( DCTPFace *f );
+  double error_epsilon;
+  double computeApproximationError(DCTPFace* f);
+  // returns error of triangualtion when creating an approximation of
+  // a B.TensorSurf. with two triangles
+  double computeBilinearNorm(DCTPFace* face);
+  int    finishSubdivisions(DCTPFace* f);
 
-public:
-    QuadTreeCreator( DCTPMesh *mesh/*, bool bForTrimming*/ ) { qtm = mesh; /*m_bForTrimming = bForTrimming;*/ }
-    ~QuadTreeCreator()
-    {
-        dctpfacevector::iterator fe = qtm->faces.end();
-        for( dctpfacevector::iterator f = qtm->faces.begin(); f != fe; ++f )
-                delete (BezierTensorSurface*)((*f)->faceinfo);
-    }
-    void setErrorTolerance( double epsilon ) { error_epsilon = epsilon; }
-    int setInitialLeaves( const beziersurfacematrix& patches,
-                          const DCTPdvector& intervals_u,
-                          const DCTPdvector& intervals_v ); //sets starting leaves
-    int createQuadTree( void );//well... go figure
-    void resetMesh( void );
+ public:
+  QuadTreeCreator(DCTPMesh* mesh /*, bool bForTrimming*/) {
+    qtm = mesh; /*m_bForTrimming = bForTrimming;*/
+  }
+  ~QuadTreeCreator() {
+    dctpfacevector::iterator fe = qtm->faces.end();
+    for (dctpfacevector::iterator f = qtm->faces.begin(); f != fe; ++f)
+      delete (BezierTensorSurface*)((*f)->faceinfo);
+  }
+  void setErrorTolerance(double epsilon) {
+    error_epsilon = epsilon;
+  }
+  int  setInitialLeaves(const beziersurfacematrix& patches, const DCTPdvector& intervals_u,
+       const DCTPdvector& intervals_v); // sets starting leaves
+  int  createQuadTree(void);            // well... go figure
+  void resetMesh(void);
 };
 
 OSG_END_NAMESPACE
 
-#endif //QuadTreeCreator.h
+#endif // QuadTreeCreator.h

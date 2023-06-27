@@ -49,133 +49,125 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief State chunk for cubic textures. See \ref PageSystemCubeTextureChunk 
+/*! \brief State chunk for cubic textures. See \ref PageSystemCubeTextureChunk
     for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING CubeTextureChunk : public CubeTextureChunkBase
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING CubeTextureChunk : public CubeTextureChunkBase {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                 Chunk Class Access                           */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                 Chunk Class Access                           */
-    /*! \{                                                                 */
+  virtual const StateChunkClass* getClass(void) const;
 
-           virtual const StateChunkClass * getClass         (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name              Static Chunk Class Access                       */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name              Static Chunk Class Access                       */
-    /*! \{                                                                 */
+  inline static UInt32                 getStaticClassId(void);
+  inline static const StateChunkClass* getStaticClass(void);
 
-    inline static        UInt32            getStaticClassId (void);
-    inline static  const StateChunkClass * getStaticClass   (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    virtual void changed(BitVector whichField,
-                         UInt32    origin    );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/ 
-    /*! \name                     Output                                   */ 
-    /*! \{                                                                 */
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       State                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       State                                  */
-    /*! \{                                                                 */
+  virtual void activate(DrawActionBase* action, UInt32 index = 0);
 
-    virtual void activate   (DrawActionBase * action, UInt32 index = 0);
+  virtual void changeFrom(DrawActionBase* action, StateChunk* old, UInt32 index = 0);
 
-    virtual void changeFrom (DrawActionBase * action, StateChunk * old,
-                             UInt32 index = 0 );
+  virtual void deactivate(DrawActionBase* action, UInt32 index = 0);
 
-    virtual void deactivate (DrawActionBase * action, UInt32 index = 0);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Comparison                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Comparison                                 */
-    /*! \{                                                                 */
+  virtual Real32 switchCost(StateChunk* chunk);
 
-    virtual Real32 switchCost  (StateChunk * chunk);
+  virtual bool operator<(const StateChunk& other) const;
 
-    virtual bool   operator <  (const StateChunk &other) const;
+  virtual bool operator==(const StateChunk& other) const;
+  virtual bool operator!=(const StateChunk& other) const;
 
-    virtual bool   operator == (const StateChunk &other) const;
-    virtual bool   operator != (const StateChunk &other) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name               Cube Texture specific                          */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name               Cube Texture specific                          */
-    /*! \{                                                                 */
+  void setPosZImage(ImagePtr& value);
+  void setPosXImage(ImagePtr& value);
+  void setNegXImage(ImagePtr& value);
+  void setPosYImage(ImagePtr& value);
+  void setNegYImage(ImagePtr& value);
 
-     void setPosZImage(ImagePtr &value);
-     void setPosXImage(ImagePtr &value);
-     void setNegXImage(ImagePtr &value);
-     void setPosYImage(ImagePtr &value);
-     void setNegYImage(ImagePtr &value);
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in CubeTextureChunkBase.
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Init                                   */
+  /*! \{                                                                 */
 
-    // Variables should all be in CubeTextureChunkBase.
+  void onCreate(const CubeTextureChunk* source = NULL);
+  void onDestroy(void);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Init                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    void onCreate(const CubeTextureChunk *source = NULL);
-    void onDestroy(void);
+  CubeTextureChunk(void);
+  CubeTextureChunk(const CubeTextureChunk& source);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    CubeTextureChunk(void);
-    CubeTextureChunk(const CubeTextureChunk &source);
+  virtual ~CubeTextureChunk(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    virtual ~CubeTextureChunk(void); 
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class CubeTextureChunkBase;
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  typedef CubeTextureChunkBase Inherited;
 
-    friend class FieldContainer;
-    friend class CubeTextureChunkBase;
+  /*---------------------------------------------------------------------*/
+  /*! \name                         GL                                   */
+  /*! \{                                                                 */
 
-    typedef CubeTextureChunkBase Inherited;
+  void handleGL(Window* win, UInt32 id);
 
+  /*! \}                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                         GL                                   */
-    /*! \{                                                                 */
+  // prohibit default functions (move to 'public' if you need one)
 
-    void handleGL(Window *win, UInt32 id);
-
-    /*! \}                                                                 */
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const CubeTextureChunk &source);
+  void operator=(const CubeTextureChunk& source);
 };
 
-typedef CubeTextureChunk *CubeTextureChunkP;
+typedef CubeTextureChunk* CubeTextureChunkP;
 
 OSG_END_NAMESPACE
 

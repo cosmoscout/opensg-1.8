@@ -51,70 +51,61 @@ OSG_BEGIN_NAMESPACE
 
 class Exception;
 
-OSG_BASE_DLLMAPPING 
-std::ostream &operator <<(      std::ostream &os,
-                          const Exception    &obj);
+OSG_BASE_DLLMAPPING
+std::ostream& operator<<(std::ostream& os, const Exception& obj);
 
 /*! \ingroup GrpBaseBase
  */
 
-class OSG_BASE_DLLMAPPING Exception : 
-    public OSG_STDEXCEPTION_NAMESPACE::exception
-{
-    /*==========================  PUBLIC  =================================*/
+class OSG_BASE_DLLMAPPING Exception : public OSG_STDEXCEPTION_NAMESPACE::exception {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-     /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  Exception(void);
+  Exception(const Exception& source);
 
-    Exception(      void             );
-    Exception(const Exception &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  virtual ~Exception(void) OSG_THROW_NOTHING();
 
-    virtual ~Exception(void) OSG_THROW_NOTHING();
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Info                                      */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Info                                      */
-    /*! \{                                                                 */
+  virtual const Char8* what(void) const OSG_THROW_NOTHING();
 
-    virtual const Char8 *what(void) const OSG_THROW_NOTHING();
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Assignment                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Assignment                                 */
-    /*! \{                                                                 */
+  Exception& operator=(const Exception& source);
 
-    Exception &operator =(const Exception &source);
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+ protected:
+  typedef OSG_STDEXCEPTION_NAMESPACE::exception Inherited;
 
-  protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Specific                            */
+  /*! \{                                                                 */
 
-    typedef OSG_STDEXCEPTION_NAMESPACE::exception Inherited;
+  std::string _what;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Specific                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-    std::string _what;
-
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-
-  private:
-
-    friend OSG_BASE_DLLMAPPING
-    std::ostream &operator <<(      std::ostream &os,
-                              const Exception    &obj);
-
+ private:
+  friend OSG_BASE_DLLMAPPING std::ostream& operator<<(std::ostream& os, const Exception& obj);
 };
 
 OSG_END_NAMESPACE

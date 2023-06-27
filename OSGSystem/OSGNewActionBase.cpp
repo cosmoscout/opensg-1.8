@@ -102,13 +102,10 @@ OSG_USING_NAMESPACE
 //    Statistics
 //----------------------------------------------------------------------------
 
-StatElemDesc<StatIntElem>
-NewActionBase::statNodesEnter("NewActionBase::nodesEnter",
-                              "Number of nodes entered"   );
-StatElemDesc<StatIntElem>
-NewActionBase::statNodesLeave("NewActionBase::nodesLeave",
-                              "Number of nodes left"      );
-
+StatElemDesc<StatIntElem> NewActionBase::statNodesEnter(
+    "NewActionBase::nodesEnter", "Number of nodes entered");
+StatElemDesc<StatIntElem> NewActionBase::statNodesLeave(
+    "NewActionBase::nodesLeave", "Number of nodes left");
 
 #endif /* OSG_NEWACTION_STATISTICS */
 
@@ -119,8 +116,7 @@ NewActionBase::statNodesLeave("NewActionBase::nodesLeave",
 /*! Destructor.
  */
 
-NewActionBase::~NewActionBase(void)
-{
+NewActionBase::~NewActionBase(void) {
 }
 
 //----------------------------------------------------------------------------
@@ -140,10 +136,8 @@ NewActionBase::~NewActionBase(void)
 \enddev
  */
 
-UInt32
-NewActionBase::addActor(ActorBase *pActor)
-{
-    return pActor->addHelper(this);
+UInt32 NewActionBase::addActor(ActorBase* pActor) {
+  return pActor->addHelper(this);
 }
 
 /*! Remove an actor from this action. The actor may now be attached to
@@ -155,10 +149,8 @@ NewActionBase::addActor(ActorBase *pActor)
 \enddev
  */
 
-void
-NewActionBase::subActor(ActorBase *pActor)
-{
-    pActor->subHelper(this);
+void NewActionBase::subActor(ActorBase* pActor) {
+  pActor->subHelper(this);
 }
 
 /*! Return the index of an actor or TypeTraits<UInt32>::getMax() if the actor
@@ -173,19 +165,15 @@ NewActionBase::subActor(ActorBase *pActor)
 \enddev
  */
 
-UInt32
-NewActionBase::findActor(ActorBase *pActor) const
-{
-    return pActor->findHelper(this);
+UInt32 NewActionBase::findActor(ActorBase* pActor) const {
+  return pActor->findHelper(this);
 }
 
 /*! Return the total number of actors attached to this action.
  */
 
-UInt32
-NewActionBase::getNumActors(void) const
-{
-    return _extendActors.size() + _basicActors.size();
+UInt32 NewActionBase::getNumActors(void) const {
+  return _extendActors.size() + _basicActors.size();
 }
 
 //----------------------------------------------------------------------------
@@ -198,10 +186,8 @@ NewActionBase::getNumActors(void) const
     an actor to two actions at the same time.
  */
 
-UInt32
-NewActionBase::addExtendActor(ExtendActorBase *pActor)
-{
-    return addExtendActor(pActor, _extendActors.size());
+UInt32 NewActionBase::addExtendActor(ExtendActorBase* pActor) {
+  return addExtendActor(pActor, _extendActors.size());
 }
 
 /*! Add an extend actor to this action before the index pos. Returns the index
@@ -210,32 +196,28 @@ NewActionBase::addExtendActor(ExtendActorBase *pActor)
     an actor to two actions at the same time.
  */
 
-UInt32
-NewActionBase::addExtendActor(ExtendActorBase *pActor, UInt32 pos)
-{
-    UInt32 actorId = getNumActors();
+UInt32 NewActionBase::addExtendActor(ExtendActorBase* pActor, UInt32 pos) {
+  UInt32 actorId = getNumActors();
 
-    pActor       ->addEvent      (this,                        actorId);
-    _extendActors. insert        (_extendActors.begin() + pos, pActor );
-    this         ->addExtendEvent(pActor,                      pos    );
+  pActor->addEvent(this, actorId);
+  _extendActors.insert(_extendActors.begin() + pos, pActor);
+  this->addExtendEvent(pActor, pos);
 
-    return pos;
+  return pos;
 }
 
 /*! Remove the extend actor at index pos. The actor may now be attached to
     another action.
  */
 
-void
-NewActionBase::subExtendActor(UInt32 pos)
-{
-    ExtendActorStoreIt  itActor = _extendActors.begin() + pos;
-    ExtendActorBase    *pActor  = *itActor;
+void NewActionBase::subExtendActor(UInt32 pos) {
+  ExtendActorStoreIt itActor = _extendActors.begin() + pos;
+  ExtendActorBase*   pActor  = *itActor;
 
-    this  ->subExtendEvent(pActor, pos                 );
-    pActor->subEvent      (this,   pActor->getActorId());
+  this->subExtendEvent(pActor, pos);
+  pActor->subEvent(this, pActor->getActorId());
 
-    _extendActors.erase(itActor);
+  _extendActors.erase(itActor);
 }
 
 /*! Return the index of the extend actor or TypeTraits<UInt32>::getMax() if
@@ -243,34 +225,28 @@ NewActionBase::subExtendActor(UInt32 pos)
     to the addExtendActor and subExtendActor methods.
  */
 
-UInt32
-NewActionBase::findExtendActor(ExtendActorBase *pActor) const
-{
-    ExtendActorStoreConstIt itActors  = _extendActors.begin();
-    ExtendActorStoreConstIt endActors = _extendActors.end  ();
+UInt32 NewActionBase::findExtendActor(ExtendActorBase* pActor) const {
+  ExtendActorStoreConstIt itActors  = _extendActors.begin();
+  ExtendActorStoreConstIt endActors = _extendActors.end();
 
-    UInt32             pos       = 0;
-    bool               found     = false;
+  UInt32 pos   = 0;
+  bool   found = false;
 
-    for(; (itActors != endActors) && !found; ++itActors, ++pos)
-    {
-        if(*itActors == pActor)
-        {
-            found = true;
-            break;
-        }
+  for (; (itActors != endActors) && !found; ++itActors, ++pos) {
+    if (*itActors == pActor) {
+      found = true;
+      break;
     }
+  }
 
-    return (found ? pos : TypeTraits<UInt32>::getMax());
+  return (found ? pos : TypeTraits<UInt32>::getMax());
 }
 
 /*! Return the number of extend actors attached to the action.
  */
 
-UInt32
-NewActionBase::getNumExtendActors(void) const
-{
-    return _extendActors.size();
+UInt32 NewActionBase::getNumExtendActors(void) const {
+  return _extendActors.size();
 }
 
 //----------------------------------------------------------------------------
@@ -283,10 +259,8 @@ NewActionBase::getNumExtendActors(void) const
     an actor to two actions at the same time.
  */
 
-UInt32
-NewActionBase::addBasicActor(BasicActorBase *pActor)
-{
-    return addBasicActor(pActor, _basicActors.size());
+UInt32 NewActionBase::addBasicActor(BasicActorBase* pActor) {
+  return addBasicActor(pActor, _basicActors.size());
 }
 
 /*! Add an basic actor to this action before the index pos. Returns the index
@@ -295,32 +269,28 @@ NewActionBase::addBasicActor(BasicActorBase *pActor)
     an actor to two actions at the same time.
  */
 
-UInt32
-NewActionBase::addBasicActor(BasicActorBase *pActor, UInt32 pos)
-{
-    UInt32 actorId = getNumActors();
+UInt32 NewActionBase::addBasicActor(BasicActorBase* pActor, UInt32 pos) {
+  UInt32 actorId = getNumActors();
 
-    pActor      ->addEvent     (this,                       actorId);
-    _basicActors. insert       (_basicActors.begin() + pos, pActor );
-    this        ->addBasicEvent(pActor,                     pos    );
+  pActor->addEvent(this, actorId);
+  _basicActors.insert(_basicActors.begin() + pos, pActor);
+  this->addBasicEvent(pActor, pos);
 
-    return pos;
+  return pos;
 }
 
 /*! Remove the basic actor at index pos. The actor may now be attached to
     another action.
  */
 
-void
-NewActionBase::subBasicActor(UInt32 pos)
-{
-    BasicActorStoreIt  itActor = _basicActors.begin() + pos;
-    BasicActorBase    *pActor  = *itActor;
+void NewActionBase::subBasicActor(UInt32 pos) {
+  BasicActorStoreIt itActor = _basicActors.begin() + pos;
+  BasicActorBase*   pActor  = *itActor;
 
-    this  ->subBasicEvent(pActor, pos                 );
-    pActor->subEvent     (this,   pActor->getActorId());
+  this->subBasicEvent(pActor, pos);
+  pActor->subEvent(this, pActor->getActorId());
 
-    _basicActors.erase(itActor);
+  _basicActors.erase(itActor);
 }
 
 /*! Return the index of the basic actor or TypeTraits<UInt32>::getMax() if
@@ -328,34 +298,28 @@ NewActionBase::subBasicActor(UInt32 pos)
     to the addBasicActor and subBasicActor methods.
  */
 
-UInt32
-NewActionBase::findBasicActor(BasicActorBase *pActor) const
-{
-    BasicActorStoreConstIt itActors  = _basicActors.begin();
-    BasicActorStoreConstIt endActors = _basicActors.end  ();
+UInt32 NewActionBase::findBasicActor(BasicActorBase* pActor) const {
+  BasicActorStoreConstIt itActors  = _basicActors.begin();
+  BasicActorStoreConstIt endActors = _basicActors.end();
 
-    UInt32            pos       = 0;
-    bool              found     = false;
+  UInt32 pos   = 0;
+  bool   found = false;
 
-    for(; (itActors != endActors) && !found; ++itActors, ++pos)
-    {
-        if(*itActors == pActor)
-        {
-            found = true;
-            break;
-        }
+  for (; (itActors != endActors) && !found; ++itActors, ++pos) {
+    if (*itActors == pActor) {
+      found = true;
+      break;
     }
+  }
 
-    return (found ? pos : TypeTraits<UInt32>::getMax());
+  return (found ? pos : TypeTraits<UInt32>::getMax());
 }
 
 /*! Return the number of basic actors attached to the action.
  */
 
-UInt32
-NewActionBase::getNumBasicActors(void) const
-{
-    return _basicActors.size();
+UInt32 NewActionBase::getNumBasicActors(void) const {
+  return _basicActors.size();
 }
 
 //----------------------------------------------------------------------------
@@ -363,18 +327,19 @@ NewActionBase::getNumBasicActors(void) const
 //----------------------------------------------------------------------------
 
 NewActionBase::NewActionBase(void)
-    : _extendActors       (                           ),
-      _basicActors        (                           ),
+    : _extendActors()
+    , _basicActors()
+    ,
 #ifdef OSG_NEWACTION_STATISTICS
-      _pStatistics        (NULL                       ),
-      _ownStatistics      (false                      ),
+    _pStatistics(NULL)
+    , _ownStatistics(false)
+    ,
 #endif /* OSG_NEWACTION_STATISTICS */
-      _travMask           (TypeTraits<UInt32>::BitsSet),
-      _numPasses          (1                          ),
-      _childrenListEnabled(false                      ),
-      _childrenList       (                           ),
-      _extraChildrenList  (                           )
-{
+    _travMask(TypeTraits<UInt32>::BitsSet)
+    , _numPasses(1)
+    , _childrenListEnabled(false)
+    , _childrenList()
+    , _extraChildrenList() {
 }
 
 //----------------------------------------------------------------------------
@@ -385,22 +350,17 @@ NewActionBase::NewActionBase(void)
     When overriding this method the inherited version must be called.
  */
 
-void
-NewActionBase::startEvent(void)
-{
+void NewActionBase::startEvent(void) {
 #ifdef OSG_NEWACTION_STATISTICS
-    if(_pStatistics == NULL)
-    {
-        _pStatistics   = StatCollector::create();
-        _ownStatistics = true;
-    }
-    else
-    {
-        _ownStatistics = false;
-    }
+  if (_pStatistics == NULL) {
+    _pStatistics   = StatCollector::create();
+    _ownStatistics = true;
+  } else {
+    _ownStatistics = false;
+  }
 
-    getStatistics()->getElem(statNodesEnter)->reset();
-    getStatistics()->getElem(statNodesLeave)->reset();
+  getStatistics()->getElem(statNodesEnter)->reset();
+  getStatistics()->getElem(statNodesLeave)->reset();
 #endif /* OSG_NEWACTION_STATISTICS */
 }
 
@@ -408,15 +368,12 @@ NewActionBase::startEvent(void)
     When overriding this method the inherited version must be called.
  */
 
-void
-NewActionBase::stopEvent(void)
-{
+void NewActionBase::stopEvent(void) {
 #ifdef OSG_NEWACTION_STATISTICS
-    if(_ownStatistics == true)
-    {
-        delete _pStatistics;
-        _pStatistics = NULL;
-    }
+  if (_ownStatistics == true) {
+    delete _pStatistics;
+    _pStatistics = NULL;
+  }
 #endif /* OSG_NEWACTION_STATISTICS */
 }
 
@@ -424,54 +381,42 @@ NewActionBase::stopEvent(void)
 //    Actor Access
 //----------------------------------------------------------------------------
 
-NewActionBase::ResultE
-NewActionBase::startActors(void)
-{
-    ResultE            result      = NewActionTypes::Continue;
+NewActionBase::ResultE NewActionBase::startActors(void) {
+  ResultE result = NewActionTypes::Continue;
 
-    ExtendActorStoreIt itExtend    = beginExtend();
-    ExtendActorStoreIt endItExtend = endExtend  ();
+  ExtendActorStoreIt itExtend    = beginExtend();
+  ExtendActorStoreIt endItExtend = endExtend();
 
-    for(; (itExtend != endItExtend         ) &&
-         !(result   &  NewActionTypes::Quit);    ++itExtend)
-    {
-        result = (*itExtend)->start();
-    }
+  for (; (itExtend != endItExtend) && !(result & NewActionTypes::Quit); ++itExtend) {
+    result = (*itExtend)->start();
+  }
 
-    BasicActorStoreIt itBasic    = beginBasic();
-    BasicActorStoreIt endItBasic = endBasic  ();
+  BasicActorStoreIt itBasic    = beginBasic();
+  BasicActorStoreIt endItBasic = endBasic();
 
-    for(;  (itBasic != endItBasic          ) &&
-          !(result  &  NewActionTypes::Quit);    ++itBasic)
-    {
-        result = (*itBasic)->start();
-    }
+  for (; (itBasic != endItBasic) && !(result & NewActionTypes::Quit); ++itBasic) {
+    result = (*itBasic)->start();
+  }
 
-    return result;
+  return result;
 }
 
-NewActionBase::ResultE
-NewActionBase::stopActors(void)
-{
-    ResultE            result      = NewActionTypes::Continue;
+NewActionBase::ResultE NewActionBase::stopActors(void) {
+  ResultE result = NewActionTypes::Continue;
 
-    ExtendActorStoreIt itExtend    = beginExtend();
-    ExtendActorStoreIt endItExtend = endExtend  ();
+  ExtendActorStoreIt itExtend    = beginExtend();
+  ExtendActorStoreIt endItExtend = endExtend();
 
-    for(; (itExtend != endItExtend         ) &&
-         !(result   &  NewActionTypes::Quit);    ++itExtend)
-    {
-        result = (*itExtend)->stop();
-    }
+  for (; (itExtend != endItExtend) && !(result & NewActionTypes::Quit); ++itExtend) {
+    result = (*itExtend)->stop();
+  }
 
-    BasicActorStoreIt itBasic    = beginBasic();
-    BasicActorStoreIt endItBasic = endBasic  ();
+  BasicActorStoreIt itBasic    = beginBasic();
+  BasicActorStoreIt endItBasic = endBasic();
 
-    for(;  (itBasic != endItBasic          ) &&
-          !(result  &  NewActionTypes::Quit);    ++itBasic)
-    {
-        result = (*itBasic)->stop();
-    }
+  for (; (itBasic != endItBasic) && !(result & NewActionTypes::Quit); ++itBasic) {
+    result = (*itBasic)->stop();
+  }
 
-    return result;
+  return result;
 }

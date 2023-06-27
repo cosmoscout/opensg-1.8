@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 /***************************************************************************\
 *                             Includes                                    *
 \***************************************************************************/
@@ -56,7 +55,7 @@
 
 OSG_USING_NAMESPACE
 
-GraphOpFactory *GraphOpFactory::_the=NULL;
+GraphOpFactory* GraphOpFactory::_the = NULL;
 
 /***************************************************************************\
  *                            Description                                  *
@@ -64,7 +63,7 @@ GraphOpFactory *GraphOpFactory::_the=NULL;
 
 /*! \class osg::GraphOpFactory
     \ingroup GrpSystemNodeCoresDrawablesGeometry
-    
+
 A base class used to traverse geometries.
 
 */
@@ -77,62 +76,55 @@ A base class used to traverse geometries.
  -  public                                                                 -
 \*-------------------------------------------------------------------------*/
 
-
-void GraphOpFactory::registerOp(GraphOp* prototype)
-{
-    _typeMap[prototype->getName()]=prototype;
+void GraphOpFactory::registerOp(GraphOp* prototype) {
+  _typeMap[prototype->getName()] = prototype;
 }
 
-void GraphOpFactory::unRegisterOp(GraphOp* prototype)
-{
-    unRegisterOp(prototype->getName().c_str());
+void GraphOpFactory::unRegisterOp(GraphOp* prototype) {
+  unRegisterOp(prototype->getName().c_str());
 }
 
-void GraphOpFactory::unRegisterOp(const char* name)
-{
-    _typeMap.erase(name);
-}
-    
-GraphOp *GraphOpFactory::create(const char* name)
-{
-    GraphOp *proto = _typeMap[name];     
-    if (proto != NULL)
-        return proto->create();
-    else
-        return NULL;
+void GraphOpFactory::unRegisterOp(const char* name) {
+  _typeMap.erase(name);
 }
 
-GraphOpFactory& GraphOpFactory::the()
-{
-    if(_the == NULL)
-        _the=new GraphOpFactory();
-    return *_the;
+GraphOp* GraphOpFactory::create(const char* name) {
+  GraphOp* proto = _typeMap[name];
+  if (proto != NULL)
+    return proto->create();
+  else
+    return NULL;
 }
 
-GraphOpFactory::iterator GraphOpFactory::begin()
-{
-    return _typeMap.begin();;
+GraphOpFactory& GraphOpFactory::the() {
+  if (_the == NULL)
+    _the = new GraphOpFactory();
+  return *_the;
 }
 
-GraphOpFactory::iterator GraphOpFactory::end()
-{
-    return _typeMap.end();;
+GraphOpFactory::iterator GraphOpFactory::begin() {
+  return _typeMap.begin();
+  ;
+}
+
+GraphOpFactory::iterator GraphOpFactory::end() {
+  return _typeMap.end();
+  ;
 }
 
 /*-------------------------------------------------------------------------*\
  -  private                                                                -
 \*-------------------------------------------------------------------------*/
 
-GraphOpFactory::GraphOpFactory()
-{
-    registerOp(new GeoTypeGraphOp);
-    registerOp(new MakeTransparentGraphOp);
-    registerOp(new MaterialMergeGraphOp);
-    registerOp(new MergeGraphOp);
-    registerOp(new PruneGraphOp);
-    registerOp(new SharePtrGraphOp);
-    registerOp(new SplitGraphOp);
-    registerOp(new StripeGraphOp);
-    registerOp(new VerifyGeoGraphOp);
-    registerOp(new VerifyGraphOp);
+GraphOpFactory::GraphOpFactory() {
+  registerOp(new GeoTypeGraphOp);
+  registerOp(new MakeTransparentGraphOp);
+  registerOp(new MaterialMergeGraphOp);
+  registerOp(new MergeGraphOp);
+  registerOp(new PruneGraphOp);
+  registerOp(new SharePtrGraphOp);
+  registerOp(new SplitGraphOp);
+  registerOp(new StripeGraphOp);
+  registerOp(new VerifyGeoGraphOp);
+  registerOp(new VerifyGraphOp);
 }

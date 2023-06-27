@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGPROJECTIONCAMERADECORATORBASE_H_
 #define _OSGPROJECTIONCAMERADECORATORBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -67,11 +65,11 @@
 
 #include <OSGStereoCameraDecorator.h> // Parent
 
-#include <OSGNodeFields.h> // User type
-#include <OSGPnt3fFields.h> // Surface type
-#include <OSGPlaneFields.h> // Left type
-#include <OSGPlaneFields.h> // Bottom type
-#include <OSGPlaneFields.h> // Normal type
+#include <OSGNodeFields.h>   // User type
+#include <OSGPnt3fFields.h>  // Surface type
+#include <OSGPlaneFields.h>  // Left type
+#include <OSGPlaneFields.h>  // Bottom type
+#include <OSGPlaneFields.h>  // Normal type
 #include <OSGReal32Fields.h> // Width type
 #include <OSGReal32Fields.h> // Height type
 
@@ -84,236 +82,216 @@ class BinaryDataHandler;
 
 //! \brief ProjectionCameraDecorator Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING ProjectionCameraDecoratorBase : public StereoCameraDecorator
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING ProjectionCameraDecoratorBase : public StereoCameraDecorator {
+ private:
+  typedef StereoCameraDecorator Inherited;
 
-    typedef StereoCameraDecorator    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef ProjectionCameraDecoratorPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    UserFieldId    = Inherited::NextFieldId,
+    SurfaceFieldId = UserFieldId + 1,
+    LeftFieldId    = SurfaceFieldId + 1,
+    BottomFieldId  = LeftFieldId + 1,
+    NormalFieldId  = BottomFieldId + 1,
+    WidthFieldId   = NormalFieldId + 1,
+    HeightFieldId  = WidthFieldId + 1,
+    NextFieldId    = HeightFieldId + 1
+  };
 
-    typedef ProjectionCameraDecoratorPtr  Ptr;
+  static const OSG::BitVector UserFieldMask;
+  static const OSG::BitVector SurfaceFieldMask;
+  static const OSG::BitVector LeftFieldMask;
+  static const OSG::BitVector BottomFieldMask;
+  static const OSG::BitVector NormalFieldMask;
+  static const OSG::BitVector WidthFieldMask;
+  static const OSG::BitVector HeightFieldMask;
 
-    enum
-    {
-        UserFieldId    = Inherited::NextFieldId,
-        SurfaceFieldId = UserFieldId    + 1,
-        LeftFieldId    = SurfaceFieldId + 1,
-        BottomFieldId  = LeftFieldId    + 1,
-        NormalFieldId  = BottomFieldId  + 1,
-        WidthFieldId   = NormalFieldId  + 1,
-        HeightFieldId  = WidthFieldId   + 1,
-        NextFieldId    = HeightFieldId  + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector UserFieldMask;
-    static const OSG::BitVector SurfaceFieldMask;
-    static const OSG::BitVector LeftFieldMask;
-    static const OSG::BitVector BottomFieldMask;
-    static const OSG::BitVector NormalFieldMask;
-    static const OSG::BitVector WidthFieldMask;
-    static const OSG::BitVector HeightFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFNodePtr* getSFUser(void);
+  MFPnt3f*   getMFSurface(void);
+  SFReal32*  getSFWidth(void);
+  SFReal32*  getSFHeight(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  NodePtr&       getUser(void);
+  const NodePtr& getUser(void) const;
+  Real32&        getWidth(void);
+  const Real32&  getWidth(void) const;
+  Real32&        getHeight(void);
+  const Real32&  getHeight(void) const;
+  Pnt3f&         getSurface(const UInt32 index);
+  MFPnt3f&       getSurface(void);
+  const MFPnt3f& getSurface(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFNodePtr           *getSFUser           (void);
-           MFPnt3f             *getMFSurface        (void);
-           SFReal32            *getSFWidth          (void);
-           SFReal32            *getSFHeight         (void);
+  void setUser(const NodePtr& value);
+  void setWidth(const Real32& value);
+  void setHeight(const Real32& value);
 
-           NodePtr             &getUser           (void);
-     const NodePtr             &getUser           (void) const;
-           Real32              &getWidth          (void);
-     const Real32              &getWidth          (void) const;
-           Real32              &getHeight         (void);
-     const Real32              &getHeight         (void) const;
-           Pnt3f               &getSurface        (const UInt32 index);
-           MFPnt3f             &getSurface        (void);
-     const MFPnt3f             &getSurface        (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setUser           ( const NodePtr &value );
-     void setWidth          ( const Real32 &value );
-     void setHeight         ( const Real32 &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static ProjectionCameraDecoratorPtr create(void);
+  static ProjectionCameraDecoratorPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  ProjectionCameraDecoratorPtr      create          (void); 
-    static  ProjectionCameraDecoratorPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFNodePtr _sfUser;
+  MFPnt3f   _mfSurface;
+  SFPlane   _sfLeft;
+  SFPlane   _sfBottom;
+  SFPlane   _sfNormal;
+  SFReal32  _sfWidth;
+  SFReal32  _sfHeight;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  ProjectionCameraDecoratorBase(void);
+  ProjectionCameraDecoratorBase(const ProjectionCameraDecoratorBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~ProjectionCameraDecoratorBase(void);
 
-    SFNodePtr           _sfUser;
-    MFPnt3f             _mfSurface;
-    SFPlane             _sfLeft;
-    SFPlane             _sfBottom;
-    SFPlane             _sfNormal;
-    SFReal32            _sfWidth;
-    SFReal32            _sfHeight;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  SFPlane* getSFLeft(void);
+  SFPlane* getSFBottom(void);
+  SFPlane* getSFNormal(void);
 
-    ProjectionCameraDecoratorBase(void);
-    ProjectionCameraDecoratorBase(const ProjectionCameraDecoratorBase &source);
+  Plane&       getLeft(void);
+  const Plane& getLeft(void) const;
+  Plane&       getBottom(void);
+  const Plane& getBottom(void) const;
+  Plane&       getNormal(void);
+  const Plane& getNormal(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-    virtual ~ProjectionCameraDecoratorBase(void); 
+  void setLeft(const Plane& value);
+  void setBottom(const Plane& value);
+  void setNormal(const Plane& value);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
-
-           SFPlane             *getSFLeft           (void);
-           SFPlane             *getSFBottom         (void);
-           SFPlane             *getSFNormal         (void);
-
-           Plane               &getLeft           (void);
-     const Plane               &getLeft           (void) const;
-           Plane               &getBottom         (void);
-     const Plane               &getBottom         (void) const;
-           Plane               &getNormal         (void);
-     const Plane               &getNormal         (void) const;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
-
-     void setLeft           (const Plane &value);
-     void setBottom         (const Plane &value);
-     void setNormal         (const Plane &value);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      ProjectionCameraDecoratorBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(ProjectionCameraDecoratorBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      ProjectionCameraDecoratorBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      ProjectionCameraDecoratorBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const ProjectionCameraDecoratorBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const ProjectionCameraDecoratorBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef ProjectionCameraDecoratorBase* ProjectionCameraDecoratorBaseP;
 
-typedef ProjectionCameraDecoratorBase *ProjectionCameraDecoratorBaseP;
-
-typedef osgIF<ProjectionCameraDecoratorBase::isNodeCore,
-              CoredNodePtr<ProjectionCameraDecorator>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet ProjectionCameraDecoratorNodePtr;
+typedef osgIF<ProjectionCameraDecoratorBase::isNodeCore, CoredNodePtr<ProjectionCameraDecorator>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet
+    ProjectionCameraDecoratorNodePtr;
 
 typedef RefPtr<ProjectionCameraDecoratorPtr> ProjectionCameraDecoratorRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGPROJECTIONCAMERADECORATORBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGPROJECTIONCAMERADECORATORBASE_HEADER_CVSID                                              \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGPROJECTIONCAMERADECORATORBASE_H_ */

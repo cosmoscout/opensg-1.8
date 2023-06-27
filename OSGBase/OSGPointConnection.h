@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _POINTCONNECTION_H_
 #define _POINTCONNECTION_H_
 #ifdef __sgi
@@ -55,63 +54,59 @@
 
 OSG_BEGIN_NAMESPACE
 
-class OSG_BASE_DLLMAPPING PointConnection : public Connection
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_BASE_DLLMAPPING PointConnection : public Connection {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  PointConnection(int zeroCopyThreshold);
+  virtual ~PointConnection(void);
 
-             PointConnection ( int zeroCopyThreshold );
-    virtual ~PointConnection ( void                  ); 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   type info                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   type info                                  */
-    /*! \{                                                                 */
+  virtual const ConnectionType* getType(void) = 0;
 
-    virtual const ConnectionType *getType (void) = 0;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   connection                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   connection                                 */
-    /*! \{                                                                 */
+  virtual Channel connectGroup(const std::string& address, Time timeout = -1) = 0;
+  virtual void    disconnect(void)                                            = 0;
+  virtual Channel acceptGroup(Time timeout = -1)                              = 0;
 
-    virtual Channel connectGroup(const std::string &address,
-                                       Time        timeout=-1) = 0;
-    virtual void    disconnect  (      void                  ) = 0;
-    virtual Channel acceptGroup (      Time        timeout=-1) = 0;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   synchronisation                            */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   synchronisation                            */
-    /*! \{                                                                 */
+  virtual bool wait(Time timeout = -1) = 0;
+  virtual void signal(void)            = 0;
 
-    virtual bool wait  (Time timeout=-1) = 0;
-    virtual void signal(void           ) = 0;
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   members                                    */
+  /*! \{                                                                 */
 
-    /*=========================  PROTECTED  ===============================*/
-  protected:
-    /*---------------------------------------------------------------------*/
-    /*! \name                   members                                    */
-    /*! \{                                                                 */
+  bool _pointToPoint;
 
-    bool _pointToPoint;
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  typedef Connection Inherited;
 
-    /*==========================  PRIVATE  ================================*/
-  private:
-
-    typedef Connection Inherited;
-
-	// prohibit default functions (move to 'public' if you need one)
-    PointConnection(const PointConnection &source);
-    PointConnection& operator =(const PointConnection &source);
+  // prohibit default functions (move to 'public' if you need one)
+  PointConnection(const PointConnection& source);
+  PointConnection& operator=(const PointConnection& source);
 };
 
 //---------------------------------------------------------------------------
@@ -120,7 +115,7 @@ class OSG_BASE_DLLMAPPING PointConnection : public Connection
 
 // class pointer
 
-typedef PointConnection *PointConnectionP;
+typedef PointConnection* PointConnectionP;
 
 OSG_END_NAMESPACE
 

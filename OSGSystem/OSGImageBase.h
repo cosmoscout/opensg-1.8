@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGIMAGEBASE_H_
 #define _OSGIMAGEBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -68,29 +66,29 @@
 #include <OSGAttachmentContainer.h> // Parent
 
 #include <OSGFieldContainerFields.h> // Parents type
-#include <OSGInt32Fields.h> // Dimension type
-#include <OSGInt32Fields.h> // Width type
-#include <OSGInt32Fields.h> // Height type
-#include <OSGInt32Fields.h> // Depth type
-#include <OSGInt32Fields.h> // Bpp type
-#include <OSGInt32Fields.h> // MipMapCount type
-#include <OSGInt32Fields.h> // FrameCount type
-#include <OSGTimeFields.h> // FrameDelay type
-#include <OSGUInt32Fields.h> // PixelFormat type
-#include <OSGUInt8Fields.h> // Pixel type
-#include <OSGInt32Fields.h> // FrameSize type
-#include <OSGStringFields.h> // Name type
-#include <OSGInt32Fields.h> // DataType type
-#include <OSGInt32Fields.h> // ComponentSize type
-#include <OSGInt32Fields.h> // SideCount type
-#include <OSGInt32Fields.h> // SideSize type
-#include <OSGBoolFields.h> // ForceCompressedData type
-#include <OSGBoolFields.h> // ForceAlphaChannel type
-#include <OSGBoolFields.h> // ForceColorChannel type
-#include <OSGBoolFields.h> // ForceAlphaBinary type
-#include <OSGReal32Fields.h> // ResX type
-#include <OSGReal32Fields.h> // ResY type
-#include <OSGUInt16Fields.h> // ResUnit type
+#include <OSGInt32Fields.h>          // Dimension type
+#include <OSGInt32Fields.h>          // Width type
+#include <OSGInt32Fields.h>          // Height type
+#include <OSGInt32Fields.h>          // Depth type
+#include <OSGInt32Fields.h>          // Bpp type
+#include <OSGInt32Fields.h>          // MipMapCount type
+#include <OSGInt32Fields.h>          // FrameCount type
+#include <OSGTimeFields.h>           // FrameDelay type
+#include <OSGUInt32Fields.h>         // PixelFormat type
+#include <OSGUInt8Fields.h>          // Pixel type
+#include <OSGInt32Fields.h>          // FrameSize type
+#include <OSGStringFields.h>         // Name type
+#include <OSGInt32Fields.h>          // DataType type
+#include <OSGInt32Fields.h>          // ComponentSize type
+#include <OSGInt32Fields.h>          // SideCount type
+#include <OSGInt32Fields.h>          // SideSize type
+#include <OSGBoolFields.h>           // ForceCompressedData type
+#include <OSGBoolFields.h>           // ForceAlphaChannel type
+#include <OSGBoolFields.h>           // ForceColorChannel type
+#include <OSGBoolFields.h>           // ForceAlphaBinary type
+#include <OSGReal32Fields.h>         // ResX type
+#include <OSGReal32Fields.h>         // ResY type
+#include <OSGUInt16Fields.h>         // ResUnit type
 
 #include <OSGImageFields.h>
 
@@ -101,355 +99,333 @@ class BinaryDataHandler;
 
 //! \brief Image Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING ImageBase : public AttachmentContainer
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING ImageBase : public AttachmentContainer {
+ private:
+  typedef AttachmentContainer Inherited;
 
-    typedef AttachmentContainer    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef ImagePtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    ParentsFieldId             = Inherited::NextFieldId,
+    DimensionFieldId           = ParentsFieldId + 1,
+    WidthFieldId               = DimensionFieldId + 1,
+    HeightFieldId              = WidthFieldId + 1,
+    DepthFieldId               = HeightFieldId + 1,
+    BppFieldId                 = DepthFieldId + 1,
+    MipMapCountFieldId         = BppFieldId + 1,
+    FrameCountFieldId          = MipMapCountFieldId + 1,
+    FrameDelayFieldId          = FrameCountFieldId + 1,
+    PixelFormatFieldId         = FrameDelayFieldId + 1,
+    PixelFieldId               = PixelFormatFieldId + 1,
+    FrameSizeFieldId           = PixelFieldId + 1,
+    NameFieldId                = FrameSizeFieldId + 1,
+    DataTypeFieldId            = NameFieldId + 1,
+    ComponentSizeFieldId       = DataTypeFieldId + 1,
+    SideCountFieldId           = ComponentSizeFieldId + 1,
+    SideSizeFieldId            = SideCountFieldId + 1,
+    ForceCompressedDataFieldId = SideSizeFieldId + 1,
+    ForceAlphaChannelFieldId   = ForceCompressedDataFieldId + 1,
+    ForceColorChannelFieldId   = ForceAlphaChannelFieldId + 1,
+    ForceAlphaBinaryFieldId    = ForceColorChannelFieldId + 1,
+    ResXFieldId                = ForceAlphaBinaryFieldId + 1,
+    ResYFieldId                = ResXFieldId + 1,
+    ResUnitFieldId             = ResYFieldId + 1,
+    NextFieldId                = ResUnitFieldId + 1
+  };
 
-    typedef ImagePtr  Ptr;
+  static const OSG::BitVector ParentsFieldMask;
+  static const OSG::BitVector DimensionFieldMask;
+  static const OSG::BitVector WidthFieldMask;
+  static const OSG::BitVector HeightFieldMask;
+  static const OSG::BitVector DepthFieldMask;
+  static const OSG::BitVector BppFieldMask;
+  static const OSG::BitVector MipMapCountFieldMask;
+  static const OSG::BitVector FrameCountFieldMask;
+  static const OSG::BitVector FrameDelayFieldMask;
+  static const OSG::BitVector PixelFormatFieldMask;
+  static const OSG::BitVector PixelFieldMask;
+  static const OSG::BitVector FrameSizeFieldMask;
+  static const OSG::BitVector NameFieldMask;
+  static const OSG::BitVector DataTypeFieldMask;
+  static const OSG::BitVector ComponentSizeFieldMask;
+  static const OSG::BitVector SideCountFieldMask;
+  static const OSG::BitVector SideSizeFieldMask;
+  static const OSG::BitVector ForceCompressedDataFieldMask;
+  static const OSG::BitVector ForceAlphaChannelFieldMask;
+  static const OSG::BitVector ForceColorChannelFieldMask;
+  static const OSG::BitVector ForceAlphaBinaryFieldMask;
+  static const OSG::BitVector ResXFieldMask;
+  static const OSG::BitVector ResYFieldMask;
+  static const OSG::BitVector ResUnitFieldMask;
 
-    enum
-    {
-        ParentsFieldId             = Inherited::NextFieldId,
-        DimensionFieldId           = ParentsFieldId             + 1,
-        WidthFieldId               = DimensionFieldId           + 1,
-        HeightFieldId              = WidthFieldId               + 1,
-        DepthFieldId               = HeightFieldId              + 1,
-        BppFieldId                 = DepthFieldId               + 1,
-        MipMapCountFieldId         = BppFieldId                 + 1,
-        FrameCountFieldId          = MipMapCountFieldId         + 1,
-        FrameDelayFieldId          = FrameCountFieldId          + 1,
-        PixelFormatFieldId         = FrameDelayFieldId          + 1,
-        PixelFieldId               = PixelFormatFieldId         + 1,
-        FrameSizeFieldId           = PixelFieldId               + 1,
-        NameFieldId                = FrameSizeFieldId           + 1,
-        DataTypeFieldId            = NameFieldId                + 1,
-        ComponentSizeFieldId       = DataTypeFieldId            + 1,
-        SideCountFieldId           = ComponentSizeFieldId       + 1,
-        SideSizeFieldId            = SideCountFieldId           + 1,
-        ForceCompressedDataFieldId = SideSizeFieldId            + 1,
-        ForceAlphaChannelFieldId   = ForceCompressedDataFieldId + 1,
-        ForceColorChannelFieldId   = ForceAlphaChannelFieldId   + 1,
-        ForceAlphaBinaryFieldId    = ForceColorChannelFieldId   + 1,
-        ResXFieldId                = ForceAlphaBinaryFieldId    + 1,
-        ResYFieldId                = ResXFieldId                + 1,
-        ResUnitFieldId             = ResYFieldId                + 1,
-        NextFieldId                = ResUnitFieldId             + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector ParentsFieldMask;
-    static const OSG::BitVector DimensionFieldMask;
-    static const OSG::BitVector WidthFieldMask;
-    static const OSG::BitVector HeightFieldMask;
-    static const OSG::BitVector DepthFieldMask;
-    static const OSG::BitVector BppFieldMask;
-    static const OSG::BitVector MipMapCountFieldMask;
-    static const OSG::BitVector FrameCountFieldMask;
-    static const OSG::BitVector FrameDelayFieldMask;
-    static const OSG::BitVector PixelFormatFieldMask;
-    static const OSG::BitVector PixelFieldMask;
-    static const OSG::BitVector FrameSizeFieldMask;
-    static const OSG::BitVector NameFieldMask;
-    static const OSG::BitVector DataTypeFieldMask;
-    static const OSG::BitVector ComponentSizeFieldMask;
-    static const OSG::BitVector SideCountFieldMask;
-    static const OSG::BitVector SideSizeFieldMask;
-    static const OSG::BitVector ForceCompressedDataFieldMask;
-    static const OSG::BitVector ForceAlphaChannelFieldMask;
-    static const OSG::BitVector ForceColorChannelFieldMask;
-    static const OSG::BitVector ForceAlphaBinaryFieldMask;
-    static const OSG::BitVector ResXFieldMask;
-    static const OSG::BitVector ResYFieldMask;
-    static const OSG::BitVector ResUnitFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  MFFieldContainerPtr* getMFParents(void);
+  SFInt32*             getSFDimension(void);
+  SFInt32*             getSFWidth(void);
+  SFInt32*             getSFHeight(void);
+  SFInt32*             getSFDepth(void);
+  SFInt32*             getSFBpp(void);
+  SFInt32*             getSFMipMapCount(void);
+  SFInt32*             getSFFrameCount(void);
+  SFTime*              getSFFrameDelay(void);
+  SFUInt32*            getSFPixelFormat(void);
+  MFUInt8*             getMFPixel(void);
+  SFInt32*             getSFFrameSize(void);
+  SFString*            getSFName(void);
+  SFInt32*             getSFDataType(void);
+  SFInt32*             getSFSideCount(void);
+  SFInt32*             getSFSideSize(void);
+  SFBool*              getSFForceCompressedData(void);
+  SFBool*              getSFForceAlphaChannel(void);
+  SFBool*              getSFForceColorChannel(void);
+  SFBool*              getSFForceAlphaBinary(void);
+  SFReal32*            getSFResX(void);
+  SFReal32*            getSFResY(void);
+  SFUInt16*            getSFResUnit(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  Int32&                     getDimension(void);
+  const Int32&               getDimension(void) const;
+  Int32&                     getWidth(void);
+  const Int32&               getWidth(void) const;
+  Int32&                     getHeight(void);
+  const Int32&               getHeight(void) const;
+  Int32&                     getDepth(void);
+  const Int32&               getDepth(void) const;
+  Int32&                     getBpp(void);
+  const Int32&               getBpp(void) const;
+  Int32&                     getMipMapCount(void);
+  const Int32&               getMipMapCount(void) const;
+  Int32&                     getFrameCount(void);
+  const Int32&               getFrameCount(void) const;
+  Time&                      getFrameDelay(void);
+  const Time&                getFrameDelay(void) const;
+  UInt32&                    getPixelFormat(void);
+  const UInt32&              getPixelFormat(void) const;
+  Int32&                     getFrameSize(void);
+  const Int32&               getFrameSize(void) const;
+  std::string&               getName(void);
+  const std::string&         getName(void) const;
+  Int32&                     getDataType(void);
+  const Int32&               getDataType(void) const;
+  Int32&                     getSideCount(void);
+  const Int32&               getSideCount(void) const;
+  Int32&                     getSideSize(void);
+  const Int32&               getSideSize(void) const;
+  bool&                      getForceCompressedData(void);
+  const bool&                getForceCompressedData(void) const;
+  bool&                      getForceAlphaChannel(void);
+  const bool&                getForceAlphaChannel(void) const;
+  bool&                      getForceColorChannel(void);
+  const bool&                getForceColorChannel(void) const;
+  bool&                      getForceAlphaBinary(void);
+  const bool&                getForceAlphaBinary(void) const;
+  Real32&                    getResX(void);
+  const Real32&              getResX(void) const;
+  Real32&                    getResY(void);
+  const Real32&              getResY(void) const;
+  UInt16&                    getResUnit(void);
+  const UInt16&              getResUnit(void) const;
+  FieldContainerPtr&         getParents(const UInt32 index);
+  MFFieldContainerPtr&       getParents(void);
+  const MFFieldContainerPtr& getParents(void) const;
+  UInt8&                     getPixel(const UInt32 index);
+  MFUInt8&                   getPixel(void);
+  const MFUInt8&             getPixel(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           MFFieldContainerPtr *getMFParents        (void);
-           SFInt32             *getSFDimension      (void);
-           SFInt32             *getSFWidth          (void);
-           SFInt32             *getSFHeight         (void);
-           SFInt32             *getSFDepth          (void);
-           SFInt32             *getSFBpp            (void);
-           SFInt32             *getSFMipMapCount    (void);
-           SFInt32             *getSFFrameCount     (void);
-           SFTime              *getSFFrameDelay     (void);
-           SFUInt32            *getSFPixelFormat    (void);
-           MFUInt8             *getMFPixel          (void);
-           SFInt32             *getSFFrameSize      (void);
-           SFString            *getSFName           (void);
-           SFInt32             *getSFDataType       (void);
-           SFInt32             *getSFSideCount      (void);
-           SFInt32             *getSFSideSize       (void);
-           SFBool              *getSFForceCompressedData(void);
-           SFBool              *getSFForceAlphaChannel(void);
-           SFBool              *getSFForceColorChannel(void);
-           SFBool              *getSFForceAlphaBinary(void);
-           SFReal32            *getSFResX           (void);
-           SFReal32            *getSFResY           (void);
-           SFUInt16            *getSFResUnit        (void);
+  void setDimension(const Int32& value);
+  void setWidth(const Int32& value);
+  void setHeight(const Int32& value);
+  void setDepth(const Int32& value);
+  void setBpp(const Int32& value);
+  void setMipMapCount(const Int32& value);
+  void setFrameCount(const Int32& value);
+  void setFrameDelay(const Time& value);
+  void setPixelFormat(const UInt32& value);
+  void setFrameSize(const Int32& value);
+  void setName(const std::string& value);
+  void setDataType(const Int32& value);
+  void setSideCount(const Int32& value);
+  void setSideSize(const Int32& value);
+  void setForceCompressedData(const bool& value);
+  void setForceAlphaChannel(const bool& value);
+  void setForceColorChannel(const bool& value);
+  void setForceAlphaBinary(const bool& value);
+  void setResX(const Real32& value);
+  void setResY(const Real32& value);
+  void setResUnit(const UInt16& value);
 
-           Int32               &getDimension      (void);
-     const Int32               &getDimension      (void) const;
-           Int32               &getWidth          (void);
-     const Int32               &getWidth          (void) const;
-           Int32               &getHeight         (void);
-     const Int32               &getHeight         (void) const;
-           Int32               &getDepth          (void);
-     const Int32               &getDepth          (void) const;
-           Int32               &getBpp            (void);
-     const Int32               &getBpp            (void) const;
-           Int32               &getMipMapCount    (void);
-     const Int32               &getMipMapCount    (void) const;
-           Int32               &getFrameCount     (void);
-     const Int32               &getFrameCount     (void) const;
-           Time                &getFrameDelay     (void);
-     const Time                &getFrameDelay     (void) const;
-           UInt32              &getPixelFormat    (void);
-     const UInt32              &getPixelFormat    (void) const;
-           Int32               &getFrameSize      (void);
-     const Int32               &getFrameSize      (void) const;
-           std::string         &getName           (void);
-     const std::string         &getName           (void) const;
-           Int32               &getDataType       (void);
-     const Int32               &getDataType       (void) const;
-           Int32               &getSideCount      (void);
-     const Int32               &getSideCount      (void) const;
-           Int32               &getSideSize       (void);
-     const Int32               &getSideSize       (void) const;
-           bool                &getForceCompressedData(void);
-     const bool                &getForceCompressedData(void) const;
-           bool                &getForceAlphaChannel(void);
-     const bool                &getForceAlphaChannel(void) const;
-           bool                &getForceColorChannel(void);
-     const bool                &getForceColorChannel(void) const;
-           bool                &getForceAlphaBinary(void);
-     const bool                &getForceAlphaBinary(void) const;
-           Real32              &getResX           (void);
-     const Real32              &getResX           (void) const;
-           Real32              &getResY           (void);
-     const Real32              &getResY           (void) const;
-           UInt16              &getResUnit        (void);
-     const UInt16              &getResUnit        (void) const;
-           FieldContainerPtr   &getParents        (const UInt32 index);
-           MFFieldContainerPtr &getParents        (void);
-     const MFFieldContainerPtr &getParents        (void) const;
-           UInt8               &getPixel          (const UInt32 index);
-           MFUInt8             &getPixel          (void);
-     const MFUInt8             &getPixel          (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setDimension      ( const Int32 &value );
-     void setWidth          ( const Int32 &value );
-     void setHeight         ( const Int32 &value );
-     void setDepth          ( const Int32 &value );
-     void setBpp            ( const Int32 &value );
-     void setMipMapCount    ( const Int32 &value );
-     void setFrameCount     ( const Int32 &value );
-     void setFrameDelay     ( const Time &value );
-     void setPixelFormat    ( const UInt32 &value );
-     void setFrameSize      ( const Int32 &value );
-     void setName           ( const std::string &value );
-     void setDataType       ( const Int32 &value );
-     void setSideCount      ( const Int32 &value );
-     void setSideSize       ( const Int32 &value );
-     void setForceCompressedData( const bool &value );
-     void setForceAlphaChannel( const bool &value );
-     void setForceColorChannel( const bool &value );
-     void setForceAlphaBinary( const bool &value );
-     void setResX           ( const Real32 &value );
-     void setResY           ( const Real32 &value );
-     void setResUnit        ( const UInt16 &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static ImagePtr create(void);
+  static ImagePtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  ImagePtr      create          (void); 
-    static  ImagePtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  MFFieldContainerPtr _mfParents;
+  SFInt32             _sfDimension;
+  SFInt32             _sfWidth;
+  SFInt32             _sfHeight;
+  SFInt32             _sfDepth;
+  SFInt32             _sfBpp;
+  SFInt32             _sfMipMapCount;
+  SFInt32             _sfFrameCount;
+  SFTime              _sfFrameDelay;
+  SFUInt32            _sfPixelFormat;
+  MFUInt8             _mfPixel;
+  SFInt32             _sfFrameSize;
+  SFString            _sfName;
+  SFInt32             _sfDataType;
+  SFInt32             _sfComponentSize;
+  SFInt32             _sfSideCount;
+  SFInt32             _sfSideSize;
+  SFBool              _sfForceCompressedData;
+  SFBool              _sfForceAlphaChannel;
+  SFBool              _sfForceColorChannel;
+  SFBool              _sfForceAlphaBinary;
+  SFReal32            _sfResX;
+  SFReal32            _sfResY;
+  SFUInt16            _sfResUnit;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  ImageBase(void);
+  ImageBase(const ImageBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~ImageBase(void);
 
-    MFFieldContainerPtr   _mfParents;
-    SFInt32             _sfDimension;
-    SFInt32             _sfWidth;
-    SFInt32             _sfHeight;
-    SFInt32             _sfDepth;
-    SFInt32             _sfBpp;
-    SFInt32             _sfMipMapCount;
-    SFInt32             _sfFrameCount;
-    SFTime              _sfFrameDelay;
-    SFUInt32            _sfPixelFormat;
-    MFUInt8             _mfPixel;
-    SFInt32             _sfFrameSize;
-    SFString            _sfName;
-    SFInt32             _sfDataType;
-    SFInt32             _sfComponentSize;
-    SFInt32             _sfSideCount;
-    SFInt32             _sfSideSize;
-    SFBool              _sfForceCompressedData;
-    SFBool              _sfForceAlphaChannel;
-    SFBool              _sfForceColorChannel;
-    SFBool              _sfForceAlphaBinary;
-    SFReal32            _sfResX;
-    SFReal32            _sfResY;
-    SFUInt16            _sfResUnit;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  SFInt32* getSFComponentSize(void);
 
-    ImageBase(void);
-    ImageBase(const ImageBase &source);
+  Int32&       getComponentSize(void);
+  const Int32& getComponentSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-    virtual ~ImageBase(void); 
+  void setComponentSize(const Int32& value);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
-
-           SFInt32             *getSFComponentSize  (void);
-
-           Int32               &getComponentSize  (void);
-     const Int32               &getComponentSize  (void) const;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
-
-     void setComponentSize  (const Int32 &value);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      ImageBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(ImageBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      ImageBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(ImageBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const ImageBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const ImageBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef ImageBase* ImageBaseP;
 
-typedef ImageBase *ImageBaseP;
-
-typedef osgIF<ImageBase::isNodeCore,
-              CoredNodePtr<Image>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet ImageNodePtr;
+typedef osgIF<ImageBase::isNodeCore, CoredNodePtr<Image>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet ImageNodePtr;
 
 typedef RefPtr<ImagePtr> ImageRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGIMAGEBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGIMAGEBASE_HEADER_CVSID                                                                  \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGIMAGEBASE_H_ */

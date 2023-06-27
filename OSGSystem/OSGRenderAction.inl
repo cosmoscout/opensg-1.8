@@ -40,7 +40,6 @@
 //  Includes
 //---------------------------------------------------------------------------
 
-
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -54,16 +53,13 @@ OSG_BEGIN_NAMESPACE
  *                               Types                                     *
 \***************************************************************************/
 
-
 /***************************************************************************\
  *                           Class variables                               *
 \***************************************************************************/
 
-
 /***************************************************************************\
  *                           Class methods                                 *
 \***************************************************************************/
-
 
 /*-------------------------------------------------------------------------*\
  -  public                                                                 -
@@ -73,11 +69,9 @@ OSG_BEGIN_NAMESPACE
  -  protected                                                              -
 \*-------------------------------------------------------------------------*/
 
-
 /*-------------------------------------------------------------------------*\
  -  private                                                                -
 \*-------------------------------------------------------------------------*/
-
 
 /***************************************************************************\
  *                           Instance methods                              *
@@ -92,66 +86,48 @@ OSG_BEGIN_NAMESPACE
 /** \brief Constructor
  */
 
-
-
 /** \brief Destructor
  */
-
 
 /*------------------------------ access -----------------------------------*/
 
 /*---------------------------- properties ---------------------------------*/
 
-inline 
-void RenderAction::updateTopMatrix(void)
-{
-    _currMatrix.acc = _camInverse;
-    _currMatrix.acc.mult(_currMatrix.second);
+inline void RenderAction::updateTopMatrix(void) {
+  _currMatrix.acc = _camInverse;
+  _currMatrix.acc.mult(_currMatrix.second);
 }
 
-inline
-const Matrix &RenderAction::top_matrix(void)
-{
-// not necessary anymore, is updated as soon as _currMatrix changes
-//    _accMatrix = _camInverse;
-//    _accMatrix.mult(_currMatrix.second);
+inline const Matrix& RenderAction::top_matrix(void) {
+  // not necessary anymore, is updated as soon as _currMatrix changes
+  //    _accMatrix = _camInverse;
+  //    _accMatrix.mult(_currMatrix.second);
 
-    return _currMatrix.acc;
+  return _currMatrix.acc;
 }
 
-inline
-void RenderAction::setStateSorting(bool s)
-{
-    _stateSorting = s;
+inline void RenderAction::setStateSorting(bool s) {
+  _stateSorting = s;
 }
 
-inline
-bool RenderAction::getStateSorting(void)
-{
-    return _stateSorting;
+inline bool RenderAction::getStateSorting(void) {
+  return _stateSorting;
 }
 
-inline
-UInt32 RenderAction::getActiveLightsMask(void)
-{
-    return _activeLightsMask;
+inline UInt32 RenderAction::getActiveLightsMask(void) {
+  return _activeLightsMask;
 }
 
-inline
-UInt32 RenderAction::getActiveLightsCount(void)
-{
-    return _activeLightsCount;
+inline UInt32 RenderAction::getActiveLightsCount(void) {
+  return _activeLightsCount;
 }
 
-inline
-const std::vector<UInt32> &RenderAction::getLightEnvsLightsState(void)
-{
-    return _lightEnvsLightsState;
+inline const std::vector<UInt32>& RenderAction::getLightEnvsLightsState(void) {
+  return _lightEnvsLightsState;
 }
 
-inline State *RenderAction::getCurrentState(void)
-{
-    return _pActiveState;
+inline State* RenderAction::getCurrentState(void) {
+  return _pActiveState;
 }
 
 /*-------------------------- your_category---------------------------------*/
@@ -161,27 +137,20 @@ inline State *RenderAction::getCurrentState(void)
 /** \brief assignment
  */
 
-
 /*-------------------------- comparison -----------------------------------*/
 
 /** \brief assignment
  */
 
-
 /** \brief equal
  */
-
 
 /** \brief unequal
  */
 
-
-
 /*-------------------------------------------------------------------------*\
  -  protected                                                              -
 \*-------------------------------------------------------------------------*/
-
-
 
 /*-------------------------------------------------------------------------*\
  -  private                                                                -
@@ -190,30 +159,29 @@ inline State *RenderAction::getCurrentState(void)
 OSG_END_NAMESPACE
 
 ///---------------------------------------------------------------------------
-///  FUNCTION: 
+///  FUNCTION:
 ///---------------------------------------------------------------------------
 //:  Example for the head comment of a function
 ///---------------------------------------------------------------------------
 ///
-//p: Paramaters: 
-//p: 
+// p: Paramaters:
+// p:
 ///
-//g: GlobalVars:
-//g: 
+// g: GlobalVars:
+// g:
 ///
-//r: Return:
-//r: 
+// r: Return:
+// r:
 ///
-//c: Caution:
-//c: 
+// c: Caution:
+// c:
 ///
-//a: Assumptions:
-//a: 
+// a: Assumptions:
+// a:
 ///
-//d: Description:
-//d: 
+// d: Description:
+// d:
 ///
-//s: SeeAlso:
-//s: 
+// s: SeeAlso:
+// s:
 ///---------------------------------------------------------------------------
-

@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILETRANSFORMINST
 
 #include <stdlib.h>
@@ -61,16 +60,13 @@
 #include "OSGTransformBase.h"
 #include "OSGTransform.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  TransformBase::MatrixFieldMask = 
+const OSG::BitVector TransformBase::MatrixFieldMask =
     (TypeTraits<BitVector>::One << TransformBase::MatrixFieldId);
 
-const OSG::BitVector TransformBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector TransformBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
@@ -80,187 +76,131 @@ const OSG::BitVector TransformBase::MTInfluenceMask =
 
 //! Transform description
 
-FieldDescription *TransformBase::_desc[] = 
-{
-    new FieldDescription(SFMatrix::getClassType(), 
-                     "matrix", 
-                     MatrixFieldId, MatrixFieldMask,
-                     false,
-                     (FieldAccessMethod) &TransformBase::getSFMatrix)
-};
+FieldDescription* TransformBase::_desc[] = {new FieldDescription(SFMatrix::getClassType(), "matrix",
+    MatrixFieldId, MatrixFieldMask, false, (FieldAccessMethod)&TransformBase::getSFMatrix)};
 
+FieldContainerType TransformBase::_type("Transform", "Group", NULL,
+    (PrototypeCreateF)&TransformBase::createEmpty, Transform::initMethod, _desc, sizeof(_desc));
 
-FieldContainerType TransformBase::_type(
-    "Transform",
-    "Group",
-    NULL,
-    (PrototypeCreateF) &TransformBase::createEmpty,
-    Transform::initMethod,
-    _desc,
-    sizeof(_desc));
-
-//OSG_FIELD_CONTAINER_DEF(TransformBase, TransformPtr)
+// OSG_FIELD_CONTAINER_DEF(TransformBase, TransformPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &TransformBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &TransformBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr TransformBase::shallowCopy(void) const 
-{ 
-    TransformPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const Transform *>(this)); 
-
-    return returnValue; 
+FieldContainerType& TransformBase::getType(void) {
+  return _type;
 }
 
-UInt32 TransformBase::getContainerSize(void) const 
-{ 
-    return sizeof(Transform); 
+const FieldContainerType& TransformBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr TransformBase::shallowCopy(void) const {
+  TransformPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const Transform*>(this));
+
+  return returnValue;
+}
+
+UInt32 TransformBase::getContainerSize(void) const {
+  return sizeof(Transform);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void TransformBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((TransformBase *) &other, whichField);
+void TransformBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((TransformBase*)&other, whichField);
 }
 #else
-void TransformBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((TransformBase *) &other, whichField, sInfo);
+void TransformBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((TransformBase*)&other, whichField, sInfo);
 }
-void TransformBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void TransformBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void TransformBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void TransformBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-TransformBase::TransformBase(void) :
-    _sfMatrix                 (), 
-    Inherited() 
-{
+TransformBase::TransformBase(void)
+    : _sfMatrix()
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-TransformBase::TransformBase(const TransformBase &source) :
-    _sfMatrix                 (source._sfMatrix                 ), 
-    Inherited                 (source)
-{
+TransformBase::TransformBase(const TransformBase& source)
+    : _sfMatrix(source._sfMatrix)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-TransformBase::~TransformBase(void)
-{
+TransformBase::~TransformBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 TransformBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 TransformBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (MatrixFieldMask & whichField))
-    {
-        returnValue += _sfMatrix.getBinSize();
-    }
+  if (FieldBits::NoField != (MatrixFieldMask & whichField)) {
+    returnValue += _sfMatrix.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void TransformBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void TransformBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (MatrixFieldMask & whichField))
-    {
-        _sfMatrix.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (MatrixFieldMask & whichField)) {
+    _sfMatrix.copyToBin(pMem);
+  }
 }
 
-void TransformBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void TransformBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (MatrixFieldMask & whichField))
-    {
-        _sfMatrix.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (MatrixFieldMask & whichField)) {
+    _sfMatrix.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void TransformBase::executeSyncImpl(      TransformBase *pOther,
-                                        const BitVector         &whichField)
-{
+void TransformBase::executeSyncImpl(TransformBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (MatrixFieldMask & whichField))
-        _sfMatrix.syncWith(pOther->_sfMatrix);
-
-
+  if (FieldBits::NoField != (MatrixFieldMask & whichField))
+    _sfMatrix.syncWith(pOther->_sfMatrix);
 }
 #else
-void TransformBase::executeSyncImpl(      TransformBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void TransformBase::executeSyncImpl(
+    TransformBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (MatrixFieldMask & whichField))
-        _sfMatrix.syncWith(pOther->_sfMatrix);
-
-
-
+  if (FieldBits::NoField != (MatrixFieldMask & whichField))
+    _sfMatrix.syncWith(pOther->_sfMatrix);
 }
 
-void TransformBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void TransformBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>

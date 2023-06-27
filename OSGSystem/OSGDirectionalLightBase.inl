@@ -52,81 +52,59 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &DirectionalLightBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& DirectionalLightBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 DirectionalLightBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 DirectionalLightBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-DirectionalLightPtr DirectionalLightBase::create(void) 
-{
-    DirectionalLightPtr fc; 
+inline DirectionalLightPtr DirectionalLightBase::create(void) {
+  DirectionalLightPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = DirectionalLightPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = DirectionalLightPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-DirectionalLightPtr DirectionalLightBase::createEmpty(void) 
-{ 
-    DirectionalLightPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline DirectionalLightPtr DirectionalLightBase::createEmpty(void) {
+  DirectionalLightPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the DirectionalLight::_sfDirection field.
-inline
-SFVec3f *DirectionalLightBase::getSFDirection(void)
-{
-    return &_sfDirection;
-}
-
-
-//! Get the value of the DirectionalLight::_sfDirection field.
-inline
-Vec3f &DirectionalLightBase::getDirection(void)
-{
-    return _sfDirection.getValue();
+inline SFVec3f* DirectionalLightBase::getSFDirection(void) {
+  return &_sfDirection;
 }
 
 //! Get the value of the DirectionalLight::_sfDirection field.
-inline
-const Vec3f &DirectionalLightBase::getDirection(void) const
-{
-    return _sfDirection.getValue();
+inline Vec3f& DirectionalLightBase::getDirection(void) {
+  return _sfDirection.getValue();
+}
+
+//! Get the value of the DirectionalLight::_sfDirection field.
+inline const Vec3f& DirectionalLightBase::getDirection(void) const {
+  return _sfDirection.getValue();
 }
 
 //! Set the value of the DirectionalLight::_sfDirection field.
-inline
-void DirectionalLightBase::setDirection(const Vec3f &value)
-{
-    _sfDirection.setValue(value);
+inline void DirectionalLightBase::setDirection(const Vec3f& value) {
+  _sfDirection.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGDIRECTIONALLIGHTBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGDIRECTIONALLIGHTBASE_INLINE_CVSID                                                       \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

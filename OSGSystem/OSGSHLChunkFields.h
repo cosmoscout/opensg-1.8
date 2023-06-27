@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGSHLCHUNKFIELDS_H_
 #define _OSGSHLCHUNKFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class SHLChunk;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! SHLChunkPtr
 
 typedef FCPtr<ShaderChunkPtr, SHLChunk> SHLChunkPtr;
@@ -81,18 +80,22 @@ typedef FCPtr<ShaderChunkPtr, SHLChunk> SHLChunkPtr;
 #endif
 
 template <>
-struct FieldDataTraits<SHLChunkPtr> : 
-    public FieldTraitsRecurseMapper<SHLChunkPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<SHLChunkPtr> : public FieldTraitsRecurseMapper<SHLChunkPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getSName(void) { return "SFSHLChunkPtr"; }
-    static const char *getMName(void) { return "MFSHLChunkPtr"; }
+  static const char* getSName(void) {
+    return "SFSHLChunkPtr";
+  }
+  static const char* getMName(void) {
+    return "MFSHLChunkPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -102,7 +105,6 @@ struct FieldDataTraits<SHLChunkPtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
@@ -126,6 +128,7 @@ OSG_DLLEXPORT_DECL1(MField, SHLChunkPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 
 OSG_END_NAMESPACE
 
-#define OSGSHLCHUNKFIELDS_HEADER_CVSID "@(#)$Id: OSGSHLChunkFields.h,v 1.13 2006/11/17 17:16:04 a-m-z Exp $"
+#define OSGSHLCHUNKFIELDS_HEADER_CVSID                                                             \
+  "@(#)$Id: OSGSHLChunkFields.h,v 1.13 2006/11/17 17:16:04 a-m-z Exp $"
 
 #endif /* _OSGSHLCHUNKFIELDS_H_ */

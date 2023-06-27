@@ -53,77 +53,63 @@
 
 OSG_BEGIN_NAMESPACE
 
-class OSG_BASE_DLLMAPPING DgramSocket:public Socket
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_BASE_DLLMAPPING DgramSocket : public Socket {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  DgramSocket();
+  DgramSocket(const DgramSocket& source);
 
-    DgramSocket();
-    DgramSocket(const DgramSocket &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   open/close                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   open/close                                 */
-    /*! \{                                                                 */
+  virtual void open(void);
+  virtual void close(void);
 
-    virtual void open (void);
-    virtual void close(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   read, write                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   read, write                                */
-    /*! \{                                                                 */
+  int recvFrom(void* buf, int size, SocketAddress& from);
+  int peekFrom(void* buf, int size, SocketAddress& from);
+  int recvFrom(NetworkMessage& msg, SocketAddress& from);
+  int sendTo(const void* buf, int size, const SocketAddress& to);
+  int sendTo(NetworkMessage& msg, const SocketAddress& to);
 
-    int recvFrom(      void           *buf ,
-                       int             size,
-                       SocketAddress  &from );
-    int peekFrom(      void           *buf ,
-                       int             size,
-                       SocketAddress  &from );
-    int recvFrom(      NetworkMessage &msg ,
-                       SocketAddress  &from );
-    int sendTo  (const void           *buf ,
-                       int             size,
-                 const SocketAddress  &to   );
-    int sendTo  (      NetworkMessage &msg ,
-                 const SocketAddress  &to   );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                multicast                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                multicast                                     */
-    /*! \{                                                                 */
+  void join(
+      const SocketAddress& group, const SocketAddress& interf = SocketAddress(SocketAddress::ANY));
+  void leave(
+      const SocketAddress& group, const SocketAddress& interf = SocketAddress(SocketAddress::ANY));
+  void setTTL(unsigned char ttl);
+  void setMCastInterface(const SocketAddress& interf);
 
-    void join             (const SocketAddress &group,
-                           const SocketAddress &interf=
-                                 SocketAddress(SocketAddress::ANY));
-    void leave            (const SocketAddress &group,
-                           const SocketAddress &interf=
-                                 SocketAddress(SocketAddress::ANY));
-    void setTTL           (      unsigned char ttl                );
-    void setMCastInterface(const SocketAddress &interf            );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   assignment                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   assignment                                 */
-    /*! \{                                                                 */
+  const DgramSocket& operator=(const DgramSocket& source);
 
-	const DgramSocket & operator =(const DgramSocket &source);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*==========================  PRIVATE  ================================*/
+ private:
+  typedef Socket Inherited;
 
-    /*=========================  PROTECTED  ===============================*/
-  protected:
-
-    /*==========================  PRIVATE  ================================*/
-  private:
-
-    typedef Socket Inherited;
-
-	static char cvsid[];
+  static char cvsid[];
 };
 
 OSG_END_NAMESPACE

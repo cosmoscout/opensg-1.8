@@ -53,17 +53,15 @@
 
 #include <utility>
 
-#if ! defined (OSG_USE_PTHREADS)   && \
-    ! defined (OSG_USE_SPROC)      && \
-    ! defined (OSG_USE_WINTHREADS)
+#if !defined(OSG_USE_PTHREADS) && !defined(OSG_USE_SPROC) && !defined(OSG_USE_WINTHREADS)
 #error "No threading model defined, check your system/compiler combination"
 #endif
 
-#if defined (OSG_USE_PTHREADS) && defined (OSG_USE_SPROC)
+#if defined(OSG_USE_PTHREADS) && defined(OSG_USE_SPROC)
 #error "PTHREAD and SPROC defined, check your system/compiler combination"
 #endif
 
-#if defined (OSG_USE_WINTHREADS) && defined (OSG_USE_SPROC)
+#if defined(OSG_USE_WINTHREADS) && defined(OSG_USE_SPROC)
 #error "Winthreads and SPROC defined, check your system/compiler combination"
 #endif
 
@@ -81,53 +79,46 @@ class MPFieldStore;
 /*! \ingroup GrpBaseBaseMultiThreading
  */
 
-class OSG_BASE_DLLMAPPING BaseThreadCommonBase : public MPBase
-{
-    /*==========================  PUBLIC  =================================*/
+class OSG_BASE_DLLMAPPING BaseThreadCommonBase : public MPBase {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  typedef void (*ThreadFuncF)(void* pThreadArg);
 
-    typedef void (*ThreadFuncF)(void *pThreadArg);
+  bool isInitialized(void);
 
-    bool isInitialized(void);
+  /*=========================  PROTECTED  ===============================*/
 
-    /*=========================  PROTECTED  ===============================*/
+ protected:
+  typedef MPBase Inherited;
 
-  protected:
+  UInt32 _uiThreadId;
+  bool   _bInitialized;
 
-    typedef MPBase  Inherited;
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-            UInt32 _uiThreadId;
-            bool   _bInitialized;
+  BaseThreadCommonBase(const Char8* szName, UInt32 uiId);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    BaseThreadCommonBase(const Char8 *szName, UInt32 uiId);
+  virtual ~BaseThreadCommonBase(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-    virtual ~BaseThreadCommonBase(void);
+ private:
+  friend class ThreadManager;
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-
-  private:
-
-    friend class ThreadManager;
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    BaseThreadCommonBase(const BaseThreadCommonBase &source);
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const BaseThreadCommonBase &source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  BaseThreadCommonBase(const BaseThreadCommonBase& source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const BaseThreadCommonBase& source);
 };
-
-
-
 
 //---------------------------------------------------------------------------
 //  Class
@@ -138,135 +129,127 @@ class OSG_BASE_DLLMAPPING BaseThreadCommonBase : public MPBase
 /*! \ingroup GrpBaseBaseMultiThreading
  */
 
-class BasePThreadBase : public BaseThreadCommonBase
-{
-    /*==========================  PUBLIC  =================================*/
+class BasePThreadBase : public BaseThreadCommonBase {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  /*=========================  PROTECTED  ===============================*/
 
-    /*=========================  PROTECTED  ===============================*/
-
-  protected:
-
-    typedef BaseThreadCommonBase  Inherited;
+ protected:
+  typedef BaseThreadCommonBase Inherited;
 
 #if defined(OSG_PTHREAD_ELF_TLS)
-    static  __thread BaseThread     *_pLocalThread;
+  static __thread BaseThread* _pLocalThread;
 #else
-    static           pthread_key_t   _threadKey;
+  static pthread_key_t _threadKey;
 #endif
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Helper                                  */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Helper                                  */
+  /*! \{                                                                 */
 
-    static void *threadFunc(void *pThreadArg);
+  static void* threadFunc(void* pThreadArg);
 
 #if !defined(OSG_PTHREAD_ELF_TLS)
-    static void  freeThread(void *pThread   );
+  static void freeThread(void* pThread);
 #endif
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Instance Variables                         */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Instance Variables                         */
+  /*! \{                                                                 */
 
-    void            *_pThreadData[3];
-    pthread_t       *_pThreadDesc;
+  void*      _pThreadData[3];
+  pthread_t* _pThreadDesc;
 
-    pthread_cond_t  *_pBlockCond;
-    pthread_mutex_t *_pBlockMutex;
+  pthread_cond_t*  _pBlockCond;
+  pthread_mutex_t* _pBlockMutex;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    BasePThreadBase(const Char8 *szName, UInt32 uiId);
+  BasePThreadBase(const Char8* szName, UInt32 uiId);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    virtual ~BasePThreadBase(void);
+  virtual ~BasePThreadBase(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    virtual void init          (void);
+  virtual void init(void);
 
-            void setupThread   (void);
-            void setupBlockCond(void);
+  void setupThread(void);
+  void setupBlockCond(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Get                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Get                                    */
+  /*! \{                                                                 */
 
-    static BaseThread *getCurrent(void);
+  static BaseThread* getCurrent(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Join                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Join                                    */
+  /*! \{                                                                 */
 
-    static void join(BasePThreadBase *threadP);
+  static void join(BasePThreadBase* threadP);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Run                                     */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Run                                     */
+  /*! \{                                                                 */
 
-    bool runFunction(ThreadFuncF  fThreadFunc,
-                     void        *pThreadArg );
+  bool runFunction(ThreadFuncF fThreadFunc, void* pThreadArg);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Blocking                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Blocking                                   */
+  /*! \{                                                                 */
 
-    void block  (void);
-    void unblock(void);
+  void block(void);
+  void unblock(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Helper                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Helper                                    */
+  /*! \{                                                                 */
 
-    bool exists   (void);
+  bool exists(void);
 
-    void terminate(void);
-    void kill     (void);
+  void terminate(void);
+  void kill(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Dump                                      */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Dump                                      */
+  /*! \{                                                                 */
 
-    void print(void);
+  void print(void);
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-  private:
+ private:
+  friend class ThreadManager;
 
-    friend class ThreadManager;
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    BasePThreadBase(const BasePThreadBase &source);
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const BasePThreadBase &source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  BasePThreadBase(const BasePThreadBase& source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const BasePThreadBase& source);
 };
 
 typedef BasePThreadBase BaseThreadBase;
 
 #endif /* OSG_USE_PTHREADS */
-
-
-
 
 //---------------------------------------------------------------------------
 //  Class
@@ -277,130 +260,121 @@ typedef BasePThreadBase BaseThreadBase;
 /*! \ingroup GrpBaseBaseMultiThreading
  */
 
-class BaseSprocBase : public BaseThreadCommonBase
-{
-    /*==========================  PUBLIC  =================================*/
+class BaseSprocBase : public BaseThreadCommonBase {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  /*=========================  PROTECTED  ===============================*/
 
-    /*=========================  PROTECTED  ===============================*/
+ protected:
+  typedef BaseThreadCommonBase Inherited;
 
-  protected:
+  /*! \hideinhierarchy
+   */
 
-    typedef BaseThreadCommonBase Inherited;
+  struct ProcessData {
+    BaseThread* _pThread;
+  };
 
-    /*! \hideinhierarchy
-     */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Helper                                  */
+  /*! \{                                                                 */
 
-    struct ProcessData
-    {
-        BaseThread *_pThread;
-    };
+  static void threadFunc(void* pThreadArgP);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Helper                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Instance Variables                         */
+  /*! \{                                                                 */
 
-    static void threadFunc(void *pThreadArgP);
+  void* _pThreadData[3];
+  pid_t _pid;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Instance Variables                         */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    void  *_pThreadData[3];
-    pid_t  _pid;
+  BaseSprocBase(const Char8* szName, UInt32 uiId);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Destructors                               */
+  /*! \{                                                                 */
 
-    BaseSprocBase(const Char8 *szName, UInt32 uiId);
+  virtual ~BaseSprocBase(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Destructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    virtual ~BaseSprocBase(void);
+  virtual void init(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  void setPid(void);
+  void setCurrentInternal(BaseThread* pThread);
 
-    virtual void init              (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Get                                    */
+  /*! \{                                                                 */
 
-            void setPid            (void);
-            void setCurrentInternal(BaseThread *pThread);
+  static BaseThread* getCurrent(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Get                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Join                                    */
+  /*! \{                                                                 */
 
-    static BaseThread *getCurrent(void);
+  static void join(BaseSprocBase* pThread);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Join                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Run                                     */
+  /*! \{                                                                 */
 
-    static void join(BaseSprocBase *pThread);
+  bool runFunction(ThreadFuncF fThreadFunc, void* pThreadArg);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Run                                     */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Blocking                                   */
+  /*! \{                                                                 */
 
-    bool runFunction(ThreadFuncF  fThreadFunc,
-                     void        *pThreadArg);
+  void block(void);
+  void unblock(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Blocking                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Helper                                    */
+  /*! \{                                                                 */
 
-    void block    (void);
-    void unblock  (void);
+  bool exists(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Helper                                    */
-    /*! \{                                                                 */
+  void terminate(void);
+  void kill(void);
 
-    bool exists   (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Dump                                      */
+  /*! \{                                                                 */
 
-    void terminate(void);
-    void kill     (void);
+  void print(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Dump                                      */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-    void print(void);
+ private:
+  friend class ThreadManager;
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-
-  private:
-
-    friend class ThreadManager;
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    BaseSprocBase(const BaseSprocBase &source);
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const BaseSprocBase &source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  BaseSprocBase(const BaseSprocBase& source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const BaseSprocBase& source);
 };
 
 typedef BaseSprocBase BaseThreadBase;
 
 #endif /* OSG_USE_SPROC */
-
-
-
 
 //---------------------------------------------------------------------------
 //  Class
@@ -411,137 +385,129 @@ typedef BaseSprocBase BaseThreadBase;
 /*! \ingroup GrpBaseBaseMultiThreading
  */
 
-class OSG_BASE_DLLMAPPING BaseWinThreadBase : public BaseThreadCommonBase
-{
-    /*==========================  PUBLIC  =================================*/
+class OSG_BASE_DLLMAPPING BaseWinThreadBase : public BaseThreadCommonBase {
+  /*==========================  PUBLIC  =================================*/
 
-   public:
+ public:
+  /*=========================  PROTECTED  ===============================*/
 
-    /*=========================  PROTECTED  ===============================*/
-
-  protected:
-
-    typedef BaseThreadCommonBase Inherited;
+ protected:
+  typedef BaseThreadCommonBase Inherited;
 
 #if defined(OSG_ASPECT_USE_LOCALSTORAGE)
-    static UInt32 _threadKey;
+  static UInt32 _threadKey;
 #endif
 #if defined(OSG_ASPECT_USE_DECLSPEC)
-    static __declspec (thread) BaseThread *_pThreadLocal;
+  static __declspec(thread) BaseThread* _pThreadLocal;
 #endif
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Class Specific                             */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Class Specific                             */
+  /*! \{                                                                 */
 
-    static void threadFunc(void *pThreadArg);
+  static void threadFunc(void* pThreadArg);
 
 #ifdef OSG_ASPECT_USE_LOCALSTORAGE
-    static void freeThread(void            );
+  static void freeThread(void);
 #endif
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Instance Variables                         */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Instance Variables                         */
+  /*! \{                                                                 */
 
-    void   *_pThreadData[3];
+  void* _pThreadData[3];
 
-    Handle  _pThreadHandle;
-    Handle  _pExternalHandle;
-    UInt32  _uiNativeThreadId;
+  Handle _pThreadHandle;
+  Handle _pExternalHandle;
+  UInt32 _uiNativeThreadId;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    BaseWinThreadBase(const Char8 *szName, UInt32 uiId);
+  BaseWinThreadBase(const Char8* szName, UInt32 uiId);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Destructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Destructors                               */
+  /*! \{                                                                 */
 
-    virtual ~BaseWinThreadBase(void);
+  virtual ~BaseWinThreadBase(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    virtual void init             (void);
+  virtual void init(void);
 
-            void setPid           (void);
-            void setExternalHandle(Handle pExternalHandle);
+  void setPid(void);
+  void setExternalHandle(Handle pExternalHandle);
 
-            void setupThread      (void);
+  void setupThread(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Get                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Get                                    */
+  /*! \{                                                                 */
 
-    static BaseThread *getCurrent(void);
+  static BaseThread* getCurrent(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Join                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Join                                    */
+  /*! \{                                                                 */
 
-    static void join(BaseWinThreadBase *pThread);
+  static void join(BaseWinThreadBase* pThread);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Run                                     */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Run                                     */
+  /*! \{                                                                 */
 
-    bool runFunction(ThreadFuncF fThreadFunc,
-                     void        *pThreadArg);
+  bool runFunction(ThreadFuncF fThreadFunc, void* pThreadArg);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Blocking                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Blocking                                   */
+  /*! \{                                                                 */
 
-    void block  (void);
-    void unblock(void);
+  void block(void);
+  void unblock(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Helper                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Helper                                    */
+  /*! \{                                                                 */
 
-    bool exists   (void);
+  bool exists(void);
 
-    void terminate(void);
-    void kill     (void);
+  void terminate(void);
+  void kill(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Dump                                      */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Dump                                      */
+  /*! \{                                                                 */
 
-    void print(void);
+  void print(void);
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-   private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class ThreadManager;
 
-    friend class ThreadManager;
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    BaseWinThreadBase(const BaseWinThreadBase &source);
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const BaseWinThreadBase &source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  BaseWinThreadBase(const BaseWinThreadBase& source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const BaseWinThreadBase& source);
 };
 
 typedef BaseWinThreadBase BaseThreadBase;
 
 #endif /* OSG_USE_WINTHREADS */
-
-
-
 
 //---------------------------------------------------------------------------
 //  Class
@@ -550,129 +516,123 @@ typedef BaseWinThreadBase BaseThreadBase;
 /*! \ingroup GrpBaseBaseMultiThreading
  */
 
-class OSG_BASE_DLLMAPPING BaseThread : public BaseThreadBase
-{
-    /*==========================  PRIVATE  ================================*/
+class OSG_BASE_DLLMAPPING BaseThread : public BaseThreadBase {
+  /*==========================  PRIVATE  ================================*/
 
-  private:
+ private:
+  typedef BaseThreadBase Inherited;
 
-    typedef BaseThreadBase Inherited;
+  /*==========================  PUBLIC  =================================*/
 
-    /*==========================  PUBLIC  =================================*/
+ public:
+  typedef MPThreadType Type;
 
-  public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Get                                     */
+  /*! \{                                                                 */
 
-    typedef MPThreadType Type;
+  static BaseThread* get(const Char8* szName);
+  static BaseThread* find(const Char8* szName);
+  static BaseThread* create(void);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Get                                     */
-    /*! \{                                                                 */
-    
-    static       BaseThread   *get         (const Char8 *szName);
-    static       BaseThread   *find        (const Char8 *szName);
-    static       BaseThread   *create      (      void         );
+  static const MPThreadType& getClassType(void);
 
-    static const MPThreadType &getClassType(      void         );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Get                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Get                                    */
-    /*! \{                                                                 */
+  static BaseThread* getCurrent(void);
 
-    static BaseThread *getCurrent(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Join                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Join                                    */
-    /*! \{                                                                 */
+  static void join(BaseThread* pThread);
 
-    static void join(BaseThread *pThread);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Run                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Run                                     */
-    /*! \{                                                                 */
+  void run(void);
 
-    void run        (void                   );
+  bool runFunction(ThreadFuncF fThreadFunc, void* pThreadArg);
 
-    bool runFunction(ThreadFuncF fThreadFunc,
-                     void        *pThreadArg);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Blocking                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Blocking                                   */
-    /*! \{                                                                 */
+  void block(void);
+  void unblock(void);
 
-    void block  (void);
-    void unblock(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Helper                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Helper                                    */
-    /*! \{                                                                 */
+  bool exists(void);
 
-    bool exists   (void);
+  void terminate(void);
+  void kill(void);
 
-    void terminate(void);
-    void kill     (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Dump                                      */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Dump                                      */
-    /*! \{                                                                 */
+  void print(void);
 
-    void print(void);
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+ protected:
+  static MPThreadType _type;
 
-  protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Class Specific                             */
+  /*! \{                                                                 */
 
-    static MPThreadType _type;
+  static BaseThread* create(const Char8* szName, UInt32 uiId);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Class Specific                             */
-    /*! \{                                                                 */
+  static void initThreading(void);
 
-    static BaseThread *create       (const Char8 *szName, UInt32 uiId);
+  static void runWorkProc(void* pThread);
 
-    static void        initThreading(      void                      );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    static void        runWorkProc  (      void  *pThread            );
+  BaseThread(const Char8* szName, UInt32 uiId);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Destructors                               */
+  /*! \{                                                                 */
 
-    BaseThread(const Char8 *szName, UInt32 uiId);
+  virtual ~BaseThread(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Destructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Workproc                                */
+  /*! \{                                                                 */
 
-    virtual ~BaseThread(void);
+  virtual void workProc(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Workproc                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-    virtual void workProc(void);
+ private:
+  friend class ThreadManager;
+  friend class MPFieldStore<BaseThread>;
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-
-  private:
-
-    friend class ThreadManager;
-    friend class MPFieldStore<BaseThread>;
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    BaseThread(const BaseThread &source);
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const BaseThread &source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  BaseThread(const BaseThread& source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const BaseThread& source);
 };
 
 OSG_END_NAMESPACE

@@ -48,77 +48,70 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief Foreground class for grabbing the viewport into an image. See \ref 
+/*! \brief Foreground class for grabbing the viewport into an image. See \ref
     PageSystemWindowForegroundGrab for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING GrabForeground : public GrabForegroundBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING GrabForeground : public GrabForegroundBase {
+ private:
+  typedef GrabForegroundBase Inherited;
 
-    typedef GrabForegroundBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector whichField, 
-                         UInt32    origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   draw                                       */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  virtual void draw(DrawActionBase* action, Viewport* port);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   draw                                       */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in GrabForegroundBase.
 
-    virtual void draw( DrawActionBase * action, Viewport * port );
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  GrabForeground(void);
+  GrabForeground(const GrabForeground& source);
 
-    // Variables should all be in GrabForegroundBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~GrabForeground(void);
 
-    GrabForeground(void);
-    GrabForeground(const GrabForeground &source);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class GrabForegroundBase;
 
-    virtual ~GrabForeground(void); 
+  static void initMethod(void);
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  // prohibit default functions (move to 'public' if you need one)
 
-    friend class FieldContainer;
-    friend class GrabForegroundBase;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const GrabForeground &source);
+  void operator=(const GrabForeground& source);
 };
 
-typedef GrabForeground *GrabForegroundP;
+typedef GrabForeground* GrabForegroundP;
 
 OSG_END_NAMESPACE
 

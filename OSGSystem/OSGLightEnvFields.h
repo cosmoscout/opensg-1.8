@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGLIGHTENVFIELDS_H_
 #define _OSGLIGHTENVFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class LightEnv;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! LightEnvPtr
 
 typedef FCPtr<NodeCorePtr, LightEnv> LightEnvPtr;
@@ -81,13 +80,11 @@ typedef FCPtr<NodeCorePtr, LightEnv> LightEnvPtr;
 #endif
 
 template <>
-struct FieldDataTraits<LightEnvPtr> : 
-    public FieldTraitsRecurseMapper<LightEnvPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<LightEnvPtr> : public FieldTraitsRecurseMapper<LightEnvPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -98,10 +95,9 @@ struct FieldDataTraits<LightEnvPtr> :
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
 
-
-
 OSG_END_NAMESPACE
 
-#define OSGLIGHTENVFIELDS_HEADER_CVSID "@(#)$Id: OSGLightEnvFields.h,v 1.5 2006/02/20 16:54:23 dirk Exp $"
+#define OSGLIGHTENVFIELDS_HEADER_CVSID                                                             \
+  "@(#)$Id: OSGLightEnvFields.h,v 1.5 2006/02/20 16:54:23 dirk Exp $"
 
 #endif /* _OSGLIGHTENVFIELDS_H_ */

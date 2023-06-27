@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEDVRGEOMETRYINST
 
 #include <stdlib.h>
@@ -61,163 +60,113 @@
 #include "OSGDVRGeometryBase.h"
 #include "OSGDVRGeometry.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector DVRGeometryBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
+const OSG::BitVector DVRGeometryBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
+FieldContainerType DVRGeometryBase::_type("DVRGeometry", "Geometry", NULL,
+    (PrototypeCreateF)&DVRGeometryBase::createEmpty, DVRGeometry::initMethod, NULL, 0);
 
-
-FieldContainerType DVRGeometryBase::_type(
-    "DVRGeometry",
-    "Geometry",
-    NULL,
-    (PrototypeCreateF) &DVRGeometryBase::createEmpty,
-    DVRGeometry::initMethod,
-    NULL,
-    0);
-
-//OSG_FIELD_CONTAINER_DEF(DVRGeometryBase, DVRGeometryPtr)
+// OSG_FIELD_CONTAINER_DEF(DVRGeometryBase, DVRGeometryPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &DVRGeometryBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &DVRGeometryBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr DVRGeometryBase::shallowCopy(void) const 
-{ 
-    DVRGeometryPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const DVRGeometry *>(this)); 
-
-    return returnValue; 
+FieldContainerType& DVRGeometryBase::getType(void) {
+  return _type;
 }
 
-UInt32 DVRGeometryBase::getContainerSize(void) const 
-{ 
-    return sizeof(DVRGeometry); 
+const FieldContainerType& DVRGeometryBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr DVRGeometryBase::shallowCopy(void) const {
+  DVRGeometryPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const DVRGeometry*>(this));
+
+  return returnValue;
+}
+
+UInt32 DVRGeometryBase::getContainerSize(void) const {
+  return sizeof(DVRGeometry);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void DVRGeometryBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((DVRGeometryBase *) &other, whichField);
+void DVRGeometryBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((DVRGeometryBase*)&other, whichField);
 }
 #else
-void DVRGeometryBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((DVRGeometryBase *) &other, whichField, sInfo);
+void DVRGeometryBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((DVRGeometryBase*)&other, whichField, sInfo);
 }
-void DVRGeometryBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void DVRGeometryBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void DVRGeometryBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void DVRGeometryBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-DVRGeometryBase::DVRGeometryBase(void) :
-    Inherited() 
-{
+DVRGeometryBase::DVRGeometryBase(void)
+    : Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-DVRGeometryBase::DVRGeometryBase(const DVRGeometryBase &source) :
-    Inherited                 (source)
-{
+DVRGeometryBase::DVRGeometryBase(const DVRGeometryBase& source)
+    : Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-DVRGeometryBase::~DVRGeometryBase(void)
-{
+DVRGeometryBase::~DVRGeometryBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 DVRGeometryBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 DVRGeometryBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void DVRGeometryBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
-
-
+void DVRGeometryBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 }
 
-void DVRGeometryBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
-
-
+void DVRGeometryBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void DVRGeometryBase::executeSyncImpl(      DVRGeometryBase *pOther,
-                                        const BitVector         &whichField)
-{
+void DVRGeometryBase::executeSyncImpl(DVRGeometryBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
-
-
+  Inherited::executeSyncImpl(pOther, whichField);
 }
 #else
-void DVRGeometryBase::executeSyncImpl(      DVRGeometryBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void DVRGeometryBase::executeSyncImpl(
+    DVRGeometryBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
-
-
-
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 }
 
-void DVRGeometryBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void DVRGeometryBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 

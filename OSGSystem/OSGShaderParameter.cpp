@@ -65,10 +65,8 @@ OSG_USING_NAMESPACE
  *                           Class methods                                 *
 \***************************************************************************/
 
-void ShaderParameter::initMethod (void)
-{
+void ShaderParameter::initMethod(void) {
 }
-
 
 /***************************************************************************\
  *                           Instance methods                              *
@@ -80,35 +78,29 @@ void ShaderParameter::initMethod (void)
 
 /*----------------------- constructors & destructors ----------------------*/
 
-ShaderParameter::ShaderParameter(void) :
-    Inherited(),
-    _changed(false),
-    _typeid(SHPTypeUnknown),
-    _location(-1)
-{
+ShaderParameter::ShaderParameter(void)
+    : Inherited()
+    , _changed(false)
+    , _typeid(SHPTypeUnknown)
+    , _location(-1) {
 }
 
-ShaderParameter::ShaderParameter(const ShaderParameter &source) :
-    Inherited(source),
-    _changed(source._changed),
-    _typeid(source._typeid),
-    _location(source._location)
-{
+ShaderParameter::ShaderParameter(const ShaderParameter& source)
+    : Inherited(source)
+    , _changed(source._changed)
+    , _typeid(source._typeid)
+    , _location(source._location) {
 }
 
-ShaderParameter::~ShaderParameter(void)
-{
+ShaderParameter::~ShaderParameter(void) {
 }
 
 /*----------------------------- class specific ----------------------------*/
 
-void ShaderParameter::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void ShaderParameter::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
-void ShaderParameter::dump(      UInt32    , 
-                         const BitVector ) const
-{
-    SLOG << "Dump ShaderParameter NI" << std::endl;
+void ShaderParameter::dump(UInt32, const BitVector) const {
+  SLOG << "Dump ShaderParameter NI" << std::endl;
 }

@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGDVRCLIPOBJECTSBASE_H_
 #define _OSGDVRCLIPOBJECTSBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -68,8 +66,8 @@
 #include <OSGAttachment.h> // Parent
 
 #include <OSGDVRClipGeometry.h> // ClipObjects type
-#include <OSGInt32Fields.h> // ClipMode type
-#include <OSGBoolFields.h> // DoContours type
+#include <OSGInt32Fields.h>     // ClipMode type
+#include <OSGBoolFields.h>      // DoContours type
 
 #include <OSGDVRClipObjectsFields.h>
 
@@ -80,208 +78,186 @@ class BinaryDataHandler;
 
 //! \brief DVRClipObjects Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING DVRClipObjectsBase : public Attachment
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING DVRClipObjectsBase : public Attachment {
+ private:
+  typedef Attachment Inherited;
 
-    typedef Attachment    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef DVRClipObjectsPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    ClipObjectsFieldId = Inherited::NextFieldId,
+    ClipModeFieldId    = ClipObjectsFieldId + 1,
+    DoContoursFieldId  = ClipModeFieldId + 1,
+    NextFieldId        = DoContoursFieldId + 1
+  };
 
-    typedef DVRClipObjectsPtr  Ptr;
+  static const OSG::BitVector ClipObjectsFieldMask;
+  static const OSG::BitVector ClipModeFieldMask;
+  static const OSG::BitVector DoContoursFieldMask;
 
-    enum
-    {
-        ClipObjectsFieldId = Inherited::NextFieldId,
-        ClipModeFieldId    = ClipObjectsFieldId + 1,
-        DoContoursFieldId  = ClipModeFieldId    + 1,
-        NextFieldId        = DoContoursFieldId  + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector ClipObjectsFieldMask;
-    static const OSG::BitVector ClipModeFieldMask;
-    static const OSG::BitVector DoContoursFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFInt32* getSFClipMode(void);
+  SFBool*  getSFDoContours(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  Int32&       getClipMode(void);
+  const Int32& getClipMode(void) const;
+  bool&        getDoContours(void);
+  const bool&  getDoContours(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFInt32             *getSFClipMode       (void);
-           SFBool              *getSFDoContours     (void);
+  void setClipMode(const Int32& value);
+  void setDoContours(const bool& value);
 
-           Int32               &getClipMode       (void);
-     const Int32               &getClipMode       (void) const;
-           bool                &getDoContours     (void);
-     const bool                &getDoContours     (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setClipMode       ( const Int32 &value );
-     void setDoContours     ( const bool &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static DVRClipObjectsPtr create(void);
+  static DVRClipObjectsPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  DVRClipObjectsPtr      create          (void); 
-    static  DVRClipObjectsPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  MFDVRClipGeometryPtr _mfClipObjects;
+  SFInt32              _sfClipMode;
+  SFBool               _sfDoContours;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  DVRClipObjectsBase(void);
+  DVRClipObjectsBase(const DVRClipObjectsBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~DVRClipObjectsBase(void);
 
-    MFDVRClipGeometryPtr   _mfClipObjects;
-    SFInt32             _sfClipMode;
-    SFBool              _sfDoContours;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  MFDVRClipGeometryPtr* getMFClipObjects(void);
 
-    DVRClipObjectsBase(void);
-    DVRClipObjectsBase(const DVRClipObjectsBase &source);
+  DVRClipGeometryPtr&         getClipObjects(UInt32 index);
+  MFDVRClipGeometryPtr&       getClipObjects(void);
+  const MFDVRClipGeometryPtr& getClipObjects(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-    virtual ~DVRClipObjectsBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
-
-           MFDVRClipGeometryPtr *getMFClipObjects    (void);
-
-           DVRClipGeometryPtr  &getClipObjects    (UInt32 index);
-           MFDVRClipGeometryPtr &getClipObjects    (void);
-     const MFDVRClipGeometryPtr &getClipObjects    (void) const;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
-
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      DVRClipObjectsBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(DVRClipObjectsBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      DVRClipObjectsBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      DVRClipObjectsBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const DVRClipObjectsBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const DVRClipObjectsBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef DVRClipObjectsBase* DVRClipObjectsBaseP;
 
-typedef DVRClipObjectsBase *DVRClipObjectsBaseP;
-
-typedef osgIF<DVRClipObjectsBase::isNodeCore,
-              CoredNodePtr<DVRClipObjects>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet DVRClipObjectsNodePtr;
+typedef osgIF<DVRClipObjectsBase::isNodeCore, CoredNodePtr<DVRClipObjects>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet DVRClipObjectsNodePtr;
 
 typedef RefPtr<DVRClipObjectsPtr> DVRClipObjectsRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGDVRCLIPOBJECTSBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGDVRCLIPOBJECTSBASE_HEADER_CVSID                                                         \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGDVRCLIPOBJECTSBASE_H_ */

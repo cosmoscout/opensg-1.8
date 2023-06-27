@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEMULTIPASSMATERIALINST
 
 #include <stdlib.h>
@@ -61,210 +60,155 @@
 #include "OSGMultiPassMaterialBase.h"
 #include "OSGMultiPassMaterial.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  MultiPassMaterialBase::MaterialsFieldMask = 
+const OSG::BitVector MultiPassMaterialBase::MaterialsFieldMask =
     (TypeTraits<BitVector>::One << MultiPassMaterialBase::MaterialsFieldId);
 
-const OSG::BitVector MultiPassMaterialBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector MultiPassMaterialBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
 /*! \var MaterialPtr     MultiPassMaterialBase::_mfMaterials
-    
+
 */
 
 //! MultiPassMaterial description
 
-FieldDescription *MultiPassMaterialBase::_desc[] = 
-{
-    new FieldDescription(MFMaterialPtr::getClassType(), 
-                     "materials", 
-                     MaterialsFieldId, MaterialsFieldMask,
-                     false,
-                     (FieldAccessMethod) &MultiPassMaterialBase::getMFMaterials)
-};
+FieldDescription* MultiPassMaterialBase::_desc[] = {
+    new FieldDescription(MFMaterialPtr::getClassType(), "materials", MaterialsFieldId,
+        MaterialsFieldMask, false, (FieldAccessMethod)&MultiPassMaterialBase::getMFMaterials)};
 
-
-FieldContainerType MultiPassMaterialBase::_type(
-    "MultiPassMaterial",
-    "Material",
-    NULL,
-    (PrototypeCreateF) &MultiPassMaterialBase::createEmpty,
-    MultiPassMaterial::initMethod,
-    _desc,
+FieldContainerType MultiPassMaterialBase::_type("MultiPassMaterial", "Material", NULL,
+    (PrototypeCreateF)&MultiPassMaterialBase::createEmpty, MultiPassMaterial::initMethod, _desc,
     sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(MultiPassMaterialBase, MultiPassMaterialPtr)
+// OSG_FIELD_CONTAINER_DEF(MultiPassMaterialBase, MultiPassMaterialPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &MultiPassMaterialBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &MultiPassMaterialBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr MultiPassMaterialBase::shallowCopy(void) const 
-{ 
-    MultiPassMaterialPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const MultiPassMaterial *>(this)); 
-
-    return returnValue; 
+FieldContainerType& MultiPassMaterialBase::getType(void) {
+  return _type;
 }
 
-UInt32 MultiPassMaterialBase::getContainerSize(void) const 
-{ 
-    return sizeof(MultiPassMaterial); 
+const FieldContainerType& MultiPassMaterialBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr MultiPassMaterialBase::shallowCopy(void) const {
+  MultiPassMaterialPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const MultiPassMaterial*>(this));
+
+  return returnValue;
+}
+
+UInt32 MultiPassMaterialBase::getContainerSize(void) const {
+  return sizeof(MultiPassMaterial);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void MultiPassMaterialBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((MultiPassMaterialBase *) &other, whichField);
+void MultiPassMaterialBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((MultiPassMaterialBase*)&other, whichField);
 }
 #else
-void MultiPassMaterialBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((MultiPassMaterialBase *) &other, whichField, sInfo);
+void MultiPassMaterialBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((MultiPassMaterialBase*)&other, whichField, sInfo);
 }
-void MultiPassMaterialBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void MultiPassMaterialBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void MultiPassMaterialBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
+void MultiPassMaterialBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 
-    _mfMaterials.terminateShare(uiAspect, this->getContainerSize());
+  _mfMaterials.terminateShare(uiAspect, this->getContainerSize());
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-MultiPassMaterialBase::MultiPassMaterialBase(void) :
-    _mfMaterials              (), 
-    Inherited() 
-{
+MultiPassMaterialBase::MultiPassMaterialBase(void)
+    : _mfMaterials()
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-MultiPassMaterialBase::MultiPassMaterialBase(const MultiPassMaterialBase &source) :
-    _mfMaterials              (source._mfMaterials              ), 
-    Inherited                 (source)
-{
+MultiPassMaterialBase::MultiPassMaterialBase(const MultiPassMaterialBase& source)
+    : _mfMaterials(source._mfMaterials)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-MultiPassMaterialBase::~MultiPassMaterialBase(void)
-{
+MultiPassMaterialBase::~MultiPassMaterialBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 MultiPassMaterialBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 MultiPassMaterialBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (MaterialsFieldMask & whichField))
-    {
-        returnValue += _mfMaterials.getBinSize();
-    }
+  if (FieldBits::NoField != (MaterialsFieldMask & whichField)) {
+    returnValue += _mfMaterials.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void MultiPassMaterialBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void MultiPassMaterialBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (MaterialsFieldMask & whichField))
-    {
-        _mfMaterials.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (MaterialsFieldMask & whichField)) {
+    _mfMaterials.copyToBin(pMem);
+  }
 }
 
-void MultiPassMaterialBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void MultiPassMaterialBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (MaterialsFieldMask & whichField))
-    {
-        _mfMaterials.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (MaterialsFieldMask & whichField)) {
+    _mfMaterials.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void MultiPassMaterialBase::executeSyncImpl(      MultiPassMaterialBase *pOther,
-                                        const BitVector         &whichField)
-{
+void MultiPassMaterialBase::executeSyncImpl(
+    MultiPassMaterialBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (MaterialsFieldMask & whichField))
-        _mfMaterials.syncWith(pOther->_mfMaterials);
-
-
+  if (FieldBits::NoField != (MaterialsFieldMask & whichField))
+    _mfMaterials.syncWith(pOther->_mfMaterials);
 }
 #else
-void MultiPassMaterialBase::executeSyncImpl(      MultiPassMaterialBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void MultiPassMaterialBase::executeSyncImpl(
+    MultiPassMaterialBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-
-    if(FieldBits::NoField != (MaterialsFieldMask & whichField))
-        _mfMaterials.syncWith(pOther->_mfMaterials, sInfo);
-
-
+  if (FieldBits::NoField != (MaterialsFieldMask & whichField))
+    _mfMaterials.syncWith(pOther->_mfMaterials, sInfo);
 }
 
-void MultiPassMaterialBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void MultiPassMaterialBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (MaterialsFieldMask & whichField))
-        _mfMaterials.beginEdit(uiAspect, uiContainerSize);
-
+  if (FieldBits::NoField != (MaterialsFieldMask & whichField))
+    _mfMaterials.beginEdit(uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>

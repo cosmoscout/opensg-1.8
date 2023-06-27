@@ -44,5 +44,5 @@ OSG_BEGIN_NAMESPACE
 
 OSG_END_NAMESPACE
 
-#define OSGSHADOWMAPVIEWPORT_INLINE_CVSID "@(#)$Id: OSGShadowMapViewport.inl,v 1.1 2004/08/06 11:49:36 a-m-z Exp $"
-
+#define OSGSHADOWMAPVIEWPORT_INLINE_CVSID                                                          \
+  "@(#)$Id: OSGShadowMapViewport.inl,v 1.1 2004/08/06 11:49:36 a-m-z Exp $"

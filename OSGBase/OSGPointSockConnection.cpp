@@ -63,33 +63,30 @@ OSG_USING_NAMESPACE
 /*! Constructor
  */
 
-PointSockConnection::PointSockConnection():
-    Inherited(0)
-{
-    _acceptSocket.open();
-    _acceptSocket.setReusePort(true);
+PointSockConnection::PointSockConnection()
+    : Inherited(0) {
+  _acceptSocket.open();
+  _acceptSocket.setReusePort(true);
 
-    _socketReadBuffer.resize(131071);
-    _socketWriteBuffer.resize( _socketReadBuffer.size() );
-    // reserve first bytes for buffer size
-    readBufAdd (&_socketReadBuffer [sizeof(SocketBufferHeader)],
-                _socketReadBuffer.size() -sizeof(SocketBufferHeader));
-    writeBufAdd(&_socketWriteBuffer[sizeof(SocketBufferHeader)],
-                _socketWriteBuffer.size()-sizeof(SocketBufferHeader));
+  _socketReadBuffer.resize(131071);
+  _socketWriteBuffer.resize(_socketReadBuffer.size());
+  // reserve first bytes for buffer size
+  readBufAdd(&_socketReadBuffer[sizeof(SocketBufferHeader)],
+      _socketReadBuffer.size() - sizeof(SocketBufferHeader));
+  writeBufAdd(&_socketWriteBuffer[sizeof(SocketBufferHeader)],
+      _socketWriteBuffer.size() - sizeof(SocketBufferHeader));
 }
 
 /*! Destructor
  */
-PointSockConnection::~PointSockConnection(void)
-{
-    _acceptSocket.close();
+PointSockConnection::~PointSockConnection(void) {
+  _acceptSocket.close();
 }
 
 /*! get connection type
  */
-const ConnectionType *PointSockConnection::getType()
-{
-    return &_type;
+const ConnectionType* PointSockConnection::getType() {
+  return &_type;
 }
 
 /*-------------------------------------------------------------------------*/
@@ -98,80 +95,59 @@ const ConnectionType *PointSockConnection::getType()
 /*! connect to the given point. If timeout is reached, -1 is
     returned
  */
-Connection::Channel PointSockConnection::connectPoint(
-    const std::string &address,
-    Time               timeout)
-{
-    StreamSocket socket;
-    if(GroupSockConnection::connectSocket(socket,address,_remoteAddress,timeout))
-    {
-        _socket = socket;
-        _pointToPoint = true;
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+Connection::Channel PointSockConnection::connectPoint(const std::string& address, Time timeout) {
+  StreamSocket socket;
+  if (GroupSockConnection::connectSocket(socket, address, _remoteAddress, timeout)) {
+    _socket       = socket;
+    _pointToPoint = true;
+    return true;
+  } else {
+    return false;
+  }
 }
 
 /*! connect to the given group. If timeout is reached, -1 is
     returned
  */
-Connection::Channel PointSockConnection::connectGroup(
-    const std::string &address,
-    Time               timeout)
-{
-    StreamSocket socket;
-    if(GroupSockConnection::connectSocket(socket,address,_remoteAddress,timeout))
-    {
-        _socket = socket;
-        _pointToPoint = false;
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+Connection::Channel PointSockConnection::connectGroup(const std::string& address, Time timeout) {
+  StreamSocket socket;
+  if (GroupSockConnection::connectSocket(socket, address, _remoteAddress, timeout)) {
+    _socket       = socket;
+    _pointToPoint = false;
+    return true;
+  } else {
+    return false;
+  }
 }
 
 /*! disconnect the given channel
  */
-void PointSockConnection::disconnect(void)
-{
-    _socket.close();
+void PointSockConnection::disconnect(void) {
+  _socket.close();
 }
 
 /*! accept an icomming point connection. If timeout is reached,
     -1 is returned. If timeout is -1 then wait without timeout
  */
-Connection::Channel PointSockConnection::acceptPoint(Time timeout)
-{
-    if(GroupSockConnection::acceptSocket(_acceptSocket,_socket,_remoteAddress,timeout))
-    {
-        _pointToPoint = true;
-        return 0;
-    }
-    else
-    {
-        return -1;
-    }
+Connection::Channel PointSockConnection::acceptPoint(Time timeout) {
+  if (GroupSockConnection::acceptSocket(_acceptSocket, _socket, _remoteAddress, timeout)) {
+    _pointToPoint = true;
+    return 0;
+  } else {
+    return -1;
+  }
 }
 
 /*! accept an icomming grop connection. If timeout is reached,
     -1 is returned. If timeout is -1 then wait without timeout
  */
-Connection::Channel PointSockConnection::acceptGroup(Time timeout)
-{
-    if(GroupSockConnection::acceptSocket(_acceptSocket,_socket,_remoteAddress,timeout))
-    {
-        _pointToPoint = false;
-        return 0;
-    }
-    else
-    {
-        return -1;
-    }
+Connection::Channel PointSockConnection::acceptGroup(Time timeout) {
+  if (GroupSockConnection::acceptSocket(_acceptSocket, _socket, _remoteAddress, timeout)) {
+    _pointToPoint = false;
+    return 0;
+  } else {
+    return -1;
+  }
 }
 
 /*! bind the connection to a network interface. The address is
@@ -180,40 +156,38 @@ Connection::Channel PointSockConnection::acceptGroup(Time timeout)
     address parameter. Address can be empty, wich means to use
     a free port or address can contain a port number.
  */
-std::string PointSockConnection::bind(const std::string &address)
-{
-    int         port=0;
-    char        localhost[256];
-    char        host[256];
-    char        portStr[256];
-    std::string interf;
+std::string PointSockConnection::bind(const std::string& address) {
+  int         port = 0;
+  char        localhost[256];
+  char        host[256];
+  char        portStr[256];
+  std::string interf;
 
-    // get local host name
-    osgGetHostname(localhost,255);
-    if(!getInterface().empty())
-        interf = getInterface();
-    else
-        interf = localhost;
+  // get local host name
+  osgGetHostname(localhost, 255);
+  if (!getInterface().empty())
+    interf = getInterface();
+  else
+    interf = localhost;
 
-    // parse address
-    if(!address.empty())
-        if(sscanf(address.c_str(),"%*[^:]:%d",&port) != 1)
-            if(sscanf(address.c_str(),":%d",&port) != 1)
-                port = 0;
-    // bind port
-    _acceptSocket.setReusePort(true);
-    if(!getInterface().empty())
-        _acceptSocket.bind(SocketAddress(getInterface().c_str(),port));
-    else
-        _acceptSocket.bind(SocketAddress(SocketAddress::ANY,port));
+  // parse address
+  if (!address.empty())
+    if (sscanf(address.c_str(), "%*[^:]:%d", &port) != 1)
+      if (sscanf(address.c_str(), ":%d", &port) != 1)
+        port = 0;
+  // bind port
+  _acceptSocket.setReusePort(true);
+  if (!getInterface().empty())
+    _acceptSocket.bind(SocketAddress(getInterface().c_str(), port));
+  else
+    _acceptSocket.bind(SocketAddress(SocketAddress::ANY, port));
 
-    SINFO << "Connection bound to "
-          << _acceptSocket.getAddress().getHost() << ":"
-          << _acceptSocket.getAddress().getPort() << std::endl;
-    _acceptSocket.listen();
-    // create address
-    sprintf(portStr,"%d",_acceptSocket.getAddress().getPort());
-    return interf + ":" + portStr;
+  SINFO << "Connection bound to " << _acceptSocket.getAddress().getHost() << ":"
+        << _acceptSocket.getAddress().getPort() << std::endl;
+  _acceptSocket.listen();
+  // create address
+  sprintf(portStr, "%d", _acceptSocket.getAddress().getPort());
+  return interf + ":" + portStr;
 }
 
 /*-------------------------------------------------------------------------*/
@@ -222,18 +196,12 @@ std::string PointSockConnection::bind(const std::string &address)
 /*! select the next channel for reading. If timeout is not -1
     then -1 is returned if timeout is reached
 */
-Connection::Channel PointSockConnection::selectChannel(Time timeout)
-{
-    try
-    {
-        if(_socket.waitReadable(timeout))
-            return 0;
-    }
-    catch(SocketError &e)
-    {
-        throw ReadError(e.what());
-    }
-    return -1;
+Connection::Channel PointSockConnection::selectChannel(Time timeout) {
+  try {
+    if (_socket.waitReadable(timeout))
+      return 0;
+  } catch (SocketError& e) { throw ReadError(e.what()); }
+  return -1;
 }
 
 /*-------------------------------------------------------------------------*/
@@ -241,42 +209,29 @@ Connection::Channel PointSockConnection::selectChannel(Time timeout)
 
 /*! wait for signal
  */
-bool PointSockConnection::wait(Time timeout)
-{
-    UInt32 tag;
-    try
-    {
-        if(!_socket.waitReadable(timeout))
-            return false;
-        if(!_socket.recv(&tag,sizeof(tag)))
-            throw ReadError("Channel closed");
-        tag = osgntohl(tag);
-        if(tag != 314156)
-        {
-            FFATAL(("Stream out of sync in SockConnection\n"));
-            throw ReadError("Stream out of sync");
-        }
+bool PointSockConnection::wait(Time timeout) {
+  UInt32 tag;
+  try {
+    if (!_socket.waitReadable(timeout))
+      return false;
+    if (!_socket.recv(&tag, sizeof(tag)))
+      throw ReadError("Channel closed");
+    tag = osgntohl(tag);
+    if (tag != 314156) {
+      FFATAL(("Stream out of sync in SockConnection\n"));
+      throw ReadError("Stream out of sync");
     }
-    catch(SocketError &e)
-    {
-        throw ReadError(e.what());
-    }
-    return true;
+  } catch (SocketError& e) { throw ReadError(e.what()); }
+  return true;
 }
 
 /*! send signal
  */
-void PointSockConnection::signal(void)
-{
-    UInt32 tag=osghtonl(314156);
-    try
-    {
-        _socket.send(&tag,sizeof(tag));
-    }
-    catch(SocketError &e)
-    {
-        throw ReadError(e.what());
-    }
+void PointSockConnection::signal(void) {
+  UInt32 tag = osghtonl(314156);
+  try {
+    _socket.send(&tag, sizeof(tag));
+  } catch (SocketError& e) { throw ReadError(e.what()); }
 }
 
 /*-------------------------- create ---------------------------------------*/
@@ -284,9 +239,8 @@ void PointSockConnection::signal(void)
 /** \brief create conneciton
  */
 
-PointConnection *PointSockConnection::create(void)
-{
-    return new PointSockConnection();
+PointConnection* PointSockConnection::create(void) {
+  return new PointSockConnection();
 }
 
 /*-------------------------------------------------------------------------*/
@@ -299,16 +253,14 @@ PointConnection *PointSockConnection::create(void)
  *
  **/
 
-void PointSockConnection::read(MemoryHandle mem,UInt32 size)
-{
-    int len;
+void PointSockConnection::read(MemoryHandle mem, UInt32 size) {
+  int len;
 
-    // read data
-    len=_socket.recv(mem,size);
-    if(len==0)
-    {
-        throw ReadError("read got 0 bytes!");
-    }
+  // read data
+  len = _socket.recv(mem, size);
+  if (len == 0) {
+    throw ReadError("read got 0 bytes!");
+  }
 }
 
 /** Read next data block
@@ -318,23 +270,21 @@ void PointSockConnection::read(MemoryHandle mem,UInt32 size)
  *
  */
 
-void PointSockConnection::readBuffer()
-{
-    int size;
-    int len;
+void PointSockConnection::readBuffer() {
+  int size;
+  int len;
 
-    // read buffer header
-    len=_socket.recv(&_socketReadBuffer[0],sizeof(SocketBufferHeader));
-    if(len==0)
-        throw ReadError("peek got 0 bytes!");
-    // read remaining data
-    size=osgntohl(((SocketBufferHeader*)&_socketReadBuffer[0])->size);
-    len=_socket.recv(&_socketReadBuffer[sizeof(SocketBufferHeader)],
-                     size);
-    if(len==0)
-        throw ReadError("read got 0 bytes!");
-    readBufBegin()->setDataSize(size);
-}    
+  // read buffer header
+  len = _socket.recv(&_socketReadBuffer[0], sizeof(SocketBufferHeader));
+  if (len == 0)
+    throw ReadError("peek got 0 bytes!");
+  // read remaining data
+  size = osgntohl(((SocketBufferHeader*)&_socketReadBuffer[0])->size);
+  len  = _socket.recv(&_socketReadBuffer[sizeof(SocketBufferHeader)], size);
+  if (len == 0)
+    throw ReadError("read got 0 bytes!");
+  readBufBegin()->setDataSize(size);
+}
 
 /** Write data to destinations
  *
@@ -343,9 +293,8 @@ void PointSockConnection::readBuffer()
  *
  **/
 
-void PointSockConnection::write(MemoryHandle mem,UInt32 size)
-{
-    _socket.send(mem,size);
+void PointSockConnection::write(MemoryHandle mem, UInt32 size) {
+  _socket.send(mem, size);
 }
 
 /** Write buffer
@@ -353,25 +302,18 @@ void PointSockConnection::write(MemoryHandle mem,UInt32 size)
  * Write blocksize and data.
  *
  **/
-void PointSockConnection::writeBuffer(void)
-{
-    Int32 index;
-    UInt32 size = writeBufBegin()->getDataSize();
-    // write size to header
-    ((SocketBufferHeader*)&_socketWriteBuffer[0])->size=osghtonl(size);
-    if(size)
-    {
-        // write whole block
-        _socket.send(&_socketWriteBuffer[0],
-                     size+sizeof(SocketBufferHeader));
-    }
+void PointSockConnection::writeBuffer(void) {
+  Int32  index;
+  UInt32 size = writeBufBegin()->getDataSize();
+  // write size to header
+  ((SocketBufferHeader*)&_socketWriteBuffer[0])->size = osghtonl(size);
+  if (size) {
+    // write whole block
+    _socket.send(&_socketWriteBuffer[0], size + sizeof(SocketBufferHeader));
+  }
 }
 
 /*-------------------------------------------------------------------------*/
 /*                              static type                                */
 
-ConnectionType PointSockConnection::_type(
-    &PointSockConnection::create,
-    "StreamSock");
-
-
+ConnectionType PointSockConnection::_type(&PointSockConnection::create, "StreamSock");

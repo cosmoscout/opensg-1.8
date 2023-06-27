@@ -52,83 +52,59 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &MaterialBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& MaterialBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 MaterialBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
-
+inline OSG::UInt32 MaterialBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the Material::_sfSortKey field.
-inline
-SFInt32 *MaterialBase::getSFSortKey(void)
-{
-    return &_sfSortKey;
+inline SFInt32* MaterialBase::getSFSortKey(void) {
+  return &_sfSortKey;
 }
 
 //! Get the Material::_sfTransparencyMode field.
-inline
-SFInt32 *MaterialBase::getSFTransparencyMode(void)
-{
-    return &_sfTransparencyMode;
-}
-
-
-//! Get the value of the Material::_sfSortKey field.
-inline
-Int32 &MaterialBase::getSortKey(void)
-{
-    return _sfSortKey.getValue();
+inline SFInt32* MaterialBase::getSFTransparencyMode(void) {
+  return &_sfTransparencyMode;
 }
 
 //! Get the value of the Material::_sfSortKey field.
-inline
-const Int32 &MaterialBase::getSortKey(void) const
-{
-    return _sfSortKey.getValue();
+inline Int32& MaterialBase::getSortKey(void) {
+  return _sfSortKey.getValue();
+}
+
+//! Get the value of the Material::_sfSortKey field.
+inline const Int32& MaterialBase::getSortKey(void) const {
+  return _sfSortKey.getValue();
 }
 
 //! Set the value of the Material::_sfSortKey field.
-inline
-void MaterialBase::setSortKey(const Int32 &value)
-{
-    _sfSortKey.setValue(value);
+inline void MaterialBase::setSortKey(const Int32& value) {
+  _sfSortKey.setValue(value);
 }
 
 //! Get the value of the Material::_sfTransparencyMode field.
-inline
-Int32 &MaterialBase::getTransparencyMode(void)
-{
-    return _sfTransparencyMode.getValue();
+inline Int32& MaterialBase::getTransparencyMode(void) {
+  return _sfTransparencyMode.getValue();
 }
 
 //! Get the value of the Material::_sfTransparencyMode field.
-inline
-const Int32 &MaterialBase::getTransparencyMode(void) const
-{
-    return _sfTransparencyMode.getValue();
+inline const Int32& MaterialBase::getTransparencyMode(void) const {
+  return _sfTransparencyMode.getValue();
 }
 
 //! Set the value of the Material::_sfTransparencyMode field.
-inline
-void MaterialBase::setTransparencyMode(const Int32 &value)
-{
-    _sfTransparencyMode.setValue(value);
+inline void MaterialBase::setTransparencyMode(const Int32& value) {
+  _sfTransparencyMode.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGMATERIALBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGMATERIALBASE_INLINE_CVSID                                                               \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

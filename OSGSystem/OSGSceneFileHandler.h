@@ -38,8 +38,8 @@
 
 #ifndef _OSGSCENEFILEHANDLER_H_
 #define _OSGSCENEFILEHANDLER_H_
-#ifdef  __sgi
-#pragma  once
+#ifdef __sgi
+#pragma once
 #endif
 
 #include <string>
@@ -60,216 +60,205 @@ class GraphOpSeq;
  *  \brief Brief OSGSceneFileHandler
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING SceneFileHandler
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING SceneFileHandler {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef std::vector<FieldContainerPtr> FCPtrStore;
 
-    typedef std::vector<FieldContainerPtr> FCPtrStore;
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Class Get                                  */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Class Get                                  */
-    /*! \{                                                                 */
+  static SceneFileHandler& the(void);
 
-    static SceneFileHandler &the(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  virtual ~SceneFileHandler(void);
 
-    virtual ~SceneFileHandler(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Get                                        */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Get                                        */
-    /*! \{                                                                 */
+  virtual SceneFileType* getFileType(const Char8* fileNameOrExtension);
 
-    virtual SceneFileType *getFileType(const Char8 *fileNameOrExtension);
+  virtual int getSuffixList(std::list<const Char8*>& suffixList,
+      UInt32 flags = SceneFileType::OSG_READ_SUPPORTED | SceneFileType::OSG_WRITE_SUPPORTED);
 
-    virtual int getSuffixList(std::list<const Char8*> & suffixList,
-                              UInt32 flags = SceneFileType::OSG_READ_SUPPORTED |
-                                             SceneFileType::OSG_WRITE_SUPPORTED);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Progress                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Progress                                   */
-    /*! \{                                                                 */
+  typedef void (*progresscbfp)(UInt32 p);
+  typedef void (*filenamecbfp)(const Char8* fname);
 
-    typedef void (*progresscbfp) (UInt32 p);
-    typedef void (*filenamecbfp) (const Char8 *fname);
-    
-    void setReadProgressCB(progresscbfp fp, bool use_thread = true);
-    progresscbfp getReadProgressCB(void);
+  void         setReadProgressCB(progresscbfp fp, bool use_thread = true);
+  progresscbfp getReadProgressCB(void);
 
-    void setReadBeginCB(filenamecbfp fp);
-    filenamecbfp getReadBeginCB(void);
+  void         setReadBeginCB(filenamecbfp fp);
+  filenamecbfp getReadBeginCB(void);
 
-    void setReadEndCB(filenamecbfp fp);
-    filenamecbfp getReadEndCB(void);
+  void         setReadEndCB(filenamecbfp fp);
+  filenamecbfp getReadEndCB(void);
 
-    void updateReadProgress(void);
-    void updateReadProgress(UInt32 p);
+  void updateReadProgress(void);
+  void updateReadProgress(UInt32 p);
 
-    void triggerReadBegin(const Char8 *fname);
-    void triggerReadEnd  (const Char8 *fname);
+  void triggerReadBegin(const Char8* fname);
+  void triggerReadEnd(const Char8* fname);
 
-    void setWriteProgressCB(progresscbfp fp);
-    progresscbfp getWriteProgressCB(void);
+  void         setWriteProgressCB(progresscbfp fp);
+  progresscbfp getWriteProgressCB(void);
 
-    void setWriteBeginCB(filenamecbfp fp);
-    filenamecbfp getWriteBeginCB(void);
+  void         setWriteBeginCB(filenamecbfp fp);
+  filenamecbfp getWriteBeginCB(void);
 
-    void setWriteEndCB(filenamecbfp fp);
-    filenamecbfp getWriteEndCB(void);
+  void         setWriteEndCB(filenamecbfp fp);
+  filenamecbfp getWriteEndCB(void);
 
-    void updateWriteProgress(UInt32 p);
+  void updateWriteProgress(UInt32 p);
 
-    void triggerWriteBegin(const Char8 *fname);
-    void triggerWriteEnd  (const Char8 *fname);
+  void triggerWriteBegin(const Char8* fname);
+  void triggerWriteEnd(const Char8* fname);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Read                                       */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Read                                       */
+  /*! \{                                                                 */
 
-    virtual NodePtr    read                  (std::istream &is, const Char8* ext,
-                                                     GraphOpSeq *graphOpSeq = _defaultgraphOpSeq);
+  virtual NodePtr read(
+      std::istream& is, const Char8* ext, GraphOpSeq* graphOpSeq = _defaultgraphOpSeq);
 
-    virtual FCPtrStore readTopNodes          (std::istream &is, const Char8* ext,
-                                                     GraphOpSeq *graphOpSeq = _defaultgraphOpSeq);
+  virtual FCPtrStore readTopNodes(
+      std::istream& is, const Char8* ext, GraphOpSeq* graphOpSeq = _defaultgraphOpSeq);
 
-    virtual NodePtr    read                  (const  Char8  *fileName,
-                                                     GraphOpSeq *graphOpSeq = _defaultgraphOpSeq);
+  virtual NodePtr read(const Char8* fileName, GraphOpSeq* graphOpSeq = _defaultgraphOpSeq);
 
-    virtual FCPtrStore readTopNodes          (const  Char8  *fileName,
-                                                     GraphOpSeq *graphOpSeq = _defaultgraphOpSeq);
+  virtual FCPtrStore readTopNodes(
+      const Char8* fileName, GraphOpSeq* graphOpSeq = _defaultgraphOpSeq);
 
-    typedef NodePtr (*fileioreadcbfp) (SceneFileType *type,
-                                       std::istream &is, const Char8* ext);
-    void setReadCB(fileioreadcbfp fp);
-    fileioreadcbfp getReadCB(void);
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Write                                      */
-    /*! \{                                                                 */
+  typedef NodePtr (*fileioreadcbfp)(SceneFileType* type, std::istream& is, const Char8* ext);
+  void           setReadCB(fileioreadcbfp fp);
+  fileioreadcbfp getReadCB(void);
 
-    virtual bool write(const NodePtr &node, std::ostream &os, const Char8 *ext, bool compress = false);
-    virtual bool write(const NodePtr &node, const Char8 *fileName, bool compress = false);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Write                                      */
+  /*! \{                                                                 */
 
-    typedef bool (*fileiowritecbfp) (SceneFileType *type,
-                                     const NodePtr &node, std::ostream &os,
-                                     const Char8 *ext, bool compress);
-    void setWriteCB(fileiowritecbfp fp);
-    fileiowritecbfp getWriteCB(void);
+  virtual bool write(
+      const NodePtr& node, std::ostream& os, const Char8* ext, bool compress = false);
+  virtual bool write(const NodePtr& node, const Char8* fileName, bool compress = false);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   PathHandler                                */
-    /*! \{                                                                 */
+  typedef bool (*fileiowritecbfp)(
+      SceneFileType* type, const NodePtr& node, std::ostream& os, const Char8* ext, bool compress);
+  void            setWriteCB(fileiowritecbfp fp);
+  fileiowritecbfp getWriteCB(void);
 
-    virtual PathHandler* getPathHandler(void                    );
-    virtual void         setPathHandler(PathHandler *pathHandler);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   PathHandler                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   DefaultGraphOp                             */
-    /*! \{                                                                 */
-    
-    virtual GraphOpSeq *getDefaultGraphOp(void                  );
-    virtual void        setDefaultGraphOp(GraphOpSeq *graphOpSeq);
+  virtual PathHandler* getPathHandler(void);
+  virtual void         setPathHandler(PathHandler* pathHandler);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Options                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   DefaultGraphOp                             */
+  /*! \{                                                                 */
 
-    virtual bool               setOptions(const Char8 *suffix, const Char8 *options);
-    virtual const Char8        *getOptions(const Char8 *suffix);
+  virtual GraphOpSeq* getDefaultGraphOp(void);
+  virtual void        setDefaultGraphOp(GraphOpSeq* graphOpSeq);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Debug                                      */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Options                                    */
+  /*! \{                                                                 */
 
-    void print (void);
+  virtual bool         setOptions(const Char8* suffix, const Char8* options);
+  virtual const Char8* getOptions(const Char8* suffix);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Debug                                      */
+  /*! \{                                                                 */
 
-    typedef std::list<          SceneFileType *> FileTypeList;
-    typedef std::map <IDString, FileTypeList  *> FileTypeMap;
+  void print(void);
 
-    struct FindOverride
-    {
-        UInt32 uiRefPriority;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  typedef std::list<SceneFileType*>         FileTypeList;
+  typedef std::map<IDString, FileTypeList*> FileTypeMap;
 
-        bool operator() (SceneFileType *fileTypeP);
-    };
+  struct FindOverride {
+    UInt32 uiRefPriority;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Member                                  */
-    /*! \{                                                                 */
+    bool operator()(SceneFileType* fileTypeP);
+  };
 
-    static SceneFileHandler *_the;
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Member                                  */
+  /*! \{                                                                 */
 
-    static GraphOpSeq      *_defaultgraphOpSeq;
+  static SceneFileHandler* _the;
 
-           FileTypeMap       _suffixTypeMap;
+  static GraphOpSeq* _defaultgraphOpSeq;
 
+  FileTypeMap _suffixTypeMap;
 
-    static bool               addSceneFileType(SceneFileType &fileType);
-    static bool               subSceneFileType(SceneFileType &fileType);
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  static bool addSceneFileType(SceneFileType& fileType);
+  static bool subSceneFileType(SceneFileType& fileType);
 
-    SceneFileHandler(void);
-    SceneFileHandler(const SceneFileHandler &obj);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  SceneFileHandler(void);
+  SceneFileHandler(const SceneFileHandler& obj);
 
-    friend class OSG_SYSTEMLIB_DLLMAPPING SceneFileType;
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class OSG_SYSTEMLIB_DLLMAPPING SceneFileType;
 
-    std::string initPathHandler(const Char8 *fileName);
-    
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const SceneFileHandler &source);
+  std::string initPathHandler(const Char8* fileName);
 
-    typedef struct
-    {
-        UInt64 length;
-        std::istream *is;
-    } progressS;
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const SceneFileHandler& source);
 
-    void initReadProgress(std::istream &is);
-    void terminateReadProgress(void);
-    static void readProgress(void *data);
+  typedef struct {
+    UInt64        length;
+    std::istream* is;
+  } progressS;
 
-    progresscbfp    _readProgressFP;
-    filenamecbfp    _readBeginFP;
-    filenamecbfp    _readEndFP;
+  void        initReadProgress(std::istream& is);
+  void        terminateReadProgress(void);
+  static void readProgress(void* data);
 
-    progressS       _progressData;
-    bool            _readReady;
-    bool            _useProgressThread;
+  progresscbfp _readProgressFP;
+  filenamecbfp _readBeginFP;
+  filenamecbfp _readEndFP;
 
-    progresscbfp    _writeProgressFP;
-    filenamecbfp    _writeBeginFP;
-    filenamecbfp    _writeEndFP;
+  progressS _progressData;
+  bool      _readReady;
+  bool      _useProgressThread;
 
-    PathHandler     *_pathHandler;
-    PathHandler     _defaultPathHandler;
+  progresscbfp _writeProgressFP;
+  filenamecbfp _writeBeginFP;
+  filenamecbfp _writeEndFP;
 
-    fileioreadcbfp  _readFP;
-    fileiowritecbfp _writeFP;
-    
+  PathHandler* _pathHandler;
+  PathHandler  _defaultPathHandler;
+
+  fileioreadcbfp  _readFP;
+  fileiowritecbfp _writeFP;
 };
 
 typedef SceneFileHandler* SceneFileHandlerP;

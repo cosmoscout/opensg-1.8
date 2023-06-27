@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGBLENDCHUNKBASE_H_
 #define _OSGBLENDCHUNKBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -67,14 +65,14 @@
 
 #include <OSGStateChunk.h> // Parent
 
-#include <OSGGLenumFields.h> // SrcFactor type
-#include <OSGGLenumFields.h> // DestFactor type
-#include <OSGGLenumFields.h> // Equation type
+#include <OSGGLenumFields.h>  // SrcFactor type
+#include <OSGGLenumFields.h>  // DestFactor type
+#include <OSGGLenumFields.h>  // Equation type
 #include <OSGColor4fFields.h> // Color type
-#include <OSGGLenumFields.h> // AlphaFunc type
-#include <OSGReal32Fields.h> // AlphaValue type
-#include <OSGGLenumFields.h> // AlphaSrcFactor type
-#include <OSGGLenumFields.h> // AlphaDestFactor type
+#include <OSGGLenumFields.h>  // AlphaFunc type
+#include <OSGReal32Fields.h>  // AlphaValue type
+#include <OSGGLenumFields.h>  // AlphaSrcFactor type
+#include <OSGGLenumFields.h>  // AlphaDestFactor type
 
 #include <OSGBlendChunkFields.h>
 
@@ -85,230 +83,208 @@ class BinaryDataHandler;
 
 //! \brief BlendChunk Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING BlendChunkBase : public StateChunk
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING BlendChunkBase : public StateChunk {
+ private:
+  typedef StateChunk Inherited;
 
-    typedef StateChunk    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef BlendChunkPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    SrcFactorFieldId       = Inherited::NextFieldId,
+    DestFactorFieldId      = SrcFactorFieldId + 1,
+    EquationFieldId        = DestFactorFieldId + 1,
+    ColorFieldId           = EquationFieldId + 1,
+    AlphaFuncFieldId       = ColorFieldId + 1,
+    AlphaValueFieldId      = AlphaFuncFieldId + 1,
+    AlphaSrcFactorFieldId  = AlphaValueFieldId + 1,
+    AlphaDestFactorFieldId = AlphaSrcFactorFieldId + 1,
+    NextFieldId            = AlphaDestFactorFieldId + 1
+  };
 
-    typedef BlendChunkPtr  Ptr;
+  static const OSG::BitVector SrcFactorFieldMask;
+  static const OSG::BitVector DestFactorFieldMask;
+  static const OSG::BitVector EquationFieldMask;
+  static const OSG::BitVector ColorFieldMask;
+  static const OSG::BitVector AlphaFuncFieldMask;
+  static const OSG::BitVector AlphaValueFieldMask;
+  static const OSG::BitVector AlphaSrcFactorFieldMask;
+  static const OSG::BitVector AlphaDestFactorFieldMask;
 
-    enum
-    {
-        SrcFactorFieldId       = Inherited::NextFieldId,
-        DestFactorFieldId      = SrcFactorFieldId       + 1,
-        EquationFieldId        = DestFactorFieldId      + 1,
-        ColorFieldId           = EquationFieldId        + 1,
-        AlphaFuncFieldId       = ColorFieldId           + 1,
-        AlphaValueFieldId      = AlphaFuncFieldId       + 1,
-        AlphaSrcFactorFieldId  = AlphaValueFieldId      + 1,
-        AlphaDestFactorFieldId = AlphaSrcFactorFieldId  + 1,
-        NextFieldId            = AlphaDestFactorFieldId + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector SrcFactorFieldMask;
-    static const OSG::BitVector DestFactorFieldMask;
-    static const OSG::BitVector EquationFieldMask;
-    static const OSG::BitVector ColorFieldMask;
-    static const OSG::BitVector AlphaFuncFieldMask;
-    static const OSG::BitVector AlphaValueFieldMask;
-    static const OSG::BitVector AlphaSrcFactorFieldMask;
-    static const OSG::BitVector AlphaDestFactorFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFGLenum*  getSFSrcFactor(void);
+  SFGLenum*  getSFDestFactor(void);
+  SFGLenum*  getSFEquation(void);
+  SFColor4f* getSFColor(void);
+  SFGLenum*  getSFAlphaFunc(void);
+  SFReal32*  getSFAlphaValue(void);
+  SFGLenum*  getSFAlphaSrcFactor(void);
+  SFGLenum*  getSFAlphaDestFactor(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  GLenum&        getSrcFactor(void);
+  const GLenum&  getSrcFactor(void) const;
+  GLenum&        getDestFactor(void);
+  const GLenum&  getDestFactor(void) const;
+  GLenum&        getEquation(void);
+  const GLenum&  getEquation(void) const;
+  Color4f&       getColor(void);
+  const Color4f& getColor(void) const;
+  GLenum&        getAlphaFunc(void);
+  const GLenum&  getAlphaFunc(void) const;
+  Real32&        getAlphaValue(void);
+  const Real32&  getAlphaValue(void) const;
+  GLenum&        getAlphaSrcFactor(void);
+  const GLenum&  getAlphaSrcFactor(void) const;
+  GLenum&        getAlphaDestFactor(void);
+  const GLenum&  getAlphaDestFactor(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFGLenum            *getSFSrcFactor      (void);
-           SFGLenum            *getSFDestFactor     (void);
-           SFGLenum            *getSFEquation       (void);
-           SFColor4f           *getSFColor          (void);
-           SFGLenum            *getSFAlphaFunc      (void);
-           SFReal32            *getSFAlphaValue     (void);
-           SFGLenum            *getSFAlphaSrcFactor (void);
-           SFGLenum            *getSFAlphaDestFactor(void);
+  void setSrcFactor(const GLenum& value);
+  void setDestFactor(const GLenum& value);
+  void setEquation(const GLenum& value);
+  void setColor(const Color4f& value);
+  void setAlphaFunc(const GLenum& value);
+  void setAlphaValue(const Real32& value);
+  void setAlphaSrcFactor(const GLenum& value);
+  void setAlphaDestFactor(const GLenum& value);
 
-           GLenum              &getSrcFactor      (void);
-     const GLenum              &getSrcFactor      (void) const;
-           GLenum              &getDestFactor     (void);
-     const GLenum              &getDestFactor     (void) const;
-           GLenum              &getEquation       (void);
-     const GLenum              &getEquation       (void) const;
-           Color4f             &getColor          (void);
-     const Color4f             &getColor          (void) const;
-           GLenum              &getAlphaFunc      (void);
-     const GLenum              &getAlphaFunc      (void) const;
-           Real32              &getAlphaValue     (void);
-     const Real32              &getAlphaValue     (void) const;
-           GLenum              &getAlphaSrcFactor (void);
-     const GLenum              &getAlphaSrcFactor (void) const;
-           GLenum              &getAlphaDestFactor(void);
-     const GLenum              &getAlphaDestFactor(void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setSrcFactor      ( const GLenum &value );
-     void setDestFactor     ( const GLenum &value );
-     void setEquation       ( const GLenum &value );
-     void setColor          ( const Color4f &value );
-     void setAlphaFunc      ( const GLenum &value );
-     void setAlphaValue     ( const Real32 &value );
-     void setAlphaSrcFactor ( const GLenum &value );
-     void setAlphaDestFactor( const GLenum &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static BlendChunkPtr create(void);
+  static BlendChunkPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  BlendChunkPtr      create          (void); 
-    static  BlendChunkPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFGLenum  _sfSrcFactor;
+  SFGLenum  _sfDestFactor;
+  SFGLenum  _sfEquation;
+  SFColor4f _sfColor;
+  SFGLenum  _sfAlphaFunc;
+  SFReal32  _sfAlphaValue;
+  SFGLenum  _sfAlphaSrcFactor;
+  SFGLenum  _sfAlphaDestFactor;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  BlendChunkBase(void);
+  BlendChunkBase(const BlendChunkBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~BlendChunkBase(void);
 
-    SFGLenum            _sfSrcFactor;
-    SFGLenum            _sfDestFactor;
-    SFGLenum            _sfEquation;
-    SFColor4f           _sfColor;
-    SFGLenum            _sfAlphaFunc;
-    SFReal32            _sfAlphaValue;
-    SFGLenum            _sfAlphaSrcFactor;
-    SFGLenum            _sfAlphaDestFactor;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    BlendChunkBase(void);
-    BlendChunkBase(const BlendChunkBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~BlendChunkBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      BlendChunkBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(BlendChunkBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      BlendChunkBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(BlendChunkBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const BlendChunkBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const BlendChunkBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef BlendChunkBase* BlendChunkBaseP;
 
-typedef BlendChunkBase *BlendChunkBaseP;
-
-typedef osgIF<BlendChunkBase::isNodeCore,
-              CoredNodePtr<BlendChunk>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet BlendChunkNodePtr;
+typedef osgIF<BlendChunkBase::isNodeCore, CoredNodePtr<BlendChunk>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet BlendChunkNodePtr;
 
 typedef RefPtr<BlendChunkPtr> BlendChunkRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGBLENDCHUNKBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGBLENDCHUNKBASE_HEADER_CVSID                                                             \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGBLENDCHUNKBASE_H_ */

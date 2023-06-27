@@ -50,188 +50,165 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief BinarySwapComposer class. See \ref 
+/*! \brief BinarySwapComposer class. See \ref
            PageSystemBinarySwapComposer for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING BinarySwapComposer : public BinarySwapComposerBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING BinarySwapComposer : public BinarySwapComposerBase {
+ private:
+  typedef BinarySwapComposerBase Inherited;
+  /** \brief RGB Color value */
+  struct RGBValue {
+    UInt8 red;
+    UInt8 green;
+    UInt8 blue;
+  };
+  struct TileBuffer {
+    bool   empty;
+    UInt32 size;
+    UInt32 colorSize;
+    UInt32 depthSize;
+    UInt32 dataSize;
+    struct {
+      UInt16 x;
+      UInt16 y;
+      UInt16 w;
+      UInt16 h;
+    } header;
+    UInt8 data[1];
+  };
+  struct Statistics {
+    UInt32 bytesIn;
+    UInt32 bytesOut;
+    double composeTime;
+  };
 
-    typedef BinarySwapComposerBase Inherited;
-    /** \brief RGB Color value */
-    struct RGBValue
-    {
-        UInt8 red;
-        UInt8 green;
-        UInt8 blue;
-    };
-    struct TileBuffer
-    {
-        bool empty;
-        UInt32 size;
-        UInt32 colorSize;
-        UInt32 depthSize;
-        UInt32 dataSize;
-        struct {
-            UInt16 x;
-            UInt16 y;
-            UInt16 w;
-            UInt16 h;
-        } header;
-        UInt8 data[1];
-    };
-    struct Statistics {
-        UInt32 bytesIn;
-        UInt32 bytesOut;
-        double composeTime;
-    };
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name      features                                                */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  virtual bool clientRendering(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name      features                                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name      composition                                             */
+  /*! \{                                                                 */
 
-    virtual bool clientRendering (void);
+  virtual void open();
+  virtual void composeViewport(ViewportPtr port);
+  virtual void close(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name      composition                                             */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name      features                                                */
+  /*! \{                                                                 */
 
-    virtual void open           (                  );
-    virtual void composeViewport( ViewportPtr port );
-    virtual void close          ( void             );
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name      features                                                */
-    /*! \{                                                                 */
+  virtual bool   getClientRendering(void);
+  virtual UInt32 getUsableServers(void);
 
-    virtual bool   getClientRendering(void);
-    virtual UInt32 getUsableServers  (void);
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  BaseThread*        _writer;
+  Barrier*           _barrier;
+  bool               _stopWriter;
+  UInt32             _swapWith;
+  Connection*        _swapConnection;
+  UInt32             _tilesX;
+  UInt32             _tilesY;
+  UInt32             _tileBufferSize;
+  std::vector<UInt8> _tile;
+  std::vector<UInt8> _readTile;
+  UInt32             _writeLeft;
+  UInt32             _writeRight;
+  UInt32             _writeBottom;
+  UInt32             _writeTop;
+  UInt32             _usableServers;
+  Statistics         _statistics;
+  UInt32             _intDepthMax;
+  UInt32             _shortDepthMax;
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    BaseThread              *_writer;
-    Barrier                 *_barrier;
-    bool                     _stopWriter;
-    UInt32                   _swapWith;
-    Connection              *_swapConnection;
-    UInt32                   _tilesX;
-    UInt32                   _tilesY;
-    UInt32                   _tileBufferSize;
-    std::vector<UInt8>       _tile;
-    std::vector<UInt8>       _readTile;
-    UInt32                   _writeLeft;
-    UInt32                   _writeRight;
-    UInt32                   _writeBottom;
-    UInt32                   _writeTop;
-    UInt32                   _usableServers;
-    Statistics               _statistics;
-    UInt32                   _intDepthMax;
-    UInt32                   _shortDepthMax;
+  BinarySwapComposer(void);
+  BinarySwapComposer(const BinarySwapComposer& source);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    BinarySwapComposer(void);
-    BinarySwapComposer(const BinarySwapComposer &source);
+  virtual ~BinarySwapComposer(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name              compose                                         */
+  /*! \{                                                                 */
 
-    virtual ~BinarySwapComposer(void); 
+  void writeBuffer();
+  void readBuffer();
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name              compose                                         */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      helper function                         */
+  /*! \{                                                                 */
 
-    void writeBuffer();
-    void readBuffer();
+  template <class DepthT, class ColorT>
+  void sendToClient(
+      DepthT& depth, ColorT& color, UInt32 left, UInt32 bottom, UInt32 right, UInt32 top);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      helper function                         */
-    /*! \{                                                                 */
+  template <class DepthT, class ColorT>
+  void recvFromServers(
+      DepthT& depth, ColorT& color, UInt32 colorType, UInt32 colorFormat, ViewportPtr port);
 
-    template<class DepthT,class ColorT>
-    void sendToClient(DepthT &depth,ColorT &color,
-                      UInt32 left,
-                      UInt32 bottom,
-                      UInt32 right,
-                      UInt32 top);
+  template <class DepthT, class ColorT>
+  void writeCombine(DepthT& depthDummy, ColorT& colorDummy);
 
-    template<class DepthT,class ColorT>
-    void recvFromServers(DepthT &depth,ColorT &color,
-                         UInt32 colorType,
-                         UInt32 colorFormat,
-                         ViewportPtr port);
+  template <class DepthT, class ColorT>
+  void readCombine(DepthT& depth, ColorT& color, UInt32 colorType, UInt32 colorFormat, UInt32 left,
+      UInt32 bottom, UInt32 right, UInt32 top, UInt32 level);
 
-    template<class DepthT,class ColorT>
-    void writeCombine(DepthT &depthDummy,ColorT &colorDummy);
+  template <class DepthT, class ColorT>
+  void startReader(DepthT& depth, ColorT& color, UInt32 depthFormat, UInt32 colorType,
+      UInt32 colorFormat, ViewportPtr port);
 
-    template<class DepthT,class ColorT>
-    void readCombine(DepthT &depth,ColorT &color,
-                     UInt32 colorType,
-                     UInt32 colorFormat,
-                     UInt32 left,
-                     UInt32 bottom,
-                     UInt32 right,
-                     UInt32 top,
-                     UInt32 level);
+  TileBuffer* getTileBuffer(UInt32 x, UInt32 y);
+  TileBuffer* getTileReadBuffer(void);
 
-    template<class DepthT,class ColorT>
-    void startReader(DepthT &depth,ColorT &color,
-                     UInt32 depthFormat,
-                     UInt32 colorType,
-                     UInt32 colorFormat,
-                     ViewportPtr port);
+  /*! \}                                                                 */
 
-    TileBuffer *getTileBuffer(UInt32 x,UInt32 y);
-    TileBuffer *getTileReadBuffer(void);
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class BinarySwapComposerBase;
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  static void writeProc(void* arg);
+  static void initMethod(void);
 
-    friend class FieldContainer;
-    friend class BinarySwapComposerBase;
+  // prohibit default functions (move to 'public' if you need one)
 
-    static void writeProc(void *arg);
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const BinarySwapComposer &source);
+  void operator=(const BinarySwapComposer& source);
 };
 
-typedef BinarySwapComposer *BinarySwapComposerP;
+typedef BinarySwapComposer* BinarySwapComposerP;
 
 OSG_END_NAMESPACE
 

@@ -61,36 +61,31 @@ OSG_USING_NAMESPACE
 /*! Constructor documentation
  */
 
-Indenter::Indenter(UInt32 indent, UInt32 step) :
-    _indent(indent), _step(step)
-{
+Indenter::Indenter(UInt32 indent, UInt32 step)
+    : _indent(indent)
+    , _step(step) {
 }
 
-Indenter::Indenter(const Indenter &source) :
-    _indent(source._indent), 
-    _step  (source._step  )
-{
+Indenter::Indenter(const Indenter& source)
+    : _indent(source._indent)
+    , _step(source._step) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Destructor                                  */
 
-Indenter::~Indenter(void)
-{
+Indenter::~Indenter(void) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Assignment                                  */
 
-Indenter &Indenter::operator =(const Indenter &source)
-{
-    if(this == &source)
-        return *this;
-
-    this->_indent = source._indent;
-    this->_step   = source._step;
-
+Indenter& Indenter::operator=(const Indenter& source) {
+  if (this == &source)
     return *this;
+
+  this->_indent = source._indent;
+  this->_step   = source._step;
+
+  return *this;
 }
-
-

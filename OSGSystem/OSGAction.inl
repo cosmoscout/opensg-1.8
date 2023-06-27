@@ -40,7 +40,6 @@
 //  Includes
 //---------------------------------------------------------------------------
 
-
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -51,67 +50,44 @@
 
 OSG_BEGIN_NAMESPACE
 
-
-inline NodePtr Action::getActNode( void )
-{
-    return _actNode;
+inline NodePtr Action::getActNode(void) {
+  return _actNode;
 }
 
-    
-inline void Action::setActNode(NodePtr node)
-{
-    _actNode = node;
+inline void Action::setActNode(NodePtr node) {
+  _actNode = node;
 }
 
-inline
-const NodePtr Action::getNode( int index )
-{
-    if ( ! _actList )
-    {
-        return _actNode->getChild( index );
-    }
-    else
-    {
-        return (*_actList)[ index ];
-    }
+inline const NodePtr Action::getNode(int index) {
+  if (!_actList) {
+    return _actNode->getChild(index);
+  } else {
+    return (*_actList)[index];
+  }
 }
 
-inline
-void Action::addNode( NodePtr node )
-{
-    _newList.push_back( node );
+inline void Action::addNode(NodePtr node) {
+  _newList.push_back(node);
 }
 
-inline
-void Action::useNodeList( void )
-{
-    _useNewList = true;
+inline void Action::useNodeList(void) {
+  _useNewList = true;
 }
 
-inline
-UInt32 Action::getNNodes( void ) const
-{
-    if ( ! _actList )
-    {
-        return _actNode->getNChildren();
-    }
-    else
-    {
-        return (*_actList).size();
-    }
+inline UInt32 Action::getNNodes(void) const {
+  if (!_actList) {
+    return _actNode->getNChildren();
+  } else {
+    return (*_actList).size();
+  }
 }
 
-
-inline
-UInt32 Action::getTravMask(void) const
-{
-    return _travMask;
+inline UInt32 Action::getTravMask(void) const {
+  return _travMask;
 }
 
-inline
-void Action::setTravMask(UInt32 val)
-{
-    _travMask = val;
+inline void Action::setTravMask(UInt32 val) {
+  _travMask = val;
 }
 
 /*-------------------------- your_category---------------------------------*/
@@ -120,62 +96,50 @@ void Action::setTravMask(UInt32 val)
 // (i.e. its index is larger than the vector) try to find the function in the
 // default list.
 
-inline
-Action::ResultE Action::callEnter( NodePtr node )
-{
-    ResultE result;
+inline Action::ResultE Action::callEnter(NodePtr node) {
+  ResultE result;
 
-    UInt32 uiFunctorIndex = node->getCore()->getType().getId();
-    CNodePtr cnode(node);
+  UInt32   uiFunctorIndex = node->getCore()->getType().getId();
+  CNodePtr cnode(node);
 
-    if ( uiFunctorIndex < _enterFunctors.size() )
-        result = _enterFunctors[uiFunctorIndex].call(cnode,this);
-    else if (  getDefaultEnterFunctors() &&
-                uiFunctorIndex < getDefaultEnterFunctors()->size() )
-    {
-        // field container registered method after this action was instantiated
-        // copy the new functors from default vector
-        std::vector<Functor> *defaultEnter = getDefaultEnterFunctors();
+  if (uiFunctorIndex < _enterFunctors.size())
+    result = _enterFunctors[uiFunctorIndex].call(cnode, this);
+  else if (getDefaultEnterFunctors() && uiFunctorIndex < getDefaultEnterFunctors()->size()) {
+    // field container registered method after this action was instantiated
+    // copy the new functors from default vector
+    std::vector<Functor>* defaultEnter = getDefaultEnterFunctors();
 
-        while ( defaultEnter->size() > _enterFunctors.size() )
-        {
-            _enterFunctors.push_back( (*defaultEnter)[_enterFunctors.size()] );
-        }
-        result = _enterFunctors[uiFunctorIndex].call(cnode,this);
+    while (defaultEnter->size() > _enterFunctors.size()) {
+      _enterFunctors.push_back((*defaultEnter)[_enterFunctors.size()]);
     }
-    else // unknown field container
-        result = _defaultEnterFunction(cnode,this);
+    result = _enterFunctors[uiFunctorIndex].call(cnode, this);
+  } else // unknown field container
+    result = _defaultEnterFunction(cnode, this);
 
-    return result;
+  return result;
 }
 
-inline
-Action::ResultE Action::callLeave( NodePtr node )
-{
-    ResultE result;
+inline Action::ResultE Action::callLeave(NodePtr node) {
+  ResultE result;
 
-    UInt32 uiFunctorIndex = node->getCore()->getType().getId();
-    CNodePtr cnode(node);
+  UInt32   uiFunctorIndex = node->getCore()->getType().getId();
+  CNodePtr cnode(node);
 
-    if ( uiFunctorIndex < _leaveFunctors.size() )
-        result = _leaveFunctors[uiFunctorIndex].call(cnode,this);
-    else if (   getDefaultLeaveFunctors() &&
-                uiFunctorIndex < getDefaultLeaveFunctors()->size() )
-    {
-        // field container registered method after this action was instantiated
-        // copy the new functors from default vector
-        std::vector<Functor> *defaultLeave = getDefaultLeaveFunctors();
+  if (uiFunctorIndex < _leaveFunctors.size())
+    result = _leaveFunctors[uiFunctorIndex].call(cnode, this);
+  else if (getDefaultLeaveFunctors() && uiFunctorIndex < getDefaultLeaveFunctors()->size()) {
+    // field container registered method after this action was instantiated
+    // copy the new functors from default vector
+    std::vector<Functor>* defaultLeave = getDefaultLeaveFunctors();
 
-        while ( defaultLeave->size() > _leaveFunctors.size() )
-        {
-            _leaveFunctors.push_back( (*defaultLeave)[_leaveFunctors.size()] );
-        }
-        result = _leaveFunctors[uiFunctorIndex].call(cnode,this);
+    while (defaultLeave->size() > _leaveFunctors.size()) {
+      _leaveFunctors.push_back((*defaultLeave)[_leaveFunctors.size()]);
     }
-    else // unknown field container
-        result = _defaultLeaveFunction(cnode,this);
+    result = _leaveFunctors[uiFunctorIndex].call(cnode, this);
+  } else // unknown field container
+    result = _defaultLeaveFunction(cnode, this);
 
-    return result;
+  return result;
 }
 
 /*-------------------------- assignment -----------------------------------*/
@@ -183,27 +147,20 @@ Action::ResultE Action::callLeave( NodePtr node )
 /** \brief assignment
  */
 
-
 /*-------------------------- comparison -----------------------------------*/
 
 /** \brief assignment
  */
 
-
 /** \brief equal
  */
-
 
 /** \brief unequal
  */
 
-
-
 /*-------------------------------------------------------------------------*\
  -  protected                                                              -
 \*-------------------------------------------------------------------------*/
-
-
 
 /*-------------------------------------------------------------------------*\
  -  private                                                                -
@@ -217,25 +174,24 @@ OSG_END_NAMESPACE
 //:  Example for the head comment of a function
 ///---------------------------------------------------------------------------
 ///
-//p: Paramaters:
-//p:
+// p: Paramaters:
+// p:
 ///
-//g: GlobalVars:
-//g:
+// g: GlobalVars:
+// g:
 ///
-//r: Return:
-//r:
+// r: Return:
+// r:
 ///
-//c: Caution:
-//c:
+// c: Caution:
+// c:
 ///
-//a: Assumptions:
-//a:
+// a: Assumptions:
+// a:
 ///
-//d: Description:
-//d:
+// d: Description:
+// d:
 ///
-//s: SeeAlso:
-//s:
+// s: SeeAlso:
+// s:
 ///---------------------------------------------------------------------------
-

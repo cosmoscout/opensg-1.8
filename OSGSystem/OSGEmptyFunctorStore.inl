@@ -41,29 +41,23 @@ OSG_BEGIN_NAMESPACE
 /*-------------------------------------------------------------------------*/
 /*    Constructors                                                         */
 
-inline
-EmptyFunctorStore::EmptyFunctorStore(void)
-{
+inline EmptyFunctorStore::EmptyFunctorStore(void) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*    Destructor                                                           */
 
-
-inline
-EmptyFunctorStore::~EmptyFunctorStore(void)
-{
+inline EmptyFunctorStore::~EmptyFunctorStore(void) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*    Empty                                                                */
 
-inline bool
-EmptyFunctorStore::empty(void) const
-{
-    return true;
+inline bool EmptyFunctorStore::empty(void) const {
+  return true;
 }
 
 OSG_END_NAMESPACE
 
-#define OSGEMPTYFUNCTORSTORE_INLINE_CVSID "@(#)$Id: OSGEmptyFunctorStore.inl,v 1.3 2004/04/20 13:47:08 neumannc Exp $"
+#define OSGEMPTYFUNCTORSTORE_INLINE_CVSID                                                          \
+  "@(#)$Id: OSGEmptyFunctorStore.inl,v 1.3 2004/04/20 13:47:08 neumannc Exp $"

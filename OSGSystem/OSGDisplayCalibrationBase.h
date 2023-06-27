@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGDISPLAYCALIBRATIONBASE_H_
 #define _OSGDISPLAYCALIBRATIONBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -67,15 +65,15 @@
 
 #include <OSGAttachmentContainer.h> // Parent
 
-#include <OSGBoolFields.h> // Enabled type
-#include <OSGStringFields.h> // Server type
-#include <OSGMatrixFields.h> // ColorMatrix type
-#include <OSGReal32Fields.h> // Gamma type
+#include <OSGBoolFields.h>    // Enabled type
+#include <OSGStringFields.h>  // Server type
+#include <OSGMatrixFields.h>  // ColorMatrix type
+#include <OSGReal32Fields.h>  // Gamma type
 #include <OSGColor3fFields.h> // GammaRamp type
-#include <OSGUInt32Fields.h> // GridWidth type
-#include <OSGUInt32Fields.h> // GridHeight type
-#include <OSGVec2fFields.h> // Grid type
-#include <OSGReal32Fields.h> // ScaleDown type
+#include <OSGUInt32Fields.h>  // GridWidth type
+#include <OSGUInt32Fields.h>  // GridHeight type
+#include <OSGVec2fFields.h>   // Grid type
+#include <OSGReal32Fields.h>  // ScaleDown type
 
 #include <OSGDisplayCalibrationFields.h>
 
@@ -86,237 +84,217 @@ class BinaryDataHandler;
 
 //! \brief DisplayCalibration Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING DisplayCalibrationBase : public AttachmentContainer
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING DisplayCalibrationBase : public AttachmentContainer {
+ private:
+  typedef AttachmentContainer Inherited;
 
-    typedef AttachmentContainer    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef DisplayCalibrationPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    EnabledFieldId     = Inherited::NextFieldId,
+    ServerFieldId      = EnabledFieldId + 1,
+    ColorMatrixFieldId = ServerFieldId + 1,
+    GammaFieldId       = ColorMatrixFieldId + 1,
+    GammaRampFieldId   = GammaFieldId + 1,
+    GridWidthFieldId   = GammaRampFieldId + 1,
+    GridHeightFieldId  = GridWidthFieldId + 1,
+    GridFieldId        = GridHeightFieldId + 1,
+    ScaleDownFieldId   = GridFieldId + 1,
+    NextFieldId        = ScaleDownFieldId + 1
+  };
 
-    typedef DisplayCalibrationPtr  Ptr;
+  static const OSG::BitVector EnabledFieldMask;
+  static const OSG::BitVector ServerFieldMask;
+  static const OSG::BitVector ColorMatrixFieldMask;
+  static const OSG::BitVector GammaFieldMask;
+  static const OSG::BitVector GammaRampFieldMask;
+  static const OSG::BitVector GridWidthFieldMask;
+  static const OSG::BitVector GridHeightFieldMask;
+  static const OSG::BitVector GridFieldMask;
+  static const OSG::BitVector ScaleDownFieldMask;
 
-    enum
-    {
-        EnabledFieldId     = Inherited::NextFieldId,
-        ServerFieldId      = EnabledFieldId     + 1,
-        ColorMatrixFieldId = ServerFieldId      + 1,
-        GammaFieldId       = ColorMatrixFieldId + 1,
-        GammaRampFieldId   = GammaFieldId       + 1,
-        GridWidthFieldId   = GammaRampFieldId   + 1,
-        GridHeightFieldId  = GridWidthFieldId   + 1,
-        GridFieldId        = GridHeightFieldId  + 1,
-        ScaleDownFieldId   = GridFieldId        + 1,
-        NextFieldId        = ScaleDownFieldId   + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector EnabledFieldMask;
-    static const OSG::BitVector ServerFieldMask;
-    static const OSG::BitVector ColorMatrixFieldMask;
-    static const OSG::BitVector GammaFieldMask;
-    static const OSG::BitVector GammaRampFieldMask;
-    static const OSG::BitVector GridWidthFieldMask;
-    static const OSG::BitVector GridHeightFieldMask;
-    static const OSG::BitVector GridFieldMask;
-    static const OSG::BitVector ScaleDownFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFBool*    getSFEnabled(void);
+  SFString*  getSFServer(void);
+  SFMatrix*  getSFColorMatrix(void);
+  SFReal32*  getSFGamma(void);
+  MFColor3f* getMFGammaRamp(void);
+  SFUInt32*  getSFGridWidth(void);
+  SFUInt32*  getSFGridHeight(void);
+  MFVec2f*   getMFGrid(void);
+  SFReal32*  getSFScaleDown(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  bool&              getEnabled(void);
+  const bool&        getEnabled(void) const;
+  std::string&       getServer(void);
+  const std::string& getServer(void) const;
+  Matrix&            getColorMatrix(void);
+  const Matrix&      getColorMatrix(void) const;
+  Real32&            getGamma(void);
+  const Real32&      getGamma(void) const;
+  UInt32&            getGridWidth(void);
+  const UInt32&      getGridWidth(void) const;
+  UInt32&            getGridHeight(void);
+  const UInt32&      getGridHeight(void) const;
+  Real32&            getScaleDown(void);
+  const Real32&      getScaleDown(void) const;
+  Color3f&           getGammaRamp(const UInt32 index);
+  MFColor3f&         getGammaRamp(void);
+  const MFColor3f&   getGammaRamp(void) const;
+  Vec2f&             getGrid(const UInt32 index);
+  MFVec2f&           getGrid(void);
+  const MFVec2f&     getGrid(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFBool              *getSFEnabled        (void);
-           SFString            *getSFServer         (void);
-           SFMatrix            *getSFColorMatrix    (void);
-           SFReal32            *getSFGamma          (void);
-           MFColor3f           *getMFGammaRamp      (void);
-           SFUInt32            *getSFGridWidth      (void);
-           SFUInt32            *getSFGridHeight     (void);
-           MFVec2f             *getMFGrid           (void);
-           SFReal32            *getSFScaleDown      (void);
+  void setEnabled(const bool& value);
+  void setServer(const std::string& value);
+  void setColorMatrix(const Matrix& value);
+  void setGamma(const Real32& value);
+  void setGridWidth(const UInt32& value);
+  void setGridHeight(const UInt32& value);
+  void setScaleDown(const Real32& value);
 
-           bool                &getEnabled        (void);
-     const bool                &getEnabled        (void) const;
-           std::string         &getServer         (void);
-     const std::string         &getServer         (void) const;
-           Matrix              &getColorMatrix    (void);
-     const Matrix              &getColorMatrix    (void) const;
-           Real32              &getGamma          (void);
-     const Real32              &getGamma          (void) const;
-           UInt32              &getGridWidth      (void);
-     const UInt32              &getGridWidth      (void) const;
-           UInt32              &getGridHeight     (void);
-     const UInt32              &getGridHeight     (void) const;
-           Real32              &getScaleDown      (void);
-     const Real32              &getScaleDown      (void) const;
-           Color3f             &getGammaRamp      (const UInt32 index);
-           MFColor3f           &getGammaRamp      (void);
-     const MFColor3f           &getGammaRamp      (void) const;
-           Vec2f               &getGrid           (const UInt32 index);
-           MFVec2f             &getGrid           (void);
-     const MFVec2f             &getGrid           (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setEnabled        ( const bool &value );
-     void setServer         ( const std::string &value );
-     void setColorMatrix    ( const Matrix &value );
-     void setGamma          ( const Real32 &value );
-     void setGridWidth      ( const UInt32 &value );
-     void setGridHeight     ( const UInt32 &value );
-     void setScaleDown      ( const Real32 &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static DisplayCalibrationPtr create(void);
+  static DisplayCalibrationPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  DisplayCalibrationPtr      create          (void); 
-    static  DisplayCalibrationPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFBool    _sfEnabled;
+  SFString  _sfServer;
+  SFMatrix  _sfColorMatrix;
+  SFReal32  _sfGamma;
+  MFColor3f _mfGammaRamp;
+  SFUInt32  _sfGridWidth;
+  SFUInt32  _sfGridHeight;
+  MFVec2f   _mfGrid;
+  SFReal32  _sfScaleDown;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  DisplayCalibrationBase(void);
+  DisplayCalibrationBase(const DisplayCalibrationBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~DisplayCalibrationBase(void);
 
-    SFBool              _sfEnabled;
-    SFString            _sfServer;
-    SFMatrix            _sfColorMatrix;
-    SFReal32            _sfGamma;
-    MFColor3f           _mfGammaRamp;
-    SFUInt32            _sfGridWidth;
-    SFUInt32            _sfGridHeight;
-    MFVec2f             _mfGrid;
-    SFReal32            _sfScaleDown;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    DisplayCalibrationBase(void);
-    DisplayCalibrationBase(const DisplayCalibrationBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~DisplayCalibrationBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      DisplayCalibrationBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(DisplayCalibrationBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      DisplayCalibrationBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      DisplayCalibrationBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const DisplayCalibrationBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const DisplayCalibrationBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef DisplayCalibrationBase* DisplayCalibrationBaseP;
 
-typedef DisplayCalibrationBase *DisplayCalibrationBaseP;
-
-typedef osgIF<DisplayCalibrationBase::isNodeCore,
-              CoredNodePtr<DisplayCalibration>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet DisplayCalibrationNodePtr;
+typedef osgIF<DisplayCalibrationBase::isNodeCore, CoredNodePtr<DisplayCalibration>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet
+    DisplayCalibrationNodePtr;
 
 typedef RefPtr<DisplayCalibrationPtr> DisplayCalibrationRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGDISPLAYCALIBRATIONBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGDISPLAYCALIBRATIONBASE_HEADER_CVSID                                                     \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGDISPLAYCALIBRATIONBASE_H_ */

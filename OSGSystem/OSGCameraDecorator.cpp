@@ -52,103 +52,77 @@ OSG_USING_NAMESPACE
 
 /*! \class osg::CameraDecorator
     \ingroup GrpSystemWindowCameraDecorators
-    
-The base class for the camera decorator, see \ref
-PageSystemWindowCameraDecorators for a description. 
 
-The decorated object is held in the _sfDecoratee field.	
+The base class for the camera decorator, see \ref
+PageSystemWindowCameraDecorators for a description.
+
+The decorated object is held in the _sfDecoratee field.
 
 */
 
 /*----------------------- constructors & destructors ----------------------*/
 
-CameraDecorator::CameraDecorator(void) :
-    Inherited()
-{
+CameraDecorator::CameraDecorator(void)
+    : Inherited() {
 }
 
-CameraDecorator::CameraDecorator(const CameraDecorator &source) :
-    Inherited(source)
-{
+CameraDecorator::CameraDecorator(const CameraDecorator& source)
+    : Inherited(source) {
 }
 
-CameraDecorator::~CameraDecorator(void)
-{
+CameraDecorator::~CameraDecorator(void) {
 }
 
 /*----------------------------- class specific ----------------------------*/
 
-void CameraDecorator::initMethod (void)
-{
+void CameraDecorator::initMethod(void) {
 }
 
-void CameraDecorator::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void CameraDecorator::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
-void CameraDecorator::dump(      UInt32    , 
-                         const BitVector ) const
-{
-    SLOG << "Dump CameraDecorator NI" << std::endl;
+void CameraDecorator::dump(UInt32, const BitVector) const {
+  SLOG << "Dump CameraDecorator NI" << std::endl;
 }
-
 
 /*---------------------- Decorated Functions ----------------------------*/
 
-
-void CameraDecorator::draw(      DrawAction *action, 
-                           const Viewport   &port  )
-{
-    CameraPtr camera = getDecoratee();
-    if(camera == NullFC)
-    {
-        FWARNING(("CameraDecorator::draw: no decoratee!\n"));
-        return;
-    }
-    camera->draw(action, port);
+void CameraDecorator::draw(DrawAction* action, const Viewport& port) {
+  CameraPtr camera = getDecoratee();
+  if (camera == NullFC) {
+    FWARNING(("CameraDecorator::draw: no decoratee!\n"));
+    return;
+  }
+  camera->draw(action, port);
 }
 
-void CameraDecorator::getProjection(Matrix &result,
-                                    UInt32  width ,
-                                    UInt32  height)
-{
-    CameraPtr camera = getDecoratee();
-    if(camera == NullFC)
-    {
-        FWARNING(("CameraDecorator::getProjection: no decoratee!\n"));
-        result.setIdentity();
-        return;
-    }
-    camera->getProjection(result, width, height);
+void CameraDecorator::getProjection(Matrix& result, UInt32 width, UInt32 height) {
+  CameraPtr camera = getDecoratee();
+  if (camera == NullFC) {
+    FWARNING(("CameraDecorator::getProjection: no decoratee!\n"));
+    result.setIdentity();
+    return;
+  }
+  camera->getProjection(result, width, height);
 }
 
-void CameraDecorator::getProjectionTranslation(Matrix &result, 
-                                               UInt32  width , 
-                                               UInt32  height)
-{
-    CameraPtr camera = getDecoratee();
-    if(camera == NullFC)
-    {
-        FWARNING(("CameraDecorator::getProjectionTranslation: no decoratee!\n"));
-        result.setIdentity();
-        return;
-    }
-    camera->getProjectionTranslation(result, width, height);
+void CameraDecorator::getProjectionTranslation(Matrix& result, UInt32 width, UInt32 height) {
+  CameraPtr camera = getDecoratee();
+  if (camera == NullFC) {
+    FWARNING(("CameraDecorator::getProjectionTranslation: no decoratee!\n"));
+    result.setIdentity();
+    return;
+  }
+  camera->getProjectionTranslation(result, width, height);
 }
 
-void CameraDecorator::getViewing(Matrix &result, 
-                                 UInt32  width , 
-                                 UInt32  height)
-{
-    CameraPtr camera = getDecoratee();
-    if(camera == NullFC)
-    {
-        FWARNING(("CameraDecorator::getViewing: no decoratee!\n"));
-        result.setIdentity();
-        return;
-    }
-    camera->getViewing(result, width, height);
+void CameraDecorator::getViewing(Matrix& result, UInt32 width, UInt32 height) {
+  CameraPtr camera = getDecoratee();
+  if (camera == NullFC) {
+    FWARNING(("CameraDecorator::getViewing: no decoratee!\n"));
+    result.setIdentity();
+    return;
+  }
+  camera->getViewing(result, width, height);
 }
-
-

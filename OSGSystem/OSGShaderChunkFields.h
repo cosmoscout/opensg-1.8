@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGSHADERCHUNKFIELDS_H_
 #define _OSGSHADERCHUNKFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class ShaderChunk;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! ShaderChunkPtr
 
 typedef FCPtr<ShaderParameterChunkPtr, ShaderChunk> ShaderChunkPtr;
@@ -81,18 +80,22 @@ typedef FCPtr<ShaderParameterChunkPtr, ShaderChunk> ShaderChunkPtr;
 #endif
 
 template <>
-struct FieldDataTraits<ShaderChunkPtr> : 
-    public FieldTraitsRecurseMapper<ShaderChunkPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<ShaderChunkPtr> : public FieldTraitsRecurseMapper<ShaderChunkPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getSName(void) { return "SFShaderChunkPtr"; }
-    static const char *getMName(void) { return "MFShaderChunkPtr"; }
+  static const char* getSName(void) {
+    return "SFShaderChunkPtr";
+  }
+  static const char* getMName(void) {
+    return "MFShaderChunkPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -102,7 +105,6 @@ struct FieldDataTraits<ShaderChunkPtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
@@ -126,6 +128,7 @@ OSG_DLLEXPORT_DECL1(MField, ShaderChunkPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 
 OSG_END_NAMESPACE
 
-#define OSGSHADERCHUNKFIELDS_HEADER_CVSID "@(#)$Id: OSGShaderChunkFields.h,v 1.7 2006/11/17 17:16:04 a-m-z Exp $"
+#define OSGSHADERCHUNKFIELDS_HEADER_CVSID                                                          \
+  "@(#)$Id: OSGShaderChunkFields.h,v 1.7 2006/11/17 17:16:04 a-m-z Exp $"
 
 #endif /* _OSGSHADERCHUNKFIELDS_H_ */

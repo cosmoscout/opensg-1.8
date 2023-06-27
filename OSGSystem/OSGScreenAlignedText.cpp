@@ -83,160 +83,128 @@ OSG_USING_NAMESPACE
 
 //! Constructor
 
-ScreenAlignedText::ScreenAlignedText(void) :
-    Inherited()
-{
+ScreenAlignedText::ScreenAlignedText(void)
+    : Inherited() {
 }
 
 //! Copy Constructor
 
-ScreenAlignedText::ScreenAlignedText(const ScreenAlignedText &source) :
-    Inherited(source)
-{
+ScreenAlignedText::ScreenAlignedText(const ScreenAlignedText& source)
+    : Inherited(source) {
 }
 
 //! Destructor
 
-ScreenAlignedText::~ScreenAlignedText(void)
-{
+ScreenAlignedText::~ScreenAlignedText(void) {
 }
 
 /*----------------------------- class specific ----------------------------*/
 
 //! initialize the static features of the class, e.g. action callbacks
 
-void ScreenAlignedText::initMethod (void)
-{
-  DrawAction::registerEnterDefault( getClassType(),
-                                    osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE,
-									MaterialDrawablePtr,
-                                    CNodePtr      ,
-                                    Action       *>(&MaterialDrawable::drawActionHandler));
-  
-  RenderAction::registerEnterDefault( getClassType(),
-                                      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE,
-                                      MaterialDrawablePtr  ,
-                                      CNodePtr      ,
-                                      Action       *>(&MaterialDrawable::renderActionHandler));
+void ScreenAlignedText::initMethod(void) {
+  DrawAction::registerEnterDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, MaterialDrawablePtr, CNodePtr, Action*>(
+          &MaterialDrawable::drawActionHandler));
 
+  RenderAction::registerEnterDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, MaterialDrawablePtr, CNodePtr, Action*>(
+          &MaterialDrawable::renderActionHandler));
 }
 
 //! react to field changes
 
-void ScreenAlignedText::changed(BitVector whichField, UInt32 origin)
-{
-	//cout << "******** ScreenAlignedText::changed called ********** " << endl;
+void ScreenAlignedText::changed(BitVector whichField, UInt32 origin) {
+  // cout << "******** ScreenAlignedText::changed called ********** " << endl;
 
-  if( whichField & PositionFieldMask ||
-      whichField & FontFieldMask ||
-      whichField & TextFieldMask ||
-      whichField & VerticalLineDistanceFieldMask ||
-      whichField & AlignmentFieldMask ) 
-  {
-	  tessellate();
+  if (whichField & PositionFieldMask || whichField & FontFieldMask || whichField & TextFieldMask ||
+      whichField & VerticalLineDistanceFieldMask || whichField & AlignmentFieldMask) {
+    tessellate();
   }
 
-    Inherited::changed(whichField, origin);
+  Inherited::changed(whichField, origin);
 }
 
-void ScreenAlignedText::tessellate(void)
-{
+void ScreenAlignedText::tessellate(void) {
 
-	//cout << "ScreenAlignedText::tessellate called" << endl;
+  // cout << "ScreenAlignedText::tessellate called" << endl;
 
-	if( _mfText.empty() )
-		return;
-	Text fontText;
+  if (_mfText.empty())
+    return;
+  Text fontText;
 
-	//SFSharedFontStylePtr *psfsp = getSFFont();
-	//SFSharedFontStyleWrapperPtr *wrapperPtr = getSFFont();
-	SharedFontStyleWrapperPtr wrapperPtr = getFont();
-		   
-	//SFSharedFontStylePtr psfsp = wrapperPtr->getSFFStyleContainer();
+  // SFSharedFontStylePtr *psfsp = getSFFont();
+  // SFSharedFontStyleWrapperPtr *wrapperPtr = getSFFont();
+  SharedFontStyleWrapperPtr wrapperPtr = getFont();
 
-	//SharedFontStylePtr psfs = psfsp->getValue();
-	SharedFontStylePtr psfs = wrapperPtr->getFStyleContainer();
+  // SFSharedFontStylePtr psfsp = wrapperPtr->getSFFStyleContainer();
 
-	if( psfs == NullFC )
-	{
-		cerr << "ScreenAlignedText::tessellate:  psfs = NullFC ! " << endl;
-		return;
-	}
-	FontStyleP pFS = psfs->getContainedFontStyle();
-	if( pFS == NULL )
-	{		
-		cerr << "ScreenAlignedText::tessellate:  pFS = NULL ! " << endl;
-		return;
-	}
+  // SharedFontStylePtr psfs = psfsp->getValue();
+  SharedFontStylePtr psfs = wrapperPtr->getFStyleContainer();
 
-    fontText.setFontStyle( pFS );
-    fontText.setJustifyMajor(MIDDLE_JT);
+  if (psfs == NullFC) {
+    cerr << "ScreenAlignedText::tessellate:  psfs = NullFC ! " << endl;
+    return;
+  }
+  FontStyleP pFS = psfs->getContainedFontStyle();
+  if (pFS == NULL) {
+    cerr << "ScreenAlignedText::tessellate:  pFS = NULL ! " << endl;
+    return;
+  }
 
-	// Colors are changed during rendering, 
-	// but are needed for 
-	// calling the fillImage routine
-    Color4ub    col1( 255, 255, 255, 255);
-    Color4ub    col2( 0, 0, 0, 0 );
-	ImagePtr pImg = Image::create();
+  fontText.setFontStyle(pFS);
+  fontText.setJustifyMajor(MIDDLE_JT);
 
-	std::vector<std::string> lineVec;
+  // Colors are changed during rendering,
+  // but are needed for
+  // calling the fillImage routine
+  Color4ub col1(255, 255, 255, 255);
+  Color4ub col2(0, 0, 0, 0);
+  ImagePtr pImg = Image::create();
 
-	for(unsigned int i = 0; i < _mfText.size(); i++ )
-	{
-		lineVec.push_back( _mfText[i] );
-	}
+  std::vector<std::string> lineVec;
 
-	vector<NodePtr> cNodes;
+  for (unsigned int i = 0; i < _mfText.size(); i++) {
+    lineVec.push_back(_mfText[i]);
+  }
 
-    if(fontText.fillImage(pImg, lineVec, &col1, &col2,
-						  false, 0, 0, SET_TEX_TCM, CLEAR_ADD_MM, 1, true ) )
-    {	
-		_sfRenderImage.setValue( pImg );
-	}
+  vector<NodePtr> cNodes;
 
-	// cout << "ScreenAlignedText::tessellate(void)" << endl;
+  if (fontText.fillImage(
+          pImg, lineVec, &col1, &col2, false, 0, 0, SET_TEX_TCM, CLEAR_ADD_MM, 1, true)) {
+    _sfRenderImage.setValue(pImg);
+  }
+
+  // cout << "ScreenAlignedText::tessellate(void)" << endl;
 }
 
 //! output the instance for debug purposes
 
-void ScreenAlignedText::dump(      UInt32    , 
-                         const BitVector ) const
-{
-    SLOG << "Dump ScreenAlignedText NI" << endl;
+void ScreenAlignedText::dump(UInt32, const BitVector) const {
+  SLOG << "Dump ScreenAlignedText NI" << endl;
 }
-Action::ResultE ScreenAlignedText::drawPrimitives( DrawActionBase * )
-{
-    // some variables for faster access
-    SFVec3f *pos = getSFPosition();
-    Vec3f   &vec = pos->getValue();
-	ImagePtr pImage =_sfRenderImage.getValue();
-	GLubyte *pImageData = _sfRenderImage.getValue()->getData();
-	
-	
-	glRasterPos3f( vec[0], vec[1], vec[2] );
-	glBitmap( pImage->getWidth()*8,
-			  pImage->getHeight(),
-			  .0,.0,
-			  GLfloat(pImage->getWidth()), 
-			  GLfloat(pImage->getHeight()),
-			  pImageData );
-    
-    return Action::Continue;
+Action::ResultE ScreenAlignedText::drawPrimitives(DrawActionBase*) {
+  // some variables for faster access
+  SFVec3f* pos        = getSFPosition();
+  Vec3f&   vec        = pos->getValue();
+  ImagePtr pImage     = _sfRenderImage.getValue();
+  GLubyte* pImageData = _sfRenderImage.getValue()->getData();
+
+  glRasterPos3f(vec[0], vec[1], vec[2]);
+  glBitmap(pImage->getWidth() * 8, pImage->getHeight(), .0, .0, GLfloat(pImage->getWidth()),
+      GLfloat(pImage->getHeight()), pImageData);
+
+  return Action::Continue;
 }
 
-void ScreenAlignedText::adjustVolume( Volume & volume )
-{   
-    volume.setValid();
-    volume.setEmpty();
+void ScreenAlignedText::adjustVolume(Volume& volume) {
+  volume.setValid();
+  volume.setEmpty();
 
-    SFVec3f *sfpos = getSFPosition();
-	Vec3f   &pos = sfpos->getValue();
+  SFVec3f* sfpos = getSFPosition();
+  Vec3f&   pos   = sfpos->getValue();
 
-    // go through all the cubes adjusting the volume
-	volume.extendBy( Pnt3f( pos[0] + 0.0000001f,
-							pos[1] + 0.0000001f,
-							pos[2] + 0.0000001f ) );
-	volume.extendBy( Pnt3f( pos[0] - 0.0000001f,
-							pos[1] - 0.0000001f,
-							pos[2] - 0.0000001f ) );
+  // go through all the cubes adjusting the volume
+  volume.extendBy(Pnt3f(pos[0] + 0.0000001f, pos[1] + 0.0000001f, pos[2] + 0.0000001f));
+  volume.extendBy(Pnt3f(pos[0] - 0.0000001f, pos[1] - 0.0000001f, pos[2] - 0.0000001f));
 }

@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGRENDEROPTIONSFIELDS_H_
 #define _OSGRENDEROPTIONSFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class RenderOptions;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! RenderOptionsPtr
 
 typedef FCPtr<AttachmentPtr, RenderOptions> RenderOptionsPtr;
@@ -81,18 +80,22 @@ typedef FCPtr<AttachmentPtr, RenderOptions> RenderOptionsPtr;
 #endif
 
 template <>
-struct FieldDataTraits<RenderOptionsPtr> : 
-    public FieldTraitsRecurseMapper<RenderOptionsPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<RenderOptionsPtr> : public FieldTraitsRecurseMapper<RenderOptionsPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getSName(void) { return "SFRenderOptionsPtr"; }
-    static const char *getMName(void) { return "MFRenderOptionsPtr"; }
+  static const char* getSName(void) {
+    return "SFRenderOptionsPtr";
+  }
+  static const char* getMName(void) {
+    return "MFRenderOptionsPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -102,7 +105,6 @@ struct FieldDataTraits<RenderOptionsPtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
@@ -126,6 +128,7 @@ OSG_DLLEXPORT_DECL1(MField, RenderOptionsPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 
 OSG_END_NAMESPACE
 
-#define OSGRENDEROPTIONSFIELDS_HEADER_CVSID "@(#)$Id: OSGRenderOptionsFields.h,v 1.7 2007/07/03 09:16:10 yjung Exp $"
+#define OSGRENDEROPTIONSFIELDS_HEADER_CVSID                                                        \
+  "@(#)$Id: OSGRenderOptionsFields.h,v 1.7 2007/07/03 09:16:10 yjung Exp $"
 
 #endif /* _OSGRENDEROPTIONSFIELDS_H_ */

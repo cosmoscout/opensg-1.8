@@ -52,81 +52,59 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &LogicOpChunkBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& LogicOpChunkBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 LogicOpChunkBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 LogicOpChunkBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-LogicOpChunkPtr LogicOpChunkBase::create(void) 
-{
-    LogicOpChunkPtr fc; 
+inline LogicOpChunkPtr LogicOpChunkBase::create(void) {
+  LogicOpChunkPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = LogicOpChunkPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = LogicOpChunkPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-LogicOpChunkPtr LogicOpChunkBase::createEmpty(void) 
-{ 
-    LogicOpChunkPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline LogicOpChunkPtr LogicOpChunkBase::createEmpty(void) {
+  LogicOpChunkPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the LogicOpChunk::_sfLogicOp field.
-inline
-SFGLenum *LogicOpChunkBase::getSFLogicOp(void)
-{
-    return &_sfLogicOp;
-}
-
-
-//! Get the value of the LogicOpChunk::_sfLogicOp field.
-inline
-GLenum &LogicOpChunkBase::getLogicOp(void)
-{
-    return _sfLogicOp.getValue();
+inline SFGLenum* LogicOpChunkBase::getSFLogicOp(void) {
+  return &_sfLogicOp;
 }
 
 //! Get the value of the LogicOpChunk::_sfLogicOp field.
-inline
-const GLenum &LogicOpChunkBase::getLogicOp(void) const
-{
-    return _sfLogicOp.getValue();
+inline GLenum& LogicOpChunkBase::getLogicOp(void) {
+  return _sfLogicOp.getValue();
+}
+
+//! Get the value of the LogicOpChunk::_sfLogicOp field.
+inline const GLenum& LogicOpChunkBase::getLogicOp(void) const {
+  return _sfLogicOp.getValue();
 }
 
 //! Set the value of the LogicOpChunk::_sfLogicOp field.
-inline
-void LogicOpChunkBase::setLogicOp(const GLenum &value)
-{
-    _sfLogicOp.setValue(value);
+inline void LogicOpChunkBase::setLogicOp(const GLenum& value) {
+  _sfLogicOp.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGLOGICOPCHUNKBASE_INLINE_CVSID "@(#)$Id: OSGLogicOpChunkBase.inl,v 1.1 2007/06/25 14:32:45 neumannc Exp $"
-
+#define OSGLOGICOPCHUNKBASE_INLINE_CVSID                                                           \
+  "@(#)$Id: OSGLogicOpChunkBase.inl,v 1.1 2007/06/25 14:32:45 neumannc Exp $"

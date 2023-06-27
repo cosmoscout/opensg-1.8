@@ -40,8 +40,6 @@
 //  Includes
 //---------------------------------------------------------------------------
 
-
-
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -52,7 +50,6 @@
 
 OSG_USING_NAMESPACE
 
-
 /***************************************************************************\
  *                            Description                                  *
 \***************************************************************************/
@@ -60,7 +57,7 @@ OSG_USING_NAMESPACE
 /*! \class osg::MatrixCamera
     \ingroup GrpSystemWindowCameras
 
-The Matrix Camera class, see \ref PageSystemWindowCameraMatrix for 
+The Matrix Camera class, see \ref PageSystemWindowCameraMatrix for
 a description.
 
 The used matrices are stored in the _sfModelviewMatrix and _sfProjectionMatrix
@@ -75,8 +72,7 @@ Fields.
  -  private                                                                -
 \*-------------------------------------------------------------------------*/
 
-void MatrixCamera::initMethod (void)
-{
+void MatrixCamera::initMethod(void) {
 }
 
 /***************************************************************************\
@@ -85,49 +81,37 @@ void MatrixCamera::initMethod (void)
 
 /*------------- constructors & destructors --------------------------------*/
 
-MatrixCamera::MatrixCamera(void) :
-    Inherited()
-{
+MatrixCamera::MatrixCamera(void)
+    : Inherited() {
 }
 
-MatrixCamera::MatrixCamera(const MatrixCamera &source) :
-    Inherited(source)
-{
+MatrixCamera::MatrixCamera(const MatrixCamera& source)
+    : Inherited(source) {
 }
 
-MatrixCamera::~MatrixCamera(void)
-{
+MatrixCamera::~MatrixCamera(void) {
 }
 
-void MatrixCamera::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void MatrixCamera::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
 /*------------------------------- dump ----------------------------------*/
 
-void MatrixCamera::dump(      UInt32     OSG_CHECK_ARG(uiIndent), 
-                         const BitVector OSG_CHECK_ARG(bvFlags)) const
-{
-	SLOG << "Dump MatrixCamera NI" << std::endl;
+void MatrixCamera::dump(
+    UInt32 OSG_CHECK_ARG(uiIndent), const BitVector OSG_CHECK_ARG(bvFlags)) const {
+  SLOG << "Dump MatrixCamera NI" << std::endl;
 }
 
-void MatrixCamera::draw( DrawAction *    OSG_CHECK_ARG(action), 
-                         const Viewport& OSG_CHECK_ARG(port) )
-{
+void MatrixCamera::draw(DrawAction* OSG_CHECK_ARG(action), const Viewport& OSG_CHECK_ARG(port)) {
 }
 
-void MatrixCamera::getProjection( Matrix& result, UInt32 OSG_CHECK_ARG(width), 
-                                                  UInt32 OSG_CHECK_ARG(height))
-{
-	result = getProjectionMatrix();
+void MatrixCamera::getProjection(
+    Matrix& result, UInt32 OSG_CHECK_ARG(width), UInt32 OSG_CHECK_ARG(height)) {
+  result = getProjectionMatrix();
 }
 
-void MatrixCamera::getViewing( Matrix& result, UInt32 OSG_CHECK_ARG(width), 
-                                               UInt32 OSG_CHECK_ARG(height))
-{
-	result = getModelviewMatrix();
+void MatrixCamera::getViewing(
+    Matrix& result, UInt32 OSG_CHECK_ARG(width), UInt32 OSG_CHECK_ARG(height)) {
+  result = getModelviewMatrix();
 }
- 
-
-

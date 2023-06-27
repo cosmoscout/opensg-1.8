@@ -49,83 +49,74 @@
 OSG_BEGIN_NAMESPACE
 
 /*! \brief VRMLSceneFileType
-*/
+ */
 
-class OSG_SYSTEMLIB_DLLMAPPING VRMLSceneFileType : public SceneFileType
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING VRMLSceneFileType : public SceneFileType {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef std::vector<FieldContainerPtr> FCPtrStore;
 
-    typedef std::vector<FieldContainerPtr> FCPtrStore;
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Class Get                                  */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Class Get                                  */
-    /*! \{                                                                 */
+  static VRMLSceneFileType& the(void);
 
-    static VRMLSceneFileType &the(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  virtual ~VRMLSceneFileType(void);
 
-    virtual ~VRMLSceneFileType(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Get                                        */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Get                                        */
-    /*! \{                                                                 */
+  virtual const Char8* getName(void) const;
 
-    virtual const Char8 *getName(void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Read                                       */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Read                                       */
-    /*! \{                                                                 */
+  virtual NodePtr read(std::istream& is, const Char8* fileNameOrExtension) const;
 
-    virtual NodePtr    read        (std::istream &is,
-                                    const Char8 *fileNameOrExtension) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Write                                      */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Write                                      */
-    /*! \{                                                                 */
+  virtual bool write(const NodePtr& node, std::ostream& os, const Char8* fileNameOrExtension) const;
 
-    virtual bool write(const NodePtr &node, std::ostream &os,
-                       const Char8 *fileNameOrExtension) const;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Member                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  static const Char8*      _suffixA[];
+  static VRMLSceneFileType _the;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Member                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    static const Char8             *_suffixA[];
-    static       VRMLSceneFileType  _the;
+  VRMLSceneFileType(const Char8* suffixArray[], UInt16 suffixByteCount, bool override,
+      UInt32 overridePriority, UInt32 flags);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  typedef SceneFileType Inherited;
 
-    VRMLSceneFileType(const Char8  *suffixArray[],
-                            UInt16  suffixByteCount,
-                            bool    override,
-                            UInt32  overridePriority,
-                            UInt32  flags);
-
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
-
-    typedef SceneFileType Inherited;
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    VRMLSceneFileType(const VRMLSceneFileType &source);
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const VRMLSceneFileType &source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  VRMLSceneFileType(const VRMLSceneFileType& source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const VRMLSceneFileType& source);
 };
 
 OSG_END_NAMESPACE

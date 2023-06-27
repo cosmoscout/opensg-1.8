@@ -42,22 +42,18 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! As the image data can be manipulated by the user at any time, the system 
-    cannot know when that happens. Thus it has to be informed by the 
-    application when the texture data has chnaged and the texture needs to be 
+/*! As the image data can be manipulated by the user at any time, the system
+    cannot know when that happens. Thus it has to be informed by the
+    application when the texture data has chnaged and the texture needs to be
     rebuild.
-    
+
     That's what imageChanged is for.
  */
 
-inline
-void SimpleTexturedMaterial::imageChanged(void)
-{
-    _textureChunk->imageContentChanged();
+inline void SimpleTexturedMaterial::imageChanged(void) {
+  _textureChunk->imageContentChanged();
 }
-
 
 OSG_END_NAMESPACE
 
 #define OSGSIMPLETEXTUREDMATERIAL_INLINE_CVSID "@(#)$Id: $"
-

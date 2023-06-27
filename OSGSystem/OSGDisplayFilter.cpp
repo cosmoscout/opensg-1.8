@@ -65,10 +65,8 @@ OSG_BEGIN_NAMESPACE
  *                           Class methods                                 *
 \***************************************************************************/
 
-void DisplayFilter::initMethod (void)
-{
+void DisplayFilter::initMethod(void) {
 }
-
 
 /***************************************************************************\
  *                           Instance methods                              *
@@ -80,44 +78,35 @@ void DisplayFilter::initMethod (void)
 
 /*----------------------- constructors & destructors ----------------------*/
 
-DisplayFilter::DisplayFilter(void) :
-    Inherited(),
-    _changed(0)
-{
+DisplayFilter::DisplayFilter(void)
+    : Inherited()
+    , _changed(0) {
 }
 
-DisplayFilter::DisplayFilter(const DisplayFilter &source) :
-    Inherited(source),
-    _changed(0)
-{
+DisplayFilter::DisplayFilter(const DisplayFilter& source)
+    : Inherited(source)
+    , _changed(0) {
 }
 
-DisplayFilter::~DisplayFilter(void)
-{
+DisplayFilter::~DisplayFilter(void) {
 }
 
 /*----------------------------- class specific ----------------------------*/
 
-void DisplayFilter::changed(BitVector whichField, UInt32 origin)
-{
-    _changed++;
-    Inherited::changed(whichField, origin);
+void DisplayFilter::changed(BitVector whichField, UInt32 origin) {
+  _changed++;
+  Inherited::changed(whichField, origin);
 }
 
-void DisplayFilter::dump(      UInt32    , 
-                         const BitVector ) const
-{
-    SLOG << "enabled = " << getEnabled() << std::endl;
+void DisplayFilter::dump(UInt32, const BitVector) const {
+  SLOG << "enabled = " << getEnabled() << std::endl;
 }
 
-void DisplayFilter::updateFilter(Viewport *port)
-{
+void DisplayFilter::updateFilter(Viewport* port) {
 }
 
-UInt32 DisplayFilter::getChanged( void )
-{
-    return _changed;
+UInt32 DisplayFilter::getChanged(void) {
+  return _changed;
 }
 
 OSG_END_NAMESPACE
-

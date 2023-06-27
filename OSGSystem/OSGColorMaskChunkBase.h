@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGCOLORMASKCHUNKBASE_H_
 #define _OSGCOLORMASKCHUNKBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -81,202 +79,181 @@ class BinaryDataHandler;
 
 //! \brief ColorMaskChunk Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING ColorMaskChunkBase : public StateChunk
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING ColorMaskChunkBase : public StateChunk {
+ private:
+  typedef StateChunk Inherited;
 
-    typedef StateChunk    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef ColorMaskChunkPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    MaskRFieldId = Inherited::NextFieldId,
+    MaskGFieldId = MaskRFieldId + 1,
+    MaskBFieldId = MaskGFieldId + 1,
+    MaskAFieldId = MaskBFieldId + 1,
+    NextFieldId  = MaskAFieldId + 1
+  };
 
-    typedef ColorMaskChunkPtr  Ptr;
+  static const OSG::BitVector MaskRFieldMask;
+  static const OSG::BitVector MaskGFieldMask;
+  static const OSG::BitVector MaskBFieldMask;
+  static const OSG::BitVector MaskAFieldMask;
 
-    enum
-    {
-        MaskRFieldId = Inherited::NextFieldId,
-        MaskGFieldId = MaskRFieldId + 1,
-        MaskBFieldId = MaskGFieldId + 1,
-        MaskAFieldId = MaskBFieldId + 1,
-        NextFieldId  = MaskAFieldId + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector MaskRFieldMask;
-    static const OSG::BitVector MaskGFieldMask;
-    static const OSG::BitVector MaskBFieldMask;
-    static const OSG::BitVector MaskAFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFBool* getSFMaskR(void);
+  SFBool* getSFMaskG(void);
+  SFBool* getSFMaskB(void);
+  SFBool* getSFMaskA(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  bool&       getMaskR(void);
+  const bool& getMaskR(void) const;
+  bool&       getMaskG(void);
+  const bool& getMaskG(void) const;
+  bool&       getMaskB(void);
+  const bool& getMaskB(void) const;
+  bool&       getMaskA(void);
+  const bool& getMaskA(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFBool              *getSFMaskR          (void);
-           SFBool              *getSFMaskG          (void);
-           SFBool              *getSFMaskB          (void);
-           SFBool              *getSFMaskA          (void);
+  void setMaskR(const bool& value);
+  void setMaskG(const bool& value);
+  void setMaskB(const bool& value);
+  void setMaskA(const bool& value);
 
-           bool                &getMaskR          (void);
-     const bool                &getMaskR          (void) const;
-           bool                &getMaskG          (void);
-     const bool                &getMaskG          (void) const;
-           bool                &getMaskB          (void);
-     const bool                &getMaskB          (void) const;
-           bool                &getMaskA          (void);
-     const bool                &getMaskA          (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setMaskR          ( const bool &value );
-     void setMaskG          ( const bool &value );
-     void setMaskB          ( const bool &value );
-     void setMaskA          ( const bool &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static ColorMaskChunkPtr create(void);
+  static ColorMaskChunkPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  ColorMaskChunkPtr      create          (void); 
-    static  ColorMaskChunkPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFBool _sfMaskR;
+  SFBool _sfMaskG;
+  SFBool _sfMaskB;
+  SFBool _sfMaskA;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  ColorMaskChunkBase(void);
+  ColorMaskChunkBase(const ColorMaskChunkBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~ColorMaskChunkBase(void);
 
-    SFBool              _sfMaskR;
-    SFBool              _sfMaskG;
-    SFBool              _sfMaskB;
-    SFBool              _sfMaskA;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    ColorMaskChunkBase(void);
-    ColorMaskChunkBase(const ColorMaskChunkBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~ColorMaskChunkBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      ColorMaskChunkBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(ColorMaskChunkBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      ColorMaskChunkBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      ColorMaskChunkBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const ColorMaskChunkBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const ColorMaskChunkBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef ColorMaskChunkBase* ColorMaskChunkBaseP;
 
-typedef ColorMaskChunkBase *ColorMaskChunkBaseP;
-
-typedef osgIF<ColorMaskChunkBase::isNodeCore,
-              CoredNodePtr<ColorMaskChunk>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet ColorMaskChunkNodePtr;
+typedef osgIF<ColorMaskChunkBase::isNodeCore, CoredNodePtr<ColorMaskChunk>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet ColorMaskChunkNodePtr;
 
 typedef RefPtr<ColorMaskChunkPtr> ColorMaskChunkRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGCOLORMASKCHUNKBASE_HEADER_CVSID "@(#)$Id: OSGColorMaskChunkBase.h,v 1.4 2006/02/20 17:04:46 dirk Exp $"
+#define OSGCOLORMASKCHUNKBASE_HEADER_CVSID                                                         \
+  "@(#)$Id: OSGColorMaskChunkBase.h,v 1.4 2006/02/20 17:04:46 dirk Exp $"
 
 #endif /* _OSGCOLORMASKCHUNKBASE_H_ */

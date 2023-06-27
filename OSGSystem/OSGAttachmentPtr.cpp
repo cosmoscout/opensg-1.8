@@ -52,53 +52,36 @@ OSG_USING_NAMESPACE
  */
 #endif
 
-AttachmentPtr::AttachmentPtr(const Attachment &source) :
+AttachmentPtr::AttachmentPtr(const Attachment& source)
+    :
 
-    Inherited(source)
-{
+    Inherited(source) {
 }
 
-AttachmentPtr::AttachmentPtr(const Attachment *source) :
+AttachmentPtr::AttachmentPtr(const Attachment* source)
+    :
 
-    Inherited(source)
-{
+    Inherited(source) {
 }
 
-AttachmentPtr::AttachmentPtr(const Attachment *source,
-                             const UInt16      uiSize,
-                             const UInt16      uiParentPos) :
+AttachmentPtr::AttachmentPtr(
+    const Attachment* source, const UInt16 uiSize, const UInt16 uiParentPos)
+    :
 
-    Inherited(source, uiSize, uiParentPos)
-{
+    Inherited(source, uiSize, uiParentPos) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                               Functions                                 */
 
 OSG_SYSTEMLIB_DLLMAPPING
-std::ostream &OSG::operator <<(      std::ostream   &os,
-                               const AttachmentPtr  &fc)
-{
-    if(fc == NullFC)
-    {
-        os << std::hex << "NodePtr 0x" << &fc << std::dec << ":NullFC";
-    }
-    else
-    {
-        os << std::hex 
-           << "NodePtr 0x"
-           << &fc 
-           << std::dec << ":" 
-           << fc->getType().getName() 
-           << "Ptr(0x"
-           << std::hex
-           << (&(*fc)) 
-           << std::dec
-           << ")";
-    }
+std::ostream& OSG::operator<<(std::ostream& os, const AttachmentPtr& fc) {
+  if (fc == NullFC) {
+    os << std::hex << "NodePtr 0x" << &fc << std::dec << ":NullFC";
+  } else {
+    os << std::hex << "NodePtr 0x" << &fc << std::dec << ":" << fc->getType().getName() << "Ptr(0x"
+       << std::hex << (&(*fc)) << std::dec << ")";
+  }
 
-    return os;
+  return os;
 }
-
-
-

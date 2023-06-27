@@ -52,81 +52,59 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &OffCenterPerspectiveCameraBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& OffCenterPerspectiveCameraBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 OffCenterPerspectiveCameraBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 OffCenterPerspectiveCameraBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-OffCenterPerspectiveCameraPtr OffCenterPerspectiveCameraBase::create(void) 
-{
-    OffCenterPerspectiveCameraPtr fc; 
+inline OffCenterPerspectiveCameraPtr OffCenterPerspectiveCameraBase::create(void) {
+  OffCenterPerspectiveCameraPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = OffCenterPerspectiveCameraPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = OffCenterPerspectiveCameraPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-OffCenterPerspectiveCameraPtr OffCenterPerspectiveCameraBase::createEmpty(void) 
-{ 
-    OffCenterPerspectiveCameraPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline OffCenterPerspectiveCameraPtr OffCenterPerspectiveCameraBase::createEmpty(void) {
+  OffCenterPerspectiveCameraPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the OffCenterPerspectiveCamera::_sfPrincipalPoint field.
-inline
-SFVec2f *OffCenterPerspectiveCameraBase::getSFPrincipalPoint(void)
-{
-    return &_sfPrincipalPoint;
-}
-
-
-//! Get the value of the OffCenterPerspectiveCamera::_sfPrincipalPoint field.
-inline
-Vec2f &OffCenterPerspectiveCameraBase::getPrincipalPoint(void)
-{
-    return _sfPrincipalPoint.getValue();
+inline SFVec2f* OffCenterPerspectiveCameraBase::getSFPrincipalPoint(void) {
+  return &_sfPrincipalPoint;
 }
 
 //! Get the value of the OffCenterPerspectiveCamera::_sfPrincipalPoint field.
-inline
-const Vec2f &OffCenterPerspectiveCameraBase::getPrincipalPoint(void) const
-{
-    return _sfPrincipalPoint.getValue();
+inline Vec2f& OffCenterPerspectiveCameraBase::getPrincipalPoint(void) {
+  return _sfPrincipalPoint.getValue();
+}
+
+//! Get the value of the OffCenterPerspectiveCamera::_sfPrincipalPoint field.
+inline const Vec2f& OffCenterPerspectiveCameraBase::getPrincipalPoint(void) const {
+  return _sfPrincipalPoint.getValue();
 }
 
 //! Set the value of the OffCenterPerspectiveCamera::_sfPrincipalPoint field.
-inline
-void OffCenterPerspectiveCameraBase::setPrincipalPoint(const Vec2f &value)
-{
-    _sfPrincipalPoint.setValue(value);
+inline void OffCenterPerspectiveCameraBase::setPrincipalPoint(const Vec2f& value) {
+  _sfPrincipalPoint.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGOFFCENTERPERSPECTIVECAMERABASE_INLINE_CVSID "@(#)$Id: OSGOffCenterPerspectiveCameraBase.inl,v 1.2 2006/02/20 16:54:30 dirk Exp $"
-
+#define OSGOFFCENTERPERSPECTIVECAMERABASE_INLINE_CVSID                                             \
+  "@(#)$Id: OSGOffCenterPerspectiveCameraBase.inl,v 1.2 2006/02/20 16:54:30 dirk Exp $"

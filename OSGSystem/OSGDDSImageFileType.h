@@ -38,8 +38,8 @@
 
 #ifndef OSGDDSIMAGEFILETYPE_CLASS_DECLARATION
 #define OSGDDSIMAGEFILETYPE_CLASS_DECLARATION
-#ifdef  __sgi
-#pragma  once
+#ifdef __sgi
+#pragma once
 #endif
 
 #include <OSGSystemDef.h>
@@ -53,81 +53,75 @@ OSG_BEGIN_NAMESPACE
 See \ref PageSystemImage for a detailed description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING DDSImageFileType : public ImageFileType
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING DDSImageFileType : public ImageFileType {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  virtual ~DDSImageFileType(void);
 
-    virtual ~DDSImageFileType (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Get Methods                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Get Methods                                 */
-    /*! \{                                                                 */
+  void setFlipImage(bool s);
+  bool getFlipImage(void);
 
-    void setFlipImage(bool s);
-    bool getFlipImage(void);
+  void setFlipCubeMap(bool s);
+  bool getFlipCubeMap(void);
 
-    void setFlipCubeMap(bool s);
-    bool getFlipCubeMap(void);
+  void setSwapCubeMap(bool s);
+  bool getSwapCubeMap(void);
 
-    void setSwapCubeMap(bool s);
-    bool getSwapCubeMap(void);
+  static DDSImageFileType& the(void);
 
-    static DDSImageFileType & the (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Read/Write                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Read/Write                                 */
-    /*! \{                                                                 */
+  virtual bool read(ImagePtr& image, std::istream& is, const std::string& mimetype);
 
-    virtual bool read (ImagePtr &image, std::istream &is, const std::string &mimetype);
+  virtual std::string determineMimetypeFromStream(std::istream& is);
 
-    virtual std::string determineMimetypeFromStream(std::istream &is);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name               Default Constructor                            */
+  /*! \{                                                                 */
 
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  DDSImageFileType(
+      const Char8* mimeType, const Char8* suffixArray[], UInt16 suffixByteCount, UInt32 flags);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name               Default Constructor                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    DDSImageFileType ( const Char8 *mimeType,
-                       const Char8 *suffixArray[], UInt16 suffixByteCount,
-                       UInt32 flags );
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /*---------------------------------------------------------------------*/
+  /*! \name                Copy Constructor                              */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  DDSImageFileType(const DDSImageFileType& obj);
 
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                Copy Operator                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                Copy Constructor                              */
-    /*! \{                                                                 */
+  const DDSImageFileType& operator=(const DDSImageFileType& obj);
 
-    DDSImageFileType (const DDSImageFileType &obj);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                Copy Operator                                 */
-    /*! \{                                                                 */
+  bool _flipImage;
+  bool _flipCubeMap;
+  bool _swapCubeMap;
 
-    const DDSImageFileType & operator= (const DDSImageFileType &obj);
-
-    /*! \}                                                                 */
-
-    bool _flipImage;
-    bool _flipCubeMap;
-    bool _swapCubeMap;
-  
-    static DDSImageFileType _the;
-
+  static DDSImageFileType _the;
 };
 
 typedef DDSImageFileType* DDSImageFileTypeP;

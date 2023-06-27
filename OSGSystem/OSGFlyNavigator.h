@@ -48,74 +48,74 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief Navigator for simple fly model. See \ref 
+/*! \brief Navigator for simple fly model. See \ref
     PageSystemWindowNavigatorsFly for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING FlyNavigator
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+class OSG_SYSTEMLIB_DLLMAPPING FlyNavigator {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    FlyNavigator();
+  FlyNavigator();
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    virtual ~FlyNavigator();
+  virtual ~FlyNavigator();
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                        Get                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                        Get                                   */
+  /*! \{                                                                 */
 
-    Matrix &getMatrix(void);
-    Pnt3f  &getFrom  (void);
-    Pnt3f  &getAt    (void);
-    Vec3f  &getUp    (void);
+  Matrix& getMatrix(void);
+  Pnt3f&  getFrom(void);
+  Pnt3f&  getAt(void);
+  Vec3f&  getUp(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                        Set                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                        Set                                   */
+  /*! \{                                                                 */
 
-    void setFrom   (Pnt3f new_from);
-    void setAt     (Pnt3f new_at);
-    void setUp     (Vec3f new_up);
-    void set       (Pnt3f new_from, Pnt3f new_at, Vec3f new_up);
-    void set       (Matrix new_matrix);
+  void setFrom(Pnt3f new_from);
+  void setAt(Pnt3f new_at);
+  void setUp(Vec3f new_up);
+  void set(Pnt3f new_from, Pnt3f new_at, Vec3f new_up);
+  void set(Matrix new_matrix);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Flyer Transformations                       */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Flyer Transformations                       */
+  /*! \{                                                                 */
 
-    void rotate (Real32 deltaX, Real32 deltaY);
-    Real32 forward(Real32 step);
-    Real32 right  (Real32 step);
+  void   rotate(Real32 deltaX, Real32 deltaY);
+  Real32 forward(Real32 step);
+  Real32 right(Real32 step);
 
-    /*! \}                                                                 */
-    /*==========================  PROTECTED  ==============================*/
-  protected:
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Members                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*==========================  PROTECTED  ==============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Members                                  */
+  /*! \{                                                                 */
 
-    Pnt3f  _rFrom;
-    Pnt3f  _rAt;
-    Vec3f  _vUp;
-    Matrix _tMatrix;
+  Pnt3f  _rFrom;
+  Pnt3f  _rAt;
+  Vec3f  _vUp;
+  Matrix _tMatrix;
 
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 };
 
 OSG_END_NAMESPACE
 
-#define OSGFLYNAVIGATOR_HEADER_CVSID "@(#)$Id: OSGFlyNavigator.h,v 1.3 2002/05/24 14:45:11 istoynov Exp $"
+#define OSGFLYNAVIGATOR_HEADER_CVSID                                                               \
+  "@(#)$Id: OSGFlyNavigator.h,v 1.3 2002/05/24 14:45:11 istoynov Exp $"
 
 #endif

@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGDISTORTIONDISPLAYFILTERBASE_H_
 #define _OSGDISTORTIONDISPLAYFILTERBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -69,7 +67,7 @@
 
 #include <OSGUInt32Fields.h> // Rows type
 #include <OSGUInt32Fields.h> // Columns type
-#include <OSGVec2fFields.h> // Positions type
+#include <OSGVec2fFields.h>  // Positions type
 
 #include <OSGDistortionDisplayFilterFields.h>
 
@@ -80,195 +78,175 @@ class BinaryDataHandler;
 
 //! \brief DistortionDisplayFilter Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING DistortionDisplayFilterBase : public DisplayFilter
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING DistortionDisplayFilterBase : public DisplayFilter {
+ private:
+  typedef DisplayFilter Inherited;
 
-    typedef DisplayFilter    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef DistortionDisplayFilterPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    RowsFieldId      = Inherited::NextFieldId,
+    ColumnsFieldId   = RowsFieldId + 1,
+    PositionsFieldId = ColumnsFieldId + 1,
+    NextFieldId      = PositionsFieldId + 1
+  };
 
-    typedef DistortionDisplayFilterPtr  Ptr;
+  static const OSG::BitVector RowsFieldMask;
+  static const OSG::BitVector ColumnsFieldMask;
+  static const OSG::BitVector PositionsFieldMask;
 
-    enum
-    {
-        RowsFieldId      = Inherited::NextFieldId,
-        ColumnsFieldId   = RowsFieldId      + 1,
-        PositionsFieldId = ColumnsFieldId   + 1,
-        NextFieldId      = PositionsFieldId + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector RowsFieldMask;
-    static const OSG::BitVector ColumnsFieldMask;
-    static const OSG::BitVector PositionsFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFUInt32* getSFRows(void);
+  SFUInt32* getSFColumns(void);
+  MFVec2f*  getMFPositions(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  UInt32&        getRows(void);
+  const UInt32&  getRows(void) const;
+  UInt32&        getColumns(void);
+  const UInt32&  getColumns(void) const;
+  Vec2f&         getPositions(const UInt32 index);
+  MFVec2f&       getPositions(void);
+  const MFVec2f& getPositions(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFUInt32            *getSFRows           (void);
-           SFUInt32            *getSFColumns        (void);
-           MFVec2f             *getMFPositions      (void);
+  void setRows(const UInt32& value);
+  void setColumns(const UInt32& value);
 
-           UInt32              &getRows           (void);
-     const UInt32              &getRows           (void) const;
-           UInt32              &getColumns        (void);
-     const UInt32              &getColumns        (void) const;
-           Vec2f               &getPositions      (const UInt32 index);
-           MFVec2f             &getPositions      (void);
-     const MFVec2f             &getPositions      (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setRows           ( const UInt32 &value );
-     void setColumns        ( const UInt32 &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static DistortionDisplayFilterPtr create(void);
+  static DistortionDisplayFilterPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  DistortionDisplayFilterPtr      create          (void); 
-    static  DistortionDisplayFilterPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFUInt32 _sfRows;
+  SFUInt32 _sfColumns;
+  MFVec2f  _mfPositions;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  DistortionDisplayFilterBase(void);
+  DistortionDisplayFilterBase(const DistortionDisplayFilterBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~DistortionDisplayFilterBase(void);
 
-    SFUInt32            _sfRows;
-    SFUInt32            _sfColumns;
-    MFVec2f             _mfPositions;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    DistortionDisplayFilterBase(void);
-    DistortionDisplayFilterBase(const DistortionDisplayFilterBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~DistortionDisplayFilterBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      DistortionDisplayFilterBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(DistortionDisplayFilterBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      DistortionDisplayFilterBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      DistortionDisplayFilterBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const DistortionDisplayFilterBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const DistortionDisplayFilterBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef DistortionDisplayFilterBase* DistortionDisplayFilterBaseP;
 
-typedef DistortionDisplayFilterBase *DistortionDisplayFilterBaseP;
-
-typedef osgIF<DistortionDisplayFilterBase::isNodeCore,
-              CoredNodePtr<DistortionDisplayFilter>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet DistortionDisplayFilterNodePtr;
+typedef osgIF<DistortionDisplayFilterBase::isNodeCore, CoredNodePtr<DistortionDisplayFilter>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet
+    DistortionDisplayFilterNodePtr;
 
 typedef RefPtr<DistortionDisplayFilterPtr> DistortionDisplayFilterRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGDISTORTIONDISPLAYFILTERBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.38 2005/07/08 06:37:35 vossg Exp $"
+#define OSGDISTORTIONDISPLAYFILTERBASE_HEADER_CVSID                                                \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.38 2005/07/08 06:37:35 vossg Exp $"
 
 #endif /* _OSGDISTORTIONDISPLAYFILTERBASE_H_ */

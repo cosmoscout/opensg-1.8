@@ -66,123 +66,104 @@
 
 OSG_BEGIN_NAMESPACE
 
-//! VRML97 Loader prototype handler 
+//! VRML97 Loader prototype handler
 //! \ingroup GrpSystemDrawablesGeometrymetryLoaderLib
 
 template <class BaseT>
-class VRMLNodeFactory : public BaseT
-{
-    /*==========================  PRIVATE  ================================*/
-  protected:
-
+class VRMLNodeFactory : public BaseT {
+  /*==========================  PRIVATE  ================================*/
+ protected:
 #ifdef OSG_STL_HAS_HASH_MAP
 #ifdef OSG_USE_HASH_COMPARE
-    typedef 
-        OSG_STDEXTENSION_NAMESPACE::hash_map<
-            const Char8  *,  
-            VRMLNodeDesc *,
-            HashCmpString> NodeNameDescHash;
+  typedef OSG_STDEXTENSION_NAMESPACE::hash_map<const Char8*, VRMLNodeDesc*, HashCmpString>
+      NodeNameDescHash;
 #else
-    typedef 
-        OSG_STDEXTENSION_NAMESPACE::hash_map<
-            const Char8  *,  
-            VRMLNodeDesc *, 
-            OSG_STDEXTENSION_NAMESPACE::hash<const Char8 *>, 
-            EQString                                      > NodeNameDescHash;  
+  typedef OSG_STDEXTENSION_NAMESPACE::hash_map<const Char8*, VRMLNodeDesc*,
+      OSG_STDEXTENSION_NAMESPACE::hash<const Char8*>, EQString>
+      NodeNameDescHash;
 #endif
 #else
-    typedef 
-        std::map<     const Char8 *,  VRMLNodeDesc  *, 
-                                      LTString       > NodeNameDescHash;
+  typedef std::map<const Char8*, VRMLNodeDesc*, LTString> NodeNameDescHash;
 #endif
 
-    typedef VRMLNodeFactory<BaseT> Self;
-    
-    /*==========================  PUBLIC  =================================*/
-  public :
+  typedef VRMLNodeFactory<BaseT> Self;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    VRMLNodeFactory(void);
+  VRMLNodeFactory(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    virtual ~VRMLNodeFactory(void); 
+  virtual ~VRMLNodeFactory(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Skel replacements                          */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Skel replacements                          */
+  /*! \{                                                                 */
 
-    virtual void beginProto            (const Char8 *szProtoname);
-    virtual void endProto              (      void);
+  virtual void beginProto(const Char8* szProtoname);
+  virtual void endProto(void);
 
-    virtual void beginEventInDecl      (const Char8 *szEventType,
-                                        const UInt32  uiFieldTypeId,
-                                        const Char8 *szEventName); 
+  virtual void beginEventInDecl(
+      const Char8* szEventType, const UInt32 uiFieldTypeId, const Char8* szEventName);
 
-    virtual void beginEventOutDecl     (const Char8 *szEventType,
-                                        const UInt32  uiFieldTypeId,
-                                        const Char8 *szEventName); 
+  virtual void beginEventOutDecl(
+      const Char8* szEventType, const UInt32 uiFieldTypeId, const Char8* szEventName);
 
-    virtual void beginFieldDecl        (const Char8  *szFieldType,
-                                        const UInt32  uiFieldTypeId,
-                                        const Char8  *szFieldName); 
+  virtual void beginFieldDecl(
+      const Char8* szFieldType, const UInt32 uiFieldTypeId, const Char8* szFieldName);
 
-    virtual void endFieldDecl          (      void);
+  virtual void endFieldDecl(void);
 
-    virtual void beginExposedFieldDecl (const Char8  *szFieldType,
-                                        const UInt32  uiFieldTypeId,
-                                        const Char8  *szFieldName); 
+  virtual void beginExposedFieldDecl(
+      const Char8* szFieldType, const UInt32 uiFieldTypeId, const Char8* szFieldName);
 
-    virtual void endExposedFieldDecl   (      void);
+  virtual void endExposedFieldDecl(void);
 
-    virtual void addFieldValue         (const Char8 *szFieldVal);
+  virtual void addFieldValue(const Char8* szFieldVal);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                        Dump                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                        Dump                                  */
+  /*! \{                                                                 */
 
-    void dumpTable(void);
+  void dumpTable(void);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  typedef BaseT Inherited;
 
-    typedef BaseT Inherited;
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Member                                  */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Member                                  */
-    /*! \{                                                                 */
+  VRMLNodeDesc*    _pCurrentNodeDesc;
+  NodeNameDescHash _mNodeDescHash;
 
-    VRMLNodeDesc     *_pCurrentNodeDesc;
-    NodeNameDescHash  _mNodeDescHash;
+  bool _bInFieldProto;
+  bool _bIgnoreProto;
 
-    bool              _bInFieldProto;
-    bool              _bIgnoreProto;
+  VRMLNodeDesc* findNodeDesc(const Char8* szNodeTypename);
+  void          addNodeDesc(const Char8* szNodeTypename, VRMLNodeDesc* pDesc);
 
+  virtual void preStandardProtos(void);
+  virtual void postStandardProtos(void);
 
-    VRMLNodeDesc *findNodeDesc     (const Char8        *szNodeTypename);
-    void          addNodeDesc      (const Char8        *szNodeTypename,
-                                          VRMLNodeDesc *pDesc);
-
-    virtual void preStandardProtos (      void);
-    virtual void postStandardProtos(      void);
-
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    VRMLNodeFactory(const VRMLNodeFactory &source);
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const VRMLNodeFactory &source);
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  VRMLNodeFactory(const VRMLNodeFactory& source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const VRMLNodeFactory& source);
 };
 
 OSG_END_NAMESPACE

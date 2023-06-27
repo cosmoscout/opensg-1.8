@@ -48,70 +48,63 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief *put brief class description here* 
+/*! \brief *put brief class description here*
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING DVRIsoSurface : public DVRIsoSurfaceBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING DVRIsoSurface : public DVRIsoSurfaceBase {
+ private:
+  typedef DVRIsoSurfaceBase Inherited;
 
-    typedef DVRIsoSurfaceBase Inherited;
+  /*==========================  PUBLIC  =================================*/
 
-    /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+ protected:
+  // Variables should all be in DVRIsoSurfaceBase.
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-  protected:
+  DVRIsoSurface(void);
+  DVRIsoSurface(const DVRIsoSurface& source);
 
-    // Variables should all be in DVRIsoSurfaceBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~DVRIsoSurface(void);
 
-    DVRIsoSurface(void);
-    DVRIsoSurface(const DVRIsoSurface &source);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class DVRIsoSurfaceBase;
 
-    virtual ~DVRIsoSurface(void); 
+  static void initMethod(void);
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
-
-    friend class FieldContainer;
-    friend class DVRIsoSurfaceBase;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const DVRIsoSurface &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const DVRIsoSurface& source);
 };
 
-typedef DVRIsoSurface *DVRIsoSurfaceP;
+typedef DVRIsoSurface* DVRIsoSurfaceP;
 
 OSG_END_NAMESPACE
 

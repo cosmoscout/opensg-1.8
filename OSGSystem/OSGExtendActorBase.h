@@ -53,80 +53,80 @@
 
 OSG_BEGIN_NAMESPACE
 
-class OSG_SYSTEMLIB_DLLMAPPING ExtendActorBase : public ActorBase
-{
-    /*==== PUBLIC ===========================================================*/
-  public:
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Destructor                                                  */
-    /*! \{                                                                   */
+class OSG_SYSTEMLIB_DLLMAPPING ExtendActorBase : public ActorBase {
+  /*==== PUBLIC ===========================================================*/
+ public:
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Destructor                                                  */
+  /*! \{                                                                   */
 
-    virtual ~ExtendActorBase(void);
+  virtual ~ExtendActorBase(void);
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Start/Stop                                                  */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Start/Stop                                                  */
+  /*! \{                                                                   */
 
-    virtual ResultE start(void) = 0;
-    virtual ResultE stop (void) = 0;
+  virtual ResultE start(void) = 0;
+  virtual ResultE stop(void)  = 0;
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Enter/Leave Callback                                        */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Enter/Leave Callback                                        */
+  /*! \{                                                                   */
 
-    virtual ResultE enterNode(FunctorArgumentType &funcArg) = 0;
-    virtual ResultE leaveNode(FunctorArgumentType &funcArg) = 0;
+  virtual ResultE enterNode(FunctorArgumentType& funcArg) = 0;
+  virtual ResultE leaveNode(FunctorArgumentType& funcArg) = 0;
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Extra Children Management                                   */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Extra Children Management                                   */
+  /*! \{                                                                   */
 
-    inline UInt32 addExtraChild(const NodePtr &pNode                   );
-    inline UInt32 addExtraChild(const NodePtr &pNode, PriorityType prio);
+  inline UInt32 addExtraChild(const NodePtr& pNode);
+  inline UInt32 addExtraChild(const NodePtr& pNode, PriorityType prio);
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Mutli Pass Management                                       */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Mutli Pass Management                                       */
+  /*! \{                                                                   */
 
-    inline void setNumPasses(UInt32 numPasses);
-    
-    /*! \}                                                                   */
-    /*==== PROTECTED ========================================================*/
-  protected:
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Types                                                       */
-    /*! \{                                                                   */
+  inline void setNumPasses(UInt32 numPasses);
 
-    typedef ActorBase            Inherited;
-    typedef Inherited::StateType StateType;
+  /*! \}                                                                   */
+  /*==== PROTECTED ========================================================*/
+ protected:
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Types                                                       */
+  /*! \{                                                                   */
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Constructor                                                 */
-    /*! \{                                                                   */
+  typedef ActorBase            Inherited;
+  typedef Inherited::StateType StateType;
 
-    ExtendActorBase(void);
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Constructor                                                 */
+  /*! \{                                                                   */
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Add, Sub and Find Helper                                    */
-    /*! \{                                                                   */
+  ExtendActorBase(void);
 
-    virtual UInt32 addHelper (      NewActionBase *pAction);
-    virtual void   subHelper (      NewActionBase *pAction);
-    virtual UInt32 findHelper(const NewActionBase *pAction);
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Add, Sub and Find Helper                                    */
+  /*! \{                                                                   */
 
-    /*! \}                                                                   */
+  virtual UInt32 addHelper(NewActionBase* pAction);
+  virtual void   subHelper(NewActionBase* pAction);
+  virtual UInt32 findHelper(const NewActionBase* pAction);
+
+  /*! \}                                                                   */
 };
 
 OSG_END_NAMESPACE
 
 #include "OSGExtendActorBase.inl"
 
-#define OSGEXTENDACTORBASE_HEADER_CVSID "@(#)$Id: OSGExtendActorBase.h,v 1.4 2004/09/17 14:09:43 neumannc Exp $"
+#define OSGEXTENDACTORBASE_HEADER_CVSID                                                            \
+  "@(#)$Id: OSGExtendActorBase.h,v 1.4 2004/09/17 14:09:43 neumannc Exp $"
 
 #endif /* _OSGEXTENDACTORBASE_H_ */

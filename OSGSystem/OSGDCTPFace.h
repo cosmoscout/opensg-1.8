@@ -44,7 +44,6 @@
 #include <OSGSystemDef.h>
 #include <OSGConfig.h>
 
-
 #include <iostream>
 #include <fstream>
 #include <iomanip>
@@ -55,7 +54,7 @@
 OSG_BEGIN_NAMESPACE
 #define OSG_UNION_TRI_QUAD
 
-//class DCTPVertex;
+// class DCTPVertex;
 OSG_END_NAMESPACE
 #include "OSGDCTPVertex.h"
 
@@ -63,101 +62,107 @@ OSG_BEGIN_NAMESPACE
 class DCTPEdge;
 
 class OSG_SYSTEMLIB_DLLMAPPING TrimSegment {
-public:
-  TrimSegment() { start = end = NULL; }
-  TrimSegment( const TrimSegment & ts ) {
-    trimbeziers = ts.trimbeziers;
-    start = ts.start;
-    end = ts.end;
+ public:
+  TrimSegment() {
+    start = end = NULL;
   }
-  ~TrimSegment() {}
+  TrimSegment(const TrimSegment& ts) {
+    trimbeziers = ts.trimbeziers;
+    start       = ts.start;
+    end         = ts.end;
+  }
+  ~TrimSegment() {
+  }
   bezier2dvector trimbeziers;
-  DCTPVertex *start;
-  DCTPVertex *end;
+  DCTPVertex*    start;
+  DCTPVertex*    end;
 };
 
 class OSG_SYSTEMLIB_DLLMAPPING DCTPFace {
-public:
-	DCTPFace() {}
-  ~DCTPFace() {}
+ public:
+  DCTPFace() {
+  }
+  ~DCTPFace() {
+  }
 
-  std::vector< DCTPVertex* > vertices;
-  std::vector< DCTPEdge* > edges;
+  std::vector<DCTPVertex*> vertices;
+  std::vector<DCTPEdge*>   edges;
 
 #ifdef OSG_UNION_TRI_QUAD
-  DCTPVertex* orig_face[ 4 ];
+  DCTPVertex* orig_face[4];
 #else
-  DCTPVertex* orig_triangle[ 3 ];
-  DCTPVertex* orig_quad[ 4 ];
+  DCTPVertex* orig_triangle[3];
+  DCTPVertex* orig_quad[4];
 #endif
-  double norm;
-  unsigned long id;
-  std::vector< TrimSegment > trimseg;
-  void *faceinfo;
-  void AddVertex( DCTPVertex *v ) {
-    //FIXME: check for adding existing vertex?
-    vertices.push_back( v );
+  double                   norm;
+  unsigned long            id;
+  std::vector<TrimSegment> trimseg;
+  void*                    faceinfo;
+  void                     AddVertex(DCTPVertex* v) {
+    // FIXME: check for adding existing vertex?
+    vertices.push_back(v);
   }
-  void RemoveVertex( DCTPVertex *v ) {
-    std::vector< DCTPVertex* > ::iterator ve = vertices.end();
-    bool removed = false;
-    for (std::vector< DCTPVertex* >::iterator i = vertices.begin(); i != ve; ++i ) 
-      if ( *i == v ) {
+  void RemoveVertex(DCTPVertex* v) {
+    std::vector<DCTPVertex*>::iterator ve      = vertices.end();
+    bool                               removed = false;
+    for (std::vector<DCTPVertex*>::iterator i = vertices.begin(); i != ve; ++i)
+      if (*i == v) {
         removed = true;
-        vertices.erase( i );
+        vertices.erase(i);
         break;
       }
-    if ( !removed) std::cerr << "DCTPFace::RemoveVertex: trying to remove nonexistant vertex..." << std::endl;
+    if (!removed)
+      std::cerr << "DCTPFace::RemoveVertex: trying to remove nonexistant vertex..." << std::endl;
   }
-  //to keep the order of the vertices
-  void ReplaceVertex( DCTPVertex *oldv, DCTPVertex *newv) {
-    std::vector< DCTPVertex* > ::iterator ve = vertices.end();
-    bool replaced = false;
-    for (std::vector< DCTPVertex* >::iterator i = vertices.begin(); i != ve; ++i ) 
-      if ( *i == oldv ) {
+  // to keep the order of the vertices
+  void ReplaceVertex(DCTPVertex* oldv, DCTPVertex* newv) {
+    std::vector<DCTPVertex*>::iterator ve       = vertices.end();
+    bool                               replaced = false;
+    for (std::vector<DCTPVertex*>::iterator i = vertices.begin(); i != ve; ++i)
+      if (*i == oldv) {
         replaced = true;
-        *i = newv;
+        *i       = newv;
         break;
       }
-    if ( !replaced) std::cerr << "DCTPFace::ReplaceVertex: trying to replace nonexistant vertex..." << std::endl;
+    if (!replaced)
+      std::cerr << "DCTPFace::ReplaceVertex: trying to replace nonexistant vertex..." << std::endl;
   }
-  void AddEdge( DCTPEdge *e ) {
-    //FIXME: check for adding existing edge?
-    edges.push_back( e );      
-  }  
-  void RemoveEdge( DCTPEdge *e ) {
-    std::vector< DCTPEdge* > ::iterator ee = edges.end();
-    bool removed = false;
-    for (std::vector< DCTPEdge* >::iterator i = edges.begin(); i != ee; ++i ) 
-      if ( *i == e ) {
+  void AddEdge(DCTPEdge* e) {
+    // FIXME: check for adding existing edge?
+    edges.push_back(e);
+  }
+  void RemoveEdge(DCTPEdge* e) {
+    std::vector<DCTPEdge*>::iterator ee      = edges.end();
+    bool                             removed = false;
+    for (std::vector<DCTPEdge*>::iterator i = edges.begin(); i != ee; ++i)
+      if (*i == e) {
         removed = true;
-        edges.erase( i );
+        edges.erase(i);
         break;
       }
-    if ( !removed) 
-	{
-		std::cerr << "DCTPFace::RemoveEdge: trying to remove nonexistant edge..." << std::endl;
-	}
+    if (!removed) {
+      std::cerr << "DCTPFace::RemoveEdge: trying to remove nonexistant edge..." << std::endl;
+    }
   }
-  void dump_triangle( void ) {
+  void dump_triangle(void) {
 #ifdef OSG_UNION_TRI_QUAD
-//FIXME: operator<< deprecated
-//      std::cerr << orig_face[ 0 ]->coords << ' ' << orig_face[ 1 ]->coords << ' ' << orig_face[ 2 ]->coords;
-//	  if( orig_face[ 3 ] ) std::cerr << ' ' << orig_face[ 3 ]->coords;
-	  std::cerr << std::endl;
+    // FIXME: operator<< deprecated
+    //      std::cerr << orig_face[ 0 ]->coords << ' ' << orig_face[ 1 ]->coords << ' ' <<
+    //      orig_face[ 2 ]->coords;
+    //	  if( orig_face[ 3 ] ) std::cerr << ' ' << orig_face[ 3 ]->coords;
+    std::cerr << std::endl;
 #else
-	  if( orig_triangle[ 0 ] )
-//        std::cerr << orig_triangle[ 0 ]->coords << ' ' << orig_triangle[ 1 ]->coords
-//             << ' ' << orig_triangle[ 2 ]->coords << std::endl;
-	  else
+    if (orig_triangle[0])
+      //        std::cerr << orig_triangle[ 0 ]->coords << ' ' << orig_triangle[ 1 ]->coords
+      //             << ' ' << orig_triangle[ 2 ]->coords << std::endl;
+      else
 //		  std::cerr << orig_quad[ 0 ]->coords << " " << orig_quad[ 1 ]->coords << " "
 //			   << orig_quad[ 2 ]->coords << " " << orig_quad[ 3 ]->coords << std::endl;
 #endif
   }
-
 };
 
-typedef std::vector< DCTPFace* > dctpfacevector;
+typedef std::vector<DCTPFace*> dctpfacevector;
 
 OSG_END_NAMESPACE
 

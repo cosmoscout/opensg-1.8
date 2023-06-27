@@ -48,73 +48,72 @@
 
 OSG_BEGIN_NAMESPACE
 
-class OSG_SYSTEMLIB_DLLMAPPING SingleFunctorStore
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
-    /*---------------------------------------------------------------------*/
-    /*! \name    Types                                                     */
-    /*! \{                                                                 */
+class OSG_SYSTEMLIB_DLLMAPPING SingleFunctorStore {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name    Types                                                     */
+  /*! \{                                                                 */
 
-    typedef NewActionTypes::Functor Functor;
+  typedef NewActionTypes::Functor Functor;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name    Constructors                                              */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name    Constructors                                              */
+  /*! \{                                                                 */
 
-    inline  SingleFunctorStore(void);
+  inline SingleFunctorStore(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name    Destructor                                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name    Destructor                                                */
+  /*! \{                                                                 */
 
-    inline ~SingleFunctorStore(void);
+  inline ~SingleFunctorStore(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name    Empty                                                     */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name    Empty                                                     */
+  /*! \{                                                                 */
 
-    inline bool empty(void) const;
+  inline bool empty(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name    Functor Registration                                      */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name    Functor Registration                                      */
+  /*! \{                                                                 */
 
-    inline void     regFunctor         (const Functor            &refFunc,
-                                        const FieldContainerType &refType);
-    inline void     unregFunctor       (      void                       );
+  inline void regFunctor(const Functor& refFunc, const FieldContainerType& refType);
+  inline void unregFunctor(void);
 
-    inline void     regDefaultFunctor  (const Functor            &refFunc);
-    inline void     unregDefaultFunctor(      void                       );
+  inline void regDefaultFunctor(const Functor& refFunc);
+  inline void unregDefaultFunctor(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name    Functor Access                                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name    Functor Access                                            */
+  /*! \{                                                                 */
 
-    inline Functor *getFunctor         (const FieldContainerType &refType);
-    inline Functor *getDefaultFunctor  (      void                       );
+  inline Functor* getFunctor(const FieldContainerType& refType);
+  inline Functor* getDefaultFunctor(void);
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
-    UInt32  _uiTypeId;
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  UInt32 _uiTypeId;
 
-    Functor _func;
-    Functor _defaultFunc;
+  Functor _func;
+  Functor _defaultFunc;
 
-    bool    _bHasFunctor;
-    bool    _bHasDefaultFunctor;
+  bool _bHasFunctor;
+  bool _bHasDefaultFunctor;
 };
 
 OSG_END_NAMESPACE
 
 #include "OSGSingleFunctorStore.inl"
 
-#define OSGSINGLEFUNCTORSTORE_HEADER_CVSID "@(#)$Id: OSGSingleFunctorStore.h,v 1.4 2004/04/20 13:47:08 neumannc Exp $"
+#define OSGSINGLEFUNCTORSTORE_HEADER_CVSID                                                         \
+  "@(#)$Id: OSGSingleFunctorStore.h,v 1.4 2004/04/20 13:47:08 neumannc Exp $"
 
 #endif /* _OSGSINGLEFUNCTORSTORE_H_ */

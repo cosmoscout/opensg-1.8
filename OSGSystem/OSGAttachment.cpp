@@ -54,242 +54,181 @@
 
 OSG_USING_NAMESPACE
 
+const BitVector Attachment::InternalFieldMask = (1 << Attachment::InternalFieldId);
+const BitVector Attachment::ParentsFieldMask  = (1 << Attachment::ParentsFieldId);
 
-const BitVector 
-    Attachment::InternalFieldMask  = (1 << Attachment::InternalFieldId);
-const BitVector 
-    Attachment::ParentsFieldMask  = (1 << Attachment::ParentsFieldId);
+FieldDescription* Attachment::_desc[] = {
+    new FieldDescription(SFBool::getClassType(), "internal", OSG_FC_FIELD_IDM_DESC(InternalField),
+        false, (FieldAccessMethod)&Attachment::getSFInternal, "true"),
 
-FieldDescription *Attachment::_desc[] =
-{
-    new FieldDescription(
-        SFBool::getClassType(),
-        "internal",
-        OSG_FC_FIELD_IDM_DESC(InternalField),
-        false,
-        (FieldAccessMethod) &Attachment::getSFInternal,
-        "true"),
+    new FieldDescription(MFNodePtr::getClassType(), "parents", OSG_FC_FIELD_IDM_DESC(ParentsField),
+        true, (FieldAccessMethod)&Attachment::getMFParents, "test")};
 
-    new FieldDescription(
-        MFNodePtr::getClassType(),
-        "parents",
-        OSG_FC_FIELD_IDM_DESC(ParentsField),
-        true,
-        (FieldAccessMethod) &Attachment::getMFParents,
-        "test")
-};
-
-FieldContainerType Attachment::_type("Attachment",
-                                     "FieldContainer",
-                                      NULL,
-                                      NULL,
-                                      NULL,
-                                     _desc,
-                                      sizeof(_desc));
+FieldContainerType Attachment::_type(
+    "Attachment", "FieldContainer", NULL, NULL, NULL, _desc, sizeof(_desc));
 
 OSG_FIELD_CONTAINER_DEF(Attachment, AttachmentPtr)
 
 /*-------------------------------------------------------------------------*/
 /*                               Parents                                   */
 
-MFFieldContainerPtr &Attachment::getParents(void)
-{
-    return _parents;
+MFFieldContainerPtr& Attachment::getParents(void) {
+  return _parents;
 }
 
-const MFFieldContainerPtr &Attachment::getParents(void) const
-{
-    return _parents;
+const MFFieldContainerPtr& Attachment::getParents(void) const {
+  return _parents;
 }
 
-MFFieldContainerPtr *Attachment::getMFParents(void)
-{
-    return &_parents;
+MFFieldContainerPtr* Attachment::getMFParents(void) {
+  return &_parents;
 }
 
-void Attachment::addParent(FieldContainerPtr parent)
-{
-    _parents.push_back(parent);
+void Attachment::addParent(FieldContainerPtr parent) {
+  _parents.push_back(parent);
 }
 
-void Attachment::subParent(FieldContainerPtr parent)
-{
-    MFFieldContainerPtr::iterator parentIt = _parents.find(parent);
+void Attachment::subParent(FieldContainerPtr parent) {
+  MFFieldContainerPtr::iterator parentIt = _parents.find(parent);
 
-    if(parentIt != _parents.end())
-    {
-        _parents.erase(parentIt);
-    }
+  if (parentIt != _parents.end()) {
+    _parents.erase(parentIt);
+  }
 }
 
-Int32 Attachment::findParent(FieldContainerPtr parent)
-{
-    MFFieldContainerPtr::iterator parentIt = _parents.find(parent);
+Int32 Attachment::findParent(FieldContainerPtr parent) {
+  MFFieldContainerPtr::iterator parentIt = _parents.find(parent);
 
-    if(parentIt != _parents.end())
-    {
-        return parentIt - _parents.begin();
-    }
-    else
-    {
-        return -1;
-    }
+  if (parentIt != _parents.end()) {
+    return parentIt - _parents.begin();
+  } else {
+    return -1;
+  }
 }
 
 /*-------------------------------------------------------------------------*/
 /*                            Binary Access                                */
 
-SFBool &Attachment::getInternal(void)
-{
-    return _sfInternal;
+SFBool& Attachment::getInternal(void) {
+  return _sfInternal;
 }
 
-const SFBool &Attachment::getInternal(void) const
-{
-    return _sfInternal;
+const SFBool& Attachment::getInternal(void) const {
+  return _sfInternal;
 }
 
-SFBool *Attachment::getSFInternal(void)
-{
-    return &_sfInternal;
+SFBool* Attachment::getSFInternal(void) {
+  return &_sfInternal;
 }
 
-void Attachment::setInternal(bool bVal)
-{
-    _sfInternal.setValue(bVal);
+void Attachment::setInternal(bool bVal) {
+  _sfInternal.setValue(bVal);
 }
 
 /*-------------------------------------------------------------------------*/
 /*                            Binary Access                                */
 
-UInt32 Attachment::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = 0;
+UInt32 Attachment::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = 0;
 
-    if(FieldBits::NoField != (InternalFieldMask & whichField))
-    {
-        returnValue += _sfInternal.getBinSize();
-    }
+  if (FieldBits::NoField != (InternalFieldMask & whichField)) {
+    returnValue += _sfInternal.getBinSize();
+  }
 
-    if(FieldBits::NoField != (ParentsFieldMask & whichField))
-    {
-        returnValue += _parents.getBinSize();
-    }
+  if (FieldBits::NoField != (ParentsFieldMask & whichField)) {
+    returnValue += _parents.getBinSize();
+  }
 
-    return returnValue;
+  return returnValue;
 }
 
-void Attachment::copyToBin(      BinaryDataHandler &pMem,
-                           const BitVector         &whichField)
-{
-    if(FieldBits::NoField != (InternalFieldMask & whichField))
-    {
-        _sfInternal.copyToBin(pMem);
-    }
+void Attachment::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  if (FieldBits::NoField != (InternalFieldMask & whichField)) {
+    _sfInternal.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ParentsFieldMask & whichField))
-    {
-        _parents.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (ParentsFieldMask & whichField)) {
+    _parents.copyToBin(pMem);
+  }
 }
 
-void Attachment::copyFromBin(      BinaryDataHandler &pMem,
-                             const BitVector         &whichField)
-{
-    if(FieldBits::NoField != (InternalFieldMask & whichField))
-    {
-        _sfInternal.copyFromBin(pMem);
-    }
+void Attachment::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  if (FieldBits::NoField != (InternalFieldMask & whichField)) {
+    _sfInternal.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ParentsFieldMask & whichField))
-    {
-        _parents.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (ParentsFieldMask & whichField)) {
+    _parents.copyFromBin(pMem);
+  }
 }
 
 /*-------------------------------------------------------------------------*/
 /*                               Dump                                      */
 
-void Attachment::dump(      UInt32                  uiIndent,
-                      const BitVector OSG_CHECK_ARG(bvFlags)) const
-{
-    UInt32 i;
+void Attachment::dump(UInt32 uiIndent, const BitVector OSG_CHECK_ARG(bvFlags)) const {
+  UInt32 i;
 
-    AttachmentPtr thisP(this);
+  AttachmentPtr thisP(this);
 
-    indentLog(uiIndent, PLOG);
+  indentLog(uiIndent, PLOG);
 
-    PLOG << "Attachment"
-         << "(" 
-         << std::dec
-         << thisP.getFieldContainerId()
-         << ") : " 
-         << getType().getName()
-         << "("       
-         << this 
-         << ")" 
-         << std::endl;
+  PLOG << "Attachment"
+       << "(" << std::dec << thisP.getFieldContainerId() << ") : " << getType().getName() << "("
+       << this << ")" << std::endl;
 
-    indentLog(uiIndent, PLOG);
-    PLOG << "[" << std::endl;
+  indentLog(uiIndent, PLOG);
+  PLOG << "[" << std::endl;
 
+  indentLog(uiIndent + 4, PLOG);
+  PLOG << "Parents : " << std::endl;
+
+  for (i = 0; i < _parents.size(); i++) {
     indentLog(uiIndent + 4, PLOG);
-    PLOG << "Parents : " << std::endl;
+    PLOG << "           " << i << ") " << &(*(_parents[i])) << std::endl;
+  }
 
-    for(i = 0; i < _parents.size(); i++)
-    {
-        indentLog(uiIndent + 4, PLOG);
-        PLOG << "           " << i << ") " << &(*(_parents[i])) << std::endl;
-    }
+  //    thisP.dump(uiIndent, FCDumpFlags::RefCount);
 
-//    thisP.dump(uiIndent, FCDumpFlags::RefCount);
+  indentLog(uiIndent, PLOG);
+  PLOG << "]" << std::endl;
 
-    indentLog(uiIndent, PLOG);
-    PLOG << "]" << std::endl;
+  indentLog(uiIndent, PLOG);
+  PLOG << "{" << std::endl;
 
-    indentLog(uiIndent, PLOG);
-    PLOG << "{" << std::endl;
-
-    indentLog(uiIndent, PLOG);
-    PLOG << "}" << std::endl;
+  indentLog(uiIndent, PLOG);
+  PLOG << "}" << std::endl;
 }
 
 /*-------------------------------------------------------------------------*/
 /*                            Constructors                                 */
 
-Attachment::Attachment(void) :
-     Inherited (     ),
-    _sfInternal(false),
-    _parents   (     )
-{
+Attachment::Attachment(void)
+    : Inherited()
+    , _sfInternal(false)
+    , _parents() {
 }
 
-Attachment::Attachment(const Attachment &obj) :
-     Inherited (obj            ),
-    _sfInternal(obj._sfInternal),
-    _parents   (               )
-{
+Attachment::Attachment(const Attachment& obj)
+    : Inherited(obj)
+    , _sfInternal(obj._sfInternal)
+    , _parents() {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Destructor                                  */
 
-Attachment::~Attachment(void)
-{
+Attachment::~Attachment(void) {
 }
-
 
 /*-------------------------------------------------------------------------*/
 /*                          MT Destruction                                 */
 
-void Attachment::onDestroy(void)
-{
+void Attachment::onDestroy(void) {
 }
 
 #if defined(OSG_FIXED_MFIELDSYNC)
-void Attachment::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    _parents.terminateShare(uiAspect, this->getContainerSize());
+void Attachment::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  _parents.terminateShare(uiAspect, this->getContainerSize());
 }
 #endif
 
@@ -297,83 +236,58 @@ void Attachment::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
 /*                                Sync                                     */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void Attachment::executeSync(      FieldContainer &other,
-                             const BitVector      &whichField)
-{
-    this->executeSyncImpl(static_cast<Attachment *>(&other), whichField);
+void Attachment::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl(static_cast<Attachment*>(&other), whichField);
 }
 
-void Attachment::executeSyncImpl(      Attachment *pOther,
-                                 const BitVector  &whichField)
-{
-    Inherited::executeSyncImpl(pOther, whichField);
+void Attachment::executeSyncImpl(Attachment* pOther, const BitVector& whichField) {
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (InternalFieldMask & whichField))
-    {
-        _sfInternal.syncWith(pOther->_sfInternal);
-    }
+  if (FieldBits::NoField != (InternalFieldMask & whichField)) {
+    _sfInternal.syncWith(pOther->_sfInternal);
+  }
 
-    if(FieldBits::NoField != (ParentsFieldMask & whichField))
-    {
-        _parents.syncWith(pOther->_parents);
-    }
+  if (FieldBits::NoField != (ParentsFieldMask & whichField)) {
+    _parents.syncWith(pOther->_parents);
+  }
 }
 #else
-void Attachment::executeSync(      FieldContainer &other,
-                             const BitVector      &whichField,
-                             const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl(static_cast<Attachment *>(&other), 
-                          whichField,
-                          sInfo);
+void Attachment::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl(static_cast<Attachment*>(&other), whichField, sInfo);
 }
 
-void Attachment::executeSyncImpl(      Attachment *pOther,
-                                 const BitVector  &whichField,
-                                 const SyncInfo   &sInfo)
-{
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+void Attachment::executeSyncImpl(
+    Attachment* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (InternalFieldMask & whichField))
-    {
-        _sfInternal.syncWith(pOther->_sfInternal);
-    }
+  if (FieldBits::NoField != (InternalFieldMask & whichField)) {
+    _sfInternal.syncWith(pOther->_sfInternal);
+  }
 
-    if(FieldBits::NoField != (ParentsFieldMask & whichField))
-    {
-        _parents.syncWith(pOther->_parents, sInfo);
-    }
+  if (FieldBits::NoField != (ParentsFieldMask & whichField)) {
+    _parents.syncWith(pOther->_parents, sInfo);
+  }
 }
 
-void Attachment::execBeginEditImpl (const BitVector &whichField, 
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void Attachment::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 
-    if (FieldBits::NoField != (ParentsFieldMask & whichField))
-    {
-        _parents.beginEdit(uiAspect, uiContainerSize);
-    }
+  if (FieldBits::NoField != (ParentsFieldMask & whichField)) {
+    _parents.beginEdit(uiAspect, uiContainerSize);
+  }
 }
 
-void Attachment::execBeginEdit(const BitVector &whichField, 
-                               UInt32     uiAspect,
-                               UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void Attachment::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
 
 OSG_SYSTEMLIB_DLLMAPPING
-std::ostream &OSG::operator <<(      std::ostream  &stream,
-                               const AttachmentMap &OSG_CHECK_ARG(amap))
-{
-    stream << "Attachment << NI" << std::endl;
+std::ostream& OSG::operator<<(std::ostream& stream, const AttachmentMap& OSG_CHECK_ARG(amap)) {
+  stream << "Attachment << NI" << std::endl;
 
-    return stream;
+  return stream;
 }
-
-
-
-

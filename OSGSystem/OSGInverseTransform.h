@@ -72,8 +72,6 @@
 
 \*---------------------------------------------------------------------------*/
 
-
-
 #ifndef _OSGINVERSETRANSFORM_H_
 
 #define _OSGINVERSETRANSFORM_H_
@@ -84,27 +82,15 @@
 
 #endif
 
-
-
 #include <OSGConfig.h>
-
-
 
 #include <OSGInverseTransformBase.h>
 
-
-
 #include "OSGMatrix.h"
-
-
 
 OSG_BEGIN_NAMESPACE
 
-
-
 class DrawActionBase;
-
-
 
 /*! \brief InverseTransform class. See \ref
 
@@ -112,217 +98,140 @@ class DrawActionBase;
 
 */
 
-
-
 class OSG_SYSTEMLIB_DLLMAPPING InverseTransform : public InverseTransformBase
 
 {
 
-  private:
+ private:
+  typedef InverseTransformBase Inherited;
 
+  /*==========================  PUBLIC  =================================*/
 
+ public:
+  /*---------------------------------------------------------------------*/
 
-    typedef InverseTransformBase Inherited;
+  /*! \name                      Sync                                    */
 
+  /*! \{                                                                 */
 
+  virtual void changed(BitVector whichField,
 
-    /*==========================  PUBLIC  =================================*/
+      UInt32 origin);
 
-  public:
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
 
+  /*! \name               calc the inverse matrix                        */
 
-    /*---------------------------------------------------------------------*/
+  /*! \{                                                                 */
 
-    /*! \name                      Sync                                    */
+  void initMatrix(const Matrix& mToWorld);
 
-    /*! \{                                                                 */
+  void calcMatrix(DrawActionBase* pAction,
 
+      const Matrix& mToWorld,
 
+      Matrix& mResult);
 
-    virtual void changed(BitVector  whichField,
+  /*! \}                                                                 */
 
-                         UInt32     origin    );
+  /*---------------------------------------------------------------------*/
 
+  /*! \name                     Output                                   */
 
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  virtual void dump(UInt32 uiIndent = 0,
 
-    /*---------------------------------------------------------------------*/
+      const BitVector bvFlags = 0) const;
 
-    /*! \name               calc the inverse matrix                        */
+  /*! \}                                                                 */
 
-    /*! \{                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
+ protected:
+  // Variables should all be in InverseTransformBase.
 
+  /*---------------------------------------------------------------------*/
 
-    void initMatrix(const Matrix         &mToWorld);
+  /*! \name                  Constructors                                */
 
+  /*! \{                                                                 */
 
+  InverseTransform(void);
 
-    void calcMatrix(      DrawActionBase *pAction,
+  InverseTransform(const InverseTransform& source);
 
-                    const Matrix         &mToWorld,
+  /*! \}                                                                 */
 
-                          Matrix         &mResult);
+  /*---------------------------------------------------------------------*/
 
+  /*! \name                   Destructors                                */
 
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  virtual ~InverseTransform(void);
 
-    /*---------------------------------------------------------------------*/
+  /*! \}                                                                 */
 
-    /*! \name                     Output                                   */
+  /*---------------------------------------------------------------------*/
 
-    /*! \{                                                                 */
+  /*! \name                      NodeCore Specific                       */
 
+  /*! \{                                                                 */
 
+  void adjustVolume(Volume& volume);
 
-    virtual void dump(      UInt32     uiIndent = 0,
+  virtual void accumulateMatrix(Matrix& result);
 
-                      const BitVector  bvFlags  = 0) const;
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
 
+  /*! \name              Draw & Intersect & Render                       */
 
-    /*! \}                                                                 */
+  /*! \{                                                                 */
 
-    /*=========================  PROTECTED  ===============================*/
+  Action::ResultE drawEnter(Action* action);
 
-  protected:
+  Action::ResultE drawLeave(Action* action);
 
+  Action::ResultE intersectEnter(Action* action);
 
+  Action::ResultE intersectLeave(Action* action);
 
-    // Variables should all be in InverseTransformBase.
+  Action::ResultE renderEnter(Action* action);
 
+  Action::ResultE renderLeave(Action* action);
 
+  /*! \}    */
 
-    /*---------------------------------------------------------------------*/
+  /*==========================  PRIVATE  ================================*/
 
-    /*! \name                  Constructors                                */
+ private:
+  friend class FieldContainer;
 
-    /*! \{                                                                 */
+  friend class InverseTransformBase;
 
+  static void initMethod(void);
 
+  Matrix _invWorld;
 
-    InverseTransform(void);
+  // prohibit default functions (move to 'public' if you need one)
 
-    InverseTransform(const InverseTransform &source);
-
-
-
-    /*! \}                                                                 */
-
-    /*---------------------------------------------------------------------*/
-
-    /*! \name                   Destructors                                */
-
-    /*! \{                                                                 */
-
-
-
-    virtual ~InverseTransform(void);
-
-
-
-    /*! \}                                                                 */
-
-
-
-    /*---------------------------------------------------------------------*/
-
-    /*! \name                      NodeCore Specific                       */
-
-    /*! \{                                                                 */
-
-
-
-    void            adjustVolume  (Volume & volume);
-
-
-
-    virtual void   accumulateMatrix(Matrix &result);
-
-
-
-    /*! \}                                                                 */
-
-    /*---------------------------------------------------------------------*/
-
-    /*! \name              Draw & Intersect & Render                       */
-
-    /*! \{                                                                 */
-
-
-
-    Action::ResultE drawEnter     (Action *action);
-
-    Action::ResultE drawLeave     (Action *action);
-
-
-
-    Action::ResultE intersectEnter(Action *action);
-
-    Action::ResultE intersectLeave(Action *action);
-
-
-
-    Action::ResultE renderEnter   (Action *action);
-
-    Action::ResultE renderLeave   (Action *action);
-
-
-
-    /*! \}    */
-
-
-
-    /*==========================  PRIVATE  ================================*/
-
-  private:
-
-
-
-    friend class FieldContainer;
-
-    friend class InverseTransformBase;
-
-
-
-    static void initMethod(void);
-
-
-
-    Matrix _invWorld;
-
-
-
-    // prohibit default functions (move to 'public' if you need one)
-
-
-
-    void operator =(const InverseTransform &source);
-
+  void operator=(const InverseTransform& source);
 };
 
-
-
-typedef InverseTransform *InverseTransformP;
-
-
+typedef InverseTransform* InverseTransformP;
 
 OSG_END_NAMESPACE
-
-
 
 #include <OSGInverseTransformBase.inl>
 
 #include <OSGInverseTransform.inl>
 
-
-
-#define OSGINVERSETRANSFORM_HEADER_CVSID "@(#)$Id: OSGInverseTransform.h,v 1.2 2004/10/13 14:51:34 a-m-z Exp $"
-
-
+#define OSGINVERSETRANSFORM_HEADER_CVSID                                                           \
+  "@(#)$Id: OSGInverseTransform.h,v 1.2 2004/10/13 14:51:34 a-m-z Exp $"
 
 #endif /* _OSGINVERSETRANSFORM_H_ */
-

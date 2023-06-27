@@ -44,19 +44,14 @@ OSG_USING_NAMESPACE
 
 //! helper functions to dump a volume. Useful for debugger.
 
-void  volDump(Volume *vol)
-{
-    vol->dump();
+void volDump(Volume* vol) {
+  vol->dump();
 }
 
-
-bool Volume::operator ==(const Volume &other) const
-{
-    return _state == other._state;
+bool Volume::operator==(const Volume& other) const {
+  return _state == other._state;
 }
 
-bool Volume::operator !=(const Volume &other) const
-{
-    return !(*this == other);
+bool Volume::operator!=(const Volume& other) const {
+  return !(*this == other);
 }
-

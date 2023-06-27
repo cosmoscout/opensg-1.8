@@ -48,85 +48,79 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief OrthographicCamera class. See \ref 
+/*! \brief OrthographicCamera class. See \ref
            PageSystemOrthographicCamera for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING OrthographicCamera : public OrthographicCameraBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING OrthographicCamera : public OrthographicCameraBase {
+ private:
+  typedef OrthographicCameraBase Inherited;
 
-    typedef OrthographicCameraBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Camera-specific                             */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void draw(DrawAction* action, const Viewport& port);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Camera-specific                             */
-    /*! \{                                                                 */
+  virtual void getProjection(Matrix& result, UInt32 width, UInt32 height);
 
-    virtual void draw( DrawAction * action, const Viewport& port );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void getProjection( Matrix& result, UInt32 width, UInt32 height );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in OrthographicCameraBase.
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  OrthographicCamera(void);
+  OrthographicCamera(const OrthographicCamera& source);
 
-    // Variables should all be in OrthographicCameraBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~OrthographicCamera(void);
 
-    OrthographicCamera(void);
-    OrthographicCamera(const OrthographicCamera &source);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class OrthographicCameraBase;
 
-    virtual ~OrthographicCamera(void); 
+  static void initMethod(void);
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  // prohibit default functions (move to 'public' if you need one)
 
-    friend class FieldContainer;
-    friend class OrthographicCameraBase;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const OrthographicCamera &source);
+  void operator=(const OrthographicCamera& source);
 };
 
-typedef OrthographicCamera *OrthographicCameraP;
+typedef OrthographicCamera* OrthographicCameraP;
 
 OSG_END_NAMESPACE
 
 #include <OSGOrthographicCameraBase.inl>
 #include <OSGOrthographicCamera.inl>
 
-#define OSGORTHOGRAPHICCAMERA_HEADER_CVSID "@(#)$Id: OSGOrthographicCamera.h,v 1.1 2005/09/26 00:08:18 dirk Exp $"
+#define OSGORTHOGRAPHICCAMERA_HEADER_CVSID                                                         \
+  "@(#)$Id: OSGOrthographicCamera.h,v 1.1 2005/09/26 00:08:18 dirk Exp $"
 
 #endif /* _OSGORTHOGRAPHICCAMERA_H_ */

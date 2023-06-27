@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGSHADERPARAMETERMREALFIELDS_H_
 #define _OSGSHADERPARAMETERMREALFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class ShaderParameterMReal;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! ShaderParameterMRealPtr
 
 typedef FCPtr<ShaderParameterPtr, ShaderParameterMReal> ShaderParameterMRealPtr;
@@ -81,18 +80,23 @@ typedef FCPtr<ShaderParameterPtr, ShaderParameterMReal> ShaderParameterMRealPtr;
 #endif
 
 template <>
-struct FieldDataTraits<ShaderParameterMRealPtr> : 
-    public FieldTraitsRecurseMapper<ShaderParameterMRealPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<ShaderParameterMRealPtr>
+    : public FieldTraitsRecurseMapper<ShaderParameterMRealPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getSName(void) { return "SFShaderParameterMRealPtr"; }
-    static const char *getMName(void) { return "MFShaderParameterMRealPtr"; }
+  static const char* getSName(void) {
+    return "SFShaderParameterMRealPtr";
+  }
+  static const char* getMName(void) {
+    return "MFShaderParameterMRealPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -102,7 +106,6 @@ struct FieldDataTraits<ShaderParameterMRealPtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
@@ -126,6 +129,7 @@ OSG_DLLEXPORT_DECL1(MField, ShaderParameterMRealPtr, OSG_SYSTEMLIB_DLLTMPLMAPPIN
 
 OSG_END_NAMESPACE
 
-#define OSGSHADERPARAMETERMREALFIELDS_HEADER_CVSID "@(#)$Id: OSGShaderParameterMRealFields.h,v 1.1 2007/03/09 18:11:48 a-m-z Exp $"
+#define OSGSHADERPARAMETERMREALFIELDS_HEADER_CVSID                                                 \
+  "@(#)$Id: OSGShaderParameterMRealFields.h,v 1.1 2007/03/09 18:11:48 a-m-z Exp $"
 
 #endif /* _OSGSHADERPARAMETERMREALFIELDS_H_ */

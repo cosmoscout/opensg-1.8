@@ -52,32 +52,25 @@ OSG_USING_NAMESPACE
 /*-------------------------------------------------------------------------*/
 /*                             Destructor                                  */
 
-Field::~Field(void)
-{
+Field::~Field(void) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                                Get                                      */
 
-const DataType &Field::getContentType(void) const
-{
-    return getType().getContentType();
+const DataType& Field::getContentType(void) const {
+  return getType().getContentType();
 }
 
-FieldType::Cardinality Field::getCardinality(void) const
-{
-    return getType().getCardinality();
+FieldType::Cardinality Field::getCardinality(void) const {
+  return getType().getCardinality();
 }
 
 /*-------------------------------------------------------------------------*/
 /*                            Constructors                                 */
 
-Field::Field(void)
-{
+Field::Field(void) {
 }
 
-Field::Field(const Field &)
-{
+Field::Field(const Field&) {
 }
-
-
