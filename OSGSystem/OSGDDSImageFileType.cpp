@@ -767,10 +767,12 @@ bool CDDSImage::check_dxt1_alpha_data(char* image, Int32 size) {
     if (colBlock[i].col0 <= colBlock[i].col1) {
       for (unsigned j = 0; j < 4; j++) {
         UInt8 byte = colBlock[i].row[j];
+        // for (unsigned p = 0; p < 4; p++, byte >> 2) { // original code (does nothing)
         if ((byte & 3) == 3) {
           hasAlpha = true;
           break;
         }
+        // }
       }
 
       if (hasAlpha) {
