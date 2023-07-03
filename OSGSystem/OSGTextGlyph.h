@@ -40,129 +40,120 @@
 #define _OSGTEXTGLYPH_H_
 
 #ifdef _MSC_VER
-# pragma once
+#pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
 #include <OSGBaseTypes.h>
 
-
 OSG_BEGIN_NAMESPACE
-
 
 /**
  * Abstract base class of all glyphes.
  * @author Patrick D&auml;hne
  */
-class OSG_SYSTEMLIB_DLLMAPPING TextGlyph
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING TextGlyph {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /** Defines the glyph index */
+  typedef Int32 Index;
 
-    /** Defines the glyph index */
-    typedef Int32 Index;
+  /** Defines the invalid glyph index */
+  enum { INVALID_INDEX = -1 };
 
-    /** Defines the invalid glyph index */
-    enum { INVALID_INDEX = -1 };
+  /** Destroys the %Glyph object. */
+  virtual ~TextGlyph();
 
-    /** Destroys the %Glyph object. */
-    virtual ~TextGlyph();
+  /**
+   * Returns the index of the glyph.
+   * @return The index of the glyph
+   */
+  inline Index getGlyphIndex() const;
 
-    /**
-     * Returns the index of the glyph.
-     * @return The index of the glyph
-     */
-    inline Index getGlyphIndex() const;
+  /**
+   * Returns the advance of the glyph for horizontal layout. The
+   * advance is the distance to the next character on the base line.
+   * @return The advance for horizontal layout
+   */
+  inline Real32 getHoriAdvance() const;
 
-    /**
-     * Returns the advance of the glyph for horizontal layout. The
-     * advance is the distance to the next character on the base line.
-     * @return The advance for horizontal layout
-     */
-    inline Real32 getHoriAdvance() const;
+  /**
+   * Returns the advance of the glyph for vertical layout. The
+   * advance is the distance to the next character on the base line.
+   * This value is usually negative!
+   * @return The advance for vertical layout
+   */
+  inline Real32 getVertAdvance() const;
 
-    /**
-     * Returns the advance of the glyph for vertical layout. The
-     * advance is the distance to the next character on the base line.
-     * This value is usually negative!
-     * @return The advance for vertical layout
-     */
-    inline Real32 getVertAdvance() const;
+  /**
+   * Returns the width of the glyph.
+   * @return The width of the glyph
+   */
+  virtual Real32 getWidth() const = 0;
 
-    /**
-     * Returns the width of the glyph.
-     * @return The width of the glyph
-     */
-    virtual Real32 getWidth() const = 0;
+  /**
+   * Returns the height of the glyph.
+   * @return The height of the glyph
+   */
+  virtual Real32 getHeight() const = 0;
 
-    /**
-     * Returns the height of the glyph.
-     * @return The height of the glyph
-     */
-    virtual Real32 getHeight() const = 0;
+  /**
+   * Returns the x bearing of the glyph for horizontal layout.
+   * The x bearing is the distance from the origin to the left
+   * border of the glyph.
+   * @return The x bearing of the glyph for horizontal layout
+   */
+  virtual Real32 getHoriBearingX() const = 0;
 
-    /**
-     * Returns the x bearing of the glyph for horizontal layout.
-     * The x bearing is the distance from the origin to the left
-     * border of the glyph.
-     * @return The x bearing of the glyph for horizontal layout
-     */
-    virtual Real32 getHoriBearingX() const = 0;
+  /**
+   * Returns the y bearing of the glyph for horizontal layout.
+   * The y bearing is the distance from the origin to the top
+   * border of the glyph.
+   * @return The y bearing of the glyph for horizontal layout
+   */
+  virtual Real32 getHoriBearingY() const = 0;
 
-    /**
-     * Returns the y bearing of the glyph for horizontal layout.
-     * The y bearing is the distance from the origin to the top
-     * border of the glyph.
-     * @return The y bearing of the glyph for horizontal layout
-     */
-    virtual Real32 getHoriBearingY() const = 0;
+  /**
+   * Returns the x bearing of the glyph for vertical layout.
+   * The x bearing is the distance from the origin to the left
+   * border of the glyph.
+   * @return The x bearing of the glyph for vertical layout
+   */
+  virtual Real32 getVertBearingX() const = 0;
 
-    /**
-     * Returns the x bearing of the glyph for vertical layout.
-     * The x bearing is the distance from the origin to the left
-     * border of the glyph.
-     * @return The x bearing of the glyph for vertical layout
-     */
-    virtual Real32 getVertBearingX() const = 0;
+  /**
+   * Returns the y bearing of the glyph for vertical layout.
+   * The y bearing is the distance from the origin to the top
+   * border of the glyph.
+   * @return The y bearing of the glyph for vertical layout
+   */
+  virtual Real32 getVertBearingY() const = 0;
 
-    /**
-     * Returns the y bearing of the glyph for vertical layout.
-     * The y bearing is the distance from the origin to the top
-     * border of the glyph.
-     * @return The y bearing of the glyph for vertical layout
-     */
-    virtual Real32 getVertBearingY() const = 0;
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /** Creates a new %Glyph object. */
+  inline TextGlyph();
 
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /** The index of the glyph */
+  Index _glyphIndex;
 
-    /** Creates a new %Glyph object. */
-    inline TextGlyph();
+  /** The advance of the glyph for horizontal layout */
+  Real32 _horiAdvance;
 
-    /** The index of the glyph */
-    Index _glyphIndex;
+  /** The advance of the glyph for vertical layout */
+  Real32 _vertAdvance;
 
-    /** The advance of the glyph for horizontal layout */
-    Real32 _horiAdvance;
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /** Copy constructor (not implemented!) */
+  TextGlyph(const TextGlyph& other);
 
-    /** The advance of the glyph for vertical layout */
-    Real32 _vertAdvance;
-
-    /*==========================  PRIVATE  ================================*/
-  private:
-
-    /** Copy constructor (not implemented!) */
-    TextGlyph(const TextGlyph &other);
-
-    /** Copy operator (not implemented!) */
-    const TextGlyph &operator=(const TextGlyph &other);
+  /** Copy operator (not implemented!) */
+  const TextGlyph& operator=(const TextGlyph& other);
 };
 
-
 OSG_END_NAMESPACE
-
 
 #include <OSGTextGlyph.inl>
 

@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGDVRLOOKUPTABLEBASE_H_
 #define _OSGDVRLOOKUPTABLEBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -67,15 +65,15 @@
 
 #include <OSGAttachment.h> // Parent
 
-#include <OSGUInt8Fields.h> // Dimension type
+#include <OSGUInt8Fields.h>  // Dimension type
 #include <OSGUInt32Fields.h> // Size type
-#include <OSGUInt8Fields.h> // Channel type
-#include <OSGUInt8Fields.h> // Data type
+#include <OSGUInt8Fields.h>  // Channel type
+#include <OSGUInt8Fields.h>  // Data type
 #include <OSGReal32Fields.h> // DataR type
 #include <OSGReal32Fields.h> // DataG type
 #include <OSGReal32Fields.h> // DataB type
 #include <OSGReal32Fields.h> // DataA type
-#include <OSGBoolFields.h> // Touched type
+#include <OSGBoolFields.h>   // Touched type
 
 #include <OSGDVRLookupTableFields.h>
 
@@ -86,237 +84,216 @@ class BinaryDataHandler;
 
 //! \brief DVRLookupTable Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING DVRLookupTableBase : public Attachment
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING DVRLookupTableBase : public Attachment {
+ private:
+  typedef Attachment Inherited;
 
-    typedef Attachment    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef DVRLookupTablePtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    DimensionFieldId = Inherited::NextFieldId,
+    SizeFieldId      = DimensionFieldId + 1,
+    ChannelFieldId   = SizeFieldId + 1,
+    DataFieldId      = ChannelFieldId + 1,
+    DataRFieldId     = DataFieldId + 1,
+    DataGFieldId     = DataRFieldId + 1,
+    DataBFieldId     = DataGFieldId + 1,
+    DataAFieldId     = DataBFieldId + 1,
+    TouchedFieldId   = DataAFieldId + 1,
+    NextFieldId      = TouchedFieldId + 1
+  };
 
-    typedef DVRLookupTablePtr  Ptr;
+  static const OSG::BitVector DimensionFieldMask;
+  static const OSG::BitVector SizeFieldMask;
+  static const OSG::BitVector ChannelFieldMask;
+  static const OSG::BitVector DataFieldMask;
+  static const OSG::BitVector DataRFieldMask;
+  static const OSG::BitVector DataGFieldMask;
+  static const OSG::BitVector DataBFieldMask;
+  static const OSG::BitVector DataAFieldMask;
+  static const OSG::BitVector TouchedFieldMask;
 
-    enum
-    {
-        DimensionFieldId = Inherited::NextFieldId,
-        SizeFieldId      = DimensionFieldId + 1,
-        ChannelFieldId   = SizeFieldId      + 1,
-        DataFieldId      = ChannelFieldId   + 1,
-        DataRFieldId     = DataFieldId      + 1,
-        DataGFieldId     = DataRFieldId     + 1,
-        DataBFieldId     = DataGFieldId     + 1,
-        DataAFieldId     = DataBFieldId     + 1,
-        TouchedFieldId   = DataAFieldId     + 1,
-        NextFieldId      = TouchedFieldId   + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector DimensionFieldMask;
-    static const OSG::BitVector SizeFieldMask;
-    static const OSG::BitVector ChannelFieldMask;
-    static const OSG::BitVector DataFieldMask;
-    static const OSG::BitVector DataRFieldMask;
-    static const OSG::BitVector DataGFieldMask;
-    static const OSG::BitVector DataBFieldMask;
-    static const OSG::BitVector DataAFieldMask;
-    static const OSG::BitVector TouchedFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFUInt8*  getSFDimension(void);
+  MFUInt32* getMFSize(void);
+  SFUInt8*  getSFChannel(void);
+  MFUInt8*  getMFData(void);
+  MFReal32* getMFDataR(void);
+  MFReal32* getMFDataG(void);
+  MFReal32* getMFDataB(void);
+  MFReal32* getMFDataA(void);
+  SFBool*   getSFTouched(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  UInt8&          getDimension(void);
+  const UInt8&    getDimension(void) const;
+  UInt8&          getChannel(void);
+  const UInt8&    getChannel(void) const;
+  bool&           getTouched(void);
+  const bool&     getTouched(void) const;
+  UInt32&         getSize(const UInt32 index);
+  MFUInt32&       getSize(void);
+  const MFUInt32& getSize(void) const;
+  UInt8&          getData(const UInt32 index);
+  MFUInt8&        getData(void);
+  const MFUInt8&  getData(void) const;
+  Real32&         getDataR(const UInt32 index);
+  MFReal32&       getDataR(void);
+  const MFReal32& getDataR(void) const;
+  Real32&         getDataG(const UInt32 index);
+  MFReal32&       getDataG(void);
+  const MFReal32& getDataG(void) const;
+  Real32&         getDataB(const UInt32 index);
+  MFReal32&       getDataB(void);
+  const MFReal32& getDataB(void) const;
+  Real32&         getDataA(const UInt32 index);
+  MFReal32&       getDataA(void);
+  const MFReal32& getDataA(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFUInt8             *getSFDimension      (void);
-           MFUInt32            *getMFSize           (void);
-           SFUInt8             *getSFChannel        (void);
-           MFUInt8             *getMFData           (void);
-           MFReal32            *getMFDataR          (void);
-           MFReal32            *getMFDataG          (void);
-           MFReal32            *getMFDataB          (void);
-           MFReal32            *getMFDataA          (void);
-           SFBool              *getSFTouched        (void);
+  void setDimension(const UInt8& value);
+  void setChannel(const UInt8& value);
+  void setTouched(const bool& value);
 
-           UInt8               &getDimension      (void);
-     const UInt8               &getDimension      (void) const;
-           UInt8               &getChannel        (void);
-     const UInt8               &getChannel        (void) const;
-           bool                &getTouched        (void);
-     const bool                &getTouched        (void) const;
-           UInt32              &getSize           (const UInt32 index);
-           MFUInt32            &getSize           (void);
-     const MFUInt32            &getSize           (void) const;
-           UInt8               &getData           (const UInt32 index);
-           MFUInt8             &getData           (void);
-     const MFUInt8             &getData           (void) const;
-           Real32              &getDataR          (const UInt32 index);
-           MFReal32            &getDataR          (void);
-     const MFReal32            &getDataR          (void) const;
-           Real32              &getDataG          (const UInt32 index);
-           MFReal32            &getDataG          (void);
-     const MFReal32            &getDataG          (void) const;
-           Real32              &getDataB          (const UInt32 index);
-           MFReal32            &getDataB          (void);
-     const MFReal32            &getDataB          (void) const;
-           Real32              &getDataA          (const UInt32 index);
-           MFReal32            &getDataA          (void);
-     const MFReal32            &getDataA          (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setDimension      ( const UInt8 &value );
-     void setChannel        ( const UInt8 &value );
-     void setTouched        ( const bool &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static DVRLookupTablePtr create(void);
+  static DVRLookupTablePtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  DVRLookupTablePtr      create          (void); 
-    static  DVRLookupTablePtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFUInt8  _sfDimension;
+  MFUInt32 _mfSize;
+  SFUInt8  _sfChannel;
+  MFUInt8  _mfData;
+  MFReal32 _mfDataR;
+  MFReal32 _mfDataG;
+  MFReal32 _mfDataB;
+  MFReal32 _mfDataA;
+  SFBool   _sfTouched;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  DVRLookupTableBase(void);
+  DVRLookupTableBase(const DVRLookupTableBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~DVRLookupTableBase(void);
 
-    SFUInt8             _sfDimension;
-    MFUInt32            _mfSize;
-    SFUInt8             _sfChannel;
-    MFUInt8             _mfData;
-    MFReal32            _mfDataR;
-    MFReal32            _mfDataG;
-    MFReal32            _mfDataB;
-    MFReal32            _mfDataA;
-    SFBool              _sfTouched;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    DVRLookupTableBase(void);
-    DVRLookupTableBase(const DVRLookupTableBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~DVRLookupTableBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      DVRLookupTableBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(DVRLookupTableBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      DVRLookupTableBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      DVRLookupTableBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const DVRLookupTableBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const DVRLookupTableBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef DVRLookupTableBase* DVRLookupTableBaseP;
 
-typedef DVRLookupTableBase *DVRLookupTableBaseP;
-
-typedef osgIF<DVRLookupTableBase::isNodeCore,
-              CoredNodePtr<DVRLookupTable>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet DVRLookupTableNodePtr;
+typedef osgIF<DVRLookupTableBase::isNodeCore, CoredNodePtr<DVRLookupTable>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet DVRLookupTableNodePtr;
 
 typedef RefPtr<DVRLookupTablePtr> DVRLookupTableRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGDVRLOOKUPTABLEBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGDVRLOOKUPTABLEBASE_HEADER_CVSID                                                         \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGDVRLOOKUPTABLEBASE_H_ */

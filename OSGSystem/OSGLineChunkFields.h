@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGLINECHUNKFIELDS_H_
 #define _OSGLINECHUNKFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class LineChunk;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! LineChunkPtr
 
 typedef FCPtr<StateChunkPtr, LineChunk> LineChunkPtr;
@@ -81,18 +80,22 @@ typedef FCPtr<StateChunkPtr, LineChunk> LineChunkPtr;
 #endif
 
 template <>
-struct FieldDataTraits<LineChunkPtr> : 
-    public FieldTraitsRecurseMapper<LineChunkPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<LineChunkPtr> : public FieldTraitsRecurseMapper<LineChunkPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getSName(void) { return "SFLineChunkPtr"; }
-    static const char *getMName(void) { return "MFLineChunkPtr"; }
+  static const char* getSName(void) {
+    return "SFLineChunkPtr";
+  }
+  static const char* getMName(void) {
+    return "MFLineChunkPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -102,7 +105,6 @@ struct FieldDataTraits<LineChunkPtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
@@ -126,6 +128,7 @@ OSG_DLLEXPORT_DECL1(MField, LineChunkPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 
 OSG_END_NAMESPACE
 
-#define OSGLINECHUNKFIELDS_HEADER_CVSID "@(#)$Id: FCFieldsTemplate_h.h,v 1.25 2005/04/04 14:51:48 dirk Exp $"
+#define OSGLINECHUNKFIELDS_HEADER_CVSID                                                            \
+  "@(#)$Id: FCFieldsTemplate_h.h,v 1.25 2005/04/04 14:51:48 dirk Exp $"
 
 #endif /* _OSGLINECHUNKFIELDS_H_ */

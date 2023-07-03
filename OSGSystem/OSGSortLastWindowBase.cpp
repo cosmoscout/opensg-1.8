@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILESORTLASTWINDOWINST
 
 #include <stdlib.h>
@@ -61,282 +60,214 @@
 #include "OSGSortLastWindowBase.h"
 #include "OSGSortLastWindow.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  SortLastWindowBase::GroupNodesFieldMask = 
+const OSG::BitVector SortLastWindowBase::GroupNodesFieldMask =
     (TypeTraits<BitVector>::One << SortLastWindowBase::GroupNodesFieldId);
 
-const OSG::BitVector  SortLastWindowBase::GroupLengthsFieldMask = 
+const OSG::BitVector SortLastWindowBase::GroupLengthsFieldMask =
     (TypeTraits<BitVector>::One << SortLastWindowBase::GroupLengthsFieldId);
 
-const OSG::BitVector  SortLastWindowBase::GroupsChangedFieldMask = 
+const OSG::BitVector SortLastWindowBase::GroupsChangedFieldMask =
     (TypeTraits<BitVector>::One << SortLastWindowBase::GroupsChangedFieldId);
 
-const OSG::BitVector SortLastWindowBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector SortLastWindowBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
 /*! \var NodePtr         SortLastWindowBase::_mfGroupNodes
-    
+
 */
 /*! \var UInt32          SortLastWindowBase::_mfGroupLengths
-    
+
 */
 /*! \var bool            SortLastWindowBase::_sfGroupsChanged
-    
+
 */
 
 //! SortLastWindow description
 
-FieldDescription *SortLastWindowBase::_desc[] = 
-{
-    new FieldDescription(MFNodePtr::getClassType(), 
-                     "groupNodes", 
-                     GroupNodesFieldId, GroupNodesFieldMask,
-                     false,
-                     (FieldAccessMethod) &SortLastWindowBase::getMFGroupNodes),
-    new FieldDescription(MFUInt32::getClassType(), 
-                     "groupLengths", 
-                     GroupLengthsFieldId, GroupLengthsFieldMask,
-                     false,
-                     (FieldAccessMethod) &SortLastWindowBase::getMFGroupLengths),
-    new FieldDescription(SFBool::getClassType(), 
-                     "groupsChanged", 
-                     GroupsChangedFieldId, GroupsChangedFieldMask,
-                     true,
-                     (FieldAccessMethod) &SortLastWindowBase::getSFGroupsChanged)
-};
+FieldDescription* SortLastWindowBase::_desc[] = {
+    new FieldDescription(MFNodePtr::getClassType(), "groupNodes", GroupNodesFieldId,
+        GroupNodesFieldMask, false, (FieldAccessMethod)&SortLastWindowBase::getMFGroupNodes),
+    new FieldDescription(MFUInt32::getClassType(), "groupLengths", GroupLengthsFieldId,
+        GroupLengthsFieldMask, false, (FieldAccessMethod)&SortLastWindowBase::getMFGroupLengths),
+    new FieldDescription(SFBool::getClassType(), "groupsChanged", GroupsChangedFieldId,
+        GroupsChangedFieldMask, true, (FieldAccessMethod)&SortLastWindowBase::getSFGroupsChanged)};
 
-
-FieldContainerType SortLastWindowBase::_type(
-    "SortLastWindow",
-    "ClusterWindow",
-    NULL,
-    (PrototypeCreateF) &SortLastWindowBase::createEmpty,
-    SortLastWindow::initMethod,
-    _desc,
+FieldContainerType SortLastWindowBase::_type("SortLastWindow", "ClusterWindow", NULL,
+    (PrototypeCreateF)&SortLastWindowBase::createEmpty, SortLastWindow::initMethod, _desc,
     sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(SortLastWindowBase, SortLastWindowPtr)
+// OSG_FIELD_CONTAINER_DEF(SortLastWindowBase, SortLastWindowPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &SortLastWindowBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &SortLastWindowBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr SortLastWindowBase::shallowCopy(void) const 
-{ 
-    SortLastWindowPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const SortLastWindow *>(this)); 
-
-    return returnValue; 
+FieldContainerType& SortLastWindowBase::getType(void) {
+  return _type;
 }
 
-UInt32 SortLastWindowBase::getContainerSize(void) const 
-{ 
-    return sizeof(SortLastWindow); 
+const FieldContainerType& SortLastWindowBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr SortLastWindowBase::shallowCopy(void) const {
+  SortLastWindowPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const SortLastWindow*>(this));
+
+  return returnValue;
+}
+
+UInt32 SortLastWindowBase::getContainerSize(void) const {
+  return sizeof(SortLastWindow);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void SortLastWindowBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((SortLastWindowBase *) &other, whichField);
+void SortLastWindowBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((SortLastWindowBase*)&other, whichField);
 }
 #else
-void SortLastWindowBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((SortLastWindowBase *) &other, whichField, sInfo);
+void SortLastWindowBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((SortLastWindowBase*)&other, whichField, sInfo);
 }
-void SortLastWindowBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void SortLastWindowBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void SortLastWindowBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
+void SortLastWindowBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 
-    _mfGroupNodes.terminateShare(uiAspect, this->getContainerSize());
-    _mfGroupLengths.terminateShare(uiAspect, this->getContainerSize());
+  _mfGroupNodes.terminateShare(uiAspect, this->getContainerSize());
+  _mfGroupLengths.terminateShare(uiAspect, this->getContainerSize());
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-SortLastWindowBase::SortLastWindowBase(void) :
-    _mfGroupNodes             (), 
-    _mfGroupLengths           (), 
-    _sfGroupsChanged          (), 
-    Inherited() 
-{
+SortLastWindowBase::SortLastWindowBase(void)
+    : _mfGroupNodes()
+    , _mfGroupLengths()
+    , _sfGroupsChanged()
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-SortLastWindowBase::SortLastWindowBase(const SortLastWindowBase &source) :
-    _mfGroupNodes             (source._mfGroupNodes             ), 
-    _mfGroupLengths           (source._mfGroupLengths           ), 
-    _sfGroupsChanged          (source._sfGroupsChanged          ), 
-    Inherited                 (source)
-{
+SortLastWindowBase::SortLastWindowBase(const SortLastWindowBase& source)
+    : _mfGroupNodes(source._mfGroupNodes)
+    , _mfGroupLengths(source._mfGroupLengths)
+    , _sfGroupsChanged(source._sfGroupsChanged)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-SortLastWindowBase::~SortLastWindowBase(void)
-{
+SortLastWindowBase::~SortLastWindowBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 SortLastWindowBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 SortLastWindowBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (GroupNodesFieldMask & whichField))
-    {
-        returnValue += _mfGroupNodes.getBinSize();
-    }
+  if (FieldBits::NoField != (GroupNodesFieldMask & whichField)) {
+    returnValue += _mfGroupNodes.getBinSize();
+  }
 
-    if(FieldBits::NoField != (GroupLengthsFieldMask & whichField))
-    {
-        returnValue += _mfGroupLengths.getBinSize();
-    }
+  if (FieldBits::NoField != (GroupLengthsFieldMask & whichField)) {
+    returnValue += _mfGroupLengths.getBinSize();
+  }
 
-    if(FieldBits::NoField != (GroupsChangedFieldMask & whichField))
-    {
-        returnValue += _sfGroupsChanged.getBinSize();
-    }
+  if (FieldBits::NoField != (GroupsChangedFieldMask & whichField)) {
+    returnValue += _sfGroupsChanged.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void SortLastWindowBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void SortLastWindowBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (GroupNodesFieldMask & whichField))
-    {
-        _mfGroupNodes.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (GroupNodesFieldMask & whichField)) {
+    _mfGroupNodes.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GroupLengthsFieldMask & whichField))
-    {
-        _mfGroupLengths.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (GroupLengthsFieldMask & whichField)) {
+    _mfGroupLengths.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GroupsChangedFieldMask & whichField))
-    {
-        _sfGroupsChanged.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (GroupsChangedFieldMask & whichField)) {
+    _sfGroupsChanged.copyToBin(pMem);
+  }
 }
 
-void SortLastWindowBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void SortLastWindowBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (GroupNodesFieldMask & whichField))
-    {
-        _mfGroupNodes.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (GroupNodesFieldMask & whichField)) {
+    _mfGroupNodes.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GroupLengthsFieldMask & whichField))
-    {
-        _mfGroupLengths.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (GroupLengthsFieldMask & whichField)) {
+    _mfGroupLengths.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GroupsChangedFieldMask & whichField))
-    {
-        _sfGroupsChanged.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (GroupsChangedFieldMask & whichField)) {
+    _sfGroupsChanged.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void SortLastWindowBase::executeSyncImpl(      SortLastWindowBase *pOther,
-                                        const BitVector         &whichField)
-{
+void SortLastWindowBase::executeSyncImpl(SortLastWindowBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (GroupNodesFieldMask & whichField))
-        _mfGroupNodes.syncWith(pOther->_mfGroupNodes);
+  if (FieldBits::NoField != (GroupNodesFieldMask & whichField))
+    _mfGroupNodes.syncWith(pOther->_mfGroupNodes);
 
-    if(FieldBits::NoField != (GroupLengthsFieldMask & whichField))
-        _mfGroupLengths.syncWith(pOther->_mfGroupLengths);
+  if (FieldBits::NoField != (GroupLengthsFieldMask & whichField))
+    _mfGroupLengths.syncWith(pOther->_mfGroupLengths);
 
-    if(FieldBits::NoField != (GroupsChangedFieldMask & whichField))
-        _sfGroupsChanged.syncWith(pOther->_sfGroupsChanged);
-
-
+  if (FieldBits::NoField != (GroupsChangedFieldMask & whichField))
+    _sfGroupsChanged.syncWith(pOther->_sfGroupsChanged);
 }
 #else
-void SortLastWindowBase::executeSyncImpl(      SortLastWindowBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void SortLastWindowBase::executeSyncImpl(
+    SortLastWindowBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (GroupsChangedFieldMask & whichField))
-        _sfGroupsChanged.syncWith(pOther->_sfGroupsChanged);
+  if (FieldBits::NoField != (GroupsChangedFieldMask & whichField))
+    _sfGroupsChanged.syncWith(pOther->_sfGroupsChanged);
 
+  if (FieldBits::NoField != (GroupNodesFieldMask & whichField))
+    _mfGroupNodes.syncWith(pOther->_mfGroupNodes, sInfo);
 
-    if(FieldBits::NoField != (GroupNodesFieldMask & whichField))
-        _mfGroupNodes.syncWith(pOther->_mfGroupNodes, sInfo);
-
-    if(FieldBits::NoField != (GroupLengthsFieldMask & whichField))
-        _mfGroupLengths.syncWith(pOther->_mfGroupLengths, sInfo);
-
-
+  if (FieldBits::NoField != (GroupLengthsFieldMask & whichField))
+    _mfGroupLengths.syncWith(pOther->_mfGroupLengths, sInfo);
 }
 
-void SortLastWindowBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void SortLastWindowBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (GroupNodesFieldMask & whichField))
-        _mfGroupNodes.beginEdit(uiAspect, uiContainerSize);
+  if (FieldBits::NoField != (GroupNodesFieldMask & whichField))
+    _mfGroupNodes.beginEdit(uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (GroupLengthsFieldMask & whichField))
-        _mfGroupLengths.beginEdit(uiAspect, uiContainerSize);
-
+  if (FieldBits::NoField != (GroupLengthsFieldMask & whichField))
+    _mfGroupLengths.beginEdit(uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 OSG_BEGIN_NAMESPACE
 
@@ -344,6 +275,4 @@ OSG_BEGIN_NAMESPACE
 DataType FieldDataTraits<SortLastWindowPtr>::_type("SortLastWindowPtr", "ClusterWindowPtr");
 #endif
 
-
 OSG_END_NAMESPACE
-

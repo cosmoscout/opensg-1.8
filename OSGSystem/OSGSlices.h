@@ -61,137 +61,127 @@ the OpenSG-Plus Volume-code from the University of Stuttgart.
 
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING Slices : public SlicesBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING Slices : public SlicesBase {
+ private:
+  typedef SlicesBase Inherited;
 
-    typedef SlicesBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   action handler                             */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  // draw the object
+  virtual Action::ResultE drawPrimitives(DrawActionBase* action);
+  Action::ResultE         intersect(Action* action);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   action handler                             */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    // draw the object
-    virtual Action::ResultE drawPrimitives (DrawActionBase *action);
-    Action::ResultE intersect              (Action * action );
+  /*---------------------------------------------------------------------*/
+  /*! \name                      update                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  void adjustVolume(Volume& volume);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      update                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-    void adjustVolume( Volume & volume );
+  void setMaterial(const MaterialPtr& value);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
-    
-    void setMaterial       (const MaterialPtr     &value);
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    virtual void changed ( BitVector  whichField, 
-                           UInt32 from);
+  virtual void changed(BitVector whichField, UInt32 from);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in SlicesBase.
 
-    // Variables should all be in SlicesBase.
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  Slices(void);
+  Slices(const Slices& source);
 
-    Slices(void);
-    Slices(const Slices &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  virtual ~Slices(void);
 
-    virtual ~Slices(void); 
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
-
-    friend class FieldContainer;
-    friend class SlicesBase;
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class SlicesBase;
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_DEV)
 
-    struct Edge {
-      
-      // index in to corner points
-      UInt32 pointIndexA;
-      UInt32 pointIndexB;
-      UInt32 edgeTag;
-      
-      // pos+vec line def., it's redundant but there is
-      // always a need for speed
-      Line line;
-      
-    };
+  struct Edge {
 
-    struct Slice {
-      
-      /// ccw flag (default: TRUE)
-      bool ccw;
+    // index in to corner points
+    UInt32 pointIndexA;
+    UInt32 pointIndexB;
+    UInt32 edgeTag;
 
-      /// number of intersection
-      UInt32 numOfIntersection;
-      
-      /// intersection edge index Vec
-      UInt32 edgeVec[6];
+    // pos+vec line def., it's redundant but there is
+    // always a need for speed
+    Line line;
+  };
 
-      /// intersection point Vec
-      Vec3f  pointVec[6];
-            
-    };
+  struct Slice {
+
+    /// ccw flag (default: TRUE)
+    bool ccw;
+
+    /// number of intersection
+    UInt32 numOfIntersection;
+
+    /// intersection edge index Vec
+    UInt32 edgeVec[6];
+
+    /// intersection point Vec
+    Vec3f pointVec[6];
+  };
 
 #endif // remove from all but dev docs
 
-    std::vector<Pnt3f> _pointVec;
-        
-    std::vector<Edge>  _edgeVec;
+  std::vector<Pnt3f> _pointVec;
 
-    static UInt32 _arbMultitexture;
-    static UInt32 _funcMultiTexCoord3fARB;
-    
-    void initEdgeVec     ( void );
-    
-    unsigned createSlice ( const OSG::Plane &plane, Slice &result );
-    
-    void     drawSlices  (Window *win, const Vec3f &planeNormal,
-                          UInt32 & triCount, UInt32 & vertexCount);
+  std::vector<Edge> _edgeVec;
 
-    static void initMethod(void);
-    
-    // prohibit default functions (move to 'public' if you need one)
-    
-    void operator =(const Slices &source);
+  static UInt32 _arbMultitexture;
+  static UInt32 _funcMultiTexCoord3fARB;
+
+  void initEdgeVec(void);
+
+  unsigned createSlice(const OSG::Plane& plane, Slice& result);
+
+  void drawSlices(Window* win, const Vec3f& planeNormal, UInt32& triCount, UInt32& vertexCount);
+
+  static void initMethod(void);
+
+  // prohibit default functions (move to 'public' if you need one)
+
+  void operator=(const Slices& source);
 };
 
-typedef Slices *SlicesP;
+typedef Slices* SlicesP;
 
 OSG_END_NAMESPACE
 

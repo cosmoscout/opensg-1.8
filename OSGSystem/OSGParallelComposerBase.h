@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGPARALLELCOMPOSERBASE_H_
 #define _OSGPARALLELCOMPOSERBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -67,8 +65,8 @@
 
 #include <OSGImageComposer.h> // Parent
 
-#include <OSGBoolFields.h> // Short type
-#include <OSGBoolFields.h> // Alpha type
+#include <OSGBoolFields.h>   // Short type
+#include <OSGBoolFields.h>   // Alpha type
 #include <OSGStringFields.h> // PcLibPath type
 
 #include <OSGParallelComposerFields.h>
@@ -80,195 +78,175 @@ class BinaryDataHandler;
 
 //! \brief ParallelComposer Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING ParallelComposerBase : public ImageComposer
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING ParallelComposerBase : public ImageComposer {
+ private:
+  typedef ImageComposer Inherited;
 
-    typedef ImageComposer    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef ParallelComposerPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    ShortFieldId     = Inherited::NextFieldId,
+    AlphaFieldId     = ShortFieldId + 1,
+    PcLibPathFieldId = AlphaFieldId + 1,
+    NextFieldId      = PcLibPathFieldId + 1
+  };
 
-    typedef ParallelComposerPtr  Ptr;
+  static const OSG::BitVector ShortFieldMask;
+  static const OSG::BitVector AlphaFieldMask;
+  static const OSG::BitVector PcLibPathFieldMask;
 
-    enum
-    {
-        ShortFieldId     = Inherited::NextFieldId,
-        AlphaFieldId     = ShortFieldId     + 1,
-        PcLibPathFieldId = AlphaFieldId     + 1,
-        NextFieldId      = PcLibPathFieldId + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector ShortFieldMask;
-    static const OSG::BitVector AlphaFieldMask;
-    static const OSG::BitVector PcLibPathFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFBool*   getSFShort(void);
+  SFBool*   getSFAlpha(void);
+  SFString* getSFPcLibPath(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  bool&              getShort(void);
+  const bool&        getShort(void) const;
+  bool&              getAlpha(void);
+  const bool&        getAlpha(void) const;
+  std::string&       getPcLibPath(void);
+  const std::string& getPcLibPath(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFBool              *getSFShort          (void);
-           SFBool              *getSFAlpha          (void);
-           SFString            *getSFPcLibPath      (void);
+  void setShort(const bool& value);
+  void setAlpha(const bool& value);
+  void setPcLibPath(const std::string& value);
 
-           bool                &getShort          (void);
-     const bool                &getShort          (void) const;
-           bool                &getAlpha          (void);
-     const bool                &getAlpha          (void) const;
-           std::string         &getPcLibPath      (void);
-     const std::string         &getPcLibPath      (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setShort          ( const bool &value );
-     void setAlpha          ( const bool &value );
-     void setPcLibPath      ( const std::string &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static ParallelComposerPtr create(void);
+  static ParallelComposerPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  ParallelComposerPtr      create          (void); 
-    static  ParallelComposerPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFBool   _sfShort;
+  SFBool   _sfAlpha;
+  SFString _sfPcLibPath;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  ParallelComposerBase(void);
+  ParallelComposerBase(const ParallelComposerBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~ParallelComposerBase(void);
 
-    SFBool              _sfShort;
-    SFBool              _sfAlpha;
-    SFString            _sfPcLibPath;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    ParallelComposerBase(void);
-    ParallelComposerBase(const ParallelComposerBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~ParallelComposerBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      ParallelComposerBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(ParallelComposerBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      ParallelComposerBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      ParallelComposerBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const ParallelComposerBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const ParallelComposerBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef ParallelComposerBase* ParallelComposerBaseP;
 
-typedef ParallelComposerBase *ParallelComposerBaseP;
-
-typedef osgIF<ParallelComposerBase::isNodeCore,
-              CoredNodePtr<ParallelComposer>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet ParallelComposerNodePtr;
+typedef osgIF<ParallelComposerBase::isNodeCore, CoredNodePtr<ParallelComposer>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet
+    ParallelComposerNodePtr;
 
 typedef RefPtr<ParallelComposerPtr> ParallelComposerRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGPARALLELCOMPOSERBASE_HEADER_CVSID "@(#)$Id: OSGParallelComposerBase.h,v 1.1 2006/05/08 04:00:01 eysquared Exp $"
+#define OSGPARALLELCOMPOSERBASE_HEADER_CVSID                                                       \
+  "@(#)$Id: OSGParallelComposerBase.h,v 1.1 2006/05/08 04:00:01 eysquared Exp $"
 
 #endif /* _OSGPARALLELCOMPOSERBASE_H_ */

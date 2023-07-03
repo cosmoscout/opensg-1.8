@@ -34,7 +34,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -42,38 +41,33 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 /*------------------------------- size ----------------------------------*/
 /*! Set the width and height of the Window. Only use if you really know what
     you're doing. In most cases resize() is a better choice.
 */
-inline void Window::setSize(UInt16 width, UInt16 height)
-{
-    setHeight(height);
-    setWidth(width);
+inline void Window::setSize(UInt16 width, UInt16 height) {
+  setHeight(height);
+  setWidth(width);
 }
 
-inline bool Window::isResizePending(void)
-{
-    return _sfResizePending.getValue();
+inline bool Window::isResizePending(void) {
+  return _sfResizePending.getValue();
 }
 
 /*! Check if the window has the indicated extension.
     \warning No error checks are done on the passed index!
 */
-inline bool Window::hasExtension(UInt32 id)
-{
-    return _availExtensions[id];
+inline bool Window::hasExtension(UInt32 id) {
+  return _availExtensions[id];
 }
 
 /*! Check if the window has the indicated extension.
-*/
-inline bool Window::hasCommonExtension(UInt32 id)
-{
-    if(id >= _commonExtensions.size())
-        return false;
+ */
+inline bool Window::hasCommonExtension(UInt32 id) {
+  if (id >= _commonExtensions.size())
+    return false;
 
-    return _commonExtensions[id];
+  return _commonExtensions[id];
 }
 
 /*! Get the indicated extension function.
@@ -81,129 +75,108 @@ inline bool Window::hasCommonExtension(UInt32 id)
     issued if there are problems. Use getFunctionNoCheck if you're sure you
     don't need them.
 */
-inline void* Window::getFunction(UInt32 id)
-{
-    if(id >= _extFunctions.size())
-    {
-        FINFO(("Window::getFunction: illegal id %d!\n", id));
-        return NULL;
-    }
-    if(_extFunctions[id] == NULL)
-    {
-        FINFO(("Window::getFunction: function \"%s\" is NULL!\n",
-                    _registeredFunctions[id].c_str()));
-        return NULL;
-    }
-    return _extFunctions[id];
+inline void* Window::getFunction(UInt32 id) {
+  if (id >= _extFunctions.size()) {
+    FINFO(("Window::getFunction: illegal id %d!\n", id));
+    return NULL;
+  }
+  if (_extFunctions[id] == NULL) {
+    FINFO(("Window::getFunction: function \"%s\" is NULL!\n", _registeredFunctions[id].c_str()));
+    return NULL;
+  }
+  return _extFunctions[id];
 }
 
 /*! Get the indicated extension function.
     \warning No error checks are done on the passed index nor on the returned
     function!
 */
-inline void* Window::getFunctionNoCheck(UInt32 id)
-{
-    return _extFunctions[ id ];
+inline void* Window::getFunctionNoCheck(UInt32 id) {
+  return _extFunctions[id];
 }
 
-/*! Return the value of the registered constant, Inf if not registered 
+/*! Return the value of the registered constant, Inf if not registered
     or no value received yet.
 */
-inline Real32 Window::getConstantValue(GLenum id)
-{
-    return getConstantValuev(id)[0];
+inline Real32 Window::getConstantValue(GLenum id) {
+  return getConstantValuev(id)[0];
 }
 
 /*! Set the library name where to find OpenGL extension functions. This has
     to be called before the first extension function is accessed, and it's
     safe to call it before osgInit().
 */
-inline void Window::setGLLibraryName(const Char8  *s)
-{
-    _glLibraryName = s;
+inline void Window::setGLLibraryName(const Char8* s) {
+  _glLibraryName = s;
 }
 
 /*! Return the version of OpenGL running in the Window in the form
 0x<major><major><minor><minor>, e.g. 0x0201 for version 2.1.
 */
-inline UInt32 Window::getGLVersion(void)
-{
-    return _glVersion;
+inline UInt32 Window::getGLVersion(void) {
+  return _glVersion;
 }
 
 /*! Find the id of a registered extension. Return -1 if extension not
     registered.
 */
-inline Int32 Window::getExtensionId(const Char8  *s)
-{
-    std::vector<std::string>::iterator it;
+inline Int32 Window::getExtensionId(const Char8* s) {
+  std::vector<std::string>::iterator it;
 
-    it = std::find(_registeredExtensions.begin(),
-              _registeredExtensions.end(),
-              s);
+  it = std::find(_registeredExtensions.begin(), _registeredExtensions.end(), s);
 
-    if(it == _registeredExtensions.end())
-        return -1;
+  if (it == _registeredExtensions.end())
+    return -1;
 
-    return Int32(it -_registeredExtensions.begin());
+  return Int32(it - _registeredExtensions.begin());
 }
 
 /*! Access the available extensions.
-*/
-inline const std::vector<std::string> &Window::getExtensions(void)
-{
-    return _extensions;
+ */
+inline const std::vector<std::string>& Window::getExtensions(void) {
+  return _extensions;
 }
 
 /*! Access the registered extensions.
-*/
-inline const std::vector<std::string> &Window::getRegisteredExtensions(void)
-{
-    return _registeredExtensions;
+ */
+inline const std::vector<std::string>& Window::getRegisteredExtensions(void) {
+  return _registeredExtensions;
 }
 
 /*! Access the registered functions.
-*/
-inline const std::vector<std::string> &Window::getRegisteredFunctions(void)
-{
-    return _registeredFunctions;
+ */
+inline const std::vector<std::string>& Window::getRegisteredFunctions(void) {
+  return _registeredFunctions;
 }
 
 /*! Access the ignored extensions.
-*/
-inline const std::vector<std::string> &Window::getIgnoredExtensions(void)
-{
-    return _ignoredExtensions;
+ */
+inline const std::vector<std::string>& Window::getIgnoredExtensions(void) {
+  return _ignoredExtensions;
 }
 
-inline void Window::setGLObjectId(UInt32 osgId, UInt32 id2)
-{
-    if(osgId < _ids.size())
-    {
-        _ids[osgId] = id2;
-    }
+inline void Window::setGLObjectId(UInt32 osgId, UInt32 id2) {
+  if (osgId < _ids.size()) {
+    _ids[osgId] = id2;
+  } else {
+    _ids.resize(_glObjects.size());
+    if (osgId < _ids.size())
+      _ids[osgId] = id2;
     else
-    {
-        _ids.resize(_glObjects.size());
-        if(osgId < _ids.size())
-            _ids[osgId] = id2;
-        else
-            SWARNING << "Window::setGLObjectId: id (" << osgId << ") is not valid!" << std::endl;
-    }
+      SWARNING << "Window::setGLObjectId: id (" << osgId << ") is not valid!" << std::endl;
+  }
 }
 
-inline UInt32 Window::getGLObjectId(UInt32 osgId)
-{
-    if(osgId < _ids.size())
-        return _ids[osgId];
+inline UInt32 Window::getGLObjectId(UInt32 osgId) {
+  if (osgId < _ids.size())
+    return _ids[osgId];
 
-    //SWARNING << "Window::getGLObjectId: id (" << osgId << ") is not valid!" << std::endl;
-    return 0;
+  // SWARNING << "Window::getGLObjectId: id (" << osgId << ") is not valid!" << std::endl;
+  return 0;
 }
 
-inline UInt32 Window::getGLObjectsSize(void)
-{
-    return _glObjects.size();
+inline UInt32 Window::getGLObjectsSize(void) {
+  return _glObjects.size();
 }
 
 /*! Pack the id and the status into one UInt32. Used to pass the id and status
@@ -216,91 +189,76 @@ change all the prototypes and implementations everywhere. Do it for 1.3.
 
 \enddev
 */
-inline UInt32 Window::packIdStatus(UInt32 osgId, GLObjectStatusE status)
-{
-    return (osgId << statusShift) | status;
+inline UInt32 Window::packIdStatus(UInt32 osgId, GLObjectStatusE status) {
+  return (osgId << statusShift) | status;
 }
 
 /*! Unpack the id and the status from one UInt32 packed by packIdStatus
-*/
-inline void Window::unpackIdStatus(UInt32 idstatus, UInt32 &osgId,
-                                   GLObjectStatusE &status)
-{
-    osgId = idstatus >> statusShift;
-    status = static_cast<GLObjectStatusE>(idstatus & statusMask);
+ */
+inline void Window::unpackIdStatus(UInt32 idstatus, UInt32& osgId, GLObjectStatusE& status) {
+  osgId  = idstatus >> statusShift;
+  status = static_cast<GLObjectStatusE>(idstatus & statusMask);
 }
-
 
 /* GLObject helper class */
 
-inline Window::GLObject::GLObject( GLObjectFunctor funct ) :
-            _functor(funct),
-            _refCounter(0),
-            _lastValidate(0)
-{
+inline Window::GLObject::GLObject(GLObjectFunctor funct)
+    : _functor(funct)
+    , _refCounter(0)
+    , _lastValidate(0) {
 }
 
-inline Window::GLObjectFunctor& Window::GLObject::getFunctor(void)
-{
-    return _functor;
+inline Window::GLObjectFunctor& Window::GLObject::getFunctor(void) {
+  return _functor;
 };
 
-inline void Window::GLObject::setFunctor(GLObjectFunctor funct)
-{
-    _functor = funct;
+inline void Window::GLObject::setFunctor(GLObjectFunctor funct) {
+  _functor = funct;
 };
 
-inline UInt32 Window::GLObject::getLastValidate(void)
-{
-    return _lastValidate;
+inline UInt32 Window::GLObject::getLastValidate(void) {
+  return _lastValidate;
 }
 
-inline void Window::GLObject::setLastValidate(UInt32 val)
-{
-    _lastValidate = val;
+inline void Window::GLObject::setLastValidate(UInt32 val) {
+  _lastValidate = val;
 }
 
-inline UInt32 Window::GLObject::getRefCounter(void)
-{
-    return _refCounter;
+inline UInt32 Window::GLObject::getRefCounter(void) {
+  return _refCounter;
 }
 
-inline UInt32 Window::GLObject::incRefCounter(void)
-{
-    UInt32 val;
+inline UInt32 Window::GLObject::incRefCounter(void) {
+  UInt32 val;
 
-    if ( ! _GLObjectLock )
-    {
-        _GLObjectLock = ThreadManager::the()->getLock(NULL);
-    }
+  if (!_GLObjectLock) {
+    _GLObjectLock = ThreadManager::the()->getLock(NULL);
+  }
 
-    _GLObjectLock->aquire();
-    val = _refCounter = _refCounter + 1;
-    _GLObjectLock->release();
+  _GLObjectLock->aquire();
+  val = _refCounter = _refCounter + 1;
+  _GLObjectLock->release();
 
-    return val;
+  return val;
 }
 
-inline UInt32 Window::GLObject::decRefCounter(void)
-{
-    UInt32 val;
+inline UInt32 Window::GLObject::decRefCounter(void) {
+  UInt32 val;
 
-    if(! _GLObjectLock)
-    {
-        _GLObjectLock = ThreadManager::the()->getLock(NULL);
-    }
+  if (!_GLObjectLock) {
+    _GLObjectLock = ThreadManager::the()->getLock(NULL);
+  }
 
-    _GLObjectLock->aquire();
-    if(_refCounter)
-        val = _refCounter = _refCounter - 1;
-    else
-        val = 0;
-    _GLObjectLock->release();
+  _GLObjectLock->aquire();
+  if (_refCounter)
+    val = _refCounter = _refCounter - 1;
+  else
+    val = 0;
+  _GLObjectLock->release();
 
-    return val;
+  return val;
 }
 
 OSG_END_NAMESPACE
-
 
 #define OSGWINDOW_INLINE_CVSID "@(#)$Id:$"

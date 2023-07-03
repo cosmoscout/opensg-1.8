@@ -42,19 +42,15 @@
 
 OSG_BEGIN_NAMESPACE
 
-inline
-UInt32 SClipPlaneChunk::getStaticClassId(void)
-{
-    return getStaticClass()->getId();
+inline UInt32 SClipPlaneChunk::getStaticClassId(void) {
+  return getStaticClass()->getId();
 }
 
-inline
-const StateChunkClass *SClipPlaneChunk::getStaticClass(void)
-{
-    return &SClipPlaneChunk::_class;
+inline const StateChunkClass* SClipPlaneChunk::getStaticClass(void) {
+  return &SClipPlaneChunk::_class;
 }
 
 OSG_END_NAMESPACE
 
-#define OSGSCLIPPLANECHUNK_INLINE_CVSID "@(#)$Id: OSGSClipPlaneChunk.inl,v 1.1 2007/04/26 15:22:01 a-m-z Exp $"
-
+#define OSGSCLIPPLANECHUNK_INLINE_CVSID                                                            \
+  "@(#)$Id: OSGSClipPlaneChunk.inl,v 1.1 2007/04/26 15:22:01 a-m-z Exp $"

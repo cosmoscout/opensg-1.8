@@ -50,39 +50,35 @@ OSG_BEGIN_NAMESPACE
 /*! \brief Base class using the render action interface of window
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING RenderActionBase : public DrawActionBase
-{
-    /*==========================  PUBLIC  =================================*/
+class OSG_SYSTEMLIB_DLLMAPPING RenderActionBase : public DrawActionBase {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  virtual ~RenderActionBase(void);
 
-    virtual ~RenderActionBase(void);
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-  protected:
+  RenderActionBase(void);
+  RenderActionBase(const RenderActionBase& source);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-    RenderActionBase(void);
-    RenderActionBase(const RenderActionBase &source);
+ private:
+  typedef DrawActionBase Inherited;
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-
-  private:
-
-    typedef DrawActionBase Inherited;
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const RenderActionBase &source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const RenderActionBase& source);
 };
 
 OSG_END_NAMESPACE

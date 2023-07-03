@@ -62,119 +62,112 @@ class NodeCore;
 //---------------------------------------------------------------------------
 
 #ifdef __sgi
-#pragma set woff 1375,1424
+#pragma set woff 1375, 1424
 #endif
 
 #ifdef OSG_LINUX_ICC
-#pragma warning( disable : 444 )
+#pragma warning(disable : 444)
 #endif
 
 /*! \ingroup GrpSystemFieldContainer
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING CNodePtr : public AttachmentContainerPtr
-{
-    /*==========================  PUBLIC  =================================*/
+class OSG_SYSTEMLIB_DLLMAPPING CNodePtr : public AttachmentContainerPtr {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  typedef NodeCore StoredObjectType;
+  typedef CNodePtr ObjectType;
 
-    typedef NodeCore               StoredObjectType;
-    typedef CNodePtr               ObjectType;
+  typedef AttachmentContainerPtr Inherited;
 
-    typedef AttachmentContainerPtr Inherited;
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  CNodePtr(void);
+  CNodePtr(const CNodePtr& source);
+  CNodePtr(const NullFieldContainerPtr& source);
+  explicit CNodePtr(const NodePtr& source);
 
-             CNodePtr(      void                         );
-             CNodePtr(const CNodePtr              &source);
-             CNodePtr(const NullFieldContainerPtr &source);
-    explicit CNodePtr(const NodePtr               &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  ~CNodePtr(void);
 
-    ~CNodePtr(void); 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Node                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Node                                    */
-    /*! \{                                                                 */
+  Node* getNode(void);
+  Node* getNode(void) const;
 
-    Node *getNode(void);
-    Node *getNode(void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                 Container Access                             */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                 Container Access                             */
-    /*! \{                                                                 */
+  NodeCore* operator->(void);
+  NodeCore* operator->(void) const;
 
-    NodeCore *operator->(void);
-    NodeCore *operator->(void) const;
+  NodeCore& operator*(void);
+  NodeCore& operator*(void) const;
 
-    NodeCore &operator *(void);
-    NodeCore &operator *(void) const;
+  NodeCore* getCPtr(void);
+  NodeCore* getCPtr(void) const;
 
-    NodeCore *getCPtr   (void);
-    NodeCore *getCPtr   (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Assignment                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Assignment                                */
-    /*! \{                                                                 */
+  void operator=(const NodePtr& source);
+  void operator=(const CNodePtr& source);
+  void operator=(const NullFieldContainerPtr& source);
 
-    void operator =(const NodePtr               &source);
-    void operator =(const CNodePtr              &source);
-    void operator =(const NullFieldContainerPtr &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name             Container Constructors                           */
+  /*! \{                                                                 */
+  /*! \brief Container Constructor, used to work around MS Bugs,
+   *  use them only if you really now what you are doing ;-)             */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name             Container Constructors                           */
-    /*! \{                                                                 */
-    /*! \brief Container Constructor, used to work around MS Bugs,  
-     *  use them only if you really now what you are doing ;-)             */
+  explicit CNodePtr(const Node& source);
+  explicit CNodePtr(const Node* source);
 
-    explicit CNodePtr(const Node &source);
-    explicit CNodePtr(const Node *source);
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name             Internal Constructors                            */
+  /*! \{                                                                 */
 
-  protected:
+  CNodePtr(const Node* source, const UInt16 uiSize, const UInt16 uiParentPos);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name             Internal Constructors                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-    CNodePtr(const Node   *source,
-             const UInt16  uiSize,
-             const UInt16  uiParentPos);
-
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-
-  private:
-
-    friend class FieldContainer;
+ private:
+  friend class FieldContainer;
 };
 
 #ifdef OSG_LINUX_ICC
-#pragma warning( default : 444 )
+#pragma warning(default : 444)
 #endif
 
 #ifdef __sgi
-#pragma reset woff 1375,1424
+#pragma reset woff 1375, 1424
 #endif
 
 /*! \ingroup GrpSystemFieldContainerFuncs
  */
 
 OSG_SYSTEMLIB_DLLMAPPING
-std::ostream &operator <<(      std::ostream &os,
-                          const CNodePtr     &fc);
+std::ostream& operator<<(std::ostream& os, const CNodePtr& fc);
 
 OSG_END_NAMESPACE
 

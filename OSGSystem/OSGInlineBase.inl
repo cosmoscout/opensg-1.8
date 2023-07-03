@@ -52,109 +52,79 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &InlineBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& InlineBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 InlineBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 InlineBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-InlinePtr InlineBase::create(void) 
-{
-    InlinePtr fc; 
+inline InlinePtr InlineBase::create(void) {
+  InlinePtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = InlinePtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = InlinePtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-InlinePtr InlineBase::createEmpty(void) 
-{ 
-    InlinePtr returnValue; 
-    
-    newPtr(returnValue); 
+inline InlinePtr InlineBase::createEmpty(void) {
+  InlinePtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the Inline::_mfUrl field.
-inline
-MFString *InlineBase::getMFUrl(void)
-{
-    return &_mfUrl;
+inline MFString* InlineBase::getMFUrl(void) {
+  return &_mfUrl;
 }
 
 //! Get the Inline::_sfLoaded field.
-inline
-SFBool *InlineBase::getSFLoaded(void)
-{
-    return &_sfLoaded;
-}
-
-
-//! Get the value of the Inline::_sfLoaded field.
-inline
-bool &InlineBase::getLoaded(void)
-{
-    return _sfLoaded.getValue();
+inline SFBool* InlineBase::getSFLoaded(void) {
+  return &_sfLoaded;
 }
 
 //! Get the value of the Inline::_sfLoaded field.
-inline
-const bool &InlineBase::getLoaded(void) const
-{
-    return _sfLoaded.getValue();
+inline bool& InlineBase::getLoaded(void) {
+  return _sfLoaded.getValue();
+}
+
+//! Get the value of the Inline::_sfLoaded field.
+inline const bool& InlineBase::getLoaded(void) const {
+  return _sfLoaded.getValue();
 }
 
 //! Set the value of the Inline::_sfLoaded field.
-inline
-void InlineBase::setLoaded(const bool &value)
-{
-    _sfLoaded.setValue(value);
+inline void InlineBase::setLoaded(const bool& value) {
+  _sfLoaded.setValue(value);
 }
-
 
 //! Get the value of the \a index element the Inline::_mfUrl field.
-inline
-std::string &InlineBase::getUrl(const UInt32 index)
-{
-    return _mfUrl[index];
+inline std::string& InlineBase::getUrl(const UInt32 index) {
+  return _mfUrl[index];
 }
 
 //! Get the Inline::_mfUrl field.
-inline
-MFString &InlineBase::getUrl(void)
-{
-    return _mfUrl;
+inline MFString& InlineBase::getUrl(void) {
+  return _mfUrl;
 }
 
 //! Get the Inline::_mfUrl field.
-inline
-const MFString &InlineBase::getUrl(void) const
-{
-    return _mfUrl;
+inline const MFString& InlineBase::getUrl(void) const {
+  return _mfUrl;
 }
 
 OSG_END_NAMESPACE
 
-#define OSGINLINEBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGINLINEBASE_INLINE_CVSID                                                                 \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

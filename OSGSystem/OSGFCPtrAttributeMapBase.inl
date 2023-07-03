@@ -52,109 +52,79 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &FCPtrAttributeMapBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& FCPtrAttributeMapBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 FCPtrAttributeMapBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 FCPtrAttributeMapBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-FCPtrAttributeMapPtr FCPtrAttributeMapBase::create(void) 
-{
-    FCPtrAttributeMapPtr fc; 
+inline FCPtrAttributeMapPtr FCPtrAttributeMapBase::create(void) {
+  FCPtrAttributeMapPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = FCPtrAttributeMapPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = FCPtrAttributeMapPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-FCPtrAttributeMapPtr FCPtrAttributeMapBase::createEmpty(void) 
-{ 
-    FCPtrAttributeMapPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline FCPtrAttributeMapPtr FCPtrAttributeMapBase::createEmpty(void) {
+  FCPtrAttributeMapPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the FCPtrAttributeMap::_mfKeys field.
-inline
-MFString *FCPtrAttributeMapBase::getMFKeys(void)
-{
-    return &_mfKeys;
+inline MFString* FCPtrAttributeMapBase::getMFKeys(void) {
+  return &_mfKeys;
 }
 
 //! Get the FCPtrAttributeMap::_mfValues field.
-inline
-MFFieldContainerPtr *FCPtrAttributeMapBase::getMFValues(void)
-{
-    return &_mfValues;
+inline MFFieldContainerPtr* FCPtrAttributeMapBase::getMFValues(void) {
+  return &_mfValues;
 }
-
-
 
 //! Get the value of the \a index element the FCPtrAttributeMap::_mfKeys field.
-inline
-std::string &FCPtrAttributeMapBase::getKeys(const UInt32 index)
-{
-    return _mfKeys[index];
+inline std::string& FCPtrAttributeMapBase::getKeys(const UInt32 index) {
+  return _mfKeys[index];
 }
 
 //! Get the FCPtrAttributeMap::_mfKeys field.
-inline
-MFString &FCPtrAttributeMapBase::getKeys(void)
-{
-    return _mfKeys;
+inline MFString& FCPtrAttributeMapBase::getKeys(void) {
+  return _mfKeys;
 }
 
 //! Get the FCPtrAttributeMap::_mfKeys field.
-inline
-const MFString &FCPtrAttributeMapBase::getKeys(void) const
-{
-    return _mfKeys;
+inline const MFString& FCPtrAttributeMapBase::getKeys(void) const {
+  return _mfKeys;
 }
 
 //! Get the value of the \a index element the FCPtrAttributeMap::_mfValues field.
-inline
-FieldContainerPtr &FCPtrAttributeMapBase::getValues(const UInt32 index)
-{
-    return _mfValues[index];
+inline FieldContainerPtr& FCPtrAttributeMapBase::getValues(const UInt32 index) {
+  return _mfValues[index];
 }
 
 //! Get the FCPtrAttributeMap::_mfValues field.
-inline
-MFFieldContainerPtr &FCPtrAttributeMapBase::getValues(void)
-{
-    return _mfValues;
+inline MFFieldContainerPtr& FCPtrAttributeMapBase::getValues(void) {
+  return _mfValues;
 }
 
 //! Get the FCPtrAttributeMap::_mfValues field.
-inline
-const MFFieldContainerPtr &FCPtrAttributeMapBase::getValues(void) const
-{
-    return _mfValues;
+inline const MFFieldContainerPtr& FCPtrAttributeMapBase::getValues(void) const {
+  return _mfValues;
 }
 
 OSG_END_NAMESPACE
 
-#define OSGFCPTRATTRIBUTEMAPBASE_INLINE_CVSID "@(#)$Id: OSGFCPtrAttributeMapBase.inl,v 1.2 2006/02/20 16:54:45 dirk Exp $"
-
+#define OSGFCPTRATTRIBUTEMAPBASE_INLINE_CVSID                                                      \
+  "@(#)$Id: OSGFCPtrAttributeMapBase.inl,v 1.2 2006/02/20 16:54:45 dirk Exp $"

@@ -57,71 +57,66 @@ OSG_BEGIN_NAMESPACE
 /*! \ingroup GrpBaseStringConversion
  */
 
-class OSG_BASE_DLLMAPPING StringTokenizer
-{
-    /*==========================  PUBLIC  =================================*/
+class OSG_BASE_DLLMAPPING StringTokenizer {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  StringTokenizer(std::string& toTokens);
 
-    StringTokenizer(std::string &toTokens);
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    virtual ~StringTokenizer(void);
+  virtual ~StringTokenizer(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Tokenize                                  */
-    /*! \{                                                                 */
-   
-    bool        hasNext    (void                 );
-    std::string getNext    (void                 );
-    void        setString  (std::string &toTokens);
-    UInt32      countTokens(void                 );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Tokenize                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  bool        hasNext(void);
+  std::string getNext(void);
+  void        setString(std::string& toTokens);
+  UInt32      countTokens(void);
 
-  protected:
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Type information                            */
-    /*! \{                                                                 */
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Type information                            */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Helper                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Helper                                  */
+  /*! \{                                                                 */
 
-    void nextTokenPos(std::string::size_type &start, 
-                      std::string::size_type &end);
+  void nextTokenPos(std::string::size_type& start, std::string::size_type& end);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Member                                  */
-    /*! \{                                                                 */
-    
-    bool                    _hasNext;
-    std::string            &_tokenString;
-    std::string             _nextToken;
-    std::string::size_type  _currPos;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Member                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
+  bool                   _hasNext;
+  std::string&           _tokenString;
+  std::string            _nextToken;
+  std::string::size_type _currPos;
 
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    StringTokenizer(const StringTokenizer &source);
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const StringTokenizer &source);
+ private:
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  StringTokenizer(const StringTokenizer& source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const StringTokenizer& source);
 };
 
 OSG_END_NAMESPACE

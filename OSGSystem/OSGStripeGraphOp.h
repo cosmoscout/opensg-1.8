@@ -36,7 +36,6 @@
 *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGSTRIPEGRAPHOP_H_
 #define _OSGSTRIPEGRAPHOP_H_
 #ifdef __sgi
@@ -56,55 +55,53 @@ OSG_BEGIN_NAMESPACE
 
 typedef SingleTypeGraphOp<Geometry> SingleTypeGraphOpGeo;
 
-class OSG_SYSTEMLIB_DLLMAPPING StripeGraphOp : public SingleTypeGraphOpGeo
-{
-    /*==========================  PUBLIC  =================================*/
-public:
+class OSG_SYSTEMLIB_DLLMAPPING StripeGraphOp : public SingleTypeGraphOpGeo {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  static const char* getClassname(void) {
+    return "StripeGraphOp";
+  };
 
-    static const char *getClassname(void) { return "StripeGraphOp"; };
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-    
-    StripeGraphOp(const char* name = "Stripe");
+  StripeGraphOp(const char* name = "Stripe");
 
-    GraphOp *create();
+  GraphOp* create();
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    virtual ~StripeGraphOp(void);
+  virtual ~StripeGraphOp(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Main methods                               */
-    /*! \{                                                                 */
-    
-    void setParams(const std::string params);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Main methods                               */
+  /*! \{                                                                 */
 
-    std::string usage(void);
+  void setParams(const std::string params);
 
-    /*! \}                                                                 */
+  std::string usage(void);
 
-    /*=========================  PROTECTED  ===============================*/
-protected:    
+  /*! \}                                                                 */
 
-    bool travNodeEnter(NodePtr node);
-    bool travNodeLeave(NodePtr node);       
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  bool travNodeEnter(NodePtr node);
+  bool travNodeLeave(NodePtr node);
 
-    /*==========================  PRIVATE  ================================*/
-private:
-
-    bool _force;  // Force striping striped geometries
-    bool _stitch; // Stitch strips together
+  /*==========================  PRIVATE  ================================*/
+ private:
+  bool _force;  // Force striping striped geometries
+  bool _stitch; // Stitch strips together
 };
 
 OSG_END_NAMESPACE

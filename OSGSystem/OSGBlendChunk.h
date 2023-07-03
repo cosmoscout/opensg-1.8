@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGBLENDCHUNK_H_
 #define _OSGBLENDCHUNK_H_
 #ifdef __sgi
@@ -48,126 +47,119 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief State chunk to wrap pixel combination functions. See \ref 
+/*! \brief State chunk to wrap pixel combination functions. See \ref
     PageSystemBlendChunk for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING BlendChunk : public BlendChunkBase
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING BlendChunk : public BlendChunkBase {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                 Chunk Class Access                           */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                 Chunk Class Access                           */
-    /*! \{                                                                 */
+  virtual const StateChunkClass* getClass(void) const;
 
-           virtual const StateChunkClass * getClass         (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name              Static Chunk Class Access                       */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name              Static Chunk Class Access                       */
-    /*! \{                                                                 */
+  inline static UInt32                 getStaticClassId(void);
+  inline static const StateChunkClass* getStaticClass(void);
 
-    inline static        UInt32            getStaticClassId (void);
-    inline static  const StateChunkClass * getStaticClass   (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    virtual void changed(BitVector whichField,
-                         UInt32    origin    );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Output                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Output                                  */
-    /*! \{                                                                 */
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    virtual void dump(      UInt32    uiIndent = 0,
-                      const BitVector bvFlags  = 0) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    State Commands                            */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    State Commands                            */
-    /*! \{                                                                 */
+  virtual void activate(DrawActionBase* action, UInt32 index = 0);
 
-    virtual void activate      ( DrawActionBase * action, UInt32 index = 0 );
+  virtual void changeFrom(DrawActionBase* action, StateChunk* old, UInt32 index = 0);
 
-    virtual void changeFrom    ( DrawActionBase * action, StateChunk * old,
-                                 UInt32 index = 0 );
+  virtual void deactivate(DrawActionBase* action, UInt32 index = 0);
 
-    virtual void deactivate    ( DrawActionBase * action, UInt32 index = 0 );
+  virtual bool isTransparent(void) const;
 
-    virtual bool isTransparent (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Comparison                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Comparison                                 */
-    /*! \{                                                                 */
+  virtual Real32 switchCost(StateChunk* chunk);
 
-    virtual Real32 switchCost  ( StateChunk * chunk );
+  virtual bool operator<(const StateChunk& other) const;
 
-    virtual bool   operator <  (const StateChunk &other) const;
+  virtual bool operator==(const StateChunk& other) const;
+  virtual bool operator!=(const StateChunk& other) const;
 
-    virtual bool   operator == (const StateChunk &other) const;
-    virtual bool   operator != (const StateChunk &other) const;
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  BlendChunk(void);
+  BlendChunk(const BlendChunk& source);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    BlendChunk(void);
-    BlendChunk(const BlendChunk &source);
+  virtual ~BlendChunk(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    virtual ~BlendChunk(void);
+  /*==========================  PRIVATE  ================================*/
+ private:
+  typedef BlendChunkBase Inherited;
 
-    /*! \}                                                                 */
+  friend class FieldContainer;
+  friend class BlendChunkBase;
 
-    /*==========================  PRIVATE  ================================*/
-  private:
+  static StateChunkClass _class;
 
-    typedef BlendChunkBase Inherited;
+  /*---------------------------------------------------------------------*/
+  /*! \name            OpenGL Extension Handling                         */
+  /*! \{                                                                 */
 
-    friend class FieldContainer;
-    friend class BlendChunkBase;
+  static UInt32 _extBlend;
+  static UInt32 _extImaging;
+  static UInt32 _extBlendSubtract;
+  static UInt32 _extBlendMinMax;
+  static UInt32 _extBlendLogicOp;
+  static UInt32 _extBlendFuncSeparate;
+  static UInt32 _funcBlendColor;
+  static UInt32 _funcBlendEquation;
+  static UInt32 _funcBlendEquationExt;
+  static UInt32 _funcBlendFuncSeparateExt;
 
-    static StateChunkClass _class;
+  /*! \}                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name            OpenGL Extension Handling                         */
-    /*! \{                                                                 */
+  static void initMethod(void);
 
-    static UInt32 _extBlend;
-    static UInt32 _extImaging;
-    static UInt32 _extBlendSubtract;
-    static UInt32 _extBlendMinMax;
-    static UInt32 _extBlendLogicOp;
-    static UInt32 _extBlendFuncSeparate;
-    static UInt32 _funcBlendColor;
-    static UInt32 _funcBlendEquation;
-    static UInt32 _funcBlendEquationExt;
-    static UInt32 _funcBlendFuncSeparateExt;
-
-    /*! \}                                                                 */
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const BlendChunk &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const BlendChunk& source);
 };
 
-typedef BlendChunk *BlendChunkP;
+typedef BlendChunk* BlendChunkP;
 
 OSG_END_NAMESPACE
 

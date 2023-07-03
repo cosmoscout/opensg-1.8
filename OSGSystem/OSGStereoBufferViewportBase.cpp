@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILESTEREOBUFFERVIEWPORTINST
 
 #include <stdlib.h>
@@ -61,19 +60,16 @@
 #include "OSGStereoBufferViewportBase.h"
 #include "OSGStereoBufferViewport.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  StereoBufferViewportBase::LeftBufferFieldMask = 
+const OSG::BitVector StereoBufferViewportBase::LeftBufferFieldMask =
     (TypeTraits<BitVector>::One << StereoBufferViewportBase::LeftBufferFieldId);
 
-const OSG::BitVector  StereoBufferViewportBase::RightBufferFieldMask = 
+const OSG::BitVector StereoBufferViewportBase::RightBufferFieldMask =
     (TypeTraits<BitVector>::One << StereoBufferViewportBase::RightBufferFieldId);
 
-const OSG::BitVector StereoBufferViewportBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector StereoBufferViewportBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
@@ -86,215 +82,157 @@ const OSG::BitVector StereoBufferViewportBase::MTInfluenceMask =
 
 //! StereoBufferViewport description
 
-FieldDescription *StereoBufferViewportBase::_desc[] = 
-{
-    new FieldDescription(SFBool::getClassType(), 
-                     "leftBuffer", 
-                     LeftBufferFieldId, LeftBufferFieldMask,
-                     false,
-                     (FieldAccessMethod) &StereoBufferViewportBase::getSFLeftBuffer),
-    new FieldDescription(SFBool::getClassType(), 
-                     "rightBuffer", 
-                     RightBufferFieldId, RightBufferFieldMask,
-                     false,
-                     (FieldAccessMethod) &StereoBufferViewportBase::getSFRightBuffer)
-};
+FieldDescription* StereoBufferViewportBase::_desc[] = {
+    new FieldDescription(SFBool::getClassType(), "leftBuffer", LeftBufferFieldId,
+        LeftBufferFieldMask, false, (FieldAccessMethod)&StereoBufferViewportBase::getSFLeftBuffer),
+    new FieldDescription(SFBool::getClassType(), "rightBuffer", RightBufferFieldId,
+        RightBufferFieldMask, false,
+        (FieldAccessMethod)&StereoBufferViewportBase::getSFRightBuffer)};
 
+FieldContainerType StereoBufferViewportBase::_type("StereoBufferViewport", "Viewport", NULL,
+    (PrototypeCreateF)&StereoBufferViewportBase::createEmpty, StereoBufferViewport::initMethod,
+    _desc, sizeof(_desc));
 
-FieldContainerType StereoBufferViewportBase::_type(
-    "StereoBufferViewport",
-    "Viewport",
-    NULL,
-    (PrototypeCreateF) &StereoBufferViewportBase::createEmpty,
-    StereoBufferViewport::initMethod,
-    _desc,
-    sizeof(_desc));
-
-//OSG_FIELD_CONTAINER_DEF(StereoBufferViewportBase, StereoBufferViewportPtr)
+// OSG_FIELD_CONTAINER_DEF(StereoBufferViewportBase, StereoBufferViewportPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &StereoBufferViewportBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &StereoBufferViewportBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr StereoBufferViewportBase::shallowCopy(void) const 
-{ 
-    StereoBufferViewportPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const StereoBufferViewport *>(this)); 
-
-    return returnValue; 
+FieldContainerType& StereoBufferViewportBase::getType(void) {
+  return _type;
 }
 
-UInt32 StereoBufferViewportBase::getContainerSize(void) const 
-{ 
-    return sizeof(StereoBufferViewport); 
+const FieldContainerType& StereoBufferViewportBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr StereoBufferViewportBase::shallowCopy(void) const {
+  StereoBufferViewportPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const StereoBufferViewport*>(this));
+
+  return returnValue;
+}
+
+UInt32 StereoBufferViewportBase::getContainerSize(void) const {
+  return sizeof(StereoBufferViewport);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void StereoBufferViewportBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((StereoBufferViewportBase *) &other, whichField);
+void StereoBufferViewportBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((StereoBufferViewportBase*)&other, whichField);
 }
 #else
-void StereoBufferViewportBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((StereoBufferViewportBase *) &other, whichField, sInfo);
+void StereoBufferViewportBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((StereoBufferViewportBase*)&other, whichField, sInfo);
 }
-void StereoBufferViewportBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void StereoBufferViewportBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void StereoBufferViewportBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void StereoBufferViewportBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-StereoBufferViewportBase::StereoBufferViewportBase(void) :
-    _sfLeftBuffer             (bool(true)), 
-    _sfRightBuffer            (bool(true)), 
-    Inherited() 
-{
+StereoBufferViewportBase::StereoBufferViewportBase(void)
+    : _sfLeftBuffer(bool(true))
+    , _sfRightBuffer(bool(true))
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-StereoBufferViewportBase::StereoBufferViewportBase(const StereoBufferViewportBase &source) :
-    _sfLeftBuffer             (source._sfLeftBuffer             ), 
-    _sfRightBuffer            (source._sfRightBuffer            ), 
-    Inherited                 (source)
-{
+StereoBufferViewportBase::StereoBufferViewportBase(const StereoBufferViewportBase& source)
+    : _sfLeftBuffer(source._sfLeftBuffer)
+    , _sfRightBuffer(source._sfRightBuffer)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-StereoBufferViewportBase::~StereoBufferViewportBase(void)
-{
+StereoBufferViewportBase::~StereoBufferViewportBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 StereoBufferViewportBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 StereoBufferViewportBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (LeftBufferFieldMask & whichField))
-    {
-        returnValue += _sfLeftBuffer.getBinSize();
-    }
+  if (FieldBits::NoField != (LeftBufferFieldMask & whichField)) {
+    returnValue += _sfLeftBuffer.getBinSize();
+  }
 
-    if(FieldBits::NoField != (RightBufferFieldMask & whichField))
-    {
-        returnValue += _sfRightBuffer.getBinSize();
-    }
+  if (FieldBits::NoField != (RightBufferFieldMask & whichField)) {
+    returnValue += _sfRightBuffer.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void StereoBufferViewportBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void StereoBufferViewportBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (LeftBufferFieldMask & whichField))
-    {
-        _sfLeftBuffer.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (LeftBufferFieldMask & whichField)) {
+    _sfLeftBuffer.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (RightBufferFieldMask & whichField))
-    {
-        _sfRightBuffer.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (RightBufferFieldMask & whichField)) {
+    _sfRightBuffer.copyToBin(pMem);
+  }
 }
 
-void StereoBufferViewportBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void StereoBufferViewportBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (LeftBufferFieldMask & whichField))
-    {
-        _sfLeftBuffer.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (LeftBufferFieldMask & whichField)) {
+    _sfLeftBuffer.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (RightBufferFieldMask & whichField))
-    {
-        _sfRightBuffer.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (RightBufferFieldMask & whichField)) {
+    _sfRightBuffer.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void StereoBufferViewportBase::executeSyncImpl(      StereoBufferViewportBase *pOther,
-                                        const BitVector         &whichField)
-{
+void StereoBufferViewportBase::executeSyncImpl(
+    StereoBufferViewportBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (LeftBufferFieldMask & whichField))
-        _sfLeftBuffer.syncWith(pOther->_sfLeftBuffer);
+  if (FieldBits::NoField != (LeftBufferFieldMask & whichField))
+    _sfLeftBuffer.syncWith(pOther->_sfLeftBuffer);
 
-    if(FieldBits::NoField != (RightBufferFieldMask & whichField))
-        _sfRightBuffer.syncWith(pOther->_sfRightBuffer);
-
-
+  if (FieldBits::NoField != (RightBufferFieldMask & whichField))
+    _sfRightBuffer.syncWith(pOther->_sfRightBuffer);
 }
 #else
-void StereoBufferViewportBase::executeSyncImpl(      StereoBufferViewportBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void StereoBufferViewportBase::executeSyncImpl(
+    StereoBufferViewportBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (LeftBufferFieldMask & whichField))
-        _sfLeftBuffer.syncWith(pOther->_sfLeftBuffer);
+  if (FieldBits::NoField != (LeftBufferFieldMask & whichField))
+    _sfLeftBuffer.syncWith(pOther->_sfLeftBuffer);
 
-    if(FieldBits::NoField != (RightBufferFieldMask & whichField))
-        _sfRightBuffer.syncWith(pOther->_sfRightBuffer);
-
-
-
+  if (FieldBits::NoField != (RightBufferFieldMask & whichField))
+    _sfRightBuffer.syncWith(pOther->_sfRightBuffer);
 }
 
-void StereoBufferViewportBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void StereoBufferViewportBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>
@@ -309,4 +247,3 @@ OSG_DLLEXPORT_SFIELD_DEF1(StereoBufferViewportPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 OSG_DLLEXPORT_MFIELD_DEF1(StereoBufferViewportPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
-

@@ -52,81 +52,59 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &ShaderParameterVec3fBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& ShaderParameterVec3fBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 ShaderParameterVec3fBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 ShaderParameterVec3fBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-ShaderParameterVec3fPtr ShaderParameterVec3fBase::create(void) 
-{
-    ShaderParameterVec3fPtr fc; 
+inline ShaderParameterVec3fPtr ShaderParameterVec3fBase::create(void) {
+  ShaderParameterVec3fPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = ShaderParameterVec3fPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = ShaderParameterVec3fPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-ShaderParameterVec3fPtr ShaderParameterVec3fBase::createEmpty(void) 
-{ 
-    ShaderParameterVec3fPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline ShaderParameterVec3fPtr ShaderParameterVec3fBase::createEmpty(void) {
+  ShaderParameterVec3fPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the ShaderParameterVec3f::_sfValue field.
-inline
-SFVec3f *ShaderParameterVec3fBase::getSFValue(void)
-{
-    return &_sfValue;
-}
-
-
-//! Get the value of the ShaderParameterVec3f::_sfValue field.
-inline
-Vec3f &ShaderParameterVec3fBase::getValue(void)
-{
-    return _sfValue.getValue();
+inline SFVec3f* ShaderParameterVec3fBase::getSFValue(void) {
+  return &_sfValue;
 }
 
 //! Get the value of the ShaderParameterVec3f::_sfValue field.
-inline
-const Vec3f &ShaderParameterVec3fBase::getValue(void) const
-{
-    return _sfValue.getValue();
+inline Vec3f& ShaderParameterVec3fBase::getValue(void) {
+  return _sfValue.getValue();
+}
+
+//! Get the value of the ShaderParameterVec3f::_sfValue field.
+inline const Vec3f& ShaderParameterVec3fBase::getValue(void) const {
+  return _sfValue.getValue();
 }
 
 //! Set the value of the ShaderParameterVec3f::_sfValue field.
-inline
-void ShaderParameterVec3fBase::setValue(const Vec3f &value)
-{
-    _sfValue.setValue(value);
+inline void ShaderParameterVec3fBase::setValue(const Vec3f& value) {
+  _sfValue.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGSHADERPARAMETERVEC3FBASE_INLINE_CVSID "@(#)$Id: OSGShaderParameterVec3fBase.inl,v 1.5 2006/02/20 17:04:38 dirk Exp $"
-
+#define OSGSHADERPARAMETERVEC3FBASE_INLINE_CVSID                                                   \
+  "@(#)$Id: OSGShaderParameterVec3fBase.inl,v 1.5 2006/02/20 17:04:38 dirk Exp $"

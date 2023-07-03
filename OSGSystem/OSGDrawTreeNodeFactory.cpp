@@ -52,32 +52,25 @@ OSG_USING_NAMESPACE
 /*-------------------------------------------------------------------------*/
 /*                            Constructors                                 */
 
-DrawTreeNodeFactory::DrawTreeNodeFactory(void) :
-    _nodeStore      ( ),
-    _currentFreeNode( ),
-    _uiAllocated    (0),
-    _uiReused       (0)
-{
-    _currentFreeNode = _nodeStore.end();
+DrawTreeNodeFactory::DrawTreeNodeFactory(void)
+    : _nodeStore()
+    , _currentFreeNode()
+    , _uiAllocated(0)
+    , _uiReused(0) {
+  _currentFreeNode = _nodeStore.end();
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Destructor                                  */
 
-DrawTreeNodeFactory::~DrawTreeNodeFactory(void)
-{
-    for(UInt32 i = 0; i < _nodeStore.size(); ++i)
-    {
-        delete _nodeStore[i];
-    }
+DrawTreeNodeFactory::~DrawTreeNodeFactory(void) {
+  for (UInt32 i = 0; i < _nodeStore.size(); ++i) {
+    delete _nodeStore[i];
+  }
 }
 
-void DrawTreeNodeFactory::printStat(void)
-{
-    fprintf(stderr, "\n%d | %d | %d\n", 
-            _uiAllocated, 
-            _uiReused, 
-            _nodeStore.size());
+void DrawTreeNodeFactory::printStat(void) {
+  fprintf(stderr, "\n%d | %d | %d\n", _uiAllocated, _uiReused, _nodeStore.size());
 }
 
 /*-------------------------------------------------------------------------*/
@@ -85,5 +78,3 @@ void DrawTreeNodeFactory::printStat(void)
 
 /*-------------------------------------------------------------------------*/
 /*                             Comparison                                  */
-
-

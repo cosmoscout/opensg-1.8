@@ -52,223 +52,159 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &WindowBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& WindowBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 WindowBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
-
+inline OSG::UInt32 WindowBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the Window::_sfWidth field.
-inline
-SFUInt16 *WindowBase::getSFWidth(void)
-{
-    return &_sfWidth;
+inline SFUInt16* WindowBase::getSFWidth(void) {
+  return &_sfWidth;
 }
 
 //! Get the Window::_sfHeight field.
-inline
-SFUInt16 *WindowBase::getSFHeight(void)
-{
-    return &_sfHeight;
+inline SFUInt16* WindowBase::getSFHeight(void) {
+  return &_sfHeight;
 }
 
 //! Get the Window::_mfPort field.
-inline
-MFViewportPtr *WindowBase::getMFPort(void)
-{
-    return &_mfPort;
+inline MFViewportPtr* WindowBase::getMFPort(void) {
+  return &_mfPort;
 }
 
 //! Get the Window::_sfResizePending field.
-inline
-SFBool *WindowBase::getSFResizePending(void)
-{
-    return &_sfResizePending;
+inline SFBool* WindowBase::getSFResizePending(void) {
+  return &_sfResizePending;
 }
 
 //! Get the Window::_sfGlObjectEventCounter field.
-inline
-SFUInt32 *WindowBase::getSFGlObjectEventCounter(void)
-{
-    return &_sfGlObjectEventCounter;
+inline SFUInt32* WindowBase::getSFGlObjectEventCounter(void) {
+  return &_sfGlObjectEventCounter;
 }
 
 //! Get the Window::_mfGlObjectLastRefresh field.
-inline
-MFUInt32 *WindowBase::getMFGlObjectLastRefresh(void)
-{
-    return &_mfGlObjectLastRefresh;
+inline MFUInt32* WindowBase::getMFGlObjectLastRefresh(void) {
+  return &_mfGlObjectLastRefresh;
 }
 
 //! Get the Window::_mfGlObjectLastReinitialize field.
-inline
-MFUInt32 *WindowBase::getMFGlObjectLastReinitialize(void)
-{
-    return &_mfGlObjectLastReinitialize;
-}
-
-
-//! Get the value of the Window::_sfWidth field.
-inline
-UInt16 &WindowBase::getWidth(void)
-{
-    return _sfWidth.getValue();
+inline MFUInt32* WindowBase::getMFGlObjectLastReinitialize(void) {
+  return &_mfGlObjectLastReinitialize;
 }
 
 //! Get the value of the Window::_sfWidth field.
-inline
-const UInt16 &WindowBase::getWidth(void) const
-{
-    return _sfWidth.getValue();
+inline UInt16& WindowBase::getWidth(void) {
+  return _sfWidth.getValue();
+}
+
+//! Get the value of the Window::_sfWidth field.
+inline const UInt16& WindowBase::getWidth(void) const {
+  return _sfWidth.getValue();
 }
 
 //! Set the value of the Window::_sfWidth field.
-inline
-void WindowBase::setWidth(const UInt16 &value)
-{
-    _sfWidth.setValue(value);
+inline void WindowBase::setWidth(const UInt16& value) {
+  _sfWidth.setValue(value);
 }
 
 //! Get the value of the Window::_sfHeight field.
-inline
-UInt16 &WindowBase::getHeight(void)
-{
-    return _sfHeight.getValue();
+inline UInt16& WindowBase::getHeight(void) {
+  return _sfHeight.getValue();
 }
 
 //! Get the value of the Window::_sfHeight field.
-inline
-const UInt16 &WindowBase::getHeight(void) const
-{
-    return _sfHeight.getValue();
+inline const UInt16& WindowBase::getHeight(void) const {
+  return _sfHeight.getValue();
 }
 
 //! Set the value of the Window::_sfHeight field.
-inline
-void WindowBase::setHeight(const UInt16 &value)
-{
-    _sfHeight.setValue(value);
+inline void WindowBase::setHeight(const UInt16& value) {
+  _sfHeight.setValue(value);
 }
 
 //! Get the value of the Window::_sfResizePending field.
-inline
-bool &WindowBase::getResizePending(void)
-{
-    return _sfResizePending.getValue();
+inline bool& WindowBase::getResizePending(void) {
+  return _sfResizePending.getValue();
 }
 
 //! Get the value of the Window::_sfResizePending field.
-inline
-const bool &WindowBase::getResizePending(void) const
-{
-    return _sfResizePending.getValue();
+inline const bool& WindowBase::getResizePending(void) const {
+  return _sfResizePending.getValue();
 }
 
 //! Set the value of the Window::_sfResizePending field.
-inline
-void WindowBase::setResizePending(const bool &value)
-{
-    _sfResizePending.setValue(value);
+inline void WindowBase::setResizePending(const bool& value) {
+  _sfResizePending.setValue(value);
 }
 
 //! Get the value of the Window::_sfGlObjectEventCounter field.
-inline
-UInt32 &WindowBase::getGlObjectEventCounter(void)
-{
-    return _sfGlObjectEventCounter.getValue();
+inline UInt32& WindowBase::getGlObjectEventCounter(void) {
+  return _sfGlObjectEventCounter.getValue();
 }
 
 //! Get the value of the Window::_sfGlObjectEventCounter field.
-inline
-const UInt32 &WindowBase::getGlObjectEventCounter(void) const
-{
-    return _sfGlObjectEventCounter.getValue();
+inline const UInt32& WindowBase::getGlObjectEventCounter(void) const {
+  return _sfGlObjectEventCounter.getValue();
 }
 
 //! Set the value of the Window::_sfGlObjectEventCounter field.
-inline
-void WindowBase::setGlObjectEventCounter(const UInt32 &value)
-{
-    _sfGlObjectEventCounter.setValue(value);
+inline void WindowBase::setGlObjectEventCounter(const UInt32& value) {
+  _sfGlObjectEventCounter.setValue(value);
 }
-
 
 //! Get the value of the \a index element the Window::_mfPort field.
-inline
-ViewportPtr &WindowBase::getPort(const UInt32 index)
-{
-    return _mfPort[index];
+inline ViewportPtr& WindowBase::getPort(const UInt32 index) {
+  return _mfPort[index];
 }
 
 //! Get the Window::_mfPort field.
-inline
-MFViewportPtr &WindowBase::getPort(void)
-{
-    return _mfPort;
+inline MFViewportPtr& WindowBase::getPort(void) {
+  return _mfPort;
 }
 
 //! Get the Window::_mfPort field.
-inline
-const MFViewportPtr &WindowBase::getPort(void) const
-{
-    return _mfPort;
+inline const MFViewportPtr& WindowBase::getPort(void) const {
+  return _mfPort;
 }
 
 //! Get the value of the \a index element the Window::_mfGlObjectLastRefresh field.
-inline
-UInt32 &WindowBase::getGlObjectLastRefresh(const UInt32 index)
-{
-    return _mfGlObjectLastRefresh[index];
+inline UInt32& WindowBase::getGlObjectLastRefresh(const UInt32 index) {
+  return _mfGlObjectLastRefresh[index];
 }
 
 //! Get the Window::_mfGlObjectLastRefresh field.
-inline
-MFUInt32 &WindowBase::getGlObjectLastRefresh(void)
-{
-    return _mfGlObjectLastRefresh;
+inline MFUInt32& WindowBase::getGlObjectLastRefresh(void) {
+  return _mfGlObjectLastRefresh;
 }
 
 //! Get the Window::_mfGlObjectLastRefresh field.
-inline
-const MFUInt32 &WindowBase::getGlObjectLastRefresh(void) const
-{
-    return _mfGlObjectLastRefresh;
+inline const MFUInt32& WindowBase::getGlObjectLastRefresh(void) const {
+  return _mfGlObjectLastRefresh;
 }
 
 //! Get the value of the \a index element the Window::_mfGlObjectLastReinitialize field.
-inline
-UInt32 &WindowBase::getGlObjectLastReinitialize(const UInt32 index)
-{
-    return _mfGlObjectLastReinitialize[index];
+inline UInt32& WindowBase::getGlObjectLastReinitialize(const UInt32 index) {
+  return _mfGlObjectLastReinitialize[index];
 }
 
 //! Get the Window::_mfGlObjectLastReinitialize field.
-inline
-MFUInt32 &WindowBase::getGlObjectLastReinitialize(void)
-{
-    return _mfGlObjectLastReinitialize;
+inline MFUInt32& WindowBase::getGlObjectLastReinitialize(void) {
+  return _mfGlObjectLastReinitialize;
 }
 
 //! Get the Window::_mfGlObjectLastReinitialize field.
-inline
-const MFUInt32 &WindowBase::getGlObjectLastReinitialize(void) const
-{
-    return _mfGlObjectLastReinitialize;
+inline const MFUInt32& WindowBase::getGlObjectLastReinitialize(void) const {
+  return _mfGlObjectLastReinitialize;
 }
 
 OSG_END_NAMESPACE
 
-#define OSGWINDOWBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGWINDOWBASE_INLINE_CVSID                                                                 \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

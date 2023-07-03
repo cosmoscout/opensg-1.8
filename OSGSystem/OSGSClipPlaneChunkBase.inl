@@ -52,81 +52,59 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &SClipPlaneChunkBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& SClipPlaneChunkBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 SClipPlaneChunkBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 SClipPlaneChunkBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-SClipPlaneChunkPtr SClipPlaneChunkBase::create(void) 
-{
-    SClipPlaneChunkPtr fc; 
+inline SClipPlaneChunkPtr SClipPlaneChunkBase::create(void) {
+  SClipPlaneChunkPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = SClipPlaneChunkPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = SClipPlaneChunkPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-SClipPlaneChunkPtr SClipPlaneChunkBase::createEmpty(void) 
-{ 
-    SClipPlaneChunkPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline SClipPlaneChunkPtr SClipPlaneChunkBase::createEmpty(void) {
+  SClipPlaneChunkPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the SClipPlaneChunk::_sfEquation field.
-inline
-SFVec4f *SClipPlaneChunkBase::getSFEquation(void)
-{
-    return &_sfEquation;
-}
-
-
-//! Get the value of the SClipPlaneChunk::_sfEquation field.
-inline
-Vec4f &SClipPlaneChunkBase::getEquation(void)
-{
-    return _sfEquation.getValue();
+inline SFVec4f* SClipPlaneChunkBase::getSFEquation(void) {
+  return &_sfEquation;
 }
 
 //! Get the value of the SClipPlaneChunk::_sfEquation field.
-inline
-const Vec4f &SClipPlaneChunkBase::getEquation(void) const
-{
-    return _sfEquation.getValue();
+inline Vec4f& SClipPlaneChunkBase::getEquation(void) {
+  return _sfEquation.getValue();
+}
+
+//! Get the value of the SClipPlaneChunk::_sfEquation field.
+inline const Vec4f& SClipPlaneChunkBase::getEquation(void) const {
+  return _sfEquation.getValue();
 }
 
 //! Set the value of the SClipPlaneChunk::_sfEquation field.
-inline
-void SClipPlaneChunkBase::setEquation(const Vec4f &value)
-{
-    _sfEquation.setValue(value);
+inline void SClipPlaneChunkBase::setEquation(const Vec4f& value) {
+  _sfEquation.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGSCLIPPLANECHUNKBASE_INLINE_CVSID "@(#)$Id: OSGSClipPlaneChunkBase.inl,v 1.1 2007/04/26 15:22:01 a-m-z Exp $"
-
+#define OSGSCLIPPLANECHUNKBASE_INLINE_CVSID                                                        \
+  "@(#)$Id: OSGSClipPlaneChunkBase.inl,v 1.1 2007/04/26 15:22:01 a-m-z Exp $"

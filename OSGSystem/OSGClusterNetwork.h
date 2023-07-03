@@ -55,92 +55,87 @@ OSG_BEGIN_NAMESPACE
 
 class RemoteAspect;
 
-class OSG_SYSTEMLIB_DLLMAPPING ClusterNetwork : public MemoryObject
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING ClusterNetwork : public MemoryObject {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef std::vector<Connection*>          ConnectionsT;
+  typedef std::map<UInt32, ClusterNetwork*> ConnectionInfoMapT;
+  enum { ALL_NODES = 0xf00000 };
 
-    typedef std::vector<Connection *>         ConnectionsT;
-    typedef std::map<UInt32,ClusterNetwork *> ConnectionInfoMapT;
-    enum { ALL_NODES   = 0xf00000 };
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Get                                     */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Get                                     */
-    /*! \{                                                                 */
+  Connection*      getMainConnection(void);
+  GroupConnection* getMainGroupConnection(void);
+  PointConnection* getMainPointConnection(void);
 
-    Connection      *getMainConnection      (void);
-    GroupConnection *getMainGroupConnection (void);
-    PointConnection *getMainPointConnection (void);
+  Connection*      getConnection(UInt32 id);
+  GroupConnection* getGroupConnection(UInt32 id);
+  PointConnection* getPointConnection(UInt32 id);
 
-    Connection      *getConnection      (UInt32 id);
-    GroupConnection *getGroupConnection (UInt32 id);
-    PointConnection *getPointConnection (UInt32 id);
+  RemoteAspect* getAspect(void);
+  ConnectionsT& getConnection(void);
 
-    RemoteAspect    *getAspect          (void     );
-    ConnectionsT    &getConnection      (void     );
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Set                                     */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Set                                     */
+  /*! \{                                                                 */
 
-    void setAspect         (RemoteAspect *aspect            );
-    void setMainConnection (Connection *connection          );
-    void setConnection     (UInt32 id,Connection *connection);
+  void setAspect(RemoteAspect* aspect);
+  void setMainConnection(Connection* connection);
+  void setConnection(UInt32 id, Connection* connection);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   establish connection                       */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   establish connection                       */
+  /*! \{                                                                 */
 
-    void connectAllPointToPoint(           UInt32  thidId,
-                                const std::string &connectionType);
-    void connectAllGroupToPoint(           UInt32  thidId,
-                                const std::string &connectionType);
+  void connectAllPointToPoint(UInt32 thidId, const std::string& connectionType);
+  void connectAllGroupToPoint(UInt32 thidId, const std::string& connectionType);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                  static access                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  static access                               */
+  /*! \{                                                                 */
 
-    static ClusterNetwork *getInstance(UInt32 ClusterWindowId);
+  static ClusterNetwork* getInstance(UInt32 ClusterWindowId);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  typedef MemoryObject Inherited;
 
-    typedef MemoryObject Inherited;
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  ClusterNetwork(UInt32 clusterWindowId);
 
-    ClusterNetwork(UInt32 clusterWindowId);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  virtual ~ClusterNetwork(void);
 
-    virtual ~ClusterNetwork(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  RemoteAspect* _aspect;
+  Connection*   _mainConnection;
+  ConnectionsT  _connection;
+  UInt32        _id;
 
-    RemoteAspect             *_aspect;
-    Connection               *_mainConnection;
-    ConnectionsT              _connection;
-    UInt32                    _id;
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  ClusterNetwork(const ClusterNetwork& source);
+  ClusterNetwork& operator=(const ClusterNetwork& source);
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
-    ClusterNetwork(const ClusterNetwork &source);
-    ClusterNetwork &operator =(const ClusterNetwork &source);
-
-    static ConnectionInfoMapT _map;
+  static ConnectionInfoMapT _map;
 };
 
 OSG_END_NAMESPACE

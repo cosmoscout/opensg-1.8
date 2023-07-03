@@ -36,242 +36,169 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 OSG_BEGIN_NAMESPACE
 
 /*-------------------------------------------------------------------------*/
 /*                               Access                                    */
 
-inline
-DrawTreeNode *DrawTreeNode::getFirstChild(void)
-{
-    return _pFirstChild;
+inline DrawTreeNode* DrawTreeNode::getFirstChild(void) {
+  return _pFirstChild;
 }
 
-inline
-DrawTreeNode *DrawTreeNode::getLastChild(void)
-{
-    return _pLastChild;
+inline DrawTreeNode* DrawTreeNode::getLastChild(void) {
+  return _pLastChild;
 }
 
-inline
-void DrawTreeNode::addChild(DrawTreeNode *pChild)
-{
-    if(_pLastChild == NULL)
-    {
-        _pFirstChild = pChild;
-        _pLastChild  = pChild;
-    }
-    else
-    {
-        _pLastChild->setBrother(pChild);
-        _pLastChild = pChild;
-    }
+inline void DrawTreeNode::addChild(DrawTreeNode* pChild) {
+  if (_pLastChild == NULL) {
+    _pFirstChild = pChild;
+    _pLastChild  = pChild;
+  } else {
+    _pLastChild->setBrother(pChild);
+    _pLastChild = pChild;
+  }
 }
 
-inline
-void DrawTreeNode::insertFirstChild  (DrawTreeNode *pChild)
-{
-    if(pChild == NULL)
-        return;
+inline void DrawTreeNode::insertFirstChild(DrawTreeNode* pChild) {
+  if (pChild == NULL)
+    return;
 
-    if(_pFirstChild == NULL)
-    {
-        addChild(pChild);
-    }
-    else
-    {
-        pChild->setBrother(_pFirstChild);
-        _pFirstChild = pChild;
-    }
-    
+  if (_pFirstChild == NULL) {
+    addChild(pChild);
+  } else {
+    pChild->setBrother(_pFirstChild);
+    _pFirstChild = pChild;
+  }
 }
 
-inline
-void DrawTreeNode::insertChildAfter(DrawTreeNode *pCurrent, 
-                                    DrawTreeNode *pChild)
-{
-    if(pCurrent == NULL || pChild == NULL)
-        return;
+inline void DrawTreeNode::insertChildAfter(DrawTreeNode* pCurrent, DrawTreeNode* pChild) {
+  if (pCurrent == NULL || pChild == NULL)
+    return;
 
-    pChild  ->setBrother(pCurrent->getBrother());
-    pCurrent->setBrother(pChild  );
+  pChild->setBrother(pCurrent->getBrother());
+  pCurrent->setBrother(pChild);
 
-    if(pCurrent == _pLastChild)
-    {
-        _pLastChild = pChild;
-    }    
+  if (pCurrent == _pLastChild) {
+    _pLastChild = pChild;
+  }
 }
 
-inline
-DrawTreeNode *DrawTreeNode::getBrother(void)
-{
-    return _pBrother;
+inline DrawTreeNode* DrawTreeNode::getBrother(void) {
+  return _pBrother;
 }
 
-inline
-void DrawTreeNode::setBrother(DrawTreeNode *pBrother)
-{
-    _pBrother = pBrother;
+inline void DrawTreeNode::setBrother(DrawTreeNode* pBrother) {
+  _pBrother = pBrother;
 }
 
-inline
-void DrawTreeNode::setGeometry(Geometry *pGeo)
-{
-    _pGeo = pGeo;
+inline void DrawTreeNode::setGeometry(Geometry* pGeo) {
+  _pGeo = pGeo;
 }
 
-inline
-Geometry *DrawTreeNode::getGeometry(void)
-{
-    return _pGeo;
+inline Geometry* DrawTreeNode::getGeometry(void) {
+  return _pGeo;
 }
 
-inline
-void DrawTreeNode::setFunctor(Material::DrawFunctor &func)
-{
-    _functor=func;
-    _hasFunctor=true;
+inline void DrawTreeNode::setFunctor(Material::DrawFunctor& func) {
+  _functor    = func;
+  _hasFunctor = true;
 }
 
-inline
-Material::DrawFunctor &DrawTreeNode::getFunctor(void)
-{
-    return _functor;
+inline Material::DrawFunctor& DrawTreeNode::getFunctor(void) {
+  return _functor;
 }
 
-inline
-bool DrawTreeNode::hasFunctor(void)
-{
-    return _hasFunctor;
+inline bool DrawTreeNode::hasFunctor(void) {
+  return _hasFunctor;
 }
 
-inline
-void DrawTreeNode::setState(State *pState)
-{
-    _pState = pState;
+inline void DrawTreeNode::setState(State* pState) {
+  _pState = pState;
 }
 
-inline
-State *DrawTreeNode::getState(void)
-{
-    return _pState;
+inline State* DrawTreeNode::getState(void) {
+  return _pState;
 }
 
-inline
-void DrawTreeNode::setNode(NodePtr pNode)
-{
-    _pNode = pNode;
+inline void DrawTreeNode::setNode(NodePtr pNode) {
+  _pNode = pNode;
 }
 
-inline
-NodePtr DrawTreeNode::getNode(void)
-{
-    return _pNode;
+inline NodePtr DrawTreeNode::getNode(void) {
+  return _pNode;
 }
 
-inline
-void DrawTreeNode::setMatrixStore(const RenderAction::MatrixStore &oMatrixStore)
-{
-    _oMatrixStore = oMatrixStore;
+inline void DrawTreeNode::setMatrixStore(const RenderAction::MatrixStore& oMatrixStore) {
+  _oMatrixStore = oMatrixStore;
 }
 
-inline
-RenderAction::MatrixStore &DrawTreeNode::getMatrixStore(void)
-{
-    return _oMatrixStore;
+inline RenderAction::MatrixStore& DrawTreeNode::getMatrixStore(void) {
+  return _oMatrixStore;
 }
 
-inline
-void DrawTreeNode::setScalar(Real32 rScalar)
-{
-    _rScalarVal = rScalar;
+inline void DrawTreeNode::setScalar(Real32 rScalar) {
+  _rScalarVal = rScalar;
 }
 
-inline
-Real32 DrawTreeNode::getScalar(void)
-{
-    return _rScalarVal;
+inline Real32 DrawTreeNode::getScalar(void) {
+  return _rScalarVal;
 }
 
-inline
-void DrawTreeNode::setLightsState(UInt32 state)
-{
-    _lightsState = state;
+inline void DrawTreeNode::setLightsState(UInt32 state) {
+  _lightsState = state;
 }
 
-inline
-UInt32 DrawTreeNode::getLightsState(void)
-{
-    return _lightsState;
+inline UInt32 DrawTreeNode::getLightsState(void) {
+  return _lightsState;
 }
 
-inline
-void DrawTreeNode::setClipPlanesState(UInt32 state)
-{
-    _clipPlanesState = state;
+inline void DrawTreeNode::setClipPlanesState(UInt32 state) {
+  _clipPlanesState = state;
 }
 
-inline
-UInt32 DrawTreeNode::getClipPlanesState(void)
-{
-    return _clipPlanesState;
+inline UInt32 DrawTreeNode::getClipPlanesState(void) {
+  return _clipPlanesState;
 }
 
-inline
-void DrawTreeNode::setMultiPass(void)
-{
-    _flags |= DrawTreeNode::MultiPass;
+inline void DrawTreeNode::setMultiPass(void) {
+  _flags |= DrawTreeNode::MultiPass;
 }
 
-inline
-void DrawTreeNode::setLastMultiPass(void)
-{
-    _flags |= DrawTreeNode::LastMultiPass;
+inline void DrawTreeNode::setLastMultiPass(void) {
+  _flags |= DrawTreeNode::LastMultiPass;
 }
 
-inline
-bool DrawTreeNode::isMultiPass(void)
-{
-    return (_flags & DrawTreeNode::MultiPass) ||
-           (_flags & DrawTreeNode::LastMultiPass);
+inline bool DrawTreeNode::isMultiPass(void) {
+  return (_flags & DrawTreeNode::MultiPass) || (_flags & DrawTreeNode::LastMultiPass);
 }
 
-inline
-bool DrawTreeNode::isLastMultiPass(void)
-{
-    return (_flags & DrawTreeNode::LastMultiPass);
+inline bool DrawTreeNode::isLastMultiPass(void) {
+  return (_flags & DrawTreeNode::LastMultiPass);
 }
 
-inline
-void DrawTreeNode::setNoStateSorting(void)
-{
-    _flags |= DrawTreeNode::NoStateSorting;
+inline void DrawTreeNode::setNoStateSorting(void) {
+  _flags |= DrawTreeNode::NoStateSorting;
 }
 
-inline
-bool DrawTreeNode::isNoStateSorting(void)
-{
-    return (_flags & DrawTreeNode::NoStateSorting);
+inline bool DrawTreeNode::isNoStateSorting(void) {
+  return (_flags & DrawTreeNode::NoStateSorting);
 }
 
-inline
-void DrawTreeNode::reset(void)
-{
-    _pFirstChild = NULL;
-    _pLastChild  = NULL;
-    _pBrother    = NULL;
-    _pState      = NULL;
-    _pGeo        = NULL;
-    _hasFunctor  = false;
+inline void DrawTreeNode::reset(void) {
+  _pFirstChild = NULL;
+  _pLastChild  = NULL;
+  _pBrother    = NULL;
+  _pState      = NULL;
+  _pGeo        = NULL;
+  _hasFunctor  = false;
 
-    _oMatrixStore.first = 0;
-    _oMatrixStore.second.setIdentity();
+  _oMatrixStore.first = 0;
+  _oMatrixStore.second.setIdentity();
 
-    _rScalarVal = 0.f;
+  _rScalarVal = 0.f;
 
-    _lightsState = 0;
-    _flags = 0;
+  _lightsState = 0;
+  _flags       = 0;
 }
 
 OSG_END_NAMESPACE

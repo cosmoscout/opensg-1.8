@@ -44,7 +44,7 @@
 
 #ifdef WIN32
 #ifdef WIN32_LEAN_AND_MEAN
-#include <winsock2.h>  
+#include <winsock2.h>
 #endif
 #include <io.h>
 #else
@@ -75,7 +75,7 @@ OSG_USING_NAMESPACE
  *
  * This class is a Handler to connection oriented sockets. A call to
  * <EM>open</EM> will assing a stream socket and <EM>close</EM>
- * releases the socket. 
+ * releases the socket.
  *
  * Client example
  * <PRE>
@@ -107,95 +107,81 @@ OSG_USING_NAMESPACE
     the constructor.
     \see StreamSocket::open
  */
-StreamSocket::StreamSocket():
-    Socket()
-{
+StreamSocket::StreamSocket()
+    : Socket() {
 }
 
 /** \brief Copy constructor
  */
-StreamSocket::StreamSocket(const StreamSocket &source):
-    Socket(source)
-{
+StreamSocket::StreamSocket(const StreamSocket& source)
+    : Socket(source) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                           Socket functionaliy                           */
 
 /*! Assign a socket. <CODE>Open</CODE> assignes a system socket to the
-    StreamSocket. 
-    \see Socket::close 
+    StreamSocket.
+    \see Socket::close
  */
-void StreamSocket::open()
-{
-    _sd = ::socket(AF_INET, SOCK_STREAM, 0);
-    if(_sd < 0)
-    {
-        throw SocketError("socket()");
-    }
-    struct linger li;
-    li.l_onoff = 1;
-    li.l_linger = 1;
-    int rc = setsockopt(_sd, SOL_SOCKET, SO_LINGER, 
-                        (SocketOptT*)&li, sizeof(li));
+void StreamSocket::open() {
+  _sd = ::socket(AF_INET, SOCK_STREAM, 0);
+  if (_sd < 0) {
+    throw SocketError("socket()");
+  }
+  struct linger li;
+  li.l_onoff  = 1;
+  li.l_linger = 1;
+  int rc      = setsockopt(_sd, SOL_SOCKET, SO_LINGER, (SocketOptT*)&li, sizeof(li));
 }
 
 /*! close socket
  */
-void StreamSocket::close(void)
-{
+void StreamSocket::close(void) {
 #ifdef WIN32
-    ::closesocket(_sd);
+  ::closesocket(_sd);
 #else
-    ::close(_sd);
+  ::close(_sd);
 #endif
 }
 
-/*! Accept incomming connection. Use the returned StreamSocket to 
+/*! Accept incomming connection. Use the returned StreamSocket to
     communicate over the accepted communication. If the new StreamSocket
-    is no longer used, you have to close it. A new StreamSocket is 
+    is no longer used, you have to close it. A new StreamSocket is
     returned to communicate with the accepted client.
  */
-StreamSocket StreamSocket::acceptFrom(SocketAddress &address)
-{
-    StreamSocket client;
-    SocketLenT len;
-    
-    len=address.getSockAddrSize();
-    client._sd=::accept(_sd,
-                        address.getSockAddr(),
-                        &len);
-    if(client._sd < 0)
-    {
-        throw SocketError("accept()");
-    }
-    return client;
+StreamSocket StreamSocket::acceptFrom(SocketAddress& address) {
+  StreamSocket client;
+  SocketLenT   len;
+
+  len        = address.getSockAddrSize();
+  client._sd = ::accept(_sd, address.getSockAddr(), &len);
+  if (client._sd < 0) {
+    throw SocketError("accept()");
+  }
+  return client;
 }
 
-/*! Accept incomming connection. Use the returned StreamSocket to 
+/*! Accept incomming connection. Use the returned StreamSocket to
     communicate over the accepted communication. If the new StreamSocket
     is no longer used, you have to close it.
  */
-StreamSocket StreamSocket::accept()
-{
-    SocketAddress addr;
-    return acceptFrom(addr);
+StreamSocket StreamSocket::accept() {
+  SocketAddress addr;
+  return acceptFrom(addr);
 }
 
 /*! A Stream socket doesen't send data immediately. Only if the internal
     buffer contains enough data, an immediate write is forced. If
     delay is set to false, then data is written always immediately.
  */
-void StreamSocket::setDelay(bool value)
-{
-    int rc,on;
-    on=!value;
-    rc=setsockopt(_sd, IPPROTO_TCP, TCP_NODELAY, 
-                  (SocketOptT*)&on, sizeof(on));
-    if(rc < 0)
-    {
-        throw SocketError("setsockopt(,SOCK_STREAM,TCP_NODELAY)");
-    }
+void StreamSocket::setDelay(bool value) {
+  int rc, on;
+  on = !value;
+  rc = setsockopt(_sd, IPPROTO_TCP, TCP_NODELAY, (SocketOptT*)&on, sizeof(on));
+  if (rc < 0) {
+    throw SocketError("setsockopt(,SOCK_STREAM,TCP_NODELAY)");
+  }
 }
 
 /*-------------------------------------------------------------------------*/
@@ -203,10 +189,7 @@ void StreamSocket::setDelay(bool value)
 
 /*! assignment
  */
-const StreamSocket & StreamSocket::operator =(const StreamSocket &source)
-{
-    _sd=source._sd;
-    return *this;
+const StreamSocket& StreamSocket::operator=(const StreamSocket& source) {
+  _sd = source._sd;
+  return *this;
 }
-
-

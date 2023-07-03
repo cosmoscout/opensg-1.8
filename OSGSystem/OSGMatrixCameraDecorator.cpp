@@ -56,13 +56,13 @@ OSG_USING_NAMESPACE
 /*! \class osg::MatrixCameraDecorator
     \ingroup GrpSystemWindowCameraDecorators
 
-The decorator to modify the Camera matrices simply by matrices. 	
+The decorator to modify the Camera matrices simply by matrices.
 
 The osg::MatrixCameraDecorator for madifying the camera matrices by matrices, see \ref
 PageSystemWindowCameraDecoratorsMatrix for a description.
 
-The matrices to use are defined by the _sf Fields. The size of the full image is defined by the _sfFullWidth and
-_sfFullHeight Fields.
+The matrices to use are defined by the _sf Fields. The size of the full image is defined by the
+_sfFullWidth and _sfFullHeight Fields.
 */
 
 /***************************************************************************\
@@ -73,10 +73,8 @@ _sfFullHeight Fields.
  *                           Class methods                                 *
 \***************************************************************************/
 
-void MatrixCameraDecorator::initMethod (void)
-{
+void MatrixCameraDecorator::initMethod(void) {
 }
-
 
 /***************************************************************************\
  *                           Instance methods                              *
@@ -88,78 +86,62 @@ void MatrixCameraDecorator::initMethod (void)
 
 /*----------------------- constructors & destructors ----------------------*/
 
-MatrixCameraDecorator::MatrixCameraDecorator(void) :
-    Inherited()
-{
+MatrixCameraDecorator::MatrixCameraDecorator(void)
+    : Inherited() {
 }
 
-MatrixCameraDecorator::MatrixCameraDecorator(const MatrixCameraDecorator &source) :
-    Inherited(source)
-{
+MatrixCameraDecorator::MatrixCameraDecorator(const MatrixCameraDecorator& source)
+    : Inherited(source) {
 }
 
-MatrixCameraDecorator::~MatrixCameraDecorator(void)
-{
+MatrixCameraDecorator::~MatrixCameraDecorator(void) {
 }
 
 /*----------------------------- class specific ----------------------------*/
 
-void MatrixCameraDecorator::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void MatrixCameraDecorator::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
+void MatrixCameraDecorator::getProjection(Matrix& result, UInt32 width, UInt32 height) {
+  CameraPtr camera = getDecoratee();
+  if (camera == NullFC) {
+    FWARNING(("MatrixCameraDecorator::getProjection: no decoratee!\n"));
+    result.setIdentity();
+    return;
+  }
+  camera->getProjection(result, width, height);
 
-void MatrixCameraDecorator::getProjection(Matrix &result, 
-                                          UInt32 width, UInt32 height)
-{
-    CameraPtr camera = getDecoratee();
-    if(camera == NullFC)
-    {
-        FWARNING(("MatrixCameraDecorator::getProjection: no decoratee!\n"));
-        result.setIdentity();
-        return;
-    }
-    camera->getProjection(result, width, height);
+  result.multLeft(getPostProjection());
+  result.mult(getPreProjection());
+}
 
-    result.multLeft(getPostProjection());
-    result.mult(getPreProjection());
-}                                       
+void MatrixCameraDecorator::getProjectionTranslation(Matrix& result, UInt32 width, UInt32 height) {
+  CameraPtr camera = getDecoratee();
+  if (camera == NullFC) {
+    FWARNING(("MatrixCameraDecorator::getProjectionTranslation: no decoratee!\n"));
+    result.setIdentity();
+    return;
+  }
+  camera->getProjectionTranslation(result, width, height);
 
-void MatrixCameraDecorator::getProjectionTranslation(Matrix &result, 
-                                                     UInt32 width, UInt32 height)
-{
-    CameraPtr camera = getDecoratee();
-    if(camera == NullFC)
-    {
-        FWARNING(("MatrixCameraDecorator::getProjectionTranslation: no decoratee!\n"));
-        result.setIdentity();
-        return;
-    }
-    camera->getProjectionTranslation(result, width, height);
+  result.multLeft(getPostProjectionTranslation());
+  result.mult(getPreProjectionTranslation());
+}
 
-    result.multLeft(getPostProjectionTranslation());
-    result.mult(getPreProjectionTranslation());
-}                                       
+void MatrixCameraDecorator::getViewing(Matrix& result, UInt32 width, UInt32 height) {
+  CameraPtr camera = getDecoratee();
+  if (camera == NullFC) {
+    FWARNING(("MatrixCameraDecorator::getViewing: no decoratee!\n"));
+    result.setIdentity();
+    return;
+  }
+  camera->getViewing(result, width, height);
 
-void MatrixCameraDecorator::getViewing(Matrix &result, 
-                                       UInt32 width, UInt32 height)
-{
-    CameraPtr camera = getDecoratee();
-    if(camera == NullFC)
-    {
-        FWARNING(("MatrixCameraDecorator::getViewing: no decoratee!\n"));
-        result.setIdentity();
-        return;
-    }
-    camera->getViewing(result, width, height);
-    
-    result.multLeft(getPostViewing());
-    result.mult(getPreViewing());
-}                                       
+  result.multLeft(getPostViewing());
+  result.mult(getPreViewing());
+}
 
-void MatrixCameraDecorator::dump(      UInt32    , 
-                         const BitVector ) const
-{
-    SLOG << "Dump MatrixCameraDecorator NI" << std::endl;
+void MatrixCameraDecorator::dump(UInt32, const BitVector) const {
+  SLOG << "Dump MatrixCameraDecorator NI" << std::endl;
 }

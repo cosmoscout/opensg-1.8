@@ -65,74 +65,42 @@ OSG_USING_NAMESPACE
 // Write FC to the given stream
 
 OSG_SYSTEMLIB_DLLMAPPING
-std::ostream &OSG::operator <<(      std::ostream &os,
-                               const NodePtr      &fc)
-{
-    if(fc == NullFC)
-    {
-        os << std::hex << "NodePtr 0x" << &fc << std::dec << ":NullFC";
-    }
-    else
-    {
-        os << std::hex
-           << "NodePtr 0x"
-           << &fc 
-           << std::dec
-           << ":" 
-           << fc->getType().getName() 
-           << "Ptr(0x"
-           << std::hex 
-           << (&(*fc))
-           << std::dec
-           << ")";
-    }
+std::ostream& OSG::operator<<(std::ostream& os, const NodePtr& fc) {
+  if (fc == NullFC) {
+    os << std::hex << "NodePtr 0x" << &fc << std::dec << ":NullFC";
+  } else {
+    os << std::hex << "NodePtr 0x" << &fc << std::dec << ":" << fc->getType().getName() << "Ptr(0x"
+       << std::hex << (&(*fc)) << std::dec << ")";
+  }
 
-    return os;
+  return os;
 }
 
 // Write FC to the given stream
 
 OSG_SYSTEMLIB_DLLMAPPING
-std::ostream &OSG::operator <<(      std::ostream  &os,
-                               const CNodePtr &fc)
-{
-    if(fc == NullFC)
-    {
-        os << std::hex << "NodePtr 0x" << &fc << std::dec << ":NullFC";
-    }
-    else
-    {
-        os << std::hex
-           << "NodePtr 0x"
-           << &fc
-           << std::dec
-           << ":" << fc->getType().getName()
-           << "Ptr(0x"
-           << std::hex
-           << (&(*fc)) 
-           << std::dec
-           << ")";
-    }
+std::ostream& OSG::operator<<(std::ostream& os, const CNodePtr& fc) {
+  if (fc == NullFC) {
+    os << std::hex << "NodePtr 0x" << &fc << std::dec << ":NullFC";
+  } else {
+    os << std::hex << "NodePtr 0x" << &fc << std::dec << ":" << fc->getType().getName() << "Ptr(0x"
+       << std::hex << (&(*fc)) << std::dec << ")";
+  }
 
-    return os;
+  return os;
 }
-
 
 // create a Node around the given core
 
 OSG_SYSTEMLIB_DLLMAPPING
-NodePtr OSG::makeNodeFor(NodeCorePtr core)
-{
-    NodePtr n = Node::create();
-    
-    beginEditCP(n, Node::CoreFieldMask);
-    
-    n->setCore(core);
-    
-    endEditCP(n, Node::CoreFieldMask);
-    
-    return n;
+NodePtr OSG::makeNodeFor(NodeCorePtr core) {
+  NodePtr n = Node::create();
+
+  beginEditCP(n, Node::CoreFieldMask);
+
+  n->setCore(core);
+
+  endEditCP(n, Node::CoreFieldMask);
+
+  return n;
 }
-
-
-

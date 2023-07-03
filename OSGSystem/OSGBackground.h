@@ -36,13 +36,11 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGBACKGROUND_H_
 #define _OSGBACKGROUND_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 
@@ -53,85 +51,78 @@ OSG_BEGIN_NAMESPACE
 class DrawActionBase;
 class Viewport;
 
-/*! \brief Background clearing base class. See \ref 
+/*! \brief Background clearing base class. See \ref
     PageSystemWindowBackground for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING Background : public BackgroundBase
-{
+class OSG_SYSTEMLIB_DLLMAPPING Background : public BackgroundBase {
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  static const Char8* getClassname(void) {
+    return "Background";
+  };
 
-    static const Char8 *getClassname(void) { return "Background"; };
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    access fields                             */
+  /*! \{                                                                 */
 
-  
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    access fields                             */
-    /*! \{                                                                 */
+  virtual void clear(DrawActionBase* action, Viewport* port) = 0;
 
-    virtual void clear( DrawActionBase * action, Viewport * port ) = 0;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     transformation                           */
+  /*! \{                                                                 */
 
-     
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     transformation                           */
-    /*! \{                                                                 */
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    virtual void changed(BitVector whichField, 
-                         UInt32    origin    );
- 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   dump                                       */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   dump                                       */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32    uiIndent = 0, 
-                      const BitVector bvFlags  = 0) const;
-  
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    Background(void);
-    Background(const Background &source);
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  Background(void);
+  Background(const Background& source);
 
-    virtual ~Background(void); 
-  
-    /*! \}                                                                 */
-    /*=========================  PRIVATE    ===============================*/
-private:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-  
-    typedef BackgroundBase Inherited;
-  
-    friend class FieldContainer;
-    friend class BackgroundBase;
+  virtual ~Background(void);
 
-    static void initMethod( void );
+  /*! \}                                                                 */
+  /*=========================  PRIVATE    ===============================*/
+ private:
+  typedef BackgroundBase Inherited;
 
-    void operator =(const Background &source);
+  friend class FieldContainer;
+  friend class BackgroundBase;
+
+  static void initMethod(void);
+
+  void operator=(const Background& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
-typedef Background *BackgroundP;
+typedef Background* BackgroundP;
 
 OSG_END_NAMESPACE
 

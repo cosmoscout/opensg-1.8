@@ -52,165 +52,119 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &SolidBackgroundBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& SolidBackgroundBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 SolidBackgroundBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 SolidBackgroundBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-SolidBackgroundPtr SolidBackgroundBase::create(void) 
-{
-    SolidBackgroundPtr fc; 
+inline SolidBackgroundPtr SolidBackgroundBase::create(void) {
+  SolidBackgroundPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = SolidBackgroundPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = SolidBackgroundPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-SolidBackgroundPtr SolidBackgroundBase::createEmpty(void) 
-{ 
-    SolidBackgroundPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline SolidBackgroundPtr SolidBackgroundBase::createEmpty(void) {
+  SolidBackgroundPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the SolidBackground::_sfColor field.
-inline
-SFColor3f *SolidBackgroundBase::getSFColor(void)
-{
-    return &_sfColor;
+inline SFColor3f* SolidBackgroundBase::getSFColor(void) {
+  return &_sfColor;
 }
 
 //! Get the SolidBackground::_sfClearStencilBit field.
-inline
-SFInt32 *SolidBackgroundBase::getSFClearStencilBit(void)
-{
-    return &_sfClearStencilBit;
+inline SFInt32* SolidBackgroundBase::getSFClearStencilBit(void) {
+  return &_sfClearStencilBit;
 }
 
 //! Get the SolidBackground::_sfAlpha field.
-inline
-SFReal32 *SolidBackgroundBase::getSFAlpha(void)
-{
-    return &_sfAlpha;
+inline SFReal32* SolidBackgroundBase::getSFAlpha(void) {
+  return &_sfAlpha;
 }
 
 //! Get the SolidBackground::_sfDepth field.
-inline
-SFReal32 *SolidBackgroundBase::getSFDepth(void)
-{
-    return &_sfDepth;
-}
-
-
-//! Get the value of the SolidBackground::_sfColor field.
-inline
-Color3f &SolidBackgroundBase::getColor(void)
-{
-    return _sfColor.getValue();
+inline SFReal32* SolidBackgroundBase::getSFDepth(void) {
+  return &_sfDepth;
 }
 
 //! Get the value of the SolidBackground::_sfColor field.
-inline
-const Color3f &SolidBackgroundBase::getColor(void) const
-{
-    return _sfColor.getValue();
+inline Color3f& SolidBackgroundBase::getColor(void) {
+  return _sfColor.getValue();
+}
+
+//! Get the value of the SolidBackground::_sfColor field.
+inline const Color3f& SolidBackgroundBase::getColor(void) const {
+  return _sfColor.getValue();
 }
 
 //! Set the value of the SolidBackground::_sfColor field.
-inline
-void SolidBackgroundBase::setColor(const Color3f &value)
-{
-    _sfColor.setValue(value);
+inline void SolidBackgroundBase::setColor(const Color3f& value) {
+  _sfColor.setValue(value);
 }
 
 //! Get the value of the SolidBackground::_sfClearStencilBit field.
-inline
-Int32 &SolidBackgroundBase::getClearStencilBit(void)
-{
-    return _sfClearStencilBit.getValue();
+inline Int32& SolidBackgroundBase::getClearStencilBit(void) {
+  return _sfClearStencilBit.getValue();
 }
 
 //! Get the value of the SolidBackground::_sfClearStencilBit field.
-inline
-const Int32 &SolidBackgroundBase::getClearStencilBit(void) const
-{
-    return _sfClearStencilBit.getValue();
+inline const Int32& SolidBackgroundBase::getClearStencilBit(void) const {
+  return _sfClearStencilBit.getValue();
 }
 
 //! Set the value of the SolidBackground::_sfClearStencilBit field.
-inline
-void SolidBackgroundBase::setClearStencilBit(const Int32 &value)
-{
-    _sfClearStencilBit.setValue(value);
+inline void SolidBackgroundBase::setClearStencilBit(const Int32& value) {
+  _sfClearStencilBit.setValue(value);
 }
 
 //! Get the value of the SolidBackground::_sfAlpha field.
-inline
-Real32 &SolidBackgroundBase::getAlpha(void)
-{
-    return _sfAlpha.getValue();
+inline Real32& SolidBackgroundBase::getAlpha(void) {
+  return _sfAlpha.getValue();
 }
 
 //! Get the value of the SolidBackground::_sfAlpha field.
-inline
-const Real32 &SolidBackgroundBase::getAlpha(void) const
-{
-    return _sfAlpha.getValue();
+inline const Real32& SolidBackgroundBase::getAlpha(void) const {
+  return _sfAlpha.getValue();
 }
 
 //! Set the value of the SolidBackground::_sfAlpha field.
-inline
-void SolidBackgroundBase::setAlpha(const Real32 &value)
-{
-    _sfAlpha.setValue(value);
+inline void SolidBackgroundBase::setAlpha(const Real32& value) {
+  _sfAlpha.setValue(value);
 }
 
 //! Get the value of the SolidBackground::_sfDepth field.
-inline
-Real32 &SolidBackgroundBase::getDepth(void)
-{
-    return _sfDepth.getValue();
+inline Real32& SolidBackgroundBase::getDepth(void) {
+  return _sfDepth.getValue();
 }
 
 //! Get the value of the SolidBackground::_sfDepth field.
-inline
-const Real32 &SolidBackgroundBase::getDepth(void) const
-{
-    return _sfDepth.getValue();
+inline const Real32& SolidBackgroundBase::getDepth(void) const {
+  return _sfDepth.getValue();
 }
 
 //! Set the value of the SolidBackground::_sfDepth field.
-inline
-void SolidBackgroundBase::setDepth(const Real32 &value)
-{
-    _sfDepth.setValue(value);
+inline void SolidBackgroundBase::setDepth(const Real32& value) {
+  _sfDepth.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGSOLIDBACKGROUNDBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGSOLIDBACKGROUNDBASE_INLINE_CVSID                                                        \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

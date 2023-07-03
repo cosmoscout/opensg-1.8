@@ -53,106 +53,101 @@
 
 OSG_BEGIN_NAMESPACE
 
-class OSG_SYSTEMLIB_DLLMAPPING MaterialPool : public MaterialPoolBase
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING MaterialPool : public MaterialPoolBase {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    virtual void changed(BitVector whichField,
-                         UInt32    origin    );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Access                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Access                                    */
-    /*! \{                                                                 */
+  void sync(void);
 
-    void    sync     (void                          );
+  UInt32 getCount(void) const;
 
-    UInt32  getCount (void                          ) const;
+  void add(const MaterialPtr& mat);
+  void add(const NodePtr& root);
+  void add(const MaterialPoolPtr& mp);
 
-    void    add      (const MaterialPtr &mat        );
-    void    add      (const NodePtr &root           );
-    void    add      (const MaterialPoolPtr &mp     );
+  Int32 find(const MaterialPtr& mat) const;
 
-    Int32   find     (const MaterialPtr &mat        ) const;
+  void sub(const MaterialPtr& mat);
+  void sub(const NodePtr& root);
+  void sub(const MaterialPoolPtr& mp);
+  void sub(UInt32 mat);
 
-    void    sub      (const MaterialPtr &mat        );
-    void    sub      (const NodePtr &root           );
-    void    sub      (const MaterialPoolPtr &mp     );
-    void    sub      (      UInt32   mat            );
+  MaterialPtr                  get(UInt32 index);
+  void                         get(std::vector<MaterialPtr>& mats);
+  const std::set<MaterialPtr>& get(void);
 
-    MaterialPtr get  (      UInt32   index          );
-    void        get  (std::vector<MaterialPtr> &mats);
-    const std::set<MaterialPtr> &get(void);
+  void clear(void);
 
-    void    clear    (void                          );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                        Dump                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                        Dump                                  */
-    /*! \{                                                                 */
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    virtual void dump(      UInt32    uiIndent = 0,
-                      const BitVector bvFlags  = 0) const;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  typedef MaterialPoolBase Inherited;
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    typedef MaterialPoolBase Inherited;
+  MaterialPool(void);
+  MaterialPool(const MaterialPool& source);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    MaterialPool(void);
-    MaterialPool(const MaterialPool &source);
+  virtual ~MaterialPool(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  void onDestroy(void);
 
-    virtual ~MaterialPool(void);
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class MaterialPoolBase;
 
-    void onDestroy(void);
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Init                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  static void initMethod(void);
 
-    friend class FieldContainer;
-    friend class MaterialPoolBase;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Init                                   */
-    /*! \{                                                                 */
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const MaterialPool& source);
 
-    static void initMethod(void);
+  OSG::Action::ResultE addMaterialCB(OSG::NodePtr& node);
+  OSG::Action::ResultE subMaterialCB(OSG::NodePtr& node);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const MaterialPool &source);
-
-    OSG::Action::ResultE addMaterialCB(OSG::NodePtr &node);
-    OSG::Action::ResultE subMaterialCB(OSG::NodePtr &node);
-
-    std::set<MaterialPtr> _mats;
+  std::set<MaterialPtr> _mats;
 };
 
-typedef MaterialPool *MaterialPoolP;
+typedef MaterialPool* MaterialPoolP;
 
 OSG_END_NAMESPACE
 
 #include <OSGMaterialPoolBase.inl>
 #include <OSGMaterialPool.inl>
 
-#define OSGMATERIALPOOL_HEADER_CVSID "@(#)$Id: OSGMaterialPool.h,v 1.1 2005/04/30 15:03:20 a-m-z Exp $"
+#define OSGMATERIALPOOL_HEADER_CVSID                                                               \
+  "@(#)$Id: OSGMaterialPool.h,v 1.1 2005/04/30 15:03:20 a-m-z Exp $"
 
 #endif /* _OSGMATERIALPOOL_H_ */

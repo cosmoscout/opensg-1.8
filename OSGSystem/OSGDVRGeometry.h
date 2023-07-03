@@ -48,71 +48,64 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief *put brief class description here* 
+/*! \brief *put brief class description here*
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING DVRGeometry : public DVRGeometryBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING DVRGeometry : public DVRGeometryBase {
+ private:
+  typedef DVRGeometryBase Inherited;
 
-    typedef DVRGeometryBase Inherited;
+  /*==========================  PUBLIC  =================================*/
 
-    /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-  public:
+  virtual void changed(BitVector whichField, UInt32 from);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     from);
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+ protected:
+  // Variables should all be in DVRGeometryBase.
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-  protected:
+  DVRGeometry(void);
+  DVRGeometry(const DVRGeometry& source);
 
-    // Variables should all be in DVRGeometryBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~DVRGeometry(void);
 
-    DVRGeometry(void);
-    DVRGeometry(const DVRGeometry &source);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-    virtual ~DVRGeometry(void); 
+ private:
+  friend class FieldContainer;
+  friend class DVRGeometryBase;
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
+  static void initMethod(void);
 
-  private:
-
-    friend class FieldContainer;
-    friend class DVRGeometryBase;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const DVRGeometry &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const DVRGeometry& source);
 };
 
-typedef DVRGeometry *DVRGeometryP;
+typedef DVRGeometry* DVRGeometryP;
 
 OSG_END_NAMESPACE
 

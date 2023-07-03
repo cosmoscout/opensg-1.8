@@ -81,46 +81,33 @@
 
 OSG_BEGIN_NAMESPACE
 
-DataType FieldDataTraits<FieldContainerPtr     >::_type(
-    "FieldContainerPtr",
-    NULL);
+DataType FieldDataTraits<FieldContainerPtr>::_type("FieldContainerPtr", NULL);
 
 DataType FieldDataTraits<AttachmentContainerPtr>::_type(
-    "AttachmentContainerPtr", 
-    "FieldContainerPtr");
+    "AttachmentContainerPtr", "FieldContainerPtr");
 
-DataType FieldDataTraits<NodePtr               >::_type(
-    "NodePtr",
-    "AttachmentContainerPtr");
+DataType FieldDataTraits<NodePtr>::_type("NodePtr", "AttachmentContainerPtr");
 
-DataType FieldDataTraits<NodeCorePtr           >::_type(
-    "NodeCorePtr",
-    "AttachmentContainerPtr");
+DataType FieldDataTraits<NodeCorePtr>::_type("NodeCorePtr", "AttachmentContainerPtr");
 
-DataType FieldDataTraits<AttachmentPtr         >::_type(
-    "AttachmentPtr",
-    "FieldContainerPtr");
+DataType FieldDataTraits<AttachmentPtr>::_type("AttachmentPtr", "FieldContainerPtr");
 
-DataType FieldDataTraits<AttachmentMap         >::_type(
-    "AttachmentMap",
-    NULL);
+DataType FieldDataTraits<AttachmentMap>::_type("AttachmentMap", NULL);
 
-OSG_DLLEXPORT_SFIELD_DEF1(FieldContainerPtr,     OSG_SYSTEMLIB_DLLTMPLMAPPING);
-OSG_DLLEXPORT_SFIELD_DEF1(AttachmentContainerPtr,OSG_SYSTEMLIB_DLLTMPLMAPPING);
-OSG_DLLEXPORT_SFIELD_DEF1(NodePtr,               OSG_SYSTEMLIB_DLLTMPLMAPPING);
-OSG_DLLEXPORT_SFIELD_DEF1(NodeCorePtr,           OSG_SYSTEMLIB_DLLTMPLMAPPING);
-OSG_DLLEXPORT_SFIELD_DEF1(AttachmentPtr,         OSG_SYSTEMLIB_DLLTMPLMAPPING);
-OSG_DLLEXPORT_SFIELD_DEF1(AttachmentMap,         OSG_SYSTEMLIB_DLLTMPLMAPPING);
+OSG_DLLEXPORT_SFIELD_DEF1(FieldContainerPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
+OSG_DLLEXPORT_SFIELD_DEF1(AttachmentContainerPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
+OSG_DLLEXPORT_SFIELD_DEF1(NodePtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
+OSG_DLLEXPORT_SFIELD_DEF1(NodeCorePtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
+OSG_DLLEXPORT_SFIELD_DEF1(AttachmentPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
+OSG_DLLEXPORT_SFIELD_DEF1(AttachmentMap, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
-OSG_DLLEXPORT_MFIELD_DEF1(FieldContainerPtr,     OSG_SYSTEMLIB_DLLTMPLMAPPING);
-OSG_DLLEXPORT_MFIELD_DEF1(AttachmentContainerPtr,OSG_SYSTEMLIB_DLLTMPLMAPPING);
-OSG_DLLEXPORT_MFIELD_DEF1(NodePtr,               OSG_SYSTEMLIB_DLLTMPLMAPPING);
-OSG_DLLEXPORT_MFIELD_DEF1(NodeCorePtr,           OSG_SYSTEMLIB_DLLTMPLMAPPING);
-OSG_DLLEXPORT_MFIELD_DEF1(AttachmentPtr,         OSG_SYSTEMLIB_DLLTMPLMAPPING);
-OSG_DLLEXPORT_MFIELD_DEF1(AttachmentMap,         OSG_SYSTEMLIB_DLLTMPLMAPPING);
+OSG_DLLEXPORT_MFIELD_DEF1(FieldContainerPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
+OSG_DLLEXPORT_MFIELD_DEF1(AttachmentContainerPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
+OSG_DLLEXPORT_MFIELD_DEF1(NodePtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
+OSG_DLLEXPORT_MFIELD_DEF1(NodeCorePtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
+OSG_DLLEXPORT_MFIELD_DEF1(AttachmentPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
+OSG_DLLEXPORT_MFIELD_DEF1(AttachmentMap, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
 
 OSG_USING_NAMESPACE
-
-

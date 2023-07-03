@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGGRADIENTBACKGROUNDFIELDS_H_
 #define _OSGGRADIENTBACKGROUNDFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class GradientBackground;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! GradientBackgroundPtr
 
 typedef FCPtr<BackgroundPtr, GradientBackground> GradientBackgroundPtr;
@@ -81,17 +80,20 @@ typedef FCPtr<BackgroundPtr, GradientBackground> GradientBackgroundPtr;
 #endif
 
 template <>
-struct FieldDataTraits<GradientBackgroundPtr> : 
-    public FieldTraitsRecurseMapper<GradientBackgroundPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<GradientBackgroundPtr>
+    : public FieldTraitsRecurseMapper<GradientBackgroundPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getMName(void) { return "MFGradientBackgroundPtr"; }
+  static const char* getMName(void) {
+    return "MFGradientBackgroundPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -101,8 +103,6 @@ struct FieldDataTraits<GradientBackgroundPtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldMulti */
@@ -116,6 +116,7 @@ OSG_DLLEXPORT_DECL1(MField, GradientBackgroundPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 
 OSG_END_NAMESPACE
 
-#define OSGGRADIENTBACKGROUNDFIELDS_HEADER_CVSID "@(#)$Id: FCFieldsTemplate_h.h,v 1.26 2006/02/20 16:55:35 dirk Exp $"
+#define OSGGRADIENTBACKGROUNDFIELDS_HEADER_CVSID                                                   \
+  "@(#)$Id: FCFieldsTemplate_h.h,v 1.26 2006/02/20 16:55:35 dirk Exp $"
 
 #endif /* _OSGGRADIENTBACKGROUNDFIELDS_H_ */

@@ -78,7 +78,7 @@ class NullFieldContainerPtr;
 #endif
 
 #ifdef OSG_LINUX_ICC
-#pragma warning( disable : 444 )
+#pragma warning(disable : 444)
 #endif
 
 //---------------------------------------------------------------------------
@@ -89,238 +89,218 @@ class NullFieldContainerPtr;
 #pragma set woff 1375
 #endif
 
-class OSG_SYSTEMLIB_DLLMAPPING FieldContainerPtrBase
-{
-    /*==========================  PUBLIC  =================================*/
+class OSG_SYSTEMLIB_DLLMAPPING FieldContainerPtrBase {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  static const UInt16 InvalidParentEPos;
+  typedef UInt8* FieldContainerPtrBase::*unspecified_bool_type;
 
-    static const UInt16           InvalidParentEPos;
-    typedef UInt8 * FieldContainerPtrBase::*unspecified_bool_type;
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  FieldContainerPtrBase(void);
+  FieldContainerPtrBase(const NullFieldContainerPtr&);
+  FieldContainerPtrBase(const FieldContainerPtrBase& source);
 
-    FieldContainerPtrBase(      void                         ); 
-    FieldContainerPtrBase(const NullFieldContainerPtr &      );
-    FieldContainerPtrBase(const FieldContainerPtrBase &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  ~FieldContainerPtrBase(void);
 
-    ~FieldContainerPtrBase(void); 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Parent Field Pos                         */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Parent Field Pos                         */
-    /*! \{                                                                 */
+  void   setParentFieldPos(UInt16 uiParentEPos);
+  UInt16 getParentFieldPos(void) const;
 
-    void   setParentFieldPos(UInt16 uiParentEPos);
-    UInt16 getParentFieldPos(void               ) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name              Get Container Information                       */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name              Get Container Information                       */
-    /*! \{                                                                 */
+  Int32  getRefCount(void) const;
+  UInt32 getFieldContainerId(void) const;
+  UInt16 getContainerSize(void) const;
 
-    Int32  getRefCount        (void) const;
-    UInt32 getFieldContainerId(void) const;
-    UInt16 getContainerSize   (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name              Get Container C++ Pointer                       */
+  /*                 be sure you know what you are doing ;-)             */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name              Get Container C++ Pointer                       */
-    /*                 be sure you know what you are doing ;-)             */
-    /*! \{                                                                 */
+  FieldContainer* getBaseCPtr(void) const;
+  FieldContainer* getAspectCPtr(UInt32 uiAspectId) const;
 
-    FieldContainer *getBaseCPtr  (void             ) const;
-    FieldContainer *getAspectCPtr(UInt32 uiAspectId) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Assignment                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Assignment                                */
-    /*! \{                                                                 */
+  void operator=(const NullFieldContainerPtr&);
+  void operator=(const FieldContainerPtrBase& source);
 
-    void operator =(const NullFieldContainerPtr &);
-    void operator =(const FieldContainerPtrBase &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Comparison                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Comparison                                */
-    /*! \{                                                                 */
+  bool operator<(const NullFieldContainerPtr&) const;
 
-    bool operator <  (const NullFieldContainerPtr &     ) const;
-    
-    bool operator == (const NullFieldContainerPtr &other) const;
-    bool operator != (const NullFieldContainerPtr &other) const;
+  bool operator==(const NullFieldContainerPtr& other) const;
+  bool operator!=(const NullFieldContainerPtr& other) const;
 
+  bool operator<(const FieldContainerPtrBase&) const;
 
-    bool operator <  (const FieldContainerPtrBase &) const;
+  bool operator==(const FieldContainerPtrBase& other) const;
+  bool operator!=(const FieldContainerPtrBase& other) const;
 
-    bool operator == (const FieldContainerPtrBase &other) const;
-    bool operator != (const FieldContainerPtrBase &other) const;
+  bool operator!(void) const;
 
-    bool operator !  (void                              ) const;
+  operator unspecified_bool_type() const;
 
-    operator unspecified_bool_type() const;
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                        Dump                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                        Dump                                  */
+  /*! \{                                                                 */
 
-    void dump(      UInt32    uiIndent = 0, 
-              const BitVector bvFlags  = 0) const;
+  void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-  protected:
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name             Intialization / Termination                      */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name             Intialization / Termination                      */
-    /*! \{                                                                 */
+  static bool initialize(void);
+  static bool terminate(void);
 
-    static bool initialize(void);
-    static bool terminate (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Member                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Member                                  */
-    /*! \{                                                                 */
-
-    UInt16          _containerSize;
-    UInt16          _uiParentEPos;
-    UInt8          *_storeP;
+  UInt16 _containerSize;
+  UInt16 _uiParentEPos;
+  UInt8* _storeP;
 #ifdef OSG_DEBUG_FCPTR
-    FieldContainer *_typedStoreP;
+  FieldContainer* _typedStoreP;
 #endif
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    explicit FieldContainerPtrBase(const FieldContainer &source      );
-    explicit FieldContainerPtrBase(const FieldContainer *source      );
+  explicit FieldContainerPtrBase(const FieldContainer& source);
+  explicit FieldContainerPtrBase(const FieldContainer* source);
 
-             FieldContainerPtrBase(const FieldContainer *source,
-                                   const UInt16          uiSize,
-                                   const UInt16          uiParentEPos);
+  FieldContainerPtrBase(
+      const FieldContainer* source, const UInt16 uiSize, const UInt16 uiParentEPos);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Sync                                     */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Sync                                     */
+  /*! \{                                                                 */
 
-    void executeSync(UInt32    uiFromAspect,
-                     UInt32    uiToAspect, 
-                     BitVector whichField);
+  void executeSync(UInt32 uiFromAspect, UInt32 uiToAspect, BitVector whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name              Get Memory Locations                            */
-    /*! \{                                                                 */
-    
-    Int32  *getRefCountP (void            );
-    Int32  *getRefCountP (void            ) const;
-    
-    UInt32 *getIdP       (void            );    
-    UInt32 *getIdP       (void            ) const;    
-    
-    UInt8  *getFirstElemP(void            );
-    UInt8  *getFirstElemP(void            ) const;
-    
-    UInt8  *getElemP     (UInt32 uiElemNum);
-    UInt8  *getElemP     (UInt32 uiElemNum) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name              Get Memory Locations                            */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name               Get Memory Offsets                             */
-    /*! \{                                                                 */
+  Int32* getRefCountP(void);
+  Int32* getRefCountP(void) const;
 
-    Int32  getRefCountOff (void            ) const;
-    Int32  getIdOff       (void            ) const;
-    Int32  getFirstElemOff(void            ) const;
-    Int32  getElemOff     (UInt32 uiElemNum) const;
+  UInt32* getIdP(void);
+  UInt32* getIdP(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Reference Counting                         */
-    /*! \{                                                                 */
+  UInt8* getFirstElemP(void);
+  UInt8* getFirstElemP(void) const;
 
-    void addRef          (void) const;
-    void subRef          (void) const;
+  UInt8* getElemP(UInt32 uiElemNum);
+  UInt8* getElemP(UInt32 uiElemNum) const;
+
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name               Get Memory Offsets                             */
+  /*! \{                                                                 */
+
+  Int32 getRefCountOff(void) const;
+  Int32 getIdOff(void) const;
+  Int32 getFirstElemOff(void) const;
+  Int32 getElemOff(UInt32 uiElemNum) const;
+
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Reference Counting                         */
+  /*! \{                                                                 */
+
+  void addRef(void) const;
+  void subRef(void) const;
 
 #if defined(OSG_FIXED_MFIELDSYNC)
-    void doSubRef        (void) const;
+  void doSubRef(void) const;
 #endif
 
-    void deleteContainers(void) const;
+  void deleteContainers(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Helper                                     */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Helper                                     */
+  /*! \{                                                                 */
 
-    void setNull(void);
+  void setNull(void);
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-  private:
-
-    friend class FieldContainer;
-    friend class FieldContainerFactory;
-    friend class ChangeList;
+ private:
+  friend class FieldContainer;
+  friend class FieldContainerFactory;
+  friend class ChangeList;
 
 #ifndef OSG_INVALID_PTR_CHECK
-    
-    friend OSG_SYSTEMLIB_DLLMAPPING
-    void addRefCP   (const FieldContainerPtrBase &objectP);
 
-    friend OSG_SYSTEMLIB_DLLMAPPING
-    void subRefCP   (const FieldContainerPtrBase &objectP);
+  friend OSG_SYSTEMLIB_DLLMAPPING void addRefCP(const FieldContainerPtrBase& objectP);
 
-    friend OSG_SYSTEMLIB_DLLMAPPING
-    void setRefdCP  (      FieldContainerPtrBase &objectP,
-                     const FieldContainerPtrBase &newObjectP);
+  friend OSG_SYSTEMLIB_DLLMAPPING void subRefCP(const FieldContainerPtrBase& objectP);
 
-    friend OSG_SYSTEMLIB_DLLMAPPING
-    void clearRefCP (      FieldContainerPtrBase &objectP);
+  friend OSG_SYSTEMLIB_DLLMAPPING void setRefdCP(
+      FieldContainerPtrBase& objectP, const FieldContainerPtrBase& newObjectP);
+
+  friend OSG_SYSTEMLIB_DLLMAPPING void clearRefCP(FieldContainerPtrBase& objectP);
 
 #else
 
-    friend OSG_SYSTEMLIB_DLLMAPPING
-    bool safeAddRefCP   (const FieldContainerPtrBase &objectP);
+  friend OSG_SYSTEMLIB_DLLMAPPING bool safeAddRefCP(const FieldContainerPtrBase& objectP);
 
-    friend OSG_SYSTEMLIB_DLLMAPPING
-    bool safeSubRefCP   (const FieldContainerPtrBase &objectP);
+  friend OSG_SYSTEMLIB_DLLMAPPING bool safeSubRefCP(const FieldContainerPtrBase& objectP);
 
-    friend OSG_SYSTEMLIB_DLLMAPPING
-    bool safeSetRefdCP  (      FieldContainerPtrBase &objectP,
-                     const FieldContainerPtrBase &newObjectP);
+  friend OSG_SYSTEMLIB_DLLMAPPING bool safeSetRefdCP(
+      FieldContainerPtrBase& objectP, const FieldContainerPtrBase& newObjectP);
 
-    friend OSG_SYSTEMLIB_DLLMAPPING
-    bool safeClearRefCP (      FieldContainerPtrBase &objectP);
+  friend OSG_SYSTEMLIB_DLLMAPPING bool safeClearRefCP(FieldContainerPtrBase& objectP);
 
 #endif
 
-    friend OSG_SYSTEMLIB_DLLMAPPING
-    class FieldContainerType;
+  friend OSG_SYSTEMLIB_DLLMAPPING class FieldContainerType;
 
-    static LockPool *_pRefCountLock;
+  static LockPool* _pRefCountLock;
 };
 
 #ifdef __sgi
 #pragma reset woff 1375
 #endif
 
-
-
 //---------------------------------------------------------------------------
 //  Class
 //---------------------------------------------------------------------------
@@ -332,141 +312,121 @@ class OSG_SYSTEMLIB_DLLMAPPING FieldContainerPtrBase
 #pragma set woff 1375
 #endif
 
-class OSG_SYSTEMLIB_DLLMAPPING FieldContainerPtr : public FieldContainerPtrBase
-{
-    /*==========================  PUBLIC  =================================*/
+class OSG_SYSTEMLIB_DLLMAPPING FieldContainerPtr : public FieldContainerPtrBase {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  OSG_PROPERTY_DECL(Pointer);
 
-    OSG_PROPERTY_DECL(Pointer);
+  typedef FieldContainer    StoredObjectType;
+  typedef FieldContainerPtr ObjectType;
 
-    typedef FieldContainer        StoredObjectType;
-    typedef FieldContainerPtr     ObjectType;
+  typedef FieldContainerPtrBase Inherited;
 
-    typedef FieldContainerPtrBase Inherited;
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  FieldContainerPtr(void);
+  FieldContainerPtr(const NullFieldContainerPtr&);
+  FieldContainerPtr(const FieldContainerPtr& source);
 
-    FieldContainerPtr(      void                         );
-    FieldContainerPtr(const NullFieldContainerPtr &      );
-    FieldContainerPtr(const FieldContainerPtr     &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  ~FieldContainerPtr(void);
 
-    ~FieldContainerPtr(void); 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                 Container Access                             */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                 Container Access                             */
-    /*! \{                                                                 */
+  FieldContainer* operator->(void);
+  FieldContainer* operator->(void) const;
 
-    FieldContainer *operator->(void);
-    FieldContainer *operator->(void) const;
+  FieldContainer& operator*(void);
+  FieldContainer& operator*(void) const;
 
-    FieldContainer &operator *(void);
-    FieldContainer &operator *(void) const;
- 
-    FieldContainer *getCPtr   (void);
-    FieldContainer *getCPtr   (void) const;
+  FieldContainer* getCPtr(void);
+  FieldContainer* getCPtr(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Assignment                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Assignment                                */
+  /*! \{                                                                 */
 
-    void operator =(const NullFieldContainerPtr &      );
-    void operator =(const FieldContainerPtr     &source);
+  void operator=(const NullFieldContainerPtr&);
+  void operator=(const FieldContainerPtr& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-  protected:
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    MT Edit                                   */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    MT Edit                                   */
-    /*! \{                                                                 */
+  void beginEdit(BitVector whichField, UInt32 origin) const;
+  void endEdit(BitVector whichField, UInt32 origin) const;
+  void changed(BitVector whichField, UInt32 origin) const;
+  void endEditNotChanged(BitVector whichField, UInt32 origin) const;
 
-    void beginEdit        (BitVector whichField, UInt32 origin) const;
-    void endEdit          (BitVector whichField, UInt32 origin) const;
-    void changed          (BitVector whichField, UInt32 origin) const;
-    void endEditNotChanged(BitVector whichField, UInt32 origin) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  explicit FieldContainerPtr(const FieldContainer& source);
+  explicit FieldContainerPtr(const FieldContainer* source);
 
-    explicit FieldContainerPtr(const FieldContainer &source);
-    explicit FieldContainerPtr(const FieldContainer *source);
+  FieldContainerPtr(const FieldContainer* source, const UInt16 uiSize, const UInt16 uiParentEPos);
 
-             FieldContainerPtr(const FieldContainer *source,
-                               const UInt16          uiSize,
-                               const UInt16          uiParentEPos);
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-  private:
+  friend OSG_SYSTEMLIB_DLLMAPPING void beginEditCP(
+      const FieldContainerPtr& objectP, BitVector whichField, UInt32 origin);
 
-    friend class FieldContainer;
+  friend OSG_SYSTEMLIB_DLLMAPPING void endEditCP(
+      const FieldContainerPtr& objectP, BitVector whichField, UInt32 origin);
 
-    friend OSG_SYSTEMLIB_DLLMAPPING
-    void beginEditCP        (const FieldContainerPtr &objectP, 
-                                   BitVector          whichField,
-                                   UInt32             origin    );
+  friend OSG_SYSTEMLIB_DLLMAPPING void changedCP(
+      const FieldContainerPtr& objectP, BitVector whichField, UInt32 origin);
 
-    friend OSG_SYSTEMLIB_DLLMAPPING
-    void endEditCP          (const FieldContainerPtr &objectP, 
-                                   BitVector          whichField,
-                                   UInt32             origin    );
-
-    friend OSG_SYSTEMLIB_DLLMAPPING
-    void changedCP          (const FieldContainerPtr &objectP, 
-                                   BitVector          whichField,
-                                   UInt32             origin    );
-
-    friend OSG_SYSTEMLIB_DLLMAPPING
-    void endEditNotChangedCP(const FieldContainerPtr &objectP, 
-                                   BitVector          whichField,
-                                   UInt32             origin    );
+  friend OSG_SYSTEMLIB_DLLMAPPING void endEditNotChangedCP(
+      const FieldContainerPtr& objectP, BitVector whichField, UInt32 origin);
 };
-
-
 
 /*! \ingroup GrpSystemFieldContainer
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING NullFieldContainerPtr : 
-    public FieldContainerPtr 
-{
-    /*==========================  PUBLIC  =================================*/
+class OSG_SYSTEMLIB_DLLMAPPING NullFieldContainerPtr : public FieldContainerPtr {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  typedef FieldContainerPtr Inherited;
 
-    typedef FieldContainerPtr Inherited;
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  NullFieldContainerPtr(void);
 
-    NullFieldContainerPtr(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  ~NullFieldContainerPtr(void);
 
-    ~NullFieldContainerPtr(void);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
 };
-
 
 //---------------------------------------------------------------------------
 //  Class
@@ -477,83 +437,75 @@ class OSG_SYSTEMLIB_DLLMAPPING NullFieldContainerPtr :
    \ingroup GrpSystemFieldContainer
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING ConstFieldContainerPtr : 
-    public FieldContainerPtrBase
-{
-    /*==========================  PUBLIC  =================================*/
+class OSG_SYSTEMLIB_DLLMAPPING ConstFieldContainerPtr : public FieldContainerPtrBase {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  OSG_PROPERTY_DECL(ConstPointer);
 
-    OSG_PROPERTY_DECL(ConstPointer);
+  typedef FieldContainer    StoredObjectType;
+  typedef FieldContainerPtr ObjectType;
 
-    typedef FieldContainer        StoredObjectType;
-    typedef FieldContainerPtr     ObjectType;
+  typedef FieldContainerPtrBase Inherited;
 
-    typedef FieldContainerPtrBase Inherited;
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  ConstFieldContainerPtr(void);
+  ConstFieldContainerPtr(const NullFieldContainerPtr&);
+  ConstFieldContainerPtr(const FieldContainerPtr& source);
+  ConstFieldContainerPtr(const ConstFieldContainerPtr& source);
 
-    ConstFieldContainerPtr(      void                          );
-    ConstFieldContainerPtr(const NullFieldContainerPtr  &      );
-    ConstFieldContainerPtr(const FieldContainerPtr      &source);
-    ConstFieldContainerPtr(const ConstFieldContainerPtr &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  ~ConstFieldContainerPtr(void);
 
-    ~ConstFieldContainerPtr(void); 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                 Container Access                             */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                 Container Access                             */
-    /*! \{                                                                 */
+  const FieldContainer* operator->(void);
+  const FieldContainer* operator->(void) const;
 
-    const FieldContainer *operator->(void);
-    const FieldContainer *operator->(void) const;
+  const FieldContainer& operator*(void);
+  const FieldContainer& operator*(void) const;
 
-    const FieldContainer &operator *(void);
-    const FieldContainer &operator *(void) const;
- 
-    const FieldContainer *getCPtr   (void);
-    const FieldContainer *getCPtr   (void) const;
+  const FieldContainer* getCPtr(void);
+  const FieldContainer* getCPtr(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Assignment                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Assignment                                */
+  /*! \{                                                                 */
 
-    void operator =(const NullFieldContainerPtr &       );
-    void operator =(const FieldContainerPtr      &source);
-    void operator =(const ConstFieldContainerPtr &source);
+  void operator=(const NullFieldContainerPtr&);
+  void operator=(const FieldContainerPtr& source);
+  void operator=(const ConstFieldContainerPtr& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-  protected:
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  explicit ConstFieldContainerPtr(const FieldContainer& source);
+  explicit ConstFieldContainerPtr(const FieldContainer* source);
 
-    explicit ConstFieldContainerPtr(const FieldContainer &source);
-    explicit ConstFieldContainerPtr(const FieldContainer *source);
+  ConstFieldContainerPtr(
+      const FieldContainer* source, const UInt16 uiSize, const UInt16 uiParentEPos);
 
-             ConstFieldContainerPtr(const FieldContainer *source,
-                                    const UInt16          uiSize,
-                                    const UInt16          uiParentEPos);
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-
-  private:
+ private:
 };
-
-
-
 
 //---------------------------------------------------------------------------
 //  Class
@@ -563,108 +515,94 @@ class OSG_SYSTEMLIB_DLLMAPPING ConstFieldContainerPtr :
     \ingroup GrpSystemFieldContainer
  */
 
-template <class BasePtrTypeT, class FieldContainerTypeT> 
-class FCPtr : public BasePtrTypeT
-{
-    /*==========================  PUBLIC  =================================*/
+template <class BasePtrTypeT, class FieldContainerTypeT>
+class FCPtr : public BasePtrTypeT {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  OSG_PROPERTY_REQUIREMENT(BasePtrTypeT, Pointer);
 
-    OSG_PROPERTY_REQUIREMENT(BasePtrTypeT, Pointer);
+  typedef FieldContainerTypeT StoredObjectType;
+  typedef FCPtr               ObjectType;
 
-    typedef FieldContainerTypeT        StoredObjectType;
-    typedef FCPtr                      ObjectType;
+  typedef BasePtrTypeT Inherited;
 
-    typedef BasePtrTypeT               Inherited;
+  typedef FCPtr<BasePtrTypeT, FieldContainerTypeT> Self;
 
-    typedef FCPtr<BasePtrTypeT,
-                  FieldContainerTypeT> Self;
+  /*---------------------------------------------------------------------*/
+  /*! \name                      dcast                                   */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      dcast                                   */
-    /*! \{                                                                 */
+  template <class InTypeT>
+  inline static FCPtr dcast(const InTypeT oIn) {
+    return FCPtr((dynamic_cast<const typename FCPtr::StoredObjectType*>(oIn.getCPtr())),
+        oIn.getContainerSize(), oIn.getParentFieldPos());
+  }
 
-    template <class InTypeT> inline
-    static FCPtr dcast(const InTypeT oIn)
-    {
-        return FCPtr(
-            (dynamic_cast<const typename FCPtr::StoredObjectType *>(
-                oIn.getCPtr())),
-            oIn.getContainerSize(),
-            oIn.getParentFieldPos());
-    }
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  FCPtr(void);
+  FCPtr(const NullFieldContainerPtr&);
+  FCPtr(const FCPtr& source);
 
-    FCPtr(      void                         ); 
-    FCPtr(const NullFieldContainerPtr &      );
-    FCPtr(const FCPtr                 &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  ~FCPtr(void);
 
-    ~FCPtr(void); 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                 Container Access                             */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                 Container Access                             */
-    /*! \{                                                                 */
+  FieldContainerTypeT* operator->(void);
+  FieldContainerTypeT* operator->(void) const;
 
-    FieldContainerTypeT *operator->(void);
-    FieldContainerTypeT *operator->(void) const;
+  FieldContainerTypeT& operator*(void);
+  FieldContainerTypeT& operator*(void) const;
 
-    FieldContainerTypeT &operator *(void);
-    FieldContainerTypeT &operator *(void) const;
+  FieldContainerTypeT* getCPtr(void);
+  FieldContainerTypeT* getCPtr(void) const;
 
-    FieldContainerTypeT *getCPtr   (void);
-    FieldContainerTypeT *getCPtr   (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Assignment                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Assignment                                */
-    /*! \{                                                                 */
+  void operator=(const FCPtr& source);
+  void operator=(const NullFieldContainerPtr&);
 
-    void operator =(const FCPtr                 &source);
-    void operator =(const NullFieldContainerPtr &      );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name             Container Constructors                           */
+  /*! \{                                                                 */
+  /*! \brief Container Constructor, used to work around MS Bugs,
+   *  use them only if you really now what you are doing ;-)             */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name             Container Constructors                           */
-    /*! \{                                                                 */
-    /*! \brief Container Constructor, used to work around MS Bugs,  
-     *  use them only if you really now what you are doing ;-)             */
+  explicit FCPtr(const FieldContainerTypeT& source);
+  explicit FCPtr(const FieldContainerTypeT* source);
 
-    explicit FCPtr(const FieldContainerTypeT &source);
-    explicit FCPtr(const FieldContainerTypeT *source);
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name             Internal Constructors                            */
+  /*! \{                                                                 */
 
-  protected:
+  FCPtr(const FieldContainerTypeT* source, const UInt16 uiSize, const UInt16 uiParentPos);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name             Internal Constructors                            */
-    /*! \{                                                                 */
-    
-    FCPtr(const FieldContainerTypeT *source,
-          const UInt16               uiSize,
-          const UInt16               uiParentPos);
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-
-  private:
-
-    friend class FieldContainer;
+ private:
+  friend class FieldContainer;
 };
-
-
-
 
 //---------------------------------------------------------------------------
 //  Class
@@ -674,148 +612,133 @@ class FCPtr : public BasePtrTypeT
     \ingroup GrpSystemFieldContainerX
  */
 
-template <class BasePtrTypeT, class FieldContainerTypeT> 
-class ConstFCPtr : public BasePtrTypeT
-{
-    /*==========================  PUBLIC  =================================*/
+template <class BasePtrTypeT, class FieldContainerTypeT>
+class ConstFCPtr : public BasePtrTypeT {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  OSG_PROPERTY_REQUIREMENT(BasePtrTypeT, ConstPointer);
 
-    OSG_PROPERTY_REQUIREMENT(BasePtrTypeT, ConstPointer);
+  typedef FieldContainerTypeT StoredObjectType;
+  typedef ConstFCPtr          ObjectType;
 
-    typedef FieldContainerTypeT                               StoredObjectType;
-    typedef ConstFCPtr                                        ObjectType;
+  typedef BasePtrTypeT Inherited;
 
-    typedef BasePtrTypeT                                      Inherited;
+  typedef FCPtr<typename FieldContainerTypeT::Ptr::Inherited, FieldContainerTypeT> NCFCPtr;
 
-    typedef FCPtr<typename FieldContainerTypeT::Ptr::Inherited,
-                  FieldContainerTypeT                         > NCFCPtr;
+  typedef ConstFCPtr<BasePtrTypeT, FieldContainerTypeT> Self;
 
-    typedef ConstFCPtr<BasePtrTypeT,
-                       FieldContainerTypeT>                     Self;
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  ConstFCPtr(void);
+  ConstFCPtr(const NullFieldContainerPtr&);
+  ConstFCPtr(const NCFCPtr& source);
+  ConstFCPtr(const ConstFCPtr& source);
 
-    ConstFCPtr(      void                         ); 
-    ConstFCPtr(const NullFieldContainerPtr &      );
-    ConstFCPtr(const NCFCPtr               &source);
-    ConstFCPtr(const ConstFCPtr            &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  ~ConstFCPtr(void);
 
-    ~ConstFCPtr(void); 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                 Container Access                             */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                 Container Access                             */
-    /*! \{                                                                 */
+  const FieldContainerTypeT* operator->(void);
+  const FieldContainerTypeT* operator->(void) const;
 
-    const FieldContainerTypeT *operator->(void);
-    const FieldContainerTypeT *operator->(void) const;
+  const FieldContainerTypeT& operator*(void);
+  const FieldContainerTypeT& operator*(void) const;
 
-    const FieldContainerTypeT &operator *(void);
-    const FieldContainerTypeT &operator *(void) const;
+  const FieldContainerTypeT* getCPtr(void);
+  const FieldContainerTypeT* getCPtr(void) const;
 
-    const FieldContainerTypeT *getCPtr   (void);
-    const FieldContainerTypeT *getCPtr   (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Assignment                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Assignment                                */
-    /*! \{                                                                 */
+  void operator=(const NCFCPtr&);
+  void operator=(const ConstFCPtr& source);
+  void operator=(const NullFieldContainerPtr& source);
 
-    void operator =(const NCFCPtr               &      );
-    void operator =(const ConstFCPtr            &source);
-    void operator =(const NullFieldContainerPtr &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name             Container Constructors                           */
+  /*! \{                                                                 */
+  /*! \brief Container Constructor, used to work around MS Bugs,
+   *  use them only if you really now what you are doing ;-)             */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name             Container Constructors                           */
-    /*! \{                                                                 */
-    /*! \brief Container Constructor, used to work around MS Bugs,  
-     *  use them only if you really now what you are doing ;-)             */
+  explicit ConstFCPtr(const FieldContainerTypeT& source);
+  explicit ConstFCPtr(const FieldContainerTypeT* source);
 
-    explicit ConstFCPtr(const FieldContainerTypeT &source);
-    explicit ConstFCPtr(const FieldContainerTypeT *source);
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name             Internal Constructors                            */
+  /*! \{                                                                 */
 
-  protected:
+  ConstFCPtr(const FieldContainerTypeT* source, const UInt16 uiSize, const UInt16 uiParentPos);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name             Internal Constructors                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-    ConstFCPtr(const FieldContainerTypeT *source,
-               const UInt16               uiSize,
-               const UInt16               uiParentPos);
-
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-
-  private:
-
-    friend class FieldContainer;
+ private:
+  friend class FieldContainer;
 };
-
 
 /*! \ingroup GrpSystemFieldContainerFuncs
     CPEditor class to wrap begin/endEditCP in an auto_ptr-like object
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING CPEditor
-{
-    /*==========================  PUBLIC  =================================*/
+class OSG_SYSTEMLIB_DLLMAPPING CPEditor {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-  
-    inline CPEditor(void);
-    
-    inline CPEditor(const FieldContainerPtr fc, 
-                    const BitVector mask = FieldBits::AllFields);
+  inline CPEditor(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
-    
-    inline ~CPEditor();
+  inline CPEditor(const FieldContainerPtr fc, const BitVector mask = FieldBits::AllFields);
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-  private:
-  
-    FieldContainerPtr   _fc;
-    BitVector           _mask;
+  inline ~CPEditor();
+
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+
+ private:
+  FieldContainerPtr _fc;
+  BitVector         _mask;
 };
 
 /*! \ingroup GrpSystemFieldContainerFuncs
     Helper macro to simplify using CPEditor
  */
 
-#define CPEdit(fc, mask) \
- ::OSG::CPEditor CPEdit_##fc((fc),(mask))
+#define CPEdit(fc, mask) ::OSG::CPEditor CPEdit_##fc((fc), (mask))
 
-#define CPEditAll(fc) \
- ::OSG::CPEditor CPEdit_##fc((fc))
+#define CPEditAll(fc) ::OSG::CPEditor CPEdit_##fc((fc))
 
 #ifdef __sgi
 #pragma reset woff 1375
 #endif
 
 #ifdef OSG_LINUX_ICC
-#pragma warning( default : 444 )
+#pragma warning(default : 444)
 #endif
 
 #ifdef __sgi
@@ -826,8 +749,7 @@ class OSG_SYSTEMLIB_DLLMAPPING CPEditor
  */
 
 OSG_SYSTEMLIB_DLLMAPPING
-std::ostream &operator <<(      std::ostream      &os,
-                          const FieldContainerPtr &fc);
+std::ostream& operator<<(std::ostream& os, const FieldContainerPtr& fc);
 
 extern OSG_SYSTEMLIB_DLLMAPPING const NullFieldContainerPtr NullFC;
 

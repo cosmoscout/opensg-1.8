@@ -55,60 +55,49 @@ OSG_USING_NAMESPACE
 
 /*----------------------------- class variables ---------------------------*/
 
-StatElemDesc<StatIntElem>  Drawable::statNTriangles("NTriangles",
-"number of rendered triangles");
-StatElemDesc<StatIntElem>  Drawable::statNLines("NLines",
-"number of rendered lines");
-StatElemDesc<StatIntElem>  Drawable::statNPoints("NPoints",
-"number of rendered points");
-StatElemDesc<StatIntElem>  Drawable::statNVertices("NVertices",
-"number of transformed vertices");
-StatElemDesc<StatIntElem>  Drawable::statNPrimitives("NPrimitives",
-"number of rendered primitive groups");
-StatElemDesc<StatIntOnceElem>  Drawable::statNGeoBytes("NGeoBytes",
-"memory usages of geometry on the gfx card");
+StatElemDesc<StatIntElem> Drawable::statNTriangles("NTriangles", "number of rendered triangles");
+StatElemDesc<StatIntElem> Drawable::statNLines("NLines", "number of rendered lines");
+StatElemDesc<StatIntElem> Drawable::statNPoints("NPoints", "number of rendered points");
+StatElemDesc<StatIntElem> Drawable::statNVertices("NVertices", "number of transformed vertices");
+StatElemDesc<StatIntElem> Drawable::statNPrimitives(
+    "NPrimitives", "number of rendered primitive groups");
+StatElemDesc<StatIntOnceElem> Drawable::statNGeoBytes(
+    "NGeoBytes", "memory usages of geometry on the gfx card");
 
 /*----------------------- constructors & destructors ----------------------*/
 
 //! Constructor
 
-Drawable::Drawable(void) :
-    Inherited()
-{
+Drawable::Drawable(void)
+    : Inherited() {
 }
 
 //! Copy Constructor
 
-Drawable::Drawable(const Drawable &source) :
-    Inherited(source)
-{
+Drawable::Drawable(const Drawable& source)
+    : Inherited(source) {
 }
 
 //! Destructor
 
-Drawable::~Drawable(void)
-{
+Drawable::~Drawable(void) {
 }
 
 /*----------------------------- class specific ----------------------------*/
 
 //! initialize the static features of the class, e.g. action callbacks
 
-void Drawable::initMethod (void)
-{
+void Drawable::initMethod(void) {
 }
 
 //! react to field changes
 
-void Drawable::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void Drawable::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
 //! output the instance for debug purposes
 
-void Drawable::dump(      UInt32    , 
-                         const BitVector ) const
-{
-    SLOG << "Dump Drawable NI" << std::endl;
+void Drawable::dump(UInt32, const BitVector) const {
+  SLOG << "Dump Drawable NI" << std::endl;
 }

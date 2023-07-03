@@ -40,7 +40,7 @@
 #define _OSGTEXTLAYOUTRESULT_H_
 
 #ifdef _MSC_VER
-# pragma once
+#pragma once
 #endif
 
 #include <OSGConfig.h>
@@ -52,51 +52,46 @@
 
 #include <vector>
 
-
 OSG_BEGIN_NAMESPACE
-
 
 /**
  * Keeps the result of a layout operation.
  * @author Patrick D&auml;hne
  */
-class OSG_SYSTEMLIB_DLLMAPPING TextLayoutResult
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING TextLayoutResult {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /** Creates a new %TextLayoutResult object. */
+  inline TextLayoutResult();
 
-    /** Creates a new %TextLayoutResult object. */
-    inline TextLayoutResult();
+  /** Clears the %TextLayoutResult object. */
+  void clear();
 
-    /** Clears the %TextLayoutResult object. */
-    void clear();
+  /** The glyph indices */
+  std::vector<TextGlyph::Index> indices;
 
-    /** The glyph indices */
-    std::vector<TextGlyph::Index> indices;
+  /** The positions of the glyphs */
+  std::vector<Vec2f> positions;
 
-    /** The positions of the glyphs */
-    std::vector<Vec2f> positions;
+  /**
+   * Returns the number of glyph indices that have a
+   * corresponding position.
+   * @return The number of glyphs.
+   */
+  inline UInt32 getNumGlyphs() const;
 
-    /**
-     * Returns the number of glyph indices that have a
-     * corresponding position.
-     * @return The number of glyphs.
-     */
-    inline UInt32 getNumGlyphs() const;
+  /** The line bounds */
+  std::vector<Vec2f> lineBounds;
 
-    /** The line bounds */
-    std::vector<Vec2f> lineBounds;
-
-    /** The text bounds */
-    Vec2f textBounds;
+  /** The text bounds */
+  Vec2f textBounds;
 };
-
 
 OSG_END_NAMESPACE
 
-
 #include <OSGTextLayoutResult.inl>
 
-#define OSGTEXTLAYOUTRESULT_HEADER_CVSID "@(#)$Id: OSGTextLayoutResult.h,v 1.1 2005/03/03 13:43:07 a-m-z Exp $"
+#define OSGTEXTLAYOUTRESULT_HEADER_CVSID                                                           \
+  "@(#)$Id: OSGTextLayoutResult.h,v 1.1 2005/03/03 13:43:07 a-m-z Exp $"
 
 #endif /* _OSGTEXTLAYOUTRESULT_H_ */

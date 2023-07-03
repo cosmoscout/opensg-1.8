@@ -44,5 +44,5 @@ OSG_BEGIN_NAMESPACE
 
 OSG_END_NAMESPACE
 
-#define OSGFBOVIEWPORT_INLINE_CVSID "@(#)$Id: OSGFBOViewport.inl,v 1.1 2007/03/12 15:03:02 a-m-z Exp $"
-
+#define OSGFBOVIEWPORT_INLINE_CVSID                                                                \
+  "@(#)$Id: OSGFBOViewport.inl,v 1.1 2007/03/12 15:03:02 a-m-z Exp $"

@@ -44,5 +44,5 @@ OSG_BEGIN_NAMESPACE
 
 OSG_END_NAMESPACE
 
-#define OSGSWITCHMATERIAL_INLINE_CVSID "@(#)$Id: OSGSwitchMaterial.inl,v 1.1 2006/01/20 10:52:15 a-m-z Exp $"
-
+#define OSGSWITCHMATERIAL_INLINE_CVSID                                                             \
+  "@(#)$Id: OSGSwitchMaterial.inl,v 1.1 2006/01/20 10:52:15 a-m-z Exp $"

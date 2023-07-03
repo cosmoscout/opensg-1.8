@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGFRESNELMATERIALBASE_H_
 #define _OSGFRESNELMATERIALBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -70,15 +68,15 @@
 #include <OSGColor3fFields.h> // Ambient type
 #include <OSGColor3fFields.h> // Diffuse type
 #include <OSGColor3fFields.h> // Specular type
-#include <OSGReal32Fields.h> // Shininess type
+#include <OSGReal32Fields.h>  // Shininess type
 #include <OSGColor3fFields.h> // Emission type
-#include <OSGReal32Fields.h> // Transparency type
-#include <OSGBoolFields.h> // Lit type
-#include <OSGGLenumFields.h> // ColorMaterial type
-#include <OSGReal32Fields.h> // Index type
-#include <OSGReal32Fields.h> // Scale type
-#include <OSGReal32Fields.h> // Bias type
-#include <OSGImageFields.h> // Image type
+#include <OSGReal32Fields.h>  // Transparency type
+#include <OSGBoolFields.h>    // Lit type
+#include <OSGGLenumFields.h>  // ColorMaterial type
+#include <OSGReal32Fields.h>  // Index type
+#include <OSGReal32Fields.h>  // Scale type
+#include <OSGReal32Fields.h>  // Bias type
+#include <OSGImageFields.h>   // Image type
 
 #include <OSGFresnelMaterialFields.h>
 
@@ -89,258 +87,238 @@ class BinaryDataHandler;
 
 //! \brief FresnelMaterial Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING FresnelMaterialBase : public ChunkMaterial
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING FresnelMaterialBase : public ChunkMaterial {
+ private:
+  typedef ChunkMaterial Inherited;
 
-    typedef ChunkMaterial    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef FresnelMaterialPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    AmbientFieldId       = Inherited::NextFieldId,
+    DiffuseFieldId       = AmbientFieldId + 1,
+    SpecularFieldId      = DiffuseFieldId + 1,
+    ShininessFieldId     = SpecularFieldId + 1,
+    EmissionFieldId      = ShininessFieldId + 1,
+    TransparencyFieldId  = EmissionFieldId + 1,
+    LitFieldId           = TransparencyFieldId + 1,
+    ColorMaterialFieldId = LitFieldId + 1,
+    IndexFieldId         = ColorMaterialFieldId + 1,
+    ScaleFieldId         = IndexFieldId + 1,
+    BiasFieldId          = ScaleFieldId + 1,
+    ImageFieldId         = BiasFieldId + 1,
+    NextFieldId          = ImageFieldId + 1
+  };
 
-    typedef FresnelMaterialPtr  Ptr;
+  static const OSG::BitVector AmbientFieldMask;
+  static const OSG::BitVector DiffuseFieldMask;
+  static const OSG::BitVector SpecularFieldMask;
+  static const OSG::BitVector ShininessFieldMask;
+  static const OSG::BitVector EmissionFieldMask;
+  static const OSG::BitVector TransparencyFieldMask;
+  static const OSG::BitVector LitFieldMask;
+  static const OSG::BitVector ColorMaterialFieldMask;
+  static const OSG::BitVector IndexFieldMask;
+  static const OSG::BitVector ScaleFieldMask;
+  static const OSG::BitVector BiasFieldMask;
+  static const OSG::BitVector ImageFieldMask;
 
-    enum
-    {
-        AmbientFieldId       = Inherited::NextFieldId,
-        DiffuseFieldId       = AmbientFieldId       + 1,
-        SpecularFieldId      = DiffuseFieldId       + 1,
-        ShininessFieldId     = SpecularFieldId      + 1,
-        EmissionFieldId      = ShininessFieldId     + 1,
-        TransparencyFieldId  = EmissionFieldId      + 1,
-        LitFieldId           = TransparencyFieldId  + 1,
-        ColorMaterialFieldId = LitFieldId           + 1,
-        IndexFieldId         = ColorMaterialFieldId + 1,
-        ScaleFieldId         = IndexFieldId         + 1,
-        BiasFieldId          = ScaleFieldId         + 1,
-        ImageFieldId         = BiasFieldId          + 1,
-        NextFieldId          = ImageFieldId         + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector AmbientFieldMask;
-    static const OSG::BitVector DiffuseFieldMask;
-    static const OSG::BitVector SpecularFieldMask;
-    static const OSG::BitVector ShininessFieldMask;
-    static const OSG::BitVector EmissionFieldMask;
-    static const OSG::BitVector TransparencyFieldMask;
-    static const OSG::BitVector LitFieldMask;
-    static const OSG::BitVector ColorMaterialFieldMask;
-    static const OSG::BitVector IndexFieldMask;
-    static const OSG::BitVector ScaleFieldMask;
-    static const OSG::BitVector BiasFieldMask;
-    static const OSG::BitVector ImageFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFColor3f*  getSFAmbient(void);
+  SFColor3f*  getSFDiffuse(void);
+  SFColor3f*  getSFSpecular(void);
+  SFReal32*   getSFShininess(void);
+  SFColor3f*  getSFEmission(void);
+  SFReal32*   getSFTransparency(void);
+  SFBool*     getSFLit(void);
+  SFGLenum*   getSFColorMaterial(void);
+  SFReal32*   getSFIndex(void);
+  SFReal32*   getSFScale(void);
+  SFReal32*   getSFBias(void);
+  SFImagePtr* getSFImage(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  Color3f&        getAmbient(void);
+  const Color3f&  getAmbient(void) const;
+  Color3f&        getDiffuse(void);
+  const Color3f&  getDiffuse(void) const;
+  Color3f&        getSpecular(void);
+  const Color3f&  getSpecular(void) const;
+  Real32&         getShininess(void);
+  const Real32&   getShininess(void) const;
+  Color3f&        getEmission(void);
+  const Color3f&  getEmission(void) const;
+  Real32&         getTransparency(void);
+  const Real32&   getTransparency(void) const;
+  bool&           getLit(void);
+  const bool&     getLit(void) const;
+  GLenum&         getColorMaterial(void);
+  const GLenum&   getColorMaterial(void) const;
+  Real32&         getIndex(void);
+  const Real32&   getIndex(void) const;
+  Real32&         getScale(void);
+  const Real32&   getScale(void) const;
+  Real32&         getBias(void);
+  const Real32&   getBias(void) const;
+  ImagePtr&       getImage(void);
+  const ImagePtr& getImage(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFColor3f           *getSFAmbient        (void);
-           SFColor3f           *getSFDiffuse        (void);
-           SFColor3f           *getSFSpecular       (void);
-           SFReal32            *getSFShininess      (void);
-           SFColor3f           *getSFEmission       (void);
-           SFReal32            *getSFTransparency   (void);
-           SFBool              *getSFLit            (void);
-           SFGLenum            *getSFColorMaterial  (void);
-           SFReal32            *getSFIndex          (void);
-           SFReal32            *getSFScale          (void);
-           SFReal32            *getSFBias           (void);
-           SFImagePtr          *getSFImage          (void);
+  void setAmbient(const Color3f& value);
+  void setDiffuse(const Color3f& value);
+  void setSpecular(const Color3f& value);
+  void setShininess(const Real32& value);
+  void setEmission(const Color3f& value);
+  void setTransparency(const Real32& value);
+  void setLit(const bool& value);
+  void setColorMaterial(const GLenum& value);
+  void setIndex(const Real32& value);
+  void setScale(const Real32& value);
+  void setBias(const Real32& value);
+  void setImage(const ImagePtr& value);
 
-           Color3f             &getAmbient        (void);
-     const Color3f             &getAmbient        (void) const;
-           Color3f             &getDiffuse        (void);
-     const Color3f             &getDiffuse        (void) const;
-           Color3f             &getSpecular       (void);
-     const Color3f             &getSpecular       (void) const;
-           Real32              &getShininess      (void);
-     const Real32              &getShininess      (void) const;
-           Color3f             &getEmission       (void);
-     const Color3f             &getEmission       (void) const;
-           Real32              &getTransparency   (void);
-     const Real32              &getTransparency   (void) const;
-           bool                &getLit            (void);
-     const bool                &getLit            (void) const;
-           GLenum              &getColorMaterial  (void);
-     const GLenum              &getColorMaterial  (void) const;
-           Real32              &getIndex          (void);
-     const Real32              &getIndex          (void) const;
-           Real32              &getScale          (void);
-     const Real32              &getScale          (void) const;
-           Real32              &getBias           (void);
-     const Real32              &getBias           (void) const;
-           ImagePtr            &getImage          (void);
-     const ImagePtr            &getImage          (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setAmbient        ( const Color3f &value );
-     void setDiffuse        ( const Color3f &value );
-     void setSpecular       ( const Color3f &value );
-     void setShininess      ( const Real32 &value );
-     void setEmission       ( const Color3f &value );
-     void setTransparency   ( const Real32 &value );
-     void setLit            ( const bool &value );
-     void setColorMaterial  ( const GLenum &value );
-     void setIndex          ( const Real32 &value );
-     void setScale          ( const Real32 &value );
-     void setBias           ( const Real32 &value );
-     void setImage          ( const ImagePtr &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static FresnelMaterialPtr create(void);
+  static FresnelMaterialPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  FresnelMaterialPtr      create          (void); 
-    static  FresnelMaterialPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFColor3f  _sfAmbient;
+  SFColor3f  _sfDiffuse;
+  SFColor3f  _sfSpecular;
+  SFReal32   _sfShininess;
+  SFColor3f  _sfEmission;
+  SFReal32   _sfTransparency;
+  SFBool     _sfLit;
+  SFGLenum   _sfColorMaterial;
+  SFReal32   _sfIndex;
+  SFReal32   _sfScale;
+  SFReal32   _sfBias;
+  SFImagePtr _sfImage;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  FresnelMaterialBase(void);
+  FresnelMaterialBase(const FresnelMaterialBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~FresnelMaterialBase(void);
 
-    SFColor3f           _sfAmbient;
-    SFColor3f           _sfDiffuse;
-    SFColor3f           _sfSpecular;
-    SFReal32            _sfShininess;
-    SFColor3f           _sfEmission;
-    SFReal32            _sfTransparency;
-    SFBool              _sfLit;
-    SFGLenum            _sfColorMaterial;
-    SFReal32            _sfIndex;
-    SFReal32            _sfScale;
-    SFReal32            _sfBias;
-    SFImagePtr          _sfImage;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    FresnelMaterialBase(void);
-    FresnelMaterialBase(const FresnelMaterialBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~FresnelMaterialBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      FresnelMaterialBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(FresnelMaterialBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      FresnelMaterialBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      FresnelMaterialBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const FresnelMaterialBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const FresnelMaterialBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef FresnelMaterialBase* FresnelMaterialBaseP;
 
-typedef FresnelMaterialBase *FresnelMaterialBaseP;
-
-typedef osgIF<FresnelMaterialBase::isNodeCore,
-              CoredNodePtr<FresnelMaterial>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet FresnelMaterialNodePtr;
+typedef osgIF<FresnelMaterialBase::isNodeCore, CoredNodePtr<FresnelMaterial>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet
+    FresnelMaterialNodePtr;
 
 typedef RefPtr<FresnelMaterialPtr> FresnelMaterialRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGFRESNELMATERIALBASE_HEADER_CVSID "@(#)$Id: OSGFresnelMaterialBase.h,v 1.6 2006/02/20 17:04:43 dirk Exp $"
+#define OSGFRESNELMATERIALBASE_HEADER_CVSID                                                        \
+  "@(#)$Id: OSGFresnelMaterialBase.h,v 1.6 2006/02/20 17:04:43 dirk Exp $"
 
 #endif /* _OSGFRESNELMATERIALBASE_H_ */

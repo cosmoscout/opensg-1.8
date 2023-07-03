@@ -48,80 +48,73 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief FatBorderChunk class. See \ref 
+/*! \brief FatBorderChunk class. See \ref
            PageMyExtensionFatBorderChunk for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING FatBorderChunk : public FatBorderChunkBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING FatBorderChunk : public FatBorderChunkBase {
+ private:
+  typedef FatBorderChunkBase Inherited;
 
-    typedef FatBorderChunkBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                Helper Functions                              */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  void activateWithStandardLighting();
+  void activateWithFragmentBasedLighting();
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                Helper Functions                              */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in FatBorderChunkBase.
 
-	void activateWithStandardLighting( );
-	void activateWithFragmentBasedLighting( );
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  FatBorderChunk(void);
+  FatBorderChunk(const FatBorderChunk& source);
 
-    // Variables should all be in FatBorderChunkBase.
+  void onCreate(const FatBorderChunk* source = NULL);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    FatBorderChunk(void);
-    FatBorderChunk(const FatBorderChunk &source);
+  virtual ~FatBorderChunk(void);
 
-    void onCreate(const FatBorderChunk *source = NULL);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class FatBorderChunkBase;
 
-    virtual ~FatBorderChunk(void); 
+  static void initMethod(void);
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  // prohibit default functions (move to 'public' if you need one)
 
-    friend class FieldContainer;
-    friend class FatBorderChunkBase;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const FatBorderChunk &source);
+  void operator=(const FatBorderChunk& source);
 };
 
-typedef FatBorderChunk *FatBorderChunkP;
+typedef FatBorderChunk* FatBorderChunkP;
 
 OSG_END_NAMESPACE
 

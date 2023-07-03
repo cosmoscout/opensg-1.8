@@ -52,137 +52,98 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &DistortionDisplayFilterBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& DistortionDisplayFilterBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 DistortionDisplayFilterBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 DistortionDisplayFilterBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-DistortionDisplayFilterPtr DistortionDisplayFilterBase::create(void) 
-{
-    DistortionDisplayFilterPtr fc; 
+inline DistortionDisplayFilterPtr DistortionDisplayFilterBase::create(void) {
+  DistortionDisplayFilterPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = DistortionDisplayFilterPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = DistortionDisplayFilterPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-DistortionDisplayFilterPtr DistortionDisplayFilterBase::createEmpty(void) 
-{ 
-    DistortionDisplayFilterPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline DistortionDisplayFilterPtr DistortionDisplayFilterBase::createEmpty(void) {
+  DistortionDisplayFilterPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the DistortionDisplayFilter::_sfRows field.
-inline
-SFUInt32 *DistortionDisplayFilterBase::getSFRows(void)
-{
-    return &_sfRows;
+inline SFUInt32* DistortionDisplayFilterBase::getSFRows(void) {
+  return &_sfRows;
 }
 
 //! Get the DistortionDisplayFilter::_sfColumns field.
-inline
-SFUInt32 *DistortionDisplayFilterBase::getSFColumns(void)
-{
-    return &_sfColumns;
+inline SFUInt32* DistortionDisplayFilterBase::getSFColumns(void) {
+  return &_sfColumns;
 }
 
 //! Get the DistortionDisplayFilter::_mfPositions field.
-inline
-MFVec2f *DistortionDisplayFilterBase::getMFPositions(void)
-{
-    return &_mfPositions;
-}
-
-
-//! Get the value of the DistortionDisplayFilter::_sfRows field.
-inline
-UInt32 &DistortionDisplayFilterBase::getRows(void)
-{
-    return _sfRows.getValue();
+inline MFVec2f* DistortionDisplayFilterBase::getMFPositions(void) {
+  return &_mfPositions;
 }
 
 //! Get the value of the DistortionDisplayFilter::_sfRows field.
-inline
-const UInt32 &DistortionDisplayFilterBase::getRows(void) const
-{
-    return _sfRows.getValue();
+inline UInt32& DistortionDisplayFilterBase::getRows(void) {
+  return _sfRows.getValue();
+}
+
+//! Get the value of the DistortionDisplayFilter::_sfRows field.
+inline const UInt32& DistortionDisplayFilterBase::getRows(void) const {
+  return _sfRows.getValue();
 }
 
 //! Set the value of the DistortionDisplayFilter::_sfRows field.
-inline
-void DistortionDisplayFilterBase::setRows(const UInt32 &value)
-{
-    _sfRows.setValue(value);
+inline void DistortionDisplayFilterBase::setRows(const UInt32& value) {
+  _sfRows.setValue(value);
 }
 
 //! Get the value of the DistortionDisplayFilter::_sfColumns field.
-inline
-UInt32 &DistortionDisplayFilterBase::getColumns(void)
-{
-    return _sfColumns.getValue();
+inline UInt32& DistortionDisplayFilterBase::getColumns(void) {
+  return _sfColumns.getValue();
 }
 
 //! Get the value of the DistortionDisplayFilter::_sfColumns field.
-inline
-const UInt32 &DistortionDisplayFilterBase::getColumns(void) const
-{
-    return _sfColumns.getValue();
+inline const UInt32& DistortionDisplayFilterBase::getColumns(void) const {
+  return _sfColumns.getValue();
 }
 
 //! Set the value of the DistortionDisplayFilter::_sfColumns field.
-inline
-void DistortionDisplayFilterBase::setColumns(const UInt32 &value)
-{
-    _sfColumns.setValue(value);
+inline void DistortionDisplayFilterBase::setColumns(const UInt32& value) {
+  _sfColumns.setValue(value);
 }
-
 
 //! Get the value of the \a index element the DistortionDisplayFilter::_mfPositions field.
-inline
-Vec2f &DistortionDisplayFilterBase::getPositions(const UInt32 index)
-{
-    return _mfPositions[index];
+inline Vec2f& DistortionDisplayFilterBase::getPositions(const UInt32 index) {
+  return _mfPositions[index];
 }
 
 //! Get the DistortionDisplayFilter::_mfPositions field.
-inline
-MFVec2f &DistortionDisplayFilterBase::getPositions(void)
-{
-    return _mfPositions;
+inline MFVec2f& DistortionDisplayFilterBase::getPositions(void) {
+  return _mfPositions;
 }
 
 //! Get the DistortionDisplayFilter::_mfPositions field.
-inline
-const MFVec2f &DistortionDisplayFilterBase::getPositions(void) const
-{
-    return _mfPositions;
+inline const MFVec2f& DistortionDisplayFilterBase::getPositions(void) const {
+  return _mfPositions;
 }
 
 OSG_END_NAMESPACE
 
 #define OSGDISTORTIONDISPLAYFILTERBASE_INLINE_CVSID "@(#)$Id: $"
-

@@ -44,5 +44,5 @@ OSG_BEGIN_NAMESPACE
 
 OSG_END_NAMESPACE
 
-#define OSGSHAREDFONTSTYLEWRAPPER_INLINE_CVSID "@(#)$Id: OSGSharedFontStyleWrapper.inl,v 1.1 2003/02/24 16:05:14 trembilski Exp $"
-
+#define OSGSHAREDFONTSTYLEWRAPPER_INLINE_CVSID                                                     \
+  "@(#)$Id: OSGSharedFontStyleWrapper.inl,v 1.1 2003/02/24 16:05:14 trembilski Exp $"

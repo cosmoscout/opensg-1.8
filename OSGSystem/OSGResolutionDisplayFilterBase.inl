@@ -52,81 +52,58 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &ResolutionDisplayFilterBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& ResolutionDisplayFilterBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 ResolutionDisplayFilterBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 ResolutionDisplayFilterBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-ResolutionDisplayFilterPtr ResolutionDisplayFilterBase::create(void) 
-{
-    ResolutionDisplayFilterPtr fc; 
+inline ResolutionDisplayFilterPtr ResolutionDisplayFilterBase::create(void) {
+  ResolutionDisplayFilterPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = ResolutionDisplayFilterPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = ResolutionDisplayFilterPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-ResolutionDisplayFilterPtr ResolutionDisplayFilterBase::createEmpty(void) 
-{ 
-    ResolutionDisplayFilterPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline ResolutionDisplayFilterPtr ResolutionDisplayFilterBase::createEmpty(void) {
+  ResolutionDisplayFilterPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the ResolutionDisplayFilter::_sfDownScale field.
-inline
-SFReal32 *ResolutionDisplayFilterBase::getSFDownScale(void)
-{
-    return &_sfDownScale;
-}
-
-
-//! Get the value of the ResolutionDisplayFilter::_sfDownScale field.
-inline
-Real32 &ResolutionDisplayFilterBase::getDownScale(void)
-{
-    return _sfDownScale.getValue();
+inline SFReal32* ResolutionDisplayFilterBase::getSFDownScale(void) {
+  return &_sfDownScale;
 }
 
 //! Get the value of the ResolutionDisplayFilter::_sfDownScale field.
-inline
-const Real32 &ResolutionDisplayFilterBase::getDownScale(void) const
-{
-    return _sfDownScale.getValue();
+inline Real32& ResolutionDisplayFilterBase::getDownScale(void) {
+  return _sfDownScale.getValue();
+}
+
+//! Get the value of the ResolutionDisplayFilter::_sfDownScale field.
+inline const Real32& ResolutionDisplayFilterBase::getDownScale(void) const {
+  return _sfDownScale.getValue();
 }
 
 //! Set the value of the ResolutionDisplayFilter::_sfDownScale field.
-inline
-void ResolutionDisplayFilterBase::setDownScale(const Real32 &value)
-{
-    _sfDownScale.setValue(value);
+inline void ResolutionDisplayFilterBase::setDownScale(const Real32& value) {
+  _sfDownScale.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
 #define OSGRESOLUTIONDISPLAYFILTERBASE_INLINE_CVSID "@(#)$Id: $"
-

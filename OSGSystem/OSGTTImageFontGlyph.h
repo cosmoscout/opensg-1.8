@@ -9,28 +9,24 @@
 #include "OSGImageFontGlyph.h"
 #include "OSGTTFontGlyph.h"
 
-OSG_BEGIN_NAMESPACE 
+OSG_BEGIN_NAMESPACE
 
-class OSG_SYSTEMLIB_DLLMAPPING TTImageFontGlyph :
-    public         ImageFontGlyph,
-    public virtual TTFontGlyph
-{
+class OSG_SYSTEMLIB_DLLMAPPING TTImageFontGlyph : public ImageFontGlyph,
+                                                  public virtual TTFontGlyph {
 
-  private:
+ private:
+  TTImageFontGlyph(const TTImageFontGlyph& obj);
+  void operator=(const TTImageFontGlyph& obj);
 
-    TTImageFontGlyph(const TTImageFontGlyph &obj);
-    void operator =(const TTImageFontGlyph &obj);
+ protected:
+ public:
+  TTImageFontGlyph(void);
+  TTImageFontGlyph(IGlyphType type, Int32 ascii, Int32 unicode);
 
-  protected:
-  public:
+  virtual ~TTImageFontGlyph(void);
 
-    TTImageFontGlyph(void);
-    TTImageFontGlyph(IGlyphType type, Int32 ascii, Int32 unicode);
-
-    virtual ~TTImageFontGlyph(void);
-
-            void setup (IGlyphType type, Int32 ascii, Int32 unicode);
-    virtual bool create(void                                       );
+  void         setup(IGlyphType type, Int32 ascii, Int32 unicode);
+  virtual bool create(void);
 };
 
 OSG_END_NAMESPACE

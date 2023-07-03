@@ -53,67 +53,60 @@ OSG_BEGIN_NAMESPACE
     \ingroup GrpSystemNodeCoresMisc
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING ComponentTransform : 
-    public ComponentTransformBase
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING ComponentTransform : public ComponentTransformBase {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    virtual void changed(BitVector whichField,
-                         UInt32    origin    );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                        Dump                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                        Dump                                  */
-    /*! \{                                                                 */
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    virtual void dump(      UInt32    uiIndent = 0,
-                      const BitVector bvFlags  = 0) const;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  typedef ComponentTransformBase Inherited;
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    typedef ComponentTransformBase Inherited;
+  ComponentTransform(void);
+  ComponentTransform(const ComponentTransform& source);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    ComponentTransform(void);
-    ComponentTransform(const ComponentTransform &source);
+  virtual ~ComponentTransform(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class ComponentTransformBase;
 
-    virtual ~ComponentTransform(void);
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Init                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  static void initMethod(void);
 
-    friend class FieldContainer;
-    friend class ComponentTransformBase;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Init                                     */
-    /*! \{                                                                 */
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void setMatrix(const Matrix& value);
 
-    static void initMethod(void);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void setMatrix(const Matrix & value);
-    
-    void operator =(const ComponentTransform &source);
+  void operator=(const ComponentTransform& source);
 };
 
 OSG_END_NAMESPACE
@@ -121,6 +114,7 @@ OSG_END_NAMESPACE
 #include <OSGComponentTransformBase.inl>
 #include <OSGComponentTransform.inl>
 
-#define OSGCOMPONENTTRANSFORM_HEADER_CVSID "@(#)$Id: OSGComponentTransform.h,v 1.4 2001/11/05 11:15:31 vossg Exp $"
+#define OSGCOMPONENTTRANSFORM_HEADER_CVSID                                                         \
+  "@(#)$Id: OSGComponentTransform.h,v 1.4 2001/11/05 11:15:31 vossg Exp $"
 
 #endif /* _OSGCOMPONENTTRANSFORM_H_ */

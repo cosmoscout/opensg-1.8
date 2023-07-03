@@ -36,9 +36,9 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-/* 
+/*
    This is a dummy header to allow automatic inference from the type to the
-   field type header. 
+   field type header.
 */
 
 #include "OSGSFBaseTypes.h"

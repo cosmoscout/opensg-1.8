@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGMATERIALFIELDS_H_
 #define _OSGMATERIALFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class Material;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! MaterialPtr
 
 typedef FCPtr<AttachmentContainerPtr, Material> MaterialPtr;
@@ -81,18 +80,22 @@ typedef FCPtr<AttachmentContainerPtr, Material> MaterialPtr;
 #endif
 
 template <>
-struct FieldDataTraits<MaterialPtr> : 
-    public FieldTraitsRecurseMapper<MaterialPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<MaterialPtr> : public FieldTraitsRecurseMapper<MaterialPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getSName(void) { return "SFMaterialPtr"; }
-    static const char *getMName(void) { return "MFMaterialPtr"; }
+  static const char* getSName(void) {
+    return "SFMaterialPtr";
+  }
+  static const char* getMName(void) {
+    return "MFMaterialPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -102,7 +105,6 @@ struct FieldDataTraits<MaterialPtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
@@ -126,6 +128,7 @@ OSG_DLLEXPORT_DECL1(MField, MaterialPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 
 OSG_END_NAMESPACE
 
-#define OSGMATERIALFIELDS_HEADER_CVSID "@(#)$Id: FCFieldsTemplate_h.h,v 1.26 2006/02/20 16:55:35 dirk Exp $"
+#define OSGMATERIALFIELDS_HEADER_CVSID                                                             \
+  "@(#)$Id: FCFieldsTemplate_h.h,v 1.26 2006/02/20 16:55:35 dirk Exp $"
 
 #endif /* _OSGMATERIALFIELDS_H_ */

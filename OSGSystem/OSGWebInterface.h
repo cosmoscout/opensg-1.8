@@ -14,139 +14,123 @@
 OSG_BEGIN_NAMESPACE
 
 class OSG_SYSTEMLIB_DLLMAPPING WebInterface {
-    /*==========================  PUBLIC  =================================*/
-public:
-    typedef std::map<IDString,IDString> ParameterT;
-    typedef void (WebInterface::*MethodT)(      std::ostream &,
-                                          const char*,
-                                                ParameterT   &);
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef std::map<IDString, IDString> ParameterT;
+  typedef void (WebInterface::*MethodT)(std::ostream&, const char*, ParameterT&);
 
-    typedef std::map<IDString, MethodT> HandlerT;
+  typedef std::map<IDString, MethodT> HandlerT;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    WebInterface(UInt32 port=8888);
+  WebInterface(UInt32 port = 8888);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    virtual ~WebInterface();
+  virtual ~WebInterface();
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                  request handling                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  request handling                            */
+  /*! \{                                                                 */
 
-    void handleRequests(void              );
-    bool waitRequest   (double duration=-1);
-    void flush         (void              );
+  void handleRequests(void);
+  bool waitRequest(double duration = -1);
+  void flush(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Set                                     */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Set                                     */
+  /*! \{                                                                 */
 
-    void    setRoot(NodePtr root);
-    void    setChangeList(ChangeList *clist);
-    
-    void                setHeader(const std::string &header);
-    void                setFooter(const std::string &footer);
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Get                                     */
-    /*! \{                                                                 */
+  void setRoot(NodePtr root);
+  void setChangeList(ChangeList* clist);
 
-          NodePtr        getRoot  (void);
-    
-    const std::string   &getHeader(void);
-    const std::string   &getFooter(void);
-    
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-protected:
-    /*---------------------------------------------------------------------*/
-    /*! \name                handler management                            */
-    /*! \{                                                                 */
+  void setHeader(const std::string& header);
+  void setFooter(const std::string& footer);
 
-    void addHandler(char *key,MethodT method);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Get                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                url encoding/decoding                         */
-    /*! \{                                                                 */
+  NodePtr getRoot(void);
 
-    std::string encodeUrl(const std::string &path,
-                          const ParameterT  &param);
-    void        decodeUrl(const std::string &url,
-                                std::string &path,
-                                ParameterT  &param);
+  const std::string& getHeader(void);
+  const std::string& getFooter(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Helper                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                handler management                            */
+  /*! \{                                                                 */
 
-    std::string createFCViewReference(      FieldContainerPtr fcPtr,
-                                            UInt32            id=0  );
+  void addHandler(char* key, MethodT method);
 
-    const char *getParam             (      ParameterT       &param,
-                                      const char             *name  );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                url encoding/decoding                         */
+  /*! \{                                                                 */
 
-    void        setParam             (      ParameterT       &param,
-                                      const char             *name ,
-                                      const char             *value );
-                                      
-    void        treeViewNode         (std::ostream     &os,
-                                      NodePtr           node,
-                                      ParameterT       &param );
-                                      
-    const char *getNodeName          (const FieldContainerPtr &fcPtr);
+  std::string encodeUrl(const std::string& path, const ParameterT& param);
+  void        decodeUrl(const std::string& url, std::string& path, ParameterT& param);
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-private:
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Helper                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Helper                                    */
+  /*! \{                                                                 */
 
-    bool        checkRequest         (std::string &url        );
-    std::string getDefaultHeader     (void);
+  std::string createFCViewReference(FieldContainerPtr fcPtr, UInt32 id = 0);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                  web page handler                            */
-    /*! \{                                                                 */
+  const char* getParam(ParameterT& param, const char* name);
 
-    void rootHandler      (std::ostream &os,
-                           const char   *path,ParameterT &param);
-    void changelistHandler(std::ostream &os,
-                           const char   *path,ParameterT &param);
-    void fcViewHandler    (std::ostream &os,
-                           const char   *path,ParameterT &param);
-    void fcEditHandler    (std::ostream &os,
-                           const char   *path,ParameterT &param);
-    void treeViewHandler  (std::ostream &os,
-                           const char   *path,ParameterT &param);
+  void setParam(ParameterT& param, const char* name, const char* value);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                  private members                             */
-    /*! \{                                                                 */
+  void treeViewNode(std::ostream& os, NodePtr node, ParameterT& param);
 
-    StreamSocket      _socket;
-    StreamSocket      _accepted;
-    std::stringstream _body;
-    HandlerT          _handler;
-    NodePtr           _root;
-    std::string       _header;
-    std::string       _footer;
-    ChangeList       *_clist;
-    /*! \}                                                                 */
+  const char* getNodeName(const FieldContainerPtr& fcPtr);
+
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Helper                                    */
+  /*! \{                                                                 */
+
+  bool        checkRequest(std::string& url);
+  std::string getDefaultHeader(void);
+
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  web page handler                            */
+  /*! \{                                                                 */
+
+  void rootHandler(std::ostream& os, const char* path, ParameterT& param);
+  void changelistHandler(std::ostream& os, const char* path, ParameterT& param);
+  void fcViewHandler(std::ostream& os, const char* path, ParameterT& param);
+  void fcEditHandler(std::ostream& os, const char* path, ParameterT& param);
+  void treeViewHandler(std::ostream& os, const char* path, ParameterT& param);
+
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  private members                             */
+  /*! \{                                                                 */
+
+  StreamSocket      _socket;
+  StreamSocket      _accepted;
+  std::stringstream _body;
+  HandlerT          _handler;
+  NodePtr           _root;
+  std::string       _header;
+  std::string       _footer;
+  ChangeList*       _clist;
+  /*! \}                                                                 */
 };
 
 OSG_END_NAMESPACE

@@ -44,5 +44,5 @@ OSG_BEGIN_NAMESPACE
 
 OSG_END_NAMESPACE
 
-#define OSGMULTIPASSMATERIAL_INLINE_CVSID "@(#)$Id: OSGMultiPassMaterial.inl,v 1.1 2005/04/14 15:43:45 a-m-z Exp $"
-
+#define OSGMULTIPASSMATERIAL_INLINE_CVSID                                                          \
+  "@(#)$Id: OSGMultiPassMaterial.inl,v 1.1 2005/04/14 15:43:45 a-m-z Exp $"

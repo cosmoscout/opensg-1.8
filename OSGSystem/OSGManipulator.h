@@ -51,116 +51,101 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief Manipulator class. See \ref 
+/*! \brief Manipulator class. See \ref
            PageManipulatorsManipulator for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING Manipulator : public ManipulatorBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING Manipulator : public ManipulatorBase {
+ private:
+  typedef ManipulatorBase Inherited;
 
-    typedef ManipulatorBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  virtual void mouseMove(Int16 x, Int16 y);
+  virtual void mouseButtonPress(UInt16 button, Int16 x, Int16 y);
+  virtual void mouseButtonRelease(UInt16 button, Int16 x, Int16 y);
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
-    
-    virtual void mouseMove          (Int16 x, Int16 y);
-    virtual void mouseButtonPress   (UInt16 button, Int16 x, Int16 y);
-    virtual void mouseButtonRelease (UInt16 button, Int16 x, Int16 y);
-    
-	inline
-    virtual bool hasSubHandle(const NodePtr& n);    
-    
-    void         setExternalUpdateHandler(ExternalUpdateHandler* h);
-    void         callExternalUpdateHandler();
+  inline virtual bool hasSubHandle(const NodePtr& n);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  void setExternalUpdateHandler(ExternalUpdateHandler* h);
+  void callExternalUpdateHandler();
 
-    // Variables should all be in ManipulatorBase.
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in ManipulatorBase.
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    Manipulator(void);
-    Manipulator(const Manipulator &source);
+  Manipulator(void);
+  Manipulator(const Manipulator& source);
 
-  	void	onCreate();	
-    void    onCreate(const Manipulator* source);
+  void onCreate();
+  void onCreate(const Manipulator* source);
 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  virtual ~Manipulator(void);
 
-    virtual ~Manipulator(void); 
+  void onDestroy();
 
-    void    onDestroy();    
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    
-	
-	virtual NodePtr makeHandleGeo() = 0;        
-    virtual void    addHandleGeo(NodePtr n);
-    virtual void    subHandleGeo(NodePtr n);
-    void            reverseTransform();
-    
-	virtual void    doMovement(TransformPtr t,
-							   Int32 coord,
-							   Real32 value,
-							   const Vec3f      &translation,
-							   const Quaternion &rotation,
-							   const Vec3f      &scaleFactor,
-							   const Quaternion &scaleOrientation ) = 0;
-	
+  virtual NodePtr makeHandleGeo() = 0;
+  virtual void    addHandleGeo(NodePtr n);
+  virtual void    subHandleGeo(NodePtr n);
+  void            reverseTransform();
 
-    Pnt2f calcScreenProjection(const Pnt3f&, const ViewportPtr& port);
-    
-    NodePtr                 _activeParent;              
-    ExternalUpdateHandler*  _externalUpdateHandler;
-              
-    /*==========================  PRIVATE  ================================*/
-  private:
+  virtual void doMovement(TransformPtr t, Int32 coord, Real32 value, const Vec3f& translation,
+      const Quaternion& rotation, const Vec3f& scaleFactor, const Quaternion& scaleOrientation) = 0;
 
-    ComponentTransformPtr _transHandleXC;
-    ComponentTransformPtr _transHandleYC;
-    ComponentTransformPtr _transHandleZC;
+  Pnt2f calcScreenProjection(const Pnt3f&, const ViewportPtr& port);
 
-    friend class FieldContainer;
-    friend class ManipulatorBase;
+  NodePtr                _activeParent;
+  ExternalUpdateHandler* _externalUpdateHandler;
 
-    static void initMethod(void);
+  /*==========================  PRIVATE  ================================*/
+ private:
+  ComponentTransformPtr _transHandleXC;
+  ComponentTransformPtr _transHandleYC;
+  ComponentTransformPtr _transHandleZC;
 
-    // prohibit default functions (move to 'public' if you need one)
+  friend class FieldContainer;
+  friend class ManipulatorBase;
 
-    void operator =(const Manipulator &source);
+  static void initMethod(void);
+
+  // prohibit default functions (move to 'public' if you need one)
+
+  void operator=(const Manipulator& source);
 };
 
-typedef Manipulator *ManipulatorP;
+typedef Manipulator* ManipulatorP;
 
 OSG_END_NAMESPACE
 
 #include <OSGManipulatorBase.inl>
 #include <OSGManipulator.inl>
 
-#define OSGMANIPULATOR_HEADER_CVSID "@(#)$Id: OSGManipulator.h,v 1.1 2005/06/26 12:44:40 a-m-z Exp $"
+#define OSGMANIPULATOR_HEADER_CVSID                                                                \
+  "@(#)$Id: OSGManipulator.h,v 1.1 2005/06/26 12:44:40 a-m-z Exp $"
 
 #endif /* _OSGMANIPULATOR_H_ */

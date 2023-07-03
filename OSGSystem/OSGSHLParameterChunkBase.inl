@@ -52,81 +52,59 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &SHLParameterChunkBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& SHLParameterChunkBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 SHLParameterChunkBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 SHLParameterChunkBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-SHLParameterChunkPtr SHLParameterChunkBase::create(void) 
-{
-    SHLParameterChunkPtr fc; 
+inline SHLParameterChunkPtr SHLParameterChunkBase::create(void) {
+  SHLParameterChunkPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = SHLParameterChunkPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = SHLParameterChunkPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-SHLParameterChunkPtr SHLParameterChunkBase::createEmpty(void) 
-{ 
-    SHLParameterChunkPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline SHLParameterChunkPtr SHLParameterChunkBase::createEmpty(void) {
+  SHLParameterChunkPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the SHLParameterChunk::_sfSHLChunk field.
-inline
-SFSHLChunkPtr *SHLParameterChunkBase::getSFSHLChunk(void)
-{
-    return &_sfSHLChunk;
-}
-
-
-//! Get the value of the SHLParameterChunk::_sfSHLChunk field.
-inline
-SHLChunkPtr &SHLParameterChunkBase::getSHLChunk(void)
-{
-    return _sfSHLChunk.getValue();
+inline SFSHLChunkPtr* SHLParameterChunkBase::getSFSHLChunk(void) {
+  return &_sfSHLChunk;
 }
 
 //! Get the value of the SHLParameterChunk::_sfSHLChunk field.
-inline
-const SHLChunkPtr &SHLParameterChunkBase::getSHLChunk(void) const
-{
-    return _sfSHLChunk.getValue();
+inline SHLChunkPtr& SHLParameterChunkBase::getSHLChunk(void) {
+  return _sfSHLChunk.getValue();
+}
+
+//! Get the value of the SHLParameterChunk::_sfSHLChunk field.
+inline const SHLChunkPtr& SHLParameterChunkBase::getSHLChunk(void) const {
+  return _sfSHLChunk.getValue();
 }
 
 //! Set the value of the SHLParameterChunk::_sfSHLChunk field.
-inline
-void SHLParameterChunkBase::setSHLChunk(const SHLChunkPtr &value)
-{
-    _sfSHLChunk.setValue(value);
+inline void SHLParameterChunkBase::setSHLChunk(const SHLChunkPtr& value) {
+  _sfSHLChunk.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGSHLPARAMETERCHUNKBASE_INLINE_CVSID "@(#)$Id: OSGSHLParameterChunkBase.inl,v 1.6 2006/02/20 17:04:38 dirk Exp $"
-
+#define OSGSHLPARAMETERCHUNKBASE_INLINE_CVSID                                                      \
+  "@(#)$Id: OSGSHLParameterChunkBase.inl,v 1.6 2006/02/20 17:04:38 dirk Exp $"

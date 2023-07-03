@@ -42,19 +42,14 @@
 
 OSG_BEGIN_NAMESPACE
 
-inline
-UInt32 FragmentProgramChunk::getStaticClassId(void)
-{
-    return getStaticClass()->getId();
+inline UInt32 FragmentProgramChunk::getStaticClassId(void) {
+  return getStaticClass()->getId();
 }
 
-inline
-const StateChunkClass *FragmentProgramChunk::getStaticClass(void)
-{
-    return &FragmentProgramChunk::_class;
+inline const StateChunkClass* FragmentProgramChunk::getStaticClass(void) {
+  return &FragmentProgramChunk::_class;
 }
 
 OSG_END_NAMESPACE
 
 #define OSGFRAGMENTPROGRAMCHUNK_INLINE_CVSID "@(#)$Id: $"
-

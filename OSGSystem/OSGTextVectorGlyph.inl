@@ -36,32 +36,39 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 OSG_BEGIN_NAMESPACE
 
+inline TextVectorGlyph::Point::Point(const Vec2f& _pos, PointType _type)
+    : pos(_pos)
+    , type(_type) {
+}
 
-inline TextVectorGlyph::Point::Point(const Vec2f &_pos, PointType _type)
-: pos(_pos), type(_type)
-{}
-
-
-inline const TextVectorGlyph::Outline &TextVectorGlyph::getOutline() const { return _outline; }
-
+inline const TextVectorGlyph::Outline& TextVectorGlyph::getOutline() const {
+  return _outline;
+}
 
 inline TextVectorGlyph::TextVectorGlyph()
-: TextGlyph(), _width(0.f), _height(0.f),
-  _horiBearingX(0.f), _horiBearingY(0.f), _vertBearingX(0.f), _vertBearingY(0.f),
-  _outline(), _polygonOutlineMap(), 
-  _normalMap(), _contourOrientations()
-{}
+    : TextGlyph()
+    , _width(0.f)
+    , _height(0.f)
+    , _horiBearingX(0.f)
+    , _horiBearingY(0.f)
+    , _vertBearingX(0.f)
+    , _vertBearingY(0.f)
+    , _outline()
+    , _polygonOutlineMap()
+    , _normalMap()
+    , _contourOrientations() {
+}
 
-
-inline TextVectorGlyph::VertexNormal::VertexNormal(const Vec2f &nextEdgeNormal_, const Vec2f &meanEdgeNormal_, Real32 edgeAngle_)
-: nextEdgeNormal(nextEdgeNormal_), meanEdgeNormal(meanEdgeNormal_), edgeAngle(edgeAngle_)
-{}
-
+inline TextVectorGlyph::VertexNormal::VertexNormal(
+    const Vec2f& nextEdgeNormal_, const Vec2f& meanEdgeNormal_, Real32 edgeAngle_)
+    : nextEdgeNormal(nextEdgeNormal_)
+    , meanEdgeNormal(meanEdgeNormal_)
+    , edgeAngle(edgeAngle_) {
+}
 
 OSG_END_NAMESPACE
 
-
-#define OSGTEXTVECTORGLYPH_INLINE_CVSID "@(#)$Id: OSGTextVectorGlyph.inl,v 1.1 2005/03/03 13:43:07 a-m-z Exp $"
+#define OSGTEXTVECTORGLYPH_INLINE_CVSID                                                            \
+  "@(#)$Id: OSGTextVectorGlyph.inl,v 1.1 2005/03/03 13:43:07 a-m-z Exp $"

@@ -55,84 +55,82 @@
 
 OSG_BEGIN_NAMESPACE
 
-class OSG_BASE_DLLMAPPING SocketAddress 
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_BASE_DLLMAPPING SocketAddress {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*! \enum SocketAddress type */
+  enum Type { ANY, BROADCAST, MULTICAST };
 
-    /*! \enum SocketAddress type */
-    enum Type { ANY,BROADCAST,MULTICAST };
-
-#if   defined(WIN32)
-    typedef              char       SocketAddrT;
+#if defined(WIN32)
+  typedef char SocketAddrT;
 #elif defined(darwin) || defined(__hpux) || defined(__sun)
-    typedef        const char       SocketAddrT;
+  typedef const char SocketAddrT;
 #else
-    typedef struct       socketaddr SocketAddrT;
+  typedef struct socketaddr SocketAddrT;
 #endif
 
-    /*----------------------windows-----------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*----------------------windows-----------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    SocketAddress(const char           *host   ,int port=0);
-    SocketAddress(      Type           type=ANY,int port=0);
-    SocketAddress(const SocketAddress &source             );
+  SocketAddress(const char* host, int port = 0);
+  SocketAddress(Type type = ANY, int port = 0);
+  SocketAddress(const SocketAddress& source);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    virtual ~SocketAddress();
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Get/Set                                    */
-    /*! \{                                                                 */
+  virtual ~SocketAddress();
 
-    struct sockaddr *getSockAddr    (      void             ) const;
-    int              getSockAddrSize(      void             ) const;
-    void             setPort        (      int          port);
-    void             setHost        (const std::string &host);
-    int              getPort        (      void             ) const;
-    std::string      getHost        (      void             ) const;
-    std::string      getHostByName  (      void             ) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Get/Set                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Type querry                                 */
-    /*! \{                                                                 */
+  struct sockaddr* getSockAddr(void) const;
+  int              getSockAddrSize(void) const;
+  void             setPort(int port);
+  void             setHost(const std::string& host);
+  int              getPort(void) const;
+  std::string      getHost(void) const;
+  std::string      getHostByName(void) const;
 
-    bool isMulticast(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Type querry                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Comparision                                */
-    /*! \{                                                                 */
+  bool isMulticast(void);
 
-    void operator = (const SocketAddress &other) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Comparision                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Comparision                                */
-    /*! \{                                                                 */
+  void operator=(const SocketAddress& other) const;
 
-    bool operator == (const SocketAddress &other) const;
-    bool operator != (const SocketAddress &other) const;
-    bool operator <  (const SocketAddress &other) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Comparision                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*==========================  PROTECTED ===============================*/
-  protected:
-    /*---------------------------------------------------------------------*/
-    /*! \name                 static element                               */
-    /*! \{                                                                 */
+  bool operator==(const SocketAddress& other) const;
+  bool operator!=(const SocketAddress& other) const;
+  bool operator<(const SocketAddress& other) const;
 
-    struct sockaddr_in *_sockaddr;
-//    struct sockaddr_in _sockaddr;
+  /*! \}                                                                 */
+  /*==========================  PROTECTED ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                 static element                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  struct sockaddr_in* _sockaddr;
+  //    struct sockaddr_in _sockaddr;
+
+  /*! \}                                                                 */
 };
 
 OSG_END_NAMESPACE

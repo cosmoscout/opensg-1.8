@@ -59,7 +59,6 @@
 
 OSG_USING_NAMESPACE
 
-
 /***************************************************************************\
  *                            Description                                  *
 \***************************************************************************/
@@ -79,65 +78,51 @@ description.
  -  private                                                                -
 \*-------------------------------------------------------------------------*/
 
-void DepthClearBackground::initMethod (void)
-{
+void DepthClearBackground::initMethod(void) {
 }
 
 /***************************************************************************\
  *                           Instance methods                              *
 \***************************************************************************/
 
-DepthClearBackground::DepthClearBackground(void) :
-    Inherited()
-{
+DepthClearBackground::DepthClearBackground(void)
+    : Inherited() {
 }
 
-DepthClearBackground::DepthClearBackground(const DepthClearBackground &source) :
-    Inherited(source)
-{
+DepthClearBackground::DepthClearBackground(const DepthClearBackground& source)
+    : Inherited(source) {
 }
 
-DepthClearBackground::~DepthClearBackground(void)
-{
+DepthClearBackground::~DepthClearBackground(void) {
 }
 
-void DepthClearBackground::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void DepthClearBackground::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
 /*-------------------------- your_category---------------------------------*/
 
-void DepthClearBackground::clear(DrawActionBase *, Viewport *)
-{
-    Int32 bit = getClearStencilBit();
+void DepthClearBackground::clear(DrawActionBase*, Viewport*) {
+  Int32 bit = getClearStencilBit();
 
-    glClearDepth(getDepth());
+  glClearDepth(getDepth());
 
-    if (bit >= 0)
-    {
-        glClearStencil(bit);
+  if (bit >= 0) {
+    glClearStencil(bit);
 
-        if (getClearDepth())
-            glClear(GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-        else
-            glClear(GL_STENCIL_BUFFER_BIT);
-    }
+    if (getClearDepth())
+      glClear(GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     else
-    {
-        if (getClearDepth())
-            glClear(GL_DEPTH_BUFFER_BIT);
-    }
+      glClear(GL_STENCIL_BUFFER_BIT);
+  } else {
+    if (getClearDepth())
+      glClear(GL_DEPTH_BUFFER_BIT);
+  }
 }
 
 /*------------------------------- dump ----------------------------------*/
 
-void DepthClearBackground::dump(      UInt32    OSG_CHECK_ARG(uiIndent), 
-                             const BitVector OSG_CHECK_ARG(bvFlags )) const
-{
-    SLOG << "Dump DepthClearBackground NI" << std::endl;
+void DepthClearBackground::dump(
+    UInt32 OSG_CHECK_ARG(uiIndent), const BitVector OSG_CHECK_ARG(bvFlags)) const {
+  SLOG << "Dump DepthClearBackground NI" << std::endl;
 }
-
-
-
-

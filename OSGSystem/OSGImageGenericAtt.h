@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGIMAGEGENERICATT_H_
 #define _OSGIMAGEGENERICATT_H_
 #ifdef __sgi
@@ -73,34 +72,39 @@ OSG_BEGIN_NAMESPACE
 
 /*! \hideinhierarchy */
 
-struct ImageGenericAttDesc
-{
-    typedef Attachment    Parent;
-    typedef AttachmentPtr ParentPtr;
+struct ImageGenericAttDesc {
+  typedef Attachment    Parent;
+  typedef AttachmentPtr ParentPtr;
 
-    static const Char8 *getTypeName      (void) { return "ImageGenericAtt"; }
-    static const Char8 *getParentTypeName(void) { return "Attachment"; }
-    static const Char8 *getGroupName     (void) { return "ImageGenAtt"; }
+  static const Char8* getTypeName(void) {
+    return "ImageGenericAtt";
+  }
+  static const Char8* getParentTypeName(void) {
+    return "Attachment";
+  }
+  static const Char8* getGroupName(void) {
+    return "ImageGenAtt";
+  }
 
-    static InitContainerF     getInitMethod(void) { return NULL; }
+  static InitContainerF getInitMethod(void) {
+    return NULL;
+  }
 
-    static FieldDescription **getDesc      (void) { return NULL; }
+  static FieldDescription** getDesc(void) {
+    return NULL;
+  }
 };
 
-typedef DynFieldAttachment<ImageGenericAttDesc>  ImageGenericAtt;
-typedef ImageGenericAtt::PtrType                 ImageGenericAttPtr;
+typedef DynFieldAttachment<ImageGenericAttDesc> ImageGenericAtt;
+typedef ImageGenericAtt::PtrType                ImageGenericAttPtr;
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 #ifndef OSG_IMAGEGENERICATT
 #if defined(OSG_WIN32_CL) && _MSC_VER > 1300
-OSG_ABSTR_FC_DLLEXPORT_DECL(DynFieldAttachment, 
-                            ImageGenericAttDesc,
-                            )
+OSG_ABSTR_FC_DLLEXPORT_DECL(DynFieldAttachment, ImageGenericAttDesc, )
 #else
-OSG_ABSTR_FC_DLLEXPORT_DECL(DynFieldAttachment, 
-                            ImageGenericAttDesc,
-                            OSG_SYSTEMLIB_DLLTMPLMAPPING)
+OSG_ABSTR_FC_DLLEXPORT_DECL(DynFieldAttachment, ImageGenericAttDesc, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 #endif
 #endif
 
@@ -115,16 +119,21 @@ OSG_ABSTR_FC_DLLEXPORT_DECL(DynFieldAttachment,
 #endif
 
 template <>
-struct FieldDataTraits<ImageGenericAttPtr> : 
-    public FieldTraitsRecurseMapper<ImageGenericAttPtr, true>
-{
-    static DataType                 _type;
-    enum                            { StringConvertable = 0x00  };
-    enum                            { bHasParent        = 0x01  };
+struct FieldDataTraits<ImageGenericAttPtr>
+    : public FieldTraitsRecurseMapper<ImageGenericAttPtr, true> {
+  static DataType _type;
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType &getType (void) { return _type;             }
-    static Char8    *getSName(void) { return "SFImageGenericAttPtr"; }
-    static Char8    *getMName(void) { return "MFImageGenericAttPtr"; }
+  static DataType& getType(void) {
+    return _type;
+  }
+  static Char8* getSName(void) {
+    return "SFImageGenericAttPtr";
+  }
+  static Char8* getMName(void) {
+    return "MFImageGenericAttPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -134,10 +143,10 @@ struct FieldDataTraits<ImageGenericAttPtr> :
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
 
-#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS) 
+#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
 
-typedef SField<ImageGenericAttPtr>       SFImageGenericAttPtr;
+typedef SField<ImageGenericAttPtr> SFImageGenericAttPtr;
 #endif
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -148,10 +157,10 @@ OSG_DLLEXPORT_DECL1(SField, ImageGenericAttPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
-#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS) 
+#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldMulti */
 
-typedef MField<ImageGenericAttPtr>       MFImageGenericAttPtr;
+typedef MField<ImageGenericAttPtr> MFImageGenericAttPtr;
 #endif
 
 #ifndef OSG_IMAGEGENERICATT
@@ -163,5 +172,3 @@ OSG_END_NAMESPACE
 #define OSGIMAGEGENERICATT_HEADER_CVSID "@(#)$Id: $"
 
 #endif /* _OSGIMAGEGENERICATT_H_ */
-
-

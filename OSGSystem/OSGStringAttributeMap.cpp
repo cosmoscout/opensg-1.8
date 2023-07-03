@@ -67,10 +67,8 @@ whatever ways are appropriate.
  *                           Class methods                                 *
 \***************************************************************************/
 
-void StringAttributeMap::initMethod (void)
-{
+void StringAttributeMap::initMethod(void) {
 }
-
 
 /***************************************************************************\
  *                           Instance methods                              *
@@ -82,31 +80,25 @@ void StringAttributeMap::initMethod (void)
 
 /*----------------------- constructors & destructors ----------------------*/
 
-StringAttributeMap::StringAttributeMap(void) :
-    Inherited()
-{
+StringAttributeMap::StringAttributeMap(void)
+    : Inherited() {
 }
 
-StringAttributeMap::StringAttributeMap(const StringAttributeMap &source) :
-    Inherited(source)
-{
+StringAttributeMap::StringAttributeMap(const StringAttributeMap& source)
+    : Inherited(source) {
 }
 
-StringAttributeMap::~StringAttributeMap(void)
-{
+StringAttributeMap::~StringAttributeMap(void) {
 }
 
 /*----------------------------- class specific ----------------------------*/
 
-void StringAttributeMap::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void StringAttributeMap::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
-void StringAttributeMap::dump(      UInt32    , 
-                         const BitVector ) const
-{
-    SLOG << "Dump StringAttributeMap NI" << std::endl;
+void StringAttributeMap::dump(UInt32, const BitVector) const {
+  SLOG << "Dump StringAttributeMap NI" << std::endl;
 }
 
 /*! Sets the value associated with the named key in this attribute map.
@@ -119,29 +111,25 @@ void StringAttributeMap::dump(      UInt32    ,
     Values) are edited by this method.
  */
 
-void StringAttributeMap::setAttribute(const std::string& key,
-                                      const std::string& value)
-{
-    MFString& keys   = this->StringAttributeMapBase::getKeys();
-    MFString& values = this->StringAttributeMapBase::getValues();
+void StringAttributeMap::setAttribute(const std::string& key, const std::string& value) {
+  MFString& keys   = this->StringAttributeMapBase::getKeys();
+  MFString& values = this->StringAttributeMapBase::getValues();
 
-    unsigned int index(0);
+  unsigned int index(0);
 
-    // Find the index of key in _mfKeys. This index will be the index of the
-    // value associated with key in _mfValues.
-    for ( MFString::iterator i = keys.begin(); i != keys.end(); ++i, ++index )
-    {
-        if ( *i == key )
-        {
-           values[index] = value;
-           return;
-        }
+  // Find the index of key in _mfKeys. This index will be the index of the
+  // value associated with key in _mfValues.
+  for (MFString::iterator i = keys.begin(); i != keys.end(); ++i, ++index) {
+    if (*i == key) {
+      values[index] = value;
+      return;
     }
+  }
 
-    // key was not found in _mfKeys, so we add key to _mfKeys and value to
-    // _mfValues.
-    keys.push_back(key);
-    values.push_back(value);
+  // key was not found in _mfKeys, so we add key to _mfKeys and value to
+  // _mfValues.
+  keys.push_back(key);
+  values.push_back(value);
 }
 
 /*! Attempts to look up the value associated with the named key in this
@@ -149,33 +137,27 @@ void StringAttributeMap::setAttribute(const std::string& key,
     false is returned. Otherwise, \p value is set to the value associated
     with the named key, and true is returned.
  */
- 
-bool StringAttributeMap::getAttribute(const std::string& key,
-                                      std::string& value)
-    const
-{
-    if ( hasAttribute(key) )
-    {
-        const MFString& keys   = this->StringAttributeMapBase::getKeys();
-        const MFString& values = this->StringAttributeMapBase::getValues();
 
-        // Find the index of key in _mfKeys. This index will be the index of
-        // the value associated with key in _mfValues.
-        unsigned int index(0);
-        MFString::const_iterator i;
-        for ( i = keys.begin(); i != keys.end(); ++i, ++index )
-        {
-            if ( *i == key )
-            {
-                // Assign the value associated with key.
-                value = values[index];
-                return true;
-            }
-        }
+bool StringAttributeMap::getAttribute(const std::string& key, std::string& value) const {
+  if (hasAttribute(key)) {
+    const MFString& keys   = this->StringAttributeMapBase::getKeys();
+    const MFString& values = this->StringAttributeMapBase::getValues();
+
+    // Find the index of key in _mfKeys. This index will be the index of
+    // the value associated with key in _mfValues.
+    unsigned int             index(0);
+    MFString::const_iterator i;
+    for (i = keys.begin(); i != keys.end(); ++i, ++index) {
+      if (*i == key) {
+        // Assign the value associated with key.
+        value = values[index];
+        return true;
+      }
     }
+  }
 
-    // _mfKeys does not contain key.
-    return false;
+  // _mfKeys does not contain key.
+  return false;
 }
 
 /*-------------------------------------------------------------------------*/
@@ -192,37 +174,32 @@ OSG_BEGIN_NAMESPACE
     attached OSG::StringAttributeMapPtr is returned.
  */
 
-StringAttributeMapPtr stringAttributeMap(AttachmentContainerPtr container)
-{
-    if ( NullFC == container )
-    {
-        FFATAL(("stringAttributeMap: no container?!?\n"));
-        return NullFC;
+StringAttributeMapPtr stringAttributeMap(AttachmentContainerPtr container) {
+  if (NullFC == container) {
+    FFATAL(("stringAttributeMap: no container?!?\n"));
+    return NullFC;
+  }
+
+  StringAttributeMapPtr attr_map = NullFC;
+  AttachmentPtr         attach_ptr =
+      container->findAttachment(StringAttributeMap::getClassType().getGroupId());
+
+  if (NullFC == attach_ptr) {
+    attr_map = StringAttributeMap::create();
+    beginEditCP(container, AttachmentContainer::AttachmentsFieldMask);
+    container->addAttachment(attr_map);
+    endEditCP(container, AttachmentContainer::AttachmentsFieldMask);
+  } else {
+    attr_map = StringAttributeMapPtr::dcast(attach_ptr);
+
+    if (NullFC == attr_map) {
+      FFATAL(("stringAttributeMap: StringAttributeMap Attachment is not castable to "
+              "StringAttributeMap?!?\n"));
+      return NullFC;
     }
+  }
 
-    StringAttributeMapPtr attr_map = NullFC;
-    AttachmentPtr attach_ptr =
-        container->findAttachment(StringAttributeMap::getClassType().getGroupId());
-
-    if ( NullFC == attach_ptr )
-    {
-        attr_map = StringAttributeMap::create();
-        beginEditCP(container, AttachmentContainer::AttachmentsFieldMask);
-            container->addAttachment(attr_map);
-        endEditCP(container, AttachmentContainer::AttachmentsFieldMask);
-    }
-    else
-    {
-        attr_map = StringAttributeMapPtr::dcast(attach_ptr);
-
-        if ( NullFC == attr_map )
-        {
-            FFATAL(("stringAttributeMap: StringAttributeMap Attachment is not castable to StringAttributeMap?!?\n"));
-            return NullFC;
-        }
-    }
-
-    return attr_map;
+  return attr_map;
 }
 
 OSG_END_NAMESPACE

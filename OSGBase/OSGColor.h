@@ -52,273 +52,230 @@ OSG_BEGIN_NAMESPACE
  */
 
 template <class ValueTypeT>
-class Color3
-{
-    /*==========================  PUBLIC  =================================*/
+class Color3 {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  typedef ValueTypeT ValueType;
 
-    typedef ValueTypeT ValueType;
+  static const Color3 Null;
 
-    static const Color3 Null;
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Class Specific                          */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Class Specific                          */
-    /*! \{                                                                 */
+  static void convertFromHSV(ValueType* rgbP, const Real32 h, const Real32 s, const Real32 v);
 
-    static void   convertFromHSV(      ValueType     *rgbP,
-                                 const Real32         h,
-                                 const Real32         s,
-                                 const Real32         v   );
+  static void convertToHSV(const ValueType* rgbP, Real32& h, Real32& s, Real32& v);
 
+  static UInt32 minPart(const ValueType* rgbP);
+  static UInt32 maxPart(const ValueType* rgbP);
 
-    static void   convertToHSV  (const ValueType     *rgbP,
-                                       Real32        &h,
-                                       Real32        &s,
-                                       Real32        &v   );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Constructors                            */
+  /*! \{                                                                 */
 
-    static UInt32 minPart       (const ValueType     *rgbP);
-    static UInt32 maxPart       (const ValueType     *rgbP);
+  Color3(void);
+  Color3(const Color3& source);
+  Color3(ValueType red, ValueType green, ValueType blue);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Constructors                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Destructors                            */
+  /*! \{                                                                 */
 
-    Color3(      void             );
-    Color3(const Color3    &source);
-    Color3(      ValueType  red,
-                 ValueType  green,
-                 ValueType  blue  );
+  ~Color3(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Destructors                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                           Set                                */
+  /*! \{                                                                 */
 
-    ~Color3(void);
+  void clear(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                           Set                                */
-    /*! \{                                                                 */
+  void setValuesRGB(const ValueType red, const ValueType green, const ValueType blue);
 
-    void clear        (     void               );
+  void setValuesHSV(const Real32 h, const Real32 s, const Real32 v);
 
-    void setValuesRGB(const ValueType  red,
-                      const ValueType  green,
-                      const ValueType  blue    );
+  void setRandom(void);
+  void setRGB(UInt32 rgbPack);
 
-    void setValuesHSV(const Real32     h,
-                      const Real32     s,
-                      const Real32     v       );
+  void setValue(const Char8* szString);
+  void setValue(Char8* szString);
 
-    void setRandom   (      void               );
-    void setRGB      (      UInt32     rgbPack );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                           Get                                */
+  /*! \{                                                                 */
 
-    void setValue    (const Char8     *szString);
-    void setValue    (      Char8     *szString);
+  UInt32 getRGB(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                           Get                                */
-    /*! \{                                                                 */
+  void getValuesRGB(ValueType& red, ValueType& green, ValueType& blue) const;
 
-          UInt32     getRGB       (void           ) const;
+  void getValuesHSV(Real32& h, Real32& s, Real32& v) const;
 
-          void       getValuesRGB(ValueType &red,
-                                  ValueType &green,
-                                  ValueType &blue ) const;
+  ValueType red(void) const;
+  ValueType green(void) const;
+  ValueType blue(void) const;
 
-          void       getValuesHSV(Real32    &h,
-                                  Real32    &s,
-                                  Real32    &v    ) const;
+  ValueType*       getValuesRGB(void);
+  const ValueType* getValuesRGB(void) const;
 
-          ValueType  red         (void            ) const;
-          ValueType  green       (void            ) const;
-          ValueType  blue        (void            ) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                        Operators                             */
+  /*! \{                                                                 */
 
-          ValueType *getValuesRGB(void            );
-    const ValueType *getValuesRGB(void            ) const;
+  Color3 operator*(const ValueType val);
+  Color3 operator/(const ValueType val);
+  Color3 operator+(const ValueType val);
+  Color3 operator-(const ValueType val);
 
+  void operator*=(const ValueType val);
+  void operator/=(const ValueType val);
+  void operator+=(const ValueType val);
+  void operator-=(const ValueType val);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                        Operators                             */
-    /*! \{                                                                 */
+  Color3 operator*(const Color3& other) const;
+  Color3 operator/(const Color3& other) const;
+  Color3 operator+(const Color3& other) const;
+  Color3 operator-(const Color3& other) const;
 
-          Color3     operator * (const ValueType  val      );
-          Color3     operator / (const ValueType  val      );
-          Color3     operator + (const ValueType  val      );
-          Color3     operator - (const ValueType  val      );
+  void operator*=(const Color3& other);
+  void operator/=(const Color3& other);
+  void operator+=(const Color3& other);
+  void operator-=(const Color3& other);
 
-          void       operator *= (const ValueType  val      );
-          void       operator /= (const ValueType  val      );
-          void       operator += (const ValueType  val      );
-          void       operator -= (const ValueType  val      );
-          
-          Color3     operator * (const Color3    &other    ) const;
-          Color3     operator / (const Color3    &other    ) const;
-          Color3     operator + (const Color3    &other    ) const;
-          Color3     operator - (const Color3    &other    ) const;
+  ValueType&       operator[](const UInt32 uiIndex);
+  const ValueType& operator[](const UInt32 uiIndex) const;
 
-          void       operator *=(const Color3   &other );
-          void       operator /=(const Color3   &other );
-          void       operator +=(const Color3   &other );
-          void       operator -=(const Color3   &other );
+  Color3& operator=(const Color3& source);
 
+  bool equals(const Color3& other, const ValueType tolerance) const;
 
-          ValueType &operator [](const UInt32     uiIndex  );
-    const ValueType &operator [](const UInt32     uiIndex  ) const;
+  bool operator<(const Color3& other) const;
+  bool operator==(const Color3& other) const;
+  bool operator!=(const Color3& other) const;
 
-           Color3   &operator  =(const Color3    &source   );
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-           bool      equals     (const Color3    &other, 
-                                 const ValueType  tolerance) const;
-
-           bool      operator < (const Color3    &other    ) const;
-           bool      operator ==(const Color3    &other    ) const;
-           bool      operator !=(const Color3    &other    ) const;
-    
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-
-  protected:
-          
-    ValueType _rgb[3];
+ protected:
+  ValueType _rgb[3];
 };
 
 /*! \ingroup GrpBaseBaseColors
  */
 
 template <class ValueTypeT>
-class Color4
-{
-    /*==========================  PUBLIC  =================================*/    
-  public:
+class Color4 {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef ValueTypeT ValueType;
 
-    typedef ValueTypeT ValueType;
+  static const Color4 Null;
 
-    static const Color4 Null;
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  Color4(void);
+  Color4(const Color4& source);
+  Color4(const ValueType red, const ValueType green, const ValueType blue, const ValueType alpha);
 
-    Color4(      void             );
-    Color4(const Color4    &source);
-    Color4(const ValueType  red,
-           const ValueType  green,
-           const ValueType  blue,
-           const ValueType  alpha );
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Destructors                               */
-    /*! \{                                                                 */
-    
-    ~Color4(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Destructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Set                                    */
-    /*! \{                                                                 */
+  ~Color4(void);
 
-    void clear        (      void           );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Set                                    */
+  /*! \{                                                                 */
 
-    void setValuesRGBA(const ValueType red,
-                       const ValueType green,
-                       const ValueType blue,
-                       const ValueType alpha);
+  void clear(void);
 
-    void setValuesHSV (const Real32 h,
-                       const Real32 s,
-                       const Real32 v       );
+  void setValuesRGBA(
+      const ValueType red, const ValueType green, const ValueType blue, const ValueType alpha);
 
-    void setRandom    (      void           );
-    void setRGBA      (      UInt32 rgbPack );    
+  void setValuesHSV(const Real32 h, const Real32 s, const Real32 v);
 
-    void setValue     (const Char8 *szString);
-    void setValue     (      Char8 *szString);
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Get                                    */
-    /*! \{                                                                 */
-    
-          UInt32    getRGBA       (void            ) const;
+  void setRandom(void);
+  void setRGBA(UInt32 rgbPack);
 
-          void      getValuesRGBA (ValueType &red,
-                                   ValueType &green,
-                                   ValueType &blue,
-                                   ValueType &alpha) const;
+  void setValue(const Char8* szString);
+  void setValue(Char8* szString);
 
-          void      getValuesHSV  (Real32    &h,
-                                   Real32    &s,
-                                   Real32    &v    ) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Get                                    */
+  /*! \{                                                                 */
 
-          ValueType red           (void            ) const;
-          ValueType green         (void            ) const;
-          ValueType blue          (void            ) const;
-          ValueType alpha         (void            ) const;
+  UInt32 getRGBA(void) const;
 
-          ValueType *getValuesRGBA(void            );
-    const ValueType *getValuesRGBA(void            ) const;
+  void getValuesRGBA(ValueType& red, ValueType& green, ValueType& blue, ValueType& alpha) const;
 
+  void getValuesHSV(Real32& h, Real32& s, Real32& v) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Operators                              */
-    /*! \{                                                                 */
+  ValueType red(void) const;
+  ValueType green(void) const;
+  ValueType blue(void) const;
+  ValueType alpha(void) const;
 
-          Color4     operator * (const ValueType  val      );
-          Color4     operator / (const ValueType  val      );
-          Color4     operator + (const ValueType  val      );
-          Color4     operator - (const ValueType  val      );
+  ValueType*       getValuesRGBA(void);
+  const ValueType* getValuesRGBA(void) const;
 
-          void       operator *= (const ValueType  val      );
-          void       operator /= (const ValueType  val      );
-          void       operator += (const ValueType  val      );
-          void       operator -= (const ValueType  val      );
-          
-          Color4     operator * (const Color4    &other    ) const;
-          Color4     operator / (const Color4    &other    ) const;
-          Color4     operator + (const Color4    &other    ) const;
-          Color4     operator - (const Color4    &other    ) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Operators                              */
+  /*! \{                                                                 */
 
-          void       operator *=(const Color4   &other );
-          void       operator /=(const Color4   &other );
-          void       operator +=(const Color4   &other );
-          void       operator -=(const Color4   &other );
+  Color4 operator*(const ValueType val);
+  Color4 operator/(const ValueType val);
+  Color4 operator+(const ValueType val);
+  Color4 operator-(const ValueType val);
 
-          ValueType &operator [](const UInt32     uiIndex  );
-    const ValueType &operator [](const UInt32     uiIndex  ) const;
+  void operator*=(const ValueType val);
+  void operator/=(const ValueType val);
+  void operator+=(const ValueType val);
+  void operator-=(const ValueType val);
 
-          Color4    &operator = (const Color4    &source   );
+  Color4 operator*(const Color4& other) const;
+  Color4 operator/(const Color4& other) const;
+  Color4 operator+(const Color4& other) const;
+  Color4 operator-(const Color4& other) const;
 
-          bool       equals     (const Color4    &other, 
-                                 const ValueType  tolerance) const;
+  void operator*=(const Color4& other);
+  void operator/=(const Color4& other);
+  void operator+=(const Color4& other);
+  void operator-=(const Color4& other);
 
-          bool       operator < (const Color4    &other    ) const;
-          bool       operator ==(const Color4    &other    ) const;
-          bool       operator !=(const Color4    &other    ) const;
-    
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  ValueType&       operator[](const UInt32 uiIndex);
+  const ValueType& operator[](const UInt32 uiIndex) const;
 
-  protected:
+  Color4& operator=(const Color4& source);
 
-    ValueType _rgba[4];
+  bool equals(const Color4& other, const ValueType tolerance) const;
+
+  bool operator<(const Color4& other) const;
+  bool operator==(const Color4& other) const;
+  bool operator!=(const Color4& other) const;
+
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+
+ protected:
+  ValueType _rgba[4];
 };
 
+template <class ValueTypeT>
+inline std::ostream& operator<<(std::ostream& outStream, const Color3<ValueTypeT>& color);
 
-template <class ValueTypeT> inline
-std::ostream &operator <<(      std::ostream       &outStream,
-                          const Color3<ValueTypeT> &color);
-
-template <class ValueTypeT> inline
-std::ostream &operator <<(      std::ostream       &outStream,
-                          const Color4<ValueTypeT> &color);
+template <class ValueTypeT>
+inline std::ostream& operator<<(std::ostream& outStream, const Color4<ValueTypeT>& color);
 
 /*! \var Color3<Real32> Color3f;
  *  \ingroup GrpBaseColors

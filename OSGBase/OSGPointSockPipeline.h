@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _POINTSOCKPIPELINE_H_
 #define _POINTSOCKPIPELINE_H_
 #ifdef __sgi
@@ -59,96 +58,91 @@
 
 OSG_BEGIN_NAMESPACE
 
-class OSG_BASE_DLLMAPPING PointSockPipeline : public PointSockConnection
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_BASE_DLLMAPPING PointSockPipeline : public PointSockConnection {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  PointSockPipeline(void);
+  virtual ~PointSockPipeline(void);
 
-             PointSockPipeline ( void );
-    virtual ~PointSockPipeline ( void ); 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   type info                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   type info                                  */
-    /*! \{                                                                 */
+  virtual const ConnectionType* getType(void);
 
-    virtual const ConnectionType *getType (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   connection                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   connection                                 */
-    /*! \{                                                                 */
+  virtual Channel connectGroup(const std::string& address, Time timeout = -1);
+  virtual void    disconnect(void);
+  virtual Channel acceptGroup(Time timeout = -1);
 
-    virtual Channel     connectGroup(const std::string &address,
-                                           Time        timeout=-1 );
-    virtual void        disconnect  (      void                   );
-    virtual Channel     acceptGroup (      Time        timeout=-1 );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   channel handling                           */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   channel handling                           */
-    /*! \{                                                                 */
+  virtual Channel selectChannel(Time timeout = -1);
 
-    virtual Channel selectChannel (Time timeout=-1);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   create                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   create                                     */
-    /*! \{                                                                 */
+  static PointConnection* create(void);
 
-    static PointConnection *create(void);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   IO Implementation                          */
+  /*! \{                                                                 */
 
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  virtual void read(MemoryHandle mem, UInt32 size);
+  virtual void readBuffer(void);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   IO Implementation                          */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   members                                    */
+  /*! \{                                                                 */
 
-    virtual void read             (MemoryHandle mem, UInt32 size);
-    virtual void readBuffer       (void);
+  StreamSocket _next;
+  StreamSocket _prev;
+  bool         _last;
+  bool         _initialized;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   members                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    StreamSocket                   _next;
-    StreamSocket                   _prev;
-    bool                           _last;
-    bool                           _initialized;
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /*---------------------------------------------------------------------*/
+  /*! \name               private helpers                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  void initialize(void);
 
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   static type                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name               private helpers                                */
-    /*! \{                                                                 */
+  static ConnectionType _type;
 
-    void initialize(void);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   static type                                */
-    /*! \{                                                                 */
+  typedef PointSockConnection Inherited;
 
-    static ConnectionType _type;
-
-    /*! \}                                                                 */
-
-    typedef PointSockConnection Inherited;
-
-	// prohibit default functions (move to 'public' if you need one)
-    PointSockPipeline(const PointSockPipeline &source);
-    PointSockPipeline& operator =(const PointSockPipeline &source);
+  // prohibit default functions (move to 'public' if you need one)
+  PointSockPipeline(const PointSockPipeline& source);
+  PointSockPipeline& operator=(const PointSockPipeline& source);
 };
 
 //---------------------------------------------------------------------------
@@ -157,7 +151,7 @@ class OSG_BASE_DLLMAPPING PointSockPipeline : public PointSockConnection
 
 // class pointer
 
-typedef PointSockPipeline *PointSockPipelineP;
+typedef PointSockPipeline* PointSockPipelineP;
 
 OSG_END_NAMESPACE
 

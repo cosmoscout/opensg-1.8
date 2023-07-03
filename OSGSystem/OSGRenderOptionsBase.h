@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGRENDEROPTIONSBASE_H_
 #define _OSGRENDEROPTIONSBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -67,27 +65,27 @@
 
 #include <OSGAttachment.h> // Parent
 
-#include <OSGBoolFields.h> // Statistic type
+#include <OSGBoolFields.h>   // Statistic type
 #include <OSGGLenumFields.h> // PolygonMode type
-#include <OSGBoolFields.h> // TwoSidedLighting type
-#include <OSGBoolFields.h> // SpecTexLighting type
-#include <OSGBoolFields.h> // SortTrans type
-#include <OSGBoolFields.h> // ZWriteTrans type
-#include <OSGBoolFields.h> // LocalLights type
-#include <OSGBoolFields.h> // CorrectTwoSidedLighting type
-#include <OSGBoolFields.h> // OcclusionCulling type
-#include <OSGInt32Fields.h> // OcclusionCullingMode type
+#include <OSGBoolFields.h>   // TwoSidedLighting type
+#include <OSGBoolFields.h>   // SpecTexLighting type
+#include <OSGBoolFields.h>   // SortTrans type
+#include <OSGBoolFields.h>   // ZWriteTrans type
+#include <OSGBoolFields.h>   // LocalLights type
+#include <OSGBoolFields.h>   // CorrectTwoSidedLighting type
+#include <OSGBoolFields.h>   // OcclusionCulling type
+#include <OSGInt32Fields.h>  // OcclusionCullingMode type
 #include <OSGUInt32Fields.h> // OcclusionCullingPixels type
-#include <OSGBoolFields.h> // Antialiasing type
+#include <OSGBoolFields.h>   // Antialiasing type
 #include <OSGReal32Fields.h> // AntialiasingDistance type
 #include <OSGReal32Fields.h> // AntialiasingScale type
 #include <OSGUInt32Fields.h> // AntialiasingTrigger type
-#include <OSGBoolFields.h> // FrustumCulling type
-#include <OSGBoolFields.h> // BackfaceCulling type
-#include <OSGBoolFields.h> // SmallFeatureCulling type
+#include <OSGBoolFields.h>   // FrustumCulling type
+#include <OSGBoolFields.h>   // BackfaceCulling type
+#include <OSGBoolFields.h>   // SmallFeatureCulling type
 #include <OSGReal32Fields.h> // SmallFeaturePixels type
 #include <OSGUInt32Fields.h> // SmallFeatureThreshold type
-#include <OSGBoolFields.h> // FirstFrame type
+#include <OSGBoolFields.h>   // FirstFrame type
 
 #include <OSGRenderOptionsFields.h>
 
@@ -98,321 +96,300 @@ class BinaryDataHandler;
 
 //! \brief RenderOptions Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING RenderOptionsBase : public Attachment
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING RenderOptionsBase : public Attachment {
+ private:
+  typedef Attachment Inherited;
 
-    typedef Attachment    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef RenderOptionsPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    StatisticFieldId               = Inherited::NextFieldId,
+    PolygonModeFieldId             = StatisticFieldId + 1,
+    TwoSidedLightingFieldId        = PolygonModeFieldId + 1,
+    SpecTexLightingFieldId         = TwoSidedLightingFieldId + 1,
+    SortTransFieldId               = SpecTexLightingFieldId + 1,
+    ZWriteTransFieldId             = SortTransFieldId + 1,
+    LocalLightsFieldId             = ZWriteTransFieldId + 1,
+    CorrectTwoSidedLightingFieldId = LocalLightsFieldId + 1,
+    OcclusionCullingFieldId        = CorrectTwoSidedLightingFieldId + 1,
+    OcclusionCullingModeFieldId    = OcclusionCullingFieldId + 1,
+    OcclusionCullingPixelsFieldId  = OcclusionCullingModeFieldId + 1,
+    AntialiasingFieldId            = OcclusionCullingPixelsFieldId + 1,
+    AntialiasingDistanceFieldId    = AntialiasingFieldId + 1,
+    AntialiasingScaleFieldId       = AntialiasingDistanceFieldId + 1,
+    AntialiasingTriggerFieldId     = AntialiasingScaleFieldId + 1,
+    FrustumCullingFieldId          = AntialiasingTriggerFieldId + 1,
+    BackfaceCullingFieldId         = FrustumCullingFieldId + 1,
+    SmallFeatureCullingFieldId     = BackfaceCullingFieldId + 1,
+    SmallFeaturePixelsFieldId      = SmallFeatureCullingFieldId + 1,
+    SmallFeatureThresholdFieldId   = SmallFeaturePixelsFieldId + 1,
+    FirstFrameFieldId              = SmallFeatureThresholdFieldId + 1,
+    NextFieldId                    = FirstFrameFieldId + 1
+  };
 
-    typedef RenderOptionsPtr  Ptr;
+  static const OSG::BitVector StatisticFieldMask;
+  static const OSG::BitVector PolygonModeFieldMask;
+  static const OSG::BitVector TwoSidedLightingFieldMask;
+  static const OSG::BitVector SpecTexLightingFieldMask;
+  static const OSG::BitVector SortTransFieldMask;
+  static const OSG::BitVector ZWriteTransFieldMask;
+  static const OSG::BitVector LocalLightsFieldMask;
+  static const OSG::BitVector CorrectTwoSidedLightingFieldMask;
+  static const OSG::BitVector OcclusionCullingFieldMask;
+  static const OSG::BitVector OcclusionCullingModeFieldMask;
+  static const OSG::BitVector OcclusionCullingPixelsFieldMask;
+  static const OSG::BitVector AntialiasingFieldMask;
+  static const OSG::BitVector AntialiasingDistanceFieldMask;
+  static const OSG::BitVector AntialiasingScaleFieldMask;
+  static const OSG::BitVector AntialiasingTriggerFieldMask;
+  static const OSG::BitVector FrustumCullingFieldMask;
+  static const OSG::BitVector BackfaceCullingFieldMask;
+  static const OSG::BitVector SmallFeatureCullingFieldMask;
+  static const OSG::BitVector SmallFeaturePixelsFieldMask;
+  static const OSG::BitVector SmallFeatureThresholdFieldMask;
+  static const OSG::BitVector FirstFrameFieldMask;
 
-    enum
-    {
-        StatisticFieldId               = Inherited::NextFieldId,
-        PolygonModeFieldId             = StatisticFieldId               + 1,
-        TwoSidedLightingFieldId        = PolygonModeFieldId             + 1,
-        SpecTexLightingFieldId         = TwoSidedLightingFieldId        + 1,
-        SortTransFieldId               = SpecTexLightingFieldId         + 1,
-        ZWriteTransFieldId             = SortTransFieldId               + 1,
-        LocalLightsFieldId             = ZWriteTransFieldId             + 1,
-        CorrectTwoSidedLightingFieldId = LocalLightsFieldId             + 1,
-        OcclusionCullingFieldId        = CorrectTwoSidedLightingFieldId + 1,
-        OcclusionCullingModeFieldId    = OcclusionCullingFieldId        + 1,
-        OcclusionCullingPixelsFieldId  = OcclusionCullingModeFieldId    + 1,
-        AntialiasingFieldId            = OcclusionCullingPixelsFieldId  + 1,
-        AntialiasingDistanceFieldId    = AntialiasingFieldId            + 1,
-        AntialiasingScaleFieldId       = AntialiasingDistanceFieldId    + 1,
-        AntialiasingTriggerFieldId     = AntialiasingScaleFieldId       + 1,
-        FrustumCullingFieldId          = AntialiasingTriggerFieldId     + 1,
-        BackfaceCullingFieldId         = FrustumCullingFieldId          + 1,
-        SmallFeatureCullingFieldId     = BackfaceCullingFieldId         + 1,
-        SmallFeaturePixelsFieldId      = SmallFeatureCullingFieldId     + 1,
-        SmallFeatureThresholdFieldId   = SmallFeaturePixelsFieldId      + 1,
-        FirstFrameFieldId              = SmallFeatureThresholdFieldId   + 1,
-        NextFieldId                    = FirstFrameFieldId              + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector StatisticFieldMask;
-    static const OSG::BitVector PolygonModeFieldMask;
-    static const OSG::BitVector TwoSidedLightingFieldMask;
-    static const OSG::BitVector SpecTexLightingFieldMask;
-    static const OSG::BitVector SortTransFieldMask;
-    static const OSG::BitVector ZWriteTransFieldMask;
-    static const OSG::BitVector LocalLightsFieldMask;
-    static const OSG::BitVector CorrectTwoSidedLightingFieldMask;
-    static const OSG::BitVector OcclusionCullingFieldMask;
-    static const OSG::BitVector OcclusionCullingModeFieldMask;
-    static const OSG::BitVector OcclusionCullingPixelsFieldMask;
-    static const OSG::BitVector AntialiasingFieldMask;
-    static const OSG::BitVector AntialiasingDistanceFieldMask;
-    static const OSG::BitVector AntialiasingScaleFieldMask;
-    static const OSG::BitVector AntialiasingTriggerFieldMask;
-    static const OSG::BitVector FrustumCullingFieldMask;
-    static const OSG::BitVector BackfaceCullingFieldMask;
-    static const OSG::BitVector SmallFeatureCullingFieldMask;
-    static const OSG::BitVector SmallFeaturePixelsFieldMask;
-    static const OSG::BitVector SmallFeatureThresholdFieldMask;
-    static const OSG::BitVector FirstFrameFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFBool*   getSFStatistic(void);
+  SFGLenum* getSFPolygonMode(void);
+  SFBool*   getSFTwoSidedLighting(void);
+  SFBool*   getSFSpecTexLighting(void);
+  SFBool*   getSFSortTrans(void);
+  SFBool*   getSFZWriteTrans(void);
+  SFBool*   getSFLocalLights(void);
+  SFBool*   getSFCorrectTwoSidedLighting(void);
+  SFBool*   getSFOcclusionCulling(void);
+  SFInt32*  getSFOcclusionCullingMode(void);
+  SFUInt32* getSFOcclusionCullingPixels(void);
+  SFBool*   getSFAntialiasing(void);
+  SFReal32* getSFAntialiasingDistance(void);
+  SFReal32* getSFAntialiasingScale(void);
+  SFUInt32* getSFAntialiasingTrigger(void);
+  SFBool*   getSFFrustumCulling(void);
+  SFBool*   getSFBackfaceCulling(void);
+  SFBool*   getSFSmallFeatureCulling(void);
+  SFReal32* getSFSmallFeaturePixels(void);
+  SFUInt32* getSFSmallFeatureThreshold(void);
+  SFBool*   getSFFirstFrame(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  bool&         getStatistic(void);
+  const bool&   getStatistic(void) const;
+  GLenum&       getPolygonMode(void);
+  const GLenum& getPolygonMode(void) const;
+  bool&         getTwoSidedLighting(void);
+  const bool&   getTwoSidedLighting(void) const;
+  bool&         getSpecTexLighting(void);
+  const bool&   getSpecTexLighting(void) const;
+  bool&         getSortTrans(void);
+  const bool&   getSortTrans(void) const;
+  bool&         getZWriteTrans(void);
+  const bool&   getZWriteTrans(void) const;
+  bool&         getLocalLights(void);
+  const bool&   getLocalLights(void) const;
+  bool&         getCorrectTwoSidedLighting(void);
+  const bool&   getCorrectTwoSidedLighting(void) const;
+  bool&         getOcclusionCulling(void);
+  const bool&   getOcclusionCulling(void) const;
+  Int32&        getOcclusionCullingMode(void);
+  const Int32&  getOcclusionCullingMode(void) const;
+  UInt32&       getOcclusionCullingPixels(void);
+  const UInt32& getOcclusionCullingPixels(void) const;
+  bool&         getAntialiasing(void);
+  const bool&   getAntialiasing(void) const;
+  Real32&       getAntialiasingDistance(void);
+  const Real32& getAntialiasingDistance(void) const;
+  Real32&       getAntialiasingScale(void);
+  const Real32& getAntialiasingScale(void) const;
+  UInt32&       getAntialiasingTrigger(void);
+  const UInt32& getAntialiasingTrigger(void) const;
+  bool&         getFrustumCulling(void);
+  const bool&   getFrustumCulling(void) const;
+  bool&         getBackfaceCulling(void);
+  const bool&   getBackfaceCulling(void) const;
+  bool&         getSmallFeatureCulling(void);
+  const bool&   getSmallFeatureCulling(void) const;
+  Real32&       getSmallFeaturePixels(void);
+  const Real32& getSmallFeaturePixels(void) const;
+  UInt32&       getSmallFeatureThreshold(void);
+  const UInt32& getSmallFeatureThreshold(void) const;
+  bool&         getFirstFrame(void);
+  const bool&   getFirstFrame(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFBool              *getSFStatistic      (void);
-           SFGLenum            *getSFPolygonMode    (void);
-           SFBool              *getSFTwoSidedLighting(void);
-           SFBool              *getSFSpecTexLighting(void);
-           SFBool              *getSFSortTrans      (void);
-           SFBool              *getSFZWriteTrans    (void);
-           SFBool              *getSFLocalLights    (void);
-           SFBool              *getSFCorrectTwoSidedLighting(void);
-           SFBool              *getSFOcclusionCulling(void);
-           SFInt32             *getSFOcclusionCullingMode(void);
-           SFUInt32            *getSFOcclusionCullingPixels(void);
-           SFBool              *getSFAntialiasing   (void);
-           SFReal32            *getSFAntialiasingDistance(void);
-           SFReal32            *getSFAntialiasingScale(void);
-           SFUInt32            *getSFAntialiasingTrigger(void);
-           SFBool              *getSFFrustumCulling (void);
-           SFBool              *getSFBackfaceCulling(void);
-           SFBool              *getSFSmallFeatureCulling(void);
-           SFReal32            *getSFSmallFeaturePixels(void);
-           SFUInt32            *getSFSmallFeatureThreshold(void);
-           SFBool              *getSFFirstFrame     (void);
+  void setStatistic(const bool& value);
+  void setPolygonMode(const GLenum& value);
+  void setTwoSidedLighting(const bool& value);
+  void setSpecTexLighting(const bool& value);
+  void setSortTrans(const bool& value);
+  void setZWriteTrans(const bool& value);
+  void setLocalLights(const bool& value);
+  void setCorrectTwoSidedLighting(const bool& value);
+  void setOcclusionCulling(const bool& value);
+  void setOcclusionCullingMode(const Int32& value);
+  void setOcclusionCullingPixels(const UInt32& value);
+  void setAntialiasing(const bool& value);
+  void setAntialiasingDistance(const Real32& value);
+  void setAntialiasingScale(const Real32& value);
+  void setAntialiasingTrigger(const UInt32& value);
+  void setFrustumCulling(const bool& value);
+  void setBackfaceCulling(const bool& value);
+  void setSmallFeatureCulling(const bool& value);
+  void setSmallFeaturePixels(const Real32& value);
+  void setSmallFeatureThreshold(const UInt32& value);
+  void setFirstFrame(const bool& value);
 
-           bool                &getStatistic      (void);
-     const bool                &getStatistic      (void) const;
-           GLenum              &getPolygonMode    (void);
-     const GLenum              &getPolygonMode    (void) const;
-           bool                &getTwoSidedLighting(void);
-     const bool                &getTwoSidedLighting(void) const;
-           bool                &getSpecTexLighting(void);
-     const bool                &getSpecTexLighting(void) const;
-           bool                &getSortTrans      (void);
-     const bool                &getSortTrans      (void) const;
-           bool                &getZWriteTrans    (void);
-     const bool                &getZWriteTrans    (void) const;
-           bool                &getLocalLights    (void);
-     const bool                &getLocalLights    (void) const;
-           bool                &getCorrectTwoSidedLighting(void);
-     const bool                &getCorrectTwoSidedLighting(void) const;
-           bool                &getOcclusionCulling(void);
-     const bool                &getOcclusionCulling(void) const;
-           Int32               &getOcclusionCullingMode(void);
-     const Int32               &getOcclusionCullingMode(void) const;
-           UInt32              &getOcclusionCullingPixels(void);
-     const UInt32              &getOcclusionCullingPixels(void) const;
-           bool                &getAntialiasing   (void);
-     const bool                &getAntialiasing   (void) const;
-           Real32              &getAntialiasingDistance(void);
-     const Real32              &getAntialiasingDistance(void) const;
-           Real32              &getAntialiasingScale(void);
-     const Real32              &getAntialiasingScale(void) const;
-           UInt32              &getAntialiasingTrigger(void);
-     const UInt32              &getAntialiasingTrigger(void) const;
-           bool                &getFrustumCulling (void);
-     const bool                &getFrustumCulling (void) const;
-           bool                &getBackfaceCulling(void);
-     const bool                &getBackfaceCulling(void) const;
-           bool                &getSmallFeatureCulling(void);
-     const bool                &getSmallFeatureCulling(void) const;
-           Real32              &getSmallFeaturePixels(void);
-     const Real32              &getSmallFeaturePixels(void) const;
-           UInt32              &getSmallFeatureThreshold(void);
-     const UInt32              &getSmallFeatureThreshold(void) const;
-           bool                &getFirstFrame     (void);
-     const bool                &getFirstFrame     (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setStatistic      ( const bool &value );
-     void setPolygonMode    ( const GLenum &value );
-     void setTwoSidedLighting( const bool &value );
-     void setSpecTexLighting( const bool &value );
-     void setSortTrans      ( const bool &value );
-     void setZWriteTrans    ( const bool &value );
-     void setLocalLights    ( const bool &value );
-     void setCorrectTwoSidedLighting( const bool &value );
-     void setOcclusionCulling( const bool &value );
-     void setOcclusionCullingMode( const Int32 &value );
-     void setOcclusionCullingPixels( const UInt32 &value );
-     void setAntialiasing   ( const bool &value );
-     void setAntialiasingDistance( const Real32 &value );
-     void setAntialiasingScale( const Real32 &value );
-     void setAntialiasingTrigger( const UInt32 &value );
-     void setFrustumCulling ( const bool &value );
-     void setBackfaceCulling( const bool &value );
-     void setSmallFeatureCulling( const bool &value );
-     void setSmallFeaturePixels( const Real32 &value );
-     void setSmallFeatureThreshold( const UInt32 &value );
-     void setFirstFrame     ( const bool &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static RenderOptionsPtr create(void);
+  static RenderOptionsPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  RenderOptionsPtr      create          (void); 
-    static  RenderOptionsPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFBool   _sfStatistic;
+  SFGLenum _sfPolygonMode;
+  SFBool   _sfTwoSidedLighting;
+  SFBool   _sfSpecTexLighting;
+  SFBool   _sfSortTrans;
+  SFBool   _sfZWriteTrans;
+  SFBool   _sfLocalLights;
+  SFBool   _sfCorrectTwoSidedLighting;
+  SFBool   _sfOcclusionCulling;
+  SFInt32  _sfOcclusionCullingMode;
+  SFUInt32 _sfOcclusionCullingPixels;
+  SFBool   _sfAntialiasing;
+  SFReal32 _sfAntialiasingDistance;
+  SFReal32 _sfAntialiasingScale;
+  SFUInt32 _sfAntialiasingTrigger;
+  SFBool   _sfFrustumCulling;
+  SFBool   _sfBackfaceCulling;
+  SFBool   _sfSmallFeatureCulling;
+  SFReal32 _sfSmallFeaturePixels;
+  SFUInt32 _sfSmallFeatureThreshold;
+  SFBool   _sfFirstFrame;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  RenderOptionsBase(void);
+  RenderOptionsBase(const RenderOptionsBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~RenderOptionsBase(void);
 
-    SFBool              _sfStatistic;
-    SFGLenum            _sfPolygonMode;
-    SFBool              _sfTwoSidedLighting;
-    SFBool              _sfSpecTexLighting;
-    SFBool              _sfSortTrans;
-    SFBool              _sfZWriteTrans;
-    SFBool              _sfLocalLights;
-    SFBool              _sfCorrectTwoSidedLighting;
-    SFBool              _sfOcclusionCulling;
-    SFInt32             _sfOcclusionCullingMode;
-    SFUInt32            _sfOcclusionCullingPixels;
-    SFBool              _sfAntialiasing;
-    SFReal32            _sfAntialiasingDistance;
-    SFReal32            _sfAntialiasingScale;
-    SFUInt32            _sfAntialiasingTrigger;
-    SFBool              _sfFrustumCulling;
-    SFBool              _sfBackfaceCulling;
-    SFBool              _sfSmallFeatureCulling;
-    SFReal32            _sfSmallFeaturePixels;
-    SFUInt32            _sfSmallFeatureThreshold;
-    SFBool              _sfFirstFrame;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    RenderOptionsBase(void);
-    RenderOptionsBase(const RenderOptionsBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~RenderOptionsBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      RenderOptionsBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(RenderOptionsBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      RenderOptionsBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      RenderOptionsBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const RenderOptionsBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const RenderOptionsBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef RenderOptionsBase* RenderOptionsBaseP;
 
-typedef RenderOptionsBase *RenderOptionsBaseP;
-
-typedef osgIF<RenderOptionsBase::isNodeCore,
-              CoredNodePtr<RenderOptions>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet RenderOptionsNodePtr;
+typedef osgIF<RenderOptionsBase::isNodeCore, CoredNodePtr<RenderOptions>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet RenderOptionsNodePtr;
 
 typedef RefPtr<RenderOptionsPtr> RenderOptionsRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGRENDEROPTIONSBASE_HEADER_CVSID "@(#)$Id: OSGRenderOptionsBase.h,v 1.7 2007/07/03 09:16:10 yjung Exp $"
+#define OSGRENDEROPTIONSBASE_HEADER_CVSID                                                          \
+  "@(#)$Id: OSGRenderOptionsBase.h,v 1.7 2007/07/03 09:16:10 yjung Exp $"
 
 #endif /* _OSGRENDEROPTIONSBASE_H_ */

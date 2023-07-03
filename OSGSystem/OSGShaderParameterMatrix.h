@@ -48,74 +48,68 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief ShaderParameterMatrix class. See \ref 
+/*! \brief ShaderParameterMatrix class. See \ref
            PageSystemShaderParameterMatrix for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING ShaderParameterMatrix : public ShaderParameterMatrixBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING ShaderParameterMatrix : public ShaderParameterMatrixBase {
+ private:
+  typedef ShaderParameterMatrixBase Inherited;
 
-    typedef ShaderParameterMatrixBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  ShaderParameterMatrix(void);
+  ShaderParameterMatrix(const ShaderParameterMatrix& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~ShaderParameterMatrix(void);
 
-    ShaderParameterMatrix(void);
-    ShaderParameterMatrix(const ShaderParameterMatrix &source);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class ShaderParameterMatrixBase;
 
-    virtual ~ShaderParameterMatrix(void); 
+  static void initMethod(void);
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  // prohibit default functions (move to 'public' if you need one)
 
-    friend class FieldContainer;
-    friend class ShaderParameterMatrixBase;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const ShaderParameterMatrix &source);
+  void operator=(const ShaderParameterMatrix& source);
 };
 
-typedef ShaderParameterMatrix *ShaderParameterMatrixP;
+typedef ShaderParameterMatrix* ShaderParameterMatrixP;
 
 OSG_END_NAMESPACE
 
 #include <OSGShaderParameterMatrixBase.inl>
 #include <OSGShaderParameterMatrix.inl>
 
-#define OSGSHADERPARAMETERMATRIX_HEADER_CVSID "@(#)$Id: OSGShaderParameterMatrix.h,v 1.2 2005/02/24 17:29:15 a-m-z Exp $"
+#define OSGSHADERPARAMETERMATRIX_HEADER_CVSID                                                      \
+  "@(#)$Id: OSGShaderParameterMatrix.h,v 1.2 2005/02/24 17:29:15 a-m-z Exp $"
 
 #endif /* _OSGSHADERPARAMETERMATRIX_H_ */

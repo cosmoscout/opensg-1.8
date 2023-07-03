@@ -7,7 +7,7 @@
 #ifndef _OSGTWOSIDEDLIGHTINGCHUNK_H_
 #define _OSGTWOSIDEDLIGHTINGCHUNK_H_
 #ifdef __sgi
-#   pragma once
+#pragma once
 #endif
 
 //----------------------------------------------------------------------------
@@ -24,117 +24,111 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief State chunk for automatic cubetexture coordinate transformations. 
-*/
+/*! \brief State chunk for automatic cubetexture coordinate transformations.
+ */
 
-class OSG_SYSTEMLIB_DLLMAPPING TwoSidedLightingChunk : public TwoSidedLightingChunkBase
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING TwoSidedLightingChunk : public TwoSidedLightingChunkBase {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                 Chunk Class Access                           */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                 Chunk Class Access                           */
-    /*! \{                                                                 */
+  virtual const StateChunkClass* getClass(void) const;
 
-           virtual const StateChunkClass * getClass         (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name              Static Chunk Class Access                       */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name              Static Chunk Class Access                       */
-    /*! \{                                                                 */
+  inline static UInt32                 getStaticClassId(void);
+  inline static const StateChunkClass* getStaticClass(void);
 
-    inline static        UInt32            getStaticClassId (void);
-    inline static  const StateChunkClass * getStaticClass   (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    virtual void changed(BitVector whichField, 
-                         UInt32    origin    );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      State                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      State                                   */
-    /*! \{                                                                 */
+  virtual void activate(DrawActionBase* action, UInt32 index = 0);
 
-    virtual void activate   ( DrawActionBase * action, UInt32 index = 0 );
+  virtual void changeFrom(DrawActionBase* action, StateChunk* old, UInt32 index = 0);
 
-    virtual void changeFrom ( DrawActionBase * action, StateChunk * old,
-                             UInt32 index = 0 );
+  virtual void deactivate(DrawActionBase* action, UInt32 index = 0);
 
-    virtual void deactivate ( DrawActionBase * action, UInt32 index = 0 );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Comparison                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Comparison                                */
-    /*! \{                                                                 */
+  virtual Real32 switchCost(StateChunk* chunk);
 
-    virtual Real32  switchCost    ( StateChunk * chunk );
+  virtual bool operator<(const StateChunk& other) const;
 
-    virtual bool operator <  (const StateChunk &other) const;
+  virtual bool operator==(const StateChunk& other) const;
+  virtual bool operator!=(const StateChunk& other) const;
 
-    virtual bool operator == (const StateChunk &other) const;
-    virtual bool operator != (const StateChunk &other) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in CubeTextureTransformChunkBase.
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    // Variables should all be in CubeTextureTransformChunkBase.
+  TwoSidedLightingChunk(void);
+  TwoSidedLightingChunk(const TwoSidedLightingChunk& source);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    TwoSidedLightingChunk(void);
-    TwoSidedLightingChunk(const TwoSidedLightingChunk &source);
+  virtual ~TwoSidedLightingChunk(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    virtual ~TwoSidedLightingChunk(void); 
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class TwoSidedLightingChunkBase;
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  typedef TwoSidedLightingChunkBase Inherited;
 
-    friend class FieldContainer;
-    friend class TwoSidedLightingChunkBase;
+  static void initMethod(void);
 
-    typedef TwoSidedLightingChunkBase Inherited;
+  // class. Used for indexing in State
+  static StateChunkClass _class;
 
-    static void initMethod(void);
-    
-    // class. Used for indexing in State
-    static StateChunkClass _class;
-   
-    // prohibit default functions (move to 'public' if you need one)
+  // prohibit default functions (move to 'public' if you need one)
 
-    void operator =(const TwoSidedLightingChunk &source);
+  void operator=(const TwoSidedLightingChunk& source);
 
-    GLboolean _state;
+  GLboolean _state;
 };
 
-typedef TwoSidedLightingChunk *TwoSidedLightingChunkP;
+typedef TwoSidedLightingChunk* TwoSidedLightingChunkP;
 
 OSG_END_NAMESPACE
 
 #include <OSGTwoSidedLightingChunkBase.inl>
 #include <OSGTwoSidedLightingChunk.inl>
 
-#define OSGTWOSIDEDLIGHTINGCHUNK_HEADER_CVSID "@(#)$Id: OSGTwoSidedLightingChunk.h,v 1.1 2005/06/09 08:39:27 a-m-z Exp $"
+#define OSGTWOSIDEDLIGHTINGCHUNK_HEADER_CVSID                                                      \
+  "@(#)$Id: OSGTwoSidedLightingChunk.h,v 1.1 2005/06/09 08:39:27 a-m-z Exp $"
 
 #endif /* _OSGTWOSIDEDLIGHTINGCHUNK_H_ */

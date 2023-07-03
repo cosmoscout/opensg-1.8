@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGMULTIPASSMATERIALFIELDS_H_
 #define _OSGMULTIPASSMATERIALFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class MultiPassMaterial;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! MultiPassMaterialPtr
 
 typedef FCPtr<MaterialPtr, MultiPassMaterial> MultiPassMaterialPtr;
@@ -81,18 +80,23 @@ typedef FCPtr<MaterialPtr, MultiPassMaterial> MultiPassMaterialPtr;
 #endif
 
 template <>
-struct FieldDataTraits<MultiPassMaterialPtr> : 
-    public FieldTraitsRecurseMapper<MultiPassMaterialPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<MultiPassMaterialPtr>
+    : public FieldTraitsRecurseMapper<MultiPassMaterialPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getSName(void) { return "SFMultiPassMaterialPtr"; }
-    static const char *getMName(void) { return "MFMultiPassMaterialPtr"; }
+  static const char* getSName(void) {
+    return "SFMultiPassMaterialPtr";
+  }
+  static const char* getMName(void) {
+    return "MFMultiPassMaterialPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -102,7 +106,6 @@ struct FieldDataTraits<MultiPassMaterialPtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
@@ -126,6 +129,7 @@ OSG_DLLEXPORT_DECL1(MField, MultiPassMaterialPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 
 OSG_END_NAMESPACE
 
-#define OSGMULTIPASSMATERIALFIELDS_HEADER_CVSID "@(#)$Id: OSGMultiPassMaterialFields.h,v 1.5 2006/02/20 17:04:44 dirk Exp $"
+#define OSGMULTIPASSMATERIALFIELDS_HEADER_CVSID                                                    \
+  "@(#)$Id: OSGMultiPassMaterialFields.h,v 1.5 2006/02/20 17:04:44 dirk Exp $"
 
 #endif /* _OSGMULTIPASSMATERIALFIELDS_H_ */

@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGLIGHTFIELDS_H_
 #define _OSGLIGHTFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class Light;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! LightPtr
 
 typedef FCPtr<GroupPtr, Light> LightPtr;
@@ -81,13 +80,11 @@ typedef FCPtr<GroupPtr, Light> LightPtr;
 #endif
 
 template <>
-struct FieldDataTraits<LightPtr> : 
-    public FieldTraitsRecurseMapper<LightPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<LightPtr> : public FieldTraitsRecurseMapper<LightPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -98,10 +95,9 @@ struct FieldDataTraits<LightPtr> :
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
 
-
-
 OSG_END_NAMESPACE
 
-#define OSGLIGHTFIELDS_HEADER_CVSID "@(#)$Id: FCFieldsTemplate_h.h,v 1.26 2006/02/20 16:55:35 dirk Exp $"
+#define OSGLIGHTFIELDS_HEADER_CVSID                                                                \
+  "@(#)$Id: FCFieldsTemplate_h.h,v 1.26 2006/02/20 16:55:35 dirk Exp $"
 
 #endif /* _OSGLIGHTFIELDS_H_ */

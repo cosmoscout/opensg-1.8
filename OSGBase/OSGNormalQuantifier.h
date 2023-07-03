@@ -52,88 +52,73 @@ OSG_BEGIN_NAMESPACE
 /*! \ingroup GrpBaseBase
  */
 
-class OSG_BASE_DLLMAPPING NormalQuantifier 
-{
-    /*==========================  PUBLIC  =================================*/
+class OSG_BASE_DLLMAPPING NormalQuantifier {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  NormalQuantifier(UInt32 numberSubdivisions = 0);
 
-    NormalQuantifier(UInt32 numberSubdivisions = 0);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  virtual ~NormalQuantifier(void);
 
-    virtual ~NormalQuantifier(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Get                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Get                                     */
-    /*! \{                                                                 */
- 
-          UInt32  getIndex      (Vec3f  &normal, 
-                                 UInt32  numberSubdivisions = 0) const;
+  UInt32 getIndex(Vec3f& normal, UInt32 numberSubdivisions = 0) const;
 
-    const Vec3f  &getNormal     (UInt32  index                 ) const;
+  const Vec3f& getNormal(UInt32 index) const;
 
-          UInt32  getNormalCount(void                          ) const;
+  UInt32 getNormalCount(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Init                                     */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Init                                     */
+  /*! \{                                                                 */
 
-    void build(UInt32 numberSubdivisions = 4);
+  void build(UInt32 numberSubdivisions = 4);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-  protected:
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Member                                  */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Member                                  */
-    /*! \{                                                                 */
+  UInt32 _numberSubdivisions;
 
-    UInt32             _numberSubdivisions;
+  std::vector<Vec3f> _normalTable;
 
-    std::vector<Vec3f> _normalTable;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Helper                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Helper                                  */
-    /*! \{                                                                 */
+  void subdivide(Vec3f point1, Vec3f point2, Vec3f point3, UInt32 number, UInt32& index);
 
-    void   subdivide  (Vec3f   point1, 
-                       Vec3f   point2, 
-                       Vec3f   point3, 
-                       UInt32  number, 
-                       UInt32 &index );
+  bool rayTriangle(
+      const Vec3f& dir, const Vec3f& vert0, const Vec3f& vert1, const Vec3f& vert2) const;
 
-    bool rayTriangle ( const Vec3f & dir, 
-                       const Vec3f & vert0, 
-                       const Vec3f & vert1, 
-                       const Vec3f & vert2) const;
-    
-    UInt32 getSubIndex(Vec3f   point, 
-                       Vec3f   point1, 
-                       Vec3f   point2, 
-                       Vec3f   point3, 
-                       UInt32  number) const;
+  UInt32 getSubIndex(Vec3f point, Vec3f point1, Vec3f point2, Vec3f point3, UInt32 number) const;
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
  private:
-    
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    NormalQuantifier(const NormalQuantifier &source);
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    NormalQuantifier &operator =(const NormalQuantifier &source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  NormalQuantifier(const NormalQuantifier& source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  NormalQuantifier& operator=(const NormalQuantifier& source);
 };
 
 OSG_END_NAMESPACE

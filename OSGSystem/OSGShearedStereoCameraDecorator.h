@@ -52,77 +52,69 @@ OSG_BEGIN_NAMESPACE
     PageSystemWindowCameraDecoratorsStereoSheared for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING ShearedStereoCameraDecorator : public ShearedStereoCameraDecoratorBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING ShearedStereoCameraDecorator
+    : public ShearedStereoCameraDecoratorBase {
+ private:
+  typedef ShearedStereoCameraDecoratorBase Inherited;
 
-    typedef ShearedStereoCameraDecoratorBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    access                                    */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector whichField, 
-                         UInt32    origin    );
+  virtual void getProjection(Matrix& result, UInt32 width, UInt32 height);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    access                                    */
-    /*! \{                                                                 */
- 
-    virtual void getProjection           (Matrix        &result, 
-                                          UInt32 width, UInt32 height);
-  
-  	virtual void getDecoration           (Matrix        &result, 
-                                          UInt32 width, UInt32 height);
- 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  virtual void getDecoration(Matrix& result, UInt32 width, UInt32 height);
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    // Variables should all be in ShearedStereoCameraDecoratorBase.
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in ShearedStereoCameraDecoratorBase.
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    ShearedStereoCameraDecorator(void);
-    ShearedStereoCameraDecorator(const ShearedStereoCameraDecorator &source);
+  ShearedStereoCameraDecorator(void);
+  ShearedStereoCameraDecorator(const ShearedStereoCameraDecorator& source);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    virtual ~ShearedStereoCameraDecorator(void); 
+  virtual ~ShearedStereoCameraDecorator(void);
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
 
-    friend class FieldContainer;
-    friend class ShearedStereoCameraDecoratorBase;
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class ShearedStereoCameraDecoratorBase;
 
-    static void initMethod(void);
+  static void initMethod(void);
 
-    // prohibit default functions (move to 'public' if you need one)
+  // prohibit default functions (move to 'public' if you need one)
 
-    void operator =(const ShearedStereoCameraDecorator &source);
+  void operator=(const ShearedStereoCameraDecorator& source);
 };
 
-typedef ShearedStereoCameraDecorator *ShearedStereoCameraDecoratorP;
+typedef ShearedStereoCameraDecorator* ShearedStereoCameraDecoratorP;
 
 OSG_END_NAMESPACE
 

@@ -56,7 +56,6 @@
 
 OSG_USING_NAMESPACE
 
-
 /*! \class osg::SHLParameterChunk
 
 */
@@ -73,10 +72,8 @@ UInt32 SHLParameterChunk::_shl_extension;
  *                           Class methods                                 *
 \***************************************************************************/
 
-void SHLParameterChunk::initMethod (void)
-{
+void SHLParameterChunk::initMethod(void) {
 }
-
 
 /***************************************************************************\
  *                           Instance methods                              *
@@ -88,106 +85,90 @@ void SHLParameterChunk::initMethod (void)
 
 /*----------------------- constructors & destructors ----------------------*/
 
-SHLParameterChunk::SHLParameterChunk(void) :
-    Inherited()
-{
+SHLParameterChunk::SHLParameterChunk(void)
+    : Inherited() {
 }
 
-SHLParameterChunk::SHLParameterChunk(const SHLParameterChunk &source) :
-    Inherited(source)
-{
-    _shl_extension = Window::registerExtension("GL_ARB_shading_language_100");
+SHLParameterChunk::SHLParameterChunk(const SHLParameterChunk& source)
+    : Inherited(source) {
+  _shl_extension = Window::registerExtension("GL_ARB_shading_language_100");
 }
 
-SHLParameterChunk::~SHLParameterChunk(void)
-{
+SHLParameterChunk::~SHLParameterChunk(void) {
 }
 
-const StateChunkClass *SHLParameterChunk::getClass(void) const
-{
-    return &_class;
+const StateChunkClass* SHLParameterChunk::getClass(void) const {
+  return &_class;
 }
 
 /*----------------------------- class specific ----------------------------*/
 
-void SHLParameterChunk::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void SHLParameterChunk::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
-void SHLParameterChunk::dump(      UInt32    ,
-                         const BitVector ) const
-{
-    SLOG << "Dump SHLParameterChunk NI" << std::endl;
+void SHLParameterChunk::dump(UInt32, const BitVector) const {
+  SLOG << "Dump SHLParameterChunk NI" << std::endl;
 }
 
 /*------------------------------ State ------------------------------------*/
 
-void SHLParameterChunk::activate(DrawActionBase *action, UInt32 /*idx*/)
-{
-    if(!action->getWindow()->hasExtension(_shl_extension))
-    {
-        FWARNING(("OpenGL Shading Language is not supported, couldn't find extension 'GL_ARB_shading_language_100'!\n"));
-        return;
-    }
-    updateParameters(action->getWindow());
+void SHLParameterChunk::activate(DrawActionBase* action, UInt32 /*idx*/) {
+  if (!action->getWindow()->hasExtension(_shl_extension)) {
+    FWARNING(("OpenGL Shading Language is not supported, couldn't find extension "
+              "'GL_ARB_shading_language_100'!\n"));
+    return;
+  }
+  updateParameters(action->getWindow());
 }
 
-void SHLParameterChunk::changeFrom(DrawActionBase *action, StateChunk * old_chunk,
-                                UInt32 /*idx*/)
-{
-    SHLParameterChunk *old = dynamic_cast<SHLParameterChunk *>(old_chunk);
-    
-    // SHLParameterChunk didn't change so do nothing.
-    if(old == this)
-        return;
+void SHLParameterChunk::changeFrom(DrawActionBase* action, StateChunk* old_chunk, UInt32 /*idx*/) {
+  SHLParameterChunk* old = dynamic_cast<SHLParameterChunk*>(old_chunk);
 
-    if(!action->getWindow()->hasExtension(_shl_extension))
-    {
-        FWARNING(("OpenGL Shading Language is not supported, couldn't find extension 'GL_ARB_shading_language_100'!\n"));
-        return;
-    }
+  // SHLParameterChunk didn't change so do nothing.
+  if (old == this)
+    return;
 
-    if(old == NULL)
-    {
-        FWARNING(( "SHLParameterChunk::changeFrom: caught non-SHLParameterChunk!\n"));
-        return;
-    }
+  if (!action->getWindow()->hasExtension(_shl_extension)) {
+    FWARNING(("OpenGL Shading Language is not supported, couldn't find extension "
+              "'GL_ARB_shading_language_100'!\n"));
+    return;
+  }
 
-    updateParameters(action->getWindow());
+  if (old == NULL) {
+    FWARNING(("SHLParameterChunk::changeFrom: caught non-SHLParameterChunk!\n"));
+    return;
+  }
+
+  updateParameters(action->getWindow());
 }
 
-
-void SHLParameterChunk::deactivate(DrawActionBase *OSG_CHECK_ARG(action), UInt32 OSG_CHECK_ARG(idx))
-{
+void SHLParameterChunk::deactivate(
+    DrawActionBase* OSG_CHECK_ARG(action), UInt32 OSG_CHECK_ARG(idx)) {
 }
 
 /*-------------------------- Comparison -----------------------------------*/
 
-Real32 SHLParameterChunk::switchCost(StateChunk *OSG_CHECK_ARG(chunk))
-{
-    return 0;
+Real32 SHLParameterChunk::switchCost(StateChunk* OSG_CHECK_ARG(chunk)) {
+  return 0;
 }
 
-bool SHLParameterChunk::operator < (const StateChunk &other) const
-{
-    return this < &other;
+bool SHLParameterChunk::operator<(const StateChunk& other) const {
+  return this < &other;
 }
 
-bool SHLParameterChunk::operator == (const StateChunk &other) const
-{
-    SHLParameterChunk const *tother = dynamic_cast<SHLParameterChunk const*>(&other);
+bool SHLParameterChunk::operator==(const StateChunk& other) const {
+  SHLParameterChunk const* tother = dynamic_cast<SHLParameterChunk const*>(&other);
 
-    if(!tother)
-        return false;
+  if (!tother)
+    return false;
 
-    if(getParameters().size() != tother->getParameters().size())
-        return false;
+  if (getParameters().size() != tother->getParameters().size())
+    return false;
 
-    return true;
+  return true;
 }
 
-bool SHLParameterChunk::operator != (const StateChunk &other) const
-{
-    return ! (*this == other);
+bool SHLParameterChunk::operator!=(const StateChunk& other) const {
+  return !(*this == other);
 }

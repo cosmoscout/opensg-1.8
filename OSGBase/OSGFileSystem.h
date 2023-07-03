@@ -70,43 +70,36 @@ OSG_BEGIN_NAMESPACE
     \ingroup GrpBaseBaseFileSystem
  */
 
-namespace AccessFlags
-{
-    /*! \name AccessFlags              */
-    /*! \ingroup GrpBaseBaseFileSystem */
-    /*! @{                             */
-    
-    const UInt32 None        = 0x00;
-    const UInt32 IsReadable  = 0x01;
-    const UInt32 IsWriteable = 0x02;
+namespace AccessFlags {
+/*! \name AccessFlags              */
+/*! \ingroup GrpBaseBaseFileSystem */
+/*! @{                             */
 
-    /*! @}                             */
-}
+const UInt32 None        = 0x00;
+const UInt32 IsReadable  = 0x01;
+const UInt32 IsWriteable = 0x02;
+
+/*! @}                             */
+} // namespace AccessFlags
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-namespace File
-{
-    static bool tstAttr(const Char8  *szFilename,
-                              UInt32  uiAccessFlags);
+namespace File {
+static bool tstAttr(const Char8* szFilename, UInt32 uiAccessFlags);
 }
 
-namespace Directory
-{
-    static bool                  tstAttr   (const Char8  *szDirname,
-                                                  UInt32  uiAccessFlags);
+namespace Directory {
+static bool tstAttr(const Char8* szDirname, UInt32 uiAccessFlags);
 
-    static Char8                *getCurrent(void);
+static Char8* getCurrent(void);
 
-    static bool                  setCurrent(const Char8 *szDirname);
+static bool setCurrent(const Char8* szDirname);
 
-    static std::vector<Char8 *> *getEntries(const Char8 *szDirname,
-                                            const Char8 *szPattern);
-}
+static std::vector<Char8*>* getEntries(const Char8* szDirname, const Char8* szPattern);
+} // namespace Directory
 
-namespace Path
-{
-    static void fixWinNetworkPath(std::string &path);
+namespace Path {
+static void fixWinNetworkPath(std::string& path);
 }
 
 #endif
@@ -118,7 +111,3 @@ OSG_END_NAMESPACE
 #define OSGFILESYSTEM_HEADER_CVSID "@(#)$Id: $"
 
 #endif /* _OSGFILESYSTEM_H_ */
-
-
-
-

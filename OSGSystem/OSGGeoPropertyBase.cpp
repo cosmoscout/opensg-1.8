@@ -37,7 +37,7 @@
 \*---------------------------------------------------------------------------*/
 
 //---------------------------------------------------------------------------
- //  Includes
+//  Includes
 //---------------------------------------------------------------------------
 
 #define OSG_COMPILEGEOPROPINST
@@ -55,62 +55,53 @@ OSG_GEO_PROP_TYPE_TMPL_DEF(AbstractGeoProperty, GeoPropertyDesc, PtrType)
 
 OSG_BEGIN_NAMESPACE
 
-OSG_ABSTR_GEOPROP_DLLEXPORT_DEF(AbstractGeoProperty, 
-                                GeoPositionsPropertyDesc, 
-                                OSG_SYSTEMLIB_DLLTMPLMAPPING);
+OSG_ABSTR_GEOPROP_DLLEXPORT_DEF(
+    AbstractGeoProperty, GeoPositionsPropertyDesc, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
-OSG_ABSTR_GEOPROP_DLLEXPORT_DEF(AbstractGeoProperty,
-                                GeoNormalsPropertyDesc, 
-                                OSG_SYSTEMLIB_DLLTMPLMAPPING);
+OSG_ABSTR_GEOPROP_DLLEXPORT_DEF(
+    AbstractGeoProperty, GeoNormalsPropertyDesc, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
-OSG_ABSTR_GEOPROP_DLLEXPORT_DEF(AbstractGeoProperty,
-                                GeoColorsPropertyDesc, 
-                                OSG_SYSTEMLIB_DLLTMPLMAPPING);
+OSG_ABSTR_GEOPROP_DLLEXPORT_DEF(
+    AbstractGeoProperty, GeoColorsPropertyDesc, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
-OSG_ABSTR_GEOPROP_DLLEXPORT_DEF(AbstractGeoProperty,
-                                GeoTexCoordsPropertyDesc, 
-                                OSG_SYSTEMLIB_DLLTMPLMAPPING);
+OSG_ABSTR_GEOPROP_DLLEXPORT_DEF(
+    AbstractGeoProperty, GeoTexCoordsPropertyDesc, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
-OSG_ABSTR_GEOPROP_DLLEXPORT_DEF(AbstractGeoProperty,
-                                GeoIndicesPropertyDesc, 
-                                OSG_SYSTEMLIB_DLLTMPLMAPPING);
+OSG_ABSTR_GEOPROP_DLLEXPORT_DEF(
+    AbstractGeoProperty, GeoIndicesPropertyDesc, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
-OSG_ABSTR_GEOPROP_DLLEXPORT_DEF(AbstractGeoProperty,
-                                GeoPTypesPropertyDesc, 
-                                OSG_SYSTEMLIB_DLLTMPLMAPPING);
+OSG_ABSTR_GEOPROP_DLLEXPORT_DEF(
+    AbstractGeoProperty, GeoPTypesPropertyDesc, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
-OSG_ABSTR_GEOPROP_DLLEXPORT_DEF(AbstractGeoProperty,
-                                GeoPLengthsPropertyDesc, 
-                                OSG_SYSTEMLIB_DLLTMPLMAPPING);
+OSG_ABSTR_GEOPROP_DLLEXPORT_DEF(
+    AbstractGeoProperty, GeoPLengthsPropertyDesc, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
 
-
 ///---------------------------------------------------------------------------
-//  FUNCTION: 
+//  FUNCTION:
 ///---------------------------------------------------------------------------
 //:  Example for the head comment of a function
 ///---------------------------------------------------------------------------
 ///
-//p: Paramaters: 
-//p: 
+// p: Paramaters:
+// p:
 ///
-//g: GlobalVars:
-//g: 
+// g: GlobalVars:
+// g:
 ///
-//r: Return:
-//r: 
+// r: Return:
+// r:
 ///
-//c: Caution:
-//c: 
+// c: Caution:
+// c:
 ///
-//a: Assumptions:
-//a: 
+// a: Assumptions:
+// a:
 ///
-//d: Description:
-//d: 
+// d: Description:
+// d:
 ///
-//s: SeeAlso:
-//s: 
+// s: SeeAlso:
+// s:
 ///---------------------------------------------------------------------------
-

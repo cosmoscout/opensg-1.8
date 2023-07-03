@@ -58,38 +58,27 @@ OSG_USING_NAMESPACE
 /*-------------------------------------------------------------------------*/
 /*                            Constructors                                 */
 
-DataType::DataType(const Char8  *szName,
-                   const Char8  *szParentName,
-                   const UInt32  uiNameSpace ) :
-    Inherited(szName, szParentName, uiNameSpace)
-{
+DataType::DataType(const Char8* szName, const Char8* szParentName, const UInt32 uiNameSpace)
+    : Inherited(szName, szParentName, uiNameSpace) {
 }
 
-DataType::DataType(const DataType &source) :
-    Inherited(source)
-{
+DataType::DataType(const DataType& source)
+    : Inherited(source) {
 }
-
 
 /*-------------------------------------------------------------------------*/
 /*                             Destructor                                  */
 
-DataType::~DataType(void)
-{
+DataType::~DataType(void) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Comparison                                  */
 
-bool DataType::operator ==(const DataType &other) const
-{
-    return *(static_cast<const Inherited *>(this)) == other;
+bool DataType::operator==(const DataType& other) const {
+  return *(static_cast<const Inherited*>(this)) == other;
 }
 
-bool DataType::operator !=(const DataType &other) const
-{
-    return ! (*this == other);
+bool DataType::operator!=(const DataType& other) const {
+  return !(*this == other);
 }
-
-
-

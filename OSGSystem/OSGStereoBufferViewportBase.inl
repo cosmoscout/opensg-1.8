@@ -52,109 +52,79 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &StereoBufferViewportBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& StereoBufferViewportBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 StereoBufferViewportBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 StereoBufferViewportBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-StereoBufferViewportPtr StereoBufferViewportBase::create(void) 
-{
-    StereoBufferViewportPtr fc; 
+inline StereoBufferViewportPtr StereoBufferViewportBase::create(void) {
+  StereoBufferViewportPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = StereoBufferViewportPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = StereoBufferViewportPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-StereoBufferViewportPtr StereoBufferViewportBase::createEmpty(void) 
-{ 
-    StereoBufferViewportPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline StereoBufferViewportPtr StereoBufferViewportBase::createEmpty(void) {
+  StereoBufferViewportPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the StereoBufferViewport::_sfLeftBuffer field.
-inline
-SFBool *StereoBufferViewportBase::getSFLeftBuffer(void)
-{
-    return &_sfLeftBuffer;
+inline SFBool* StereoBufferViewportBase::getSFLeftBuffer(void) {
+  return &_sfLeftBuffer;
 }
 
 //! Get the StereoBufferViewport::_sfRightBuffer field.
-inline
-SFBool *StereoBufferViewportBase::getSFRightBuffer(void)
-{
-    return &_sfRightBuffer;
-}
-
-
-//! Get the value of the StereoBufferViewport::_sfLeftBuffer field.
-inline
-bool &StereoBufferViewportBase::getLeftBuffer(void)
-{
-    return _sfLeftBuffer.getValue();
+inline SFBool* StereoBufferViewportBase::getSFRightBuffer(void) {
+  return &_sfRightBuffer;
 }
 
 //! Get the value of the StereoBufferViewport::_sfLeftBuffer field.
-inline
-const bool &StereoBufferViewportBase::getLeftBuffer(void) const
-{
-    return _sfLeftBuffer.getValue();
+inline bool& StereoBufferViewportBase::getLeftBuffer(void) {
+  return _sfLeftBuffer.getValue();
+}
+
+//! Get the value of the StereoBufferViewport::_sfLeftBuffer field.
+inline const bool& StereoBufferViewportBase::getLeftBuffer(void) const {
+  return _sfLeftBuffer.getValue();
 }
 
 //! Set the value of the StereoBufferViewport::_sfLeftBuffer field.
-inline
-void StereoBufferViewportBase::setLeftBuffer(const bool &value)
-{
-    _sfLeftBuffer.setValue(value);
+inline void StereoBufferViewportBase::setLeftBuffer(const bool& value) {
+  _sfLeftBuffer.setValue(value);
 }
 
 //! Get the value of the StereoBufferViewport::_sfRightBuffer field.
-inline
-bool &StereoBufferViewportBase::getRightBuffer(void)
-{
-    return _sfRightBuffer.getValue();
+inline bool& StereoBufferViewportBase::getRightBuffer(void) {
+  return _sfRightBuffer.getValue();
 }
 
 //! Get the value of the StereoBufferViewport::_sfRightBuffer field.
-inline
-const bool &StereoBufferViewportBase::getRightBuffer(void) const
-{
-    return _sfRightBuffer.getValue();
+inline const bool& StereoBufferViewportBase::getRightBuffer(void) const {
+  return _sfRightBuffer.getValue();
 }
 
 //! Set the value of the StereoBufferViewport::_sfRightBuffer field.
-inline
-void StereoBufferViewportBase::setRightBuffer(const bool &value)
-{
-    _sfRightBuffer.setValue(value);
+inline void StereoBufferViewportBase::setRightBuffer(const bool& value) {
+  _sfRightBuffer.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGSTEREOBUFFERVIEWPORTBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGSTEREOBUFFERVIEWPORTBASE_INLINE_CVSID                                                   \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGTRIANGLEITERATOR_H_
 #define _OSGTRIANGLEITERATOR_H_
 #ifdef __sgi
@@ -51,125 +50,122 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief Geometry Iterator for triangles. See \ref 
+/*! \brief Geometry Iterator for triangles. See \ref
     PageSystemGeometryIterators for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING TriangleIterator : public PrimitiveIterator
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING TriangleIterator : public PrimitiveIterator {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  static const char* getClassname(void) {
+    return "TriangleIterator";
+  }
 
-    static const char *getClassname(void) { return "TriangleIterator"; }
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  TriangleIterator(void);
+  TriangleIterator(const TriangleIterator& source);
+  TriangleIterator(const GeometryPtr& geo);
+  TriangleIterator(const NodePtr& geo);
 
-    TriangleIterator(void);
-    TriangleIterator(const TriangleIterator &source);
-    TriangleIterator(const GeometryPtr& geo);
-    TriangleIterator(const NodePtr& geo);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  virtual ~TriangleIterator(void);
 
-    virtual ~TriangleIterator(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Get                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Get                                    */
-    /*! \{                                                                 */
-    
-    inline Int32        getIndex                (void       ) const;
-    
-    inline Int32        getPositionIndex        (Int32 which) const;
-    inline Pnt3f        getPosition             (Int32 which) const;
+  inline Int32 getIndex(void) const;
 
-    inline Int32        getNormalIndex          (Int32 which) const;
-    inline Vec3f        getNormal               (Int32 which) const;
+  inline Int32 getPositionIndex(Int32 which) const;
+  inline Pnt3f getPosition(Int32 which) const;
 
-    inline Int32        getColorIndex           (Int32 which) const;
-    inline Color3f      getColor                (Int32 which) const;
+  inline Int32 getNormalIndex(Int32 which) const;
+  inline Vec3f getNormal(Int32 which) const;
 
-    inline Int32        getSecondaryColorIndex  (Int32 which) const;
-    inline Color3f      getSecondaryColor       (Int32 which) const;
+  inline Int32   getColorIndex(Int32 which) const;
+  inline Color3f getColor(Int32 which) const;
 
-    inline Int32        getTexCoordsIndex       (Int32 which) const;
-    inline Vec2f        getTexCoords            (Int32 which) const;
-    inline Int32        getTexCoordsIndex1      (Int32 which) const;
-    inline Vec2f        getTexCoords1           (Int32 which) const;
-    inline Int32        getTexCoordsIndex2      (Int32 which) const;
-    inline Vec2f        getTexCoords2           (Int32 which) const;
-    inline Int32        getTexCoordsIndex3      (Int32 which) const;
-    inline Vec2f        getTexCoords3           (Int32 which) const;
-    inline Int32        getTexCoordsIndex4      (Int32 which) const;
-    inline Vec2f        getTexCoords4           (Int32 which) const;
-    inline Int32        getTexCoordsIndex5      (Int32 which) const;
-    inline Vec2f        getTexCoords5           (Int32 which) const;
-    inline Int32        getTexCoordsIndex6      (Int32 which) const;
-    inline Vec2f        getTexCoords6           (Int32 which) const;
-    inline Int32        getTexCoordsIndex7      (Int32 which) const;
-    inline Vec2f        getTexCoords7           (Int32 which) const;
+  inline Int32   getSecondaryColorIndex(Int32 which) const;
+  inline Color3f getSecondaryColor(Int32 which) const;
 
-    inline Int32        getIndexIndex           (Int32 which) const;
+  inline Int32 getTexCoordsIndex(Int32 which) const;
+  inline Vec2f getTexCoords(Int32 which) const;
+  inline Int32 getTexCoordsIndex1(Int32 which) const;
+  inline Vec2f getTexCoords1(Int32 which) const;
+  inline Int32 getTexCoordsIndex2(Int32 which) const;
+  inline Vec2f getTexCoords2(Int32 which) const;
+  inline Int32 getTexCoordsIndex3(Int32 which) const;
+  inline Vec2f getTexCoords3(Int32 which) const;
+  inline Int32 getTexCoordsIndex4(Int32 which) const;
+  inline Vec2f getTexCoords4(Int32 which) const;
+  inline Int32 getTexCoordsIndex5(Int32 which) const;
+  inline Vec2f getTexCoords5(Int32 which) const;
+  inline Int32 getTexCoordsIndex6(Int32 which) const;
+  inline Vec2f getTexCoords6(Int32 which) const;
+  inline Int32 getTexCoordsIndex7(Int32 which) const;
+  inline Vec2f getTexCoords7(Int32 which) const;
 
- 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Operators                              */
-    /*! \{                                                                 */
+  inline Int32 getIndexIndex(Int32 which) const;
 
-    void operator ++(void);
-    void seek(Int32 index);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Operators                              */
+  /*! \{                                                                 */
 
-    TriangleIterator & operator =(const TriangleIterator &source);
-    bool operator < (const TriangleIterator &other) const;
-    bool operator == (const TriangleIterator &other) const;
-    bool operator != (const TriangleIterator &other) const;
+  void operator++(void);
+  void seek(Int32 index);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  TriangleIterator& operator=(const TriangleIterator& source);
+  bool              operator<(const TriangleIterator& other) const;
+  bool              operator==(const TriangleIterator& other) const;
+  bool              operator!=(const TriangleIterator& other) const;
 
-    typedef PrimitiveIterator Inherited;
-    
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Set                                    */
-    /*! \{                                                                 */
-          
-    void setToBegin(void);
-    void setToEnd(void);
-    
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  typedef PrimitiveIterator Inherited;
 
-    friend class Geometry;
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Set                                    */
+  /*! \{                                                                 */
 
-    static char cvsid[];
+  void setToBegin(void);
+  void setToEnd(void);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class Geometry;
 
-    Int32           _triIndex;
-    UInt32          _actPrimIndex;
-    Int32           _triPntIndex[3];
+  static char cvsid[];
 
-    /*! \}                                                                 */
-    
-    void startPrim(void);
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
+
+  Int32  _triIndex;
+  UInt32 _actPrimIndex;
+  Int32  _triPntIndex[3];
+
+  /*! \}                                                                 */
+
+  void startPrim(void);
 };
 
-typedef TriangleIterator *TriangleIteratorP;
+typedef TriangleIterator* TriangleIteratorP;
 
 OSG_END_NAMESPACE
 

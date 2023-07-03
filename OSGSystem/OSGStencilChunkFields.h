@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGSTENCILCHUNKFIELDS_H_
 #define _OSGSTENCILCHUNKFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class StencilChunk;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! StencilChunkPtr
 
 typedef FCPtr<StateChunkPtr, StencilChunk> StencilChunkPtr;
@@ -81,13 +80,11 @@ typedef FCPtr<StateChunkPtr, StencilChunk> StencilChunkPtr;
 #endif
 
 template <>
-struct FieldDataTraits<StencilChunkPtr> : 
-    public FieldTraitsRecurseMapper<StencilChunkPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<StencilChunkPtr> : public FieldTraitsRecurseMapper<StencilChunkPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -98,10 +95,9 @@ struct FieldDataTraits<StencilChunkPtr> :
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
 
-
-
 OSG_END_NAMESPACE
 
-#define OSGSTENCILCHUNKFIELDS_HEADER_CVSID "@(#)$Id: OSGStencilChunkFields.h,v 1.6 2006/09/08 13:45:30 yjung Exp $"
+#define OSGSTENCILCHUNKFIELDS_HEADER_CVSID                                                         \
+  "@(#)$Id: OSGStencilChunkFields.h,v 1.6 2006/09/08 13:45:30 yjung Exp $"
 
 #endif /* _OSGSTENCILCHUNKFIELDS_H_ */

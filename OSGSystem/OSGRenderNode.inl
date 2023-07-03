@@ -38,101 +38,76 @@
 
 OSG_BEGIN_NAMESPACE
 
-inline Real32 RenderNode::getVisibleFaceCost(void) const
-{
-    return _visibleFaceCost;
+inline Real32 RenderNode::getVisibleFaceCost(void) const {
+  return _visibleFaceCost;
 }
 
-inline Real32 RenderNode::getInvisibleFaceCost(void) const
-{
-    return _invisibleFaceCost;
+inline Real32 RenderNode::getInvisibleFaceCost(void) const {
+  return _invisibleFaceCost;
 }
 
-inline Real32 RenderNode::getDrawPixelCost(void) const
-{
-    return _drawPixelCost;
+inline Real32 RenderNode::getDrawPixelCost(void) const {
+  return _drawPixelCost;
 }
 
-inline Real32 RenderNode::getReadPixelCost(void) const
-{
-    return _readPixelCost;
+inline Real32 RenderNode::getReadPixelCost(void) const {
+  return _readPixelCost;
 }
 
-inline Real32 RenderNode::getWritePixelCost(void) const
-{
-    return _writePixelCost;
+inline Real32 RenderNode::getWritePixelCost(void) const {
+  return _writePixelCost;
 }
 
-inline std::string RenderNode::getVendor(void) const
-{
-    return _vendor;
+inline std::string RenderNode::getVendor(void) const {
+  return _vendor;
 }
 
-inline std::string RenderNode::getRenderer(void) const
-{
-    return _renderer;
+inline std::string RenderNode::getRenderer(void) const {
+  return _renderer;
 }
 
-inline void RenderNode::setVisibleFaceCost(Real32 value)
-{
-    _visibleFaceCost=value;
+inline void RenderNode::setVisibleFaceCost(Real32 value) {
+  _visibleFaceCost = value;
 }
 
-inline void RenderNode::setInvisibleFaceCost(Real32 value)
-{
-    _invisibleFaceCost=value;
+inline void RenderNode::setInvisibleFaceCost(Real32 value) {
+  _invisibleFaceCost = value;
 }
 
-inline void RenderNode::setDrawPixelCost(Real32 value)
-{
-    _drawPixelCost=value;
+inline void RenderNode::setDrawPixelCost(Real32 value) {
+  _drawPixelCost = value;
 }
 
-inline void RenderNode::setReadPixelCost(Real32 value)
-{
-    _readPixelCost=value;
+inline void RenderNode::setReadPixelCost(Real32 value) {
+  _readPixelCost = value;
 }
 
-inline void RenderNode::setWritePixelCost(Real32 value)
-{
-    _writePixelCost=value;
+inline void RenderNode::setWritePixelCost(Real32 value) {
+  _writePixelCost = value;
 }
 
 /*! set vendor string of the graphics board
  */
-inline void RenderNode::setVendor(const std::string &value)
-{
-    _vendor=value;
+inline void RenderNode::setVendor(const std::string& value) {
+  _vendor = value;
 }
 
 /*! set renderer string of the graphics board
  */
-inline void RenderNode::setRenderer(const std::string &value)
-{
-    _renderer=value;
+inline void RenderNode::setRenderer(const std::string& value) {
+  _renderer = value;
 }
 
 /*! Estimate rendering performance. Facesetup end rasterisation is done
- *  in parallel on most hardware plattforms. So we use the maximum of 
+ *  in parallel on most hardware plattforms. So we use the maximum of
  *  face cost and rasterisation cost.
  */
-inline Real32 RenderNode::estimatePerformance(Real32 invisibleFaces,
-                                              Real32 visibleFaces,
-                                              Real32 pixel         ) const
-{
-    return 
-        ( invisibleFaces * _invisibleFaceCost ) +
-        osgMax( ( visibleFaces   * _visibleFaceCost   ), 
-                ( pixel          * _drawPixelCost     ) );
+inline Real32 RenderNode::estimatePerformance(
+    Real32 invisibleFaces, Real32 visibleFaces, Real32 pixel) const {
+  return (invisibleFaces * _invisibleFaceCost) +
+         osgMax((visibleFaces * _visibleFaceCost), (pixel * _drawPixelCost));
 }
 
 OSG_END_NAMESPACE
 
 #define OSG_CLUSTERNODE_INLINE_CVSID "@(#)$Id:$"
-
-
-
-
-
-
-

@@ -52,55 +52,39 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &ShaderParameterChunkBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& ShaderParameterChunkBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 ShaderParameterChunkBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
-
+inline OSG::UInt32 ShaderParameterChunkBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the ShaderParameterChunk::_mfParameters field.
-inline
-MFShaderParameterPtr *ShaderParameterChunkBase::getMFParameters(void)
-{
-    return &_mfParameters;
+inline MFShaderParameterPtr* ShaderParameterChunkBase::getMFParameters(void) {
+  return &_mfParameters;
 }
-
-
 
 //! Get the value of the \a index element the ShaderParameterChunk::_mfParameters field.
-inline
-ShaderParameterPtr &ShaderParameterChunkBase::getParameters(const UInt32 index)
-{
-    return _mfParameters[index];
+inline ShaderParameterPtr& ShaderParameterChunkBase::getParameters(const UInt32 index) {
+  return _mfParameters[index];
 }
 
 //! Get the ShaderParameterChunk::_mfParameters field.
-inline
-MFShaderParameterPtr &ShaderParameterChunkBase::getParameters(void)
-{
-    return _mfParameters;
+inline MFShaderParameterPtr& ShaderParameterChunkBase::getParameters(void) {
+  return _mfParameters;
 }
 
 //! Get the ShaderParameterChunk::_mfParameters field.
-inline
-const MFShaderParameterPtr &ShaderParameterChunkBase::getParameters(void) const
-{
-    return _mfParameters;
+inline const MFShaderParameterPtr& ShaderParameterChunkBase::getParameters(void) const {
+  return _mfParameters;
 }
 
 OSG_END_NAMESPACE
 
-#define OSGSHADERPARAMETERCHUNKBASE_INLINE_CVSID "@(#)$Id: OSGShaderParameterChunkBase.inl,v 1.5 2006/02/20 17:04:38 dirk Exp $"
-
+#define OSGSHADERPARAMETERCHUNKBASE_INLINE_CVSID                                                   \
+  "@(#)$Id: OSGShaderParameterChunkBase.inl,v 1.5 2006/02/20 17:04:38 dirk Exp $"

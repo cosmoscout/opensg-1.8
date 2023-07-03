@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGTESTCUBEMAPS_H_
 #define _OSGTESTCUBEMAPS_H_
 #ifdef __sgi
@@ -48,7 +47,7 @@
 
 OSG_BEGIN_NAMESPACE
 
-OSG_SYSTEMLIB_DLLMAPPING void setTestCubeImages(TextureChunkPtr chunk );
+OSG_SYSTEMLIB_DLLMAPPING void setTestCubeImages(TextureChunkPtr chunk);
 
 OSG_END_NAMESPACE
 

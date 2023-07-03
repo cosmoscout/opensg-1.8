@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGSHADOWVIEWPORTFIELDS_H_
 #define _OSGSHADOWVIEWPORTFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class ShadowViewport;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! ShadowViewportPtr
 
 typedef FCPtr<StereoBufferViewportPtr, ShadowViewport> ShadowViewportPtr;
@@ -81,18 +80,23 @@ typedef FCPtr<StereoBufferViewportPtr, ShadowViewport> ShadowViewportPtr;
 #endif
 
 template <>
-struct FieldDataTraits<ShadowViewportPtr> : 
-    public FieldTraitsRecurseMapper<ShadowViewportPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<ShadowViewportPtr>
+    : public FieldTraitsRecurseMapper<ShadowViewportPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getSName(void) { return "SFShadowViewportPtr"; }
-    static const char *getMName(void) { return "MFShadowViewportPtr"; }
+  static const char* getSName(void) {
+    return "SFShadowViewportPtr";
+  }
+  static const char* getMName(void) {
+    return "MFShadowViewportPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -102,7 +106,6 @@ struct FieldDataTraits<ShadowViewportPtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
@@ -126,6 +129,7 @@ OSG_DLLEXPORT_DECL1(MField, ShadowViewportPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 
 OSG_END_NAMESPACE
 
-#define OSGSHADOWVIEWPORTFIELDS_HEADER_CVSID "@(#)$Id: OSGShadowViewportFields.h,v 1.12 2006/12/01 18:12:43 a-m-z Exp $"
+#define OSGSHADOWVIEWPORTFIELDS_HEADER_CVSID                                                       \
+  "@(#)$Id: OSGShadowViewportFields.h,v 1.12 2006/12/01 18:12:43 a-m-z Exp $"
 
 #endif /* _OSGSHADOWVIEWPORTFIELDS_H_ */

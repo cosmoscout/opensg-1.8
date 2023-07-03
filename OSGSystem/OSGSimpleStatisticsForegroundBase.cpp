@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILESIMPLESTATISTICSFOREGROUNDINST
 
 #include <stdlib.h>
@@ -61,49 +60,46 @@
 #include "OSGSimpleStatisticsForegroundBase.h"
 #include "OSGSimpleStatisticsForeground.h"
 
-
 OSG_BEGIN_NAMESPACE
 
-const OSG::BitVector  SimpleStatisticsForegroundBase::FormatsFieldMask = 
+const OSG::BitVector SimpleStatisticsForegroundBase::FormatsFieldMask =
     (TypeTraits<BitVector>::One << SimpleStatisticsForegroundBase::FormatsFieldId);
 
-const OSG::BitVector  SimpleStatisticsForegroundBase::SizeFieldMask = 
+const OSG::BitVector SimpleStatisticsForegroundBase::SizeFieldMask =
     (TypeTraits<BitVector>::One << SimpleStatisticsForegroundBase::SizeFieldId);
 
-const OSG::BitVector  SimpleStatisticsForegroundBase::ColorFieldMask = 
+const OSG::BitVector SimpleStatisticsForegroundBase::ColorFieldMask =
     (TypeTraits<BitVector>::One << SimpleStatisticsForegroundBase::ColorFieldId);
 
-const OSG::BitVector  SimpleStatisticsForegroundBase::ShadowColorFieldMask = 
+const OSG::BitVector SimpleStatisticsForegroundBase::ShadowColorFieldMask =
     (TypeTraits<BitVector>::One << SimpleStatisticsForegroundBase::ShadowColorFieldId);
 
-const OSG::BitVector  SimpleStatisticsForegroundBase::BgColorFieldMask = 
+const OSG::BitVector SimpleStatisticsForegroundBase::BgColorFieldMask =
     (TypeTraits<BitVector>::One << SimpleStatisticsForegroundBase::BgColorFieldId);
 
-const OSG::BitVector  SimpleStatisticsForegroundBase::FamilyFieldMask = 
+const OSG::BitVector SimpleStatisticsForegroundBase::FamilyFieldMask =
     (TypeTraits<BitVector>::One << SimpleStatisticsForegroundBase::FamilyFieldId);
 
-const OSG::BitVector  SimpleStatisticsForegroundBase::ShadowOffsetFieldMask = 
+const OSG::BitVector SimpleStatisticsForegroundBase::ShadowOffsetFieldMask =
     (TypeTraits<BitVector>::One << SimpleStatisticsForegroundBase::ShadowOffsetFieldId);
 
-const OSG::BitVector  SimpleStatisticsForegroundBase::HorizontalAlignFieldMask = 
+const OSG::BitVector SimpleStatisticsForegroundBase::HorizontalAlignFieldMask =
     (TypeTraits<BitVector>::One << SimpleStatisticsForegroundBase::HorizontalAlignFieldId);
 
-const OSG::BitVector  SimpleStatisticsForegroundBase::VerticalAlignFieldMask = 
+const OSG::BitVector SimpleStatisticsForegroundBase::VerticalAlignFieldMask =
     (TypeTraits<BitVector>::One << SimpleStatisticsForegroundBase::VerticalAlignFieldId);
 
-const OSG::BitVector  SimpleStatisticsForegroundBase::BorderColorFieldMask = 
+const OSG::BitVector SimpleStatisticsForegroundBase::BorderColorFieldMask =
     (TypeTraits<BitVector>::One << SimpleStatisticsForegroundBase::BorderColorFieldId);
 
-const OSG::BitVector  SimpleStatisticsForegroundBase::BorderOffsetFieldMask = 
+const OSG::BitVector SimpleStatisticsForegroundBase::BorderOffsetFieldMask =
     (TypeTraits<BitVector>::One << SimpleStatisticsForegroundBase::BorderOffsetFieldId);
 
-const OSG::BitVector  SimpleStatisticsForegroundBase::TextMarginFieldMask = 
+const OSG::BitVector SimpleStatisticsForegroundBase::TextMarginFieldMask =
     (TypeTraits<BitVector>::One << SimpleStatisticsForegroundBase::TextMarginFieldId);
 
-const OSG::BitVector SimpleStatisticsForegroundBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector SimpleStatisticsForegroundBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
@@ -146,499 +142,392 @@ const OSG::BitVector SimpleStatisticsForegroundBase::MTInfluenceMask =
 
 //! SimpleStatisticsForeground description
 
-FieldDescription *SimpleStatisticsForegroundBase::_desc[] = 
-{
-    new FieldDescription(MFString::getClassType(), 
-                     "formats", 
-                     FormatsFieldId, FormatsFieldMask,
-                     false,
-                     (FieldAccessMethod) &SimpleStatisticsForegroundBase::getMFFormats),
-    new FieldDescription(SFReal32::getClassType(), 
-                     "size", 
-                     SizeFieldId, SizeFieldMask,
-                     false,
-                     (FieldAccessMethod) &SimpleStatisticsForegroundBase::getSFSize),
-    new FieldDescription(SFColor4f::getClassType(), 
-                     "color", 
-                     ColorFieldId, ColorFieldMask,
-                     false,
-                     (FieldAccessMethod) &SimpleStatisticsForegroundBase::getSFColor),
-    new FieldDescription(SFColor4f::getClassType(), 
-                     "shadowColor", 
-                     ShadowColorFieldId, ShadowColorFieldMask,
-                     false,
-                     (FieldAccessMethod) &SimpleStatisticsForegroundBase::getSFShadowColor),
-    new FieldDescription(SFColor4f::getClassType(), 
-                     "bgColor", 
-                     BgColorFieldId, BgColorFieldMask,
-                     false,
-                     (FieldAccessMethod) &SimpleStatisticsForegroundBase::getSFBgColor),
-    new FieldDescription(SFString::getClassType(), 
-                     "family", 
-                     FamilyFieldId, FamilyFieldMask,
-                     false,
-                     (FieldAccessMethod) &SimpleStatisticsForegroundBase::getSFFamily),
-    new FieldDescription(SFVec2f::getClassType(), 
-                     "shadowOffset", 
-                     ShadowOffsetFieldId, ShadowOffsetFieldMask,
-                     false,
-                     (FieldAccessMethod) &SimpleStatisticsForegroundBase::getSFShadowOffset),
-    new FieldDescription(SFUInt8::getClassType(), 
-                     "horizontalAlign", 
-                     HorizontalAlignFieldId, HorizontalAlignFieldMask,
-                     false,
-                     (FieldAccessMethod) &SimpleStatisticsForegroundBase::getSFHorizontalAlign),
-    new FieldDescription(SFUInt8::getClassType(), 
-                     "verticalAlign", 
-                     VerticalAlignFieldId, VerticalAlignFieldMask,
-                     false,
-                     (FieldAccessMethod) &SimpleStatisticsForegroundBase::getSFVerticalAlign),
-    new FieldDescription(SFColor4f::getClassType(), 
-                     "borderColor", 
-                     BorderColorFieldId, BorderColorFieldMask,
-                     false,
-                     (FieldAccessMethod) &SimpleStatisticsForegroundBase::getSFBorderColor),
-    new FieldDescription(SFVec2f::getClassType(), 
-                     "borderOffset", 
-                     BorderOffsetFieldId, BorderOffsetFieldMask,
-                     false,
-                     (FieldAccessMethod) &SimpleStatisticsForegroundBase::getSFBorderOffset),
-    new FieldDescription(SFVec2f::getClassType(), 
-                     "textMargin", 
-                     TextMarginFieldId, TextMarginFieldMask,
-                     false,
-                     (FieldAccessMethod) &SimpleStatisticsForegroundBase::getSFTextMargin)
-};
+FieldDescription* SimpleStatisticsForegroundBase::_desc[] = {
+    new FieldDescription(MFString::getClassType(), "formats", FormatsFieldId, FormatsFieldMask,
+        false, (FieldAccessMethod)&SimpleStatisticsForegroundBase::getMFFormats),
+    new FieldDescription(SFReal32::getClassType(), "size", SizeFieldId, SizeFieldMask, false,
+        (FieldAccessMethod)&SimpleStatisticsForegroundBase::getSFSize),
+    new FieldDescription(SFColor4f::getClassType(), "color", ColorFieldId, ColorFieldMask, false,
+        (FieldAccessMethod)&SimpleStatisticsForegroundBase::getSFColor),
+    new FieldDescription(SFColor4f::getClassType(), "shadowColor", ShadowColorFieldId,
+        ShadowColorFieldMask, false,
+        (FieldAccessMethod)&SimpleStatisticsForegroundBase::getSFShadowColor),
+    new FieldDescription(SFColor4f::getClassType(), "bgColor", BgColorFieldId, BgColorFieldMask,
+        false, (FieldAccessMethod)&SimpleStatisticsForegroundBase::getSFBgColor),
+    new FieldDescription(SFString::getClassType(), "family", FamilyFieldId, FamilyFieldMask, false,
+        (FieldAccessMethod)&SimpleStatisticsForegroundBase::getSFFamily),
+    new FieldDescription(SFVec2f::getClassType(), "shadowOffset", ShadowOffsetFieldId,
+        ShadowOffsetFieldMask, false,
+        (FieldAccessMethod)&SimpleStatisticsForegroundBase::getSFShadowOffset),
+    new FieldDescription(SFUInt8::getClassType(), "horizontalAlign", HorizontalAlignFieldId,
+        HorizontalAlignFieldMask, false,
+        (FieldAccessMethod)&SimpleStatisticsForegroundBase::getSFHorizontalAlign),
+    new FieldDescription(SFUInt8::getClassType(), "verticalAlign", VerticalAlignFieldId,
+        VerticalAlignFieldMask, false,
+        (FieldAccessMethod)&SimpleStatisticsForegroundBase::getSFVerticalAlign),
+    new FieldDescription(SFColor4f::getClassType(), "borderColor", BorderColorFieldId,
+        BorderColorFieldMask, false,
+        (FieldAccessMethod)&SimpleStatisticsForegroundBase::getSFBorderColor),
+    new FieldDescription(SFVec2f::getClassType(), "borderOffset", BorderOffsetFieldId,
+        BorderOffsetFieldMask, false,
+        (FieldAccessMethod)&SimpleStatisticsForegroundBase::getSFBorderOffset),
+    new FieldDescription(SFVec2f::getClassType(), "textMargin", TextMarginFieldId,
+        TextMarginFieldMask, false,
+        (FieldAccessMethod)&SimpleStatisticsForegroundBase::getSFTextMargin)};
 
+FieldContainerType SimpleStatisticsForegroundBase::_type("SimpleStatisticsForeground",
+    "StatisticsForeground", NULL, (PrototypeCreateF)&SimpleStatisticsForegroundBase::createEmpty,
+    SimpleStatisticsForeground::initMethod, _desc, sizeof(_desc));
 
-FieldContainerType SimpleStatisticsForegroundBase::_type(
-    "SimpleStatisticsForeground",
-    "StatisticsForeground",
-    NULL,
-    (PrototypeCreateF) &SimpleStatisticsForegroundBase::createEmpty,
-    SimpleStatisticsForeground::initMethod,
-    _desc,
-    sizeof(_desc));
-
-//OSG_FIELD_CONTAINER_DEF(SimpleStatisticsForegroundBase, SimpleStatisticsForegroundPtr)
+// OSG_FIELD_CONTAINER_DEF(SimpleStatisticsForegroundBase, SimpleStatisticsForegroundPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &SimpleStatisticsForegroundBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &SimpleStatisticsForegroundBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr SimpleStatisticsForegroundBase::shallowCopy(void) const 
-{ 
-    SimpleStatisticsForegroundPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const SimpleStatisticsForeground *>(this)); 
-
-    return returnValue; 
+FieldContainerType& SimpleStatisticsForegroundBase::getType(void) {
+  return _type;
 }
 
-UInt32 SimpleStatisticsForegroundBase::getContainerSize(void) const 
-{ 
-    return sizeof(SimpleStatisticsForeground); 
+const FieldContainerType& SimpleStatisticsForegroundBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr SimpleStatisticsForegroundBase::shallowCopy(void) const {
+  SimpleStatisticsForegroundPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const SimpleStatisticsForeground*>(this));
+
+  return returnValue;
+}
+
+UInt32 SimpleStatisticsForegroundBase::getContainerSize(void) const {
+  return sizeof(SimpleStatisticsForeground);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void SimpleStatisticsForegroundBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((SimpleStatisticsForegroundBase *) &other, whichField);
+void SimpleStatisticsForegroundBase::executeSync(
+    FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((SimpleStatisticsForegroundBase*)&other, whichField);
 }
 #else
-void SimpleStatisticsForegroundBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((SimpleStatisticsForegroundBase *) &other, whichField, sInfo);
+void SimpleStatisticsForegroundBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((SimpleStatisticsForegroundBase*)&other, whichField, sInfo);
 }
-void SimpleStatisticsForegroundBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void SimpleStatisticsForegroundBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void SimpleStatisticsForegroundBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
+void SimpleStatisticsForegroundBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 
-    _mfFormats.terminateShare(uiAspect, this->getContainerSize());
+  _mfFormats.terminateShare(uiAspect, this->getContainerSize());
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-SimpleStatisticsForegroundBase::SimpleStatisticsForegroundBase(void) :
-    _mfFormats                (), 
-    _sfSize                   (Real32(16)), 
-    _sfColor                  (Color4f(1,1,1,1)), 
-    _sfShadowColor            (Color4f(0,0,0,1)), 
-    _sfBgColor                (Color4f(0,0,0,0)), 
-    _sfFamily                 (), 
-    _sfShadowOffset           (Vec2f(1,-1)), 
-    _sfHorizontalAlign        (UInt8(0)), 
-    _sfVerticalAlign          (UInt8(0)), 
-    _sfBorderColor            (Color4f(-1,-1,-1,0)), 
-    _sfBorderOffset           (Vec2f(4,4)), 
-    _sfTextMargin             (Vec2f(0,0)), 
-    Inherited() 
-{
+SimpleStatisticsForegroundBase::SimpleStatisticsForegroundBase(void)
+    : _mfFormats()
+    , _sfSize(Real32(16))
+    , _sfColor(Color4f(1, 1, 1, 1))
+    , _sfShadowColor(Color4f(0, 0, 0, 1))
+    , _sfBgColor(Color4f(0, 0, 0, 0))
+    , _sfFamily()
+    , _sfShadowOffset(Vec2f(1, -1))
+    , _sfHorizontalAlign(UInt8(0))
+    , _sfVerticalAlign(UInt8(0))
+    , _sfBorderColor(Color4f(-1, -1, -1, 0))
+    , _sfBorderOffset(Vec2f(4, 4))
+    , _sfTextMargin(Vec2f(0, 0))
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-SimpleStatisticsForegroundBase::SimpleStatisticsForegroundBase(const SimpleStatisticsForegroundBase &source) :
-    _mfFormats                (source._mfFormats                ), 
-    _sfSize                   (source._sfSize                   ), 
-    _sfColor                  (source._sfColor                  ), 
-    _sfShadowColor            (source._sfShadowColor            ), 
-    _sfBgColor                (source._sfBgColor                ), 
-    _sfFamily                 (source._sfFamily                 ), 
-    _sfShadowOffset           (source._sfShadowOffset           ), 
-    _sfHorizontalAlign        (source._sfHorizontalAlign        ), 
-    _sfVerticalAlign          (source._sfVerticalAlign          ), 
-    _sfBorderColor            (source._sfBorderColor            ), 
-    _sfBorderOffset           (source._sfBorderOffset           ), 
-    _sfTextMargin             (source._sfTextMargin             ), 
-    Inherited                 (source)
-{
+SimpleStatisticsForegroundBase::SimpleStatisticsForegroundBase(
+    const SimpleStatisticsForegroundBase& source)
+    : _mfFormats(source._mfFormats)
+    , _sfSize(source._sfSize)
+    , _sfColor(source._sfColor)
+    , _sfShadowColor(source._sfShadowColor)
+    , _sfBgColor(source._sfBgColor)
+    , _sfFamily(source._sfFamily)
+    , _sfShadowOffset(source._sfShadowOffset)
+    , _sfHorizontalAlign(source._sfHorizontalAlign)
+    , _sfVerticalAlign(source._sfVerticalAlign)
+    , _sfBorderColor(source._sfBorderColor)
+    , _sfBorderOffset(source._sfBorderOffset)
+    , _sfTextMargin(source._sfTextMargin)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-SimpleStatisticsForegroundBase::~SimpleStatisticsForegroundBase(void)
-{
+SimpleStatisticsForegroundBase::~SimpleStatisticsForegroundBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 SimpleStatisticsForegroundBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 SimpleStatisticsForegroundBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (FormatsFieldMask & whichField))
-    {
-        returnValue += _mfFormats.getBinSize();
-    }
+  if (FieldBits::NoField != (FormatsFieldMask & whichField)) {
+    returnValue += _mfFormats.getBinSize();
+  }
 
-    if(FieldBits::NoField != (SizeFieldMask & whichField))
-    {
-        returnValue += _sfSize.getBinSize();
-    }
+  if (FieldBits::NoField != (SizeFieldMask & whichField)) {
+    returnValue += _sfSize.getBinSize();
+  }
 
-    if(FieldBits::NoField != (ColorFieldMask & whichField))
-    {
-        returnValue += _sfColor.getBinSize();
-    }
+  if (FieldBits::NoField != (ColorFieldMask & whichField)) {
+    returnValue += _sfColor.getBinSize();
+  }
 
-    if(FieldBits::NoField != (ShadowColorFieldMask & whichField))
-    {
-        returnValue += _sfShadowColor.getBinSize();
-    }
+  if (FieldBits::NoField != (ShadowColorFieldMask & whichField)) {
+    returnValue += _sfShadowColor.getBinSize();
+  }
 
-    if(FieldBits::NoField != (BgColorFieldMask & whichField))
-    {
-        returnValue += _sfBgColor.getBinSize();
-    }
+  if (FieldBits::NoField != (BgColorFieldMask & whichField)) {
+    returnValue += _sfBgColor.getBinSize();
+  }
 
-    if(FieldBits::NoField != (FamilyFieldMask & whichField))
-    {
-        returnValue += _sfFamily.getBinSize();
-    }
+  if (FieldBits::NoField != (FamilyFieldMask & whichField)) {
+    returnValue += _sfFamily.getBinSize();
+  }
 
-    if(FieldBits::NoField != (ShadowOffsetFieldMask & whichField))
-    {
-        returnValue += _sfShadowOffset.getBinSize();
-    }
+  if (FieldBits::NoField != (ShadowOffsetFieldMask & whichField)) {
+    returnValue += _sfShadowOffset.getBinSize();
+  }
 
-    if(FieldBits::NoField != (HorizontalAlignFieldMask & whichField))
-    {
-        returnValue += _sfHorizontalAlign.getBinSize();
-    }
+  if (FieldBits::NoField != (HorizontalAlignFieldMask & whichField)) {
+    returnValue += _sfHorizontalAlign.getBinSize();
+  }
 
-    if(FieldBits::NoField != (VerticalAlignFieldMask & whichField))
-    {
-        returnValue += _sfVerticalAlign.getBinSize();
-    }
+  if (FieldBits::NoField != (VerticalAlignFieldMask & whichField)) {
+    returnValue += _sfVerticalAlign.getBinSize();
+  }
 
-    if(FieldBits::NoField != (BorderColorFieldMask & whichField))
-    {
-        returnValue += _sfBorderColor.getBinSize();
-    }
+  if (FieldBits::NoField != (BorderColorFieldMask & whichField)) {
+    returnValue += _sfBorderColor.getBinSize();
+  }
 
-    if(FieldBits::NoField != (BorderOffsetFieldMask & whichField))
-    {
-        returnValue += _sfBorderOffset.getBinSize();
-    }
+  if (FieldBits::NoField != (BorderOffsetFieldMask & whichField)) {
+    returnValue += _sfBorderOffset.getBinSize();
+  }
 
-    if(FieldBits::NoField != (TextMarginFieldMask & whichField))
-    {
-        returnValue += _sfTextMargin.getBinSize();
-    }
+  if (FieldBits::NoField != (TextMarginFieldMask & whichField)) {
+    returnValue += _sfTextMargin.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void SimpleStatisticsForegroundBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void SimpleStatisticsForegroundBase::copyToBin(
+    BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (FormatsFieldMask & whichField))
-    {
-        _mfFormats.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (FormatsFieldMask & whichField)) {
+    _mfFormats.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (SizeFieldMask & whichField))
-    {
-        _sfSize.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (SizeFieldMask & whichField)) {
+    _sfSize.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ColorFieldMask & whichField))
-    {
-        _sfColor.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (ColorFieldMask & whichField)) {
+    _sfColor.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ShadowColorFieldMask & whichField))
-    {
-        _sfShadowColor.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (ShadowColorFieldMask & whichField)) {
+    _sfShadowColor.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BgColorFieldMask & whichField))
-    {
-        _sfBgColor.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (BgColorFieldMask & whichField)) {
+    _sfBgColor.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (FamilyFieldMask & whichField))
-    {
-        _sfFamily.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (FamilyFieldMask & whichField)) {
+    _sfFamily.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ShadowOffsetFieldMask & whichField))
-    {
-        _sfShadowOffset.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (ShadowOffsetFieldMask & whichField)) {
+    _sfShadowOffset.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (HorizontalAlignFieldMask & whichField))
-    {
-        _sfHorizontalAlign.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (HorizontalAlignFieldMask & whichField)) {
+    _sfHorizontalAlign.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (VerticalAlignFieldMask & whichField))
-    {
-        _sfVerticalAlign.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (VerticalAlignFieldMask & whichField)) {
+    _sfVerticalAlign.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BorderColorFieldMask & whichField))
-    {
-        _sfBorderColor.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (BorderColorFieldMask & whichField)) {
+    _sfBorderColor.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BorderOffsetFieldMask & whichField))
-    {
-        _sfBorderOffset.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (BorderOffsetFieldMask & whichField)) {
+    _sfBorderOffset.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (TextMarginFieldMask & whichField))
-    {
-        _sfTextMargin.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (TextMarginFieldMask & whichField)) {
+    _sfTextMargin.copyToBin(pMem);
+  }
 }
 
-void SimpleStatisticsForegroundBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void SimpleStatisticsForegroundBase::copyFromBin(
+    BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (FormatsFieldMask & whichField))
-    {
-        _mfFormats.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (FormatsFieldMask & whichField)) {
+    _mfFormats.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (SizeFieldMask & whichField))
-    {
-        _sfSize.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (SizeFieldMask & whichField)) {
+    _sfSize.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ColorFieldMask & whichField))
-    {
-        _sfColor.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (ColorFieldMask & whichField)) {
+    _sfColor.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ShadowColorFieldMask & whichField))
-    {
-        _sfShadowColor.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (ShadowColorFieldMask & whichField)) {
+    _sfShadowColor.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BgColorFieldMask & whichField))
-    {
-        _sfBgColor.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (BgColorFieldMask & whichField)) {
+    _sfBgColor.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (FamilyFieldMask & whichField))
-    {
-        _sfFamily.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (FamilyFieldMask & whichField)) {
+    _sfFamily.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ShadowOffsetFieldMask & whichField))
-    {
-        _sfShadowOffset.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (ShadowOffsetFieldMask & whichField)) {
+    _sfShadowOffset.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (HorizontalAlignFieldMask & whichField))
-    {
-        _sfHorizontalAlign.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (HorizontalAlignFieldMask & whichField)) {
+    _sfHorizontalAlign.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (VerticalAlignFieldMask & whichField))
-    {
-        _sfVerticalAlign.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (VerticalAlignFieldMask & whichField)) {
+    _sfVerticalAlign.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BorderColorFieldMask & whichField))
-    {
-        _sfBorderColor.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (BorderColorFieldMask & whichField)) {
+    _sfBorderColor.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BorderOffsetFieldMask & whichField))
-    {
-        _sfBorderOffset.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (BorderOffsetFieldMask & whichField)) {
+    _sfBorderOffset.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (TextMarginFieldMask & whichField))
-    {
-        _sfTextMargin.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (TextMarginFieldMask & whichField)) {
+    _sfTextMargin.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void SimpleStatisticsForegroundBase::executeSyncImpl(      SimpleStatisticsForegroundBase *pOther,
-                                        const BitVector         &whichField)
-{
+void SimpleStatisticsForegroundBase::executeSyncImpl(
+    SimpleStatisticsForegroundBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (FormatsFieldMask & whichField))
-        _mfFormats.syncWith(pOther->_mfFormats);
+  if (FieldBits::NoField != (FormatsFieldMask & whichField))
+    _mfFormats.syncWith(pOther->_mfFormats);
 
-    if(FieldBits::NoField != (SizeFieldMask & whichField))
-        _sfSize.syncWith(pOther->_sfSize);
+  if (FieldBits::NoField != (SizeFieldMask & whichField))
+    _sfSize.syncWith(pOther->_sfSize);
 
-    if(FieldBits::NoField != (ColorFieldMask & whichField))
-        _sfColor.syncWith(pOther->_sfColor);
+  if (FieldBits::NoField != (ColorFieldMask & whichField))
+    _sfColor.syncWith(pOther->_sfColor);
 
-    if(FieldBits::NoField != (ShadowColorFieldMask & whichField))
-        _sfShadowColor.syncWith(pOther->_sfShadowColor);
+  if (FieldBits::NoField != (ShadowColorFieldMask & whichField))
+    _sfShadowColor.syncWith(pOther->_sfShadowColor);
 
-    if(FieldBits::NoField != (BgColorFieldMask & whichField))
-        _sfBgColor.syncWith(pOther->_sfBgColor);
+  if (FieldBits::NoField != (BgColorFieldMask & whichField))
+    _sfBgColor.syncWith(pOther->_sfBgColor);
 
-    if(FieldBits::NoField != (FamilyFieldMask & whichField))
-        _sfFamily.syncWith(pOther->_sfFamily);
+  if (FieldBits::NoField != (FamilyFieldMask & whichField))
+    _sfFamily.syncWith(pOther->_sfFamily);
 
-    if(FieldBits::NoField != (ShadowOffsetFieldMask & whichField))
-        _sfShadowOffset.syncWith(pOther->_sfShadowOffset);
+  if (FieldBits::NoField != (ShadowOffsetFieldMask & whichField))
+    _sfShadowOffset.syncWith(pOther->_sfShadowOffset);
 
-    if(FieldBits::NoField != (HorizontalAlignFieldMask & whichField))
-        _sfHorizontalAlign.syncWith(pOther->_sfHorizontalAlign);
+  if (FieldBits::NoField != (HorizontalAlignFieldMask & whichField))
+    _sfHorizontalAlign.syncWith(pOther->_sfHorizontalAlign);
 
-    if(FieldBits::NoField != (VerticalAlignFieldMask & whichField))
-        _sfVerticalAlign.syncWith(pOther->_sfVerticalAlign);
+  if (FieldBits::NoField != (VerticalAlignFieldMask & whichField))
+    _sfVerticalAlign.syncWith(pOther->_sfVerticalAlign);
 
-    if(FieldBits::NoField != (BorderColorFieldMask & whichField))
-        _sfBorderColor.syncWith(pOther->_sfBorderColor);
+  if (FieldBits::NoField != (BorderColorFieldMask & whichField))
+    _sfBorderColor.syncWith(pOther->_sfBorderColor);
 
-    if(FieldBits::NoField != (BorderOffsetFieldMask & whichField))
-        _sfBorderOffset.syncWith(pOther->_sfBorderOffset);
+  if (FieldBits::NoField != (BorderOffsetFieldMask & whichField))
+    _sfBorderOffset.syncWith(pOther->_sfBorderOffset);
 
-    if(FieldBits::NoField != (TextMarginFieldMask & whichField))
-        _sfTextMargin.syncWith(pOther->_sfTextMargin);
-
-
+  if (FieldBits::NoField != (TextMarginFieldMask & whichField))
+    _sfTextMargin.syncWith(pOther->_sfTextMargin);
 }
 #else
-void SimpleStatisticsForegroundBase::executeSyncImpl(      SimpleStatisticsForegroundBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void SimpleStatisticsForegroundBase::executeSyncImpl(
+    SimpleStatisticsForegroundBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (SizeFieldMask & whichField))
-        _sfSize.syncWith(pOther->_sfSize);
+  if (FieldBits::NoField != (SizeFieldMask & whichField))
+    _sfSize.syncWith(pOther->_sfSize);
 
-    if(FieldBits::NoField != (ColorFieldMask & whichField))
-        _sfColor.syncWith(pOther->_sfColor);
+  if (FieldBits::NoField != (ColorFieldMask & whichField))
+    _sfColor.syncWith(pOther->_sfColor);
 
-    if(FieldBits::NoField != (ShadowColorFieldMask & whichField))
-        _sfShadowColor.syncWith(pOther->_sfShadowColor);
+  if (FieldBits::NoField != (ShadowColorFieldMask & whichField))
+    _sfShadowColor.syncWith(pOther->_sfShadowColor);
 
-    if(FieldBits::NoField != (BgColorFieldMask & whichField))
-        _sfBgColor.syncWith(pOther->_sfBgColor);
+  if (FieldBits::NoField != (BgColorFieldMask & whichField))
+    _sfBgColor.syncWith(pOther->_sfBgColor);
 
-    if(FieldBits::NoField != (FamilyFieldMask & whichField))
-        _sfFamily.syncWith(pOther->_sfFamily);
+  if (FieldBits::NoField != (FamilyFieldMask & whichField))
+    _sfFamily.syncWith(pOther->_sfFamily);
 
-    if(FieldBits::NoField != (ShadowOffsetFieldMask & whichField))
-        _sfShadowOffset.syncWith(pOther->_sfShadowOffset);
+  if (FieldBits::NoField != (ShadowOffsetFieldMask & whichField))
+    _sfShadowOffset.syncWith(pOther->_sfShadowOffset);
 
-    if(FieldBits::NoField != (HorizontalAlignFieldMask & whichField))
-        _sfHorizontalAlign.syncWith(pOther->_sfHorizontalAlign);
+  if (FieldBits::NoField != (HorizontalAlignFieldMask & whichField))
+    _sfHorizontalAlign.syncWith(pOther->_sfHorizontalAlign);
 
-    if(FieldBits::NoField != (VerticalAlignFieldMask & whichField))
-        _sfVerticalAlign.syncWith(pOther->_sfVerticalAlign);
+  if (FieldBits::NoField != (VerticalAlignFieldMask & whichField))
+    _sfVerticalAlign.syncWith(pOther->_sfVerticalAlign);
 
-    if(FieldBits::NoField != (BorderColorFieldMask & whichField))
-        _sfBorderColor.syncWith(pOther->_sfBorderColor);
+  if (FieldBits::NoField != (BorderColorFieldMask & whichField))
+    _sfBorderColor.syncWith(pOther->_sfBorderColor);
 
-    if(FieldBits::NoField != (BorderOffsetFieldMask & whichField))
-        _sfBorderOffset.syncWith(pOther->_sfBorderOffset);
+  if (FieldBits::NoField != (BorderOffsetFieldMask & whichField))
+    _sfBorderOffset.syncWith(pOther->_sfBorderOffset);
 
-    if(FieldBits::NoField != (TextMarginFieldMask & whichField))
-        _sfTextMargin.syncWith(pOther->_sfTextMargin);
+  if (FieldBits::NoField != (TextMarginFieldMask & whichField))
+    _sfTextMargin.syncWith(pOther->_sfTextMargin);
 
-
-    if(FieldBits::NoField != (FormatsFieldMask & whichField))
-        _mfFormats.syncWith(pOther->_mfFormats, sInfo);
-
-
+  if (FieldBits::NoField != (FormatsFieldMask & whichField))
+    _mfFormats.syncWith(pOther->_mfFormats, sInfo);
 }
 
-void SimpleStatisticsForegroundBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void SimpleStatisticsForegroundBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (FormatsFieldMask & whichField))
-        _mfFormats.beginEdit(uiAspect, uiContainerSize);
-
+  if (FieldBits::NoField != (FormatsFieldMask & whichField))
+    _mfFormats.beginEdit(uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 OSG_END_NAMESPACE
 
@@ -648,11 +537,11 @@ OSG_END_NAMESPACE
 OSG_BEGIN_NAMESPACE
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_DEV)
-DataType FieldDataTraits<SimpleStatisticsForegroundPtr>::_type("SimpleStatisticsForegroundPtr", "StatisticsForegroundPtr");
+DataType FieldDataTraits<SimpleStatisticsForegroundPtr>::_type(
+    "SimpleStatisticsForegroundPtr", "StatisticsForegroundPtr");
 #endif
 
 OSG_DLLEXPORT_SFIELD_DEF1(SimpleStatisticsForegroundPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 OSG_DLLEXPORT_MFIELD_DEF1(SimpleStatisticsForegroundPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
-

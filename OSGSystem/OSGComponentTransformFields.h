@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGCOMPONENTTRANSFORMFIELDS_H_
 #define _OSGCOMPONENTTRANSFORMFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class ComponentTransform;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! ComponentTransformPtr
 
 typedef FCPtr<TransformPtr, ComponentTransform> ComponentTransformPtr;
@@ -81,18 +80,23 @@ typedef FCPtr<TransformPtr, ComponentTransform> ComponentTransformPtr;
 #endif
 
 template <>
-struct FieldDataTraits<ComponentTransformPtr> : 
-    public FieldTraitsRecurseMapper<ComponentTransformPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<ComponentTransformPtr>
+    : public FieldTraitsRecurseMapper<ComponentTransformPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getSName(void) { return "SFComponentTransformPtr"; }
-    static const char *getMName(void) { return "MFComponentTransformPtr"; }
+  static const char* getSName(void) {
+    return "SFComponentTransformPtr";
+  }
+  static const char* getMName(void) {
+    return "MFComponentTransformPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -102,7 +106,6 @@ struct FieldDataTraits<ComponentTransformPtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
@@ -126,6 +129,7 @@ OSG_DLLEXPORT_DECL1(MField, ComponentTransformPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 
 OSG_END_NAMESPACE
 
-#define OSGCOMPONENTTRANSFORMFIELDS_HEADER_CVSID "@(#)$Id: FCFieldsTemplate_h.h,v 1.25 2005/04/04 14:51:48 dirk Exp $"
+#define OSGCOMPONENTTRANSFORMFIELDS_HEADER_CVSID                                                   \
+  "@(#)$Id: FCFieldsTemplate_h.h,v 1.25 2005/04/04 14:51:48 dirk Exp $"
 
 #endif /* _OSGCOMPONENTTRANSFORMFIELDS_H_ */

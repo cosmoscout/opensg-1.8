@@ -37,7 +37,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 //---------------------------------------------------------------------------
 //  Includes
 //---------------------------------------------------------------------------
@@ -50,93 +49,72 @@ OSG_BEGIN_NAMESPACE
 /*-------------------------- constructor ----------------------------------*/
 
 /*! Default constructor - leaves box totally empty
-*/
+ */
 
-inline
-PolytopeVolume::PolytopeVolume() :
-    Volume()
-{
+inline PolytopeVolume::PolytopeVolume()
+    : Volume() {
 }
 
 /// Constructor given bounds
 
-inline
-PolytopeVolume::PolytopeVolume ( const UInt16& s ) :
-    Volume(), _numPlanes(s)
-{
-    _planes = new Plane[_numPlanes];
+inline PolytopeVolume::PolytopeVolume(const UInt16& s)
+    : Volume()
+    , _numPlanes(s) {
+  _planes = new Plane[_numPlanes];
 }
 
 /// Copy Constructor
-inline
-PolytopeVolume::PolytopeVolume(const PolytopeVolume &obj) :
-    Volume(obj), _numPlanes(obj._numPlanes)
-{
-    _planes=new Plane[_numPlanes];
-    for(UInt16 i=0; i<_numPlanes; i++)
-        _planes[i]=obj._planes[i];
+inline PolytopeVolume::PolytopeVolume(const PolytopeVolume& obj)
+    : Volume(obj)
+    , _numPlanes(obj._numPlanes) {
+  _planes = new Plane[_numPlanes];
+  for (UInt16 i = 0; i < _numPlanes; i++)
+    _planes[i] = obj._planes[i];
 }
 
 /// Destructor
-inline
-PolytopeVolume::~PolytopeVolume()
-{
-    delete[] _planes;
+inline PolytopeVolume::~PolytopeVolume() {
+  delete[] _planes;
 }
 
 /*------------------------------ feature ----------------------------------*/
 
 /// Returns the near plane
-inline
-const Plane &PolytopeVolume::getNear   (void) const
-{
-    return _planes[0];
+inline const Plane& PolytopeVolume::getNear(void) const {
+  return _planes[0];
 }
 
 /// get method
-inline
-const Plane *PolytopeVolume::getPlanes(void) 
-{
-    return _planes;
+inline const Plane* PolytopeVolume::getPlanes(void) {
+  return _planes;
 }
 
 /// get method
-inline
-const Plane *PolytopeVolume::getPlanes(void) const
-{
-    return _planes;
+inline const Plane* PolytopeVolume::getPlanes(void) const {
+  return _planes;
 }
 
 /*-------------------------- extending ------------------------------------*/
 
-inline
-void PolytopeVolume::extendBy(const Volume &volume)
-{
-    // not implemented
+inline void PolytopeVolume::extendBy(const Volume& volume) {
+  // not implemented
 }
 
-inline
-void PolytopeVolume::extendBy(const PolytopeVolume &volume)
-{
-    // not implemented
+inline void PolytopeVolume::extendBy(const PolytopeVolume& volume) {
+  // not implemented
 }
 
 /*-------------------------- intersection ---------------------------------*/
 
-inline
-bool PolytopeVolume::intersect (const Volume &volume) const
-{
-    // not implemented
-    return(1);
+inline bool PolytopeVolume::intersect(const Volume& volume) const {
+  // not implemented
+  return (1);
 }
 
-inline
-bool PolytopeVolume::intersect(const PolytopeVolume &volume) const
-{
-    // not implemented
-    return(1);
+inline bool PolytopeVolume::intersect(const PolytopeVolume& volume) const {
+  // not implemented
+  return (1);
 }
-
 
 /*-------------------------- operators ------------------------------------*/
 
@@ -144,10 +122,8 @@ bool PolytopeVolume::intersect(const PolytopeVolume &volume) const
  */
 
 /// Inequality comparisons
-inline
-bool operator != (const PolytopeVolume &b1, const PolytopeVolume &b2)
-{
-    return !(b1 == b2);
+inline bool operator!=(const PolytopeVolume& b1, const PolytopeVolume& b2) {
+  return !(b1 == b2);
 }
 
 /***************************************************************************\

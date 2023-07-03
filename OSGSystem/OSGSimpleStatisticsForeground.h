@@ -58,105 +58,99 @@ class TextLayoutResult;
     PageSystemWindowForegroundStatisticsSimple for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING SimpleStatisticsForeground : public SimpleStatisticsForegroundBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING SimpleStatisticsForeground : public SimpleStatisticsForegroundBase {
+ private:
+  typedef SimpleStatisticsForegroundBase Inherited;
 
-    typedef SimpleStatisticsForegroundBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Modes                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
-  
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Modes                                    */
-    /*! \{                                                                 */
+  enum { Left = 0, Middle, Right } HorizontalAlignE;
+  enum { Top = 0, Center, Bottom } VerticalAlignE;
 
-    enum { Left=0, Middle, Right } HorizontalAlignE;
-    enum { Top=0, Center, Bottom } VerticalAlignE;
-       
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector whichField,
-                         UInt32    origin    );
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0,
-                      const BitVector  bvFlags  = 0) const;
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Draw                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Draw                                    */
+  /*! \{                                                                 */
 
-    virtual void draw( DrawActionBase * action, Viewport * port );
+  virtual void draw(DrawActionBase* action, Viewport* port);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name               Convenience Functions                          */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name               Convenience Functions                          */
+  /*! \{                                                                 */
 
-    void addElement( StatElemDescBase &desc, const char *format = NULL);
-    void addElement( Int32            id,    const char *format = NULL);
-    void addText   ( const char *text );
-    void clearElems( void );
+  void addElement(StatElemDescBase& desc, const char* format = NULL);
+  void addElement(Int32 id, const char* format = NULL);
+  void addText(const char* text);
+  void clearElems(void);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in SimpleStatisticsForegroundBase.
 
-    // Variables should all be in SimpleStatisticsForegroundBase.
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  SimpleStatisticsForeground(void);
+  SimpleStatisticsForeground(const SimpleStatisticsForeground& source);
 
-    SimpleStatisticsForeground(void);
-    SimpleStatisticsForeground(const SimpleStatisticsForeground &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  virtual ~SimpleStatisticsForeground(void);
 
-    virtual ~SimpleStatisticsForeground(void);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  TextTXFFace* _face;
 
-    /*==========================  PRIVATE  ================================*/
-  private:
+  TextureChunkPtr _texchunk;
 
-    TextTXFFace *_face;
+  friend class FieldContainer;
+  friend class SimpleStatisticsForegroundBase;
 
-    TextureChunkPtr _texchunk;
+  static void initMethod(void);
 
-    friend class FieldContainer;
-    friend class SimpleStatisticsForegroundBase;
+  void initText(const std::string& family, Real32 size);
 
-    static void initMethod(void);
+  void drawCharacters(const TextLayoutResult& layoutResult) const;
 
-    void initText(const std::string &family, Real32 size);
+  // prohibit default functions (move to 'public' if you need one)
 
-    void drawCharacters(const TextLayoutResult &layoutResult) const;
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const SimpleStatisticsForeground &source);
+  void operator=(const SimpleStatisticsForeground& source);
 };
 
-typedef SimpleStatisticsForeground *SimpleStatisticsForegroundP;
+typedef SimpleStatisticsForeground* SimpleStatisticsForegroundP;
 
 OSG_END_NAMESPACE
 
 #include <OSGSimpleStatisticsForegroundBase.inl>
 #include <OSGSimpleStatisticsForeground.inl>
 
-#define OSGSIMPLESTATISTICSFOREGROUND_HEADER_CVSID "@(#)$Id: OSGSimpleStatisticsForeground.h,v 1.4 2002/06/01 10:37:25 vossg Exp $"
+#define OSGSIMPLESTATISTICSFOREGROUND_HEADER_CVSID                                                 \
+  "@(#)$Id: OSGSimpleStatisticsForeground.h,v 1.4 2002/06/01 10:37:25 vossg Exp $"
 
 #endif /* _OSGSIMPLESTATISTICSFOREGROUND_H_ */

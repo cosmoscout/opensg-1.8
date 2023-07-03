@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILESPOTLIGHTINST
 
 #include <stdlib.h>
@@ -61,27 +60,24 @@
 #include "OSGSpotLightBase.h"
 #include "OSGSpotLight.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  SpotLightBase::DirectionFieldMask = 
+const OSG::BitVector SpotLightBase::DirectionFieldMask =
     (TypeTraits<BitVector>::One << SpotLightBase::DirectionFieldId);
 
-const OSG::BitVector  SpotLightBase::SpotExponentFieldMask = 
+const OSG::BitVector SpotLightBase::SpotExponentFieldMask =
     (TypeTraits<BitVector>::One << SpotLightBase::SpotExponentFieldId);
 
-const OSG::BitVector  SpotLightBase::SpotCutOffFieldMask = 
+const OSG::BitVector SpotLightBase::SpotCutOffFieldMask =
     (TypeTraits<BitVector>::One << SpotLightBase::SpotCutOffFieldId);
 
-const OSG::BitVector SpotLightBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector SpotLightBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
 /*! \var Vec3f           SpotLightBase::_sfDirection
-    
+
 */
 /*! \var Real32          SpotLightBase::_sfSpotExponent
     The drop-off exponent of the spotlight.
@@ -92,249 +88,181 @@ const OSG::BitVector SpotLightBase::MTInfluenceMask =
 
 //! SpotLight description
 
-FieldDescription *SpotLightBase::_desc[] = 
-{
-    new FieldDescription(SFVec3f::getClassType(), 
-                     "direction", 
-                     DirectionFieldId, DirectionFieldMask,
-                     false,
-                     (FieldAccessMethod) &SpotLightBase::getSFDirection),
-    new FieldDescription(SFReal32::getClassType(), 
-                     "spotExponent", 
-                     SpotExponentFieldId, SpotExponentFieldMask,
-                     false,
-                     (FieldAccessMethod) &SpotLightBase::getSFSpotExponent),
-    new FieldDescription(SFReal32::getClassType(), 
-                     "spotCutOff", 
-                     SpotCutOffFieldId, SpotCutOffFieldMask,
-                     false,
-                     (FieldAccessMethod) &SpotLightBase::getSFSpotCutOff)
-};
+FieldDescription* SpotLightBase::_desc[] = {
+    new FieldDescription(SFVec3f::getClassType(), "direction", DirectionFieldId, DirectionFieldMask,
+        false, (FieldAccessMethod)&SpotLightBase::getSFDirection),
+    new FieldDescription(SFReal32::getClassType(), "spotExponent", SpotExponentFieldId,
+        SpotExponentFieldMask, false, (FieldAccessMethod)&SpotLightBase::getSFSpotExponent),
+    new FieldDescription(SFReal32::getClassType(), "spotCutOff", SpotCutOffFieldId,
+        SpotCutOffFieldMask, false, (FieldAccessMethod)&SpotLightBase::getSFSpotCutOff)};
 
+FieldContainerType SpotLightBase::_type("SpotLight", "PointLight", NULL,
+    (PrototypeCreateF)&SpotLightBase::createEmpty, SpotLight::initMethod, _desc, sizeof(_desc));
 
-FieldContainerType SpotLightBase::_type(
-    "SpotLight",
-    "PointLight",
-    NULL,
-    (PrototypeCreateF) &SpotLightBase::createEmpty,
-    SpotLight::initMethod,
-    _desc,
-    sizeof(_desc));
-
-//OSG_FIELD_CONTAINER_DEF(SpotLightBase, SpotLightPtr)
+// OSG_FIELD_CONTAINER_DEF(SpotLightBase, SpotLightPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &SpotLightBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &SpotLightBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr SpotLightBase::shallowCopy(void) const 
-{ 
-    SpotLightPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const SpotLight *>(this)); 
-
-    return returnValue; 
+FieldContainerType& SpotLightBase::getType(void) {
+  return _type;
 }
 
-UInt32 SpotLightBase::getContainerSize(void) const 
-{ 
-    return sizeof(SpotLight); 
+const FieldContainerType& SpotLightBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr SpotLightBase::shallowCopy(void) const {
+  SpotLightPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const SpotLight*>(this));
+
+  return returnValue;
+}
+
+UInt32 SpotLightBase::getContainerSize(void) const {
+  return sizeof(SpotLight);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void SpotLightBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((SpotLightBase *) &other, whichField);
+void SpotLightBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((SpotLightBase*)&other, whichField);
 }
 #else
-void SpotLightBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((SpotLightBase *) &other, whichField, sInfo);
+void SpotLightBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((SpotLightBase*)&other, whichField, sInfo);
 }
-void SpotLightBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void SpotLightBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void SpotLightBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void SpotLightBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-SpotLightBase::SpotLightBase(void) :
-    _sfDirection              (Vec3f(0,0,1)), 
-    _sfSpotExponent           (), 
-    _sfSpotCutOff             (), 
-    Inherited() 
-{
+SpotLightBase::SpotLightBase(void)
+    : _sfDirection(Vec3f(0, 0, 1))
+    , _sfSpotExponent()
+    , _sfSpotCutOff()
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-SpotLightBase::SpotLightBase(const SpotLightBase &source) :
-    _sfDirection              (source._sfDirection              ), 
-    _sfSpotExponent           (source._sfSpotExponent           ), 
-    _sfSpotCutOff             (source._sfSpotCutOff             ), 
-    Inherited                 (source)
-{
+SpotLightBase::SpotLightBase(const SpotLightBase& source)
+    : _sfDirection(source._sfDirection)
+    , _sfSpotExponent(source._sfSpotExponent)
+    , _sfSpotCutOff(source._sfSpotCutOff)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-SpotLightBase::~SpotLightBase(void)
-{
+SpotLightBase::~SpotLightBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 SpotLightBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 SpotLightBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (DirectionFieldMask & whichField))
-    {
-        returnValue += _sfDirection.getBinSize();
-    }
+  if (FieldBits::NoField != (DirectionFieldMask & whichField)) {
+    returnValue += _sfDirection.getBinSize();
+  }
 
-    if(FieldBits::NoField != (SpotExponentFieldMask & whichField))
-    {
-        returnValue += _sfSpotExponent.getBinSize();
-    }
+  if (FieldBits::NoField != (SpotExponentFieldMask & whichField)) {
+    returnValue += _sfSpotExponent.getBinSize();
+  }
 
-    if(FieldBits::NoField != (SpotCutOffFieldMask & whichField))
-    {
-        returnValue += _sfSpotCutOff.getBinSize();
-    }
+  if (FieldBits::NoField != (SpotCutOffFieldMask & whichField)) {
+    returnValue += _sfSpotCutOff.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void SpotLightBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void SpotLightBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (DirectionFieldMask & whichField))
-    {
-        _sfDirection.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (DirectionFieldMask & whichField)) {
+    _sfDirection.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (SpotExponentFieldMask & whichField))
-    {
-        _sfSpotExponent.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (SpotExponentFieldMask & whichField)) {
+    _sfSpotExponent.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (SpotCutOffFieldMask & whichField))
-    {
-        _sfSpotCutOff.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (SpotCutOffFieldMask & whichField)) {
+    _sfSpotCutOff.copyToBin(pMem);
+  }
 }
 
-void SpotLightBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void SpotLightBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (DirectionFieldMask & whichField))
-    {
-        _sfDirection.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (DirectionFieldMask & whichField)) {
+    _sfDirection.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (SpotExponentFieldMask & whichField))
-    {
-        _sfSpotExponent.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (SpotExponentFieldMask & whichField)) {
+    _sfSpotExponent.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (SpotCutOffFieldMask & whichField))
-    {
-        _sfSpotCutOff.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (SpotCutOffFieldMask & whichField)) {
+    _sfSpotCutOff.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void SpotLightBase::executeSyncImpl(      SpotLightBase *pOther,
-                                        const BitVector         &whichField)
-{
+void SpotLightBase::executeSyncImpl(SpotLightBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (DirectionFieldMask & whichField))
-        _sfDirection.syncWith(pOther->_sfDirection);
+  if (FieldBits::NoField != (DirectionFieldMask & whichField))
+    _sfDirection.syncWith(pOther->_sfDirection);
 
-    if(FieldBits::NoField != (SpotExponentFieldMask & whichField))
-        _sfSpotExponent.syncWith(pOther->_sfSpotExponent);
+  if (FieldBits::NoField != (SpotExponentFieldMask & whichField))
+    _sfSpotExponent.syncWith(pOther->_sfSpotExponent);
 
-    if(FieldBits::NoField != (SpotCutOffFieldMask & whichField))
-        _sfSpotCutOff.syncWith(pOther->_sfSpotCutOff);
-
-
+  if (FieldBits::NoField != (SpotCutOffFieldMask & whichField))
+    _sfSpotCutOff.syncWith(pOther->_sfSpotCutOff);
 }
 #else
-void SpotLightBase::executeSyncImpl(      SpotLightBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void SpotLightBase::executeSyncImpl(
+    SpotLightBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (DirectionFieldMask & whichField))
-        _sfDirection.syncWith(pOther->_sfDirection);
+  if (FieldBits::NoField != (DirectionFieldMask & whichField))
+    _sfDirection.syncWith(pOther->_sfDirection);
 
-    if(FieldBits::NoField != (SpotExponentFieldMask & whichField))
-        _sfSpotExponent.syncWith(pOther->_sfSpotExponent);
+  if (FieldBits::NoField != (SpotExponentFieldMask & whichField))
+    _sfSpotExponent.syncWith(pOther->_sfSpotExponent);
 
-    if(FieldBits::NoField != (SpotCutOffFieldMask & whichField))
-        _sfSpotCutOff.syncWith(pOther->_sfSpotCutOff);
-
-
-
+  if (FieldBits::NoField != (SpotCutOffFieldMask & whichField))
+    _sfSpotCutOff.syncWith(pOther->_sfSpotCutOff);
 }
 
-void SpotLightBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void SpotLightBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 OSG_BEGIN_NAMESPACE
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_DEV)
 DataType FieldDataTraits<SpotLightPtr>::_type("SpotLightPtr", "PointLightPtr");
 #endif
-
 
 OSG_END_NAMESPACE

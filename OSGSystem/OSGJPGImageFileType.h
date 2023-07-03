@@ -38,8 +38,8 @@
 
 #ifndef OSGJPGIMAGEFILETYPE_CLASS_DECLARATION
 #define OSGJPGIMAGEFILETYPE_CLASS_DECLARATION
-#ifdef  __sgi
-#pragma  once
+#ifdef __sgi
+#pragma once
 #endif
 
 #include <OSGSystemDef.h>
@@ -53,94 +53,85 @@ OSG_BEGIN_NAMESPACE
 See \ref PageSystemImage for a detailed description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING JPGImageFileType : public ImageFileType
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING JPGImageFileType : public ImageFileType {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  virtual ~JPGImageFileType(void);
 
-    virtual ~JPGImageFileType (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Get Method                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Get Method                                  */
-    /*! \{                                                                 */
+  void   setQuality(UInt32 cl);
+  UInt32 getQuality(void);
 
-    void  setQuality(UInt32 cl);
-    UInt32 getQuality(void);
-  
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Read/Write                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Read/Write                                 */
+  /*! \{                                                                 */
 
-    virtual bool validateHeader( const Char8 *fileName, bool &implemented );
+  virtual bool validateHeader(const Char8* fileName, bool& implemented);
 
-    virtual bool read (ImagePtr &image, std::istream &is, const std::string &mimetype);
+  virtual bool read(ImagePtr& image, std::istream& is, const std::string& mimetype);
 
-    virtual bool write (const ImagePtr &image, std::ostream &os, const std::string &mimetype);
+  virtual bool write(const ImagePtr& image, std::ostream& os, const std::string& mimetype);
 
-    virtual std::string determineMimetypeFromStream(std::istream &is);
+  virtual std::string determineMimetypeFromStream(std::istream& is);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Buffer                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Buffer                                   */
+  /*! \{                                                                 */
 
-    virtual UInt64 restoreData ( ImagePtr &image, const UChar8 *buffer,
-                                 Int32 memSize = -1 );
+  virtual UInt64 restoreData(ImagePtr& image, const UChar8* buffer, Int32 memSize = -1);
 
-    virtual UInt64 storeData   ( const ImagePtr &image, UChar8 *buffer,
-                                 Int32 memSize = -1 );
+  virtual UInt64 storeData(const ImagePtr& image, UChar8* buffer, Int32 memSize = -1);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Get Method                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Get Method                                  */
+  /*! \{                                                                 */
 
-    static JPGImageFileType & the (void);
+  static JPGImageFileType& the(void);
 
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name               Default Constructor                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name               Default Constructor                            */
-    /*! \{                                                                 */
+  JPGImageFileType(
+      const Char8* mimeType, const Char8* suffixArray[], UInt16 suffixByteCount, UInt32 flags);
 
-    JPGImageFileType ( const Char8 *mimeType,
-                       const Char8 *suffixArray[], 
-                             UInt16 suffixByteCount,
-                             UInt32 flags );
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /*---------------------------------------------------------------------*/
+  /*! \name                Copy Constructor                              */
+  /*! \{                                                                 */
 
-    /*==========================  PRIVATE  ================================*/
-  private:
+  JPGImageFileType(const JPGImageFileType& obj);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                Copy Constructor                              */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                Copy Operator                                 */
+  /*! \{                                                                 */
 
-    JPGImageFileType (const JPGImageFileType &obj);
+  const JPGImageFileType& operator=(const JPGImageFileType& obj);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                Copy Operator                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    const JPGImageFileType & operator= (const JPGImageFileType &obj);
+  UInt32 _quality;
 
-    /*! \}                                                                 */
-
-    UInt32 _quality;
-
-    static JPGImageFileType _the;
-
+  static JPGImageFileType _the;
 };
 
 typedef JPGImageFileType* JPGImageFileTypeP;

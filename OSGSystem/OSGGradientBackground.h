@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGGRADIENTBACKGROUND_H_
 #define _OSGGRADIENTBACKGROUND_H_
 #ifdef __sgi
@@ -52,95 +51,90 @@ OSG_BEGIN_NAMESPACE
 class DrawActionBase;
 class Viewport;
 
-/*! \brief Background clearing with a color gradient. See \ref 
+/*! \brief Background clearing with a color gradient. See \ref
     PageSystemWindowBackground for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING GradientBackground : 
-    public GradientBackgroundBase
-{
-    /*==========================  PUBLIC  =================================*/
+class OSG_SYSTEMLIB_DLLMAPPING GradientBackground : public GradientBackgroundBase {
+  /*==========================  PUBLIC  =================================*/
  public:
+  static const OSG::BitVector LineFieldMask;
 
-    static const OSG::BitVector LineFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
-    
-    static const char *getClassname(void) { return "GradientBackground"; };
+  static const char* getClassname(void) {
+    return "GradientBackground";
+  };
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    your_category                             */
-    /*! \{                                                                 */
-    
-    void clear( DrawActionBase *, Viewport *);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    your_category                             */
+  /*! \{                                                                 */
 
-    void addLine(Color3f color, Real32 position);
+  void clear(DrawActionBase*, Viewport*);
 
-    void clearLines(void);
+  void addLine(Color3f color, Real32 position);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     transformation                           */
-    /*! \{                                                                 */
-    
-    virtual void changed(BitVector whichField, 
-                         UInt32    origin    );
- 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   dump                                       */
-    /*! \{                                                                 */
+  void clearLines(void);
 
-    virtual void dump(      UInt32    uiIndent = 0, 
-                      const BitVector bvFlags  = 0) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     transformation                           */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  virtual void changed(BitVector whichField, UInt32 origin);
+
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   dump                                       */
+  /*! \{                                                                 */
+
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
+
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
  protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-                                                                     
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-    
-    GradientBackground(void);
-    GradientBackground(const GradientBackground &source);
+  GradientBackground(void);
+  GradientBackground(const GradientBackground& source);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-    
-    virtual ~GradientBackground(void); 
-    
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/  
-private:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    typedef GradientBackgroundBase Inherited;
+  virtual ~GradientBackground(void);
 
-    friend class FieldContainer;
-    friend class GradientBackgroundBase;
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  typedef GradientBackgroundBase Inherited;
 
-    static void initMethod( void );
+  friend class FieldContainer;
+  friend class GradientBackgroundBase;
 
-    void operator =(const GradientBackground &source);
+  static void initMethod(void);
+
+  void operator=(const GradientBackground& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
-typedef GradientBackground *GradientBackgroundP;
+typedef GradientBackground* GradientBackgroundP;
 
 OSG_END_NAMESPACE
 
 #include <OSGGradientBackgroundBase.inl>
 #include <OSGGradientBackground.inl>
 
-#define OSGGRADIENTBACKGROUND_HEADER_CVSID "@(#)$Id: FCTemplate_h.h,v 1.15 2002/06/01 10:37:25 vossg Exp $"
+#define OSGGRADIENTBACKGROUND_HEADER_CVSID                                                         \
+  "@(#)$Id: FCTemplate_h.h,v 1.15 2002/06/01 10:37:25 vossg Exp $"
 
 #endif /* _OSGGRADIENTBACKGROUND_H_ */

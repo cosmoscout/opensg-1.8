@@ -60,61 +60,58 @@ OSG_BEGIN_NAMESPACE
 //---------------------------------------------------------------------------
 class Socket;
 
-class OSG_BASE_DLLMAPPING SocketSelection
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_BASE_DLLMAPPING SocketSelection {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  SocketSelection();
+  SocketSelection(const SocketSelection& source);
 
-    SocketSelection();
-    SocketSelection(const SocketSelection &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  ~SocketSelection();
 
-    ~SocketSelection();
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   SocketSelection functions                        */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   SocketSelection functions                        */
-    /*! \{                                                                 */
+  void clear(void);
+  void clearRead(const Socket& soc);
+  void clearWrite(const Socket& soc);
+  void setRead(const Socket& soc);
+  void setWrite(const Socket& soc);
+  bool isSetRead(const Socket& soc);
+  bool isSetWrite(const Socket& soc);
+  int  select(double time);
+  int  select(double time, SocketSelection& result) const;
 
-    void clear     (void                                );
-    void clearRead (const Socket &soc                   );
-    void clearWrite(const Socket &soc                   );
-    void setRead   (const Socket &soc                   );
-    void setWrite  (const Socket &soc                   );
-    bool isSetRead (const Socket &soc                   );
-    bool isSetWrite(const Socket &soc                   );
-    int  select    (double time                         );
-    int  select    (double time,SocketSelection &result ) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   assignment                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   assignment                                 */
-    /*! \{                                                                 */
+  const SocketSelection& operator=(const SocketSelection& source);
 
-	const SocketSelection & operator =(const SocketSelection &source);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-
-    /*=========================  PROTECTED  ===============================*/
-  protected:
-
+  /*=========================  PROTECTED  ===============================*/
+ protected:
 #ifdef WIN32
-    struct fd_set *_fdSetRead;
-    struct fd_set *_fdSetWrite;
+  struct fd_set* _fdSetRead;
+  struct fd_set* _fdSetWrite;
 #else
-    fd_set *_fdSetRead;
-    fd_set *_fdSetWrite;
+  fd_set* _fdSetRead;
+  fd_set* _fdSetWrite;
 #endif
 
-    /*==========================  PRIVATE  ================================*/
+  /*==========================  PRIVATE  ================================*/
 };
 
 OSG_END_NAMESPACE
@@ -122,4 +119,3 @@ OSG_END_NAMESPACE
 #define OSG_SOCKET_SELECTION_HEADER_CVSID "@(#)$Id: $"
 
 #endif
-

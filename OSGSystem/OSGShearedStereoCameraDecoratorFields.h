@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGSHEAREDSTEREOCAMERADECORATORFIELDS_H_
 #define _OSGSHEAREDSTEREOCAMERADECORATORFIELDS_H_
 #ifdef __sgi
@@ -66,10 +65,11 @@ OSG_BEGIN_NAMESPACE
 
 class ShearedStereoCameraDecorator;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! ShearedStereoCameraDecoratorPtr
 
-typedef FCPtr<StereoCameraDecoratorPtr, ShearedStereoCameraDecorator> ShearedStereoCameraDecoratorPtr;
+typedef FCPtr<StereoCameraDecoratorPtr, ShearedStereoCameraDecorator>
+    ShearedStereoCameraDecoratorPtr;
 
 #endif
 
@@ -81,18 +81,23 @@ typedef FCPtr<StereoCameraDecoratorPtr, ShearedStereoCameraDecorator> ShearedSte
 #endif
 
 template <>
-struct FieldDataTraits<ShearedStereoCameraDecoratorPtr> : 
-    public FieldTraitsRecurseMapper<ShearedStereoCameraDecoratorPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<ShearedStereoCameraDecoratorPtr>
+    : public FieldTraitsRecurseMapper<ShearedStereoCameraDecoratorPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getSName(void) { return "SFShearedStereoCameraDecoratorPtr"; }
-    static const char *getMName(void) { return "MFShearedStereoCameraDecoratorPtr"; }
+  static const char* getSName(void) {
+    return "SFShearedStereoCameraDecoratorPtr";
+  }
+  static const char* getMName(void) {
+    return "MFShearedStereoCameraDecoratorPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -102,7 +107,6 @@ struct FieldDataTraits<ShearedStereoCameraDecoratorPtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
@@ -126,6 +130,7 @@ OSG_DLLEXPORT_DECL1(MField, ShearedStereoCameraDecoratorPtr, OSG_SYSTEMLIB_DLLTM
 
 OSG_END_NAMESPACE
 
-#define OSGSHEAREDSTEREOCAMERADECORATORFIELDS_HEADER_CVSID "@(#)$Id: FCFieldsTemplate_h.h,v 1.25 2005/04/04 14:51:48 dirk Exp $"
+#define OSGSHEAREDSTEREOCAMERADECORATORFIELDS_HEADER_CVSID                                         \
+  "@(#)$Id: FCFieldsTemplate_h.h,v 1.25 2005/04/04 14:51:48 dirk Exp $"
 
 #endif /* _OSGSHEAREDSTEREOCAMERADECORATORFIELDS_H_ */

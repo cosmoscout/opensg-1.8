@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEDISPLAYFILTERINST
 
 #include <stdlib.h>
@@ -61,197 +60,140 @@
 #include "OSGDisplayFilterBase.h"
 #include "OSGDisplayFilter.h"
 
-
 OSG_BEGIN_NAMESPACE
 
-const OSG::BitVector  DisplayFilterBase::EnabledFieldMask = 
+const OSG::BitVector DisplayFilterBase::EnabledFieldMask =
     (TypeTraits<BitVector>::One << DisplayFilterBase::EnabledFieldId);
 
-const OSG::BitVector DisplayFilterBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector DisplayFilterBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
 /*! \var bool            DisplayFilterBase::_sfEnabled
-    
+
 */
 
 //! DisplayFilter description
 
-FieldDescription *DisplayFilterBase::_desc[] = 
-{
-    new FieldDescription(SFBool::getClassType(), 
-                     "enabled", 
-                     EnabledFieldId, EnabledFieldMask,
-                     false,
-                     (FieldAccessMethod) &DisplayFilterBase::getSFEnabled)
-};
+FieldDescription* DisplayFilterBase::_desc[] = {
+    new FieldDescription(SFBool::getClassType(), "enabled", EnabledFieldId, EnabledFieldMask, false,
+        (FieldAccessMethod)&DisplayFilterBase::getSFEnabled)};
 
+FieldContainerType DisplayFilterBase::_type("DisplayFilter", "AttachmentContainer", NULL, NULL,
+    DisplayFilter::initMethod, _desc, sizeof(_desc));
 
-FieldContainerType DisplayFilterBase::_type(
-    "DisplayFilter",
-    "AttachmentContainer",
-    NULL,
-    NULL, 
-    DisplayFilter::initMethod,
-    _desc,
-    sizeof(_desc));
-
-//OSG_FIELD_CONTAINER_DEF(DisplayFilterBase, DisplayFilterPtr)
+// OSG_FIELD_CONTAINER_DEF(DisplayFilterBase, DisplayFilterPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &DisplayFilterBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &DisplayFilterBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-UInt32 DisplayFilterBase::getContainerSize(void) const 
-{ 
-    return sizeof(DisplayFilter); 
+FieldContainerType& DisplayFilterBase::getType(void) {
+  return _type;
 }
 
+const FieldContainerType& DisplayFilterBase::getType(void) const {
+  return _type;
+}
+
+UInt32 DisplayFilterBase::getContainerSize(void) const {
+  return sizeof(DisplayFilter);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void DisplayFilterBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((DisplayFilterBase *) &other, whichField);
+void DisplayFilterBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((DisplayFilterBase*)&other, whichField);
 }
 #else
-void DisplayFilterBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((DisplayFilterBase *) &other, whichField, sInfo);
+void DisplayFilterBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((DisplayFilterBase*)&other, whichField, sInfo);
 }
-void DisplayFilterBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void DisplayFilterBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void DisplayFilterBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void DisplayFilterBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-DisplayFilterBase::DisplayFilterBase(void) :
-    _sfEnabled                (bool(true)), 
-    Inherited() 
-{
+DisplayFilterBase::DisplayFilterBase(void)
+    : _sfEnabled(bool(true))
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-DisplayFilterBase::DisplayFilterBase(const DisplayFilterBase &source) :
-    _sfEnabled                (source._sfEnabled                ), 
-    Inherited                 (source)
-{
+DisplayFilterBase::DisplayFilterBase(const DisplayFilterBase& source)
+    : _sfEnabled(source._sfEnabled)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-DisplayFilterBase::~DisplayFilterBase(void)
-{
+DisplayFilterBase::~DisplayFilterBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 DisplayFilterBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 DisplayFilterBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (EnabledFieldMask & whichField))
-    {
-        returnValue += _sfEnabled.getBinSize();
-    }
+  if (FieldBits::NoField != (EnabledFieldMask & whichField)) {
+    returnValue += _sfEnabled.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void DisplayFilterBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void DisplayFilterBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (EnabledFieldMask & whichField))
-    {
-        _sfEnabled.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (EnabledFieldMask & whichField)) {
+    _sfEnabled.copyToBin(pMem);
+  }
 }
 
-void DisplayFilterBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void DisplayFilterBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (EnabledFieldMask & whichField))
-    {
-        _sfEnabled.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (EnabledFieldMask & whichField)) {
+    _sfEnabled.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void DisplayFilterBase::executeSyncImpl(      DisplayFilterBase *pOther,
-                                        const BitVector         &whichField)
-{
+void DisplayFilterBase::executeSyncImpl(DisplayFilterBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (EnabledFieldMask & whichField))
-        _sfEnabled.syncWith(pOther->_sfEnabled);
-
-
+  if (FieldBits::NoField != (EnabledFieldMask & whichField))
+    _sfEnabled.syncWith(pOther->_sfEnabled);
 }
 #else
-void DisplayFilterBase::executeSyncImpl(      DisplayFilterBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void DisplayFilterBase::executeSyncImpl(
+    DisplayFilterBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (EnabledFieldMask & whichField))
-        _sfEnabled.syncWith(pOther->_sfEnabled);
-
-
-
+  if (FieldBits::NoField != (EnabledFieldMask & whichField))
+    _sfEnabled.syncWith(pOther->_sfEnabled);
 }
 
-void DisplayFilterBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void DisplayFilterBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 OSG_END_NAMESPACE
 
@@ -267,6 +209,4 @@ DataType FieldDataTraits<DisplayFilterPtr>::_type("DisplayFilterPtr", "Attachmen
 OSG_DLLEXPORT_SFIELD_DEF1(DisplayFilterPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 OSG_DLLEXPORT_MFIELD_DEF1(DisplayFilterPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
-
 OSG_END_NAMESPACE
-

@@ -49,72 +49,66 @@
 
 OSG_BEGIN_NAMESPACE
 
-class OSG_SYSTEMLIB_DLLMAPPING Inline : public InlineBase
-{
-    /*==========================  PUBLIC  =================================*/  
-  public:
-          
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Sync                                      */
-    /*! \{                                                                 */
+class OSG_SYSTEMLIB_DLLMAPPING Inline : public InlineBase {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Sync                                      */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector whichField, 
-                         UInt32    origin    );
- 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                        Dump                                  */
-    /*! \{                                                                 */
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    virtual void dump(      UInt32    uiIndent = 0, 
-                      const BitVector bvFlags  = 0) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                        Dump                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    typedef InlineBase Inherited;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  typedef InlineBase Inherited;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Draw                                      */
-    /*! \{                                                                 */
-    
-    Action::ResultE drawEnter(Action *action);
-    Action::ResultE drawLeave(Action *action);
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Draw                                      */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  Action::ResultE drawEnter(Action* action);
+  Action::ResultE drawLeave(Action* action);
 
-    Inline(void);
-    Inline(const Inline &source);
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-    
-    virtual ~Inline(void); 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  Inline(void);
+  Inline(const Inline& source);
 
-    friend class FieldContainer;
-    friend class InlineBase;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Init                                     */
-    /*! \{                                                                 */
+  virtual ~Inline(void);
 
-    static void initMethod(void);
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class InlineBase;
 
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const Inline &source);
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Init                                     */
+  /*! \{                                                                 */
+
+  static void initMethod(void);
+
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const Inline& source);
 };
 
 OSG_END_NAMESPACE

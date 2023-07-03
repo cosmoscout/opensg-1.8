@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEBINARYSWAPCOMPOSERINST
 
 #include <stdlib.h>
@@ -61,280 +60,211 @@
 #include "OSGBinarySwapComposerBase.h"
 #include "OSGBinarySwapComposer.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  BinarySwapComposerBase::ShortFieldMask = 
+const OSG::BitVector BinarySwapComposerBase::ShortFieldMask =
     (TypeTraits<BitVector>::One << BinarySwapComposerBase::ShortFieldId);
 
-const OSG::BitVector  BinarySwapComposerBase::AlphaFieldMask = 
+const OSG::BitVector BinarySwapComposerBase::AlphaFieldMask =
     (TypeTraits<BitVector>::One << BinarySwapComposerBase::AlphaFieldId);
 
-const OSG::BitVector  BinarySwapComposerBase::TileSizeFieldMask = 
+const OSG::BitVector BinarySwapComposerBase::TileSizeFieldMask =
     (TypeTraits<BitVector>::One << BinarySwapComposerBase::TileSizeFieldId);
 
-const OSG::BitVector BinarySwapComposerBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector BinarySwapComposerBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
 /*! \var bool            BinarySwapComposerBase::_sfShort
-    
+
 */
 /*! \var bool            BinarySwapComposerBase::_sfAlpha
-    
+
 */
 /*! \var UInt32          BinarySwapComposerBase::_sfTileSize
-    
+
 */
 
 //! BinarySwapComposer description
 
-FieldDescription *BinarySwapComposerBase::_desc[] = 
-{
-    new FieldDescription(SFBool::getClassType(), 
-                     "short", 
-                     ShortFieldId, ShortFieldMask,
-                     false,
-                     (FieldAccessMethod) &BinarySwapComposerBase::getSFShort),
-    new FieldDescription(SFBool::getClassType(), 
-                     "alpha", 
-                     AlphaFieldId, AlphaFieldMask,
-                     false,
-                     (FieldAccessMethod) &BinarySwapComposerBase::getSFAlpha),
-    new FieldDescription(SFUInt32::getClassType(), 
-                     "tileSize", 
-                     TileSizeFieldId, TileSizeFieldMask,
-                     false,
-                     (FieldAccessMethod) &BinarySwapComposerBase::getSFTileSize)
-};
+FieldDescription* BinarySwapComposerBase::_desc[] = {
+    new FieldDescription(SFBool::getClassType(), "short", ShortFieldId, ShortFieldMask, false,
+        (FieldAccessMethod)&BinarySwapComposerBase::getSFShort),
+    new FieldDescription(SFBool::getClassType(), "alpha", AlphaFieldId, AlphaFieldMask, false,
+        (FieldAccessMethod)&BinarySwapComposerBase::getSFAlpha),
+    new FieldDescription(SFUInt32::getClassType(), "tileSize", TileSizeFieldId, TileSizeFieldMask,
+        false, (FieldAccessMethod)&BinarySwapComposerBase::getSFTileSize)};
 
-
-FieldContainerType BinarySwapComposerBase::_type(
-    "BinarySwapComposer",
-    "ImageComposer",
-    NULL,
-    (PrototypeCreateF) &BinarySwapComposerBase::createEmpty,
-    BinarySwapComposer::initMethod,
-    _desc,
+FieldContainerType BinarySwapComposerBase::_type("BinarySwapComposer", "ImageComposer", NULL,
+    (PrototypeCreateF)&BinarySwapComposerBase::createEmpty, BinarySwapComposer::initMethod, _desc,
     sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(BinarySwapComposerBase, BinarySwapComposerPtr)
+// OSG_FIELD_CONTAINER_DEF(BinarySwapComposerBase, BinarySwapComposerPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &BinarySwapComposerBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &BinarySwapComposerBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr BinarySwapComposerBase::shallowCopy(void) const 
-{ 
-    BinarySwapComposerPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const BinarySwapComposer *>(this)); 
-
-    return returnValue; 
+FieldContainerType& BinarySwapComposerBase::getType(void) {
+  return _type;
 }
 
-UInt32 BinarySwapComposerBase::getContainerSize(void) const 
-{ 
-    return sizeof(BinarySwapComposer); 
+const FieldContainerType& BinarySwapComposerBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr BinarySwapComposerBase::shallowCopy(void) const {
+  BinarySwapComposerPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const BinarySwapComposer*>(this));
+
+  return returnValue;
+}
+
+UInt32 BinarySwapComposerBase::getContainerSize(void) const {
+  return sizeof(BinarySwapComposer);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void BinarySwapComposerBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((BinarySwapComposerBase *) &other, whichField);
+void BinarySwapComposerBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((BinarySwapComposerBase*)&other, whichField);
 }
 #else
-void BinarySwapComposerBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((BinarySwapComposerBase *) &other, whichField, sInfo);
+void BinarySwapComposerBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((BinarySwapComposerBase*)&other, whichField, sInfo);
 }
-void BinarySwapComposerBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void BinarySwapComposerBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void BinarySwapComposerBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void BinarySwapComposerBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-BinarySwapComposerBase::BinarySwapComposerBase(void) :
-    _sfShort                  (bool(true)), 
-    _sfAlpha                  (bool(false)), 
-    _sfTileSize               (UInt32(44)), 
-    Inherited() 
-{
+BinarySwapComposerBase::BinarySwapComposerBase(void)
+    : _sfShort(bool(true))
+    , _sfAlpha(bool(false))
+    , _sfTileSize(UInt32(44))
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-BinarySwapComposerBase::BinarySwapComposerBase(const BinarySwapComposerBase &source) :
-    _sfShort                  (source._sfShort                  ), 
-    _sfAlpha                  (source._sfAlpha                  ), 
-    _sfTileSize               (source._sfTileSize               ), 
-    Inherited                 (source)
-{
+BinarySwapComposerBase::BinarySwapComposerBase(const BinarySwapComposerBase& source)
+    : _sfShort(source._sfShort)
+    , _sfAlpha(source._sfAlpha)
+    , _sfTileSize(source._sfTileSize)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-BinarySwapComposerBase::~BinarySwapComposerBase(void)
-{
+BinarySwapComposerBase::~BinarySwapComposerBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 BinarySwapComposerBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 BinarySwapComposerBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (ShortFieldMask & whichField))
-    {
-        returnValue += _sfShort.getBinSize();
-    }
+  if (FieldBits::NoField != (ShortFieldMask & whichField)) {
+    returnValue += _sfShort.getBinSize();
+  }
 
-    if(FieldBits::NoField != (AlphaFieldMask & whichField))
-    {
-        returnValue += _sfAlpha.getBinSize();
-    }
+  if (FieldBits::NoField != (AlphaFieldMask & whichField)) {
+    returnValue += _sfAlpha.getBinSize();
+  }
 
-    if(FieldBits::NoField != (TileSizeFieldMask & whichField))
-    {
-        returnValue += _sfTileSize.getBinSize();
-    }
+  if (FieldBits::NoField != (TileSizeFieldMask & whichField)) {
+    returnValue += _sfTileSize.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void BinarySwapComposerBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void BinarySwapComposerBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ShortFieldMask & whichField))
-    {
-        _sfShort.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (ShortFieldMask & whichField)) {
+    _sfShort.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (AlphaFieldMask & whichField))
-    {
-        _sfAlpha.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (AlphaFieldMask & whichField)) {
+    _sfAlpha.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (TileSizeFieldMask & whichField))
-    {
-        _sfTileSize.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (TileSizeFieldMask & whichField)) {
+    _sfTileSize.copyToBin(pMem);
+  }
 }
 
-void BinarySwapComposerBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void BinarySwapComposerBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ShortFieldMask & whichField))
-    {
-        _sfShort.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (ShortFieldMask & whichField)) {
+    _sfShort.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (AlphaFieldMask & whichField))
-    {
-        _sfAlpha.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (AlphaFieldMask & whichField)) {
+    _sfAlpha.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (TileSizeFieldMask & whichField))
-    {
-        _sfTileSize.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (TileSizeFieldMask & whichField)) {
+    _sfTileSize.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void BinarySwapComposerBase::executeSyncImpl(      BinarySwapComposerBase *pOther,
-                                        const BitVector         &whichField)
-{
+void BinarySwapComposerBase::executeSyncImpl(
+    BinarySwapComposerBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (ShortFieldMask & whichField))
-        _sfShort.syncWith(pOther->_sfShort);
+  if (FieldBits::NoField != (ShortFieldMask & whichField))
+    _sfShort.syncWith(pOther->_sfShort);
 
-    if(FieldBits::NoField != (AlphaFieldMask & whichField))
-        _sfAlpha.syncWith(pOther->_sfAlpha);
+  if (FieldBits::NoField != (AlphaFieldMask & whichField))
+    _sfAlpha.syncWith(pOther->_sfAlpha);
 
-    if(FieldBits::NoField != (TileSizeFieldMask & whichField))
-        _sfTileSize.syncWith(pOther->_sfTileSize);
-
-
+  if (FieldBits::NoField != (TileSizeFieldMask & whichField))
+    _sfTileSize.syncWith(pOther->_sfTileSize);
 }
 #else
-void BinarySwapComposerBase::executeSyncImpl(      BinarySwapComposerBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void BinarySwapComposerBase::executeSyncImpl(
+    BinarySwapComposerBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (ShortFieldMask & whichField))
-        _sfShort.syncWith(pOther->_sfShort);
+  if (FieldBits::NoField != (ShortFieldMask & whichField))
+    _sfShort.syncWith(pOther->_sfShort);
 
-    if(FieldBits::NoField != (AlphaFieldMask & whichField))
-        _sfAlpha.syncWith(pOther->_sfAlpha);
+  if (FieldBits::NoField != (AlphaFieldMask & whichField))
+    _sfAlpha.syncWith(pOther->_sfAlpha);
 
-    if(FieldBits::NoField != (TileSizeFieldMask & whichField))
-        _sfTileSize.syncWith(pOther->_sfTileSize);
-
-
-
+  if (FieldBits::NoField != (TileSizeFieldMask & whichField))
+    _sfTileSize.syncWith(pOther->_sfTileSize);
 }
 
-void BinarySwapComposerBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void BinarySwapComposerBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 OSG_BEGIN_NAMESPACE
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_DEV)
 DataType FieldDataTraits<BinarySwapComposerPtr>::_type("BinarySwapComposerPtr", "ImageComposerPtr");
 #endif
-
 
 OSG_END_NAMESPACE

@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILESURFACEINST
 
 #include <stdlib.h>
@@ -61,61 +60,58 @@
 #include "OSGSurfaceBase.h"
 #include "OSGSurface.h"
 
-
 OSG_BEGIN_NAMESPACE
 
-const OSG::BitVector  SurfaceBase::DimUFieldMask = 
+const OSG::BitVector SurfaceBase::DimUFieldMask =
     (TypeTraits<BitVector>::One << SurfaceBase::DimUFieldId);
 
-const OSG::BitVector  SurfaceBase::DimVFieldMask = 
+const OSG::BitVector SurfaceBase::DimVFieldMask =
     (TypeTraits<BitVector>::One << SurfaceBase::DimVFieldId);
 
-const OSG::BitVector  SurfaceBase::KnotsUFieldMask = 
+const OSG::BitVector SurfaceBase::KnotsUFieldMask =
     (TypeTraits<BitVector>::One << SurfaceBase::KnotsUFieldId);
 
-const OSG::BitVector  SurfaceBase::KnotsVFieldMask = 
+const OSG::BitVector SurfaceBase::KnotsVFieldMask =
     (TypeTraits<BitVector>::One << SurfaceBase::KnotsVFieldId);
 
-const OSG::BitVector  SurfaceBase::ControlPointsFieldMask = 
+const OSG::BitVector SurfaceBase::ControlPointsFieldMask =
     (TypeTraits<BitVector>::One << SurfaceBase::ControlPointsFieldId);
 
-const OSG::BitVector  SurfaceBase::ErrorFieldMask = 
+const OSG::BitVector SurfaceBase::ErrorFieldMask =
     (TypeTraits<BitVector>::One << SurfaceBase::ErrorFieldId);
 
-const OSG::BitVector  SurfaceBase::NumCurvesFieldMask = 
+const OSG::BitVector SurfaceBase::NumCurvesFieldMask =
     (TypeTraits<BitVector>::One << SurfaceBase::NumCurvesFieldId);
 
-const OSG::BitVector  SurfaceBase::KnotLengthsFieldMask = 
+const OSG::BitVector SurfaceBase::KnotLengthsFieldMask =
     (TypeTraits<BitVector>::One << SurfaceBase::KnotLengthsFieldId);
 
-const OSG::BitVector  SurfaceBase::DimensionsFieldMask = 
+const OSG::BitVector SurfaceBase::DimensionsFieldMask =
     (TypeTraits<BitVector>::One << SurfaceBase::DimensionsFieldId);
 
-const OSG::BitVector  SurfaceBase::CurveControlPointsFieldMask = 
+const OSG::BitVector SurfaceBase::CurveControlPointsFieldMask =
     (TypeTraits<BitVector>::One << SurfaceBase::CurveControlPointsFieldId);
 
-const OSG::BitVector  SurfaceBase::KnotsFieldMask = 
+const OSG::BitVector SurfaceBase::KnotsFieldMask =
     (TypeTraits<BitVector>::One << SurfaceBase::KnotsFieldId);
 
-const OSG::BitVector  SurfaceBase::CurvesPerLoopFieldMask = 
+const OSG::BitVector SurfaceBase::CurvesPerLoopFieldMask =
     (TypeTraits<BitVector>::One << SurfaceBase::CurvesPerLoopFieldId);
 
-const OSG::BitVector  SurfaceBase::IsDelaunayFieldMask = 
+const OSG::BitVector SurfaceBase::IsDelaunayFieldMask =
     (TypeTraits<BitVector>::One << SurfaceBase::IsDelaunayFieldId);
 
-const OSG::BitVector  SurfaceBase::TextureControlPointsFieldMask = 
+const OSG::BitVector SurfaceBase::TextureControlPointsFieldMask =
     (TypeTraits<BitVector>::One << SurfaceBase::TextureControlPointsFieldId);
 
-const OSG::BitVector  SurfaceBase::DirtyMaskFieldMask = 
+const OSG::BitVector SurfaceBase::DirtyMaskFieldMask =
     (TypeTraits<BitVector>::One << SurfaceBase::DirtyMaskFieldId);
 
-const OSG::BitVector  SurfaceBase::SurfaceGLIdFieldMask = 
+const OSG::BitVector SurfaceBase::SurfaceGLIdFieldMask =
     (TypeTraits<BitVector>::One << SurfaceBase::SurfaceGLIdFieldId);
 
-const OSG::BitVector SurfaceBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector SurfaceBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
@@ -156,13 +152,15 @@ const OSG::BitVector SurfaceBase::MTInfluenceMask =
     Specifies the number of trimming curves in each trimming curve loop
 */
 /*! \var bool            SurfaceBase::_sfIsDelaunay
-    Whether to use Delaunay triangulation. Default is no, because it's faster and slightly more robust numerically, but produces a somewhat less "nice" triangulation. Set to true, if you want Delaunay triangulation. The number of triangles generated is the same in both modes.
+    Whether to use Delaunay triangulation. Default is no, because it's faster and slightly more
+   robust numerically, but produces a somewhat less "nice" triangulation. Set to true, if you want
+   Delaunay triangulation. The number of triangles generated is the same in both modes.
 */
 /*! \var GeoTexCoordsPtr SurfaceBase::_sfTextureControlPoints
     The control points for textures (always 2D)
 */
 /*! \var UInt32          SurfaceBase::_sfDirtyMask
-    
+
 */
 /*! \var Int32           SurfaceBase::_sfSurfaceGLId
     Surface GL Id, internal use.
@@ -170,635 +168,493 @@ const OSG::BitVector SurfaceBase::MTInfluenceMask =
 
 //! Surface description
 
-FieldDescription *SurfaceBase::_desc[] = 
-{
-    new FieldDescription(SFUInt32::getClassType(), 
-                     "dimU", 
-                     DimUFieldId, DimUFieldMask,
-                     false,
-                     (FieldAccessMethod) &SurfaceBase::getSFDimU),
-    new FieldDescription(SFUInt32::getClassType(), 
-                     "dimV", 
-                     DimVFieldId, DimVFieldMask,
-                     false,
-                     (FieldAccessMethod) &SurfaceBase::getSFDimV),
-    new FieldDescription(MFReal32::getClassType(), 
-                     "knotsU", 
-                     KnotsUFieldId, KnotsUFieldMask,
-                     false,
-                     (FieldAccessMethod) &SurfaceBase::getMFKnotsU),
-    new FieldDescription(MFReal32::getClassType(), 
-                     "knotsV", 
-                     KnotsVFieldId, KnotsVFieldMask,
-                     false,
-                     (FieldAccessMethod) &SurfaceBase::getMFKnotsV),
-    new FieldDescription(SFGeoPositionsPtr::getClassType(), 
-                     "controlPoints", 
-                     ControlPointsFieldId, ControlPointsFieldMask,
-                     false,
-                     (FieldAccessMethod) &SurfaceBase::getSFControlPoints),
-    new FieldDescription(SFReal32::getClassType(), 
-                     "error", 
-                     ErrorFieldId, ErrorFieldMask,
-                     false,
-                     (FieldAccessMethod) &SurfaceBase::getSFError),
-    new FieldDescription(SFUInt32::getClassType(), 
-                     "numCurves", 
-                     NumCurvesFieldId, NumCurvesFieldMask,
-                     false,
-                     (FieldAccessMethod) &SurfaceBase::getSFNumCurves),
-    new FieldDescription(MFUInt32::getClassType(), 
-                     "knotLengths", 
-                     KnotLengthsFieldId, KnotLengthsFieldMask,
-                     false,
-                     (FieldAccessMethod) &SurfaceBase::getMFKnotLengths),
-    new FieldDescription(MFUInt32::getClassType(), 
-                     "dimensions", 
-                     DimensionsFieldId, DimensionsFieldMask,
-                     false,
-                     (FieldAccessMethod) &SurfaceBase::getMFDimensions),
-    new FieldDescription(MFPnt3f::getClassType(), 
-                     "curveControlPoints", 
-                     CurveControlPointsFieldId, CurveControlPointsFieldMask,
-                     false,
-                     (FieldAccessMethod) &SurfaceBase::getMFCurveControlPoints),
-    new FieldDescription(MFReal32::getClassType(), 
-                     "knots", 
-                     KnotsFieldId, KnotsFieldMask,
-                     false,
-                     (FieldAccessMethod) &SurfaceBase::getMFKnots),
-    new FieldDescription(MFUInt32::getClassType(), 
-                     "curvesPerLoop", 
-                     CurvesPerLoopFieldId, CurvesPerLoopFieldMask,
-                     false,
-                     (FieldAccessMethod) &SurfaceBase::getMFCurvesPerLoop),
-    new FieldDescription(SFBool::getClassType(), 
-                     "isDelaunay", 
-                     IsDelaunayFieldId, IsDelaunayFieldMask,
-                     false,
-                     (FieldAccessMethod) &SurfaceBase::getSFIsDelaunay),
-    new FieldDescription(SFGeoTexCoordsPtr::getClassType(), 
-                     "textureControlPoints", 
-                     TextureControlPointsFieldId, TextureControlPointsFieldMask,
-                     false,
-                     (FieldAccessMethod) &SurfaceBase::getSFTextureControlPoints),
-    new FieldDescription(SFUInt32::getClassType(), 
-                     "dirtyMask", 
-                     DirtyMaskFieldId, DirtyMaskFieldMask,
-                     false,
-                     (FieldAccessMethod) &SurfaceBase::getSFDirtyMask),
-    new FieldDescription(SFInt32::getClassType(), 
-                     "SurfaceGLId", 
-                     SurfaceGLIdFieldId, SurfaceGLIdFieldMask,
-                     true,
-                     (FieldAccessMethod) &SurfaceBase::getSFSurfaceGLId)
-};
+FieldDescription* SurfaceBase::_desc[] = {
+    new FieldDescription(SFUInt32::getClassType(), "dimU", DimUFieldId, DimUFieldMask, false,
+        (FieldAccessMethod)&SurfaceBase::getSFDimU),
+    new FieldDescription(SFUInt32::getClassType(), "dimV", DimVFieldId, DimVFieldMask, false,
+        (FieldAccessMethod)&SurfaceBase::getSFDimV),
+    new FieldDescription(MFReal32::getClassType(), "knotsU", KnotsUFieldId, KnotsUFieldMask, false,
+        (FieldAccessMethod)&SurfaceBase::getMFKnotsU),
+    new FieldDescription(MFReal32::getClassType(), "knotsV", KnotsVFieldId, KnotsVFieldMask, false,
+        (FieldAccessMethod)&SurfaceBase::getMFKnotsV),
+    new FieldDescription(SFGeoPositionsPtr::getClassType(), "controlPoints", ControlPointsFieldId,
+        ControlPointsFieldMask, false, (FieldAccessMethod)&SurfaceBase::getSFControlPoints),
+    new FieldDescription(SFReal32::getClassType(), "error", ErrorFieldId, ErrorFieldMask, false,
+        (FieldAccessMethod)&SurfaceBase::getSFError),
+    new FieldDescription(SFUInt32::getClassType(), "numCurves", NumCurvesFieldId,
+        NumCurvesFieldMask, false, (FieldAccessMethod)&SurfaceBase::getSFNumCurves),
+    new FieldDescription(MFUInt32::getClassType(), "knotLengths", KnotLengthsFieldId,
+        KnotLengthsFieldMask, false, (FieldAccessMethod)&SurfaceBase::getMFKnotLengths),
+    new FieldDescription(MFUInt32::getClassType(), "dimensions", DimensionsFieldId,
+        DimensionsFieldMask, false, (FieldAccessMethod)&SurfaceBase::getMFDimensions),
+    new FieldDescription(MFPnt3f::getClassType(), "curveControlPoints", CurveControlPointsFieldId,
+        CurveControlPointsFieldMask, false,
+        (FieldAccessMethod)&SurfaceBase::getMFCurveControlPoints),
+    new FieldDescription(MFReal32::getClassType(), "knots", KnotsFieldId, KnotsFieldMask, false,
+        (FieldAccessMethod)&SurfaceBase::getMFKnots),
+    new FieldDescription(MFUInt32::getClassType(), "curvesPerLoop", CurvesPerLoopFieldId,
+        CurvesPerLoopFieldMask, false, (FieldAccessMethod)&SurfaceBase::getMFCurvesPerLoop),
+    new FieldDescription(SFBool::getClassType(), "isDelaunay", IsDelaunayFieldId,
+        IsDelaunayFieldMask, false, (FieldAccessMethod)&SurfaceBase::getSFIsDelaunay),
+    new FieldDescription(SFGeoTexCoordsPtr::getClassType(), "textureControlPoints",
+        TextureControlPointsFieldId, TextureControlPointsFieldMask, false,
+        (FieldAccessMethod)&SurfaceBase::getSFTextureControlPoints),
+    new FieldDescription(SFUInt32::getClassType(), "dirtyMask", DirtyMaskFieldId,
+        DirtyMaskFieldMask, false, (FieldAccessMethod)&SurfaceBase::getSFDirtyMask),
+    new FieldDescription(SFInt32::getClassType(), "SurfaceGLId", SurfaceGLIdFieldId,
+        SurfaceGLIdFieldMask, true, (FieldAccessMethod)&SurfaceBase::getSFSurfaceGLId)};
 
+FieldContainerType SurfaceBase::_type("Surface", "Geometry", NULL,
+    (PrototypeCreateF)&SurfaceBase::createEmpty, Surface::initMethod, _desc, sizeof(_desc));
 
-FieldContainerType SurfaceBase::_type(
-    "Surface",
-    "Geometry",
-    NULL,
-    (PrototypeCreateF) &SurfaceBase::createEmpty,
-    Surface::initMethod,
-    _desc,
-    sizeof(_desc));
-
-//OSG_FIELD_CONTAINER_DEF(SurfaceBase, SurfacePtr)
+// OSG_FIELD_CONTAINER_DEF(SurfaceBase, SurfacePtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &SurfaceBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &SurfaceBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr SurfaceBase::shallowCopy(void) const 
-{ 
-    SurfacePtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const Surface *>(this)); 
-
-    return returnValue; 
+FieldContainerType& SurfaceBase::getType(void) {
+  return _type;
 }
 
-UInt32 SurfaceBase::getContainerSize(void) const 
-{ 
-    return sizeof(Surface); 
+const FieldContainerType& SurfaceBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr SurfaceBase::shallowCopy(void) const {
+  SurfacePtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const Surface*>(this));
+
+  return returnValue;
+}
+
+UInt32 SurfaceBase::getContainerSize(void) const {
+  return sizeof(Surface);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void SurfaceBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((SurfaceBase *) &other, whichField);
+void SurfaceBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((SurfaceBase*)&other, whichField);
 }
 #else
-void SurfaceBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((SurfaceBase *) &other, whichField, sInfo);
+void SurfaceBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((SurfaceBase*)&other, whichField, sInfo);
 }
-void SurfaceBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void SurfaceBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void SurfaceBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
+void SurfaceBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 
-    _mfKnotsU.terminateShare(uiAspect, this->getContainerSize());
-    _mfKnotsV.terminateShare(uiAspect, this->getContainerSize());
-    _mfKnotLengths.terminateShare(uiAspect, this->getContainerSize());
-    _mfDimensions.terminateShare(uiAspect, this->getContainerSize());
-    _mfCurveControlPoints.terminateShare(uiAspect, this->getContainerSize());
-    _mfKnots.terminateShare(uiAspect, this->getContainerSize());
-    _mfCurvesPerLoop.terminateShare(uiAspect, this->getContainerSize());
+  _mfKnotsU.terminateShare(uiAspect, this->getContainerSize());
+  _mfKnotsV.terminateShare(uiAspect, this->getContainerSize());
+  _mfKnotLengths.terminateShare(uiAspect, this->getContainerSize());
+  _mfDimensions.terminateShare(uiAspect, this->getContainerSize());
+  _mfCurveControlPoints.terminateShare(uiAspect, this->getContainerSize());
+  _mfKnots.terminateShare(uiAspect, this->getContainerSize());
+  _mfCurvesPerLoop.terminateShare(uiAspect, this->getContainerSize());
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-SurfaceBase::SurfaceBase(void) :
-    _sfDimU                   (UInt32(0)), 
-    _sfDimV                   (UInt32(0)), 
-    _mfKnotsU                 (), 
-    _mfKnotsV                 (), 
-    _sfControlPoints          (), 
-    _sfError                  (Real32(0.5)), 
-    _sfNumCurves              (UInt32(0)), 
-    _mfKnotLengths            (), 
-    _mfDimensions             (), 
-    _mfCurveControlPoints     (), 
-    _mfKnots                  (), 
-    _mfCurvesPerLoop          (), 
-    _sfIsDelaunay             (bool(false)), 
-    _sfTextureControlPoints   (), 
-    _sfDirtyMask              (UInt32(0)), 
-    _sfSurfaceGLId            (Int32(0)), 
-    Inherited() 
-{
+SurfaceBase::SurfaceBase(void)
+    : _sfDimU(UInt32(0))
+    , _sfDimV(UInt32(0))
+    , _mfKnotsU()
+    , _mfKnotsV()
+    , _sfControlPoints()
+    , _sfError(Real32(0.5))
+    , _sfNumCurves(UInt32(0))
+    , _mfKnotLengths()
+    , _mfDimensions()
+    , _mfCurveControlPoints()
+    , _mfKnots()
+    , _mfCurvesPerLoop()
+    , _sfIsDelaunay(bool(false))
+    , _sfTextureControlPoints()
+    , _sfDirtyMask(UInt32(0))
+    , _sfSurfaceGLId(Int32(0))
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-SurfaceBase::SurfaceBase(const SurfaceBase &source) :
-    _sfDimU                   (source._sfDimU                   ), 
-    _sfDimV                   (source._sfDimV                   ), 
-    _mfKnotsU                 (source._mfKnotsU                 ), 
-    _mfKnotsV                 (source._mfKnotsV                 ), 
-    _sfControlPoints          (source._sfControlPoints          ), 
-    _sfError                  (source._sfError                  ), 
-    _sfNumCurves              (source._sfNumCurves              ), 
-    _mfKnotLengths            (source._mfKnotLengths            ), 
-    _mfDimensions             (source._mfDimensions             ), 
-    _mfCurveControlPoints     (source._mfCurveControlPoints     ), 
-    _mfKnots                  (source._mfKnots                  ), 
-    _mfCurvesPerLoop          (source._mfCurvesPerLoop          ), 
-    _sfIsDelaunay             (source._sfIsDelaunay             ), 
-    _sfTextureControlPoints   (source._sfTextureControlPoints   ), 
-    _sfDirtyMask              (source._sfDirtyMask              ), 
-    _sfSurfaceGLId            (source._sfSurfaceGLId            ), 
-    Inherited                 (source)
-{
+SurfaceBase::SurfaceBase(const SurfaceBase& source)
+    : _sfDimU(source._sfDimU)
+    , _sfDimV(source._sfDimV)
+    , _mfKnotsU(source._mfKnotsU)
+    , _mfKnotsV(source._mfKnotsV)
+    , _sfControlPoints(source._sfControlPoints)
+    , _sfError(source._sfError)
+    , _sfNumCurves(source._sfNumCurves)
+    , _mfKnotLengths(source._mfKnotLengths)
+    , _mfDimensions(source._mfDimensions)
+    , _mfCurveControlPoints(source._mfCurveControlPoints)
+    , _mfKnots(source._mfKnots)
+    , _mfCurvesPerLoop(source._mfCurvesPerLoop)
+    , _sfIsDelaunay(source._sfIsDelaunay)
+    , _sfTextureControlPoints(source._sfTextureControlPoints)
+    , _sfDirtyMask(source._sfDirtyMask)
+    , _sfSurfaceGLId(source._sfSurfaceGLId)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-SurfaceBase::~SurfaceBase(void)
-{
+SurfaceBase::~SurfaceBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 SurfaceBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 SurfaceBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (DimUFieldMask & whichField))
-    {
-        returnValue += _sfDimU.getBinSize();
-    }
+  if (FieldBits::NoField != (DimUFieldMask & whichField)) {
+    returnValue += _sfDimU.getBinSize();
+  }
 
-    if(FieldBits::NoField != (DimVFieldMask & whichField))
-    {
-        returnValue += _sfDimV.getBinSize();
-    }
+  if (FieldBits::NoField != (DimVFieldMask & whichField)) {
+    returnValue += _sfDimV.getBinSize();
+  }
 
-    if(FieldBits::NoField != (KnotsUFieldMask & whichField))
-    {
-        returnValue += _mfKnotsU.getBinSize();
-    }
+  if (FieldBits::NoField != (KnotsUFieldMask & whichField)) {
+    returnValue += _mfKnotsU.getBinSize();
+  }
 
-    if(FieldBits::NoField != (KnotsVFieldMask & whichField))
-    {
-        returnValue += _mfKnotsV.getBinSize();
-    }
+  if (FieldBits::NoField != (KnotsVFieldMask & whichField)) {
+    returnValue += _mfKnotsV.getBinSize();
+  }
 
-    if(FieldBits::NoField != (ControlPointsFieldMask & whichField))
-    {
-        returnValue += _sfControlPoints.getBinSize();
-    }
+  if (FieldBits::NoField != (ControlPointsFieldMask & whichField)) {
+    returnValue += _sfControlPoints.getBinSize();
+  }
 
-    if(FieldBits::NoField != (ErrorFieldMask & whichField))
-    {
-        returnValue += _sfError.getBinSize();
-    }
+  if (FieldBits::NoField != (ErrorFieldMask & whichField)) {
+    returnValue += _sfError.getBinSize();
+  }
 
-    if(FieldBits::NoField != (NumCurvesFieldMask & whichField))
-    {
-        returnValue += _sfNumCurves.getBinSize();
-    }
+  if (FieldBits::NoField != (NumCurvesFieldMask & whichField)) {
+    returnValue += _sfNumCurves.getBinSize();
+  }
 
-    if(FieldBits::NoField != (KnotLengthsFieldMask & whichField))
-    {
-        returnValue += _mfKnotLengths.getBinSize();
-    }
+  if (FieldBits::NoField != (KnotLengthsFieldMask & whichField)) {
+    returnValue += _mfKnotLengths.getBinSize();
+  }
 
-    if(FieldBits::NoField != (DimensionsFieldMask & whichField))
-    {
-        returnValue += _mfDimensions.getBinSize();
-    }
+  if (FieldBits::NoField != (DimensionsFieldMask & whichField)) {
+    returnValue += _mfDimensions.getBinSize();
+  }
 
-    if(FieldBits::NoField != (CurveControlPointsFieldMask & whichField))
-    {
-        returnValue += _mfCurveControlPoints.getBinSize();
-    }
+  if (FieldBits::NoField != (CurveControlPointsFieldMask & whichField)) {
+    returnValue += _mfCurveControlPoints.getBinSize();
+  }
 
-    if(FieldBits::NoField != (KnotsFieldMask & whichField))
-    {
-        returnValue += _mfKnots.getBinSize();
-    }
+  if (FieldBits::NoField != (KnotsFieldMask & whichField)) {
+    returnValue += _mfKnots.getBinSize();
+  }
 
-    if(FieldBits::NoField != (CurvesPerLoopFieldMask & whichField))
-    {
-        returnValue += _mfCurvesPerLoop.getBinSize();
-    }
+  if (FieldBits::NoField != (CurvesPerLoopFieldMask & whichField)) {
+    returnValue += _mfCurvesPerLoop.getBinSize();
+  }
 
-    if(FieldBits::NoField != (IsDelaunayFieldMask & whichField))
-    {
-        returnValue += _sfIsDelaunay.getBinSize();
-    }
+  if (FieldBits::NoField != (IsDelaunayFieldMask & whichField)) {
+    returnValue += _sfIsDelaunay.getBinSize();
+  }
 
-    if(FieldBits::NoField != (TextureControlPointsFieldMask & whichField))
-    {
-        returnValue += _sfTextureControlPoints.getBinSize();
-    }
+  if (FieldBits::NoField != (TextureControlPointsFieldMask & whichField)) {
+    returnValue += _sfTextureControlPoints.getBinSize();
+  }
 
-    if(FieldBits::NoField != (DirtyMaskFieldMask & whichField))
-    {
-        returnValue += _sfDirtyMask.getBinSize();
-    }
+  if (FieldBits::NoField != (DirtyMaskFieldMask & whichField)) {
+    returnValue += _sfDirtyMask.getBinSize();
+  }
 
-    if(FieldBits::NoField != (SurfaceGLIdFieldMask & whichField))
-    {
-        returnValue += _sfSurfaceGLId.getBinSize();
-    }
+  if (FieldBits::NoField != (SurfaceGLIdFieldMask & whichField)) {
+    returnValue += _sfSurfaceGLId.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void SurfaceBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void SurfaceBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (DimUFieldMask & whichField))
-    {
-        _sfDimU.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (DimUFieldMask & whichField)) {
+    _sfDimU.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (DimVFieldMask & whichField))
-    {
-        _sfDimV.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (DimVFieldMask & whichField)) {
+    _sfDimV.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (KnotsUFieldMask & whichField))
-    {
-        _mfKnotsU.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (KnotsUFieldMask & whichField)) {
+    _mfKnotsU.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (KnotsVFieldMask & whichField))
-    {
-        _mfKnotsV.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (KnotsVFieldMask & whichField)) {
+    _mfKnotsV.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ControlPointsFieldMask & whichField))
-    {
-        _sfControlPoints.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (ControlPointsFieldMask & whichField)) {
+    _sfControlPoints.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ErrorFieldMask & whichField))
-    {
-        _sfError.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (ErrorFieldMask & whichField)) {
+    _sfError.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (NumCurvesFieldMask & whichField))
-    {
-        _sfNumCurves.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (NumCurvesFieldMask & whichField)) {
+    _sfNumCurves.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (KnotLengthsFieldMask & whichField))
-    {
-        _mfKnotLengths.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (KnotLengthsFieldMask & whichField)) {
+    _mfKnotLengths.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (DimensionsFieldMask & whichField))
-    {
-        _mfDimensions.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (DimensionsFieldMask & whichField)) {
+    _mfDimensions.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (CurveControlPointsFieldMask & whichField))
-    {
-        _mfCurveControlPoints.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (CurveControlPointsFieldMask & whichField)) {
+    _mfCurveControlPoints.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (KnotsFieldMask & whichField))
-    {
-        _mfKnots.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (KnotsFieldMask & whichField)) {
+    _mfKnots.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (CurvesPerLoopFieldMask & whichField))
-    {
-        _mfCurvesPerLoop.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (CurvesPerLoopFieldMask & whichField)) {
+    _mfCurvesPerLoop.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (IsDelaunayFieldMask & whichField))
-    {
-        _sfIsDelaunay.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (IsDelaunayFieldMask & whichField)) {
+    _sfIsDelaunay.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (TextureControlPointsFieldMask & whichField))
-    {
-        _sfTextureControlPoints.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (TextureControlPointsFieldMask & whichField)) {
+    _sfTextureControlPoints.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (DirtyMaskFieldMask & whichField))
-    {
-        _sfDirtyMask.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (DirtyMaskFieldMask & whichField)) {
+    _sfDirtyMask.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (SurfaceGLIdFieldMask & whichField))
-    {
-        _sfSurfaceGLId.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (SurfaceGLIdFieldMask & whichField)) {
+    _sfSurfaceGLId.copyToBin(pMem);
+  }
 }
 
-void SurfaceBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void SurfaceBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (DimUFieldMask & whichField))
-    {
-        _sfDimU.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (DimUFieldMask & whichField)) {
+    _sfDimU.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (DimVFieldMask & whichField))
-    {
-        _sfDimV.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (DimVFieldMask & whichField)) {
+    _sfDimV.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (KnotsUFieldMask & whichField))
-    {
-        _mfKnotsU.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (KnotsUFieldMask & whichField)) {
+    _mfKnotsU.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (KnotsVFieldMask & whichField))
-    {
-        _mfKnotsV.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (KnotsVFieldMask & whichField)) {
+    _mfKnotsV.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ControlPointsFieldMask & whichField))
-    {
-        _sfControlPoints.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (ControlPointsFieldMask & whichField)) {
+    _sfControlPoints.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ErrorFieldMask & whichField))
-    {
-        _sfError.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (ErrorFieldMask & whichField)) {
+    _sfError.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (NumCurvesFieldMask & whichField))
-    {
-        _sfNumCurves.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (NumCurvesFieldMask & whichField)) {
+    _sfNumCurves.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (KnotLengthsFieldMask & whichField))
-    {
-        _mfKnotLengths.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (KnotLengthsFieldMask & whichField)) {
+    _mfKnotLengths.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (DimensionsFieldMask & whichField))
-    {
-        _mfDimensions.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (DimensionsFieldMask & whichField)) {
+    _mfDimensions.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (CurveControlPointsFieldMask & whichField))
-    {
-        _mfCurveControlPoints.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (CurveControlPointsFieldMask & whichField)) {
+    _mfCurveControlPoints.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (KnotsFieldMask & whichField))
-    {
-        _mfKnots.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (KnotsFieldMask & whichField)) {
+    _mfKnots.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (CurvesPerLoopFieldMask & whichField))
-    {
-        _mfCurvesPerLoop.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (CurvesPerLoopFieldMask & whichField)) {
+    _mfCurvesPerLoop.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (IsDelaunayFieldMask & whichField))
-    {
-        _sfIsDelaunay.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (IsDelaunayFieldMask & whichField)) {
+    _sfIsDelaunay.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (TextureControlPointsFieldMask & whichField))
-    {
-        _sfTextureControlPoints.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (TextureControlPointsFieldMask & whichField)) {
+    _sfTextureControlPoints.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (DirtyMaskFieldMask & whichField))
-    {
-        _sfDirtyMask.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (DirtyMaskFieldMask & whichField)) {
+    _sfDirtyMask.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (SurfaceGLIdFieldMask & whichField))
-    {
-        _sfSurfaceGLId.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (SurfaceGLIdFieldMask & whichField)) {
+    _sfSurfaceGLId.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void SurfaceBase::executeSyncImpl(      SurfaceBase *pOther,
-                                        const BitVector         &whichField)
-{
+void SurfaceBase::executeSyncImpl(SurfaceBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (DimUFieldMask & whichField))
-        _sfDimU.syncWith(pOther->_sfDimU);
+  if (FieldBits::NoField != (DimUFieldMask & whichField))
+    _sfDimU.syncWith(pOther->_sfDimU);
 
-    if(FieldBits::NoField != (DimVFieldMask & whichField))
-        _sfDimV.syncWith(pOther->_sfDimV);
+  if (FieldBits::NoField != (DimVFieldMask & whichField))
+    _sfDimV.syncWith(pOther->_sfDimV);
 
-    if(FieldBits::NoField != (KnotsUFieldMask & whichField))
-        _mfKnotsU.syncWith(pOther->_mfKnotsU);
+  if (FieldBits::NoField != (KnotsUFieldMask & whichField))
+    _mfKnotsU.syncWith(pOther->_mfKnotsU);
 
-    if(FieldBits::NoField != (KnotsVFieldMask & whichField))
-        _mfKnotsV.syncWith(pOther->_mfKnotsV);
+  if (FieldBits::NoField != (KnotsVFieldMask & whichField))
+    _mfKnotsV.syncWith(pOther->_mfKnotsV);
 
-    if(FieldBits::NoField != (ControlPointsFieldMask & whichField))
-        _sfControlPoints.syncWith(pOther->_sfControlPoints);
+  if (FieldBits::NoField != (ControlPointsFieldMask & whichField))
+    _sfControlPoints.syncWith(pOther->_sfControlPoints);
 
-    if(FieldBits::NoField != (ErrorFieldMask & whichField))
-        _sfError.syncWith(pOther->_sfError);
+  if (FieldBits::NoField != (ErrorFieldMask & whichField))
+    _sfError.syncWith(pOther->_sfError);
 
-    if(FieldBits::NoField != (NumCurvesFieldMask & whichField))
-        _sfNumCurves.syncWith(pOther->_sfNumCurves);
+  if (FieldBits::NoField != (NumCurvesFieldMask & whichField))
+    _sfNumCurves.syncWith(pOther->_sfNumCurves);
 
-    if(FieldBits::NoField != (KnotLengthsFieldMask & whichField))
-        _mfKnotLengths.syncWith(pOther->_mfKnotLengths);
+  if (FieldBits::NoField != (KnotLengthsFieldMask & whichField))
+    _mfKnotLengths.syncWith(pOther->_mfKnotLengths);
 
-    if(FieldBits::NoField != (DimensionsFieldMask & whichField))
-        _mfDimensions.syncWith(pOther->_mfDimensions);
+  if (FieldBits::NoField != (DimensionsFieldMask & whichField))
+    _mfDimensions.syncWith(pOther->_mfDimensions);
 
-    if(FieldBits::NoField != (CurveControlPointsFieldMask & whichField))
-        _mfCurveControlPoints.syncWith(pOther->_mfCurveControlPoints);
+  if (FieldBits::NoField != (CurveControlPointsFieldMask & whichField))
+    _mfCurveControlPoints.syncWith(pOther->_mfCurveControlPoints);
 
-    if(FieldBits::NoField != (KnotsFieldMask & whichField))
-        _mfKnots.syncWith(pOther->_mfKnots);
+  if (FieldBits::NoField != (KnotsFieldMask & whichField))
+    _mfKnots.syncWith(pOther->_mfKnots);
 
-    if(FieldBits::NoField != (CurvesPerLoopFieldMask & whichField))
-        _mfCurvesPerLoop.syncWith(pOther->_mfCurvesPerLoop);
+  if (FieldBits::NoField != (CurvesPerLoopFieldMask & whichField))
+    _mfCurvesPerLoop.syncWith(pOther->_mfCurvesPerLoop);
 
-    if(FieldBits::NoField != (IsDelaunayFieldMask & whichField))
-        _sfIsDelaunay.syncWith(pOther->_sfIsDelaunay);
+  if (FieldBits::NoField != (IsDelaunayFieldMask & whichField))
+    _sfIsDelaunay.syncWith(pOther->_sfIsDelaunay);
 
-    if(FieldBits::NoField != (TextureControlPointsFieldMask & whichField))
-        _sfTextureControlPoints.syncWith(pOther->_sfTextureControlPoints);
+  if (FieldBits::NoField != (TextureControlPointsFieldMask & whichField))
+    _sfTextureControlPoints.syncWith(pOther->_sfTextureControlPoints);
 
-    if(FieldBits::NoField != (DirtyMaskFieldMask & whichField))
-        _sfDirtyMask.syncWith(pOther->_sfDirtyMask);
+  if (FieldBits::NoField != (DirtyMaskFieldMask & whichField))
+    _sfDirtyMask.syncWith(pOther->_sfDirtyMask);
 
-    if(FieldBits::NoField != (SurfaceGLIdFieldMask & whichField))
-        _sfSurfaceGLId.syncWith(pOther->_sfSurfaceGLId);
-
-
+  if (FieldBits::NoField != (SurfaceGLIdFieldMask & whichField))
+    _sfSurfaceGLId.syncWith(pOther->_sfSurfaceGLId);
 }
 #else
-void SurfaceBase::executeSyncImpl(      SurfaceBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void SurfaceBase::executeSyncImpl(
+    SurfaceBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (DimUFieldMask & whichField))
-        _sfDimU.syncWith(pOther->_sfDimU);
+  if (FieldBits::NoField != (DimUFieldMask & whichField))
+    _sfDimU.syncWith(pOther->_sfDimU);
 
-    if(FieldBits::NoField != (DimVFieldMask & whichField))
-        _sfDimV.syncWith(pOther->_sfDimV);
+  if (FieldBits::NoField != (DimVFieldMask & whichField))
+    _sfDimV.syncWith(pOther->_sfDimV);
 
-    if(FieldBits::NoField != (ControlPointsFieldMask & whichField))
-        _sfControlPoints.syncWith(pOther->_sfControlPoints);
+  if (FieldBits::NoField != (ControlPointsFieldMask & whichField))
+    _sfControlPoints.syncWith(pOther->_sfControlPoints);
 
-    if(FieldBits::NoField != (ErrorFieldMask & whichField))
-        _sfError.syncWith(pOther->_sfError);
+  if (FieldBits::NoField != (ErrorFieldMask & whichField))
+    _sfError.syncWith(pOther->_sfError);
 
-    if(FieldBits::NoField != (NumCurvesFieldMask & whichField))
-        _sfNumCurves.syncWith(pOther->_sfNumCurves);
+  if (FieldBits::NoField != (NumCurvesFieldMask & whichField))
+    _sfNumCurves.syncWith(pOther->_sfNumCurves);
 
-    if(FieldBits::NoField != (IsDelaunayFieldMask & whichField))
-        _sfIsDelaunay.syncWith(pOther->_sfIsDelaunay);
+  if (FieldBits::NoField != (IsDelaunayFieldMask & whichField))
+    _sfIsDelaunay.syncWith(pOther->_sfIsDelaunay);
 
-    if(FieldBits::NoField != (TextureControlPointsFieldMask & whichField))
-        _sfTextureControlPoints.syncWith(pOther->_sfTextureControlPoints);
+  if (FieldBits::NoField != (TextureControlPointsFieldMask & whichField))
+    _sfTextureControlPoints.syncWith(pOther->_sfTextureControlPoints);
 
-    if(FieldBits::NoField != (DirtyMaskFieldMask & whichField))
-        _sfDirtyMask.syncWith(pOther->_sfDirtyMask);
+  if (FieldBits::NoField != (DirtyMaskFieldMask & whichField))
+    _sfDirtyMask.syncWith(pOther->_sfDirtyMask);
 
-    if(FieldBits::NoField != (SurfaceGLIdFieldMask & whichField))
-        _sfSurfaceGLId.syncWith(pOther->_sfSurfaceGLId);
+  if (FieldBits::NoField != (SurfaceGLIdFieldMask & whichField))
+    _sfSurfaceGLId.syncWith(pOther->_sfSurfaceGLId);
 
+  if (FieldBits::NoField != (KnotsUFieldMask & whichField))
+    _mfKnotsU.syncWith(pOther->_mfKnotsU, sInfo);
 
-    if(FieldBits::NoField != (KnotsUFieldMask & whichField))
-        _mfKnotsU.syncWith(pOther->_mfKnotsU, sInfo);
+  if (FieldBits::NoField != (KnotsVFieldMask & whichField))
+    _mfKnotsV.syncWith(pOther->_mfKnotsV, sInfo);
 
-    if(FieldBits::NoField != (KnotsVFieldMask & whichField))
-        _mfKnotsV.syncWith(pOther->_mfKnotsV, sInfo);
+  if (FieldBits::NoField != (KnotLengthsFieldMask & whichField))
+    _mfKnotLengths.syncWith(pOther->_mfKnotLengths, sInfo);
 
-    if(FieldBits::NoField != (KnotLengthsFieldMask & whichField))
-        _mfKnotLengths.syncWith(pOther->_mfKnotLengths, sInfo);
+  if (FieldBits::NoField != (DimensionsFieldMask & whichField))
+    _mfDimensions.syncWith(pOther->_mfDimensions, sInfo);
 
-    if(FieldBits::NoField != (DimensionsFieldMask & whichField))
-        _mfDimensions.syncWith(pOther->_mfDimensions, sInfo);
+  if (FieldBits::NoField != (CurveControlPointsFieldMask & whichField))
+    _mfCurveControlPoints.syncWith(pOther->_mfCurveControlPoints, sInfo);
 
-    if(FieldBits::NoField != (CurveControlPointsFieldMask & whichField))
-        _mfCurveControlPoints.syncWith(pOther->_mfCurveControlPoints, sInfo);
+  if (FieldBits::NoField != (KnotsFieldMask & whichField))
+    _mfKnots.syncWith(pOther->_mfKnots, sInfo);
 
-    if(FieldBits::NoField != (KnotsFieldMask & whichField))
-        _mfKnots.syncWith(pOther->_mfKnots, sInfo);
-
-    if(FieldBits::NoField != (CurvesPerLoopFieldMask & whichField))
-        _mfCurvesPerLoop.syncWith(pOther->_mfCurvesPerLoop, sInfo);
-
-
+  if (FieldBits::NoField != (CurvesPerLoopFieldMask & whichField))
+    _mfCurvesPerLoop.syncWith(pOther->_mfCurvesPerLoop, sInfo);
 }
 
-void SurfaceBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void SurfaceBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (KnotsUFieldMask & whichField))
-        _mfKnotsU.beginEdit(uiAspect, uiContainerSize);
+  if (FieldBits::NoField != (KnotsUFieldMask & whichField))
+    _mfKnotsU.beginEdit(uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (KnotsVFieldMask & whichField))
-        _mfKnotsV.beginEdit(uiAspect, uiContainerSize);
+  if (FieldBits::NoField != (KnotsVFieldMask & whichField))
+    _mfKnotsV.beginEdit(uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (KnotLengthsFieldMask & whichField))
-        _mfKnotLengths.beginEdit(uiAspect, uiContainerSize);
+  if (FieldBits::NoField != (KnotLengthsFieldMask & whichField))
+    _mfKnotLengths.beginEdit(uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (DimensionsFieldMask & whichField))
-        _mfDimensions.beginEdit(uiAspect, uiContainerSize);
+  if (FieldBits::NoField != (DimensionsFieldMask & whichField))
+    _mfDimensions.beginEdit(uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (CurveControlPointsFieldMask & whichField))
-        _mfCurveControlPoints.beginEdit(uiAspect, uiContainerSize);
+  if (FieldBits::NoField != (CurveControlPointsFieldMask & whichField))
+    _mfCurveControlPoints.beginEdit(uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (KnotsFieldMask & whichField))
-        _mfKnots.beginEdit(uiAspect, uiContainerSize);
+  if (FieldBits::NoField != (KnotsFieldMask & whichField))
+    _mfKnots.beginEdit(uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (CurvesPerLoopFieldMask & whichField))
-        _mfCurvesPerLoop.beginEdit(uiAspect, uiContainerSize);
-
+  if (FieldBits::NoField != (CurvesPerLoopFieldMask & whichField))
+    _mfCurvesPerLoop.beginEdit(uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 OSG_END_NAMESPACE
 
@@ -815,4 +671,3 @@ OSG_DLLEXPORT_SFIELD_DEF1(SurfacePtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 OSG_DLLEXPORT_MFIELD_DEF1(SurfacePtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
-

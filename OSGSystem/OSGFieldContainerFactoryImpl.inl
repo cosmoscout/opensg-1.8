@@ -50,109 +50,86 @@ OSG_BEGIN_NAMESPACE
 /*-------------------------------------------------------------------------*/
 /*                              Mapper                                     */
 
-inline
-void FieldContainerFactory::setMapper(FieldContainerMapper *pMapper)
-{
-    _pMapper = pMapper;
+inline void FieldContainerFactory::setMapper(FieldContainerMapper* pMapper) {
+  _pMapper = pMapper;
 }
 
 /*-------------------------------------------------------------------------*/
 /*                                Get                                      */
 
-inline
-FieldContainerPtr FieldContainerFactory::getContainer(
-    UInt32 uiContainerId) const
-{
-    FieldContainerPtr returnValue = NullFC;
+inline FieldContainerPtr FieldContainerFactory::getContainer(UInt32 uiContainerId) const {
+  FieldContainerPtr returnValue = NullFC;
 
-    _pStoreLock->aquire();
+  _pStoreLock->aquire();
 
-    if(uiContainerId < _pFieldContainerStore->size())
-    {
-        returnValue = (*_pFieldContainerStore)[uiContainerId];
-    }
+  if (uiContainerId < _pFieldContainerStore->size()) {
+    returnValue = (*_pFieldContainerStore)[uiContainerId];
+  }
 
-    _pStoreLock->release();
+  _pStoreLock->release();
 
-    return returnValue;
+  return returnValue;
 }
 
-inline
-FieldContainerPtr FieldContainerFactory::getMappedContainer(
-    UInt32 uiContainerId) const
-{
-    if(_pMapper != NULL)
-    {
-        return getContainer(_pMapper->map(uiContainerId));
-    }
-    else
-    {
-        return getContainer(uiContainerId);
-    }
+inline FieldContainerPtr FieldContainerFactory::getMappedContainer(UInt32 uiContainerId) const {
+  if (_pMapper != NULL) {
+    return getContainer(_pMapper->map(uiContainerId));
+  } else {
+    return getContainer(uiContainerId);
+  }
 }
 
 /*-------------------------------------------------------------------------*/
 /*                              Register                                   */
 
-inline
-UInt32 FieldContainerFactory::registerFieldContainer(
-    const FieldContainerPtr &pFieldContainer)
-{
-    UInt32 returnValue = 0;
+inline UInt32 FieldContainerFactory::registerFieldContainer(
+    const FieldContainerPtr& pFieldContainer) {
+  UInt32 returnValue = 0;
 
-    if(_pStoreLock != NULL)
-        _pStoreLock->aquire();
+  if (_pStoreLock != NULL)
+    _pStoreLock->aquire();
 
-    if(_pFieldContainerStore == NULL)
-    {
-        _pFieldContainerStore = new FieldContainerStore;
+  if (_pFieldContainerStore == NULL) {
+    _pFieldContainerStore = new FieldContainerStore;
 
-        _pFieldContainerStore->push_back(NullFC);
-    }
+    _pFieldContainerStore->push_back(NullFC);
+  }
 
-    _pFieldContainerStore->push_back(pFieldContainer);
+  _pFieldContainerStore->push_back(pFieldContainer);
 
-    returnValue = _pFieldContainerStore->size() - 1;
+  returnValue = _pFieldContainerStore->size() - 1;
 
-    if(_pStoreLock != NULL)
-        _pStoreLock->release();
+  if (_pStoreLock != NULL)
+    _pStoreLock->release();
 
-    return returnValue;
+  return returnValue;
 }
 
-inline
-bool FieldContainerFactory::unregisterFieldContainer(
-    const FieldContainerPtr &pFieldContainer)
-{
-    if(pFieldContainer == NullFC)
-        return false;
+inline bool FieldContainerFactory::unregisterFieldContainer(
+    const FieldContainerPtr& pFieldContainer) {
+  if (pFieldContainer == NullFC)
+    return false;
 
-    if(_pStoreLock != NULL)
-        _pStoreLock->aquire();
+  if (_pStoreLock != NULL)
+    _pStoreLock->aquire();
 
-    if(_pFieldContainerStore != NULL)
-    {
+  if (_pFieldContainerStore != NULL) {
 #ifdef OSG_DEBUG
-        if (pFieldContainer.getFieldContainerId() >=
-                    (*_pFieldContainerStore).size())
-        {
-            FWARNING(("FieldContainerFactory::unregisterFieldContainer:"
-                "id %d inconsistent with store size %d!\n", 
-                pFieldContainer.getFieldContainerId(), 
-                (*_pFieldContainerStore).size() ));   
-            return true;         
-        }
-        else
+    if (pFieldContainer.getFieldContainerId() >= (*_pFieldContainerStore).size()) {
+      FWARNING(("FieldContainerFactory::unregisterFieldContainer:"
+                "id %d inconsistent with store size %d!\n",
+          pFieldContainer.getFieldContainerId(), (*_pFieldContainerStore).size()));
+      return true;
+    } else
 #endif
 
-        (*_pFieldContainerStore)[pFieldContainer.getFieldContainerId()] =
-            NullFC;
-    }
+      (*_pFieldContainerStore)[pFieldContainer.getFieldContainerId()] = NullFC;
+  }
 
-    if(_pStoreLock != NULL)
-        _pStoreLock->release();
-    
-    return false;
+  if (_pStoreLock != NULL)
+    _pStoreLock->release();
+
+  return false;
 }
 
 OSG_END_NAMESPACE

@@ -51,5 +51,4 @@
 #include <OSGAttachmentContainerPtrDepImpl.inl>
 #include <OSGAttachmentContainerImpl.inl>
 
-
 #endif /* _OSGATTACHMENTCONTAINER_H_ */

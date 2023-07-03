@@ -41,4 +41,5 @@ OSG_BEGIN_NAMESPACE
 
 OSG_END_NAMESPACE
 
-#define OSGIMGFUNCTIONS_INLINE_CVSID    "@(#)$Id: OSGImageFunctions.inl,v 1.1 2005/06/28 19:44:27 jbehr Exp $"
+#define OSGIMGFUNCTIONS_INLINE_CVSID                                                               \
+  "@(#)$Id: OSGImageFunctions.inl,v 1.1 2005/06/28 19:44:27 jbehr Exp $"

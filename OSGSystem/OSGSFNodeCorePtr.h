@@ -55,7 +55,7 @@
 
 OSG_BEGIN_NAMESPACE
 
-#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS) 
+#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
 
 typedef SField<NodeCorePtr> SFNodeCorePtr;
@@ -64,13 +64,13 @@ typedef SField<NodeCorePtr> SFNodeCorePtr;
 #ifndef OSG_COMPILECONTAINERFIELDINST
 
 #ifdef OSG_LINUX_ICC
-#pragma warning( disable : 444 )
+#pragma warning(disable : 444)
 #endif
 
 OSG_DLLEXPORT_DECL1(SField, NodeCorePtr, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 
 #ifdef OSG_LINUX_ICC
-#pragma warning( default : 444 )
+#pragma warning(default : 444)
 #endif
 
 #endif
@@ -80,4 +80,3 @@ OSG_END_NAMESPACE
 #define OSGSFNODECOREPTR_HEADER_CVSID "@(#)$Id: $"
 
 #endif /* _OSGSFNODECOREPTR_H_ */
-

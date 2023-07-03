@@ -38,13 +38,10 @@
 
 OSG_BEGIN_NAMESPACE
 
-inline const IDStringLink &IDStringLink::operator =(const IDStringLink &obj)
-{
-    set(obj.str(), LINK);
-    
-    return *this;
+inline const IDStringLink& IDStringLink::operator=(const IDStringLink& obj) {
+  set(obj.str(), LINK);
+
+  return *this;
 }
 
 OSG_END_NAMESPACE
-
-

@@ -52,137 +52,99 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &LightModelChunkBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& LightModelChunkBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 LightModelChunkBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 LightModelChunkBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-LightModelChunkPtr LightModelChunkBase::create(void) 
-{
-    LightModelChunkPtr fc; 
+inline LightModelChunkPtr LightModelChunkBase::create(void) {
+  LightModelChunkPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = LightModelChunkPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = LightModelChunkPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-LightModelChunkPtr LightModelChunkBase::createEmpty(void) 
-{ 
-    LightModelChunkPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline LightModelChunkPtr LightModelChunkBase::createEmpty(void) {
+  LightModelChunkPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the LightModelChunk::_sfAmbient field.
-inline
-SFColor4f *LightModelChunkBase::getSFAmbient(void)
-{
-    return &_sfAmbient;
+inline SFColor4f* LightModelChunkBase::getSFAmbient(void) {
+  return &_sfAmbient;
 }
 
 //! Get the LightModelChunk::_sfColorControl field.
-inline
-SFGLenum *LightModelChunkBase::getSFColorControl(void)
-{
-    return &_sfColorControl;
+inline SFGLenum* LightModelChunkBase::getSFColorControl(void) {
+  return &_sfColorControl;
 }
 
 //! Get the LightModelChunk::_sfLocalViewer field.
-inline
-SFBool *LightModelChunkBase::getSFLocalViewer(void)
-{
-    return &_sfLocalViewer;
-}
-
-
-//! Get the value of the LightModelChunk::_sfAmbient field.
-inline
-Color4f &LightModelChunkBase::getAmbient(void)
-{
-    return _sfAmbient.getValue();
+inline SFBool* LightModelChunkBase::getSFLocalViewer(void) {
+  return &_sfLocalViewer;
 }
 
 //! Get the value of the LightModelChunk::_sfAmbient field.
-inline
-const Color4f &LightModelChunkBase::getAmbient(void) const
-{
-    return _sfAmbient.getValue();
+inline Color4f& LightModelChunkBase::getAmbient(void) {
+  return _sfAmbient.getValue();
+}
+
+//! Get the value of the LightModelChunk::_sfAmbient field.
+inline const Color4f& LightModelChunkBase::getAmbient(void) const {
+  return _sfAmbient.getValue();
 }
 
 //! Set the value of the LightModelChunk::_sfAmbient field.
-inline
-void LightModelChunkBase::setAmbient(const Color4f &value)
-{
-    _sfAmbient.setValue(value);
+inline void LightModelChunkBase::setAmbient(const Color4f& value) {
+  _sfAmbient.setValue(value);
 }
 
 //! Get the value of the LightModelChunk::_sfColorControl field.
-inline
-GLenum &LightModelChunkBase::getColorControl(void)
-{
-    return _sfColorControl.getValue();
+inline GLenum& LightModelChunkBase::getColorControl(void) {
+  return _sfColorControl.getValue();
 }
 
 //! Get the value of the LightModelChunk::_sfColorControl field.
-inline
-const GLenum &LightModelChunkBase::getColorControl(void) const
-{
-    return _sfColorControl.getValue();
+inline const GLenum& LightModelChunkBase::getColorControl(void) const {
+  return _sfColorControl.getValue();
 }
 
 //! Set the value of the LightModelChunk::_sfColorControl field.
-inline
-void LightModelChunkBase::setColorControl(const GLenum &value)
-{
-    _sfColorControl.setValue(value);
+inline void LightModelChunkBase::setColorControl(const GLenum& value) {
+  _sfColorControl.setValue(value);
 }
 
 //! Get the value of the LightModelChunk::_sfLocalViewer field.
-inline
-bool &LightModelChunkBase::getLocalViewer(void)
-{
-    return _sfLocalViewer.getValue();
+inline bool& LightModelChunkBase::getLocalViewer(void) {
+  return _sfLocalViewer.getValue();
 }
 
 //! Get the value of the LightModelChunk::_sfLocalViewer field.
-inline
-const bool &LightModelChunkBase::getLocalViewer(void) const
-{
-    return _sfLocalViewer.getValue();
+inline const bool& LightModelChunkBase::getLocalViewer(void) const {
+  return _sfLocalViewer.getValue();
 }
 
 //! Set the value of the LightModelChunk::_sfLocalViewer field.
-inline
-void LightModelChunkBase::setLocalViewer(const bool &value)
-{
-    _sfLocalViewer.setValue(value);
+inline void LightModelChunkBase::setLocalViewer(const bool& value) {
+  _sfLocalViewer.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGLIGHTMODELCHUNKBASE_INLINE_CVSID "@(#)$Id: OSGLightModelChunkBase.inl,v 1.3 2006/02/20 16:54:19 dirk Exp $"
-
+#define OSGLIGHTMODELCHUNKBASE_INLINE_CVSID                                                        \
+  "@(#)$Id: OSGLightModelChunkBase.inl,v 1.3 2006/02/20 16:54:19 dirk Exp $"

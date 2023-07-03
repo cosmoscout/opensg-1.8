@@ -52,109 +52,79 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &PerspectiveCameraBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& PerspectiveCameraBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 PerspectiveCameraBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 PerspectiveCameraBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-PerspectiveCameraPtr PerspectiveCameraBase::create(void) 
-{
-    PerspectiveCameraPtr fc; 
+inline PerspectiveCameraPtr PerspectiveCameraBase::create(void) {
+  PerspectiveCameraPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = PerspectiveCameraPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = PerspectiveCameraPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-PerspectiveCameraPtr PerspectiveCameraBase::createEmpty(void) 
-{ 
-    PerspectiveCameraPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline PerspectiveCameraPtr PerspectiveCameraBase::createEmpty(void) {
+  PerspectiveCameraPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the PerspectiveCamera::_sfFov field.
-inline
-SFReal32 *PerspectiveCameraBase::getSFFov(void)
-{
-    return &_sfFov;
+inline SFReal32* PerspectiveCameraBase::getSFFov(void) {
+  return &_sfFov;
 }
 
 //! Get the PerspectiveCamera::_sfAspect field.
-inline
-SFReal32 *PerspectiveCameraBase::getSFAspect(void)
-{
-    return &_sfAspect;
-}
-
-
-//! Get the value of the PerspectiveCamera::_sfFov field.
-inline
-Real32 &PerspectiveCameraBase::getFov(void)
-{
-    return _sfFov.getValue();
+inline SFReal32* PerspectiveCameraBase::getSFAspect(void) {
+  return &_sfAspect;
 }
 
 //! Get the value of the PerspectiveCamera::_sfFov field.
-inline
-const Real32 &PerspectiveCameraBase::getFov(void) const
-{
-    return _sfFov.getValue();
+inline Real32& PerspectiveCameraBase::getFov(void) {
+  return _sfFov.getValue();
+}
+
+//! Get the value of the PerspectiveCamera::_sfFov field.
+inline const Real32& PerspectiveCameraBase::getFov(void) const {
+  return _sfFov.getValue();
 }
 
 //! Set the value of the PerspectiveCamera::_sfFov field.
-inline
-void PerspectiveCameraBase::setFov(const Real32 &value)
-{
-    _sfFov.setValue(value);
+inline void PerspectiveCameraBase::setFov(const Real32& value) {
+  _sfFov.setValue(value);
 }
 
 //! Get the value of the PerspectiveCamera::_sfAspect field.
-inline
-Real32 &PerspectiveCameraBase::getAspect(void)
-{
-    return _sfAspect.getValue();
+inline Real32& PerspectiveCameraBase::getAspect(void) {
+  return _sfAspect.getValue();
 }
 
 //! Get the value of the PerspectiveCamera::_sfAspect field.
-inline
-const Real32 &PerspectiveCameraBase::getAspect(void) const
-{
-    return _sfAspect.getValue();
+inline const Real32& PerspectiveCameraBase::getAspect(void) const {
+  return _sfAspect.getValue();
 }
 
 //! Set the value of the PerspectiveCamera::_sfAspect field.
-inline
-void PerspectiveCameraBase::setAspect(const Real32 &value)
-{
-    _sfAspect.setValue(value);
+inline void PerspectiveCameraBase::setAspect(const Real32& value) {
+  _sfAspect.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGPERSPECTIVECAMERABASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGPERSPECTIVECAMERABASE_INLINE_CVSID                                                      \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

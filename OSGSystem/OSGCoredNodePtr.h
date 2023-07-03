@@ -56,169 +56,159 @@ OSG_BEGIN_NAMESPACE
 /*! \ingroup GrpSystemFieldContainer
  */
 
-class /*OSG_SYSTEMLIB_DLLMAPPING*/ CoredNodePtrBase
-{
-    /*==========================  PUBLIC  =================================*/
-  public: 
- 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-  
-    inline CoredNodePtrBase(void);
-  
-    inline CoredNodePtrBase(NodePtr node);
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
- 
-    virtual ~CoredNodePtrBase();
+class /*OSG_SYSTEMLIB_DLLMAPPING*/ CoredNodePtrBase {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Access                                  */
-    /*! \{                                                                 */
-    
-    inline NodePtr node(void) const;
+  inline CoredNodePtrBase(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
+  inline CoredNodePtrBase(NodePtr node);
 
-    /*=========================  PROTECTED  ===============================*/    
-  protected:
-  
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Access                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    virtual NodeCorePtr getCoreV(void) const = 0;
-    
-    inline void setNode(const NodePtr &node);
-    
-    inline void setNode(const NullFieldContainerPtr &);
+  virtual ~CoredNodePtrBase();
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Access                                  */
+  /*! \{                                                                 */
 
-    /*==========================  PRIVATE  ================================*/
-  private:
-    
-    NodePtr _node;
+  inline NodePtr node(void) const;
+
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Access                                  */
+  /*! \{                                                                 */
+
+  virtual NodeCorePtr getCoreV(void) const = 0;
+
+  inline void setNode(const NodePtr& node);
+
+  inline void setNode(const NullFieldContainerPtr&);
+
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+
+  /*==========================  PRIVATE  ================================*/
+ private:
+  NodePtr _node;
 };
 
 /*! \ingroup GrpSystemFieldContainer
  */
 
-template< class Core >
-class CoredNodePtr : public CoredNodePtrBase
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
-  
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-  
-    CoredNodePtr(void);
-    
-    // make them explicit to prevent unexpected construction/cast paths
-    
-    explicit CoredNodePtr(const NodePtr& node);
-    
-    explicit CoredNodePtr(const NodeCorePtr& core);
-    
-    explicit CoredNodePtr(const typename Core::Ptr& core);
-     
-    CoredNodePtr(const CoredNodePtr<Core>& ptr);
-   
-    static CoredNodePtr<Core> create(void);
-     
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
- 
-    virtual ~CoredNodePtr();
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Access                                  */
-    /*! \{                                                                 */
-    
-    void coreChanged(void);
-  
-    typename Core::Ptr core(void) const;
+template <class Core>
+class CoredNodePtr : public CoredNodePtrBase {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    typename Core::Ptr& operator->(void);
-    
-    /* Note: these only work for a RHS */
-    operator NodePtr();
+  CoredNodePtr(void);
 
-    operator typename Core::Ptr();
+  // make them explicit to prevent unexpected construction/cast paths
 
-    /* Assignment. Create a new CNP if necessary */
-    
-    CoredNodePtr<Core>& operator =(const NodePtr& node);
+  explicit CoredNodePtr(const NodePtr& node);
 
-    CoredNodePtr<Core>& operator =(const typename Core::Ptr& core);
+  explicit CoredNodePtr(const NodeCorePtr& core);
 
-    CoredNodePtr<Core>& operator =(const CoredNodePtr<Core>& cnp);
+  explicit CoredNodePtr(const typename Core::Ptr& core);
 
-    CoredNodePtr<Core>& operator =(const NullFieldContainerPtr &);
-   
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
+  CoredNodePtr(const CoredNodePtr<Core>& ptr);
 
-    /*=========================  PROTECTED  ===============================*/    
-  protected:
-  
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Access                                  */
-    /*! \{                                                                 */
+  static CoredNodePtr<Core> create(void);
 
-    NodeCorePtr getCoreV(void) const;
-    
-    void setCore(const NodeCorePtr &core);
-    
-    void setCore(const typename Core::Ptr &core);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    void setCore(const NullFieldContainerPtr&);
-    
-    void updateNode(void);
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
+  virtual ~CoredNodePtr();
 
-    /*==========================  PRIVATE  ================================*/
-  private:
-  
-    typename Core::Ptr _core;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Access                                  */
+  /*! \{                                                                 */
+
+  void coreChanged(void);
+
+  typename Core::Ptr core(void) const;
+
+  typename Core::Ptr& operator->(void);
+
+  /* Note: these only work for a RHS */
+  operator NodePtr();
+
+  operator typename Core::Ptr();
+
+  /* Assignment. Create a new CNP if necessary */
+
+  CoredNodePtr<Core>& operator=(const NodePtr& node);
+
+  CoredNodePtr<Core>& operator=(const typename Core::Ptr& core);
+
+  CoredNodePtr<Core>& operator=(const CoredNodePtr<Core>& cnp);
+
+  CoredNodePtr<Core>& operator=(const NullFieldContainerPtr&);
+
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Access                                  */
+  /*! \{                                                                 */
+
+  NodeCorePtr getCoreV(void) const;
+
+  void setCore(const NodeCorePtr& core);
+
+  void setCore(const typename Core::Ptr& core);
+
+  void setCore(const NullFieldContainerPtr&);
+
+  void updateNode(void);
+
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+
+  /*==========================  PRIVATE  ================================*/
+ private:
+  typename Core::Ptr _core;
 };
 
-// begin/endEdit functions. 
+// begin/endEdit functions.
 
-template< class Core > inline
-void beginEditCP(const CoredNodePtr<Core> &objectP, 
-                       BitVector         whichField = FieldBits    ::AllFields,
-                       UInt32            origin     = ChangedOrigin::External);
+template <class Core>
+inline void beginEditCP(const CoredNodePtr<Core>& objectP,
+    BitVector whichField = FieldBits ::AllFields, UInt32 origin = ChangedOrigin::External);
 
-template< class Core > inline
-void endEditCP  (const CoredNodePtr<Core> &objectP, 
-                       BitVector         whichField = FieldBits    ::AllFields,
-                       UInt32            origin     = ChangedOrigin::External);
+template <class Core>
+inline void endEditCP(const CoredNodePtr<Core>& objectP,
+    BitVector whichField = FieldBits ::AllFields, UInt32 origin = ChangedOrigin::External);
 
 // Output operator
 
-template< class Core >
-inline std::ostream &operator << (std::ostream &str, 
-                                  const CoredNodePtr<Core>& cnp);
+template <class Core>
+inline std::ostream& operator<<(std::ostream& str, const CoredNodePtr<Core>& cnp);
 
 OSG_END_NAMESPACE
 
 #include "OSGCoredNodePtr.inl"
 
-#define OSGCOREDNODEPTR_HEADER_CVSID "@(#)$Id: OSGCoredNodePtr.h,v 1.7 2006/02/20 23:31:04 dirk Exp $"
+#define OSGCOREDNODEPTR_HEADER_CVSID                                                               \
+  "@(#)$Id: OSGCoredNodePtr.h,v 1.7 2006/02/20 23:31:04 dirk Exp $"
 
 #endif /* _OSGCOREDNODEPTR_H_ */

@@ -63,172 +63,163 @@ class FieldContainerPtr;
 /*! \ingroup GrpSystemMultithreading
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING ChangeList : public MemoryObject
-{
-    /*==========================  PUBLIC  =================================*/
+class OSG_SYSTEMLIB_DLLMAPPING ChangeList : public MemoryObject {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  enum Mode { Private, Public };
 
-    enum Mode
-    {
-        Private,
-        Public
-    };
+  //    typedef pair<FieldContainerPtr, BitVector>  ChangeEntry;
 
-//    typedef pair<FieldContainerPtr, BitVector>  ChangeEntry;
+  typedef std::pair<UInt32, BitVector> ChangeEntry;
+  typedef FieldContainerPtr            RefEntry;
+  typedef UInt32                       IdRefEntry;
 
-    typedef std::pair<UInt32, BitVector>             ChangeEntry;     
-    typedef FieldContainerPtr                        RefEntry;    
-    typedef UInt32                                   IdRefEntry;
+  typedef std::vector<ChangeEntry>::size_type      changed_size_type;
+  typedef std::vector<ChangeEntry>::const_iterator changed_const_iterator;
 
-    typedef std::vector<ChangeEntry>::size_type      changed_size_type;
-    typedef std::vector<ChangeEntry>::const_iterator changed_const_iterator;
+  //    typedef vector<RefEntry>::size_type       refd_size_type;
+  //    typedef vector<RefEntry>::const_iterator  refd_const_iterator;
 
-//    typedef vector<RefEntry>::size_type       refd_size_type;
-//    typedef vector<RefEntry>::const_iterator  refd_const_iterator;
+  typedef std::vector<IdRefEntry>::size_type      refd_size_type;
+  typedef std::vector<IdRefEntry>::const_iterator refd_const_iterator;
 
-    typedef std::vector<IdRefEntry>::size_type       refd_size_type;
-    typedef std::vector<IdRefEntry>::const_iterator  refd_const_iterator;
+  typedef std::vector<IdRefEntry>::size_type      idrefd_size_type;
+  typedef std::vector<IdRefEntry>::const_iterator idrefd_const_iterator;
 
-    typedef std::vector<IdRefEntry>::size_type       idrefd_size_type;
-    typedef std::vector<IdRefEntry>::const_iterator  idrefd_const_iterator;
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  ChangeList(void);
 
-    ChangeList(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  virtual ~ChangeList(void);
 
-    virtual ~ChangeList(void); 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Get                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Get                                     */
-    /*! \{                                                                 */
+  changed_size_type sizeChanged(void);
 
-    changed_size_type      sizeChanged   (void);
+  changed_const_iterator beginChanged(void) const;
+  changed_const_iterator endChanged(void) const;
 
-    changed_const_iterator beginChanged  (void) const;
-    changed_const_iterator endChanged    (void) const;
-    
-    refd_size_type         sizeAddRefd   (void);
+  refd_size_type sizeAddRefd(void);
 
-    refd_const_iterator    beginAddRefd  (void) const;
-    refd_const_iterator    endAddRefd    (void) const;
+  refd_const_iterator beginAddRefd(void) const;
+  refd_const_iterator endAddRefd(void) const;
 
-    refd_size_type         sizeSubRefd   (void);
+  refd_size_type sizeSubRefd(void);
 
-    refd_const_iterator    beginSubRefd  (void) const;
-    refd_const_iterator    endSubRefd    (void) const;
+  refd_const_iterator beginSubRefd(void) const;
+  refd_const_iterator endSubRefd(void) const;
 
-    idrefd_const_iterator  beginCreated  (void) const;
-    idrefd_const_iterator  endCreated    (void) const;
+  idrefd_const_iterator beginCreated(void) const;
+  idrefd_const_iterator endCreated(void) const;
 
-    idrefd_size_type       sizeCreated   (void) const;
+  idrefd_size_type sizeCreated(void) const;
 
-    idrefd_const_iterator  beginDestroyed(void) const;
-    idrefd_const_iterator  endDestroyed  (void) const;
+  idrefd_const_iterator beginDestroyed(void) const;
+  idrefd_const_iterator endDestroyed(void) const;
 
-    idrefd_size_type       sizeDestroyed (void) const;
+  idrefd_size_type sizeDestroyed(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Add                                     */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Add                                     */
+  /*! \{                                                                 */
 
-    void addChanged  (const FieldContainerPtr &pFieldContainer, 
-                            BitVector          bvWhichField   );
-    void addAddRefd  (const FieldContainerPtr &pFieldContainer);
-    void addSubRefd  (const FieldContainerPtr &pFieldContainer);
+  void addChanged(const FieldContainerPtr& pFieldContainer, BitVector bvWhichField);
+  void addAddRefd(const FieldContainerPtr& pFieldContainer);
+  void addSubRefd(const FieldContainerPtr& pFieldContainer);
 
-    void addCreated  (const UInt32 uiContainerId);
-    void addDestroyed(const UInt32 uiContainerId);
+  void addCreated(const UInt32 uiContainerId);
+  void addDestroyed(const UInt32 uiContainerId);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Helper                                   */
-    /*! \{                                                                 */
-    
-           void clearAll           (      void                     );
-           void swap               (      ChangeList &list         );
-           bool merge              (const ChangeList &list         );
-           bool empty              (                               ) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Helper                                   */
+  /*! \{                                                                 */
 
-           void setAspect          (      UInt32 uiAspectId        );
+  void clearAll(void);
+  void swap(ChangeList& list);
+  bool merge(const ChangeList& list);
+  bool empty() const;
 
-           void setReadOnly        (      bool bReadOnly           );
-    static void setReadWriteDefault(      bool bReadWrite = true   );
+  void setAspect(UInt32 uiAspectId);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Apply                                   */
-    /*! \{                                                                 */
+  void        setReadOnly(bool bReadOnly);
+  static void setReadWriteDefault(bool bReadWrite = true);
+
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Apply                                   */
+  /*! \{                                                                 */
 
 #ifndef OSG_DISABLE_DEPRECATED
-    void applyTo       (UInt32 uiAspectId);
-    void applyToCurrent(void);
+  void applyTo(UInt32 uiAspectId);
+  void applyToCurrent(void);
 #endif
 
-    void apply        (void);
-    void applyAndClear(void);
+  void apply(void);
+  void applyAndClear(void);
 
 #if defined(OSG_FIXED_MFIELDSYNC)
-    void applySubRefs(void);
+  void applySubRefs(void);
 #endif
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                        Dump                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                        Dump                                  */
+  /*! \{                                                                 */
 
-    void dump(void);
+  void dump(void);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-  protected:
+ protected:
+  typedef MemoryObject Inherited;
 
-    typedef MemoryObject Inherited;
+  /*==========================  PRIVATE  ================================*/
 
-    /*==========================  PRIVATE  ================================*/
+ private:
+  friend class Thread;
 
-  private:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Member                                  */
+  /*! \{                                                                 */
 
-    friend class Thread;
+  bool        _bReadOnly;
+  static bool _bReadWriteDefault;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Member                                  */
-    /*! \{                                                                 */
+  UInt32 _uiAspectId;
+  Mode   _listMode;
 
-           bool              _bReadOnly;
-    static bool              _bReadWriteDefault;
+  std::vector<ChangeEntry> _vChangedFieldContainers;
 
-    UInt32                   _uiAspectId;
-    Mode                     _listMode;
+  //    vector<RefEntry>  _vAddRefdFieldContainers;
+  //    vector<RefEntry>  _vSubRefdFieldContainers;
 
-    std::vector<ChangeEntry> _vChangedFieldContainers;
+  std::vector<IdRefEntry> _vAddRefdFieldContainers;
+  std::vector<IdRefEntry> _vSubRefdFieldContainers;
 
-//    vector<RefEntry>  _vAddRefdFieldContainers;
-//    vector<RefEntry>  _vSubRefdFieldContainers;
+  std::vector<IdRefEntry> _vCreatedFieldContainers;
+  std::vector<IdRefEntry> _vDestroyedFieldContainers;
 
-    std::vector<IdRefEntry>  _vAddRefdFieldContainers;
-    std::vector<IdRefEntry>  _vSubRefdFieldContainers;
-    
-    std::vector<IdRefEntry>  _vCreatedFieldContainers;
-    std::vector<IdRefEntry>  _vDestroyedFieldContainers;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    ChangeList(const ChangeList &source);
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const ChangeList &source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  ChangeList(const ChangeList& source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const ChangeList& source);
 };
 
 OSG_END_NAMESPACE

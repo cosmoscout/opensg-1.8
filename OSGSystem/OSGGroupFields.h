@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGGROUPFIELDS_H_
 #define _OSGGROUPFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class Group;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! GroupPtr
 
 typedef FCPtr<NodeCorePtr, Group> GroupPtr;
@@ -81,18 +80,22 @@ typedef FCPtr<NodeCorePtr, Group> GroupPtr;
 #endif
 
 template <>
-struct FieldDataTraits<GroupPtr> : 
-    public FieldTraitsRecurseMapper<GroupPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<GroupPtr> : public FieldTraitsRecurseMapper<GroupPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getSName(void) { return "SFGroupPtr"; }
-    static const char *getMName(void) { return "MFGroupPtr"; }
+  static const char* getSName(void) {
+    return "SFGroupPtr";
+  }
+  static const char* getMName(void) {
+    return "MFGroupPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -102,7 +105,6 @@ struct FieldDataTraits<GroupPtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
@@ -126,6 +128,7 @@ OSG_DLLEXPORT_DECL1(MField, GroupPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 
 OSG_END_NAMESPACE
 
-#define OSGGROUPFIELDS_HEADER_CVSID "@(#)$Id: FCFieldsTemplate_h.h,v 1.25 2005/04/04 14:51:48 dirk Exp $"
+#define OSGGROUPFIELDS_HEADER_CVSID                                                                \
+  "@(#)$Id: FCFieldsTemplate_h.h,v 1.25 2005/04/04 14:51:48 dirk Exp $"
 
 #endif /* _OSGGROUPFIELDS_H_ */

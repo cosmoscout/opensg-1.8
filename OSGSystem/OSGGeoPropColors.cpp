@@ -37,7 +37,7 @@
 \*---------------------------------------------------------------------------*/
 
 //---------------------------------------------------------------------------
- //  Includes
+//  Includes
 //---------------------------------------------------------------------------
 
 #define OSG_COMPILEGEOPROPCOLORINST
@@ -51,67 +51,43 @@
 
 OSG_USING_NAMESPACE
 
-FieldDescription *GeoColors3fPropertyDesc::_desc[] =
-{
-    new FieldDescription(
-        StoredFieldType::getClassType(), 
-        getFieldName(), 
-        OSG_FC_FIELD_IDM_DESC(GeoProperty<
-                                GeoColors3fPropertyDesc>::GeoPropDataField),
-        false,
+FieldDescription* GeoColors3fPropertyDesc::_desc[] = {
+    new FieldDescription(StoredFieldType::getClassType(), getFieldName(),
+        OSG_FC_FIELD_IDM_DESC(GeoProperty<GeoColors3fPropertyDesc>::GeoPropDataField), false,
 #ifdef OSG_MICROSOFT_COMPILER_HACKS
         GeoProperty<GeoColors3fPropertyDesc>::getFPtrAccessMethod())
 #else
-        (FieldAccessMethod) &GeoProperty<
-                                GeoColors3fPropertyDesc>::getFieldPtr)
+        (FieldAccessMethod)&GeoProperty<GeoColors3fPropertyDesc>::getFieldPtr)
 #endif
 };
 
-FieldDescription *GeoColors4fPropertyDesc::_desc[] =
-{
-    new FieldDescription(
-        StoredFieldType::getClassType(), 
-        getFieldName(), 
-        OSG_FC_FIELD_IDM_DESC(GeoProperty<
-                                GeoColors4fPropertyDesc>::GeoPropDataField),
-        false,
+FieldDescription* GeoColors4fPropertyDesc::_desc[] = {
+    new FieldDescription(StoredFieldType::getClassType(), getFieldName(),
+        OSG_FC_FIELD_IDM_DESC(GeoProperty<GeoColors4fPropertyDesc>::GeoPropDataField), false,
 #ifdef OSG_MICROSOFT_COMPILER_HACKS
         GeoProperty<GeoColors4fPropertyDesc>::getFPtrAccessMethod())
 #else
-        (FieldAccessMethod) &GeoProperty<
-                                GeoColors4fPropertyDesc>::getFieldPtr)
+        (FieldAccessMethod)&GeoProperty<GeoColors4fPropertyDesc>::getFieldPtr)
 #endif
 };
 
-FieldDescription *GeoColors3ubPropertyDesc::_desc[] =
-{
-    new FieldDescription(
-        StoredFieldType::getClassType(), 
-        getFieldName(), 
-        OSG_FC_FIELD_IDM_DESC(GeoProperty<
-                                GeoColors3ubPropertyDesc>::GeoPropDataField),
-        false,
+FieldDescription* GeoColors3ubPropertyDesc::_desc[] = {
+    new FieldDescription(StoredFieldType::getClassType(), getFieldName(),
+        OSG_FC_FIELD_IDM_DESC(GeoProperty<GeoColors3ubPropertyDesc>::GeoPropDataField), false,
 #ifdef OSG_MICROSOFT_COMPILER_HACKS
         GeoProperty<GeoColors3ubPropertyDesc>::getFPtrAccessMethod())
 #else
-        (FieldAccessMethod) &GeoProperty<
-                                GeoColors3ubPropertyDesc>::getFieldPtr)
+        (FieldAccessMethod)&GeoProperty<GeoColors3ubPropertyDesc>::getFieldPtr)
 #endif
 };
 
-FieldDescription *GeoColors4ubPropertyDesc::_desc[] =
-{
-    new FieldDescription(
-        StoredFieldType::getClassType(), 
-        getFieldName(), 
-        OSG_FC_FIELD_IDM_DESC(GeoProperty<
-                                GeoColors4ubPropertyDesc>::GeoPropDataField),
-        false,
+FieldDescription* GeoColors4ubPropertyDesc::_desc[] = {
+    new FieldDescription(StoredFieldType::getClassType(), getFieldName(),
+        OSG_FC_FIELD_IDM_DESC(GeoProperty<GeoColors4ubPropertyDesc>::GeoPropDataField), false,
 #ifdef OSG_MICROSOFT_COMPILER_HACKS
-        (FieldAccessMethod) NULL)
+        (FieldAccessMethod)NULL)
 #else
-        (FieldAccessMethod) &GeoProperty<
-                                GeoColors4ubPropertyDesc>::getFieldPtr)
+        (FieldAccessMethod)&GeoProperty<GeoColors4ubPropertyDesc>::getFieldPtr)
 #endif
 };
 
@@ -119,20 +95,12 @@ OSG_GEO_PROP_TYPE_TMPL_DEF(GeoProperty, GeoPropertyDesc, PtrType)
 
 OSG_BEGIN_NAMESPACE
 
-OSG_GEOPROP_DLLEXPORT_DEF (GeoProperty        ,
-                           GeoColors3fPropertyDesc, 
-                           OSG_SYSTEMLIB_DLLTMPLMAPPING);
+OSG_GEOPROP_DLLEXPORT_DEF(GeoProperty, GeoColors3fPropertyDesc, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
-OSG_GEOPROP_DLLEXPORT_DEF (GeoProperty        ,
-                           GeoColors4fPropertyDesc, 
-                           OSG_SYSTEMLIB_DLLTMPLMAPPING);
+OSG_GEOPROP_DLLEXPORT_DEF(GeoProperty, GeoColors4fPropertyDesc, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
-OSG_GEOPROP_DLLEXPORT_DEF (GeoProperty        ,
-                           GeoColors3ubPropertyDesc, 
-                           OSG_SYSTEMLIB_DLLTMPLMAPPING);
+OSG_GEOPROP_DLLEXPORT_DEF(GeoProperty, GeoColors3ubPropertyDesc, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
-OSG_GEOPROP_DLLEXPORT_DEF (GeoProperty        ,
-                           GeoColors4ubPropertyDesc, 
-                           OSG_SYSTEMLIB_DLLTMPLMAPPING);
+OSG_GEOPROP_DLLEXPORT_DEF(GeoProperty, GeoColors4ubPropertyDesc, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE

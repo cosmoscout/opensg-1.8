@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGSTEREOCAMERADECORATORBASE_H_
 #define _OSGSTEREOCAMERADECORATORBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -67,7 +65,7 @@
 
 #include <OSGCameraDecorator.h> // Parent
 
-#include <OSGBoolFields.h> // LeftEye type
+#include <OSGBoolFields.h>   // LeftEye type
 #include <OSGReal32Fields.h> // EyeSeparation type
 
 #include <OSGStereoCameraDecoratorFields.h>
@@ -79,172 +77,152 @@ class BinaryDataHandler;
 
 //! \brief StereoCameraDecorator Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING StereoCameraDecoratorBase : public CameraDecorator
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING StereoCameraDecoratorBase : public CameraDecorator {
+ private:
+  typedef CameraDecorator Inherited;
 
-    typedef CameraDecorator    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef StereoCameraDecoratorPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    LeftEyeFieldId       = Inherited::NextFieldId,
+    EyeSeparationFieldId = LeftEyeFieldId + 1,
+    NextFieldId          = EyeSeparationFieldId + 1
+  };
 
-    typedef StereoCameraDecoratorPtr  Ptr;
+  static const OSG::BitVector LeftEyeFieldMask;
+  static const OSG::BitVector EyeSeparationFieldMask;
 
-    enum
-    {
-        LeftEyeFieldId       = Inherited::NextFieldId,
-        EyeSeparationFieldId = LeftEyeFieldId       + 1,
-        NextFieldId          = EyeSeparationFieldId + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector LeftEyeFieldMask;
-    static const OSG::BitVector EyeSeparationFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFBool*   getSFLeftEye(void);
+  SFReal32* getSFEyeSeparation(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  bool&         getLeftEye(void);
+  const bool&   getLeftEye(void) const;
+  Real32&       getEyeSeparation(void);
+  const Real32& getEyeSeparation(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFBool              *getSFLeftEye        (void);
-           SFReal32            *getSFEyeSeparation  (void);
+  void setLeftEye(const bool& value);
+  void setEyeSeparation(const Real32& value);
 
-           bool                &getLeftEye        (void);
-     const bool                &getLeftEye        (void) const;
-           Real32              &getEyeSeparation  (void);
-     const Real32              &getEyeSeparation  (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setLeftEye        ( const bool &value );
-     void setEyeSeparation  ( const Real32 &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  SFBool   _sfLeftEye;
+  SFReal32 _sfEyeSeparation;
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
+  StereoCameraDecoratorBase(void);
+  StereoCameraDecoratorBase(const StereoCameraDecoratorBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~StereoCameraDecoratorBase(void);
 
-    SFBool              _sfLeftEye;
-    SFReal32            _sfEyeSeparation;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    StereoCameraDecoratorBase(void);
-    StereoCameraDecoratorBase(const StereoCameraDecoratorBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~StereoCameraDecoratorBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      StereoCameraDecoratorBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(StereoCameraDecoratorBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      StereoCameraDecoratorBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      StereoCameraDecoratorBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const StereoCameraDecoratorBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const StereoCameraDecoratorBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef StereoCameraDecoratorBase* StereoCameraDecoratorBaseP;
 
-typedef StereoCameraDecoratorBase *StereoCameraDecoratorBaseP;
-
-typedef osgIF<StereoCameraDecoratorBase::isNodeCore,
-              CoredNodePtr<StereoCameraDecorator>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet StereoCameraDecoratorNodePtr;
+typedef osgIF<StereoCameraDecoratorBase::isNodeCore, CoredNodePtr<StereoCameraDecorator>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet
+    StereoCameraDecoratorNodePtr;
 
 typedef RefPtr<StereoCameraDecoratorPtr> StereoCameraDecoratorRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGSTEREOCAMERADECORATORBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGSTEREOCAMERADECORATORBASE_HEADER_CVSID                                                  \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGSTEREOCAMERADECORATORBASE_H_ */

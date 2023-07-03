@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEDVRISOSURFACEINST
 
 #include <stdlib.h>
@@ -61,349 +60,269 @@
 #include "OSGDVRIsoSurfaceBase.h"
 #include "OSGDVRIsoSurface.h"
 
-#include <OSGGL.h>                        // AlphaMode default header
+#include <OSGGL.h> // AlphaMode default header
 
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  DVRIsoSurfaceBase::IsoValueFieldMask = 
+const OSG::BitVector DVRIsoSurfaceBase::IsoValueFieldMask =
     (TypeTraits<BitVector>::One << DVRIsoSurfaceBase::IsoValueFieldId);
 
-const OSG::BitVector  DVRIsoSurfaceBase::IsoThicknessFieldMask = 
+const OSG::BitVector DVRIsoSurfaceBase::IsoThicknessFieldMask =
     (TypeTraits<BitVector>::One << DVRIsoSurfaceBase::IsoThicknessFieldId);
 
-const OSG::BitVector  DVRIsoSurfaceBase::IsoOpacityFieldMask = 
+const OSG::BitVector DVRIsoSurfaceBase::IsoOpacityFieldMask =
     (TypeTraits<BitVector>::One << DVRIsoSurfaceBase::IsoOpacityFieldId);
 
-const OSG::BitVector  DVRIsoSurfaceBase::AlphaModeFieldMask = 
+const OSG::BitVector DVRIsoSurfaceBase::AlphaModeFieldMask =
     (TypeTraits<BitVector>::One << DVRIsoSurfaceBase::AlphaModeFieldId);
 
-const OSG::BitVector  DVRIsoSurfaceBase::SpecularLightingFieldMask = 
+const OSG::BitVector DVRIsoSurfaceBase::SpecularLightingFieldMask =
     (TypeTraits<BitVector>::One << DVRIsoSurfaceBase::SpecularLightingFieldId);
 
-const OSG::BitVector DVRIsoSurfaceBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector DVRIsoSurfaceBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
 /*! \var Real32          DVRIsoSurfaceBase::_sfIsoValue
-    
+
 */
 /*! \var Real32          DVRIsoSurfaceBase::_sfIsoThickness
-    
+
 */
 /*! \var Real32          DVRIsoSurfaceBase::_sfIsoOpacity
-    
+
 */
 /*! \var UInt32          DVRIsoSurfaceBase::_sfAlphaMode
-    
+
 */
 /*! \var bool            DVRIsoSurfaceBase::_sfSpecularLighting
-    
+
 */
 
 //! DVRIsoSurface description
 
-FieldDescription *DVRIsoSurfaceBase::_desc[] = 
-{
-    new FieldDescription(SFReal32::getClassType(), 
-                     "isoValue", 
-                     IsoValueFieldId, IsoValueFieldMask,
-                     false,
-                     (FieldAccessMethod) &DVRIsoSurfaceBase::getSFIsoValue),
-    new FieldDescription(SFReal32::getClassType(), 
-                     "isoThickness", 
-                     IsoThicknessFieldId, IsoThicknessFieldMask,
-                     false,
-                     (FieldAccessMethod) &DVRIsoSurfaceBase::getSFIsoThickness),
-    new FieldDescription(SFReal32::getClassType(), 
-                     "isoOpacity", 
-                     IsoOpacityFieldId, IsoOpacityFieldMask,
-                     false,
-                     (FieldAccessMethod) &DVRIsoSurfaceBase::getSFIsoOpacity),
-    new FieldDescription(SFUInt32::getClassType(), 
-                     "alphaMode", 
-                     AlphaModeFieldId, AlphaModeFieldMask,
-                     false,
-                     (FieldAccessMethod) &DVRIsoSurfaceBase::getSFAlphaMode),
-    new FieldDescription(SFBool::getClassType(), 
-                     "specularLighting", 
-                     SpecularLightingFieldId, SpecularLightingFieldMask,
-                     false,
-                     (FieldAccessMethod) &DVRIsoSurfaceBase::getSFSpecularLighting)
-};
+FieldDescription* DVRIsoSurfaceBase::_desc[] = {
+    new FieldDescription(SFReal32::getClassType(), "isoValue", IsoValueFieldId, IsoValueFieldMask,
+        false, (FieldAccessMethod)&DVRIsoSurfaceBase::getSFIsoValue),
+    new FieldDescription(SFReal32::getClassType(), "isoThickness", IsoThicknessFieldId,
+        IsoThicknessFieldMask, false, (FieldAccessMethod)&DVRIsoSurfaceBase::getSFIsoThickness),
+    new FieldDescription(SFReal32::getClassType(), "isoOpacity", IsoOpacityFieldId,
+        IsoOpacityFieldMask, false, (FieldAccessMethod)&DVRIsoSurfaceBase::getSFIsoOpacity),
+    new FieldDescription(SFUInt32::getClassType(), "alphaMode", AlphaModeFieldId,
+        AlphaModeFieldMask, false, (FieldAccessMethod)&DVRIsoSurfaceBase::getSFAlphaMode),
+    new FieldDescription(SFBool::getClassType(), "specularLighting", SpecularLightingFieldId,
+        SpecularLightingFieldMask, false,
+        (FieldAccessMethod)&DVRIsoSurfaceBase::getSFSpecularLighting)};
 
-
-FieldContainerType DVRIsoSurfaceBase::_type(
-    "DVRIsoSurface",
-    "Attachment",
-    NULL,
-    (PrototypeCreateF) &DVRIsoSurfaceBase::createEmpty,
-    DVRIsoSurface::initMethod,
-    _desc,
+FieldContainerType DVRIsoSurfaceBase::_type("DVRIsoSurface", "Attachment", NULL,
+    (PrototypeCreateF)&DVRIsoSurfaceBase::createEmpty, DVRIsoSurface::initMethod, _desc,
     sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(DVRIsoSurfaceBase, DVRIsoSurfacePtr)
+// OSG_FIELD_CONTAINER_DEF(DVRIsoSurfaceBase, DVRIsoSurfacePtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &DVRIsoSurfaceBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &DVRIsoSurfaceBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr DVRIsoSurfaceBase::shallowCopy(void) const 
-{ 
-    DVRIsoSurfacePtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const DVRIsoSurface *>(this)); 
-
-    return returnValue; 
+FieldContainerType& DVRIsoSurfaceBase::getType(void) {
+  return _type;
 }
 
-UInt32 DVRIsoSurfaceBase::getContainerSize(void) const 
-{ 
-    return sizeof(DVRIsoSurface); 
+const FieldContainerType& DVRIsoSurfaceBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr DVRIsoSurfaceBase::shallowCopy(void) const {
+  DVRIsoSurfacePtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const DVRIsoSurface*>(this));
+
+  return returnValue;
+}
+
+UInt32 DVRIsoSurfaceBase::getContainerSize(void) const {
+  return sizeof(DVRIsoSurface);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void DVRIsoSurfaceBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((DVRIsoSurfaceBase *) &other, whichField);
+void DVRIsoSurfaceBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((DVRIsoSurfaceBase*)&other, whichField);
 }
 #else
-void DVRIsoSurfaceBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((DVRIsoSurfaceBase *) &other, whichField, sInfo);
+void DVRIsoSurfaceBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((DVRIsoSurfaceBase*)&other, whichField, sInfo);
 }
-void DVRIsoSurfaceBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void DVRIsoSurfaceBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void DVRIsoSurfaceBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void DVRIsoSurfaceBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-DVRIsoSurfaceBase::DVRIsoSurfaceBase(void) :
-    _sfIsoValue               (Real32(0.1)), 
-    _sfIsoThickness           (Real32(0.1)), 
-    _sfIsoOpacity             (Real32(0.5)), 
-    _sfAlphaMode              (UInt32(GL_GREATER)), 
-    _sfSpecularLighting       (bool(true)), 
-    Inherited() 
-{
+DVRIsoSurfaceBase::DVRIsoSurfaceBase(void)
+    : _sfIsoValue(Real32(0.1))
+    , _sfIsoThickness(Real32(0.1))
+    , _sfIsoOpacity(Real32(0.5))
+    , _sfAlphaMode(UInt32(GL_GREATER))
+    , _sfSpecularLighting(bool(true))
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-DVRIsoSurfaceBase::DVRIsoSurfaceBase(const DVRIsoSurfaceBase &source) :
-    _sfIsoValue               (source._sfIsoValue               ), 
-    _sfIsoThickness           (source._sfIsoThickness           ), 
-    _sfIsoOpacity             (source._sfIsoOpacity             ), 
-    _sfAlphaMode              (source._sfAlphaMode              ), 
-    _sfSpecularLighting       (source._sfSpecularLighting       ), 
-    Inherited                 (source)
-{
+DVRIsoSurfaceBase::DVRIsoSurfaceBase(const DVRIsoSurfaceBase& source)
+    : _sfIsoValue(source._sfIsoValue)
+    , _sfIsoThickness(source._sfIsoThickness)
+    , _sfIsoOpacity(source._sfIsoOpacity)
+    , _sfAlphaMode(source._sfAlphaMode)
+    , _sfSpecularLighting(source._sfSpecularLighting)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-DVRIsoSurfaceBase::~DVRIsoSurfaceBase(void)
-{
+DVRIsoSurfaceBase::~DVRIsoSurfaceBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 DVRIsoSurfaceBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 DVRIsoSurfaceBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (IsoValueFieldMask & whichField))
-    {
-        returnValue += _sfIsoValue.getBinSize();
-    }
+  if (FieldBits::NoField != (IsoValueFieldMask & whichField)) {
+    returnValue += _sfIsoValue.getBinSize();
+  }
 
-    if(FieldBits::NoField != (IsoThicknessFieldMask & whichField))
-    {
-        returnValue += _sfIsoThickness.getBinSize();
-    }
+  if (FieldBits::NoField != (IsoThicknessFieldMask & whichField)) {
+    returnValue += _sfIsoThickness.getBinSize();
+  }
 
-    if(FieldBits::NoField != (IsoOpacityFieldMask & whichField))
-    {
-        returnValue += _sfIsoOpacity.getBinSize();
-    }
+  if (FieldBits::NoField != (IsoOpacityFieldMask & whichField)) {
+    returnValue += _sfIsoOpacity.getBinSize();
+  }
 
-    if(FieldBits::NoField != (AlphaModeFieldMask & whichField))
-    {
-        returnValue += _sfAlphaMode.getBinSize();
-    }
+  if (FieldBits::NoField != (AlphaModeFieldMask & whichField)) {
+    returnValue += _sfAlphaMode.getBinSize();
+  }
 
-    if(FieldBits::NoField != (SpecularLightingFieldMask & whichField))
-    {
-        returnValue += _sfSpecularLighting.getBinSize();
-    }
+  if (FieldBits::NoField != (SpecularLightingFieldMask & whichField)) {
+    returnValue += _sfSpecularLighting.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void DVRIsoSurfaceBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void DVRIsoSurfaceBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (IsoValueFieldMask & whichField))
-    {
-        _sfIsoValue.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (IsoValueFieldMask & whichField)) {
+    _sfIsoValue.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (IsoThicknessFieldMask & whichField))
-    {
-        _sfIsoThickness.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (IsoThicknessFieldMask & whichField)) {
+    _sfIsoThickness.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (IsoOpacityFieldMask & whichField))
-    {
-        _sfIsoOpacity.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (IsoOpacityFieldMask & whichField)) {
+    _sfIsoOpacity.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (AlphaModeFieldMask & whichField))
-    {
-        _sfAlphaMode.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (AlphaModeFieldMask & whichField)) {
+    _sfAlphaMode.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (SpecularLightingFieldMask & whichField))
-    {
-        _sfSpecularLighting.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (SpecularLightingFieldMask & whichField)) {
+    _sfSpecularLighting.copyToBin(pMem);
+  }
 }
 
-void DVRIsoSurfaceBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void DVRIsoSurfaceBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (IsoValueFieldMask & whichField))
-    {
-        _sfIsoValue.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (IsoValueFieldMask & whichField)) {
+    _sfIsoValue.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (IsoThicknessFieldMask & whichField))
-    {
-        _sfIsoThickness.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (IsoThicknessFieldMask & whichField)) {
+    _sfIsoThickness.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (IsoOpacityFieldMask & whichField))
-    {
-        _sfIsoOpacity.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (IsoOpacityFieldMask & whichField)) {
+    _sfIsoOpacity.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (AlphaModeFieldMask & whichField))
-    {
-        _sfAlphaMode.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (AlphaModeFieldMask & whichField)) {
+    _sfAlphaMode.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (SpecularLightingFieldMask & whichField))
-    {
-        _sfSpecularLighting.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (SpecularLightingFieldMask & whichField)) {
+    _sfSpecularLighting.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void DVRIsoSurfaceBase::executeSyncImpl(      DVRIsoSurfaceBase *pOther,
-                                        const BitVector         &whichField)
-{
+void DVRIsoSurfaceBase::executeSyncImpl(DVRIsoSurfaceBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (IsoValueFieldMask & whichField))
-        _sfIsoValue.syncWith(pOther->_sfIsoValue);
+  if (FieldBits::NoField != (IsoValueFieldMask & whichField))
+    _sfIsoValue.syncWith(pOther->_sfIsoValue);
 
-    if(FieldBits::NoField != (IsoThicknessFieldMask & whichField))
-        _sfIsoThickness.syncWith(pOther->_sfIsoThickness);
+  if (FieldBits::NoField != (IsoThicknessFieldMask & whichField))
+    _sfIsoThickness.syncWith(pOther->_sfIsoThickness);
 
-    if(FieldBits::NoField != (IsoOpacityFieldMask & whichField))
-        _sfIsoOpacity.syncWith(pOther->_sfIsoOpacity);
+  if (FieldBits::NoField != (IsoOpacityFieldMask & whichField))
+    _sfIsoOpacity.syncWith(pOther->_sfIsoOpacity);
 
-    if(FieldBits::NoField != (AlphaModeFieldMask & whichField))
-        _sfAlphaMode.syncWith(pOther->_sfAlphaMode);
+  if (FieldBits::NoField != (AlphaModeFieldMask & whichField))
+    _sfAlphaMode.syncWith(pOther->_sfAlphaMode);
 
-    if(FieldBits::NoField != (SpecularLightingFieldMask & whichField))
-        _sfSpecularLighting.syncWith(pOther->_sfSpecularLighting);
-
-
+  if (FieldBits::NoField != (SpecularLightingFieldMask & whichField))
+    _sfSpecularLighting.syncWith(pOther->_sfSpecularLighting);
 }
 #else
-void DVRIsoSurfaceBase::executeSyncImpl(      DVRIsoSurfaceBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void DVRIsoSurfaceBase::executeSyncImpl(
+    DVRIsoSurfaceBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (IsoValueFieldMask & whichField))
-        _sfIsoValue.syncWith(pOther->_sfIsoValue);
+  if (FieldBits::NoField != (IsoValueFieldMask & whichField))
+    _sfIsoValue.syncWith(pOther->_sfIsoValue);
 
-    if(FieldBits::NoField != (IsoThicknessFieldMask & whichField))
-        _sfIsoThickness.syncWith(pOther->_sfIsoThickness);
+  if (FieldBits::NoField != (IsoThicknessFieldMask & whichField))
+    _sfIsoThickness.syncWith(pOther->_sfIsoThickness);
 
-    if(FieldBits::NoField != (IsoOpacityFieldMask & whichField))
-        _sfIsoOpacity.syncWith(pOther->_sfIsoOpacity);
+  if (FieldBits::NoField != (IsoOpacityFieldMask & whichField))
+    _sfIsoOpacity.syncWith(pOther->_sfIsoOpacity);
 
-    if(FieldBits::NoField != (AlphaModeFieldMask & whichField))
-        _sfAlphaMode.syncWith(pOther->_sfAlphaMode);
+  if (FieldBits::NoField != (AlphaModeFieldMask & whichField))
+    _sfAlphaMode.syncWith(pOther->_sfAlphaMode);
 
-    if(FieldBits::NoField != (SpecularLightingFieldMask & whichField))
-        _sfSpecularLighting.syncWith(pOther->_sfSpecularLighting);
-
-
-
+  if (FieldBits::NoField != (SpecularLightingFieldMask & whichField))
+    _sfSpecularLighting.syncWith(pOther->_sfSpecularLighting);
 }
 
-void DVRIsoSurfaceBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void DVRIsoSurfaceBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 OSG_BEGIN_NAMESPACE
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_DEV)
 DataType FieldDataTraits<DVRIsoSurfacePtr>::_type("DVRIsoSurfacePtr", "AttachmentPtr");
 #endif
-
 
 OSG_END_NAMESPACE

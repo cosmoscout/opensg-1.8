@@ -52,109 +52,79 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &OrthographicCameraBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& OrthographicCameraBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 OrthographicCameraBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 OrthographicCameraBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-OrthographicCameraPtr OrthographicCameraBase::create(void) 
-{
-    OrthographicCameraPtr fc; 
+inline OrthographicCameraPtr OrthographicCameraBase::create(void) {
+  OrthographicCameraPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = OrthographicCameraPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = OrthographicCameraPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-OrthographicCameraPtr OrthographicCameraBase::createEmpty(void) 
-{ 
-    OrthographicCameraPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline OrthographicCameraPtr OrthographicCameraBase::createEmpty(void) {
+  OrthographicCameraPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the OrthographicCamera::_sfVerticalSize field.
-inline
-SFReal32 *OrthographicCameraBase::getSFVerticalSize(void)
-{
-    return &_sfVerticalSize;
+inline SFReal32* OrthographicCameraBase::getSFVerticalSize(void) {
+  return &_sfVerticalSize;
 }
 
 //! Get the OrthographicCamera::_sfAspect field.
-inline
-SFReal32 *OrthographicCameraBase::getSFAspect(void)
-{
-    return &_sfAspect;
-}
-
-
-//! Get the value of the OrthographicCamera::_sfVerticalSize field.
-inline
-Real32 &OrthographicCameraBase::getVerticalSize(void)
-{
-    return _sfVerticalSize.getValue();
+inline SFReal32* OrthographicCameraBase::getSFAspect(void) {
+  return &_sfAspect;
 }
 
 //! Get the value of the OrthographicCamera::_sfVerticalSize field.
-inline
-const Real32 &OrthographicCameraBase::getVerticalSize(void) const
-{
-    return _sfVerticalSize.getValue();
+inline Real32& OrthographicCameraBase::getVerticalSize(void) {
+  return _sfVerticalSize.getValue();
+}
+
+//! Get the value of the OrthographicCamera::_sfVerticalSize field.
+inline const Real32& OrthographicCameraBase::getVerticalSize(void) const {
+  return _sfVerticalSize.getValue();
 }
 
 //! Set the value of the OrthographicCamera::_sfVerticalSize field.
-inline
-void OrthographicCameraBase::setVerticalSize(const Real32 &value)
-{
-    _sfVerticalSize.setValue(value);
+inline void OrthographicCameraBase::setVerticalSize(const Real32& value) {
+  _sfVerticalSize.setValue(value);
 }
 
 //! Get the value of the OrthographicCamera::_sfAspect field.
-inline
-Real32 &OrthographicCameraBase::getAspect(void)
-{
-    return _sfAspect.getValue();
+inline Real32& OrthographicCameraBase::getAspect(void) {
+  return _sfAspect.getValue();
 }
 
 //! Get the value of the OrthographicCamera::_sfAspect field.
-inline
-const Real32 &OrthographicCameraBase::getAspect(void) const
-{
-    return _sfAspect.getValue();
+inline const Real32& OrthographicCameraBase::getAspect(void) const {
+  return _sfAspect.getValue();
 }
 
 //! Set the value of the OrthographicCamera::_sfAspect field.
-inline
-void OrthographicCameraBase::setAspect(const Real32 &value)
-{
-    _sfAspect.setValue(value);
+inline void OrthographicCameraBase::setAspect(const Real32& value) {
+  _sfAspect.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGORTHOGRAPHICCAMERABASE_INLINE_CVSID "@(#)$Id: OSGOrthographicCameraBase.inl,v 1.2 2006/02/20 16:54:30 dirk Exp $"
-
+#define OSGORTHOGRAPHICCAMERABASE_INLINE_CVSID                                                     \
+  "@(#)$Id: OSGOrthographicCameraBase.inl,v 1.2 2006/02/20 16:54:30 dirk Exp $"

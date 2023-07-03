@@ -55,7 +55,7 @@
 
 OSG_BEGIN_NAMESPACE
 
-#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS) 
+#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldMulti */
 
 typedef MField<FieldContainerPtr> MFFieldContainerPtr;
@@ -70,9 +70,3 @@ OSG_END_NAMESPACE
 #define OSGMFFIELDCONTAINERPTR_HEADER_CVSID "@(#)$Id: $"
 
 #endif /* _OSGMFFIELDCONTAINERPTR_H_ */
-
-
-
-
-
-

@@ -48,133 +48,122 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief ShaderParameter class. See \ref 
+/*! \brief ShaderParameter class. See \ref
            PageSystemShaderParameter for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING ShaderParameter : public ShaderParameterBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING ShaderParameter : public ShaderParameterBase {
+ private:
+  typedef ShaderParameterBase Inherited;
 
-    typedef ShaderParameterBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  inline bool hasChanged(void);
+  inline void resetChanged(void);
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     TypeId's                                 */
+  /*! \{                                                                 */
 
-    inline bool hasChanged(void);
-    inline void resetChanged(void);
+  enum SHPType {
+    SHPTypeUnknown = 0,
+    SHPTypeBool,
+    SHPTypeInt,
+    SHPTypeReal,
+    SHPTypeVec2s,
+    SHPTypeVec3s,
+    SHPTypeVec4s,
+    SHPTypeVec2f,
+    SHPTypeVec3f,
+    SHPTypeVec4f,
+    SHPTypeMatrix,
+    SHPTypeString,
+    SHPTypeMBool,
+    SHPTypeMInt,
+    SHPTypeMReal,
+    SHPTypeMVec2s,
+    SHPTypeMVec3s,
+    SHPTypeMVec4s,
+    SHPTypeMVec2f,
+    SHPTypeMVec3f,
+    SHPTypeMVec4f,
+    SHPTypeMMatrix,
+    SHPTypeMString
+  };
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     TypeId's                                 */
-    /*! \{                                                                 */
+  enum SHPFlags { SHPFlagNone = 0, SHPFlagUpdate = 1 };
 
-    enum SHPType
-    {
-        SHPTypeUnknown = 0,
-        SHPTypeBool,
-        SHPTypeInt,
-        SHPTypeReal,
-        SHPTypeVec2s,
-        SHPTypeVec3s,
-        SHPTypeVec4s,
-        SHPTypeVec2f,
-        SHPTypeVec3f,
-        SHPTypeVec4f,
-        SHPTypeMatrix,
-        SHPTypeString,
-        SHPTypeMBool,
-        SHPTypeMInt,
-        SHPTypeMReal,
-        SHPTypeMVec2s,
-        SHPTypeMVec3s,
-        SHPTypeMVec4s,
-        SHPTypeMVec2f,
-        SHPTypeMVec3f,
-        SHPTypeMVec4f,
-        SHPTypeMMatrix,
-        SHPTypeMString
-    };
+  inline SHPType getTypeId(void);
 
-    enum SHPFlags
-    {
-        SHPFlagNone = 0,
-        SHPFlagUpdate = 1
-    };
+  inline GLint getLocation(void);
+  inline void  setLocation(GLint location);
 
-    inline SHPType getTypeId(void);
+  inline UInt32 getFlags(void);
+  inline void   setFlags(UInt32 flags);
 
-    inline GLint getLocation(void);
-    inline void  setLocation(GLint location);
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in ShaderParameterBase.
 
-    inline UInt32 getFlags(void);
-    inline void  setFlags(UInt32 flags);
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  ShaderParameter(void);
+  ShaderParameter(const ShaderParameter& source);
 
-    // Variables should all be in ShaderParameterBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~ShaderParameter(void);
 
-    ShaderParameter(void);
-    ShaderParameter(const ShaderParameter &source);
+  inline void setTypeId(SHPType type);
+  inline void setChanged(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    virtual ~ShaderParameter(void); 
+  /*==========================  PRIVATE  ================================*/
+ private:
+  bool    _changed;
+  SHPType _typeid;
+  GLint   _location;
+  UInt32  _flags;
 
-    inline void setTypeId(SHPType type);
-    inline void setChanged(void);
+  friend class FieldContainer;
+  friend class ShaderParameterBase;
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  static void initMethod(void);
 
-    bool    _changed;
-    SHPType _typeid;
-    GLint   _location;
-    UInt32  _flags;
+  // prohibit default functions (move to 'public' if you need one)
 
-    friend class FieldContainer;
-    friend class ShaderParameterBase;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const ShaderParameter &source);
+  void operator=(const ShaderParameter& source);
 };
 
-typedef ShaderParameter *ShaderParameterP;
+typedef ShaderParameter* ShaderParameterP;
 
 OSG_END_NAMESPACE
 
 #include <OSGShaderParameterBase.inl>
 #include <OSGShaderParameter.inl>
 
-#define OSGSHADERPARAMETER_HEADER_CVSID "@(#)$Id: OSGShaderParameter.h,v 1.7 2007/03/09 18:11:48 a-m-z Exp $"
+#define OSGSHADERPARAMETER_HEADER_CVSID                                                            \
+  "@(#)$Id: OSGShaderParameter.h,v 1.7 2007/03/09 18:11:48 a-m-z Exp $"
 
 #endif /* _OSGSHADERPARAMETER_H_ */

@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEFBOVIEWPORTINST
 
 #include <stdlib.h>
@@ -61,60 +60,57 @@
 #include "OSGFBOViewportBase.h"
 #include "OSGFBOViewport.h"
 
-
 OSG_BEGIN_NAMESPACE
 
-const OSG::BitVector  FBOViewportBase::EnabledFieldMask = 
+const OSG::BitVector FBOViewportBase::EnabledFieldMask =
     (TypeTraits<BitVector>::One << FBOViewportBase::EnabledFieldId);
 
-const OSG::BitVector  FBOViewportBase::ExcludeNodesFieldMask = 
+const OSG::BitVector FBOViewportBase::ExcludeNodesFieldMask =
     (TypeTraits<BitVector>::One << FBOViewportBase::ExcludeNodesFieldId);
 
-const OSG::BitVector  FBOViewportBase::RenderNodesFieldMask = 
+const OSG::BitVector FBOViewportBase::RenderNodesFieldMask =
     (TypeTraits<BitVector>::One << FBOViewportBase::RenderNodesFieldId);
 
-const OSG::BitVector  FBOViewportBase::TexturesFieldMask = 
+const OSG::BitVector FBOViewportBase::TexturesFieldMask =
     (TypeTraits<BitVector>::One << FBOViewportBase::TexturesFieldId);
 
-const OSG::BitVector  FBOViewportBase::FboOnFieldMask = 
+const OSG::BitVector FBOViewportBase::FboOnFieldMask =
     (TypeTraits<BitVector>::One << FBOViewportBase::FboOnFieldId);
 
-const OSG::BitVector  FBOViewportBase::StorageWidthFieldMask = 
+const OSG::BitVector FBOViewportBase::StorageWidthFieldMask =
     (TypeTraits<BitVector>::One << FBOViewportBase::StorageWidthFieldId);
 
-const OSG::BitVector  FBOViewportBase::StorageHeightFieldMask = 
+const OSG::BitVector FBOViewportBase::StorageHeightFieldMask =
     (TypeTraits<BitVector>::One << FBOViewportBase::StorageHeightFieldId);
 
-const OSG::BitVector  FBOViewportBase::GenCubemapsFieldMask = 
+const OSG::BitVector FBOViewportBase::GenCubemapsFieldMask =
     (TypeTraits<BitVector>::One << FBOViewportBase::GenCubemapsFieldId);
 
-const OSG::BitVector  FBOViewportBase::GenDepthmapsFieldMask = 
+const OSG::BitVector FBOViewportBase::GenDepthmapsFieldMask =
     (TypeTraits<BitVector>::One << FBOViewportBase::GenDepthmapsFieldId);
 
-const OSG::BitVector  FBOViewportBase::FrameBufferIndexFieldMask = 
+const OSG::BitVector FBOViewportBase::FrameBufferIndexFieldMask =
     (TypeTraits<BitVector>::One << FBOViewportBase::FrameBufferIndexFieldId);
 
-const OSG::BitVector  FBOViewportBase::DepthBufferIndexFieldMask = 
+const OSG::BitVector FBOViewportBase::DepthBufferIndexFieldMask =
     (TypeTraits<BitVector>::One << FBOViewportBase::DepthBufferIndexFieldId);
 
-const OSG::BitVector  FBOViewportBase::StencilBufferIndexFieldMask = 
+const OSG::BitVector FBOViewportBase::StencilBufferIndexFieldMask =
     (TypeTraits<BitVector>::One << FBOViewportBase::StencilBufferIndexFieldId);
 
-const OSG::BitVector  FBOViewportBase::DirtyFieldMask = 
+const OSG::BitVector FBOViewportBase::DirtyFieldMask =
     (TypeTraits<BitVector>::One << FBOViewportBase::DirtyFieldId);
 
-const OSG::BitVector  FBOViewportBase::ReadBufferFieldMask = 
+const OSG::BitVector FBOViewportBase::ReadBufferFieldMask =
     (TypeTraits<BitVector>::One << FBOViewportBase::ReadBufferFieldId);
 
-const OSG::BitVector FBOViewportBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector FBOViewportBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
 /*! \var bool            FBOViewportBase::_sfEnabled
-    
+
 */
 /*! \var NodePtr         FBOViewportBase::_mfExcludeNodes
     Nodes which shall be excluded
@@ -126,28 +122,28 @@ const OSG::BitVector FBOViewportBase::MTInfluenceMask =
     The render targets
 */
 /*! \var bool            FBOViewportBase::_sfFboOn
-    
+
 */
 /*! \var Int32           FBOViewportBase::_sfStorageWidth
-    
+
 */
 /*! \var Int32           FBOViewportBase::_sfStorageHeight
-    
+
 */
 /*! \var bool            FBOViewportBase::_sfGenCubemaps
-    
+
 */
 /*! \var bool            FBOViewportBase::_sfGenDepthmaps
-    
+
 */
 /*! \var UInt32          FBOViewportBase::_sfFrameBufferIndex
-    
+
 */
 /*! \var UInt32          FBOViewportBase::_sfDepthBufferIndex
-    
+
 */
 /*! \var UInt32          FBOViewportBase::_sfStencilBufferIndex
-    
+
 */
 /*! \var bool            FBOViewportBase::_sfDirty
     Needs to be set for forceing re-initialization, e.g. when setting texture size.
@@ -158,563 +154,434 @@ const OSG::BitVector FBOViewportBase::MTInfluenceMask =
 
 //! FBOViewport description
 
-FieldDescription *FBOViewportBase::_desc[] = 
-{
-    new FieldDescription(SFBool::getClassType(), 
-                     "enabled", 
-                     EnabledFieldId, EnabledFieldMask,
-                     false,
-                     (FieldAccessMethod) &FBOViewportBase::getSFEnabled),
-    new FieldDescription(MFNodePtr::getClassType(), 
-                     "excludeNodes", 
-                     ExcludeNodesFieldId, ExcludeNodesFieldMask,
-                     false,
-                     (FieldAccessMethod) &FBOViewportBase::getMFExcludeNodes),
-    new FieldDescription(MFNodePtr::getClassType(), 
-                     "renderNodes", 
-                     RenderNodesFieldId, RenderNodesFieldMask,
-                     false,
-                     (FieldAccessMethod) &FBOViewportBase::getMFRenderNodes),
-    new FieldDescription(MFTextureChunkPtr::getClassType(), 
-                     "textures", 
-                     TexturesFieldId, TexturesFieldMask,
-                     false,
-                     (FieldAccessMethod) &FBOViewportBase::getMFTextures),
-    new FieldDescription(SFBool::getClassType(), 
-                     "fboOn", 
-                     FboOnFieldId, FboOnFieldMask,
-                     false,
-                     (FieldAccessMethod) &FBOViewportBase::getSFFboOn),
-    new FieldDescription(SFInt32::getClassType(), 
-                     "storageWidth", 
-                     StorageWidthFieldId, StorageWidthFieldMask,
-                     false,
-                     (FieldAccessMethod) &FBOViewportBase::getSFStorageWidth),
-    new FieldDescription(SFInt32::getClassType(), 
-                     "storageHeight", 
-                     StorageHeightFieldId, StorageHeightFieldMask,
-                     false,
-                     (FieldAccessMethod) &FBOViewportBase::getSFStorageHeight),
-    new FieldDescription(SFBool::getClassType(), 
-                     "genCubemaps", 
-                     GenCubemapsFieldId, GenCubemapsFieldMask,
-                     false,
-                     (FieldAccessMethod) &FBOViewportBase::getSFGenCubemaps),
-    new FieldDescription(SFBool::getClassType(), 
-                     "genDepthmaps", 
-                     GenDepthmapsFieldId, GenDepthmapsFieldMask,
-                     false,
-                     (FieldAccessMethod) &FBOViewportBase::getSFGenDepthmaps),
-    new FieldDescription(SFUInt32::getClassType(), 
-                     "frameBufferIndex", 
-                     FrameBufferIndexFieldId, FrameBufferIndexFieldMask,
-                     false,
-                     (FieldAccessMethod) &FBOViewportBase::getSFFrameBufferIndex),
-    new FieldDescription(SFUInt32::getClassType(), 
-                     "depthBufferIndex", 
-                     DepthBufferIndexFieldId, DepthBufferIndexFieldMask,
-                     false,
-                     (FieldAccessMethod) &FBOViewportBase::getSFDepthBufferIndex),
-    new FieldDescription(SFUInt32::getClassType(), 
-                     "stencilBufferIndex", 
-                     StencilBufferIndexFieldId, StencilBufferIndexFieldMask,
-                     false,
-                     (FieldAccessMethod) &FBOViewportBase::getSFStencilBufferIndex),
-    new FieldDescription(SFBool::getClassType(), 
-                     "dirty", 
-                     DirtyFieldId, DirtyFieldMask,
-                     false,
-                     (FieldAccessMethod) &FBOViewportBase::getSFDirty),
-    new FieldDescription(SFBool::getClassType(), 
-                     "readBuffer", 
-                     ReadBufferFieldId, ReadBufferFieldMask,
-                     false,
-                     (FieldAccessMethod) &FBOViewportBase::getSFReadBuffer)
-};
+FieldDescription* FBOViewportBase::_desc[] = {
+    new FieldDescription(SFBool::getClassType(), "enabled", EnabledFieldId, EnabledFieldMask, false,
+        (FieldAccessMethod)&FBOViewportBase::getSFEnabled),
+    new FieldDescription(MFNodePtr::getClassType(), "excludeNodes", ExcludeNodesFieldId,
+        ExcludeNodesFieldMask, false, (FieldAccessMethod)&FBOViewportBase::getMFExcludeNodes),
+    new FieldDescription(MFNodePtr::getClassType(), "renderNodes", RenderNodesFieldId,
+        RenderNodesFieldMask, false, (FieldAccessMethod)&FBOViewportBase::getMFRenderNodes),
+    new FieldDescription(MFTextureChunkPtr::getClassType(), "textures", TexturesFieldId,
+        TexturesFieldMask, false, (FieldAccessMethod)&FBOViewportBase::getMFTextures),
+    new FieldDescription(SFBool::getClassType(), "fboOn", FboOnFieldId, FboOnFieldMask, false,
+        (FieldAccessMethod)&FBOViewportBase::getSFFboOn),
+    new FieldDescription(SFInt32::getClassType(), "storageWidth", StorageWidthFieldId,
+        StorageWidthFieldMask, false, (FieldAccessMethod)&FBOViewportBase::getSFStorageWidth),
+    new FieldDescription(SFInt32::getClassType(), "storageHeight", StorageHeightFieldId,
+        StorageHeightFieldMask, false, (FieldAccessMethod)&FBOViewportBase::getSFStorageHeight),
+    new FieldDescription(SFBool::getClassType(), "genCubemaps", GenCubemapsFieldId,
+        GenCubemapsFieldMask, false, (FieldAccessMethod)&FBOViewportBase::getSFGenCubemaps),
+    new FieldDescription(SFBool::getClassType(), "genDepthmaps", GenDepthmapsFieldId,
+        GenDepthmapsFieldMask, false, (FieldAccessMethod)&FBOViewportBase::getSFGenDepthmaps),
+    new FieldDescription(SFUInt32::getClassType(), "frameBufferIndex", FrameBufferIndexFieldId,
+        FrameBufferIndexFieldMask, false,
+        (FieldAccessMethod)&FBOViewportBase::getSFFrameBufferIndex),
+    new FieldDescription(SFUInt32::getClassType(), "depthBufferIndex", DepthBufferIndexFieldId,
+        DepthBufferIndexFieldMask, false,
+        (FieldAccessMethod)&FBOViewportBase::getSFDepthBufferIndex),
+    new FieldDescription(SFUInt32::getClassType(), "stencilBufferIndex", StencilBufferIndexFieldId,
+        StencilBufferIndexFieldMask, false,
+        (FieldAccessMethod)&FBOViewportBase::getSFStencilBufferIndex),
+    new FieldDescription(SFBool::getClassType(), "dirty", DirtyFieldId, DirtyFieldMask, false,
+        (FieldAccessMethod)&FBOViewportBase::getSFDirty),
+    new FieldDescription(SFBool::getClassType(), "readBuffer", ReadBufferFieldId,
+        ReadBufferFieldMask, false, (FieldAccessMethod)&FBOViewportBase::getSFReadBuffer)};
 
+FieldContainerType FBOViewportBase::_type("FBOViewport", "Viewport", NULL,
+    (PrototypeCreateF)&FBOViewportBase::createEmpty, FBOViewport::initMethod, _desc, sizeof(_desc));
 
-FieldContainerType FBOViewportBase::_type(
-    "FBOViewport",
-    "Viewport",
-    NULL,
-    (PrototypeCreateF) &FBOViewportBase::createEmpty,
-    FBOViewport::initMethod,
-    _desc,
-    sizeof(_desc));
-
-//OSG_FIELD_CONTAINER_DEF(FBOViewportBase, FBOViewportPtr)
+// OSG_FIELD_CONTAINER_DEF(FBOViewportBase, FBOViewportPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &FBOViewportBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &FBOViewportBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr FBOViewportBase::shallowCopy(void) const 
-{ 
-    FBOViewportPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const FBOViewport *>(this)); 
-
-    return returnValue; 
+FieldContainerType& FBOViewportBase::getType(void) {
+  return _type;
 }
 
-UInt32 FBOViewportBase::getContainerSize(void) const 
-{ 
-    return sizeof(FBOViewport); 
+const FieldContainerType& FBOViewportBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr FBOViewportBase::shallowCopy(void) const {
+  FBOViewportPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const FBOViewport*>(this));
+
+  return returnValue;
+}
+
+UInt32 FBOViewportBase::getContainerSize(void) const {
+  return sizeof(FBOViewport);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void FBOViewportBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((FBOViewportBase *) &other, whichField);
+void FBOViewportBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((FBOViewportBase*)&other, whichField);
 }
 #else
-void FBOViewportBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((FBOViewportBase *) &other, whichField, sInfo);
+void FBOViewportBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((FBOViewportBase*)&other, whichField, sInfo);
 }
-void FBOViewportBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void FBOViewportBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void FBOViewportBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
+void FBOViewportBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 
-    _mfExcludeNodes.terminateShare(uiAspect, this->getContainerSize());
-    _mfRenderNodes.terminateShare(uiAspect, this->getContainerSize());
-    _mfTextures.terminateShare(uiAspect, this->getContainerSize());
+  _mfExcludeNodes.terminateShare(uiAspect, this->getContainerSize());
+  _mfRenderNodes.terminateShare(uiAspect, this->getContainerSize());
+  _mfTextures.terminateShare(uiAspect, this->getContainerSize());
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-FBOViewportBase::FBOViewportBase(void) :
-    _sfEnabled                (bool(true)), 
-    _mfExcludeNodes           (), 
-    _mfRenderNodes            (), 
-    _mfTextures               (), 
-    _sfFboOn                  (bool(true)), 
-    _sfStorageWidth           (Int32(256)), 
-    _sfStorageHeight          (Int32(256)), 
-    _sfGenCubemaps            (bool(false)), 
-    _sfGenDepthmaps           (bool(false)), 
-    _sfFrameBufferIndex       (UInt32(0)), 
-    _sfDepthBufferIndex       (UInt32(0)), 
-    _sfStencilBufferIndex     (UInt32(0)), 
-    _sfDirty                  (bool(true)), 
-    _sfReadBuffer             (bool(false)), 
-    Inherited() 
-{
+FBOViewportBase::FBOViewportBase(void)
+    : _sfEnabled(bool(true))
+    , _mfExcludeNodes()
+    , _mfRenderNodes()
+    , _mfTextures()
+    , _sfFboOn(bool(true))
+    , _sfStorageWidth(Int32(256))
+    , _sfStorageHeight(Int32(256))
+    , _sfGenCubemaps(bool(false))
+    , _sfGenDepthmaps(bool(false))
+    , _sfFrameBufferIndex(UInt32(0))
+    , _sfDepthBufferIndex(UInt32(0))
+    , _sfStencilBufferIndex(UInt32(0))
+    , _sfDirty(bool(true))
+    , _sfReadBuffer(bool(false))
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-FBOViewportBase::FBOViewportBase(const FBOViewportBase &source) :
-    _sfEnabled                (source._sfEnabled                ), 
-    _mfExcludeNodes           (source._mfExcludeNodes           ), 
-    _mfRenderNodes            (source._mfRenderNodes            ), 
-    _mfTextures               (source._mfTextures               ), 
-    _sfFboOn                  (source._sfFboOn                  ), 
-    _sfStorageWidth           (source._sfStorageWidth           ), 
-    _sfStorageHeight          (source._sfStorageHeight          ), 
-    _sfGenCubemaps            (source._sfGenCubemaps            ), 
-    _sfGenDepthmaps           (source._sfGenDepthmaps           ), 
-    _sfFrameBufferIndex       (source._sfFrameBufferIndex       ), 
-    _sfDepthBufferIndex       (source._sfDepthBufferIndex       ), 
-    _sfStencilBufferIndex     (source._sfStencilBufferIndex     ), 
-    _sfDirty                  (source._sfDirty                  ), 
-    _sfReadBuffer             (source._sfReadBuffer             ), 
-    Inherited                 (source)
-{
+FBOViewportBase::FBOViewportBase(const FBOViewportBase& source)
+    : _sfEnabled(source._sfEnabled)
+    , _mfExcludeNodes(source._mfExcludeNodes)
+    , _mfRenderNodes(source._mfRenderNodes)
+    , _mfTextures(source._mfTextures)
+    , _sfFboOn(source._sfFboOn)
+    , _sfStorageWidth(source._sfStorageWidth)
+    , _sfStorageHeight(source._sfStorageHeight)
+    , _sfGenCubemaps(source._sfGenCubemaps)
+    , _sfGenDepthmaps(source._sfGenDepthmaps)
+    , _sfFrameBufferIndex(source._sfFrameBufferIndex)
+    , _sfDepthBufferIndex(source._sfDepthBufferIndex)
+    , _sfStencilBufferIndex(source._sfStencilBufferIndex)
+    , _sfDirty(source._sfDirty)
+    , _sfReadBuffer(source._sfReadBuffer)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-FBOViewportBase::~FBOViewportBase(void)
-{
+FBOViewportBase::~FBOViewportBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 FBOViewportBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 FBOViewportBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (EnabledFieldMask & whichField))
-    {
-        returnValue += _sfEnabled.getBinSize();
-    }
+  if (FieldBits::NoField != (EnabledFieldMask & whichField)) {
+    returnValue += _sfEnabled.getBinSize();
+  }
 
-    if(FieldBits::NoField != (ExcludeNodesFieldMask & whichField))
-    {
-        returnValue += _mfExcludeNodes.getBinSize();
-    }
+  if (FieldBits::NoField != (ExcludeNodesFieldMask & whichField)) {
+    returnValue += _mfExcludeNodes.getBinSize();
+  }
 
-    if(FieldBits::NoField != (RenderNodesFieldMask & whichField))
-    {
-        returnValue += _mfRenderNodes.getBinSize();
-    }
+  if (FieldBits::NoField != (RenderNodesFieldMask & whichField)) {
+    returnValue += _mfRenderNodes.getBinSize();
+  }
 
-    if(FieldBits::NoField != (TexturesFieldMask & whichField))
-    {
-        returnValue += _mfTextures.getBinSize();
-    }
+  if (FieldBits::NoField != (TexturesFieldMask & whichField)) {
+    returnValue += _mfTextures.getBinSize();
+  }
 
-    if(FieldBits::NoField != (FboOnFieldMask & whichField))
-    {
-        returnValue += _sfFboOn.getBinSize();
-    }
+  if (FieldBits::NoField != (FboOnFieldMask & whichField)) {
+    returnValue += _sfFboOn.getBinSize();
+  }
 
-    if(FieldBits::NoField != (StorageWidthFieldMask & whichField))
-    {
-        returnValue += _sfStorageWidth.getBinSize();
-    }
+  if (FieldBits::NoField != (StorageWidthFieldMask & whichField)) {
+    returnValue += _sfStorageWidth.getBinSize();
+  }
 
-    if(FieldBits::NoField != (StorageHeightFieldMask & whichField))
-    {
-        returnValue += _sfStorageHeight.getBinSize();
-    }
+  if (FieldBits::NoField != (StorageHeightFieldMask & whichField)) {
+    returnValue += _sfStorageHeight.getBinSize();
+  }
 
-    if(FieldBits::NoField != (GenCubemapsFieldMask & whichField))
-    {
-        returnValue += _sfGenCubemaps.getBinSize();
-    }
+  if (FieldBits::NoField != (GenCubemapsFieldMask & whichField)) {
+    returnValue += _sfGenCubemaps.getBinSize();
+  }
 
-    if(FieldBits::NoField != (GenDepthmapsFieldMask & whichField))
-    {
-        returnValue += _sfGenDepthmaps.getBinSize();
-    }
+  if (FieldBits::NoField != (GenDepthmapsFieldMask & whichField)) {
+    returnValue += _sfGenDepthmaps.getBinSize();
+  }
 
-    if(FieldBits::NoField != (FrameBufferIndexFieldMask & whichField))
-    {
-        returnValue += _sfFrameBufferIndex.getBinSize();
-    }
+  if (FieldBits::NoField != (FrameBufferIndexFieldMask & whichField)) {
+    returnValue += _sfFrameBufferIndex.getBinSize();
+  }
 
-    if(FieldBits::NoField != (DepthBufferIndexFieldMask & whichField))
-    {
-        returnValue += _sfDepthBufferIndex.getBinSize();
-    }
+  if (FieldBits::NoField != (DepthBufferIndexFieldMask & whichField)) {
+    returnValue += _sfDepthBufferIndex.getBinSize();
+  }
 
-    if(FieldBits::NoField != (StencilBufferIndexFieldMask & whichField))
-    {
-        returnValue += _sfStencilBufferIndex.getBinSize();
-    }
+  if (FieldBits::NoField != (StencilBufferIndexFieldMask & whichField)) {
+    returnValue += _sfStencilBufferIndex.getBinSize();
+  }
 
-    if(FieldBits::NoField != (DirtyFieldMask & whichField))
-    {
-        returnValue += _sfDirty.getBinSize();
-    }
+  if (FieldBits::NoField != (DirtyFieldMask & whichField)) {
+    returnValue += _sfDirty.getBinSize();
+  }
 
-    if(FieldBits::NoField != (ReadBufferFieldMask & whichField))
-    {
-        returnValue += _sfReadBuffer.getBinSize();
-    }
+  if (FieldBits::NoField != (ReadBufferFieldMask & whichField)) {
+    returnValue += _sfReadBuffer.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void FBOViewportBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void FBOViewportBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (EnabledFieldMask & whichField))
-    {
-        _sfEnabled.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (EnabledFieldMask & whichField)) {
+    _sfEnabled.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ExcludeNodesFieldMask & whichField))
-    {
-        _mfExcludeNodes.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (ExcludeNodesFieldMask & whichField)) {
+    _mfExcludeNodes.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (RenderNodesFieldMask & whichField))
-    {
-        _mfRenderNodes.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (RenderNodesFieldMask & whichField)) {
+    _mfRenderNodes.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (TexturesFieldMask & whichField))
-    {
-        _mfTextures.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (TexturesFieldMask & whichField)) {
+    _mfTextures.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (FboOnFieldMask & whichField))
-    {
-        _sfFboOn.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (FboOnFieldMask & whichField)) {
+    _sfFboOn.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (StorageWidthFieldMask & whichField))
-    {
-        _sfStorageWidth.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (StorageWidthFieldMask & whichField)) {
+    _sfStorageWidth.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (StorageHeightFieldMask & whichField))
-    {
-        _sfStorageHeight.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (StorageHeightFieldMask & whichField)) {
+    _sfStorageHeight.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GenCubemapsFieldMask & whichField))
-    {
-        _sfGenCubemaps.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (GenCubemapsFieldMask & whichField)) {
+    _sfGenCubemaps.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GenDepthmapsFieldMask & whichField))
-    {
-        _sfGenDepthmaps.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (GenDepthmapsFieldMask & whichField)) {
+    _sfGenDepthmaps.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (FrameBufferIndexFieldMask & whichField))
-    {
-        _sfFrameBufferIndex.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (FrameBufferIndexFieldMask & whichField)) {
+    _sfFrameBufferIndex.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (DepthBufferIndexFieldMask & whichField))
-    {
-        _sfDepthBufferIndex.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (DepthBufferIndexFieldMask & whichField)) {
+    _sfDepthBufferIndex.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (StencilBufferIndexFieldMask & whichField))
-    {
-        _sfStencilBufferIndex.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (StencilBufferIndexFieldMask & whichField)) {
+    _sfStencilBufferIndex.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (DirtyFieldMask & whichField))
-    {
-        _sfDirty.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (DirtyFieldMask & whichField)) {
+    _sfDirty.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ReadBufferFieldMask & whichField))
-    {
-        _sfReadBuffer.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (ReadBufferFieldMask & whichField)) {
+    _sfReadBuffer.copyToBin(pMem);
+  }
 }
 
-void FBOViewportBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void FBOViewportBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (EnabledFieldMask & whichField))
-    {
-        _sfEnabled.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (EnabledFieldMask & whichField)) {
+    _sfEnabled.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ExcludeNodesFieldMask & whichField))
-    {
-        _mfExcludeNodes.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (ExcludeNodesFieldMask & whichField)) {
+    _mfExcludeNodes.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (RenderNodesFieldMask & whichField))
-    {
-        _mfRenderNodes.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (RenderNodesFieldMask & whichField)) {
+    _mfRenderNodes.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (TexturesFieldMask & whichField))
-    {
-        _mfTextures.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (TexturesFieldMask & whichField)) {
+    _mfTextures.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (FboOnFieldMask & whichField))
-    {
-        _sfFboOn.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (FboOnFieldMask & whichField)) {
+    _sfFboOn.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (StorageWidthFieldMask & whichField))
-    {
-        _sfStorageWidth.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (StorageWidthFieldMask & whichField)) {
+    _sfStorageWidth.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (StorageHeightFieldMask & whichField))
-    {
-        _sfStorageHeight.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (StorageHeightFieldMask & whichField)) {
+    _sfStorageHeight.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GenCubemapsFieldMask & whichField))
-    {
-        _sfGenCubemaps.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (GenCubemapsFieldMask & whichField)) {
+    _sfGenCubemaps.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GenDepthmapsFieldMask & whichField))
-    {
-        _sfGenDepthmaps.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (GenDepthmapsFieldMask & whichField)) {
+    _sfGenDepthmaps.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (FrameBufferIndexFieldMask & whichField))
-    {
-        _sfFrameBufferIndex.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (FrameBufferIndexFieldMask & whichField)) {
+    _sfFrameBufferIndex.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (DepthBufferIndexFieldMask & whichField))
-    {
-        _sfDepthBufferIndex.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (DepthBufferIndexFieldMask & whichField)) {
+    _sfDepthBufferIndex.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (StencilBufferIndexFieldMask & whichField))
-    {
-        _sfStencilBufferIndex.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (StencilBufferIndexFieldMask & whichField)) {
+    _sfStencilBufferIndex.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (DirtyFieldMask & whichField))
-    {
-        _sfDirty.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (DirtyFieldMask & whichField)) {
+    _sfDirty.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ReadBufferFieldMask & whichField))
-    {
-        _sfReadBuffer.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (ReadBufferFieldMask & whichField)) {
+    _sfReadBuffer.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void FBOViewportBase::executeSyncImpl(      FBOViewportBase *pOther,
-                                        const BitVector         &whichField)
-{
+void FBOViewportBase::executeSyncImpl(FBOViewportBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (EnabledFieldMask & whichField))
-        _sfEnabled.syncWith(pOther->_sfEnabled);
+  if (FieldBits::NoField != (EnabledFieldMask & whichField))
+    _sfEnabled.syncWith(pOther->_sfEnabled);
 
-    if(FieldBits::NoField != (ExcludeNodesFieldMask & whichField))
-        _mfExcludeNodes.syncWith(pOther->_mfExcludeNodes);
+  if (FieldBits::NoField != (ExcludeNodesFieldMask & whichField))
+    _mfExcludeNodes.syncWith(pOther->_mfExcludeNodes);
 
-    if(FieldBits::NoField != (RenderNodesFieldMask & whichField))
-        _mfRenderNodes.syncWith(pOther->_mfRenderNodes);
+  if (FieldBits::NoField != (RenderNodesFieldMask & whichField))
+    _mfRenderNodes.syncWith(pOther->_mfRenderNodes);
 
-    if(FieldBits::NoField != (TexturesFieldMask & whichField))
-        _mfTextures.syncWith(pOther->_mfTextures);
+  if (FieldBits::NoField != (TexturesFieldMask & whichField))
+    _mfTextures.syncWith(pOther->_mfTextures);
 
-    if(FieldBits::NoField != (FboOnFieldMask & whichField))
-        _sfFboOn.syncWith(pOther->_sfFboOn);
+  if (FieldBits::NoField != (FboOnFieldMask & whichField))
+    _sfFboOn.syncWith(pOther->_sfFboOn);
 
-    if(FieldBits::NoField != (StorageWidthFieldMask & whichField))
-        _sfStorageWidth.syncWith(pOther->_sfStorageWidth);
+  if (FieldBits::NoField != (StorageWidthFieldMask & whichField))
+    _sfStorageWidth.syncWith(pOther->_sfStorageWidth);
 
-    if(FieldBits::NoField != (StorageHeightFieldMask & whichField))
-        _sfStorageHeight.syncWith(pOther->_sfStorageHeight);
+  if (FieldBits::NoField != (StorageHeightFieldMask & whichField))
+    _sfStorageHeight.syncWith(pOther->_sfStorageHeight);
 
-    if(FieldBits::NoField != (GenCubemapsFieldMask & whichField))
-        _sfGenCubemaps.syncWith(pOther->_sfGenCubemaps);
+  if (FieldBits::NoField != (GenCubemapsFieldMask & whichField))
+    _sfGenCubemaps.syncWith(pOther->_sfGenCubemaps);
 
-    if(FieldBits::NoField != (GenDepthmapsFieldMask & whichField))
-        _sfGenDepthmaps.syncWith(pOther->_sfGenDepthmaps);
+  if (FieldBits::NoField != (GenDepthmapsFieldMask & whichField))
+    _sfGenDepthmaps.syncWith(pOther->_sfGenDepthmaps);
 
-    if(FieldBits::NoField != (FrameBufferIndexFieldMask & whichField))
-        _sfFrameBufferIndex.syncWith(pOther->_sfFrameBufferIndex);
+  if (FieldBits::NoField != (FrameBufferIndexFieldMask & whichField))
+    _sfFrameBufferIndex.syncWith(pOther->_sfFrameBufferIndex);
 
-    if(FieldBits::NoField != (DepthBufferIndexFieldMask & whichField))
-        _sfDepthBufferIndex.syncWith(pOther->_sfDepthBufferIndex);
+  if (FieldBits::NoField != (DepthBufferIndexFieldMask & whichField))
+    _sfDepthBufferIndex.syncWith(pOther->_sfDepthBufferIndex);
 
-    if(FieldBits::NoField != (StencilBufferIndexFieldMask & whichField))
-        _sfStencilBufferIndex.syncWith(pOther->_sfStencilBufferIndex);
+  if (FieldBits::NoField != (StencilBufferIndexFieldMask & whichField))
+    _sfStencilBufferIndex.syncWith(pOther->_sfStencilBufferIndex);
 
-    if(FieldBits::NoField != (DirtyFieldMask & whichField))
-        _sfDirty.syncWith(pOther->_sfDirty);
+  if (FieldBits::NoField != (DirtyFieldMask & whichField))
+    _sfDirty.syncWith(pOther->_sfDirty);
 
-    if(FieldBits::NoField != (ReadBufferFieldMask & whichField))
-        _sfReadBuffer.syncWith(pOther->_sfReadBuffer);
-
-
+  if (FieldBits::NoField != (ReadBufferFieldMask & whichField))
+    _sfReadBuffer.syncWith(pOther->_sfReadBuffer);
 }
 #else
-void FBOViewportBase::executeSyncImpl(      FBOViewportBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void FBOViewportBase::executeSyncImpl(
+    FBOViewportBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (EnabledFieldMask & whichField))
-        _sfEnabled.syncWith(pOther->_sfEnabled);
+  if (FieldBits::NoField != (EnabledFieldMask & whichField))
+    _sfEnabled.syncWith(pOther->_sfEnabled);
 
-    if(FieldBits::NoField != (FboOnFieldMask & whichField))
-        _sfFboOn.syncWith(pOther->_sfFboOn);
+  if (FieldBits::NoField != (FboOnFieldMask & whichField))
+    _sfFboOn.syncWith(pOther->_sfFboOn);
 
-    if(FieldBits::NoField != (StorageWidthFieldMask & whichField))
-        _sfStorageWidth.syncWith(pOther->_sfStorageWidth);
+  if (FieldBits::NoField != (StorageWidthFieldMask & whichField))
+    _sfStorageWidth.syncWith(pOther->_sfStorageWidth);
 
-    if(FieldBits::NoField != (StorageHeightFieldMask & whichField))
-        _sfStorageHeight.syncWith(pOther->_sfStorageHeight);
+  if (FieldBits::NoField != (StorageHeightFieldMask & whichField))
+    _sfStorageHeight.syncWith(pOther->_sfStorageHeight);
 
-    if(FieldBits::NoField != (GenCubemapsFieldMask & whichField))
-        _sfGenCubemaps.syncWith(pOther->_sfGenCubemaps);
+  if (FieldBits::NoField != (GenCubemapsFieldMask & whichField))
+    _sfGenCubemaps.syncWith(pOther->_sfGenCubemaps);
 
-    if(FieldBits::NoField != (GenDepthmapsFieldMask & whichField))
-        _sfGenDepthmaps.syncWith(pOther->_sfGenDepthmaps);
+  if (FieldBits::NoField != (GenDepthmapsFieldMask & whichField))
+    _sfGenDepthmaps.syncWith(pOther->_sfGenDepthmaps);
 
-    if(FieldBits::NoField != (FrameBufferIndexFieldMask & whichField))
-        _sfFrameBufferIndex.syncWith(pOther->_sfFrameBufferIndex);
+  if (FieldBits::NoField != (FrameBufferIndexFieldMask & whichField))
+    _sfFrameBufferIndex.syncWith(pOther->_sfFrameBufferIndex);
 
-    if(FieldBits::NoField != (DepthBufferIndexFieldMask & whichField))
-        _sfDepthBufferIndex.syncWith(pOther->_sfDepthBufferIndex);
+  if (FieldBits::NoField != (DepthBufferIndexFieldMask & whichField))
+    _sfDepthBufferIndex.syncWith(pOther->_sfDepthBufferIndex);
 
-    if(FieldBits::NoField != (StencilBufferIndexFieldMask & whichField))
-        _sfStencilBufferIndex.syncWith(pOther->_sfStencilBufferIndex);
+  if (FieldBits::NoField != (StencilBufferIndexFieldMask & whichField))
+    _sfStencilBufferIndex.syncWith(pOther->_sfStencilBufferIndex);
 
-    if(FieldBits::NoField != (DirtyFieldMask & whichField))
-        _sfDirty.syncWith(pOther->_sfDirty);
+  if (FieldBits::NoField != (DirtyFieldMask & whichField))
+    _sfDirty.syncWith(pOther->_sfDirty);
 
-    if(FieldBits::NoField != (ReadBufferFieldMask & whichField))
-        _sfReadBuffer.syncWith(pOther->_sfReadBuffer);
+  if (FieldBits::NoField != (ReadBufferFieldMask & whichField))
+    _sfReadBuffer.syncWith(pOther->_sfReadBuffer);
 
+  if (FieldBits::NoField != (ExcludeNodesFieldMask & whichField))
+    _mfExcludeNodes.syncWith(pOther->_mfExcludeNodes, sInfo);
 
-    if(FieldBits::NoField != (ExcludeNodesFieldMask & whichField))
-        _mfExcludeNodes.syncWith(pOther->_mfExcludeNodes, sInfo);
+  if (FieldBits::NoField != (RenderNodesFieldMask & whichField))
+    _mfRenderNodes.syncWith(pOther->_mfRenderNodes, sInfo);
 
-    if(FieldBits::NoField != (RenderNodesFieldMask & whichField))
-        _mfRenderNodes.syncWith(pOther->_mfRenderNodes, sInfo);
-
-    if(FieldBits::NoField != (TexturesFieldMask & whichField))
-        _mfTextures.syncWith(pOther->_mfTextures, sInfo);
-
-
+  if (FieldBits::NoField != (TexturesFieldMask & whichField))
+    _mfTextures.syncWith(pOther->_mfTextures, sInfo);
 }
 
-void FBOViewportBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void FBOViewportBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (ExcludeNodesFieldMask & whichField))
-        _mfExcludeNodes.beginEdit(uiAspect, uiContainerSize);
+  if (FieldBits::NoField != (ExcludeNodesFieldMask & whichField))
+    _mfExcludeNodes.beginEdit(uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (RenderNodesFieldMask & whichField))
-        _mfRenderNodes.beginEdit(uiAspect, uiContainerSize);
+  if (FieldBits::NoField != (RenderNodesFieldMask & whichField))
+    _mfRenderNodes.beginEdit(uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (TexturesFieldMask & whichField))
-        _mfTextures.beginEdit(uiAspect, uiContainerSize);
-
+  if (FieldBits::NoField != (TexturesFieldMask & whichField))
+    _mfTextures.beginEdit(uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 OSG_END_NAMESPACE
 
@@ -731,4 +598,3 @@ OSG_DLLEXPORT_SFIELD_DEF1(FBOViewportPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 OSG_DLLEXPORT_MFIELD_DEF1(FBOViewportPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
-

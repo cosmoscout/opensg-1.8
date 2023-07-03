@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGTEXTURECHUNK_H_
 #define _OSGTEXTURECHUNK_H_
 #ifdef __sgi
@@ -53,209 +52,197 @@ OSG_BEGIN_NAMESPACE
 #define osgMaxTexImages 16
 #define osgMaxTexCoords 8
 
-/*! \brief State chunk for textures. See \ref PageSystemTextureChunk 
+/*! \brief State chunk for textures. See \ref PageSystemTextureChunk
     for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING TextureChunk : public TextureChunkBase
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING TextureChunk : public TextureChunkBase {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /// Flags can be OR-ed, e.g. NPotTexScale for old gpu and YFlip for videos.
+  enum NPOTMatrixScaleE {
+    None_TT         = 0,
+    NPotTexScale_TT = 1,
+    XFlip_TT        = 2,
+    YFlip_TT        = 4,
+    ZFlip_TT        = 8
+  };
 
-	  /// Flags can be OR-ed, e.g. NPotTexScale for old gpu and YFlip for videos.
-	  enum NPOTMatrixScaleE 
-    { 
-        None_TT = 0, 
-        NPotTexScale_TT = 1, 
-        XFlip_TT = 2, 
-        YFlip_TT = 4, 
-        ZFlip_TT = 8 
-    };
-	
-    /*---------------------------------------------------------------------*/
-    /*! \name                 Chunk Class Access                           */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                 Chunk Class Access                           */
+  /*! \{                                                                 */
 
-           virtual const StateChunkClass * getClass         (void) const;
+  virtual const StateChunkClass* getClass(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name              Static Chunk Class Access                       */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name              Static Chunk Class Access                       */
+  /*! \{                                                                 */
 
-    inline static        UInt32            getStaticClassId (void);
-    inline static  const StateChunkClass * getStaticClass   (void);
+  inline static UInt32                 getStaticClassId(void);
+  inline static const StateChunkClass* getStaticClass(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector whichField,
-                         UInt32    origin    );
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Output                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Output                                  */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32    uiIndent = 0,
-                      const BitVector bvFlags  = 0) const;
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       State                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       State                                  */
+  /*! \{                                                                 */
 
-    virtual void activate   (DrawActionBase * action, UInt32 index = 0);
+  virtual void activate(DrawActionBase* action, UInt32 index = 0);
 
-    virtual void changeFrom (DrawActionBase * action, StateChunk * old,
-                             UInt32 index = 0);
+  virtual void changeFrom(DrawActionBase* action, StateChunk* old, UInt32 index = 0);
 
-    virtual void deactivate (DrawActionBase * action, UInt32 index = 0);
+  virtual void deactivate(DrawActionBase* action, UInt32 index = 0);
 
-    virtual bool isTransparent (void) const;
+  virtual bool isTransparent(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Comparison                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Comparison                                 */
+  /*! \{                                                                 */
 
-    virtual Real32 switchCost  (StateChunk * chunk);
+  virtual Real32 switchCost(StateChunk* chunk);
 
-    virtual bool   operator <  (const StateChunk &other) const;
+  virtual bool operator<(const StateChunk& other) const;
 
-    virtual bool   operator == (const StateChunk &other) const;
-    virtual bool   operator != (const StateChunk &other) const;
+  virtual bool operator==(const StateChunk& other) const;
+  virtual bool operator!=(const StateChunk& other) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                Texture specific                              */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                Texture specific                              */
+  /*! \{                                                                 */
 
-    void imageContentChanged(Int32 minx = -1, Int32 maxx = -1, 
-                             Int32 miny = -1, Int32 maxy = -1,
-                             Int32 minz = -1, Int32 maxz = -1 );
+  void imageContentChanged(Int32 minx = -1, Int32 maxx = -1, Int32 miny = -1, Int32 maxy = -1,
+      Int32 minz = -1, Int32 maxz = -1);
 
-    void setImage           (ImagePtr &pImage);
+  void setImage(ImagePtr& pImage);
 
-    inline void setShaderOffsetMatrix(Real32 m11, Real32 m12, 
-                                      Real32 m21, Real32 m22);
+  inline void setShaderOffsetMatrix(Real32 m11, Real32 m12, Real32 m21, Real32 m22);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name             Multitexture handling                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name             Multitexture handling                            */
+  /*! \{                                                                 */
 
-    static bool hasMultiTexture(Window *win);
-    static void activeTexture  (Window *win, UInt16 texture);
-    static bool activateTexture(Window *win, UInt16 texture);
+  static bool hasMultiTexture(Window* win);
+  static void activeTexture(Window* win, UInt16 texture);
+  static bool activateTexture(Window* win, UInt16 texture);
 
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Init                                   */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Init                                   */
-    /*! \{                                                                 */
+  void onCreate(const TextureChunk* source = NULL);
+  void onDestroy(void);
 
-    void onCreate(const TextureChunk *source = NULL);
-    void onDestroy(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  TextureChunk(void);
+  TextureChunk(const TextureChunk& source);
 
-    TextureChunk(void);
-    TextureChunk(const TextureChunk &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  virtual ~TextureChunk(void);
 
-    virtual ~TextureChunk(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                         GL                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                         GL                                   */
-    /*! \{                                                                 */
+  void handleTexture(Window* win, UInt32 id, GLenum bindtarget, GLenum paramtarget,
+      GLenum imgtarget, Window::GLObjectStatusE mode, ImagePtr img, int side = 0);
 
-    void handleTexture(Window *win, UInt32 id, GLenum bindtarget,
-                       GLenum paramtarget,
-                       GLenum imgtarget, 
-                       Window::GLObjectStatusE mode, 
-                       ImagePtr img, int side = 0);
+  void handleTextureShader(Window* win, GLenum bindtarget);
 
-    void handleTextureShader(Window *win, GLenum bindtarget);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */ 
+  // extension indices for used extensions;
+  static UInt32 _extTex3D;
+  static UInt32 _arbMultiTex;
+  static UInt32 _nvPointSprite;
+  static UInt32 _nvTextureShader;
+  static UInt32 _nvTextureShader2;
+  static UInt32 _nvTextureShader3;
+  static UInt32 _sgisGenerateMipmap;
+  static UInt32 _extTextureLodBias;
+  static UInt32 _arbTextureCompression;
+  static UInt32 _arbTextureRectangle;
+  static UInt32 _arbTextureNonPowerOfTwo;
+  static UInt32 _extTextureFilterAnisotropic;
 
-    // extension indices for used extensions;
-    static UInt32 _extTex3D;
-    static UInt32 _arbMultiTex;
-    static UInt32 _nvPointSprite;
-    static UInt32 _nvTextureShader;
-    static UInt32 _nvTextureShader2;
-    static UInt32 _nvTextureShader3;
-    static UInt32 _sgisGenerateMipmap;
-    static UInt32 _extTextureLodBias;
-    static UInt32 _arbTextureCompression;
-    static UInt32 _arbTextureRectangle;
-    static UInt32 _arbTextureNonPowerOfTwo;
-    static UInt32 _extTextureFilterAnisotropic;
-    
-    // extension indices for used fucntions;
-    static UInt32 _funcTexImage3D;
-    static UInt32 _funcTexSubImage3D;
-    static UInt32 _funcActiveTexture;
-    static UInt32 _arbCubeTex;
-    static UInt32 _funcCompressedTexImage1D;
-    static UInt32 _funcCompressedTexSubImage1D;
-    static UInt32 _funcCompressedTexImage2D;
-    static UInt32 _funcCompressedTexSubImage2D;
-    static UInt32 _funcCompressedTexImage3D;
-    static UInt32 _funcCompressedTexSubImage3D;
+  // extension indices for used fucntions;
+  static UInt32 _funcTexImage3D;
+  static UInt32 _funcTexSubImage3D;
+  static UInt32 _funcActiveTexture;
+  static UInt32 _arbCubeTex;
+  static UInt32 _funcCompressedTexImage1D;
+  static UInt32 _funcCompressedTexSubImage1D;
+  static UInt32 _funcCompressedTexImage2D;
+  static UInt32 _funcCompressedTexSubImage2D;
+  static UInt32 _funcCompressedTexImage3D;
+  static UInt32 _funcCompressedTexSubImage3D;
 
-    // class. Used for indexing in State
-    // protected to give CubeTextureChunk access
-    static StateChunkClass _class;
+  // class. Used for indexing in State
+  // protected to give CubeTextureChunk access
+  static StateChunkClass _class;
 
-    // protected to give CubeTextureChunk access
-    static void initMethod(void);
+  // protected to give CubeTextureChunk access
+  static void initMethod(void);
 
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*==========================  PRIVATE  ================================*/
+ private:
+  typedef TextureChunkBase Inherited;
 
-    typedef TextureChunkBase Inherited;
+  friend class FieldContainer;
+  friend class TextureChunkBase;
 
-    friend class FieldContainer;
-    friend class TextureChunkBase;
+  static char cvsid[];
 
-    static char cvsid[];
+  /*---------------------------------------------------------------------*/
+  /*! \name                         GL                                   */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                         GL                                   */
-    /*! \{                                                                 */
+  void handleGL(Window* win, UInt32 id);
 
-    void handleGL(Window *win, UInt32 id);
-    
-   /*! \}                                                                 */
+  /*! \}                                                                 */
 
-    // prohibit default functions (move to 'public' if you need one)
+  // prohibit default functions (move to 'public' if you need one)
 
-    void operator =(const TextureChunk &source);
+  void operator=(const TextureChunk& source);
 };
 
-typedef TextureChunk *TextureChunkP;
+typedef TextureChunk* TextureChunkP;
 
 OSG_END_NAMESPACE
 
 #include <OSGTextureChunkBase.inl>
 #include <OSGTextureChunk.inl>
 
-#define OSGTEXTURECHUNK_HEADER_CVSID "@(#)$Id: FCTemplate_h.h,v 1.15 2002/06/01 10:37:25 vossg Exp $"
+#define OSGTEXTURECHUNK_HEADER_CVSID                                                               \
+  "@(#)$Id: FCTemplate_h.h,v 1.15 2002/06/01 10:37:25 vossg Exp $"
 
 #endif /* _OSGTEXTURECHUNK_H_ */

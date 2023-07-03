@@ -64,4 +64,3 @@
 #include <OSGFieldContainerPtrFuncsImpl.inl>
 
 #endif /* _OSGPRIMARY_H_ */
-

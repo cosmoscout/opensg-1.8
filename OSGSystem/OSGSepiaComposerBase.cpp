@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILESEPIACOMPOSERINST
 
 #include <stdlib.h>
@@ -61,163 +60,113 @@
 #include "OSGSepiaComposerBase.h"
 #include "OSGSepiaComposer.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector SepiaComposerBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
+const OSG::BitVector SepiaComposerBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
+FieldContainerType SepiaComposerBase::_type("SepiaComposer", "ImageComposer", NULL,
+    (PrototypeCreateF)&SepiaComposerBase::createEmpty, SepiaComposer::initMethod, NULL, 0);
 
-
-FieldContainerType SepiaComposerBase::_type(
-    "SepiaComposer",
-    "ImageComposer",
-    NULL,
-    (PrototypeCreateF) &SepiaComposerBase::createEmpty,
-    SepiaComposer::initMethod,
-    NULL,
-    0);
-
-//OSG_FIELD_CONTAINER_DEF(SepiaComposerBase, SepiaComposerPtr)
+// OSG_FIELD_CONTAINER_DEF(SepiaComposerBase, SepiaComposerPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &SepiaComposerBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &SepiaComposerBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr SepiaComposerBase::shallowCopy(void) const 
-{ 
-    SepiaComposerPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const SepiaComposer *>(this)); 
-
-    return returnValue; 
+FieldContainerType& SepiaComposerBase::getType(void) {
+  return _type;
 }
 
-UInt32 SepiaComposerBase::getContainerSize(void) const 
-{ 
-    return sizeof(SepiaComposer); 
+const FieldContainerType& SepiaComposerBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr SepiaComposerBase::shallowCopy(void) const {
+  SepiaComposerPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const SepiaComposer*>(this));
+
+  return returnValue;
+}
+
+UInt32 SepiaComposerBase::getContainerSize(void) const {
+  return sizeof(SepiaComposer);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void SepiaComposerBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((SepiaComposerBase *) &other, whichField);
+void SepiaComposerBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((SepiaComposerBase*)&other, whichField);
 }
 #else
-void SepiaComposerBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((SepiaComposerBase *) &other, whichField, sInfo);
+void SepiaComposerBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((SepiaComposerBase*)&other, whichField, sInfo);
 }
-void SepiaComposerBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void SepiaComposerBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void SepiaComposerBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void SepiaComposerBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-SepiaComposerBase::SepiaComposerBase(void) :
-    Inherited() 
-{
+SepiaComposerBase::SepiaComposerBase(void)
+    : Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-SepiaComposerBase::SepiaComposerBase(const SepiaComposerBase &source) :
-    Inherited                 (source)
-{
+SepiaComposerBase::SepiaComposerBase(const SepiaComposerBase& source)
+    : Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-SepiaComposerBase::~SepiaComposerBase(void)
-{
+SepiaComposerBase::~SepiaComposerBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 SepiaComposerBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 SepiaComposerBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void SepiaComposerBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
-
-
+void SepiaComposerBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 }
 
-void SepiaComposerBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
-
-
+void SepiaComposerBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void SepiaComposerBase::executeSyncImpl(      SepiaComposerBase *pOther,
-                                        const BitVector         &whichField)
-{
+void SepiaComposerBase::executeSyncImpl(SepiaComposerBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
-
-
+  Inherited::executeSyncImpl(pOther, whichField);
 }
 #else
-void SepiaComposerBase::executeSyncImpl(      SepiaComposerBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void SepiaComposerBase::executeSyncImpl(
+    SepiaComposerBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
-
-
-
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 }
 
-void SepiaComposerBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void SepiaComposerBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 OSG_BEGIN_NAMESPACE
 
@@ -225,8 +174,4 @@ OSG_BEGIN_NAMESPACE
 DataType FieldDataTraits<SepiaComposerPtr>::_type("SepiaComposerPtr", "ImageComposerPtr");
 #endif
 
-
 OSG_END_NAMESPACE
-
-
-

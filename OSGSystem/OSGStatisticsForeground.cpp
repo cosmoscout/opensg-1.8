@@ -51,7 +51,7 @@ OSG_USING_NAMESPACE
 
 /*! \class osg::StatisticsForeground
     \ingroup GrpSystemWindowForegrounds
-    
+
 StatisticsForeground is the base class for all foregrounds that process
 statistics.  See \ref
 PageSystemWindowForegroundStatistics for a description.
@@ -62,36 +62,26 @@ collector to use is stored in the _sfCollector Field.
 
 /*----------------------- constructors & destructors ----------------------*/
 
-StatisticsForeground::StatisticsForeground(void) :
-    Inherited()
-{
+StatisticsForeground::StatisticsForeground(void)
+    : Inherited() {
 }
 
-StatisticsForeground::StatisticsForeground(const StatisticsForeground &source) :
-    Inherited(source)
-{
+StatisticsForeground::StatisticsForeground(const StatisticsForeground& source)
+    : Inherited(source) {
 }
 
-StatisticsForeground::~StatisticsForeground(void)
-{
+StatisticsForeground::~StatisticsForeground(void) {
 }
 
 /*----------------------------- class specific ----------------------------*/
 
-void StatisticsForeground::initMethod (void)
-{
+void StatisticsForeground::initMethod(void) {
 }
 
-void StatisticsForeground::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void StatisticsForeground::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
-void StatisticsForeground::dump(      UInt32    , 
-                         const BitVector ) const
-{
-    SLOG << "Dump StatisticsForeground NI" << std::endl;
+void StatisticsForeground::dump(UInt32, const BitVector) const {
+  SLOG << "Dump StatisticsForeground NI" << std::endl;
 }
-
-
-

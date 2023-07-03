@@ -60,209 +60,201 @@ class ActorBase;
 class ExtendActorBase;
 class BasicActorBase;
 
-class OSG_SYSTEMLIB_DLLMAPPING NewActionBase
-{
-    /*==== PUBLIC ===========================================================*/
-  public:
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Types                                                       */
-    /*! \{                                                                   */
+class OSG_SYSTEMLIB_DLLMAPPING NewActionBase {
+  /*==== PUBLIC ===========================================================*/
+ public:
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Types                                                       */
+  /*! \{                                                                   */
 
-    typedef NewActionTypes::ResultE             ResultE;
-    typedef NewActionTypes::PriorityType        PriorityType;
-    typedef NewActionTypes::PriorityTypeTraits  PriorityTypeTraits;
-    typedef NewActionTypes::Functor             Functor;
-    typedef NewActionTypes::FunctorArgumentType FunctorArgumentType;
+  typedef NewActionTypes::ResultE             ResultE;
+  typedef NewActionTypes::PriorityType        PriorityType;
+  typedef NewActionTypes::PriorityTypeTraits  PriorityTypeTraits;
+  typedef NewActionTypes::Functor             Functor;
+  typedef NewActionTypes::FunctorArgumentType FunctorArgumentType;
 
 #ifdef OSG_NEWACTION_STATISTICS
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Statistics                                                  */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Statistics                                                  */
+  /*! \{                                                                   */
 
-    static StatElemDesc<StatIntElem> statNodesEnter;
-    static StatElemDesc<StatIntElem> statNodesLeave;
+  static StatElemDesc<StatIntElem> statNodesEnter;
+  static StatElemDesc<StatIntElem> statNodesLeave;
 
-    inline const StatCollector *getStatistics(void                      ) const;
-    inline       StatCollector *getStatistics(void                      );
-    inline       void           setStatistics(StatCollector *pStatistics);
+  inline const StatCollector* getStatistics(void) const;
+  inline StatCollector*       getStatistics(void);
+  inline void                 setStatistics(StatCollector* pStatistics);
 
 #endif /* OSG_NEWACTION_STATISTICS */
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Destructor                                                  */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Destructor                                                  */
+  /*! \{                                                                   */
 
-    virtual ~NewActionBase(void);
+  virtual ~NewActionBase(void);
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Apply                                                       */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Apply                                                       */
+  /*! \{                                                                   */
 
-    virtual ResultE apply(NodePtr pRoot) = 0;
+  virtual ResultE apply(NodePtr pRoot) = 0;
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Generic Actor Management                                    */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Generic Actor Management                                    */
+  /*! \{                                                                   */
 
-    UInt32 addActor          (ActorBase       *pActor );
-    void   subActor          (ActorBase       *pActor );
-    UInt32 findActor         (ActorBase       *pActor ) const;
-    UInt32 getNumActors      (void                    ) const;
+  UInt32 addActor(ActorBase* pActor);
+  void   subActor(ActorBase* pActor);
+  UInt32 findActor(ActorBase* pActor) const;
+  UInt32 getNumActors(void) const;
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Extend Actor Management                                     */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Extend Actor Management                                     */
+  /*! \{                                                                   */
 
-    UInt32 addExtendActor    (ExtendActorBase *pActor );
-    UInt32 addExtendActor    (ExtendActorBase *pActor,
-                              UInt32            pos   );
-    void   subExtendActor    (UInt32            pos   );
-    UInt32 findExtendActor   (ExtendActorBase *pActor ) const;
-    UInt32 getNumExtendActors(void                    ) const;
+  UInt32 addExtendActor(ExtendActorBase* pActor);
+  UInt32 addExtendActor(ExtendActorBase* pActor, UInt32 pos);
+  void   subExtendActor(UInt32 pos);
+  UInt32 findExtendActor(ExtendActorBase* pActor) const;
+  UInt32 getNumExtendActors(void) const;
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Basic Actor Management                                      */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Basic Actor Management                                      */
+  /*! \{                                                                   */
 
-    UInt32 addBasicActor     (BasicActorBase  *pActor );
-    UInt32 addBasicActor     (BasicActorBase  *pActor,
-                              UInt32           pos    );
-    void   subBasicActor     (UInt32           pos    );
-    UInt32 findBasicActor    (BasicActorBase  *pActor ) const;
-    UInt32 getNumBasicActors (void                    ) const;
+  UInt32 addBasicActor(BasicActorBase* pActor);
+  UInt32 addBasicActor(BasicActorBase* pActor, UInt32 pos);
+  void   subBasicActor(UInt32 pos);
+  UInt32 findBasicActor(BasicActorBase* pActor) const;
+  UInt32 getNumBasicActors(void) const;
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Traversal Mask                                              */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Traversal Mask                                              */
+  /*! \{                                                                   */
 
-    inline UInt32 getTravMask (void           ) const;
-    inline void   setTravMask (UInt32 travMask);
+  inline UInt32 getTravMask(void) const;
+  inline void   setTravMask(UInt32 travMask);
 
-    /*! \}                                                                   */
-    /*==== PROTECTED ========================================================*/
-  protected:
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Types                                                       */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*==== PROTECTED ========================================================*/
+ protected:
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Types                                                       */
+  /*! \{                                                                   */
 
-    typedef std::vector<ExtendActorBase *>   ExtendActorStore;
-    typedef ExtendActorStore::iterator       ExtendActorStoreIt;
-    typedef ExtendActorStore::const_iterator ExtendActorStoreConstIt;
+  typedef std::vector<ExtendActorBase*>    ExtendActorStore;
+  typedef ExtendActorStore::iterator       ExtendActorStoreIt;
+  typedef ExtendActorStore::const_iterator ExtendActorStoreConstIt;
 
-    typedef std::vector<BasicActorBase  *>   BasicActorStore;
-    typedef BasicActorStore::iterator        BasicActorStoreIt;
-    typedef BasicActorStore::const_iterator  BasicActorStoreConstIt;
+  typedef std::vector<BasicActorBase*>    BasicActorStore;
+  typedef BasicActorStore::iterator       BasicActorStoreIt;
+  typedef BasicActorStore::const_iterator BasicActorStoreConstIt;
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Friends                                                     */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Friends                                                     */
+  /*! \{                                                                   */
 
-    friend class OSG::ActorBase;
-    friend class OSG::ExtendActorBase;
-    friend class OSG::BasicActorBase;
+  friend class OSG::ActorBase;
+  friend class OSG::ExtendActorBase;
+  friend class OSG::BasicActorBase;
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Constructor                                                 */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Constructor                                                 */
+  /*! \{                                                                   */
 
-    NewActionBase(void);
+  NewActionBase(void);
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Events                                                      */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Events                                                      */
+  /*! \{                                                                   */
 
-    virtual void addExtendEvent    (ExtendActorBase   *pActor,
-                                    UInt32             actorIndex) = 0;
-    virtual void subExtendEvent    (ExtendActorBase   *pActor,
-                                    UInt32             actorIndex) = 0;
+  virtual void addExtendEvent(ExtendActorBase* pActor, UInt32 actorIndex) = 0;
+  virtual void subExtendEvent(ExtendActorBase* pActor, UInt32 actorIndex) = 0;
 
-    virtual void addBasicEvent     (BasicActorBase    *pActor,
-                                    UInt32             actorIndex) = 0;
-    virtual void subBasicEvent     (BasicActorBase    *pActor,
-                                    UInt32             actorIndex) = 0;
+  virtual void addBasicEvent(BasicActorBase* pActor, UInt32 actorIndex) = 0;
+  virtual void subBasicEvent(BasicActorBase* pActor, UInt32 actorIndex) = 0;
 
-    virtual void startEvent         (void                        );
-    virtual void stopEvent          (void                        );
+  virtual void startEvent(void);
+  virtual void stopEvent(void);
 
-    virtual void beginEditStateEvent(ActorBase        *pActor,
-                                     UInt32            actorId   ) = 0;
-    virtual void endEditStateEvent  (ActorBase        *pActor,
-                                     UInt32            actorId   ) = 0;
+  virtual void beginEditStateEvent(ActorBase* pActor, UInt32 actorId) = 0;
+  virtual void endEditStateEvent(ActorBase* pActor, UInt32 actorId)   = 0;
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    ChildrenList/ExtraChildrenList Access                       */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    ChildrenList/ExtraChildrenList Access                       */
+  /*! \{                                                                   */
 
-    inline       bool               getChildrenListEnabled(void        ) const;
-    inline       void               setChildrenListEnabled(bool enabled);
+  inline bool getChildrenListEnabled(void) const;
+  inline void setChildrenListEnabled(bool enabled);
 
-    inline const ChildrenList      &getChildrenList       (void        ) const;
-    inline       ChildrenList      &getChildrenList       (void        );
+  inline const ChildrenList& getChildrenList(void) const;
+  inline ChildrenList&       getChildrenList(void);
 
-    inline const ExtraChildrenList &getExtraChildrenList  (void        ) const;
-    inline       ExtraChildrenList &getExtraChildrenList  (void        );
+  inline const ExtraChildrenList& getExtraChildrenList(void) const;
+  inline ExtraChildrenList&       getExtraChildrenList(void);
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    MultiPass Setup                                             */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    MultiPass Setup                                             */
+  /*! \{                                                                   */
 
-    inline UInt32 getNumPasses(void            ) const;
-    inline void   setNumPasses(UInt32 numPasses);
+  inline UInt32 getNumPasses(void) const;
+  inline void   setNumPasses(UInt32 numPasses);
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Actor Access                                                */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Actor Access                                                */
+  /*! \{                                                                   */
 
-    inline ExtendActorStoreConstIt beginExtend(void) const;
-    inline ExtendActorStoreIt      beginExtend(void);
-    inline ExtendActorStoreConstIt endExtend  (void) const;
-    inline ExtendActorStoreIt      endExtend  (void);
+  inline ExtendActorStoreConstIt beginExtend(void) const;
+  inline ExtendActorStoreIt      beginExtend(void);
+  inline ExtendActorStoreConstIt endExtend(void) const;
+  inline ExtendActorStoreIt      endExtend(void);
 
-    inline BasicActorStoreConstIt  beginBasic (void) const;
-    inline BasicActorStoreIt       beginBasic (void);
-    inline BasicActorStoreConstIt  endBasic   (void) const;
-    inline BasicActorStoreIt       endBasic   (void);
+  inline BasicActorStoreConstIt beginBasic(void) const;
+  inline BasicActorStoreIt      beginBasic(void);
+  inline BasicActorStoreConstIt endBasic(void) const;
+  inline BasicActorStoreIt      endBasic(void);
 
-           ResultE                 startActors(void);
-           ResultE                 stopActors (void);
+  ResultE startActors(void);
+  ResultE stopActors(void);
 
-    /*! \}                                                                   */
-    /*==== PRIVATE ==========================================================*/
-  private:
-    ExtendActorStore   _extendActors;
-    BasicActorStore    _basicActors;
+  /*! \}                                                                   */
+  /*==== PRIVATE ==========================================================*/
+ private:
+  ExtendActorStore _extendActors;
+  BasicActorStore  _basicActors;
 
 #ifdef OSG_NEWACTION_STATISTICS
-    StatCollector     *_pStatistics;
-    bool               _ownStatistics;
+  StatCollector* _pStatistics;
+  bool           _ownStatistics;
 #endif /* OSG_NEWACTION_STATISTICS */
 
-    UInt32             _travMask;
-    UInt32             _numPasses;
+  UInt32 _travMask;
+  UInt32 _numPasses;
 
-    bool               _childrenListEnabled;
-    ChildrenList       _childrenList;
+  bool         _childrenListEnabled;
+  ChildrenList _childrenList;
 
-    ExtraChildrenList  _extraChildrenList;
+  ExtraChildrenList _extraChildrenList;
 };
 
 OSG_END_NAMESPACE
 
 #include "OSGNewActionBase.inl"
 
-#define OSGNEWACTIONBASE_HEADER_CVSID "@(#)$Id: OSGNewActionBase.h,v 1.5 2004/09/17 14:09:43 neumannc Exp $"
+#define OSGNEWACTIONBASE_HEADER_CVSID                                                              \
+  "@(#)$Id: OSGNewActionBase.h,v 1.5 2004/09/17 14:09:43 neumannc Exp $"
 
 #endif /* _OSGNEWACTIONBASE_H_ */

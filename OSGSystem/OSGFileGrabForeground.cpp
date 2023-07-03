@@ -52,7 +52,7 @@ OSG_USING_NAMESPACE
 
 /*! \class osg::FileGrabForeground
     \ingroup GrpSystemWindowForegrounds
-    
+
 The FileGrabForeground is used for grabbing a frame or sequence of frames to
 disk.  See \ref
 PageSystemWindowForegroundGrabFile for a description.
@@ -66,86 +66,69 @@ be activated/deactivated using _sfActive.
 
 /*----------------------- constructors & destructors ----------------------*/
 
-FileGrabForeground::FileGrabForeground(void) :
-    Inherited()
-{
+FileGrabForeground::FileGrabForeground(void)
+    : Inherited() {
 }
 
-FileGrabForeground::FileGrabForeground(const FileGrabForeground &source) :
-    Inherited(source)
-{
+FileGrabForeground::FileGrabForeground(const FileGrabForeground& source)
+    : Inherited(source) {
 }
 
-FileGrabForeground::~FileGrabForeground(void)
-{
+FileGrabForeground::~FileGrabForeground(void) {
 }
 
 /*----------------------------- class specific ----------------------------*/
 
-void FileGrabForeground::initMethod (void)
-{
+void FileGrabForeground::initMethod(void) {
 }
 
-void FileGrabForeground::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void FileGrabForeground::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
-void FileGrabForeground::dump(      UInt32    , 
-                         const BitVector ) const
-{
-    SLOG << "Dump FileGrabForeground NI" << std::endl;
+void FileGrabForeground::dump(UInt32, const BitVector) const {
+  SLOG << "Dump FileGrabForeground NI" << std::endl;
 }
-
 
 /*! Grab the image and write it to the file. The name needs to be set.
-*/
-    
-void FileGrabForeground::draw(DrawActionBase *action, Viewport *port)
-{
-    if(getActive() == false)
-        return;
-    
-    if(getName().empty())
-    {
-        FWARNING(("FileGrabForeground::draw: no name ?!?\n"));
-        return;
-    }
-    
-    // do we have an image yet? If not, create one.
-    if(getImage() == NullFC)
-    {
-        beginEditCP(this->getPtr(), FileGrabForeground::ImageFieldMask);
-        {
-            ImagePtr iPtr=Image::create();
-            iPtr->set(Image::OSG_RGB_PF, 1);
-            setImage(iPtr);
-        }
-        endEditCP  (this->getPtr(), FileGrabForeground::ImageFieldMask);
-    }
-    
-    Inherited::draw(action,port);
-    
-    Char8 *name = new Char8 [ getName().size() + 32 ]; // this is really 
-                                                       // arbitrary... :(
+ */
 
-    sprintf(name, getName().c_str(), getFrame());
-        
-    ImagePtr i = getImage();
+void FileGrabForeground::draw(DrawActionBase* action, Viewport* port) {
+  if (getActive() == false)
+    return;
 
-    i->write(name);
-    
-    delete [] name;
-    
-    if(getIncrement() != false)
+  if (getName().empty()) {
+    FWARNING(("FileGrabForeground::draw: no name ?!?\n"));
+    return;
+  }
+
+  // do we have an image yet? If not, create one.
+  if (getImage() == NullFC) {
+    beginEditCP(this->getPtr(), FileGrabForeground::ImageFieldMask);
     {
-        beginEditCP(this->getPtr(), FileGrabForeground::FrameFieldMask);
-        {
-            setFrame(getFrame() + 1);
-        }
-        endEditCP  (this->getPtr(), FileGrabForeground::FrameFieldMask);
-    }   
+      ImagePtr iPtr = Image::create();
+      iPtr->set(Image::OSG_RGB_PF, 1);
+      setImage(iPtr);
+    }
+    endEditCP(this->getPtr(), FileGrabForeground::ImageFieldMask);
+  }
+
+  Inherited::draw(action, port);
+
+  Char8* name = new Char8[getName().size() + 32]; // this is really
+                                                  // arbitrary... :(
+
+  sprintf(name, getName().c_str(), getFrame());
+
+  ImagePtr i = getImage();
+
+  i->write(name);
+
+  delete[] name;
+
+  if (getIncrement() != false) {
+    beginEditCP(this->getPtr(), FileGrabForeground::FrameFieldMask);
+    { setFrame(getFrame() + 1); }
+    endEditCP(this->getPtr(), FileGrabForeground::FrameFieldMask);
+  }
 }
-
-
-

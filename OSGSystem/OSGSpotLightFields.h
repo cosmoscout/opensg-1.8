@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGSPOTLIGHTFIELDS_H_
 #define _OSGSPOTLIGHTFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class SpotLight;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! SpotLightPtr
 
 typedef FCPtr<PointLightPtr, SpotLight> SpotLightPtr;
@@ -81,13 +80,11 @@ typedef FCPtr<PointLightPtr, SpotLight> SpotLightPtr;
 #endif
 
 template <>
-struct FieldDataTraits<SpotLightPtr> : 
-    public FieldTraitsRecurseMapper<SpotLightPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<SpotLightPtr> : public FieldTraitsRecurseMapper<SpotLightPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -98,10 +95,9 @@ struct FieldDataTraits<SpotLightPtr> :
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
 
-
-
 OSG_END_NAMESPACE
 
-#define OSGSPOTLIGHTFIELDS_HEADER_CVSID "@(#)$Id: FCFieldsTemplate_h.h,v 1.25 2005/04/04 14:51:48 dirk Exp $"
+#define OSGSPOTLIGHTFIELDS_HEADER_CVSID                                                            \
+  "@(#)$Id: FCFieldsTemplate_h.h,v 1.25 2005/04/04 14:51:48 dirk Exp $"
 
 #endif /* _OSGSPOTLIGHTFIELDS_H_ */

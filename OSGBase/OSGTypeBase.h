@@ -51,88 +51,82 @@ OSG_BEGIN_NAMESPACE
 /*! \ingroup GrpBaseBaseTypeSystem
  */
 
-class OSG_BASE_DLLMAPPING TypeBase
-{
-    /*==========================  PUBLIC  =================================*/
+class OSG_BASE_DLLMAPPING TypeBase {
+  /*==========================  PUBLIC  =================================*/
 
-  public :
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructor                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructor                                */
-    /*! \{                                                                 */
+  TypeBase(const Char8* szName, const Char8* szParentName, const UInt32 uiNameSpace = 0);
 
-    TypeBase(const Char8  *szName, 
-             const Char8  *szParentName,
-             const UInt32  uiNameSpace = 0);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  virtual ~TypeBase(void);
 
-    virtual ~TypeBase(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Id                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Id                                     */
-    /*! \{                                                                 */
+  UInt32 getId(void) const;
 
-          UInt32    getId         (void) const;
+  const IDString& getName(void) const;
+  const Char8*    getCName(void) const;
 
-    const IDString &getName       (void) const;
-    const Char8    *getCName      (void) const;
+  const IDString& getParentName(void) const;
+  const Char8*    getCParentName(void) const;
 
-    const IDString &getParentName (void) const;
-    const Char8    *getCParentName(void) const;
+  UInt32 getNameSpace(void) const;
 
-          UInt32    getNameSpace  (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Operators                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Operators                                */
-    /*! \{                                                                 */
+  virtual bool isDerivedFrom(const TypeBase& other) const;
 
-    virtual bool isDerivedFrom(const TypeBase &other) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Comparison                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Comparison                                */
-    /*! \{                                                                 */
+  bool operator==(const TypeBase& other) const;
+  bool operator!=(const TypeBase& other) const;
 
-    bool operator ==(const TypeBase &other) const;
-    bool operator !=(const TypeBase &other) const;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Members                                 */
+  /*! \{                                                                 */
 
-  protected:
+  UInt32 _uiTypeId;
+  UInt32 _uiTypeRootId;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Members                                 */
-    /*! \{                                                                 */
+  TypeBase* _pParent;
 
-    UInt32    _uiTypeId;
-    UInt32    _uiTypeRootId;
+  IDString _szName;
+  IDString _szParentName;
 
-    TypeBase *_pParent;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    IDString  _szName;
-    IDString  _szParentName;
+  TypeBase(const TypeBase& source);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-    TypeBase(const TypeBase &source);
-
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-
-  private:
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const TypeBase &source);
+ private:
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const TypeBase& source);
 };
 
 OSG_END_NAMESPACE
@@ -140,7 +134,3 @@ OSG_END_NAMESPACE
 #define OSGTYPEBASE_HEADER_CVSID "@(#)$Id: $"
 
 #endif /* _OSGTYPEBASE_H_ */
-
-
-
-

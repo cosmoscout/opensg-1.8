@@ -55,15 +55,11 @@ class Barrier;
 class Lock;
 class LockPool;
 
-typedef BaseThread *(*CreateThreadF  )(const Char8  *szName,
-                                             UInt32  uiId);
-typedef Barrier    *(*CreateBarrierF )(const Char8  *szName,
-                                             UInt32  uiId);
-typedef Lock       *(*CreateLockF    )(const Char8  *szName,
-                                             UInt32  uiId);
-typedef LockPool   *(*CreateLockPoolF)(const Char8  *szName,
-                                             UInt32  uiId);
-typedef void        (*InitThreadingF) (void);
+typedef BaseThread* (*CreateThreadF)(const Char8* szName, UInt32 uiId);
+typedef Barrier* (*CreateBarrierF)(const Char8* szName, UInt32 uiId);
+typedef Lock* (*CreateLockF)(const Char8* szName, UInt32 uiId);
+typedef LockPool* (*CreateLockPoolF)(const Char8* szName, UInt32 uiId);
+typedef void (*InitThreadingF)(void);
 
 //---------------------------------------------------------------------------
 //  Class
@@ -72,45 +68,37 @@ typedef void        (*InitThreadingF) (void);
 /*! \ingroup GrpBaseBaseMultiThreading
  */
 
-class OSG_BASE_DLLMAPPING MPType : public TypeBase
-{
-    /*==========================  PUBLIC  =================================*/
+class OSG_BASE_DLLMAPPING MPType : public TypeBase {
+  /*==========================  PUBLIC  =================================*/
 
-  public :
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructor                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructor                                */
-    /*! \{                                                                 */
+  MPType(const Char8* szName, const Char8* szParentName);
 
-    MPType(const Char8 *szName, 
-           const Char8 *szParentName);
-                 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
-             
-    virtual ~MPType(void); 
-    
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-  protected:
+  virtual ~MPType(void);
 
-    typedef TypeBase Inherited;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    /*==========================  PRIVATE  ================================*/
+ protected:
+  typedef TypeBase Inherited;
 
-  private:
+  /*==========================  PRIVATE  ================================*/
 
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    MPType(const MPType &source);
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const MPType &source);
+ private:
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  MPType(const MPType& source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const MPType& source);
 };
-
-
-
 
 //---------------------------------------------------------------------------
 //  Class
@@ -119,62 +107,53 @@ class OSG_BASE_DLLMAPPING MPType : public TypeBase
 /*! \ingroup GrpBaseBaseMultiThreading
  */
 
-class OSG_BASE_DLLMAPPING MPThreadType : public MPType
-{
-    /*==========================  PUBLIC  =================================*/
+class OSG_BASE_DLLMAPPING MPThreadType : public MPType {
+  /*==========================  PUBLIC  =================================*/
 
-  public :
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructor                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructor                                */
-    /*! \{                                                                 */
+  MPThreadType(const Char8* szName, const Char8* szParentName, CreateThreadF fCreateThread,
+      InitThreadingF fInitThreading);
 
-    MPThreadType(const Char8         *szName, 
-                 const Char8         *szParentName,
-                       CreateThreadF  fCreateThread,
-                       InitThreadingF fInitThreading);
-                       
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    virtual ~MPThreadType(void); 
+  virtual ~MPThreadType(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    BaseThread *create(const Char8 *szName);
-    
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  BaseThread* create(const Char8* szName);
 
-  protected:
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    typedef MPType Inherited;
+ protected:
+  typedef MPType Inherited;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Class Specific                             */
-    /*! \{                                                                 */
- 
-    static UInt32        _uiThreadCount;
-           CreateThreadF _fCreateThread;
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Class Specific                             */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
+  static UInt32 _uiThreadCount;
+  CreateThreadF _fCreateThread;
 
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    MPThreadType(const MPThreadType &source);
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const MPThreadType &source);
+ private:
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  MPThreadType(const MPThreadType& source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const MPThreadType& source);
 };
-
-
-
 
 //---------------------------------------------------------------------------
 //  Class
@@ -183,61 +162,52 @@ class OSG_BASE_DLLMAPPING MPThreadType : public MPType
 /*! \ingroup GrpBaseBaseMultiThreading
  */
 
-class OSG_BASE_DLLMAPPING MPBarrierType : public MPType
-{
-    /*==========================  PUBLIC  =================================*/
+class OSG_BASE_DLLMAPPING MPBarrierType : public MPType {
+  /*==========================  PUBLIC  =================================*/
 
-  public :
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructor                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructor                                */
-    /*! \{                                                                 */
+  MPBarrierType(const Char8* szName, const Char8* szParentName, CreateBarrierF fCreateBarrier);
 
-    MPBarrierType(const Char8          *szName, 
-                  const Char8          *szParentName,
-                        CreateBarrierF  fCreateBarrier);
-                        
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
-                    
-    virtual ~MPBarrierType(void); 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual ~MPBarrierType(void);
 
-    Barrier *create(const Char8 *szName);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  Barrier* create(const Char8* szName);
 
-  protected:
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    typedef MPType Inherited;
+ protected:
+  typedef MPType Inherited;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Class Specific                         */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Class Specific                         */
+  /*! \{                                                                 */
 
-    static UInt32         _uiBarrierCount;
-           CreateBarrierF _fCreateBarrier;
+  static UInt32  _uiBarrierCount;
+  CreateBarrierF _fCreateBarrier;
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-  private:
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    MPBarrierType(const MPBarrierType &source);
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const MPBarrierType &source);
+ private:
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  MPBarrierType(const MPBarrierType& source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const MPBarrierType& source);
 };
-
-
-
 
 //---------------------------------------------------------------------------
 //  Class
@@ -246,60 +216,51 @@ class OSG_BASE_DLLMAPPING MPBarrierType : public MPType
 /*! \ingroup GrpBaseBaseMultiThreading
  */
 
-class OSG_BASE_DLLMAPPING MPLockType : public MPType
-{
-    /*==========================  PUBLIC  =================================*/
+class OSG_BASE_DLLMAPPING MPLockType : public MPType {
+  /*==========================  PUBLIC  =================================*/
 
-  public :
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructor                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructor                                */
-    /*! \{                                                                 */
+  MPLockType(const Char8* szName, const Char8* szParentName, CreateLockF fCreateLock);
 
-    MPLockType(const Char8       *szName, 
-               const Char8       *szParentName,
-                     CreateLockF  fCreateLock);
-                     
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
-                 
-    virtual ~MPLockType(void); 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual ~MPLockType(void);
 
-    Lock *create(const Char8 *szName);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  Lock* create(const Char8* szName);
 
-    typedef MPType Inherited;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  typedef MPType Inherited;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Class Specific                              */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Class Specific                              */
+  /*! \{                                                                 */
 
-    static UInt32       _uiLockCount;
-           CreateLockF  _fCreateLock;
-    
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
+  static UInt32 _uiLockCount;
+  CreateLockF   _fCreateLock;
 
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    MPLockType(const MPLockType &source);
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const MPLockType &source);
+ private:
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  MPLockType(const MPLockType& source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const MPLockType& source);
 };
-
-
-
 
 //---------------------------------------------------------------------------
 //  Class
@@ -307,61 +268,52 @@ class OSG_BASE_DLLMAPPING MPLockType : public MPType
 
 //! \ingroup GrpBaseBaseMultiThreading
 
-class OSG_BASE_DLLMAPPING MPLockPoolType : public MPType
-{
-    /*==========================  PUBLIC  =================================*/
+class OSG_BASE_DLLMAPPING MPLockPoolType : public MPType {
+  /*==========================  PUBLIC  =================================*/
 
-  public :
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructor                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructor                                */
-    /*! \{                                                                 */
+  MPLockPoolType(const Char8* szName, const Char8* szParentName, CreateLockPoolF fCreateLockPool);
 
-    MPLockPoolType(const Char8           *szName, 
-                   const Char8           *szParentName,
-                         CreateLockPoolF  fCreateLockPool);
-                         
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    virtual ~MPLockPoolType(void); 
+  virtual ~MPLockPoolType(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Construction                              */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Construction                              */
+  /*! \{                                                                 */
 
-    LockPool *create(const Char8 *szName);
-    
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  LockPool* create(const Char8* szName);
 
-  protected:
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    typedef MPType Inherited;
+ protected:
+  typedef MPType Inherited;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Class Specific                             */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Class Specific                             */
+  /*! \{                                                                 */
 
-    static  UInt32          _uiLockPoolCount;
-            CreateLockPoolF _fCreateLockPool;
+  static UInt32   _uiLockPoolCount;
+  CreateLockPoolF _fCreateLockPool;
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-  private:
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    MPLockPoolType(const MPLockPoolType &source);
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const MPLockPoolType &source);
+ private:
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  MPLockPoolType(const MPLockPoolType& source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const MPLockPoolType& source);
 };
-
-
-
 
 //---------------------------------------------------------------------------
 //  Class
@@ -369,65 +321,61 @@ class OSG_BASE_DLLMAPPING MPLockPoolType : public MPType
 
 //! \ingroup GrpBaseBaseMultiThreading
 
-class OSG_BASE_DLLMAPPING MPBase : public MemoryObject
-{
-    /*==========================  PUBLIC  =================================*/
-  public :
+class OSG_BASE_DLLMAPPING MPBase : public MemoryObject {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  static const MPType& getStaticType(void);
+  static UInt32        getStaticTypeId(void);
 
-    static const MPType &getStaticType  (void);
-    static       UInt32  getStaticTypeId(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Get                                       */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Get                                       */
-    /*! \{                                                                 */
+  virtual MPType&       getType(void);
+  virtual const MPType& getType(void) const;
+  UInt32                getTypeId(void);
+  const Char8*          getCName(void) const;
 
-    virtual       MPType &getType  (void);
-    virtual const MPType &getType  (void) const;
-                  UInt32  getTypeId(void);
-            const Char8  *getCName (void) const;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+ protected:
+  typedef MemoryObject Inherited;
 
-  protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Class Specific                             */
+  /*! \{                                                                 */
 
-    typedef MemoryObject Inherited;
+  static MPType _type;
+  Char8*        _szName;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Class Specific                             */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructor                                */
+  /*! \{                                                                 */
 
-    static  MPType  _type;
-            Char8  *_szName;
+  MPBase(const Char8* szName);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructor                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    MPBase(const Char8 *szName);
+  virtual ~MPBase(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-    virtual ~MPBase(void); 
-
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-
-  private:
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    MPBase(const MPBase &source);
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const MPBase &source);
+ private:
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  MPBase(const MPBase& source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const MPBase& source);
 };
 
 OSG_END_NAMESPACE

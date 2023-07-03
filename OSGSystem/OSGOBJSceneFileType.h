@@ -38,8 +38,8 @@
 
 #ifndef _OSGOBJSCENEFILETYPE_H_
 #define _OSGOBJSCENEFILETYPE_H_
-#ifdef  __sgi
-#pragma  once
+#ifdef __sgi
+#pragma once
 #endif
 
 #include <OSGBaseTypes.h>
@@ -48,160 +48,157 @@
 
 #include <map>
 
-
 OSG_BEGIN_NAMESPACE
 
 /*! \brief OBJSceneFileType
-*/
+ */
 
-class OSG_SYSTEMLIB_DLLMAPPING OBJSceneFileType : public SceneFileType
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING OBJSceneFileType : public SceneFileType {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Class Get                                  */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Class Get                                  */
-    /*! \{                                                                 */
+  static OBJSceneFileType& the(void);
 
-    static OBJSceneFileType &the(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  virtual ~OBJSceneFileType(void);
 
-    virtual ~OBJSceneFileType(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Get                                        */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Get                                        */
-    /*! \{                                                                 */
+  virtual const Char8* getName(void) const;
 
-    virtual const Char8 *getName(void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Read                                       */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Read                                       */
-    /*! \{                                                                 */
+  virtual NodePtr read(std::istream& is, const Char8* fileNameOrExtension) const;
 
-    virtual NodePtr read(std::istream &is,
-                         const Char8 *fileNameOrExtension) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Write                                      */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Write                                      */
-    /*! \{                                                                 */
+  virtual bool write(const NodePtr& node, std::ostream& os, const Char8* fileNameOrExtension) const;
 
-    virtual bool write(const NodePtr &node, std::ostream &os,
-                       const Char8 *fileNameOrExtension) const;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Member                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  static const Char8*     _suffixA[];
+  static OBJSceneFileType _the;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Member                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    static const Char8            *_suffixA[];
-    static       OBJSceneFileType  _the;
+  OBJSceneFileType(const Char8* suffixArray[], UInt16 suffixByteCount, bool override,
+      UInt32 overridePriority, UInt32 flags);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  OBJSceneFileType(const OBJSceneFileType& obj);
 
-    OBJSceneFileType(const Char8  *suffixArray[],
-                           UInt16  suffixByteCount,
-                           bool    override,
-                           UInt32  overridePriority,
-                           UInt32  flags);
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  typedef SceneFileType Inherited;
 
-    OBJSceneFileType(const OBJSceneFileType &obj);
+  enum DataElem {
+    UNKNOWN_DE = 0,
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+    VERTEX_DE,
+    VERTEX_TEXTURECOORD_DE,
+    VERTEX_NORMAL_DE,
+    FACE_DE,
 
-    typedef SceneFileType Inherited;
+    LIB_MTL_DE,
+    USE_MTL_DE,
 
-    enum DataElem
-    {
-      UNKNOWN_DE = 0,
+    GROUP_DE,
+    SMOOTHING_GROUP_DE,
+    OBJECT_DE
+  };
 
-      VERTEX_DE, VERTEX_TEXTURECOORD_DE, VERTEX_NORMAL_DE,
-      FACE_DE,
+  std::map<std::string, DataElem> _dataElemMap;
 
-      LIB_MTL_DE,
-      USE_MTL_DE,
+  enum MaterialElem {
+    UNKNOWN_ME = 0,
 
-      GROUP_DE, SMOOTHING_GROUP_DE, OBJECT_DE
-    };
+    NEW_MTL_ME,
+    MTL_DIFFUSE_ME,
+    MTL_AMBIENT_ME,
+    MTL_SPECULAR_ME,
+    MTL_SHININESS_ME,
+    MTL_ILLUM_ME,
+    MTL_TRANSPARENCY_ME,
+    MTL_DISSOLVE_ME,
+    MTL_MAP_KD_ME,
+    MTL_MAP_KA_ME,
+    MTL_MAP_KS_ME,
+    MTL_REFL_ME
+  };
 
-    std::map<std::string, DataElem> _dataElemMap;
+  std::map<std::string, MaterialElem> _mtlElemMap;
 
-    enum MaterialElem
-    {
-      UNKNOWN_ME = 0,
+  void initElemMap(void);
 
-      NEW_MTL_ME,
-      MTL_DIFFUSE_ME, MTL_AMBIENT_ME, MTL_SPECULAR_ME,
-      MTL_SHININESS_ME, MTL_ILLUM_ME,
-      MTL_TRANSPARENCY_ME, MTL_DISSOLVE_ME,
-      MTL_MAP_KD_ME, MTL_MAP_KA_ME, MTL_MAP_KS_ME,
-      MTL_REFL_ME
-    };
+  class Mesh;
+  friend class Mesh;
 
-    std::map<std::string, MaterialElem> _mtlElemMap;
+  class Face;
+  friend class Face;
 
-    void initElemMap(void);
+  struct TiePoint {
+    Int32 index[3];
+    TiePoint(Int32 v = -1, Int32 vt = -1, Int32 vn = -1) {
+      index[0] = v;
+      index[1] = vt;
+      index[2] = vn;
+    }
+    inline void set(Int32 v = -1, Int32 vt = -1, Int32 vn = -1) {
+      index[0] = v;
+      index[1] = vt;
+      index[2] = vn;
+    }
+  };
 
-    class Mesh;
-    friend class Mesh;
+  struct Face {
+    std::vector<TiePoint> tieVec;
+  };
 
-    class Face;
-    friend class Face;
+  struct Mesh {
+    std::string       name;
+    std::list<Face>   faceList;
+    SimpleMaterialPtr mtlPtr;
+  };
 
-    struct TiePoint
-    {
-        Int32 index[3];
-        TiePoint( Int32 v = -1, Int32 vt = -1, Int32 vn = -1 )
-            { index[0] = v; index[1] = vt; index[2] = vn; }
-        inline void set ( Int32 v = -1, Int32 vt = -1, Int32 vn = -1 )
-            { index[0] = v; index[1] = vt; index[2] = vn; }
-    };
+  Int32 readMTL(
+      const Char8* fileName, std::map<std::string, SimpleTexturedMaterialPtr>& mtlMap) const;
 
-    struct Face
-    {
-        std::vector<TiePoint> tieVec;
-    };
+  void write(
+      const NodePtr& node, std::ostream& os, UInt32& pIndex, UInt32& nIndex, UInt32& tIndex) const;
 
-    struct Mesh {
-      std::string name;
-      std::list<Face> faceList;
-      SimpleMaterialPtr mtlPtr;
-    };
-
-
-    Int32 readMTL (const Char8 *fileName,
-                   std::map<std::string,
-                   SimpleTexturedMaterialPtr> &mtlMap  ) const;
-
-    void write(const NodePtr &node,
-               std::ostream &os,
-               UInt32 &pIndex,
-               UInt32 &nIndex,
-               UInt32 &tIndex) const;
-
-    /* prohibit default function (move to 'public' if needed) */
-    void operator =(const OBJSceneFileType &source);
+  /* prohibit default function (move to 'public' if needed) */
+  void operator=(const OBJSceneFileType& source);
 };
 
 typedef OBJSceneFileType* OBJSceneFileTypeP;
 
 OSG_END_NAMESPACE
 
-#define OSGOBJSCENEFILETYPE_HEADER_CVSID "@(#)$Id: OSGOBJSceneFileType.h,v 1.12 2002/02/04 16:08:09 dirk Exp $"
+#define OSGOBJSCENEFILETYPE_HEADER_CVSID                                                           \
+  "@(#)$Id: OSGOBJSceneFileType.h,v 1.12 2002/02/04 16:08:09 dirk Exp $"
 
 #endif // _OSGOBJSCENEFILETYPE_H_
-

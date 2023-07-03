@@ -44,7 +44,7 @@
 
 /*! \file OSGGeoProperty.h
 
-    Helper header to include all properties in one go.    
+    Helper header to include all properties in one go.
 */
 
 #include <OSGGeoPropertyBase.h>

@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGTILECAMERADECORATOR_H_
 #define _OSGTILECAMERADECORATOR_H_
 #ifdef __sgi
@@ -49,94 +48,85 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 /*! \brief Camera Decorator class to select a part of the image, see \ref
     PageSystemWindowCameraDecoratorsTile for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING TileCameraDecorator : public TileCameraDecoratorBase
-{
-    /*==========================  PRIVATE  ================================*/     
-  private:
-
-    typedef TileCameraDecoratorBase Inherited;
-
-    /*==========================  PUPLIC   ================================*/       
-  public:
-
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
-    
-    static const char *getClassname(void) { return "TileCameraDecorator"; };
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     transformation                           */
-    /*! \{                                                                 */
-    
-    virtual void changed(BitVector whichField, 
-                         UInt32    origin    );
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    access                                    */
-    /*! \{                                                                 */
-
-    void setSize(Real32 left,  Real32 bottom, 
-                 Real32 right, Real32 top);
-    
-    void setFullSize(UInt32 width, UInt32 height);
- 
-    virtual void getProjection           (Matrix        &result, 
-                                          UInt32 width, UInt32 height);
-										  
-	virtual void getDecoration           (Matrix        &result, 
-                                          UInt32 width, UInt32 height);
- 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   dump                                       */
-    /*! \{                                                                 */
-
-    virtual void dump(      UInt32    uiIndent = 0, 
-                      const BitVector bvFlags  = 0) const;
-    
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
- protected:
-    
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    TileCameraDecorator(void);
-    TileCameraDecorator(const TileCameraDecorator &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~TileCameraDecorator(void); 
-    
-    /*! \}                                                                 */
-    /*=========================  PRIVATE    ===============================*/
+class OSG_SYSTEMLIB_DLLMAPPING TileCameraDecorator : public TileCameraDecoratorBase {
+  /*==========================  PRIVATE  ================================*/
  private:
+  typedef TileCameraDecoratorBase Inherited;
 
-    friend class FieldContainer;
-    friend class TileCameraDecoratorBase;
+  /*==========================  PUPLIC   ================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
-    static void initMethod( void );
+  static const char* getClassname(void) {
+    return "TileCameraDecorator";
+  };
 
-    void operator =(const TileCameraDecorator &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     transformation                           */
+  /*! \{                                                                 */
+
+  virtual void changed(BitVector whichField, UInt32 origin);
+
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    access                                    */
+  /*! \{                                                                 */
+
+  void setSize(Real32 left, Real32 bottom, Real32 right, Real32 top);
+
+  void setFullSize(UInt32 width, UInt32 height);
+
+  virtual void getProjection(Matrix& result, UInt32 width, UInt32 height);
+
+  virtual void getDecoration(Matrix& result, UInt32 width, UInt32 height);
+
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   dump                                       */
+  /*! \{                                                                 */
+
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
+
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
+
+  TileCameraDecorator(void);
+  TileCameraDecorator(const TileCameraDecorator& source);
+
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
+
+  virtual ~TileCameraDecorator(void);
+
+  /*! \}                                                                 */
+  /*=========================  PRIVATE    ===============================*/
+ private:
+  friend class FieldContainer;
+  friend class TileCameraDecoratorBase;
+
+  static void initMethod(void);
+
+  void operator=(const TileCameraDecorator& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
-typedef TileCameraDecorator *TileCameraDecoratorP;
+typedef TileCameraDecorator* TileCameraDecoratorP;
 
 OSG_END_NAMESPACE
 

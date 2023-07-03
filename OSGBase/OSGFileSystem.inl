@@ -47,7 +47,6 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 #if defined(__sgi)
 
 const UInt32 OSGDIRFLAG   = IFDIR;
@@ -74,317 +73,256 @@ const UInt32 OSGWRITEFLAG = _S_IWRITE;
      \ingroup GrpBaseBaseFileSystem
  */
 
-namespace File
-{
-    /*! \name File Functions           
-        \ingroup GrpBaseBaseFileSystem 
-        @{                             */
+namespace File {
+/*! \name File Functions
+    \ingroup GrpBaseBaseFileSystem
+    @{                             */
 
-    inline
-    bool tstAttr(const Char8  *szFilename,
-                       UInt32  uiAccessFlags)
-    {
-        bool  returnValue = false;
-        Int32 rc          = 0;
-        
+inline bool tstAttr(const Char8* szFilename, UInt32 uiAccessFlags) {
+  bool  returnValue = false;
+  Int32 rc          = 0;
+
 #ifdef WIN32
-        struct _stat statBuffer;
+  struct _stat statBuffer;
 #else
-        struct  stat statBuffer;
+  struct stat statBuffer;
 #endif
-        
-        if(szFilename != NULL)
-        {
+
+  if (szFilename != NULL) {
 #ifdef WIN32
-            rc = _stat(szFilename, &statBuffer);
+    rc = _stat(szFilename, &statBuffer);
 #else
-            rc =  stat(szFilename, &statBuffer);
+    rc = stat(szFilename, &statBuffer);
 #endif
-            if(rc == 0 && ! (statBuffer.st_mode & OSGDIRFLAG))
-            {
-                if(uiAccessFlags & AccessFlags::IsReadable)
-                {
-                    if(statBuffer.st_mode & OSGREADFLAG)
-                    {
-                        returnValue = true;
-                    }
-                }
-                
-                if(uiAccessFlags & AccessFlags::IsWriteable)
-                {
-                    if(statBuffer.st_mode & OSGWRITEFLAG)
-                    {
-                        returnValue = true;
-                    }
-                }
-            }
+    if (rc == 0 && !(statBuffer.st_mode & OSGDIRFLAG)) {
+      if (uiAccessFlags & AccessFlags::IsReadable) {
+        if (statBuffer.st_mode & OSGREADFLAG) {
+          returnValue = true;
         }
-        
-        return returnValue;
-    }
+      }
 
-    /*! @} */
+      if (uiAccessFlags & AccessFlags::IsWriteable) {
+        if (statBuffer.st_mode & OSGWRITEFLAG) {
+          returnValue = true;
+        }
+      }
+    }
+  }
+
+  return returnValue;
 }
+
+/*! @} */
+} // namespace File
 
 /*!  Directory Functions
      \ingroup GrpBaseBaseFileSystem
  */
 
-namespace Directory
-{
-    /*! \name Directory Functions      
-        \ingroup GrpBaseBaseFileSystem 
-        @{                             
-     */
+namespace Directory {
+/*! \name Directory Functions
+    \ingroup GrpBaseBaseFileSystem
+    @{
+ */
 
-    inline
-    bool tstAttr(const Char8  *szDirname,
-                       UInt32  uiAccessFlags)
-    {
-        bool  returnValue = false;
-        Int32 rc          = 0;
-        
+inline bool tstAttr(const Char8* szDirname, UInt32 uiAccessFlags) {
+  bool  returnValue = false;
+  Int32 rc          = 0;
+
 #ifdef WIN32
-        struct _stat statBuffer;
+  struct _stat statBuffer;
 #else
-        struct  stat statBuffer;
+  struct stat statBuffer;
 #endif
-        
-        if(szDirname != NULL)
-        {
+
+  if (szDirname != NULL) {
 #ifdef WIN32
-            rc = _stat(szDirname, &statBuffer);
+    rc = _stat(szDirname, &statBuffer);
 #else
-            rc = stat(szDirname, &statBuffer);
+    rc       = stat(szDirname, &statBuffer);
 #endif
-            
-            if(rc == 0 && (statBuffer.st_mode & OSGDIRFLAG))
-            {
-                if(uiAccessFlags & AccessFlags::IsReadable)
-                {
-                    if(statBuffer.st_mode & OSGREADFLAG)
-                    {
-                        returnValue = true;
-                    }
-                    else
-                    {
-                        returnValue = false;
-                    }
-                }
-                
-                if(uiAccessFlags & AccessFlags::IsWriteable)
-                {
-                    if(statBuffer.st_mode & OSGWRITEFLAG)
-                    {
-                        returnValue = true;
-                    }
-                    else
-                    {
-                        returnValue = false;
-                    }
-                }
-            }
+
+    if (rc == 0 && (statBuffer.st_mode & OSGDIRFLAG)) {
+      if (uiAccessFlags & AccessFlags::IsReadable) {
+        if (statBuffer.st_mode & OSGREADFLAG) {
+          returnValue = true;
+        } else {
+          returnValue = false;
         }
-        
-        return returnValue;
+      }
+
+      if (uiAccessFlags & AccessFlags::IsWriteable) {
+        if (statBuffer.st_mode & OSGWRITEFLAG) {
+          returnValue = true;
+        } else {
+          returnValue = false;
+        }
+      }
     }
+  }
+
+  return returnValue;
+}
 
 #ifdef __sgi
 #pragma set woff 1209
 #endif
 
-    /*! \ingroup GrpBaseBaseFileSystem
-     */
+/*! \ingroup GrpBaseBaseFileSystem
+ */
 
-    inline
-    Char8 *getCurrent(void)
-    {
-        UInt32 uiCurrentNameSize = 256;
-        
-        Char8 *returnValue = new Char8[uiCurrentNameSize];
-        Char8 *szTmpBuf;
-        
-        while(1)
-        {
+inline Char8* getCurrent(void) {
+  UInt32 uiCurrentNameSize = 256;
+
+  Char8* returnValue = new Char8[uiCurrentNameSize];
+  Char8* szTmpBuf;
+
+  while (1) {
 #ifndef WIN32
-            szTmpBuf =  getcwd(returnValue, uiCurrentNameSize);
+    szTmpBuf = getcwd(returnValue, uiCurrentNameSize);
 #else
-            szTmpBuf = _getcwd(returnValue, uiCurrentNameSize);
+    szTmpBuf = _getcwd(returnValue, uiCurrentNameSize);
 #endif
-            if(szTmpBuf != NULL)
-                break;
-            
-            uiCurrentNameSize *= 2;
-            delete [] returnValue;
-            
-            returnValue = new Char8[uiCurrentNameSize];
-        }
-        
-        return returnValue;
-    }
-    
+    if (szTmpBuf != NULL)
+      break;
+
+    uiCurrentNameSize *= 2;
+    delete[] returnValue;
+
+    returnValue = new Char8[uiCurrentNameSize];
+  }
+
+  return returnValue;
+}
+
 #ifdef __sgi
 #pragma reset woff 1209
 #endif
-    
-    inline
-    bool setCurrent(const Char8 *szDirname)
-    {
-        bool returnValue = false;
-        
-        if(szDirname != NULL)
-        {
+
+inline bool setCurrent(const Char8* szDirname) {
+  bool returnValue = false;
+
+  if (szDirname != NULL) {
 #ifndef WIN32
-            if(chdir(szDirname) == 0)
-                returnValue = true;
+    if (chdir(szDirname) == 0)
+      returnValue = true;
 #else
-            if(_chdir(szDirname) == 0)
-                returnValue = true;
+    if (_chdir(szDirname) == 0)
+      returnValue         = true;
 #endif
-        }
-        
-        return returnValue;
-    }
+  }
 
-    /*! \ingroup GrpBaseBaseFileSystem
-     */
-
-    inline
-    std::vector<Char8 *> *getEntries(const Char8 *szDirname,
-                                     const Char8 *szPattern)
-    {
-        std::vector<Char8 *> *returnValue = NULL;
-        
-        if(szDirname != NULL)
-        {
-            if(tstAttr(szDirname, AccessFlags::IsReadable) == true)
-            {
-#ifndef WIN32
-                DIR    *pDir        = opendir(szDirname);
-                dirent *pDirEntry   = NULL;
-                Char8  *szEntryName = NULL;
-                
-                if(pDir != NULL)
-                {
-                    returnValue = new std::vector<Char8 *>;
-
-                    do
-                    {
-                        pDirEntry = readdir(pDir);
-                        
-                        if(pDirEntry != NULL)
-                        {
-                            stringDup(pDirEntry->d_name, szEntryName);
-                            
-                            if(szPattern != NULL)
-                            {
-                                if(fnmatch(szPattern, szEntryName, 0) == 0)
-                                {
-                                    returnValue->push_back(szEntryName);
-                                }
-                                else
-                                {
-                                    delete [] szEntryName;
-                                }
-                            }
-                            else
-                            {
-                                returnValue->push_back(szEntryName);
-                            }
-
-                            szEntryName = NULL;
-                        }
-                    }
-                    while(pDirEntry != NULL);
-                    
-                    closedir(pDir);
-                }
-#else
-                Char8           *szTmpDirname = NULL;
-                
-                bool             bVal;
-                WIN32_FIND_DATA  pDirEntry;
-                HANDLE           pDir;
-                Char8           *szEntryName = NULL;
-                
-                if(szPattern == NULL)
-                {
-                    szTmpDirname = new Char8[stringlen(szDirname) + 5];
-                    
-                    sprintf(szTmpDirname, "%s\\*", szDirname);
-                }
-                else
-                {
-                    szTmpDirname = new Char8[stringlen(szDirname) +
-                                             stringlen(szPattern) + 
-                                             5];
-                    
-                    sprintf(szTmpDirname, "%s\\%s", szDirname, szPattern);
-                }
-                
-                pDir = FindFirstFile(szTmpDirname, &pDirEntry);
-                
-#ifdef OSG_WIN32_ICL
-#pragma warning (disable : 171)
-#endif
-                
-                if(INVALID_HANDLE_VALUE != pDir)
-                {
-                    returnValue = new std::vector<Char8 *>;
-                    
-                    do
-                    {
-                        stringDup(pDirEntry.cFileName, szEntryName);
-                        
-                        returnValue->push_back(szEntryName);
-                        szEntryName = NULL;
-                        
-                        bVal = (FindNextFile(pDir, &pDirEntry) != FALSE);
-                    }
-                    while(bVal == true);
-                    
-                    FindClose(pDir);
-                }
-                
-#ifdef OSG_WIN32_ICL
-#pragma warning (error : 171)
-#endif
-                
-                delete szTmpDirname;
-#endif
-            }
-        }
-        
-        return returnValue;
-    }
-
-    /*! @} */
+  return returnValue;
 }
 
-namespace Path
-{
-    inline
-    static void fixWinNetworkPath(std::string &path)
-    {
+/*! \ingroup GrpBaseBaseFileSystem
+ */
+
+inline std::vector<Char8*>* getEntries(const Char8* szDirname, const Char8* szPattern) {
+  std::vector<Char8*>* returnValue = NULL;
+
+  if (szDirname != NULL) {
+    if (tstAttr(szDirname, AccessFlags::IsReadable) == true) {
+#ifndef WIN32
+      DIR*    pDir        = opendir(szDirname);
+      dirent* pDirEntry   = NULL;
+      Char8*  szEntryName = NULL;
+
+      if (pDir != NULL) {
+        returnValue = new std::vector<Char8*>;
+
+        do {
+          pDirEntry = readdir(pDir);
+
+          if (pDirEntry != NULL) {
+            stringDup(pDirEntry->d_name, szEntryName);
+
+            if (szPattern != NULL) {
+              if (fnmatch(szPattern, szEntryName, 0) == 0) {
+                returnValue->push_back(szEntryName);
+              } else {
+                delete[] szEntryName;
+              }
+            } else {
+              returnValue->push_back(szEntryName);
+            }
+
+            szEntryName = NULL;
+          }
+        } while (pDirEntry != NULL);
+
+        closedir(pDir);
+      }
+#else
+      Char8* szTmpDirname = NULL;
+
+      bool            bVal;
+      WIN32_FIND_DATA pDirEntry;
+      HANDLE          pDir;
+      Char8*          szEntryName = NULL;
+
+      if (szPattern == NULL) {
+        szTmpDirname = new Char8[stringlen(szDirname) + 5];
+
+        sprintf(szTmpDirname, "%s\\*", szDirname);
+      } else {
+        szTmpDirname = new Char8[stringlen(szDirname) + stringlen(szPattern) + 5];
+
+        sprintf(szTmpDirname, "%s\\%s", szDirname, szPattern);
+      }
+
+      pDir = FindFirstFile(szTmpDirname, &pDirEntry);
+
+#ifdef OSG_WIN32_ICL
+#pragma warning(disable : 171)
+#endif
+
+      if (INVALID_HANDLE_VALUE != pDir) {
+        returnValue = new std::vector<Char8*>;
+
+        do {
+          stringDup(pDirEntry.cFileName, szEntryName);
+
+          returnValue->push_back(szEntryName);
+          szEntryName = NULL;
+
+          bVal = (FindNextFile(pDir, &pDirEntry) != FALSE);
+        } while (bVal == true);
+
+        FindClose(pDir);
+      }
+
+#ifdef OSG_WIN32_ICL
+#pragma warning(error : 171)
+#endif
+
+      delete szTmpDirname;
+#endif
+    }
+  }
+
+  return returnValue;
+}
+
+/*! @} */
+} // namespace Directory
+
+namespace Path {
+inline static void fixWinNetworkPath(std::string& path) {
 #ifdef WIN32
-        // HACK but on windows network paths like \\Server\bla doesn't work, 
-        // but //Server/bla works ...
+  // HACK but on windows network paths like \\Server\bla doesn't work,
+  // but //Server/bla works ...
 
-        if((path.length() >  2   ) &&
-           (path[0]       == '\\') &&
-           (path[1]       == '\\')  )
-        {
-            for(Int32 i = 0; i < path.length(); ++i)
-            {
-                if(path[i] == '\\')
-                {
-                    path[i] = '/';
-                }
-            }
-        }
-#endif
+  if ((path.length() > 2) && (path[0] == '\\') && (path[1] == '\\')) {
+    for (Int32 i = 0; i < path.length(); ++i) {
+      if (path[i] == '\\') {
+        path[i] = '/';
+      }
     }
+  }
+#endif
 }
+} // namespace Path
 
 #define OSGFILESYSTEM_INLINE_CVSID "@(#)$Id: $"
 

@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGDISPLAYFILTERFOREGROUNDFIELDS_H_
 #define _OSGDISPLAYFILTERFOREGROUNDFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class DisplayFilterForeground;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! DisplayFilterForegroundPtr
 
 typedef FCPtr<ForegroundPtr, DisplayFilterForeground> DisplayFilterForegroundPtr;
@@ -81,18 +80,23 @@ typedef FCPtr<ForegroundPtr, DisplayFilterForeground> DisplayFilterForegroundPtr
 #endif
 
 template <>
-struct FieldDataTraits<DisplayFilterForegroundPtr> : 
-    public FieldTraitsRecurseMapper<DisplayFilterForegroundPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<DisplayFilterForegroundPtr>
+    : public FieldTraitsRecurseMapper<DisplayFilterForegroundPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getSName(void) { return "SFDisplayFilterForegroundPtr"; }
-    static const char *getMName(void) { return "MFDisplayFilterForegroundPtr"; }
+  static const char* getSName(void) {
+    return "SFDisplayFilterForegroundPtr";
+  }
+  static const char* getMName(void) {
+    return "MFDisplayFilterForegroundPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -102,7 +106,6 @@ struct FieldDataTraits<DisplayFilterForegroundPtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
@@ -126,6 +129,7 @@ OSG_DLLEXPORT_DECL1(MField, DisplayFilterForegroundPtr, OSG_SYSTEMLIB_DLLTMPLMAP
 
 OSG_END_NAMESPACE
 
-#define OSGDISPLAYFILTERFOREGROUNDFIELDS_HEADER_CVSID "@(#)$Id: FCFieldsTemplate_h.h,v 1.26 2006/02/20 16:55:35 dirk Exp $"
+#define OSGDISPLAYFILTERFOREGROUNDFIELDS_HEADER_CVSID                                              \
+  "@(#)$Id: FCFieldsTemplate_h.h,v 1.26 2006/02/20 16:55:35 dirk Exp $"
 
 #endif /* _OSGDISPLAYFILTERFOREGROUNDFIELDS_H_ */

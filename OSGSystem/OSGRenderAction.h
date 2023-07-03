@@ -87,363 +87,353 @@ class DrawTreeNodeFactory;
 /*! \brief RenderAction class
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING RenderAction : public RenderActionBase
-{
-  public:
-
-    typedef struct
-    {
-        UInt32 first;
-        Matrix second;
-        Matrix acc;
-    }
-    MatrixStore;
-    
-    typedef std::map <Material   *,      DrawTreeNode *         > MaterialMap;
-    typedef std::pair<LightChunk *,      Matrix                 > LightStore;
-    typedef std::pair<SClipPlaneChunk *, Matrix                 > ClipPlaneStore;
+class OSG_SYSTEMLIB_DLLMAPPING RenderAction : public RenderActionBase {
+ public:
+  typedef struct {
+    UInt32 first;
+    Matrix second;
+    Matrix acc;
+  } MatrixStore;
 
-    //-----------------------------------------------------------------------
-    //   constants                                                               
-    //-----------------------------------------------------------------------
+  typedef std::map<Material*, DrawTreeNode*>  MaterialMap;
+  typedef std::pair<LightChunk*, Matrix>      LightStore;
+  typedef std::pair<SClipPlaneChunk*, Matrix> ClipPlaneStore;
 
-    static StatElemDesc<StatTimeElem   > statDrawTime;
-    static StatElemDesc<StatIntElem    > statNMaterials;
-    static StatElemDesc<StatIntElem    > statNMatrices;
-    static StatElemDesc<StatIntElem    > statNLights;
-    static StatElemDesc<StatIntElem    > statNGeometries;
-    static StatElemDesc<StatIntElem    > statNTransGeometries;
-    static StatElemDesc<StatIntOnceElem> statNTextures;
-    static StatElemDesc<StatIntOnceElem> statNTexBytes;
-    static StatElemDesc<StatStringElem > statNOcclusionMode;
-    static StatElemDesc<StatIntElem    > statNOcclusionTests;
-    static StatElemDesc<StatIntElem    > statNOcclusionCulled;
-
-    static const Int32 OcclusionStopAndWait;
-    static const Int32 OcclusionMultiFrame;
-    static const Int32 OcclusionHierarchicalMultiFrame;
-
-    //-----------------------------------------------------------------------
-    //   enums                                                               
-    //-----------------------------------------------------------------------
+  //-----------------------------------------------------------------------
+  //   constants
+  //-----------------------------------------------------------------------
 
-    //-----------------------------------------------------------------------
-    //   types                                                               
-    //-----------------------------------------------------------------------
-  
-    //-----------------------------------------------------------------------
-    //   class functions                                                     
-    //-----------------------------------------------------------------------
-
-    static RenderAction *create      (void                    );
-    
-    static void          setPrototype(RenderAction *pPrototype);
-    static RenderAction *getPrototype(void                    );
-
-
-    static void registerEnterDefault (const FieldContainerType &type, 
-                                      const Action::Functor    &func);
-    
-    static void registerLeaveDefault (const FieldContainerType &type, 
-                                      const Action::Functor    &func);
-
-    //-----------------------------------------------------------------------
-    //   instance functions                                                  
-    //-----------------------------------------------------------------------
-
-    virtual ~RenderAction(void); 
-
-    /*------------------------- your_category -------------------------------*/
-    
-    virtual Action::ResultE start(void       );
-    virtual Action::ResultE stop (ResultE res); 
-
-    /*------------------------- your_operators ------------------------------*/
-
-           void          push_matrix(const Matrix &matrix);
-           void          pop_matrix (      void          );
-
-    inline const Matrix &top_matrix (      void          );
-
-    /*------------------------- assignment ----------------------------------*/
-
-    void dropGeometry(Geometry  *pGeo);
-    void dropFunctor (Material::DrawFunctor &func, Material *mat);
-
-    void dropLight     (Light     *pLight);
-    void undropLight   (Light     *pLight);
-
-    void dropLightEnv  (LightEnv  *pLightEnv);
-    void undropLightEnv(LightEnv  *pLightEnv);
-
-    void dropClipPlane  (ClipPlane     *pClipPlane);
-    void undropClipPlane(ClipPlane     *pClipPlane);
-
-    void setStateSorting(bool s);
-    bool getStateSorting(void);
-
-    std::vector<Light *> getActiveLights(void);
-    UInt32 getActiveLightsMask(void);
-    UInt32 getActiveLightsCount(void);
-
-    const std::vector<UInt32> &getLightEnvsLightsState(void);
+  static StatElemDesc<StatTimeElem>    statDrawTime;
+  static StatElemDesc<StatIntElem>     statNMaterials;
+  static StatElemDesc<StatIntElem>     statNMatrices;
+  static StatElemDesc<StatIntElem>     statNLights;
+  static StatElemDesc<StatIntElem>     statNGeometries;
+  static StatElemDesc<StatIntElem>     statNTransGeometries;
+  static StatElemDesc<StatIntOnceElem> statNTextures;
+  static StatElemDesc<StatIntOnceElem> statNTexBytes;
+  static StatElemDesc<StatStringElem>  statNOcclusionMode;
+  static StatElemDesc<StatIntElem>     statNOcclusionTests;
+  static StatElemDesc<StatIntElem>     statNOcclusionCulled;
 
-    inline State *getCurrentState(void);
+  static const Int32 OcclusionStopAndWait;
+  static const Int32 OcclusionMultiFrame;
+  static const Int32 OcclusionHierarchicalMultiFrame;
 
-    /*------------------------- comparison ----------------------------------*/
+  //-----------------------------------------------------------------------
+  //   enums
+  //-----------------------------------------------------------------------
 
-    void setSortTrans(bool bVal);
-    bool getSortTrans(void) const;
+  //-----------------------------------------------------------------------
+  //   types
+  //-----------------------------------------------------------------------
 
-    void setZWriteTrans(bool bVal);
-    bool getZWriteTrans(void) const;
+  //-----------------------------------------------------------------------
+  //   class functions
+  //-----------------------------------------------------------------------
 
-    void setLocalLights(bool bVal);
-    bool getLocalLights(void) const;
+  static RenderAction* create(void);
 
-    void setCorrectTwoSidedLighting(bool bVal);
-    bool getCorrectTwoSidedLighting(void) const;
+  static void          setPrototype(RenderAction* pPrototype);
+  static RenderAction* getPrototype(void);
 
-    void setOcclusionCulling(bool bVal);
-    bool getOcclusionCulling(void) const;
+  static void registerEnterDefault(const FieldContainerType& type, const Action::Functor& func);
 
-    void setOcclusionCullingMode(Int32 mode);
-    Int32 getOcclusionCullingMode(void) const;
-    void setOcclusionCullingPixels(UInt32 pixels);
-    UInt32 getOcclusionCullingPixels(void) const;
-    void setOcclusionCullingThreshold(UInt32 threshold);
-    UInt32 getOcclusionCullingThreshold(void) const;
+  static void registerLeaveDefault(const FieldContainerType& type, const Action::Functor& func);
 
-    void setSmallFeatureCulling(bool bVal);
-    bool getSmallFeatureCulling(void) const;
-    void setSmallFeaturePixels(Real32 pixels);
-    Real32 getSmallFeaturePixels(void) const;
-    void setSmallFeatureThreshold(UInt32 threshold);
-    UInt32 getSmallFeatureThreshold(void) const;
+  //-----------------------------------------------------------------------
+  //   instance functions
+  //-----------------------------------------------------------------------
 
-    void setUseGLFinish(bool s);
-    bool getUseGLFinish(void) const;
+  virtual ~RenderAction(void);
 
-    /*------------------------- comparison ----------------------------------*/
-
-    bool isSmallFeature(const NodePtr &node);
-    bool isOccluded(DrawTreeNode *pRoot);
-    void deleteOcclusionQueriesPool(void);
-    GLuint getOcclusionQuery(void);
-    GLuint getOcclusionQuery(NodePtr node);
-    void setOcclusionQuery(NodePtr node, GLuint occlusionQuery);
-    void resetOcclusionQueryIndex(void);
-    void setOcclusionMask(NodePtr node, UInt8 mask);
-    bool hasGeometryChild(NodePtr node);
-
-    void drawOcclusionBB(const Pnt3f &bbmin, const Pnt3f &bbmax);
-    void drawMultiFrameOcclusionBB(DrawTreeNode *pRoot);
-    void drawHierarchicalMultiFrameOcclusionBB(const Matrix &view, NodePtr node);
-
-    // test a single node
-    bool            isVisible( Node* node );
-    
-    // visibility levels
-    bool  pushVisibility(void);
-    void  popVisibility(void);
-
-    void (OSG_APIENTRY* _glGenQueriesARB)(GLsizei, GLuint*);
-    void (OSG_APIENTRY* _glDeleteQueriesARB)(GLsizei, GLuint*);
-    void (OSG_APIENTRY* _glBeginQueryARB)(GLenum, GLuint);
-    void (OSG_APIENTRY* _glEndQueryARB)(GLenum);
-    void (OSG_APIENTRY* _glGetQueryObjectuivARB)(GLuint, GLenum, GLuint*);
-
-  protected:
-
-    //-----------------------------------------------------------------------
-    //   enums                                                               
-    //-----------------------------------------------------------------------
-
-    //-----------------------------------------------------------------------
-    //   types                                                               
-    //-----------------------------------------------------------------------
-
-    typedef RenderActionBase Inherited;
-
-    //-----------------------------------------------------------------------
-    //   class variables                                                     
-    //-----------------------------------------------------------------------
-
-    static RenderAction    *_pPrototype;
-
-    static std::vector<Functor> *_vDefaultEnterFunctors;
-    static std::vector<Functor> *_vDefaultLeaveFunctors;
-
-    //-----------------------------------------------------------------------
-    //   class functions                                                     
-    //-----------------------------------------------------------------------
-
-    //-----------------------------------------------------------------------
-    //   instance variables                                                  
-    //-----------------------------------------------------------------------
-
-    DrawTreeNodeFactory      *_pNodeFactory;
-
-    UInt32                    _uiMatrixId;
-
-    MatrixStore               _currMatrix;
-    Matrix                    _camInverse;
-
-    std::vector<MatrixStore>  _vMatrixStack;
-
-    MaterialMap               _mMatMap;
-    
-    //DrawTreeNode             *_pRoot;
-    typedef std::map<Int32, DrawTreeNode *> SortKeyMap;
-    SortKeyMap                  _pMatRoots;
-    
-    typedef std::map<Real32, DrawTreeNode *> TransSortMap;
-    typedef std::map<Int32, TransSortMap>    TransSortKeyMap;
-    TransSortKeyMap             _pTransMatRoots;
+  /*------------------------- your_category -------------------------------*/
 
-    DrawTreeNode               *_pNoStateSortRoot;
-    DrawTreeNode               *_pNoStateSortTransRoot;
+  virtual Action::ResultE start(void);
+  virtual Action::ResultE stop(ResultE res);
 
-    typedef std::map<Real32, DrawTreeNode *> OCMap;
-    OCMap                       _ocRoot;
+  /*------------------------- your_operators ------------------------------*/
 
-    UInt32                    _uiActiveMatrix;
-    State                    *_pActiveState;
+  void push_matrix(const Matrix& matrix);
+  void pop_matrix(void);
 
-    UInt32                    _uiNumMaterialChanges;
-    UInt32                    _uiNumMatrixChanges;
-    UInt32                    _uiNumLightChanges;
-    UInt32                    _uiNumGeometries;
-    UInt32                    _uiNumTransGeometries;
-    UInt32                    _uiNumOcclusionTests;
-    UInt32                    _uiNumOcclusionCulled;
+  inline const Matrix& top_matrix(void);
 
-    bool                      _bSortTrans;
-    bool                      _bZWriteTrans;
-    bool                      _bLocalLights;
-    bool                      _bCorrectTwoSidedLighting;
-    bool                      _bOcclusionCulling;
-    Int32                     _occlusionCullingMode;
-    UInt32                    _occlusionCullingPixels;
-    UInt32                    _occlusionCullingThreshold;
-    UInt32                    _currentOcclusionQueryIndex;
-    std::vector<NodePtr>      _occluded_nodes;
-    std::set<UInt32>          _hier_occlusions;
-    UInt32                    _occ_bb_dl;
+  /*------------------------- assignment ----------------------------------*/
 
-    bool                      _bSmallFeatureCulling;
-    Real32                    _smallFeaturesPixels;
-    UInt32                    _smallFeaturesThreshold;
-    Matrix                    _worldToScreenMatrix;
-    bool                      _useGLFinish;
+  void dropGeometry(Geometry* pGeo);
+  void dropFunctor(Material::DrawFunctor& func, Material* mat);
 
-    std::vector<LightStore>   _vLights;
-    std::vector<Light *>      _lightsMap;
-    UInt32                    _lightsState;
-    UInt32                    _activeLightsState;
-    UInt32                    _activeLightsCount;
-    UInt32                    _activeLightsMask;
+  void dropLight(Light* pLight);
+  void undropLight(Light* pLight);
 
-    std::vector<std::vector<UInt32> > _lightsTable;
-    std::vector<UInt32>               _lightsPath;
-    std::vector<UInt32>               _lightEnvsLightsState;
+  void dropLightEnv(LightEnv* pLightEnv);
+  void undropLightEnv(LightEnv* pLightEnv);
 
+  void dropClipPlane(ClipPlane* pClipPlane);
+  void undropClipPlane(ClipPlane* pClipPlane);
 
-    std::vector<ClipPlaneStore> _vClipPlanes;
-    std::vector<ClipPlane *>    _clipPlanesMap;
-    UInt32                      _clipPlanesState;
-    UInt32                      _activeClipPlanesState;
-    UInt32                      _activeClipPlanesCount;
-    UInt32                      _activeClipPlanesMask;
+  void setStateSorting(bool s);
+  bool getStateSorting(void);
 
-    std::vector<std::vector<UInt32> > _clipPlanesTable;
-    std::vector<UInt32>               _clipPlanesPath;
+  std::vector<Light*> getActiveLights(void);
+  UInt32              getActiveLightsMask(void);
+  UInt32              getActiveLightsCount(void);
 
-    bool                      _stateSorting;
+  const std::vector<UInt32>& getLightEnvsLightsState(void);
 
-    std::vector<FrustumVolume::PlaneSet>  _visibilityStack;
+  inline State* getCurrentState(void);
 
-    GLuint _occlusionQuery;
-    std::vector<GLuint> _occlusionQueriesPool;
-    std::map<UInt32, GLuint> _occlusionQueries;
+  /*------------------------- comparison ----------------------------------*/
 
-    Int32 _cgChunkId;
-    Int32 _cgfxChunkId;
-    Int32 _shlChunkId;
+  void setSortTrans(bool bVal);
+  bool getSortTrans(void) const;
 
-    static UInt32 _arbOcclusionQuery;
-    static UInt32 _funcGenQueriesARB;
-    static UInt32 _funcDeleteQueriesARB;
-    static UInt32 _funcBeginQueryARB;
-    static UInt32 _funcEndQueryARB;
-    static UInt32 _funcGetQueryObjectuivARB;
+  void setZWriteTrans(bool bVal);
+  bool getZWriteTrans(void) const;
 
-//    Time                 _tMatSlot
+  void setLocalLights(bool bVal);
+  bool getLocalLights(void) const;
 
-    //-----------------------------------------------------------------------
-    //   instance functions                                                  
-    //-----------------------------------------------------------------------
+  void setCorrectTwoSidedLighting(bool bVal);
+  bool getCorrectTwoSidedLighting(void) const;
 
-    // prohibit default functions (move to 'public' if you need one)
+  void setOcclusionCulling(bool bVal);
+  bool getOcclusionCulling(void) const;
 
-    RenderAction(void);
-    RenderAction(const RenderAction &source);
+  void   setOcclusionCullingMode(Int32 mode);
+  Int32  getOcclusionCullingMode(void) const;
+  void   setOcclusionCullingPixels(UInt32 pixels);
+  UInt32 getOcclusionCullingPixels(void) const;
+  void   setOcclusionCullingThreshold(UInt32 threshold);
+  UInt32 getOcclusionCullingThreshold(void) const;
 
-    void operator =(const RenderAction &source);
+  void   setSmallFeatureCulling(bool bVal);
+  bool   getSmallFeatureCulling(void) const;
+  void   setSmallFeaturePixels(Real32 pixels);
+  Real32 getSmallFeaturePixels(void) const;
+  void   setSmallFeatureThreshold(UInt32 threshold);
+  UInt32 getSmallFeatureThreshold(void) const;
 
-    // access default functors
+  void setUseGLFinish(bool s);
+  bool getUseGLFinish(void) const;
 
-    virtual std::vector<Functor> *getDefaultEnterFunctors(void);
-    virtual std::vector<Functor> *getDefaultLeaveFunctors(void);
+  /*------------------------- comparison ----------------------------------*/
 
-            void dump(DrawTreeNode *pRoot, UInt32 uiIndent);
+  bool   isSmallFeature(const NodePtr& node);
+  bool   isOccluded(DrawTreeNode* pRoot);
+  void   deleteOcclusionQueriesPool(void);
+  GLuint getOcclusionQuery(void);
+  GLuint getOcclusionQuery(NodePtr node);
+  void   setOcclusionQuery(NodePtr node, GLuint occlusionQuery);
+  void   resetOcclusionQueryIndex(void);
+  void   setOcclusionMask(NodePtr node, UInt8 mask);
+  bool   hasGeometryChild(NodePtr node);
+
+  void drawOcclusionBB(const Pnt3f& bbmin, const Pnt3f& bbmax);
+  void drawMultiFrameOcclusionBB(DrawTreeNode* pRoot);
+  void drawHierarchicalMultiFrameOcclusionBB(const Matrix& view, NodePtr node);
+
+  // test a single node
+  bool isVisible(Node* node);
+
+  // visibility levels
+  bool pushVisibility(void);
+  void popVisibility(void);
+
+  void(OSG_APIENTRY* _glGenQueriesARB)(GLsizei, GLuint*);
+  void(OSG_APIENTRY* _glDeleteQueriesARB)(GLsizei, GLuint*);
+  void(OSG_APIENTRY* _glBeginQueryARB)(GLenum, GLuint);
+  void(OSG_APIENTRY* _glEndQueryARB)(GLenum);
+  void(OSG_APIENTRY* _glGetQueryObjectuivARB)(GLuint, GLenum, GLuint*);
+
+ protected:
+  //-----------------------------------------------------------------------
+  //   enums
+  //-----------------------------------------------------------------------
+
+  //-----------------------------------------------------------------------
+  //   types
+  //-----------------------------------------------------------------------
+
+  typedef RenderActionBase Inherited;
+
+  //-----------------------------------------------------------------------
+  //   class variables
+  //-----------------------------------------------------------------------
+
+  static RenderAction* _pPrototype;
+
+  static std::vector<Functor>* _vDefaultEnterFunctors;
+  static std::vector<Functor>* _vDefaultLeaveFunctors;
+
+  //-----------------------------------------------------------------------
+  //   class functions
+  //-----------------------------------------------------------------------
+
+  //-----------------------------------------------------------------------
+  //   instance variables
+  //-----------------------------------------------------------------------
+
+  DrawTreeNodeFactory* _pNodeFactory;
+
+  UInt32 _uiMatrixId;
+
+  MatrixStore _currMatrix;
+  Matrix      _camInverse;
+
+  std::vector<MatrixStore> _vMatrixStack;
 
-            void updateShader(State *state);
-    virtual void draw(DrawTreeNode *pRoot);
+  MaterialMap _mMatMap;
 
-    inline  void updateTopMatrix(void);
-            void activateLocalLights(DrawTreeNode *pRoot);
-            void activateLocalClipPlanes(DrawTreeNode *pRoot);
+  // DrawTreeNode             *_pRoot;
+  typedef std::map<Int32, DrawTreeNode*> SortKeyMap;
+  SortKeyMap                             _pMatRoots;
 
-    void getMaterialStates(Material *mat, std::vector<State *> &states);
+  typedef std::map<Real32, DrawTreeNode*> TransSortMap;
+  typedef std::map<Int32, TransSortMap>   TransSortKeyMap;
+  TransSortKeyMap                         _pTransMatRoots;
 
-  private:
+  DrawTreeNode* _pNoStateSortRoot;
+  DrawTreeNode* _pNoStateSortTransRoot;
 
-    //-----------------------------------------------------------------------
-    //   enums                                                               
-    //-----------------------------------------------------------------------
+  typedef std::map<Real32, DrawTreeNode*> OCMap;
+  OCMap                                   _ocRoot;
 
-    //-----------------------------------------------------------------------
-    //   types                                                               
-    //-----------------------------------------------------------------------
+  UInt32 _uiActiveMatrix;
+  State* _pActiveState;
 
-    //-----------------------------------------------------------------------
-    //   friend classes                                                      
-    //-----------------------------------------------------------------------
+  UInt32 _uiNumMaterialChanges;
+  UInt32 _uiNumMatrixChanges;
+  UInt32 _uiNumLightChanges;
+  UInt32 _uiNumGeometries;
+  UInt32 _uiNumTransGeometries;
+  UInt32 _uiNumOcclusionTests;
+  UInt32 _uiNumOcclusionCulled;
 
-    friend class ShadowViewport;
+  bool                 _bSortTrans;
+  bool                 _bZWriteTrans;
+  bool                 _bLocalLights;
+  bool                 _bCorrectTwoSidedLighting;
+  bool                 _bOcclusionCulling;
+  Int32                _occlusionCullingMode;
+  UInt32               _occlusionCullingPixels;
+  UInt32               _occlusionCullingThreshold;
+  UInt32               _currentOcclusionQueryIndex;
+  std::vector<NodePtr> _occluded_nodes;
+  std::set<UInt32>     _hier_occlusions;
+  UInt32               _occ_bb_dl;
 
-    //-----------------------------------------------------------------------
-    //   friend functions                                                    
-    //-----------------------------------------------------------------------
+  bool   _bSmallFeatureCulling;
+  Real32 _smallFeaturesPixels;
+  UInt32 _smallFeaturesThreshold;
+  Matrix _worldToScreenMatrix;
+  bool   _useGLFinish;
 
-    //-----------------------------------------------------------------------
-    //   class variables                                                     
-    //-----------------------------------------------------------------------
+  std::vector<LightStore> _vLights;
+  std::vector<Light*>     _lightsMap;
+  UInt32                  _lightsState;
+  UInt32                  _activeLightsState;
+  UInt32                  _activeLightsCount;
+  UInt32                  _activeLightsMask;
 
-    static char cvsid[];
-    
-    //-----------------------------------------------------------------------
-    //   class functions                                                     
-    //-----------------------------------------------------------------------
+  std::vector<std::vector<UInt32>> _lightsTable;
+  std::vector<UInt32>              _lightsPath;
+  std::vector<UInt32>              _lightEnvsLightsState;
 
-    //-----------------------------------------------------------------------
-    //   instance variables                                                  
-    //-----------------------------------------------------------------------
-    
-    //-----------------------------------------------------------------------
-    //   instance functions                                                  
-    //-----------------------------------------------------------------------
+  std::vector<ClipPlaneStore> _vClipPlanes;
+  std::vector<ClipPlane*>     _clipPlanesMap;
+  UInt32                      _clipPlanesState;
+  UInt32                      _activeClipPlanesState;
+  UInt32                      _activeClipPlanesCount;
+  UInt32                      _activeClipPlanesMask;
+
+  std::vector<std::vector<UInt32>> _clipPlanesTable;
+  std::vector<UInt32>              _clipPlanesPath;
+
+  bool _stateSorting;
+
+  std::vector<FrustumVolume::PlaneSet> _visibilityStack;
+
+  GLuint                   _occlusionQuery;
+  std::vector<GLuint>      _occlusionQueriesPool;
+  std::map<UInt32, GLuint> _occlusionQueries;
+
+  Int32 _cgChunkId;
+  Int32 _cgfxChunkId;
+  Int32 _shlChunkId;
+
+  static UInt32 _arbOcclusionQuery;
+  static UInt32 _funcGenQueriesARB;
+  static UInt32 _funcDeleteQueriesARB;
+  static UInt32 _funcBeginQueryARB;
+  static UInt32 _funcEndQueryARB;
+  static UInt32 _funcGetQueryObjectuivARB;
+
+  //    Time                 _tMatSlot
+
+  //-----------------------------------------------------------------------
+  //   instance functions
+  //-----------------------------------------------------------------------
+
+  // prohibit default functions (move to 'public' if you need one)
+
+  RenderAction(void);
+  RenderAction(const RenderAction& source);
+
+  void operator=(const RenderAction& source);
+
+  // access default functors
+
+  virtual std::vector<Functor>* getDefaultEnterFunctors(void);
+  virtual std::vector<Functor>* getDefaultLeaveFunctors(void);
+
+  void dump(DrawTreeNode* pRoot, UInt32 uiIndent);
+
+  void         updateShader(State* state);
+  virtual void draw(DrawTreeNode* pRoot);
+
+  inline void updateTopMatrix(void);
+  void        activateLocalLights(DrawTreeNode* pRoot);
+  void        activateLocalClipPlanes(DrawTreeNode* pRoot);
+
+  void getMaterialStates(Material* mat, std::vector<State*>& states);
+
+ private:
+  //-----------------------------------------------------------------------
+  //   enums
+  //-----------------------------------------------------------------------
+
+  //-----------------------------------------------------------------------
+  //   types
+  //-----------------------------------------------------------------------
+
+  //-----------------------------------------------------------------------
+  //   friend classes
+  //-----------------------------------------------------------------------
+
+  friend class ShadowViewport;
+
+  //-----------------------------------------------------------------------
+  //   friend functions
+  //-----------------------------------------------------------------------
+
+  //-----------------------------------------------------------------------
+  //   class variables
+  //-----------------------------------------------------------------------
+
+  static char cvsid[];
+
+  //-----------------------------------------------------------------------
+  //   class functions
+  //-----------------------------------------------------------------------
+
+  //-----------------------------------------------------------------------
+  //   instance variables
+  //-----------------------------------------------------------------------
+
+  //-----------------------------------------------------------------------
+  //   instance functions
+  //-----------------------------------------------------------------------
 };
 
 //---------------------------------------------------------------------------
@@ -455,5 +445,3 @@ OSG_END_NAMESPACE
 #include "OSGRenderAction.inl"
 
 #endif /* _OSGRENDERACTION_H_ */
-
-

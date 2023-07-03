@@ -49,89 +49,85 @@
 
 OSG_BEGIN_NAMESPACE
 
-//! \brief Factory for Connections, see 
+//! \brief Factory for Connections, see
 //! \ingroup GrpBaseNetwork
 
-class OSG_BASE_DLLMAPPING ConnectionFactory 
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_BASE_DLLMAPPING ConnectionFactory {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      types                                   */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      types                                   */
-    /*! \{                                                                 */
+  typedef std::map<std::string, ConnectionType*> TypeMap;
 
-    typedef std::map<std::string,ConnectionType *> TypeMap;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   access                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   access                                     */
-    /*! \{                                                                 */
+  static ConnectionFactory& the();
 
-    static ConnectionFactory &the();
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   interface                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   interface                                  */
-    /*! \{                                                                 */
+  GroupConnection* createGroup(const std::string& name);
+  PointConnection* createPoint(const std::string& name);
 
-    GroupConnection *createGroup(const std::string &name);
-    PointConnection *createPoint(const std::string &name);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                        Dump                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                        Dump                                  */
-    /*! \{                                                                 */
+  void dump(void);
 
-    void dump(void);
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   fields                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  TypeMap _groupMap;
+  TypeMap _pointMap;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   fields                                     */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    TypeMap _groupMap;
-    TypeMap _pointMap;
+  ConnectionFactory(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    ConnectionFactory(void);
+  virtual ~ConnectionFactory(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Type information                            */
+  /*! \{                                                                 */
 
-    virtual ~ConnectionFactory(void);
+  void addGroupType(ConnectionType* type);
+  void addPointType(ConnectionType* type);
+  void subGroupType(ConnectionType* type);
+  void subPointType(ConnectionType* type);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Type information                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  static ConnectionFactory* _the;
 
-    void addGroupType(ConnectionType *type);
-    void addPointType(ConnectionType *type);
-    void subGroupType(ConnectionType *type);
-    void subPointType(ConnectionType *type);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  ConnectionFactory(const ConnectionFactory& source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const ConnectionFactory& source);
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
-
-    static ConnectionFactory *_the;
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    ConnectionFactory(const ConnectionFactory &source);
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const ConnectionFactory &source);
-
-    friend class ConnectionType;
+  friend class ConnectionType;
 };
 
 OSG_END_NAMESPACE

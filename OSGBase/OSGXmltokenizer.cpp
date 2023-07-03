@@ -29,190 +29,162 @@
 #include "OSGXmlpp.h"
 #include "OSGXmltokenizer.h"
 
-
 // namespace declaration
 namespace xmlpp {
 
-
 // xmlstream_iterator methods
 
-xmlstream_iterator::xmlstream_iterator(std::istream &is,xmllocation &loc)
-:xmltokenizer(is,loc)
-{
-   putback_char = -1;
-   cdata_mode = false;
+xmlstream_iterator::xmlstream_iterator(std::istream& is, xmllocation& loc)
+    : xmltokenizer(is, loc) {
+  putback_char = -1;
+  cdata_mode   = false;
 }
 
 //! \todo check for instr.eof()
-void xmlstream_iterator::get_next()
-{
-   // first use the token stack if filled
-   if (tokenstack.size() != 0)
-   {
-      // get the token from the stack and return it
-      xmltoken tok;
-      curtoken = tokenstack.top();
-      tokenstack.pop();
+void xmlstream_iterator::get_next() {
+  // first use the token stack if filled
+  if (tokenstack.size() != 0) {
+    // get the token from the stack and return it
+    xmltoken tok;
+    curtoken = tokenstack.top();
+    tokenstack.pop();
 
-      return;
-   }
+    return;
+  }
 
-   bool finished = false;
-   //bool stringmode = false;
+  bool finished = false;
+  // bool stringmode = false;
 
-   xmlstring generic;
+  xmlstring generic;
 
-   // get next char
-   xml_char_type c;
-   int c2;
+  // get next char
+  xml_char_type c;
+  int           c2;
 
-   do
-   {
-      if (putback_char == -1 )
-      {
-         c2 = instr.get();
-		 c = (xml_char_type) c2;
-         location.step();
+  do {
+    if (putback_char == -1) {
+      c2 = instr.get();
+      c  = (xml_char_type)c2;
+      location.step();
+    } else {
+      c2           = putback_char;
+      c            = (xml_char_type)c2;
+      putback_char = -1;
+      location.step();
+    }
+
+    // do we have an eof?
+    // TODO: check for instr.eof()
+    if (c2 == EOF) {
+      if (generic.length() == 0) {
+        curtoken = c;
+        return;
+      } else
+        break;
+    }
+
+    // is it a literal?
+    if (is_literal(c)) {
+      cdata_mode = false;
+      if (generic.length() == 0) {
+        curtoken = c;
+
+        // quick fix for removing set_cdata_mode() functionality
+        if (c == '>')
+          cdata_mode = true;
+
+        return;
       }
+      putback_char = c2;
+      location.step(-1);
+      break;
+    }
+
+    // a string delimiter and not in cdata mode?
+    if (is_stringdelimiter(c) && !cdata_mode) {
+      generic             = c;
+      xml_char_type delim = c;
+      do {
+        c2 = instr.get();
+        c  = (xml_char_type)c2;
+        location.step();
+        if (c2 == EOF)
+          break;
+        generic += c;
+      } while (c != delim);
+      break;
+    }
+
+    // a whitespace?
+    if (is_whitespace(c)) {
+      if (generic.length() == 0)
+        continue;
+      else if (!cdata_mode)
+        break;
+    }
+
+    // a newline char?
+    if (is_newline(c)) {
+      if (cdata_mode && generic.length() != 0)
+        c = ' ';
       else
-      {
-         c2 = putback_char;
-		 c = (xml_char_type) c2;
-         putback_char = -1;
-         location.step();
-      }
+        continue;
+    }
 
-      // do we have an eof?
-      // TODO: check for instr.eof()
-      if (c2 == EOF)
-      {
-         if (generic.length()==0)
-         {
-            curtoken = c;
-            return;
-         }
-         else
-            break;
-      }
+    // add to generic string
+    generic += c;
+  } while (!finished);
 
-      // is it a literal?
-      if (is_literal(c))
-      {
-         cdata_mode = false;
-         if (generic.length()==0)
-         {
-            curtoken = c;
-
-            // quick fix for removing set_cdata_mode() functionality
-            if (c=='>')
-               cdata_mode = true;
-
-            return;
-         }
-         putback_char = c2;
-         location.step(-1);
-         break;
-      }
-
-      // a string delimiter and not in cdata mode?
-      if (is_stringdelimiter(c) && !cdata_mode)
-      {
-         generic = c;
-         xml_char_type delim = c;
-         do
-         {
-            c2 = instr.get();
-		    c = (xml_char_type) c2;
-            location.step();
-            if (c2==EOF)
-               break;
-            generic += c;
-         } while (c != delim);
-         break;
-      }
-
-      // a whitespace?
-      if (is_whitespace(c))
-      {
-         if (generic.length()==0)
-            continue;
-         else
-            if (!cdata_mode)
-               break;
-      }
-
-      // a newline char?
-      if (is_newline(c) )
-      {
-         if (cdata_mode && generic.length()!=0)
-            c = ' ';
-         else
-            continue;
-      }
-
-      // add to generic string
-      generic += c;
-   }
-   while (!finished);
-
-   // set the generic string
-   curtoken = generic;
+  // set the generic string
+  curtoken = generic;
 }
 
 // returns if we have a literal char
-bool xmlstream_iterator::is_literal( xml_char_type c )
-{
-   switch(c)
-   {
-   case '?':
-   case '=':
-   case '!':
-   case '/':
-      if (cdata_mode)
-         return false;
-   case '<':
-   case '>':
-      return true;
-   }
-   return false;
+bool xmlstream_iterator::is_literal(xml_char_type c) {
+  switch (c) {
+  case '?':
+  case '=':
+  case '!':
+  case '/':
+    if (cdata_mode)
+      return false;
+  case '<':
+  case '>':
+    return true;
+  }
+  return false;
 }
 
 // returns if we have a white space char
-bool xmlstream_iterator::is_whitespace( xml_char_type c )
-{
-   switch(c)
-   {
-   case ' ':
-   case '\t':
-      return true;
-   }
-   return false;
+bool xmlstream_iterator::is_whitespace(xml_char_type c) {
+  switch (c) {
+  case ' ':
+  case '\t':
+    return true;
+  }
+  return false;
 }
 
 // returns if we have a newline
-bool xmlstream_iterator::is_newline( xml_char_type c )
-{
-   switch(c)
-   {
-   case '\n':
-      location.newline();
-   case '\r':
-      return true;
-   }
-   return false;
+bool xmlstream_iterator::is_newline(xml_char_type c) {
+  switch (c) {
+  case '\n':
+    location.newline();
+  case '\r':
+    return true;
+  }
+  return false;
 }
 
 // returns if we have a string delimiter (separating " and ')
-bool xmlstream_iterator::is_stringdelimiter( xml_char_type c )
-{
-   switch(c)
-   {
-   case '\"':
-   case '\'':
-      return true;
-   }
-   return false;
+bool xmlstream_iterator::is_stringdelimiter(xml_char_type c) {
+  switch (c) {
+  case '\"':
+  case '\'':
+    return true;
+  }
+  return false;
 }
 
 // end namespace
-}
+} // namespace xmlpp

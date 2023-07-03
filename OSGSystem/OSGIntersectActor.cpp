@@ -51,10 +51,8 @@ OSG_USING_NAMESPACE
 /*! Create a new instance of this actor.
  */
 
-IntersectActor *
-IntersectActor::create(void)
-{
-    return new IntersectActor();
+IntersectActor* IntersectActor::create(void) {
+  return new IntersectActor();
 }
 
 //----------------------------------------------------------------------------
@@ -64,8 +62,7 @@ IntersectActor::create(void)
 /*! Destructor.
  */
 
-IntersectActor::~IntersectActor(void)
-{
+IntersectActor::~IntersectActor(void) {
 }
 
 //----------------------------------------------------------------------------
@@ -75,15 +72,13 @@ IntersectActor::~IntersectActor(void)
 /*! Reset all information about the hit object to default values.
  */
 
-void
-IntersectActor::reset(void)
-{
-    setHitDistance     (TypeTraits<Real32>::getMax());
-    setHitObject       (NullFC                      );
-    setHitTriangleIndex(-1                          );
-    setHitNormal       (Vec3f(0.0, 0.0, 0.0)        );
-    setScaleFactor     (1.0                         );
-    Inherited::setHit  (false                       );
+void IntersectActor::reset(void) {
+  setHitDistance(TypeTraits<Real32>::getMax());
+  setHitObject(NullFC);
+  setHitTriangleIndex(-1);
+  setHitNormal(Vec3f(0.0, 0.0, 0.0));
+  setScaleFactor(1.0);
+  Inherited::setHit(false);
 }
 
 /*! This is a helper method for implementing functors, do not use it otherwise.
@@ -92,26 +87,20 @@ IntersectActor::reset(void)
     action.
  */
 
-void
-IntersectActor::setHit(
-    Real32 hitDist, NodePtr pHitObj, Int32 triIndex, Vec3f hitNormal)
-{
-    if((hitDist < 0               ) ||
-       (hitDist > getHitDistance()) ||
-       (hitDist > getMaxDistance())   )
-    {
-        return;
-    }
+void IntersectActor::setHit(Real32 hitDist, NodePtr pHitObj, Int32 triIndex, Vec3f hitNormal) {
+  if ((hitDist < 0) || (hitDist > getHitDistance()) || (hitDist > getMaxDistance())) {
+    return;
+  }
 
-    beginEditState();
-    {
-        this->setHitDistance     (hitDist  );
-        this->setHitObject       (pHitObj  );
-        this->setHitTriangleIndex(triIndex );
-        this->setHitNormal       (hitNormal);
-        this->Inherited::setHit  (true     );
-    }
-    endEditState  ();
+  beginEditState();
+  {
+    this->setHitDistance(hitDist);
+    this->setHitObject(pHitObj);
+    this->setHitTriangleIndex(triIndex);
+    this->setHitNormal(hitNormal);
+    this->Inherited::setHit(true);
+  }
+  endEditState();
 }
 
 /*! This is a helper method for implementing functors, do not use it otherwise.
@@ -121,48 +110,38 @@ IntersectActor::setHit(
     action.
  */
 
-void
-IntersectActor::setupChildrenPriorities(void)
-{
-    UInt32 numChildren      = getNumChildren     ();
-    UInt32 numExtraChildren = getNumExtraChildren();
+void IntersectActor::setupChildrenPriorities(void) {
+  UInt32 numChildren      = getNumChildren();
+  UInt32 numExtraChildren = getNumExtraChildren();
 
-    Real32 scaleFactor      = getScaleFactor();
-    Real32 hitDist          = getHitDistance();
-    Real32 bvEnter;
-    Real32 bvExit;
+  Real32 scaleFactor = getScaleFactor();
+  Real32 hitDist     = getHitDistance();
+  Real32 bvEnter;
+  Real32 bvExit;
 
-    setChildrenListEnabled(true);
+  setChildrenListEnabled(true);
 
-    for(UInt32 i = 0; i < numChildren; ++i)
-    {
-        const DynamicVolume &dynVol = getChild(i)->getVolume(true);
+  for (UInt32 i = 0; i < numChildren; ++i) {
+    const DynamicVolume& dynVol = getChild(i)->getVolume(true);
 
-        if((dynVol.intersect(getRay(), bvEnter, bvExit) == true   ) &&
-           (bvEnter * scaleFactor                       <  hitDist)   )
-        {
-            setChildPriority(i, -bvEnter * scaleFactor);
-        }
-        else
-        {
-            setChildActive  (i, false);
-        }
+    if ((dynVol.intersect(getRay(), bvEnter, bvExit) == true) &&
+        (bvEnter * scaleFactor < hitDist)) {
+      setChildPriority(i, -bvEnter * scaleFactor);
+    } else {
+      setChildActive(i, false);
     }
+  }
 
-    for(UInt32 i = 0; i < numExtraChildren; ++i)
-    {
-        const DynamicVolume &dynVol = getExtraChild(i)->getVolume(true);
+  for (UInt32 i = 0; i < numExtraChildren; ++i) {
+    const DynamicVolume& dynVol = getExtraChild(i)->getVolume(true);
 
-        if((dynVol.intersect(getRay(), bvEnter, bvExit) == true   ) &&
-           (bvEnter * scaleFactor                       <  hitDist)   )
-        {
-            setExtraChildPriority(i, -bvEnter * scaleFactor);
-        }
-        else
-        {
-            setExtraChildActive  (i, false);
-        }
+    if ((dynVol.intersect(getRay(), bvEnter, bvExit) == true) &&
+        (bvEnter * scaleFactor < hitDist)) {
+      setExtraChildPriority(i, -bvEnter * scaleFactor);
+    } else {
+      setExtraChildActive(i, false);
     }
+  }
 }
 
 //----------------------------------------------------------------------------
@@ -173,6 +152,5 @@ IntersectActor::setupChildrenPriorities(void)
  */
 
 IntersectActor::IntersectActor(void)
-    : Inherited()
-{
+    : Inherited() {
 }

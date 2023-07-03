@@ -38,13 +38,10 @@
 
 OSG_BEGIN_NAMESPACE
 
-inline
-TXFFont::txfChar::txfChar(void) :
-    remapped(' ')
-{ 
+inline TXFFont::txfChar::txfChar(void)
+    : remapped(' ') {
 }
 
 OSG_END_NAMESPACE
 
 #define OSG_INLINE_CVSID "@(#)$Id: $"
-

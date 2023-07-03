@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEIMAGECOMPOSERINST
 
 #include <stdlib.h>
@@ -61,19 +60,16 @@
 #include "OSGImageComposerBase.h"
 #include "OSGImageComposer.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  ImageComposerBase::EnabledFieldMask = 
+const OSG::BitVector ImageComposerBase::EnabledFieldMask =
     (TypeTraits<BitVector>::One << ImageComposerBase::EnabledFieldId);
 
-const OSG::BitVector  ImageComposerBase::StatisticsFieldMask = 
+const OSG::BitVector ImageComposerBase::StatisticsFieldMask =
     (TypeTraits<BitVector>::One << ImageComposerBase::StatisticsFieldId);
 
-const OSG::BitVector ImageComposerBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector ImageComposerBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
@@ -81,211 +77,151 @@ const OSG::BitVector ImageComposerBase::MTInfluenceMask =
     Do composition if value is true
 */
 /*! \var bool            ImageComposerBase::_sfStatistics
-    
+
 */
 
 //! ImageComposer description
 
-FieldDescription *ImageComposerBase::_desc[] = 
-{
-    new FieldDescription(SFBool::getClassType(), 
-                     "enabled", 
-                     EnabledFieldId, EnabledFieldMask,
-                     false,
-                     (FieldAccessMethod) &ImageComposerBase::getSFEnabled),
-    new FieldDescription(SFBool::getClassType(), 
-                     "statistics", 
-                     StatisticsFieldId, StatisticsFieldMask,
-                     false,
-                     (FieldAccessMethod) &ImageComposerBase::getSFStatistics)
-};
+FieldDescription* ImageComposerBase::_desc[] = {
+    new FieldDescription(SFBool::getClassType(), "enabled", EnabledFieldId, EnabledFieldMask, false,
+        (FieldAccessMethod)&ImageComposerBase::getSFEnabled),
+    new FieldDescription(SFBool::getClassType(), "statistics", StatisticsFieldId,
+        StatisticsFieldMask, false, (FieldAccessMethod)&ImageComposerBase::getSFStatistics)};
 
+FieldContainerType ImageComposerBase::_type("ImageComposer", "AttachmentContainer", NULL, NULL,
+    ImageComposer::initMethod, _desc, sizeof(_desc));
 
-FieldContainerType ImageComposerBase::_type(
-    "ImageComposer",
-    "AttachmentContainer",
-    NULL,
-    NULL, 
-    ImageComposer::initMethod,
-    _desc,
-    sizeof(_desc));
-
-//OSG_FIELD_CONTAINER_DEF(ImageComposerBase, ImageComposerPtr)
+// OSG_FIELD_CONTAINER_DEF(ImageComposerBase, ImageComposerPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &ImageComposerBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &ImageComposerBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-UInt32 ImageComposerBase::getContainerSize(void) const 
-{ 
-    return sizeof(ImageComposer); 
+FieldContainerType& ImageComposerBase::getType(void) {
+  return _type;
 }
 
+const FieldContainerType& ImageComposerBase::getType(void) const {
+  return _type;
+}
+
+UInt32 ImageComposerBase::getContainerSize(void) const {
+  return sizeof(ImageComposer);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ImageComposerBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((ImageComposerBase *) &other, whichField);
+void ImageComposerBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((ImageComposerBase*)&other, whichField);
 }
 #else
-void ImageComposerBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((ImageComposerBase *) &other, whichField, sInfo);
+void ImageComposerBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((ImageComposerBase*)&other, whichField, sInfo);
 }
-void ImageComposerBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void ImageComposerBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void ImageComposerBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void ImageComposerBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-ImageComposerBase::ImageComposerBase(void) :
-    _sfEnabled                (bool(true)), 
-    _sfStatistics             (bool(false)), 
-    Inherited() 
-{
+ImageComposerBase::ImageComposerBase(void)
+    : _sfEnabled(bool(true))
+    , _sfStatistics(bool(false))
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-ImageComposerBase::ImageComposerBase(const ImageComposerBase &source) :
-    _sfEnabled                (source._sfEnabled                ), 
-    _sfStatistics             (source._sfStatistics             ), 
-    Inherited                 (source)
-{
+ImageComposerBase::ImageComposerBase(const ImageComposerBase& source)
+    : _sfEnabled(source._sfEnabled)
+    , _sfStatistics(source._sfStatistics)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-ImageComposerBase::~ImageComposerBase(void)
-{
+ImageComposerBase::~ImageComposerBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 ImageComposerBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 ImageComposerBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (EnabledFieldMask & whichField))
-    {
-        returnValue += _sfEnabled.getBinSize();
-    }
+  if (FieldBits::NoField != (EnabledFieldMask & whichField)) {
+    returnValue += _sfEnabled.getBinSize();
+  }
 
-    if(FieldBits::NoField != (StatisticsFieldMask & whichField))
-    {
-        returnValue += _sfStatistics.getBinSize();
-    }
+  if (FieldBits::NoField != (StatisticsFieldMask & whichField)) {
+    returnValue += _sfStatistics.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void ImageComposerBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void ImageComposerBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (EnabledFieldMask & whichField))
-    {
-        _sfEnabled.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (EnabledFieldMask & whichField)) {
+    _sfEnabled.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (StatisticsFieldMask & whichField))
-    {
-        _sfStatistics.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (StatisticsFieldMask & whichField)) {
+    _sfStatistics.copyToBin(pMem);
+  }
 }
 
-void ImageComposerBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void ImageComposerBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (EnabledFieldMask & whichField))
-    {
-        _sfEnabled.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (EnabledFieldMask & whichField)) {
+    _sfEnabled.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (StatisticsFieldMask & whichField))
-    {
-        _sfStatistics.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (StatisticsFieldMask & whichField)) {
+    _sfStatistics.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ImageComposerBase::executeSyncImpl(      ImageComposerBase *pOther,
-                                        const BitVector         &whichField)
-{
+void ImageComposerBase::executeSyncImpl(ImageComposerBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (EnabledFieldMask & whichField))
-        _sfEnabled.syncWith(pOther->_sfEnabled);
+  if (FieldBits::NoField != (EnabledFieldMask & whichField))
+    _sfEnabled.syncWith(pOther->_sfEnabled);
 
-    if(FieldBits::NoField != (StatisticsFieldMask & whichField))
-        _sfStatistics.syncWith(pOther->_sfStatistics);
-
-
+  if (FieldBits::NoField != (StatisticsFieldMask & whichField))
+    _sfStatistics.syncWith(pOther->_sfStatistics);
 }
 #else
-void ImageComposerBase::executeSyncImpl(      ImageComposerBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void ImageComposerBase::executeSyncImpl(
+    ImageComposerBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (EnabledFieldMask & whichField))
-        _sfEnabled.syncWith(pOther->_sfEnabled);
+  if (FieldBits::NoField != (EnabledFieldMask & whichField))
+    _sfEnabled.syncWith(pOther->_sfEnabled);
 
-    if(FieldBits::NoField != (StatisticsFieldMask & whichField))
-        _sfStatistics.syncWith(pOther->_sfStatistics);
-
-
-
+  if (FieldBits::NoField != (StatisticsFieldMask & whichField))
+    _sfStatistics.syncWith(pOther->_sfStatistics);
 }
 
-void ImageComposerBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void ImageComposerBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>

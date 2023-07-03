@@ -49,64 +49,54 @@
 
 OSG_USING_NAMESPACE
 
-
 /*-------------------------------------------------------------------------*/
 /*                             Sync                                     */
 
-void LightEnv::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void LightEnv::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
-
 
 /*-------------------------------------------------------------------------*/
 /*                                Dump                                     */
 
-void LightEnv::dump(      UInt32    uiIndent, 
-                     const BitVector bvFlags) const
-{
-   Inherited::dump(uiIndent, bvFlags);
+void LightEnv::dump(UInt32 uiIndent, const BitVector bvFlags) const {
+  Inherited::dump(uiIndent, bvFlags);
 }
 
 /*-------------------------------------------------------------------------*/
 /*                            Constructors                                 */
 
-LightEnv::LightEnv(void) :
-     Inherited()
-{
+LightEnv::LightEnv(void)
+    : Inherited() {
 }
 
-LightEnv::LightEnv(const LightEnv &source) :
-     Inherited(source)
-{
+LightEnv::LightEnv(const LightEnv& source)
+    : Inherited(source) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Destructor                                  */
 
-LightEnv::~LightEnv(void)
-{
+LightEnv::~LightEnv(void) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Rendering                                   */
 
-Action::ResultE LightEnv::renderEnter(Action *action)
-{
-    RenderAction *pAction = dynamic_cast<RenderAction *>(action);
+Action::ResultE LightEnv::renderEnter(Action* action) {
+  RenderAction* pAction = dynamic_cast<RenderAction*>(action);
 
-    pAction->dropLightEnv(this);
+  pAction->dropLightEnv(this);
 
-    return Action::Continue;
+  return Action::Continue;
 }
 
-Action::ResultE LightEnv::renderLeave(Action *action)
-{
-    RenderAction *pAction = dynamic_cast<RenderAction *>(action);
+Action::ResultE LightEnv::renderLeave(Action* action) {
+  RenderAction* pAction = dynamic_cast<RenderAction*>(action);
 
-    pAction->undropLightEnv(this);
+  pAction->undropLightEnv(this);
 
-    return Action::Continue;
+  return Action::Continue;
 }
 
 /*-------------------------------------------------------------------------*/
@@ -114,24 +104,12 @@ Action::ResultE LightEnv::renderLeave(Action *action)
 
 //! initialize the static features of the class, e.g. action callbacks
 
-void LightEnv::initMethod(void)
-{
-    RenderAction::registerEnterDefault(
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<
-            Action::ResultE,
-            LightEnvPtr  , 
-            CNodePtr          ,  
-            Action           *>(&LightEnv::renderEnter));
+void LightEnv::initMethod(void) {
+  RenderAction::registerEnterDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, LightEnvPtr, CNodePtr, Action*>(
+          &LightEnv::renderEnter));
 
-    RenderAction::registerLeaveDefault(
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<
-            Action::ResultE,
-            LightEnvPtr  , 
-            CNodePtr          ,  
-            Action           *>(&LightEnv::renderLeave));
+  RenderAction::registerLeaveDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, LightEnvPtr, CNodePtr, Action*>(
+          &LightEnv::renderLeave));
 }
-
-
-

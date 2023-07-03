@@ -48,116 +48,106 @@
 
 OSG_BEGIN_NAMESPACE
 
-/** 
+/**
 @brief 3D shadow frustum defined by n planes.
 @author dstaneker
 
 */
 
-class OSG_BASE_DLLMAPPING PolytopeVolume : public Volume
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
-    
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-      
-    PolytopeVolume (                                              ); 
-    PolytopeVolume ( const UInt16&                                );
-    PolytopeVolume ( const PolytopeVolume &obj                    );
+class OSG_BASE_DLLMAPPING PolytopeVolume : public Volume {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-    
-    inline ~PolytopeVolume(); 
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Get                                       */
-    /*! \{                                                                 */
-    
-    const           Plane & getNear         (void           ) const;
-    const           Plane * getPlanes       (void           ); 
-    const           Plane * getPlanes       (void           ) const; 
-    virtual         void    getCenter       (Pnt3f &center  ) const;
-    virtual         Real32  getScalarVolume (void           ) const;
-    virtual         void    getBounds       ( Pnt3f &minPnt,
-                                              Pnt3f &maxPnt ) const;
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Get                                       */
-    /*! \{                                                                 */
+  PolytopeVolume();
+  PolytopeVolume(const UInt16&);
+  PolytopeVolume(const PolytopeVolume& obj);
 
-    void setPlane(const Plane&, const UInt16);
-                                    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Extending                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    virtual         void extendBy   (const Pnt3f            &pt         );
-                    void extendBy   (const Volume           &volume     );   
-                    void extendBy   (const PolytopeVolume    &bb        );
+  inline ~PolytopeVolume();
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Intersection                              */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Get                                       */
+  /*! \{                                                                 */
 
-    bool intersect      (const Pnt3f            &point       ) const;
-    bool intersect      (const Line             &line        ) const;
-    bool intersect      (const Line             &line,
-                         Real32           &minDist,
-                         Real32           &maxDist           ) const;
+  const Plane&   getNear(void) const;
+  const Plane*   getPlanes(void);
+  const Plane*   getPlanes(void) const;
+  virtual void   getCenter(Pnt3f& center) const;
+  virtual Real32 getScalarVolume(void) const;
+  virtual void   getBounds(Pnt3f& minPnt, Pnt3f& maxPnt) const;
 
-    bool intersect    (const Volume           &volume ) const;
-    bool intersect    (const PolytopeVolume    &bb    ) const;
-    virtual bool isOnSurface (const Pnt3f            &point  ) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Get                                       */
+  /*! \{                                                                 */
 
+  void setPlane(const Plane&, const UInt16);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Transformation                            */
-    /*! \{                                                                 */
-  
-    virtual void transform      (const Matrix           &m          );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Extending                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Assignment                                 */
-    /*! \{                                                                 */
-    
-    const PolytopeVolume &operator =(const PolytopeVolume &b1);
+  virtual void extendBy(const Pnt3f& pt);
+  void         extendBy(const Volume& volume);
+  void         extendBy(const PolytopeVolume& bb);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Output                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Intersection                              */
+  /*! \{                                                                 */
 
+  bool intersect(const Pnt3f& point) const;
+  bool intersect(const Line& line) const;
+  bool intersect(const Line& line, Real32& minDist, Real32& maxDist) const;
 
-    virtual void dump(      UInt32    uiIndent = 0, 
-                      const BitVector bvFlags  = 0) const;
-    
-    /*! \}                                                                 */
+  bool         intersect(const Volume& volume) const;
+  bool         intersect(const PolytopeVolume& bb) const;
+  virtual bool isOnSurface(const Pnt3f& point) const;
 
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Transformation                            */
+  /*! \{                                                                 */
 
-    UInt16 _numPlanes;
-    Plane* _planes;
+  virtual void transform(const Matrix& m);
+
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Assignment                                 */
+  /*! \{                                                                 */
+
+  const PolytopeVolume& operator=(const PolytopeVolume& b1);
+
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Output                                  */
+  /*! \{                                                                 */
+
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
+
+  /*! \}                                                                 */
+
+  /*==========================  PRIVATE  ================================*/
+ private:
+  UInt16 _numPlanes;
+  Plane* _planes;
 };
 
 typedef PolytopeVolume* PolytopeVolumePtr;
 
 OSG_BASE_DLLMAPPING
-bool operator ==(const PolytopeVolume &b1, const PolytopeVolume &b2);
+bool operator==(const PolytopeVolume& b1, const PolytopeVolume& b2);
 
-inline
-bool operator !=(const PolytopeVolume &b1, const PolytopeVolume &b2);
+inline bool operator!=(const PolytopeVolume& b1, const PolytopeVolume& b2);
 
 OSG_END_NAMESPACE
 

@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGCOLORMASKCHUNKFIELDS_H_
 #define _OSGCOLORMASKCHUNKFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class ColorMaskChunk;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! ColorMaskChunkPtr
 
 typedef FCPtr<StateChunkPtr, ColorMaskChunk> ColorMaskChunkPtr;
@@ -81,18 +80,23 @@ typedef FCPtr<StateChunkPtr, ColorMaskChunk> ColorMaskChunkPtr;
 #endif
 
 template <>
-struct FieldDataTraits<ColorMaskChunkPtr> : 
-    public FieldTraitsRecurseMapper<ColorMaskChunkPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<ColorMaskChunkPtr>
+    : public FieldTraitsRecurseMapper<ColorMaskChunkPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getSName(void) { return "SFColorMaskChunkPtr"; }
-    static const char *getMName(void) { return "MFColorMaskChunkPtr"; }
+  static const char* getSName(void) {
+    return "SFColorMaskChunkPtr";
+  }
+  static const char* getMName(void) {
+    return "MFColorMaskChunkPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -102,7 +106,6 @@ struct FieldDataTraits<ColorMaskChunkPtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
@@ -126,6 +129,7 @@ OSG_DLLEXPORT_DECL1(MField, ColorMaskChunkPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 
 OSG_END_NAMESPACE
 
-#define OSGCOLORMASKCHUNKFIELDS_HEADER_CVSID "@(#)$Id: OSGColorMaskChunkFields.h,v 1.3 2006/02/20 16:54:19 dirk Exp $"
+#define OSGCOLORMASKCHUNKFIELDS_HEADER_CVSID                                                       \
+  "@(#)$Id: OSGColorMaskChunkFields.h,v 1.3 2006/02/20 16:54:19 dirk Exp $"
 
 #endif /* _OSGCOLORMASKCHUNKFIELDS_H_ */

@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGDVRVOLUMETEXTUREBASE_H_
 #define _OSGDVRVOLUMETEXTUREBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -67,11 +65,11 @@
 
 #include <OSGAttachment.h> // Parent
 
-#include <OSGImageFields.h> // Image type
+#include <OSGImageFields.h>  // Image type
 #include <OSGReal32Fields.h> // Histogram type
 #include <OSGReal32Fields.h> // MaxVal type
-#include <OSGVec3fFields.h> // SliceThickness type
-#include <OSGVec3fFields.h> // Resolution type
+#include <OSGVec3fFields.h>  // SliceThickness type
+#include <OSGVec3fFields.h>  // Resolution type
 #include <OSGStringFields.h> // FileName type
 
 #include <OSGDVRVolumeTextureFields.h>
@@ -83,216 +81,196 @@ class BinaryDataHandler;
 
 //! \brief DVRVolumeTexture Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING DVRVolumeTextureBase : public Attachment
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING DVRVolumeTextureBase : public Attachment {
+ private:
+  typedef Attachment Inherited;
 
-    typedef Attachment    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef DVRVolumeTexturePtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    ImageFieldId          = Inherited::NextFieldId,
+    HistogramFieldId      = ImageFieldId + 1,
+    MaxValFieldId         = HistogramFieldId + 1,
+    SliceThicknessFieldId = MaxValFieldId + 1,
+    ResolutionFieldId     = SliceThicknessFieldId + 1,
+    FileNameFieldId       = ResolutionFieldId + 1,
+    NextFieldId           = FileNameFieldId + 1
+  };
 
-    typedef DVRVolumeTexturePtr  Ptr;
+  static const OSG::BitVector ImageFieldMask;
+  static const OSG::BitVector HistogramFieldMask;
+  static const OSG::BitVector MaxValFieldMask;
+  static const OSG::BitVector SliceThicknessFieldMask;
+  static const OSG::BitVector ResolutionFieldMask;
+  static const OSG::BitVector FileNameFieldMask;
 
-    enum
-    {
-        ImageFieldId          = Inherited::NextFieldId,
-        HistogramFieldId      = ImageFieldId          + 1,
-        MaxValFieldId         = HistogramFieldId      + 1,
-        SliceThicknessFieldId = MaxValFieldId         + 1,
-        ResolutionFieldId     = SliceThicknessFieldId + 1,
-        FileNameFieldId       = ResolutionFieldId     + 1,
-        NextFieldId           = FileNameFieldId       + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector ImageFieldMask;
-    static const OSG::BitVector HistogramFieldMask;
-    static const OSG::BitVector MaxValFieldMask;
-    static const OSG::BitVector SliceThicknessFieldMask;
-    static const OSG::BitVector ResolutionFieldMask;
-    static const OSG::BitVector FileNameFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFImagePtr* getSFImage(void);
+  MFReal32*   getMFHistogram(void);
+  SFReal32*   getSFMaxVal(void);
+  SFVec3f*    getSFSliceThickness(void);
+  SFVec3f*    getSFResolution(void);
+  SFString*   getSFFileName(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  ImagePtr&          getImage(void);
+  const ImagePtr&    getImage(void) const;
+  Real32&            getMaxVal(void);
+  const Real32&      getMaxVal(void) const;
+  Vec3f&             getSliceThickness(void);
+  const Vec3f&       getSliceThickness(void) const;
+  Vec3f&             getResolution(void);
+  const Vec3f&       getResolution(void) const;
+  std::string&       getFileName(void);
+  const std::string& getFileName(void) const;
+  Real32&            getHistogram(const UInt32 index);
+  MFReal32&          getHistogram(void);
+  const MFReal32&    getHistogram(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFImagePtr          *getSFImage          (void);
-           MFReal32            *getMFHistogram      (void);
-           SFReal32            *getSFMaxVal         (void);
-           SFVec3f             *getSFSliceThickness (void);
-           SFVec3f             *getSFResolution     (void);
-           SFString            *getSFFileName       (void);
+  void setImage(const ImagePtr& value);
+  void setMaxVal(const Real32& value);
+  void setSliceThickness(const Vec3f& value);
+  void setResolution(const Vec3f& value);
+  void setFileName(const std::string& value);
 
-           ImagePtr            &getImage          (void);
-     const ImagePtr            &getImage          (void) const;
-           Real32              &getMaxVal         (void);
-     const Real32              &getMaxVal         (void) const;
-           Vec3f               &getSliceThickness (void);
-     const Vec3f               &getSliceThickness (void) const;
-           Vec3f               &getResolution     (void);
-     const Vec3f               &getResolution     (void) const;
-           std::string         &getFileName       (void);
-     const std::string         &getFileName       (void) const;
-           Real32              &getHistogram      (const UInt32 index);
-           MFReal32            &getHistogram      (void);
-     const MFReal32            &getHistogram      (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setImage          ( const ImagePtr &value );
-     void setMaxVal         ( const Real32 &value );
-     void setSliceThickness ( const Vec3f &value );
-     void setResolution     ( const Vec3f &value );
-     void setFileName       ( const std::string &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static DVRVolumeTexturePtr create(void);
+  static DVRVolumeTexturePtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  DVRVolumeTexturePtr      create          (void); 
-    static  DVRVolumeTexturePtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFImagePtr _sfImage;
+  MFReal32   _mfHistogram;
+  SFReal32   _sfMaxVal;
+  SFVec3f    _sfSliceThickness;
+  SFVec3f    _sfResolution;
+  SFString   _sfFileName;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  DVRVolumeTextureBase(void);
+  DVRVolumeTextureBase(const DVRVolumeTextureBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~DVRVolumeTextureBase(void);
 
-    SFImagePtr          _sfImage;
-    MFReal32            _mfHistogram;
-    SFReal32            _sfMaxVal;
-    SFVec3f             _sfSliceThickness;
-    SFVec3f             _sfResolution;
-    SFString            _sfFileName;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    DVRVolumeTextureBase(void);
-    DVRVolumeTextureBase(const DVRVolumeTextureBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~DVRVolumeTextureBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      DVRVolumeTextureBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(DVRVolumeTextureBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      DVRVolumeTextureBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      DVRVolumeTextureBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const DVRVolumeTextureBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const DVRVolumeTextureBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef DVRVolumeTextureBase* DVRVolumeTextureBaseP;
 
-typedef DVRVolumeTextureBase *DVRVolumeTextureBaseP;
-
-typedef osgIF<DVRVolumeTextureBase::isNodeCore,
-              CoredNodePtr<DVRVolumeTexture>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet DVRVolumeTextureNodePtr;
+typedef osgIF<DVRVolumeTextureBase::isNodeCore, CoredNodePtr<DVRVolumeTexture>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet
+    DVRVolumeTextureNodePtr;
 
 typedef RefPtr<DVRVolumeTexturePtr> DVRVolumeTextureRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGDVRVOLUMETEXTUREBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGDVRVOLUMETEXTUREBASE_HEADER_CVSID                                                       \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGDVRVOLUMETEXTUREBASE_H_ */

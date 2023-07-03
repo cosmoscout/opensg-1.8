@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEDISTANCELODINST
 
 #include <stdlib.h>
@@ -61,19 +60,16 @@
 #include "OSGDistanceLODBase.h"
 #include "OSGDistanceLOD.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  DistanceLODBase::CenterFieldMask = 
+const OSG::BitVector DistanceLODBase::CenterFieldMask =
     (TypeTraits<BitVector>::One << DistanceLODBase::CenterFieldId);
 
-const OSG::BitVector  DistanceLODBase::RangeFieldMask = 
+const OSG::BitVector DistanceLODBase::RangeFieldMask =
     (TypeTraits<BitVector>::One << DistanceLODBase::RangeFieldId);
 
-const OSG::BitVector DistanceLODBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector DistanceLODBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
@@ -86,219 +82,159 @@ const OSG::BitVector DistanceLODBase::MTInfluenceMask =
 
 //! DistanceLOD description
 
-FieldDescription *DistanceLODBase::_desc[] = 
-{
-    new FieldDescription(SFPnt3f::getClassType(), 
-                     "center", 
-                     CenterFieldId, CenterFieldMask,
-                     false,
-                     (FieldAccessMethod) &DistanceLODBase::getSFCenter),
-    new FieldDescription(MFReal32::getClassType(), 
-                     "range", 
-                     RangeFieldId, RangeFieldMask,
-                     false,
-                     (FieldAccessMethod) &DistanceLODBase::getMFRange)
-};
+FieldDescription* DistanceLODBase::_desc[] = {
+    new FieldDescription(SFPnt3f::getClassType(), "center", CenterFieldId, CenterFieldMask, false,
+        (FieldAccessMethod)&DistanceLODBase::getSFCenter),
+    new FieldDescription(MFReal32::getClassType(), "range", RangeFieldId, RangeFieldMask, false,
+        (FieldAccessMethod)&DistanceLODBase::getMFRange)};
 
+FieldContainerType DistanceLODBase::_type("DistanceLOD", "Group", NULL,
+    (PrototypeCreateF)&DistanceLODBase::createEmpty, DistanceLOD::initMethod, _desc, sizeof(_desc));
 
-FieldContainerType DistanceLODBase::_type(
-    "DistanceLOD",
-    "Group",
-    NULL,
-    (PrototypeCreateF) &DistanceLODBase::createEmpty,
-    DistanceLOD::initMethod,
-    _desc,
-    sizeof(_desc));
-
-//OSG_FIELD_CONTAINER_DEF(DistanceLODBase, DistanceLODPtr)
+// OSG_FIELD_CONTAINER_DEF(DistanceLODBase, DistanceLODPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &DistanceLODBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &DistanceLODBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr DistanceLODBase::shallowCopy(void) const 
-{ 
-    DistanceLODPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const DistanceLOD *>(this)); 
-
-    return returnValue; 
+FieldContainerType& DistanceLODBase::getType(void) {
+  return _type;
 }
 
-UInt32 DistanceLODBase::getContainerSize(void) const 
-{ 
-    return sizeof(DistanceLOD); 
+const FieldContainerType& DistanceLODBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr DistanceLODBase::shallowCopy(void) const {
+  DistanceLODPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const DistanceLOD*>(this));
+
+  return returnValue;
+}
+
+UInt32 DistanceLODBase::getContainerSize(void) const {
+  return sizeof(DistanceLOD);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void DistanceLODBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((DistanceLODBase *) &other, whichField);
+void DistanceLODBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((DistanceLODBase*)&other, whichField);
 }
 #else
-void DistanceLODBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((DistanceLODBase *) &other, whichField, sInfo);
+void DistanceLODBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((DistanceLODBase*)&other, whichField, sInfo);
 }
-void DistanceLODBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void DistanceLODBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void DistanceLODBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
+void DistanceLODBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 
-    _mfRange.terminateShare(uiAspect, this->getContainerSize());
+  _mfRange.terminateShare(uiAspect, this->getContainerSize());
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-DistanceLODBase::DistanceLODBase(void) :
-    _sfCenter                 (), 
-    _mfRange                  (), 
-    Inherited() 
-{
+DistanceLODBase::DistanceLODBase(void)
+    : _sfCenter()
+    , _mfRange()
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-DistanceLODBase::DistanceLODBase(const DistanceLODBase &source) :
-    _sfCenter                 (source._sfCenter                 ), 
-    _mfRange                  (source._mfRange                  ), 
-    Inherited                 (source)
-{
+DistanceLODBase::DistanceLODBase(const DistanceLODBase& source)
+    : _sfCenter(source._sfCenter)
+    , _mfRange(source._mfRange)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-DistanceLODBase::~DistanceLODBase(void)
-{
+DistanceLODBase::~DistanceLODBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 DistanceLODBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 DistanceLODBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (CenterFieldMask & whichField))
-    {
-        returnValue += _sfCenter.getBinSize();
-    }
+  if (FieldBits::NoField != (CenterFieldMask & whichField)) {
+    returnValue += _sfCenter.getBinSize();
+  }
 
-    if(FieldBits::NoField != (RangeFieldMask & whichField))
-    {
-        returnValue += _mfRange.getBinSize();
-    }
+  if (FieldBits::NoField != (RangeFieldMask & whichField)) {
+    returnValue += _mfRange.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void DistanceLODBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void DistanceLODBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (CenterFieldMask & whichField))
-    {
-        _sfCenter.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (CenterFieldMask & whichField)) {
+    _sfCenter.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (RangeFieldMask & whichField))
-    {
-        _mfRange.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (RangeFieldMask & whichField)) {
+    _mfRange.copyToBin(pMem);
+  }
 }
 
-void DistanceLODBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void DistanceLODBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (CenterFieldMask & whichField))
-    {
-        _sfCenter.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (CenterFieldMask & whichField)) {
+    _sfCenter.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (RangeFieldMask & whichField))
-    {
-        _mfRange.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (RangeFieldMask & whichField)) {
+    _mfRange.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void DistanceLODBase::executeSyncImpl(      DistanceLODBase *pOther,
-                                        const BitVector         &whichField)
-{
+void DistanceLODBase::executeSyncImpl(DistanceLODBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (CenterFieldMask & whichField))
-        _sfCenter.syncWith(pOther->_sfCenter);
+  if (FieldBits::NoField != (CenterFieldMask & whichField))
+    _sfCenter.syncWith(pOther->_sfCenter);
 
-    if(FieldBits::NoField != (RangeFieldMask & whichField))
-        _mfRange.syncWith(pOther->_mfRange);
-
-
+  if (FieldBits::NoField != (RangeFieldMask & whichField))
+    _mfRange.syncWith(pOther->_mfRange);
 }
 #else
-void DistanceLODBase::executeSyncImpl(      DistanceLODBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void DistanceLODBase::executeSyncImpl(
+    DistanceLODBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (CenterFieldMask & whichField))
-        _sfCenter.syncWith(pOther->_sfCenter);
+  if (FieldBits::NoField != (CenterFieldMask & whichField))
+    _sfCenter.syncWith(pOther->_sfCenter);
 
-
-    if(FieldBits::NoField != (RangeFieldMask & whichField))
-        _mfRange.syncWith(pOther->_mfRange, sInfo);
-
-
+  if (FieldBits::NoField != (RangeFieldMask & whichField))
+    _mfRange.syncWith(pOther->_mfRange, sInfo);
 }
 
-void DistanceLODBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void DistanceLODBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (RangeFieldMask & whichField))
-        _mfRange.beginEdit(uiAspect, uiContainerSize);
-
+  if (FieldBits::NoField != (RangeFieldMask & whichField))
+    _mfRange.beginEdit(uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 OSG_BEGIN_NAMESPACE
 
@@ -306,6 +242,4 @@ OSG_BEGIN_NAMESPACE
 DataType FieldDataTraits<DistanceLODPtr>::_type("DistanceLODPtr", "GroupPtr");
 #endif
 
-
 OSG_END_NAMESPACE
-

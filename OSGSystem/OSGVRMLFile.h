@@ -60,175 +60,157 @@
 
 OSG_BEGIN_NAMESPACE
 
-typedef VRMLNodeFactory<ScanParseFieldTypeMapper<ScanParseSkel> > Parent;
+typedef VRMLNodeFactory<ScanParseFieldTypeMapper<ScanParseSkel>> Parent;
 
 #if __GNUC__ >= 3
-#    if __GNUC_MINOR__ >=4
-#        define OSG_GCC_34 1
-#    endif
+#if __GNUC_MINOR__ >= 4
+#define OSG_GCC_34 1
 #endif
-# if __GNUC__ >= 4
-#    define OSG_GCC_34 1
+#endif
+#if __GNUC__ >= 4
+#define OSG_GCC_34 1
 #endif
 
 #if __GNUC__ >= 4
-#   define OSG_GCC_4 1
+#define OSG_GCC_4 1
 #endif
 
 #ifndef OSG_COMPILEVRMLLOADERINST
-#if !defined(__sgi) && !defined(__hpux) && !defined(OSG_LINUX_ICC) && \
-    !defined(__sun) && !defined(OSG_GCC_34) && !defined(OSG_GCC_4)
-extern template OSG_SYSTEMLIB_DLLMAPPING
-ScanParseFieldTypeMapper<ScanParseSkel>;
-extern template OSG_SYSTEMLIB_DLLMAPPING
-VRMLNodeFactory<ScanParseFieldTypeMapper<ScanParseSkel> >;
+#if !defined(__sgi) && !defined(__hpux) && !defined(OSG_LINUX_ICC) && !defined(__sun) &&           \
+    !defined(OSG_GCC_34) && !defined(OSG_GCC_4)
+extern template OSG_SYSTEMLIB_DLLMAPPING ScanParseFieldTypeMapper<ScanParseSkel>;
+extern template OSG_SYSTEMLIB_DLLMAPPING VRMLNodeFactory<ScanParseFieldTypeMapper<ScanParseSkel>>;
 #endif
 #endif
 
 //! VRML97 Loader (Geometry only)
 //! \ingroup GrpSystemDrawablesGeometrymetryLoaderLib
 
-class OSG_SYSTEMLIB_DLLMAPPING VRMLFile : public Parent
-{
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+class OSG_SYSTEMLIB_DLLMAPPING VRMLFile : public Parent {
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  typedef Parent   Inherited;
+  typedef VRMLFile Self;
 
-    typedef Parent   Inherited;
-    typedef VRMLFile Self;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  enum {
+    CreateNormals       = Inherited::LastOption << 1,
+    StripeGeometry      = CreateNormals << 1,
+    LogProtoGeneration  = StripeGeometry << 1,
+    LogObjectGeneration = LogProtoGeneration << 1,
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+    LastOption = LogObjectGeneration
+  };
 
-    enum
-    {
-        CreateNormals       = Inherited::LastOption << 1,
-        StripeGeometry      = CreateNormals         << 1,
-        LogProtoGeneration  = StripeGeometry        << 1,
-        LogObjectGeneration = LogProtoGeneration    << 1,
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-        LastOption          = LogObjectGeneration
-    };
+  VRMLFile(void);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    VRMLFile(void);
+  virtual ~VRMLFile(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Skel replacements                          */
+  /*! \{                                                                 */
 
-    virtual ~VRMLFile(void);
+  virtual void scanStream(std::istream& is);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Skel replacements                          */
-    /*! \{                                                                 */
+  virtual void scanFile(const Char8* szFilename);
 
-    virtual void   scanStream    (std::istream &is);
+  virtual void handleError(const Char8* szErrorText);
 
-    virtual void   scanFile      (const Char8  *szFilename);
+  virtual void beginFieldDecl(
+      const Char8* szFieldType, const UInt32 uiFieldTypeId, const Char8* szFieldName);
 
-    virtual void   handleError   (const Char8       *szErrorText);
+  virtual void beginNode(const Char8* szNodeTypename, const Char8* szNodename);
 
-    virtual void   beginFieldDecl(const Char8  *szFieldType,
-                                  const UInt32  uiFieldTypeId,
-                                  const Char8  *szFieldName);
+  virtual void endNode(void);
 
+  virtual void beginScript(const Char8* szNodename);
 
-    virtual void   beginNode     (const Char8 *szNodeTypename,
-                                  const Char8 *szNodename);
+  virtual void endScript(void);
 
-    virtual void   endNode       (void);
+  virtual void beginField(const Char8* szFieldname, const UInt32 uiFieldTypeId);
 
-    virtual void   beginScript   (const Char8 *szNodename);
+  virtual void endField(void);
 
-    virtual void   endScript     (void);
+  virtual void addFieldValue(const Char8* szFieldVal);
 
+  virtual UInt32 getFieldType(const Char8* szFieldname);
 
-    virtual void   beginField    (const Char8  *szFieldname,
-                                  const UInt32  uiFieldTypeId);
+  virtual void use(const Char8* szName);
 
-    virtual void   endField      (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Helper                                  */
+  /*! \{                                                                 */
 
+  void scanStandardPrototypes(const Char8* szFilename);
 
-    virtual void   addFieldValue(const Char8 *szFieldVal);
+  void createStandardPrototypes(void);
 
+  NodePtr getRoot(void);
 
-    virtual UInt32 getFieldType (const Char8 *szFieldname);
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  typedef std::pair<BitVector, BitVector> MaskPair;
 
+  typedef std::map<IDString, FieldContainerPtr> NameContainerMap;
+  typedef std::map<IDString, VRMLNodeDesc*>     NameDescriptionMap;
+  typedef std::stack<MaskPair>                  MaskStack;
 
-    virtual void   use          (const Char8 *szName);
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Member                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Helper                                  */
-    /*! \{                                                                 */
+  //          NodePtr                    _pRoot;
+  NodePtr _pSceneRootNode;
 
-    void    scanStandardPrototypes  (const Char8  *szFilename);
+  NodePtr _pLightRoot;
+  NodePtr _pCurrentGlobalLight;
 
-    void    createStandardPrototypes(void);
+  VRMLNodeDesc*             _pCurrNodeDesc;
+  std::stack<VRMLNodeDesc*> _sNodeDescs;
 
-    NodePtr getRoot                 (void);
+  FieldContainerPtr       _pCurrentFC;
+  Field*                  _pCurrentField;
+  const FieldDescription* _pCurrentFieldDesc;
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  std::stack<FieldContainerPtr>       _fcStack;
+  std::stack<Field*>                  _fStack;
+  std::stack<const FieldDescription*> _fdStack;
 
-    typedef std::pair<BitVector,
-                      BitVector>                  MaskPair;
+  MaskPair  _bvChanged;
+  MaskStack _sChangedStack;
 
-    typedef std::map<IDString, FieldContainerPtr> NameContainerMap;
-    typedef std::map<IDString, VRMLNodeDesc    *> NameDescriptionMap;
-    typedef std::stack<       MaskPair          > MaskStack;
+  NameContainerMap   _nameFCMap;
+  NameDescriptionMap _nameDescMap;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Member                                  */
-    /*! \{                                                                 */
+  void initIntExtFieldTypeMapper(void);
+  void initExtIntFieldTypeMapper(void);
 
-//          NodePtr                    _pRoot;
-               NodePtr                    _pSceneRootNode;
+  FieldContainerPtr findFCByName(const Char8* szName, NodePtr pNode);
 
-               NodePtr                    _pLightRoot;
-               NodePtr                    _pCurrentGlobalLight;
+  void setContainerFieldValue(const FieldContainerPtr& pFC);
 
-               VRMLNodeDesc *             _pCurrNodeDesc;
-    std::stack<VRMLNodeDesc *>            _sNodeDescs;
+  FieldContainerPtr findReference(const Char8* szName);
 
-               FieldContainerPtr          _pCurrentFC;
-               Field                     *_pCurrentField;
-    const      FieldDescription          *_pCurrentFieldDesc;
-
-    std::stack<      FieldContainerPtr >  _fcStack;
-    std::stack<      Field            *>  _fStack;
-    std::stack<const FieldDescription *>  _fdStack;
-
-               MaskPair                    _bvChanged;
-               MaskStack                   _sChangedStack;
-
-               NameContainerMap            _nameFCMap;
-               NameDescriptionMap          _nameDescMap;
-
-    void              initIntExtFieldTypeMapper(void);
-    void              initExtIntFieldTypeMapper(void);
-
-    FieldContainerPtr findFCByName             (const Char8  *szName,
-                                                      NodePtr pNode);
-
-    void              setContainerFieldValue   (const FieldContainerPtr &pFC);
-
-    FieldContainerPtr findReference            (const Char8 *szName);
-
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    VRMLFile(const VRMLFile &source);
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const VRMLFile &source);
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  VRMLFile(const VRMLFile& source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const VRMLFile& source);
 };
 
 OSG_END_NAMESPACE

@@ -56,7 +56,8 @@ OSG_USING_NAMESPACE
 \***************************************************************************/
 
 /*! \class osg::LightModelChunk
-The LightModelChunk wraps most of glLightModel. It does not wrap GL_LIGHT_MODEL_TWO_SIDE, which is wrapped by TwoSidedLightingChunk.
+The LightModelChunk wraps most of glLightModel. It does not wrap GL_LIGHT_MODEL_TWO_SIDE, which is
+wrapped by TwoSidedLightingChunk.
 */
 
 /***************************************************************************\
@@ -69,10 +70,8 @@ StateChunkClass LightModelChunk::_class("LightModel");
  *                           Class methods                                 *
 \***************************************************************************/
 
-void LightModelChunk::initMethod (void)
-{
+void LightModelChunk::initMethod(void) {
 }
-
 
 /***************************************************************************\
  *                           Instance methods                              *
@@ -84,148 +83,118 @@ void LightModelChunk::initMethod (void)
 
 /*----------------------- constructors & destructors ----------------------*/
 
-LightModelChunk::LightModelChunk(void) :
-    Inherited()
-{
+LightModelChunk::LightModelChunk(void)
+    : Inherited() {
 }
 
-LightModelChunk::LightModelChunk(const LightModelChunk &source) :
-    Inherited(source)
-{
+LightModelChunk::LightModelChunk(const LightModelChunk& source)
+    : Inherited(source) {
 }
 
-LightModelChunk::~LightModelChunk(void)
-{
+LightModelChunk::~LightModelChunk(void) {
 }
 
 /*----------------------------- class specific ----------------------------*/
 
-const StateChunkClass *LightModelChunk::getClass(void) const
-{
-    return &_class;
+const StateChunkClass* LightModelChunk::getClass(void) const {
+  return &_class;
 }
 
-void LightModelChunk::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void LightModelChunk::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
-void LightModelChunk::dump(      UInt32    , 
-                         const BitVector ) const
-{
-    SLOG << "Dump LightModelChunk NI" << std::endl;
+void LightModelChunk::dump(UInt32, const BitVector) const {
+  SLOG << "Dump LightModelChunk NI" << std::endl;
 }
 
 /*------------------------------ State ------------------------------------*/
 
-void LightModelChunk::activate ( DrawActionBase * action, UInt32 idx )
-{
+void LightModelChunk::activate(DrawActionBase* action, UInt32 idx) {
+  glLightModelfv(GL_LIGHT_MODEL_AMBIENT, _sfAmbient.getValue().getValuesRGBA());
+
+  const GLenum color_control = _sfColorControl.getValue();
+  if (color_control == GL_SINGLE_COLOR || color_control == GL_SEPARATE_SPECULAR_COLOR) {
+    glLightModeli(GL_LIGHT_MODEL_COLOR_CONTROL, color_control);
+  }
+
+  if (_sfLocalViewer.getValue()) {
+    glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, 1);
+  } else {
+    glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, 0);
+  }
+}
+
+void LightModelChunk::changeFrom(DrawActionBase* action, StateChunk* old_chunk, UInt32 idx) {
+  LightModelChunk* old = dynamic_cast<LightModelChunk*>(old_chunk);
+
+  if (old == NULL) {
+    FWARNING(("LightModelChunk::changeFrom: caught non-LightModelChunk!\n"));
+    return;
+  }
+
+  // LightModelChunk didn't change so do nothing.
+  if (old == this)
+    return;
+
+  if (old->_sfAmbient.getValue() != _sfAmbient.getValue()) {
     glLightModelfv(GL_LIGHT_MODEL_AMBIENT, _sfAmbient.getValue().getValuesRGBA());
+  }
 
-    const GLenum color_control = _sfColorControl.getValue();
-    if(color_control == GL_SINGLE_COLOR ||
-        color_control == GL_SEPARATE_SPECULAR_COLOR)
-    {
-        glLightModeli(GL_LIGHT_MODEL_COLOR_CONTROL, color_control);
-    }
+  const GLenum color_control = _sfColorControl.getValue();
+  if (color_control == GL_SINGLE_COLOR || color_control == GL_SEPARATE_SPECULAR_COLOR &&
+                                              color_control != old->_sfColorControl.getValue()) {
+    glLightModeli(GL_LIGHT_MODEL_COLOR_CONTROL, color_control);
+  }
 
-    if(_sfLocalViewer.getValue())
-    {
-        glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, 1);
+  if (_sfLocalViewer.getValue() != old->_sfLocalViewer.getValue()) {
+    if (_sfLocalViewer.getValue()) {
+      glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, 1);
+    } else {
+      glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, 0);
     }
-    else
-    {
-        glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, 0);
-    }
+  }
 }
 
-void LightModelChunk::changeFrom( DrawActionBase *action, StateChunk *old_chunk, UInt32 idx )
-{
-    LightModelChunk *old = dynamic_cast<LightModelChunk *>(old_chunk);
+void LightModelChunk::deactivate(DrawActionBase* action, UInt32 idx) {
+  GLfloat ambient[] = {0.2f, 0.2f, 0.2f, 1.0f};
+  glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambient);
 
-    if(old == NULL)
-    {
-        FWARNING(( "LightModelChunk::changeFrom: caught non-LightModelChunk!\n"));
-        return;
-    }
+  if (_sfColorControl.getValue() != GL_SINGLE_COLOR) {
+    glLightModeli(GL_LIGHT_MODEL_COLOR_CONTROL, GL_SINGLE_COLOR);
+  }
 
-    // LightModelChunk didn't change so do nothing.
-    if(old == this)
-        return;
-
-    if(old->_sfAmbient.getValue() != _sfAmbient.getValue())
-    {
-       glLightModelfv(GL_LIGHT_MODEL_AMBIENT, _sfAmbient.getValue().getValuesRGBA());
-    }
-
-    const GLenum color_control = _sfColorControl.getValue();
-    if(color_control == GL_SINGLE_COLOR ||
-        color_control == GL_SEPARATE_SPECULAR_COLOR &&
-        color_control != old->_sfColorControl.getValue())
-    {
-        glLightModeli(GL_LIGHT_MODEL_COLOR_CONTROL, color_control);
-    }
-
-    if(_sfLocalViewer.getValue() != old->_sfLocalViewer.getValue())
-    {
-        if(_sfLocalViewer.getValue())
-        {
-            glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, 1);
-        }
-        else
-        {
-            glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, 0);
-        }
-    }
-}
-
-void LightModelChunk::deactivate ( DrawActionBase * action, UInt32 idx )
-{
-    GLfloat ambient[] = {0.2f, 0.2f, 0.2f, 1.0f};
-    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambient);
-
-    if(_sfColorControl.getValue() != GL_SINGLE_COLOR)
-    {
-        glLightModeli(GL_LIGHT_MODEL_COLOR_CONTROL, GL_SINGLE_COLOR);
-    }
-
-    if(_sfLocalViewer.getValue())
-    {
-       glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, 0);
-    }
+  if (_sfLocalViewer.getValue()) {
+    glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, 0);
+  }
 }
 
 /*-------------------------- Comparison -----------------------------------*/
 
-Real32 LightModelChunk::switchCost(StateChunk *)
-{
-    return 0;
+Real32 LightModelChunk::switchCost(StateChunk*) {
+  return 0;
 }
 
-bool LightModelChunk::operator < (const StateChunk &other) const
-{
-    return this < &other;
+bool LightModelChunk::operator<(const StateChunk& other) const {
+  return this < &other;
 }
 
-bool LightModelChunk::operator == (const StateChunk &other) const
-{
-    LightModelChunk const *tother = dynamic_cast<LightModelChunk const*>(&other);
+bool LightModelChunk::operator==(const StateChunk& other) const {
+  LightModelChunk const* tother = dynamic_cast<LightModelChunk const*>(&other);
 
-    if(!tother)
-        return false;
+  if (!tother)
+    return false;
 
-    if(tother == this)
-        return true;
-
-    if(getAmbient()  != tother->getAmbient()  ||
-       getColorControl() != tother->getColorControl() ||
-       getLocalViewer()   != tother->getLocalViewer()   )
-        return false;
-
+  if (tother == this)
     return true;
+
+  if (getAmbient() != tother->getAmbient() || getColorControl() != tother->getColorControl() ||
+      getLocalViewer() != tother->getLocalViewer())
+    return false;
+
+  return true;
 }
 
-bool LightModelChunk::operator != (const StateChunk &other) const
-{
-    return ! (*this == other);
+bool LightModelChunk::operator!=(const StateChunk& other) const {
+  return !(*this == other);
 }

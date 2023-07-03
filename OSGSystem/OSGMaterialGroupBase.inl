@@ -52,81 +52,59 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &MaterialGroupBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& MaterialGroupBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 MaterialGroupBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 MaterialGroupBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-MaterialGroupPtr MaterialGroupBase::create(void) 
-{
-    MaterialGroupPtr fc; 
+inline MaterialGroupPtr MaterialGroupBase::create(void) {
+  MaterialGroupPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = MaterialGroupPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = MaterialGroupPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-MaterialGroupPtr MaterialGroupBase::createEmpty(void) 
-{ 
-    MaterialGroupPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline MaterialGroupPtr MaterialGroupBase::createEmpty(void) {
+  MaterialGroupPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the MaterialGroup::_sfMaterial field.
-inline
-SFMaterialPtr *MaterialGroupBase::getSFMaterial(void)
-{
-    return &_sfMaterial;
-}
-
-
-//! Get the value of the MaterialGroup::_sfMaterial field.
-inline
-MaterialPtr &MaterialGroupBase::getMaterial(void)
-{
-    return _sfMaterial.getValue();
+inline SFMaterialPtr* MaterialGroupBase::getSFMaterial(void) {
+  return &_sfMaterial;
 }
 
 //! Get the value of the MaterialGroup::_sfMaterial field.
-inline
-const MaterialPtr &MaterialGroupBase::getMaterial(void) const
-{
-    return _sfMaterial.getValue();
+inline MaterialPtr& MaterialGroupBase::getMaterial(void) {
+  return _sfMaterial.getValue();
+}
+
+//! Get the value of the MaterialGroup::_sfMaterial field.
+inline const MaterialPtr& MaterialGroupBase::getMaterial(void) const {
+  return _sfMaterial.getValue();
 }
 
 //! Set the value of the MaterialGroup::_sfMaterial field.
-inline
-void MaterialGroupBase::setMaterial(const MaterialPtr &value)
-{
-    _sfMaterial.setValue(value);
+inline void MaterialGroupBase::setMaterial(const MaterialPtr& value) {
+  _sfMaterial.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGMATERIALGROUPBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGMATERIALGROUPBASE_INLINE_CVSID                                                          \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

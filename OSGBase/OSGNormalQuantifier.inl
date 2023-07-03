@@ -38,28 +38,21 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 /*! get a single normal by index
  */
 
-inline 
-const Vec3f &NormalQuantifier::getNormal(UInt32 index) const
-{
-    return _normalTable[index];
+inline const Vec3f& NormalQuantifier::getNormal(UInt32 index) const {
+  return _normalTable[index];
 }
 
 /*! get the Size of a normals table (number of indices)
  */
 
-inline
-UInt32 NormalQuantifier::getNormalCount (void) const
-{
-    //return ((1<<(2*_numberSubdivisions))*8);
-    return _normalTable.size();
+inline UInt32 NormalQuantifier::getNormalCount(void) const {
+  // return ((1<<(2*_numberSubdivisions))*8);
+  return _normalTable.size();
 }
-
 
 OSG_END_NAMESPACE
 
 #define OSG_INLINE_CVSID "@(#)$Id: "
-

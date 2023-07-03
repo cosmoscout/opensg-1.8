@@ -52,277 +52,199 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &BlendChunkBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& BlendChunkBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 BlendChunkBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 BlendChunkBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-BlendChunkPtr BlendChunkBase::create(void) 
-{
-    BlendChunkPtr fc; 
+inline BlendChunkPtr BlendChunkBase::create(void) {
+  BlendChunkPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = BlendChunkPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = BlendChunkPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-BlendChunkPtr BlendChunkBase::createEmpty(void) 
-{ 
-    BlendChunkPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline BlendChunkPtr BlendChunkBase::createEmpty(void) {
+  BlendChunkPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the BlendChunk::_sfSrcFactor field.
-inline
-SFGLenum *BlendChunkBase::getSFSrcFactor(void)
-{
-    return &_sfSrcFactor;
+inline SFGLenum* BlendChunkBase::getSFSrcFactor(void) {
+  return &_sfSrcFactor;
 }
 
 //! Get the BlendChunk::_sfDestFactor field.
-inline
-SFGLenum *BlendChunkBase::getSFDestFactor(void)
-{
-    return &_sfDestFactor;
+inline SFGLenum* BlendChunkBase::getSFDestFactor(void) {
+  return &_sfDestFactor;
 }
 
 //! Get the BlendChunk::_sfEquation field.
-inline
-SFGLenum *BlendChunkBase::getSFEquation(void)
-{
-    return &_sfEquation;
+inline SFGLenum* BlendChunkBase::getSFEquation(void) {
+  return &_sfEquation;
 }
 
 //! Get the BlendChunk::_sfColor field.
-inline
-SFColor4f *BlendChunkBase::getSFColor(void)
-{
-    return &_sfColor;
+inline SFColor4f* BlendChunkBase::getSFColor(void) {
+  return &_sfColor;
 }
 
 //! Get the BlendChunk::_sfAlphaFunc field.
-inline
-SFGLenum *BlendChunkBase::getSFAlphaFunc(void)
-{
-    return &_sfAlphaFunc;
+inline SFGLenum* BlendChunkBase::getSFAlphaFunc(void) {
+  return &_sfAlphaFunc;
 }
 
 //! Get the BlendChunk::_sfAlphaValue field.
-inline
-SFReal32 *BlendChunkBase::getSFAlphaValue(void)
-{
-    return &_sfAlphaValue;
+inline SFReal32* BlendChunkBase::getSFAlphaValue(void) {
+  return &_sfAlphaValue;
 }
 
 //! Get the BlendChunk::_sfAlphaSrcFactor field.
-inline
-SFGLenum *BlendChunkBase::getSFAlphaSrcFactor(void)
-{
-    return &_sfAlphaSrcFactor;
+inline SFGLenum* BlendChunkBase::getSFAlphaSrcFactor(void) {
+  return &_sfAlphaSrcFactor;
 }
 
 //! Get the BlendChunk::_sfAlphaDestFactor field.
-inline
-SFGLenum *BlendChunkBase::getSFAlphaDestFactor(void)
-{
-    return &_sfAlphaDestFactor;
-}
-
-
-//! Get the value of the BlendChunk::_sfSrcFactor field.
-inline
-GLenum &BlendChunkBase::getSrcFactor(void)
-{
-    return _sfSrcFactor.getValue();
+inline SFGLenum* BlendChunkBase::getSFAlphaDestFactor(void) {
+  return &_sfAlphaDestFactor;
 }
 
 //! Get the value of the BlendChunk::_sfSrcFactor field.
-inline
-const GLenum &BlendChunkBase::getSrcFactor(void) const
-{
-    return _sfSrcFactor.getValue();
+inline GLenum& BlendChunkBase::getSrcFactor(void) {
+  return _sfSrcFactor.getValue();
+}
+
+//! Get the value of the BlendChunk::_sfSrcFactor field.
+inline const GLenum& BlendChunkBase::getSrcFactor(void) const {
+  return _sfSrcFactor.getValue();
 }
 
 //! Set the value of the BlendChunk::_sfSrcFactor field.
-inline
-void BlendChunkBase::setSrcFactor(const GLenum &value)
-{
-    _sfSrcFactor.setValue(value);
+inline void BlendChunkBase::setSrcFactor(const GLenum& value) {
+  _sfSrcFactor.setValue(value);
 }
 
 //! Get the value of the BlendChunk::_sfDestFactor field.
-inline
-GLenum &BlendChunkBase::getDestFactor(void)
-{
-    return _sfDestFactor.getValue();
+inline GLenum& BlendChunkBase::getDestFactor(void) {
+  return _sfDestFactor.getValue();
 }
 
 //! Get the value of the BlendChunk::_sfDestFactor field.
-inline
-const GLenum &BlendChunkBase::getDestFactor(void) const
-{
-    return _sfDestFactor.getValue();
+inline const GLenum& BlendChunkBase::getDestFactor(void) const {
+  return _sfDestFactor.getValue();
 }
 
 //! Set the value of the BlendChunk::_sfDestFactor field.
-inline
-void BlendChunkBase::setDestFactor(const GLenum &value)
-{
-    _sfDestFactor.setValue(value);
+inline void BlendChunkBase::setDestFactor(const GLenum& value) {
+  _sfDestFactor.setValue(value);
 }
 
 //! Get the value of the BlendChunk::_sfEquation field.
-inline
-GLenum &BlendChunkBase::getEquation(void)
-{
-    return _sfEquation.getValue();
+inline GLenum& BlendChunkBase::getEquation(void) {
+  return _sfEquation.getValue();
 }
 
 //! Get the value of the BlendChunk::_sfEquation field.
-inline
-const GLenum &BlendChunkBase::getEquation(void) const
-{
-    return _sfEquation.getValue();
+inline const GLenum& BlendChunkBase::getEquation(void) const {
+  return _sfEquation.getValue();
 }
 
 //! Set the value of the BlendChunk::_sfEquation field.
-inline
-void BlendChunkBase::setEquation(const GLenum &value)
-{
-    _sfEquation.setValue(value);
+inline void BlendChunkBase::setEquation(const GLenum& value) {
+  _sfEquation.setValue(value);
 }
 
 //! Get the value of the BlendChunk::_sfColor field.
-inline
-Color4f &BlendChunkBase::getColor(void)
-{
-    return _sfColor.getValue();
+inline Color4f& BlendChunkBase::getColor(void) {
+  return _sfColor.getValue();
 }
 
 //! Get the value of the BlendChunk::_sfColor field.
-inline
-const Color4f &BlendChunkBase::getColor(void) const
-{
-    return _sfColor.getValue();
+inline const Color4f& BlendChunkBase::getColor(void) const {
+  return _sfColor.getValue();
 }
 
 //! Set the value of the BlendChunk::_sfColor field.
-inline
-void BlendChunkBase::setColor(const Color4f &value)
-{
-    _sfColor.setValue(value);
+inline void BlendChunkBase::setColor(const Color4f& value) {
+  _sfColor.setValue(value);
 }
 
 //! Get the value of the BlendChunk::_sfAlphaFunc field.
-inline
-GLenum &BlendChunkBase::getAlphaFunc(void)
-{
-    return _sfAlphaFunc.getValue();
+inline GLenum& BlendChunkBase::getAlphaFunc(void) {
+  return _sfAlphaFunc.getValue();
 }
 
 //! Get the value of the BlendChunk::_sfAlphaFunc field.
-inline
-const GLenum &BlendChunkBase::getAlphaFunc(void) const
-{
-    return _sfAlphaFunc.getValue();
+inline const GLenum& BlendChunkBase::getAlphaFunc(void) const {
+  return _sfAlphaFunc.getValue();
 }
 
 //! Set the value of the BlendChunk::_sfAlphaFunc field.
-inline
-void BlendChunkBase::setAlphaFunc(const GLenum &value)
-{
-    _sfAlphaFunc.setValue(value);
+inline void BlendChunkBase::setAlphaFunc(const GLenum& value) {
+  _sfAlphaFunc.setValue(value);
 }
 
 //! Get the value of the BlendChunk::_sfAlphaValue field.
-inline
-Real32 &BlendChunkBase::getAlphaValue(void)
-{
-    return _sfAlphaValue.getValue();
+inline Real32& BlendChunkBase::getAlphaValue(void) {
+  return _sfAlphaValue.getValue();
 }
 
 //! Get the value of the BlendChunk::_sfAlphaValue field.
-inline
-const Real32 &BlendChunkBase::getAlphaValue(void) const
-{
-    return _sfAlphaValue.getValue();
+inline const Real32& BlendChunkBase::getAlphaValue(void) const {
+  return _sfAlphaValue.getValue();
 }
 
 //! Set the value of the BlendChunk::_sfAlphaValue field.
-inline
-void BlendChunkBase::setAlphaValue(const Real32 &value)
-{
-    _sfAlphaValue.setValue(value);
+inline void BlendChunkBase::setAlphaValue(const Real32& value) {
+  _sfAlphaValue.setValue(value);
 }
 
 //! Get the value of the BlendChunk::_sfAlphaSrcFactor field.
-inline
-GLenum &BlendChunkBase::getAlphaSrcFactor(void)
-{
-    return _sfAlphaSrcFactor.getValue();
+inline GLenum& BlendChunkBase::getAlphaSrcFactor(void) {
+  return _sfAlphaSrcFactor.getValue();
 }
 
 //! Get the value of the BlendChunk::_sfAlphaSrcFactor field.
-inline
-const GLenum &BlendChunkBase::getAlphaSrcFactor(void) const
-{
-    return _sfAlphaSrcFactor.getValue();
+inline const GLenum& BlendChunkBase::getAlphaSrcFactor(void) const {
+  return _sfAlphaSrcFactor.getValue();
 }
 
 //! Set the value of the BlendChunk::_sfAlphaSrcFactor field.
-inline
-void BlendChunkBase::setAlphaSrcFactor(const GLenum &value)
-{
-    _sfAlphaSrcFactor.setValue(value);
+inline void BlendChunkBase::setAlphaSrcFactor(const GLenum& value) {
+  _sfAlphaSrcFactor.setValue(value);
 }
 
 //! Get the value of the BlendChunk::_sfAlphaDestFactor field.
-inline
-GLenum &BlendChunkBase::getAlphaDestFactor(void)
-{
-    return _sfAlphaDestFactor.getValue();
+inline GLenum& BlendChunkBase::getAlphaDestFactor(void) {
+  return _sfAlphaDestFactor.getValue();
 }
 
 //! Get the value of the BlendChunk::_sfAlphaDestFactor field.
-inline
-const GLenum &BlendChunkBase::getAlphaDestFactor(void) const
-{
-    return _sfAlphaDestFactor.getValue();
+inline const GLenum& BlendChunkBase::getAlphaDestFactor(void) const {
+  return _sfAlphaDestFactor.getValue();
 }
 
 //! Set the value of the BlendChunk::_sfAlphaDestFactor field.
-inline
-void BlendChunkBase::setAlphaDestFactor(const GLenum &value)
-{
-    _sfAlphaDestFactor.setValue(value);
+inline void BlendChunkBase::setAlphaDestFactor(const GLenum& value) {
+  _sfAlphaDestFactor.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGBLENDCHUNKBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGBLENDCHUNKBASE_INLINE_CVSID                                                             \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

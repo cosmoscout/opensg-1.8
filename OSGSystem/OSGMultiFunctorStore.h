@@ -51,86 +51,85 @@
 
 OSG_BEGIN_NAMESPACE
 
-class OSG_SYSTEMLIB_DLLMAPPING MultiFunctorStore
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
-    /*---------------------------------------------------------------------*/
-    /*! \name    Types                                                     */
-    /*! \{                                                                 */
+class OSG_SYSTEMLIB_DLLMAPPING MultiFunctorStore {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name    Types                                                     */
+  /*! \{                                                                 */
 
-    typedef NewActionTypes::Functor Functor;
+  typedef NewActionTypes::Functor Functor;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name    Constructors                                              */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name    Constructors                                              */
+  /*! \{                                                                 */
 
-    inline  MultiFunctorStore(void);
+  inline MultiFunctorStore(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name    Destructor                                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name    Destructor                                                */
+  /*! \{                                                                 */
 
-    inline ~MultiFunctorStore(void);
+  inline ~MultiFunctorStore(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name    Empty                                                     */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name    Empty                                                     */
+  /*! \{                                                                 */
 
-    inline bool empty(void) const;
+  inline bool empty(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name    Functor Registration                                      */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name    Functor Registration                                      */
+  /*! \{                                                                 */
 
-    inline void     regFunctor         (const Functor            &refFunc,
-                                        const FieldContainerType &refType);
-    inline void     unregFunctor       (const FieldContainerType &refType);
+  inline void regFunctor(const Functor& refFunc, const FieldContainerType& refType);
+  inline void unregFunctor(const FieldContainerType& refType);
 
-    inline void     regDefaultFunctor  (const Functor            &refFunc);
-    inline void     unregDefaultFunctor(      void                       );
+  inline void regDefaultFunctor(const Functor& refFunc);
+  inline void unregDefaultFunctor(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name    Functor Access                                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name    Functor Access                                            */
+  /*! \{                                                                 */
 
-    inline Functor *getFunctor         (const FieldContainerType &refType);
-    inline Functor *getDefaultFunctor  (      void                       );
+  inline Functor* getFunctor(const FieldContainerType& refType);
+  inline Functor* getDefaultFunctor(void);
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
-    /*---------------------------------------------------------------------*/
-    /*! \name    Types                                                     */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /*---------------------------------------------------------------------*/
+  /*! \name    Types                                                     */
+  /*! \{                                                                 */
 
-    typedef std::list<Functor>           FunctorStore;
-    typedef FunctorStore::iterator       FunctorStoreIt;
-    typedef FunctorStore::const_iterator FunctorStoreConstIt;
+  typedef std::list<Functor>           FunctorStore;
+  typedef FunctorStore::iterator       FunctorStoreIt;
+  typedef FunctorStore::const_iterator FunctorStoreConstIt;
 
-    typedef std::vector<FunctorStoreIt>  FunctorMap;
-    typedef FunctorMap::iterator         FunctorMapIt;
-    typedef FunctorMap::const_iterator   FunctorMapConstIt;
+  typedef std::vector<FunctorStoreIt> FunctorMap;
+  typedef FunctorMap::iterator        FunctorMapIt;
+  typedef FunctorMap::const_iterator  FunctorMapConstIt;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
 
-    FunctorStore _funcStore;
-    FunctorMap   _funcMap;
+  FunctorStore _funcStore;
+  FunctorMap   _funcMap;
 
-    Functor      _defaultFunc;
-    bool         _bHasDefaultFunctor;
+  Functor _defaultFunc;
+  bool    _bHasDefaultFunctor;
 };
 
 OSG_END_NAMESPACE
 
 #include "OSGMultiFunctorStore.inl"
 
-#define OSGMULTIFUNCTORSTORE_HEADER_CVSID "@(#)$Id: OSGMultiFunctorStore.h,v 1.4 2004/04/20 13:47:08 neumannc Exp $"
+#define OSGMULTIFUNCTORSTORE_HEADER_CVSID                                                          \
+  "@(#)$Id: OSGMultiFunctorStore.h,v 1.4 2004/04/20 13:47:08 neumannc Exp $"
 
 #endif /* _OSGMULTIFUNCTORSTORE_H_ */

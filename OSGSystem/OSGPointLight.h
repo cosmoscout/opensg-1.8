@@ -51,98 +51,88 @@ OSG_BEGIN_NAMESPACE
     \ingroup GrpSystemNodeCoresLights
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING PointLight : public PointLightBase
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING PointLight : public PointLightBase {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                  static stat elem                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  static stat elem                            */
-    /*! \{                                                                 */
+  static StatElemDesc<StatIntElem> statNPointLights;
 
-    static StatElemDesc<StatIntElem>  statNPointLights;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Access Fields                            */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Access Fields                            */
-    /*! \{                                                                 */
+  void setPosition(Real32 rX, Real32 rY, Real32 rZ);
+  void setPosition(const Pnt3f& pos);
 
-    void setPosition   (      Real32 rX,
-                              Real32 rY, 
-                              Real32 rZ        );
-    void setPosition   (const Pnt3f &pos       );
+  void setAttenuation(Real32 rConstant, Real32 rLinear, Real32 rQuadratic);
 
-    void setAttenuation(      Real32 rConstant ,
-                              Real32 rLinear   ,
-                              Real32 rQuadratic);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Chunk                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Chunk                                   */
-    /*! \{                                                                 */
+  virtual void makeChunk(void);
 
-    virtual void makeChunk(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    virtual void changed(BitVector whichField,
-                         UInt32    origin    );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Dump                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Dump                                    */
-    /*! \{                                                                 */
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    virtual void dump(      UInt32    uiIndent = 0,
-                      const BitVector bvFlags  = 0) const;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  typedef PointLightBase Inherited;
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    typedef PointLightBase Inherited;
+  PointLight(void);
+  PointLight(const PointLight& source);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    PointLight(void);
-    PointLight(const PointLight &source);
+  virtual ~PointLight(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Actions                                  */
+  /*! \{                                                                 */
 
-    virtual ~PointLight(void);
+  // execute the OpenGL commands to draw the light
+  Action::ResultE drawEnter(Action* action);
+  Action::ResultE drawLeave(Action* action);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Actions                                  */
-    /*! \{                                                                 */
+  // generate draw tree
+  Action::ResultE renderEnter(Action* action);
+  Action::ResultE renderLeave(Action* action);
 
-    // execute the OpenGL commands to draw the light
-    Action::ResultE drawEnter(Action * action );
-    Action::ResultE drawLeave(Action * action );
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class PointLightBase;
 
-    // generate draw tree
-    Action::ResultE renderEnter(Action * action);
-    Action::ResultE renderLeave(Action * action);
+  static void initMethod(void);
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
-
-    friend class FieldContainer;
-    friend class PointLightBase;
-
-    static void initMethod( void );
-
-    /*! \brief prohibit default function (move to 'public' if needed) */
-    void operator =(const PointLight &source);
+  /*! \brief prohibit default function (move to 'public' if needed) */
+  void operator=(const PointLight& source);
 };
 
 OSG_END_NAMESPACE

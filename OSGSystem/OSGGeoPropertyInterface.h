@@ -34,7 +34,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGGEOPROPERTYINTERFACES_H_
 #define _OSGGEOPROPERTYINTERFACES_H_
 #ifdef __sgi
@@ -52,13 +51,13 @@ OSG_BEGIN_NAMESPACE
 #ifndef OSG_SUPPORT_NO_GEO_INTERFACE
 
 /*! \ingroup GrpSystemDrawablesGeometryProperties
-    \brief GeoPropertyArrayInterface defines the generic interface used by 
-    the geometry to access its attributes. 
- 
+    \brief GeoPropertyArrayInterface defines the generic interface used by
+    the geometry to access its attributes.
+
     GeoPropertyArrayInterface defines the generic interface used by the
     geometry to  access its attributes. This interface is not templated and
     can be used for all kinds of properties. To allow that this interface is
-    typeless and closely related to OpenGL's Vertex Arrays. 
+    typeless and closely related to OpenGL's Vertex Arrays.
 
     It's an abstract class and not to be instantiated. osg::GeoProperty is one
     implementation of this interface, but not necessarily the only one. In
@@ -67,175 +66,170 @@ OSG_BEGIN_NAMESPACE
     flexibility and can't stand the overhead.
  */
 
-class GeoPropertyArrayInterface
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class GeoPropertyArrayInterface {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Get                                    */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Get                                    */
-    /*! \{                                                                 */
+  virtual UInt32 getFormat(void) const     = 0;
+  virtual UInt32 getFormatSize(void) const = 0;
+  virtual UInt32 getStride(void) const     = 0;
+  virtual UInt32 getDimension(void) const  = 0;
+  virtual UInt32 getSize(void) const       = 0;
+  virtual UInt32 size(void) const          = 0;
+  virtual UInt8* getData(void) const       = 0;
 
-    virtual UInt32  getFormat    (void) const = 0;
-    virtual UInt32  getFormatSize(void) const = 0;
-    virtual UInt32  getStride    (void) const = 0;
-    virtual UInt32  getDimension (void) const = 0;
-    virtual UInt32  getSize      (void) const = 0;
-    virtual UInt32  size         (void) const = 0;
-    virtual UInt8  *getData      (void) const = 0;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Generic Access                         */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Generic Access                         */
-    /*! \{                                                                 */
+  virtual void clear(void)            = 0;
+  virtual void resize(size_t newsize) = 0;
+  virtual void shrink(void)           = 0;
 
-    virtual void  clear  (void          ) = 0;
-    virtual void  resize (size_t newsize) = 0;
-    virtual void  shrink (void          ) = 0;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  GeoPropertyArrayInterface(void);
+  GeoPropertyArrayInterface(const GeoPropertyArrayInterface& source);
 
-    GeoPropertyArrayInterface(void);
-    GeoPropertyArrayInterface(const GeoPropertyArrayInterface &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  virtual ~GeoPropertyArrayInterface(void);
 
-    virtual ~GeoPropertyArrayInterface(void);
-
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 };
 
-
 /*! \ingroup GrpSystemDrawablesGeometryProperties
-    \brief GeoPropertyInterface defines the typed generic interface used by 
-    the geometry to access its attributes. 
- 
+    \brief GeoPropertyInterface defines the typed generic interface used by
+    the geometry to access its attributes.
+
     GeoPropertyInterface defines the typed generic interface used by the
     geometry to  access its attributes. This interface is templated and
     specific for every different kind of osg::GeoProperty. It includes the
-    generic value access and thus is somewhat more heavy-weight than the 
+    generic value access and thus is somewhat more heavy-weight than the
     osg::GeoPropertyArrayInterface.
 */
 template <class GeoPropertyDesc>
-class GeoPropertyInterface : public GeoPropertyArrayInterface
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class GeoPropertyInterface : public GeoPropertyArrayInterface {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef GeoPropertyInterface<GeoPropertyDesc> InterfaceType;
 
-    typedef          GeoPropertyInterface<GeoPropertyDesc> InterfaceType;
+  typedef typename GeoPropertyDesc::GenericType GenericType;
 
-    typedef typename GeoPropertyDesc::GenericType          GenericType;
+  typedef GeoPropertyArrayInterface Inherited;
 
-    typedef          GeoPropertyArrayInterface          Inherited;
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Generic Access                         */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Generic Access                         */
-    /*! \{                                                                 */
+  virtual GenericType getValue(const UInt32 index) = 0;
 
-    virtual GenericType getValue (const UInt32       index )       = 0;
+  virtual GenericType getValue(const UInt32 index) const = 0;
 
-    virtual GenericType getValue (const UInt32       index ) const = 0;
+  virtual void getValue(GenericType& val, const UInt32 index) = 0;
 
-    virtual void        getValue (      GenericType &val,
-                                  const UInt32       index )       = 0;
+  virtual void getValue(GenericType& val, const UInt32 index) const = 0;
 
-    virtual void        getValue (      GenericType &val,
-                                  const UInt32       index ) const = 0;
+  virtual void setValue(const GenericType& val, const UInt32 index) = 0;
 
+  virtual void addValue(const GenericType& val) = 0;
 
-    virtual void        setValue (const GenericType &val,
-                                  const UInt32       index )       = 0;
+  virtual void push_back(const GenericType& val) = 0;
 
-    virtual void        addValue (const GenericType &val   )       = 0;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
+  GeoPropertyInterface(void);
+  GeoPropertyInterface(const GeoPropertyInterface& source);
 
-    virtual void        push_back(const GenericType &val   )       = 0;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  virtual ~GeoPropertyInterface(void);
 
-    GeoPropertyInterface(void);
-    GeoPropertyInterface(const GeoPropertyInterface &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~GeoPropertyInterface(void);
-
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 };
 #endif
 
-
 /*! \ingroup GrpSystemDrawablesGeometryProperties
     \hideinhierarchy
-    Dummy base class for the abstract instances of osg::GeoProperty. 
+    Dummy base class for the abstract instances of osg::GeoProperty.
 */
-struct AttachmentPropertyDesc
-{
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Get                                        */
-    /*! \{                                                                 */
-    
-    static const char *getTypeName (void)  { return "Attachment"; }
+struct AttachmentPropertyDesc {
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Get                                        */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */ 
+  static const char* getTypeName(void) {
+    return "Attachment";
+  }
+
+  /*! \}                                                                 */
 };
 
 /*! \ingroup GrpSystemDrawablesGeometryProperties
     \hideinhierarchy
     Abstract base class for all GeoProperty traits. These are used to
-    parameterize the actual osg::GeoProperty types. 
+    parameterize the actual osg::GeoProperty types.
 */
-struct GeoPropertyDesc
-{
-};
+struct GeoPropertyDesc {};
 
 /*! \ingroup GrpSystemDrawablesGeometryProperties
     \hideinhierarchy
-    Abstract base class for all GeoPositionsProperty traits. See \ref 
+    Abstract base class for all GeoPositionsProperty traits. See \ref
     GrpSystemDrawablesGeometryProperties for a description.
 */
-struct GeoPositionsPropertyDesc : public GeoPropertyDesc
-{
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Get                                        */
-    /*! \{                                                                 */
-    
-    static const Char8 *getTypeName (void) { return "GeoPositions";         }
+struct GeoPositionsPropertyDesc : public GeoPropertyDesc {
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Get                                        */
+  /*! \{                                                                 */
 
-    static const Char8 *getGroupName(void) { return "GeoPositions";         }
-    static const Char8 *getClassName(void) { return "GeoPositionsProperty"; }
+  static const Char8* getTypeName(void) {
+    return "GeoPositions";
+  }
 
-    static InitContainerF getInitMethod(void) { return NULL; }
+  static const Char8* getGroupName(void) {
+    return "GeoPositions";
+  }
+  static const Char8* getClassName(void) {
+    return "GeoPositionsProperty";
+  }
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Typedefs                                   */
-    /*! \{                                                                 */
-    
-    typedef Attachment             Inherited;
-    typedef AttachmentPtr          InheritedPtr;
+  static InitContainerF getInitMethod(void) {
+    return NULL;
+  }
 
-    typedef AttachmentPropertyDesc InheritedDesc;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Typedefs                                   */
+  /*! \{                                                                 */
 
-    typedef Pnt3f                  GenericType;
+  typedef Attachment    Inherited;
+  typedef AttachmentPtr InheritedPtr;
+
+  typedef AttachmentPropertyDesc InheritedDesc;
+
+  typedef Pnt3f GenericType;
 
 #ifndef OSG_SUPPORT_NO_GEO_INTERFACE
-    typedef GeoPropertyInterface<GeoPositionsPropertyDesc> Interface;
+  typedef GeoPropertyInterface<GeoPositionsPropertyDesc> Interface;
 #endif
 
-    /*! \}                                                                 */ 
+  /*! \}                                                                 */
 };
 
 #ifndef OSG_SUPPORT_NO_GEO_INTERFACE
@@ -244,38 +238,45 @@ typedef GeoPositionsPropertyDesc::Interface GeoPositionsInterface;
 
 /*! \ingroup GrpSystemDrawablesGeometryProperties
     \hideinhierarchy
-    Abstract base class for all GeoNormalsProperty traits. See \ref 
+    Abstract base class for all GeoNormalsProperty traits. See \ref
     GrpSystemDrawablesGeometryProperties for a description.
 */
-struct GeoNormalsPropertyDesc : public GeoPropertyDesc
-{
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Get                                        */
-    /*! \{                                                                 */
-    
-    static const Char8 *getTypeName (void) { return "GeoNormals";         }
-    static const Char8 *getGroupName(void) { return "GeoNormals";         }
-    static const Char8 *getClassName(void) { return "GeoNormalsProperty"; }
+struct GeoNormalsPropertyDesc : public GeoPropertyDesc {
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Get                                        */
+  /*! \{                                                                 */
 
-    static InitContainerF getInitMethod(void) { return NULL; }
+  static const Char8* getTypeName(void) {
+    return "GeoNormals";
+  }
+  static const Char8* getGroupName(void) {
+    return "GeoNormals";
+  }
+  static const Char8* getClassName(void) {
+    return "GeoNormalsProperty";
+  }
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Typedefs                                   */
-    /*! \{                                                                 */
-    
-    typedef Attachment             Inherited;
-    typedef AttachmentPtr          InheritedPtr;
+  static InitContainerF getInitMethod(void) {
+    return NULL;
+  }
 
-    typedef AttachmentPropertyDesc InheritedDesc;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Typedefs                                   */
+  /*! \{                                                                 */
 
-    typedef Vec3f                  GenericType;
+  typedef Attachment    Inherited;
+  typedef AttachmentPtr InheritedPtr;
+
+  typedef AttachmentPropertyDesc InheritedDesc;
+
+  typedef Vec3f GenericType;
 
 #ifndef OSG_SUPPORT_NO_GEO_INTERFACE
-    typedef GeoPropertyInterface<GeoNormalsPropertyDesc> Interface;
+  typedef GeoPropertyInterface<GeoNormalsPropertyDesc> Interface;
 #endif
 
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 };
 
 #ifndef OSG_SUPPORT_NO_GEO_INTERFACE
@@ -284,38 +285,45 @@ typedef GeoNormalsPropertyDesc::Interface GeoNormalsInterface;
 
 /*! \ingroup GrpSystemDrawablesGeometryProperties
     \hideinhierarchy
-    Abstract base class for all GeoColorsProperty traits. See \ref 
+    Abstract base class for all GeoColorsProperty traits. See \ref
     GrpSystemDrawablesGeometryProperties for a description.
 */
-struct GeoColorsPropertyDesc : public GeoPropertyDesc
-{
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Get                                        */
-    /*! \{                                                                 */
-    
-    static const Char8 *getTypeName (void) { return "GeoColors";         }
-    static const Char8 *getGroupName(void) { return "GeoColors";         }
-    static const Char8 *getClassName(void) { return "GeoColorsProperty"; }
+struct GeoColorsPropertyDesc : public GeoPropertyDesc {
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Get                                        */
+  /*! \{                                                                 */
 
-    static InitContainerF getInitMethod(void) { return NULL; }
+  static const Char8* getTypeName(void) {
+    return "GeoColors";
+  }
+  static const Char8* getGroupName(void) {
+    return "GeoColors";
+  }
+  static const Char8* getClassName(void) {
+    return "GeoColorsProperty";
+  }
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Typedefs                                   */
-    /*! \{                                                                 */
-    
-    typedef Attachment             Inherited;
-    typedef AttachmentPtr          InheritedPtr;
+  static InitContainerF getInitMethod(void) {
+    return NULL;
+  }
 
-    typedef AttachmentPropertyDesc InheritedDesc;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Typedefs                                   */
+  /*! \{                                                                 */
 
-    typedef Color3f                GenericType;
+  typedef Attachment    Inherited;
+  typedef AttachmentPtr InheritedPtr;
+
+  typedef AttachmentPropertyDesc InheritedDesc;
+
+  typedef Color3f GenericType;
 
 #ifndef OSG_SUPPORT_NO_GEO_INTERFACE
-    typedef GeoPropertyInterface<GeoColorsPropertyDesc> Interface;
+  typedef GeoPropertyInterface<GeoColorsPropertyDesc> Interface;
 #endif
 
-    /*! \}                                                                 */ 
+  /*! \}                                                                 */
 };
 
 #ifndef OSG_SUPPORT_NO_GEO_INTERFACE
@@ -324,38 +332,45 @@ typedef GeoColorsPropertyDesc::Interface GeoColorsInterface;
 
 /*! \ingroup GrpSystemDrawablesGeometryProperties
     \hideinhierarchy
-    Abstract base class for all GeoTexCoordsProperty traits. See \ref 
+    Abstract base class for all GeoTexCoordsProperty traits. See \ref
     GrpSystemDrawablesGeometryProperties for a description.
 */
-struct GeoTexCoordsPropertyDesc : public GeoPropertyDesc
-{
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Get                                        */
-    /*! \{                                                                 */
-    
-    static const Char8 *getTypeName (void) { return "GeoTexCoords";         }
-    static const Char8 *getGroupName(void) { return "GeoTexCoords";         }
-    static const Char8 *getClassName(void) { return "GeoTexCoordsProperty"; }
+struct GeoTexCoordsPropertyDesc : public GeoPropertyDesc {
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Get                                        */
+  /*! \{                                                                 */
 
-    static InitContainerF getInitMethod(void) { return NULL; }
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Typedefs                                   */
-    /*! \{                                                                 */
-    
-    typedef Attachment              Inherited;
-    typedef AttachmentPtr           InheritedPtr;
+  static const Char8* getTypeName(void) {
+    return "GeoTexCoords";
+  }
+  static const Char8* getGroupName(void) {
+    return "GeoTexCoords";
+  }
+  static const Char8* getClassName(void) {
+    return "GeoTexCoordsProperty";
+  }
 
-    typedef AttachmentPropertyDesc  InheritedDesc;
+  static InitContainerF getInitMethod(void) {
+    return NULL;
+  }
 
-    typedef Vec2f                   GenericType;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Typedefs                                   */
+  /*! \{                                                                 */
+
+  typedef Attachment    Inherited;
+  typedef AttachmentPtr InheritedPtr;
+
+  typedef AttachmentPropertyDesc InheritedDesc;
+
+  typedef Vec2f GenericType;
 
 #ifndef OSG_SUPPORT_NO_GEO_INTERFACE
-    typedef GeoPropertyInterface<GeoTexCoordsPropertyDesc> Interface;
+  typedef GeoPropertyInterface<GeoTexCoordsPropertyDesc> Interface;
 #endif
 
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 };
 
 #ifndef OSG_SUPPORT_NO_GEO_INTERFACE
@@ -364,38 +379,45 @@ typedef GeoTexCoordsPropertyDesc::Interface GeoTexCoordsInterface;
 
 /*! \ingroup GrpSystemDrawablesGeometryProperties
     \hideinhierarchy
-    Abstract base class for all GeoIndicesProperty traits. See \ref 
+    Abstract base class for all GeoIndicesProperty traits. See \ref
     GrpSystemDrawablesGeometryProperties for a description.
 */
-struct GeoIndicesPropertyDesc : public GeoPropertyDesc
-{
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Get                                        */
-    /*! \{                                                                 */
-    
-    static const Char8 *getTypeName (void) { return "GeoIndices";         }
-    static const Char8 *getGroupName(void) { return "GeoIndices";         }
-    static const Char8 *getClassName(void) { return "GeoIndicesProperty"; }
+struct GeoIndicesPropertyDesc : public GeoPropertyDesc {
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Get                                        */
+  /*! \{                                                                 */
 
-    static InitContainerF getInitMethod(void) { return NULL; }
+  static const Char8* getTypeName(void) {
+    return "GeoIndices";
+  }
+  static const Char8* getGroupName(void) {
+    return "GeoIndices";
+  }
+  static const Char8* getClassName(void) {
+    return "GeoIndicesProperty";
+  }
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Typedefs                                   */
-    /*! \{                                                                 */
+  static InitContainerF getInitMethod(void) {
+    return NULL;
+  }
 
-    typedef Attachment             Inherited;
-    typedef AttachmentPtr          InheritedPtr;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Typedefs                                   */
+  /*! \{                                                                 */
 
-    typedef AttachmentPropertyDesc InheritedDesc;
+  typedef Attachment    Inherited;
+  typedef AttachmentPtr InheritedPtr;
 
-    typedef UInt32                 GenericType;
+  typedef AttachmentPropertyDesc InheritedDesc;
+
+  typedef UInt32 GenericType;
 
 #ifndef OSG_SUPPORT_NO_GEO_INTERFACE
-    typedef GeoPropertyInterface<GeoIndicesPropertyDesc> Interface;
+  typedef GeoPropertyInterface<GeoIndicesPropertyDesc> Interface;
 #endif
 
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 };
 
 #ifndef OSG_SUPPORT_NO_GEO_INTERFACE
@@ -404,40 +426,46 @@ typedef GeoIndicesPropertyDesc::Interface GeoIndicesInterface;
 
 /*! \ingroup GrpSystemDrawablesGeometryProperties
     \hideinhierarchy
-    Abstract base class for all GeoPTypesProperty traits. See \ref 
+    Abstract base class for all GeoPTypesProperty traits. See \ref
     GrpSystemDrawablesGeometryProperties for a description.
 */
-struct GeoPTypesPropertyDesc : public GeoPropertyDesc
-{
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Get                                        */
-    /*! \{                                                                 */
-    
-    static const Char8 *getTypeName (void) { return "GeoPTypes"; }
-    static const Char8 *getGroupName(void) { return "GeoPTypes"; }
-    static const Char8 *getClassName(void) { return "GeoPTypesProperty"; }
+struct GeoPTypesPropertyDesc : public GeoPropertyDesc {
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Get                                        */
+  /*! \{                                                                 */
 
-    static InitContainerF getInitMethod(void) { return NULL; }
+  static const Char8* getTypeName(void) {
+    return "GeoPTypes";
+  }
+  static const Char8* getGroupName(void) {
+    return "GeoPTypes";
+  }
+  static const Char8* getClassName(void) {
+    return "GeoPTypesProperty";
+  }
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Typedefs                                   */
-    /*! \{                                                                 */
-    
-    typedef Attachment             Inherited;
-    typedef AttachmentPropertyDesc InheritedDesc;
+  static InitContainerF getInitMethod(void) {
+    return NULL;
+  }
 
-    typedef AttachmentPtr          InheritedPtr;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Typedefs                                   */
+  /*! \{                                                                 */
 
-    typedef UInt8                  GenericType;
+  typedef Attachment             Inherited;
+  typedef AttachmentPropertyDesc InheritedDesc;
+
+  typedef AttachmentPtr InheritedPtr;
+
+  typedef UInt8 GenericType;
 
 #ifndef OSG_SUPPORT_NO_GEO_INTERFACE
-    typedef GeoPropertyInterface<GeoPTypesPropertyDesc> Interface;
+  typedef GeoPropertyInterface<GeoPTypesPropertyDesc> Interface;
 #endif
 
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 };
-
 
 #ifndef OSG_SUPPORT_NO_GEO_INTERFACE
 typedef GeoPTypesPropertyDesc::Interface GeoPTypesInterface;
@@ -445,38 +473,45 @@ typedef GeoPTypesPropertyDesc::Interface GeoPTypesInterface;
 
 /*! \ingroup GrpSystemDrawablesGeometryProperties
     \hideinhierarchy
-    Abstract base class for all GeoPLengthsProperty traits. See \ref 
+    Abstract base class for all GeoPLengthsProperty traits. See \ref
     GrpSystemDrawablesGeometryProperties for a description.
 */
-struct GeoPLengthsPropertyDesc : public GeoPropertyDesc
-{
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Get                                        */
-    /*! \{                                                                 */
-    
-    static const Char8 *getTypeName (void) { return "GeoPLengths";         }
-    static const Char8 *getClassName(void) { return "GeoPLengthsProperty"; }
-    static const Char8 *getGroupName(void) { return "GeoPLengths";         }
+struct GeoPLengthsPropertyDesc : public GeoPropertyDesc {
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Get                                        */
+  /*! \{                                                                 */
 
-    static InitContainerF getInitMethod(void) { return NULL; }
+  static const Char8* getTypeName(void) {
+    return "GeoPLengths";
+  }
+  static const Char8* getClassName(void) {
+    return "GeoPLengthsProperty";
+  }
+  static const Char8* getGroupName(void) {
+    return "GeoPLengths";
+  }
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Typedefs                                   */
-    /*! \{                                                                 */
+  static InitContainerF getInitMethod(void) {
+    return NULL;
+  }
 
-    typedef Attachment             Inherited;
-    typedef AttachmentPtr          InheritedPtr;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Typedefs                                   */
+  /*! \{                                                                 */
 
-    typedef AttachmentPropertyDesc InheritedDesc;
+  typedef Attachment    Inherited;
+  typedef AttachmentPtr InheritedPtr;
 
-    typedef UInt32                 GenericType;
+  typedef AttachmentPropertyDesc InheritedDesc;
+
+  typedef UInt32 GenericType;
 
 #ifndef OSG_SUPPORT_NO_GEO_INTERFACE
-    typedef GeoPropertyInterface<GeoPLengthsPropertyDesc> Interface;
+  typedef GeoPropertyInterface<GeoPLengthsPropertyDesc> Interface;
 #endif
 
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 };
 
 #ifndef OSG_SUPPORT_NO_GEO_INTERFACE
@@ -488,17 +523,3 @@ OSG_END_NAMESPACE
 #include <OSGGeoPropertyInterface.inl>
 
 #endif /* _OSGGEOPROPERTYINTERFACES_H_ */
-
-
-
-
-
-
-
-
-
-
-
-
-
-

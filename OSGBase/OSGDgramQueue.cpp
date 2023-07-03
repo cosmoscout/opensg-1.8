@@ -64,80 +64,68 @@ OSG_USING_NAMESPACE
  *  size must be 2^x
  */
 
-DgramQueue::DgramQueue():
-    _queue(),
-    _waiting(false)
-{
-    char barrierName[256];
-    sprintf(barrierName,"DgramQueue%p",this);
+DgramQueue::DgramQueue()
+    : _queue()
+    , _waiting(false) {
+  char barrierName[256];
+  sprintf(barrierName, "DgramQueue%p", this);
 
-    // create barrier
-    _barrier = Barrier::get(barrierName);
+  // create barrier
+  _barrier = Barrier::get(barrierName);
 }
 
 /*! Destructor
  */
-DgramQueue::~DgramQueue()
-{
+DgramQueue::~DgramQueue() {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                           put / get                                     */
 
-/*! put a dgram to the queue. 
+/*! put a dgram to the queue.
  */
-void DgramQueue::put( Dgram *dgram )
-{
-    _queue.push_back(dgram);
-    if(_waiting)
-    {
-        _waiting = false;
-        _barrier->enter(2);
-    }
+void DgramQueue::put(Dgram* dgram) {
+  _queue.push_back(dgram);
+  if (_waiting) {
+    _waiting = false;
+    _barrier->enter(2);
+  }
 }
 
 /*! get a dgram from the queue. Block if queue is empty
  */
-Dgram *DgramQueue::get( Lock *lock )
-{
-    Dgram *result;
+Dgram* DgramQueue::get(Lock* lock) {
+  Dgram* result;
 
-    if(_queue.empty())
-    {
-        _waiting = true;
-        lock->release();
-        _barrier->enter(2);
-        lock->aquire();
-    }
-    result = _queue.front();
-    _queue.pop_front();
+  if (_queue.empty()) {
+    _waiting = true;
+    lock->release();
+    _barrier->enter(2);
+    lock->aquire();
+  }
+  result = _queue.front();
+  _queue.pop_front();
 
-    return result;
+  return result;
 }
 
 /*! wait for a dgram but dont read
  */
-void DgramQueue::wait( Lock *lock )
-{
-    if(_queue.empty())
-    {
-        _waiting = true;
-        lock->release();
-        _barrier->enter(2);
-        lock->aquire();
-    }
+void DgramQueue::wait(Lock* lock) {
+  if (_queue.empty()) {
+    _waiting = true;
+    lock->release();
+    _barrier->enter(2);
+    lock->aquire();
+  }
 }
 
 /*! true, if reader is waiting
  */
-bool DgramQueue::waiting(void)
-{
-    return _waiting;
+bool DgramQueue::waiting(void) {
+  return _waiting;
 }
 
-bool DgramQueue::empty(void)
-{
-    return _queue.empty();
+bool DgramQueue::empty(void) {
+  return _queue.empty();
 }
-
-

@@ -60,20 +60,17 @@ template <class SizeTraitsT>
 const UInt8 FunctorBase<SizeTraitsT>::FunctorActive;
 #endif
 
-template <class SizeTraitsT> inline
-FunctorBase<SizeTraitsT>::~FunctorBase(void) 
-{
+template <class SizeTraitsT>
+inline FunctorBase<SizeTraitsT>::~FunctorBase(void) {
 }
 
-template <class SizeTraitsT> inline
-FunctorBase<SizeTraitsT>::FunctorBase(void) :
-    _flags(0)
-{
+template <class SizeTraitsT>
+inline FunctorBase<SizeTraitsT>::FunctorBase(void)
+    : _flags(0) {
 }
 
-template <class SizeTraitsT> inline
-FunctorBase<SizeTraitsT>::FunctorBase(const FunctorBase &) 
-{
+template <class SizeTraitsT>
+inline FunctorBase<SizeTraitsT>::FunctorBase(const FunctorBase&) {
 }
 
 OSG_END_NAMESPACE

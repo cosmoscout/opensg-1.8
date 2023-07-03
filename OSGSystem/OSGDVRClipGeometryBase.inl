@@ -52,109 +52,79 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &DVRClipGeometryBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& DVRClipGeometryBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 DVRClipGeometryBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 DVRClipGeometryBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-DVRClipGeometryPtr DVRClipGeometryBase::create(void) 
-{
-    DVRClipGeometryPtr fc; 
+inline DVRClipGeometryPtr DVRClipGeometryBase::create(void) {
+  DVRClipGeometryPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = DVRClipGeometryPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = DVRClipGeometryPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-DVRClipGeometryPtr DVRClipGeometryBase::createEmpty(void) 
-{ 
-    DVRClipGeometryPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline DVRClipGeometryPtr DVRClipGeometryBase::createEmpty(void) {
+  DVRClipGeometryPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the DVRClipGeometry::_sfGeometryNode field.
-inline
-SFNodePtr *DVRClipGeometryBase::getSFGeometryNode(void)
-{
-    return &_sfGeometryNode;
+inline SFNodePtr* DVRClipGeometryBase::getSFGeometryNode(void) {
+  return &_sfGeometryNode;
 }
 
 //! Get the DVRClipGeometry::_sfBeacon field.
-inline
-SFNodePtr *DVRClipGeometryBase::getSFBeacon(void)
-{
-    return &_sfBeacon;
-}
-
-
-//! Get the value of the DVRClipGeometry::_sfGeometryNode field.
-inline
-NodePtr &DVRClipGeometryBase::getGeometryNode(void)
-{
-    return _sfGeometryNode.getValue();
+inline SFNodePtr* DVRClipGeometryBase::getSFBeacon(void) {
+  return &_sfBeacon;
 }
 
 //! Get the value of the DVRClipGeometry::_sfGeometryNode field.
-inline
-const NodePtr &DVRClipGeometryBase::getGeometryNode(void) const
-{
-    return _sfGeometryNode.getValue();
+inline NodePtr& DVRClipGeometryBase::getGeometryNode(void) {
+  return _sfGeometryNode.getValue();
+}
+
+//! Get the value of the DVRClipGeometry::_sfGeometryNode field.
+inline const NodePtr& DVRClipGeometryBase::getGeometryNode(void) const {
+  return _sfGeometryNode.getValue();
 }
 
 //! Set the value of the DVRClipGeometry::_sfGeometryNode field.
-inline
-void DVRClipGeometryBase::setGeometryNode(const NodePtr &value)
-{
-    _sfGeometryNode.setValue(value);
+inline void DVRClipGeometryBase::setGeometryNode(const NodePtr& value) {
+  _sfGeometryNode.setValue(value);
 }
 
 //! Get the value of the DVRClipGeometry::_sfBeacon field.
-inline
-NodePtr &DVRClipGeometryBase::getBeacon(void)
-{
-    return _sfBeacon.getValue();
+inline NodePtr& DVRClipGeometryBase::getBeacon(void) {
+  return _sfBeacon.getValue();
 }
 
 //! Get the value of the DVRClipGeometry::_sfBeacon field.
-inline
-const NodePtr &DVRClipGeometryBase::getBeacon(void) const
-{
-    return _sfBeacon.getValue();
+inline const NodePtr& DVRClipGeometryBase::getBeacon(void) const {
+  return _sfBeacon.getValue();
 }
 
 //! Set the value of the DVRClipGeometry::_sfBeacon field.
-inline
-void DVRClipGeometryBase::setBeacon(const NodePtr &value)
-{
-    _sfBeacon.setValue(value);
+inline void DVRClipGeometryBase::setBeacon(const NodePtr& value) {
+  _sfBeacon.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGDVRCLIPGEOMETRYBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGDVRCLIPGEOMETRYBASE_INLINE_CVSID                                                        \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

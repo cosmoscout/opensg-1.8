@@ -51,7 +51,7 @@
 OSG_USING_NAMESPACE
 
 /*! \class osg::ConnectionType
- 
+
     A connection type describes a network connection and provides an
     interface for dynamic connection creation.
 */
@@ -63,26 +63,22 @@ OSG_USING_NAMESPACE
     To create a new connection, the given functions for group and
     point are called
  */
-ConnectionType::ConnectionType(      CreateGroupFunction  createGroup, 
-                               const std::string         &name        ) :
-    _createGroup(createGroup),
-    _createPoint(NULL),
-    _name(name)
-{
-    ConnectionFactory::the().addGroupType(this);
+ConnectionType::ConnectionType(CreateGroupFunction createGroup, const std::string& name)
+    : _createGroup(createGroup)
+    , _createPoint(NULL)
+    , _name(name) {
+  ConnectionFactory::the().addGroupType(this);
 }
 
 /*! Constructor. A new connection with the given name is registered.
     To create a new connection, the given functions for group and
     point are called
  */
-ConnectionType::ConnectionType(      CreatePointFunction  createPoint, 
-                               const std::string         &name        ) :
-    _createGroup(NULL),
-    _createPoint(createPoint),
-    _name(name)
-{
-    ConnectionFactory::the().addPointType(this);
+ConnectionType::ConnectionType(CreatePointFunction createPoint, const std::string& name)
+    : _createGroup(NULL)
+    , _createPoint(createPoint)
+    , _name(name) {
+  ConnectionFactory::the().addPointType(this);
 }
 
 /*-------------------------------------------------------------------------*/
@@ -90,12 +86,11 @@ ConnectionType::ConnectionType(      CreatePointFunction  createPoint,
 
 /*! Destructor. Unregister the connection from the factory
  */
-ConnectionType::~ConnectionType(void)
-{
-    if(_createGroup)
-        ConnectionFactory::the().subGroupType(this);
-    if(_createPoint)
-        ConnectionFactory::the().subPointType(this);
+ConnectionType::~ConnectionType(void) {
+  if (_createGroup)
+    ConnectionFactory::the().subGroupType(this);
+  if (_createPoint)
+    ConnectionFactory::the().subPointType(this);
 }
 
 /*-------------------------------------------------------------------------*/
@@ -103,15 +98,14 @@ ConnectionType::~ConnectionType(void)
 
 /*! assignment
  */
-ConnectionType& ConnectionType::operator = (const ConnectionType &source)
-{
-    if(this == &source)
-        return *this;
-
-    _name        = source._name;
-    _createGroup = source._createGroup;
-    _createPoint = source._createPoint;
+ConnectionType& ConnectionType::operator=(const ConnectionType& source) {
+  if (this == &source)
     return *this;
+
+  _name        = source._name;
+  _createGroup = source._createGroup;
+  _createPoint = source._createPoint;
+  return *this;
 }
 
 /*-------------------------------------------------------------------------*/
@@ -119,48 +113,41 @@ ConnectionType& ConnectionType::operator = (const ConnectionType &source)
 
 /*! less
  */
-bool ConnectionType::operator < (const ConnectionType &other) const
-{
-    return _name < other._name;
+bool ConnectionType::operator<(const ConnectionType& other) const {
+  return _name < other._name;
 }
 
 /*! equal
  */
-bool ConnectionType::operator == (const ConnectionType &other) const
-{
-    return _name == other._name;
+bool ConnectionType::operator==(const ConnectionType& other) const {
+  return _name == other._name;
 }
 
 /*! unequal
  */
-bool ConnectionType::operator != (const ConnectionType &other) const
-{
-    return ! (*this == other);
+bool ConnectionType::operator!=(const ConnectionType& other) const {
+  return !(*this == other);
 }
-
 
 /*-------------------------------------------------------------------------*/
 /*                             get                                         */
 
 /*! get conneciton name
  */
-std::string ConnectionType::getName(void) const
-{
-    return _name;
+std::string ConnectionType::getName(void) const {
+  return _name;
 }
 
 /*! get conneciton create function
  */
-ConnectionType::CreateGroupFunction ConnectionType::getCreateGroup(void) const
-{
-    return _createGroup;
+ConnectionType::CreateGroupFunction ConnectionType::getCreateGroup(void) const {
+  return _createGroup;
 }
 
 /*! get conneciton create function
  */
-ConnectionType::CreatePointFunction ConnectionType::getCreatePoint(void) const
-{
-    return _createPoint;
+ConnectionType::CreatePointFunction ConnectionType::getCreatePoint(void) const {
+  return _createPoint;
 }
 
 /*-------------------------------------------------------------------------*/
@@ -168,17 +155,12 @@ ConnectionType::CreatePointFunction ConnectionType::getCreatePoint(void) const
 
 /*! create Connection
  */
-GroupConnection *ConnectionType::createGroup(void)
-{
-    return _createGroup();
+GroupConnection* ConnectionType::createGroup(void) {
+  return _createGroup();
 }
 
 /*! create Connection
  */
-PointConnection *ConnectionType::createPoint(void)
-{
-    return _createPoint();
+PointConnection* ConnectionType::createPoint(void) {
+  return _createPoint();
 }
-
-
-

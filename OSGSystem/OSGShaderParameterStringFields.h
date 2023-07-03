@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGSHADERPARAMETERSTRINGFIELDS_H_
 #define _OSGSHADERPARAMETERSTRINGFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class ShaderParameterString;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! ShaderParameterStringPtr
 
 typedef FCPtr<ShaderParameterPtr, ShaderParameterString> ShaderParameterStringPtr;
@@ -81,18 +80,23 @@ typedef FCPtr<ShaderParameterPtr, ShaderParameterString> ShaderParameterStringPt
 #endif
 
 template <>
-struct FieldDataTraits<ShaderParameterStringPtr> : 
-    public FieldTraitsRecurseMapper<ShaderParameterStringPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<ShaderParameterStringPtr>
+    : public FieldTraitsRecurseMapper<ShaderParameterStringPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getSName(void) { return "SFShaderParameterStringPtr"; }
-    static const char *getMName(void) { return "MFShaderParameterStringPtr"; }
+  static const char* getSName(void) {
+    return "SFShaderParameterStringPtr";
+  }
+  static const char* getMName(void) {
+    return "MFShaderParameterStringPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -102,7 +106,6 @@ struct FieldDataTraits<ShaderParameterStringPtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
@@ -126,6 +129,7 @@ OSG_DLLEXPORT_DECL1(MField, ShaderParameterStringPtr, OSG_SYSTEMLIB_DLLTMPLMAPPI
 
 OSG_END_NAMESPACE
 
-#define OSGSHADERPARAMETERSTRINGFIELDS_HEADER_CVSID "@(#)$Id: OSGShaderParameterStringFields.h,v 1.5 2006/02/20 17:04:38 dirk Exp $"
+#define OSGSHADERPARAMETERSTRINGFIELDS_HEADER_CVSID                                                \
+  "@(#)$Id: OSGShaderParameterStringFields.h,v 1.5 2006/02/20 17:04:38 dirk Exp $"
 
 #endif /* _OSGSHADERPARAMETERSTRINGFIELDS_H_ */

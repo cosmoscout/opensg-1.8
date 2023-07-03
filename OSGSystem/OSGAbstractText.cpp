@@ -55,36 +55,26 @@ OSG_USING_NAMESPACE
 
 /*----------------------- constructors & destructors ----------------------*/
 
-AbstractText::AbstractText(void) :
-    Inherited()
-{
+AbstractText::AbstractText(void)
+    : Inherited() {
 }
 
-AbstractText::AbstractText(const AbstractText &source) :
-    Inherited(source)
-{
+AbstractText::AbstractText(const AbstractText& source)
+    : Inherited(source) {
 }
 
-AbstractText::~AbstractText(void)
-{
+AbstractText::~AbstractText(void) {
 }
 
 /*----------------------------- class specific ----------------------------*/
 
-void AbstractText::initMethod (void)
-{
+void AbstractText::initMethod(void) {
 }
 
-void AbstractText::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void AbstractText::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
-void AbstractText::dump(      UInt32    , 
-                         const BitVector ) const
-{
-    SLOG << "Dump AbstractText NI" << std::endl;
+void AbstractText::dump(UInt32, const BitVector) const {
+  SLOG << "Dump AbstractText NI" << std::endl;
 }
-
-
-

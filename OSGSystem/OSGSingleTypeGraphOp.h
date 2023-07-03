@@ -36,7 +36,6 @@
 *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGSINGLETYPEGRAPHOP_H_
 #define _OSGSINGLETYPEGRAPHOP_H_
 #ifdef __sgi
@@ -53,50 +52,48 @@ OSG_BEGIN_NAMESPACE
 //! \ingroup GrpSystemRenderingBackend
 //! GraphOp class
 
-template < class Type > 
-class SingleTypeGraphOp : public GraphOp
-{
-    /*==========================  PUBLIC  =================================*/
-public:
+template <class Type>
+class SingleTypeGraphOp : public GraphOp {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  static const char* getClassname(void) {
+    return "SingleTypeGraphOp";
+  };
 
-    static const char *getClassname(void) { return "SingleTypeGraphOp"; };
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-    
-    SingleTypeGraphOp(const char* name="");
+  SingleTypeGraphOp(const char* name = "");
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    virtual ~SingleTypeGraphOp(void);
+  virtual ~SingleTypeGraphOp(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Main methods                               */
-    /*! \{                                                                 */
-    
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Main methods                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 
-    /*=========================  PROTECTED  ===============================*/
-protected:    
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  virtual bool travNodeEnter(NodePtr node) = 0; // only called for Type type objects
+  virtual bool travNodeLeave(NodePtr node) = 0; // only called for Type type objects
 
-    virtual bool travNodeEnter(NodePtr node) = 0; // only called for Type type objects 
-    virtual bool travNodeLeave(NodePtr node) = 0; // only called for Type type objects 
-        
-    /*==========================  PRIVATE  ================================*/
-private:
-    Action::ResultE traverseEnter(NodePtr& node);
-    Action::ResultE traverseLeave(NodePtr& node, Action::ResultE res);
+  /*==========================  PRIVATE  ================================*/
+ private:
+  Action::ResultE traverseEnter(NodePtr& node);
+  Action::ResultE traverseLeave(NodePtr& node, Action::ResultE res);
 };
 
 OSG_END_NAMESPACE

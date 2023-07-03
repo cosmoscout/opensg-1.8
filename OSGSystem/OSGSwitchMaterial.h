@@ -48,111 +48,103 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief SwitchMaterial class. See \ref 
+/*! \brief SwitchMaterial class. See \ref
            PageSystemSwitchMaterial for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING SwitchMaterial : public SwitchMaterialBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING SwitchMaterial : public SwitchMaterialBase {
+ private:
+  typedef SwitchMaterialBase Inherited;
 
-    typedef SwitchMaterialBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Rendering                                  */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  virtual void draw(DrawFunctor& func, DrawActionBase* action);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Rendering                                  */
-    /*! \{                                                                 */
+  virtual void draw(Geometry* geo, DrawActionBase* action);
 
-    virtual void       draw              (DrawFunctor& func,
-                                          DrawActionBase * action );
+  virtual StatePtr makeState(void);
 
-    virtual void       draw              (Geometry* geo,
-                                          DrawActionBase * action);
+  virtual void rebuildState(void);
 
-    virtual StatePtr   makeState         (void);
+  virtual StatePtr getState(UInt32 index = 0);
+  virtual bool     isMultiPass(void) const;
+  virtual UInt32   getNPasses(void) const;
 
-    virtual void       rebuildState      (void);
+  virtual bool isTransparent(void) const;
 
-    virtual StatePtr   getState          (UInt32 index = 0);
-    virtual bool       isMultiPass       (void) const;
-    virtual UInt32     getNPasses        (void) const;
+  virtual Int32 getRealSortKey(void) const;
 
-    virtual bool       isTransparent     (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Access                                    */
+  /*! \{                                                                 */
 
-    virtual Int32      getRealSortKey(void) const;
+  void addMaterial(MaterialPtr mat);
+  void subMaterial(MaterialPtr mat);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Access                                    */
-    /*! \{                                                                 */
+  bool        hasMaterial(MaterialPtr mat);
+  MaterialPtr getMaterial(UInt32 index);
+  MaterialPtr getCurrentMaterial(void);
 
-    void addMaterial(MaterialPtr mat);
-    void subMaterial(MaterialPtr mat);
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in SwitchMaterialBase.
 
-    bool hasMaterial(MaterialPtr mat);
-    MaterialPtr getMaterial(UInt32 index);
-    MaterialPtr getCurrentMaterial(void);
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  SwitchMaterial(void);
+  SwitchMaterial(const SwitchMaterial& source);
 
-    // Variables should all be in SwitchMaterialBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~SwitchMaterial(void);
 
-    SwitchMaterial(void);
-    SwitchMaterial(const SwitchMaterial &source);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class SwitchMaterialBase;
 
-    virtual ~SwitchMaterial(void); 
+  static void initMethod(void);
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  // prohibit default functions (move to 'public' if you need one)
 
-    friend class FieldContainer;
-    friend class SwitchMaterialBase;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const SwitchMaterial &source);
+  void operator=(const SwitchMaterial& source);
 };
 
-typedef SwitchMaterial *SwitchMaterialP;
+typedef SwitchMaterial* SwitchMaterialP;
 
 OSG_END_NAMESPACE
 
 #include <OSGSwitchMaterialBase.inl>
 #include <OSGSwitchMaterial.inl>
 
-#define OSGSWITCHMATERIAL_HEADER_CVSID "@(#)$Id: OSGSwitchMaterial.h,v 1.4 2006/08/22 10:11:44 a-m-z Exp $"
+#define OSGSWITCHMATERIAL_HEADER_CVSID                                                             \
+  "@(#)$Id: OSGSwitchMaterial.h,v 1.4 2006/08/22 10:11:44 a-m-z Exp $"
 
 #endif /* _OSGSWITCHMATERIAL_H_ */

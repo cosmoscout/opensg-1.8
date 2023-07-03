@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGPASSIVEBACKGROUND_H_
 #define _OSGPASSIVEBACKGROUND_H_
 #ifdef __sgi
@@ -52,85 +51,77 @@ OSG_BEGIN_NAMESPACE
 class DrawActionBase;
 class Viewport;
 
-/*! \brief Passive Background  class. See \ref 
+/*! \brief Passive Background  class. See \ref
     PageSystemWindowBackgroundPassive for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING PassiveBackground : 
-    public PassiveBackgroundBase
-{
-    /*==========================  PUBLIC  =================================*/
+class OSG_SYSTEMLIB_DLLMAPPING PassiveBackground : public PassiveBackgroundBase {
+  /*==========================  PUBLIC  =================================*/
  public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                     your_category                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                     your_category                            */
-    /*! \{                                                                 */
+  void clear(DrawActionBase*, Viewport*);
 
-    void clear(DrawActionBase *, Viewport *);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     transformation                           */
+  /*! \{                                                                 */
 
+  virtual void changed(BitVector whichField, UInt32 origin);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   dump                                       */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     transformation                           */
-    /*! \{                                                                 */
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    virtual void changed(BitVector whichField, 
-                         UInt32    origin    );
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   dump                                       */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32    uiIndent = 0, 
-                      const BitVector bvFlags  = 0) const;
+  PassiveBackground(void);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
-    
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  PassiveBackground(const PassiveBackground& source);
 
-    PassiveBackground(void);
-    
-    PassiveBackground(const PassiveBackground &source);
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    virtual ~PassiveBackground(void); 
-    
-    /*! \}                                                                 */
-    /*=========================  PRIVATE  =================================*/
-  private:
+  virtual ~PassiveBackground(void);
 
-    typedef PassiveBackgroundBase Inherited;
+  /*! \}                                                                 */
+  /*=========================  PRIVATE  =================================*/
+ private:
+  typedef PassiveBackgroundBase Inherited;
 
-    friend class FieldContainer;
-    friend class PassiveBackgroundBase;
+  friend class FieldContainer;
+  friend class PassiveBackgroundBase;
 
-    static void initMethod( void );
+  static void initMethod(void);
 
-    void operator =(const PassiveBackground &source);
+  void operator=(const PassiveBackground& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
-
 /** \brief class pointer
  */
-typedef PassiveBackground *PassiveBackgroundP;
+typedef PassiveBackground* PassiveBackgroundP;
 
 OSG_END_NAMESPACE
 
 #include <OSGPassiveBackgroundBase.inl>
 #include <OSGPassiveBackground.inl>
 
-#define OSGPASSIVEBACKGROUND_HEADER_CVSID "@(#)$Id: FCTemplate_h.h,v 1.15 2002/06/01 10:37:25 vossg Exp $"
+#define OSGPASSIVEBACKGROUND_HEADER_CVSID                                                          \
+  "@(#)$Id: FCTemplate_h.h,v 1.15 2002/06/01 10:37:25 vossg Exp $"
 
 #endif /* _OSGPASSIVEBACKGROUND_H_ */

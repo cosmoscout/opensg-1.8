@@ -51,104 +51,94 @@ OSG_BEGIN_NAMESPACE
     \ingroup GrpBaseBaseVolume
  */
 
-class OSG_BASE_DLLMAPPING CylinderVolume : public Volume
-{
-    /*==========================  PUBLIC  =================================*/
+class OSG_BASE_DLLMAPPING CylinderVolume : public Volume {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  CylinderVolume(void);
 
-    CylinderVolume(void);
+  CylinderVolume(const Pnt3f& p, const Vec3f& d, Real32 r);
+  CylinderVolume(const CylinderVolume& c);
 
-    CylinderVolume(const Pnt3f          &p, 
-                   const Vec3f          &d, 
-                         Real32          r);
-    CylinderVolume(const CylinderVolume &c);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  ~CylinderVolume(void);
 
-    ~CylinderVolume(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                        Get                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                        Get                                   */
-    /*! \{                                                                 */
-    
-            void   getAxis        (Pnt3f &apos,  Vec3f &adir) const;
-            Real32 getRadius      (void                     ) const;
+  void   getAxis(Pnt3f& apos, Vec3f& adir) const;
+  Real32 getRadius(void) const;
 
-    virtual void   getCenter      (Pnt3f &center            ) const;
-    virtual Real32 getScalarVolume(void                     ) const;
-    virtual void   getBounds      (Pnt3f &min,   Pnt3f &max ) const;
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                        Set                                   */
-    /*! \{                                                                 */
+  virtual void   getCenter(Pnt3f& center) const;
+  virtual Real32 getScalarVolume(void) const;
+  virtual void   getBounds(Pnt3f& min, Pnt3f& max) const;
 
-     void setValue (const Pnt3f &p, const Vec3f &d, Real32 r);
-     void setAxis  (const Pnt3f &p, const Vec3f &d          );
-     void setRadius(      Real32 r                          );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                        Set                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                        Extend                                */
-    /*! \{                                                                 */
+  void setValue(const Pnt3f& p, const Vec3f& d, Real32 r);
+  void setAxis(const Pnt3f& p, const Vec3f& d);
+  void setRadius(Real32 r);
 
-    virtual void extendBy(const Pnt3f          &pt    );
-    virtual void extendBy(const Volume         &volume);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                        Extend                                */
+  /*! \{                                                                 */
 
-            void extendBy(const CylinderVolume &obj   );
+  virtual void extendBy(const Pnt3f& pt);
+  virtual void extendBy(const Volume& volume);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                        Intersect                             */
-    /*! \{                                                                 */
+  void extendBy(const CylinderVolume& obj);
 
-    virtual bool intersect  (const Pnt3f          &point ) const;
-    virtual bool intersect  (const Line           &line  ) const;
-    virtual bool intersect  (const Line           &line,
-                                   Real32         &enter, 
-                                   Real32         &exit  ) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                        Intersect                             */
+  /*! \{                                                                 */
 
-    virtual bool intersect  (const Volume         &volume) const;
-            bool intersect  (const CylinderVolume &volume) const;
-    virtual bool isOnSurface(const Pnt3f          &point ) const;
+  virtual bool intersect(const Pnt3f& point) const;
+  virtual bool intersect(const Line& line) const;
+  virtual bool intersect(const Line& line, Real32& enter, Real32& exit) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                        Transform                             */
-    /*! \{                                                                 */
+  virtual bool intersect(const Volume& volume) const;
+  bool         intersect(const CylinderVolume& volume) const;
+  virtual bool isOnSurface(const Pnt3f& point) const;
 
-    virtual void transform(const Matrix &mat);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                        Transform                             */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                        Output                                */
-    /*! \{                                                                 */
+  virtual void transform(const Matrix& mat);
 
-    virtual void dump(      UInt32    uiIndent = 0,
-                      const BitVector bvFlags  = 0) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                        Output                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-  protected:
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    /*==========================  PRIVATE  ================================*/
+ protected:
+  /*==========================  PRIVATE  ================================*/
 
-  private:
-
-    Pnt3f  _axisPos;
-    Vec3f  _axisDir;
-    Real32 _radius;
-
+ private:
+  Pnt3f  _axisPos;
+  Vec3f  _axisDir;
+  Real32 _radius;
 };
 
 OSG_END_NAMESPACE

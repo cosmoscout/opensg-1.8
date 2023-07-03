@@ -52,165 +52,119 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &TextureGrabBackgroundBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& TextureGrabBackgroundBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 TextureGrabBackgroundBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 TextureGrabBackgroundBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-TextureGrabBackgroundPtr TextureGrabBackgroundBase::create(void) 
-{
-    TextureGrabBackgroundPtr fc; 
+inline TextureGrabBackgroundPtr TextureGrabBackgroundBase::create(void) {
+  TextureGrabBackgroundPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = TextureGrabBackgroundPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = TextureGrabBackgroundPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-TextureGrabBackgroundPtr TextureGrabBackgroundBase::createEmpty(void) 
-{ 
-    TextureGrabBackgroundPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline TextureGrabBackgroundPtr TextureGrabBackgroundBase::createEmpty(void) {
+  TextureGrabBackgroundPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the TextureGrabBackground::_sfTexture field.
-inline
-SFTextureChunkPtr *TextureGrabBackgroundBase::getSFTexture(void)
-{
-    return &_sfTexture;
+inline SFTextureChunkPtr* TextureGrabBackgroundBase::getSFTexture(void) {
+  return &_sfTexture;
 }
 
 //! Get the TextureGrabBackground::_sfAutoResize field.
-inline
-SFBool *TextureGrabBackgroundBase::getSFAutoResize(void)
-{
-    return &_sfAutoResize;
+inline SFBool* TextureGrabBackgroundBase::getSFAutoResize(void) {
+  return &_sfAutoResize;
 }
 
 //! Get the TextureGrabBackground::_sfBindTarget field.
-inline
-SFGLenum *TextureGrabBackgroundBase::getSFBindTarget(void)
-{
-    return &_sfBindTarget;
+inline SFGLenum* TextureGrabBackgroundBase::getSFBindTarget(void) {
+  return &_sfBindTarget;
 }
 
 //! Get the TextureGrabBackground::_sfCopyTarget field.
-inline
-SFGLenum *TextureGrabBackgroundBase::getSFCopyTarget(void)
-{
-    return &_sfCopyTarget;
-}
-
-
-//! Get the value of the TextureGrabBackground::_sfTexture field.
-inline
-TextureChunkPtr &TextureGrabBackgroundBase::getTexture(void)
-{
-    return _sfTexture.getValue();
+inline SFGLenum* TextureGrabBackgroundBase::getSFCopyTarget(void) {
+  return &_sfCopyTarget;
 }
 
 //! Get the value of the TextureGrabBackground::_sfTexture field.
-inline
-const TextureChunkPtr &TextureGrabBackgroundBase::getTexture(void) const
-{
-    return _sfTexture.getValue();
+inline TextureChunkPtr& TextureGrabBackgroundBase::getTexture(void) {
+  return _sfTexture.getValue();
+}
+
+//! Get the value of the TextureGrabBackground::_sfTexture field.
+inline const TextureChunkPtr& TextureGrabBackgroundBase::getTexture(void) const {
+  return _sfTexture.getValue();
 }
 
 //! Set the value of the TextureGrabBackground::_sfTexture field.
-inline
-void TextureGrabBackgroundBase::setTexture(const TextureChunkPtr &value)
-{
-    _sfTexture.setValue(value);
+inline void TextureGrabBackgroundBase::setTexture(const TextureChunkPtr& value) {
+  _sfTexture.setValue(value);
 }
 
 //! Get the value of the TextureGrabBackground::_sfAutoResize field.
-inline
-bool &TextureGrabBackgroundBase::getAutoResize(void)
-{
-    return _sfAutoResize.getValue();
+inline bool& TextureGrabBackgroundBase::getAutoResize(void) {
+  return _sfAutoResize.getValue();
 }
 
 //! Get the value of the TextureGrabBackground::_sfAutoResize field.
-inline
-const bool &TextureGrabBackgroundBase::getAutoResize(void) const
-{
-    return _sfAutoResize.getValue();
+inline const bool& TextureGrabBackgroundBase::getAutoResize(void) const {
+  return _sfAutoResize.getValue();
 }
 
 //! Set the value of the TextureGrabBackground::_sfAutoResize field.
-inline
-void TextureGrabBackgroundBase::setAutoResize(const bool &value)
-{
-    _sfAutoResize.setValue(value);
+inline void TextureGrabBackgroundBase::setAutoResize(const bool& value) {
+  _sfAutoResize.setValue(value);
 }
 
 //! Get the value of the TextureGrabBackground::_sfBindTarget field.
-inline
-GLenum &TextureGrabBackgroundBase::getBindTarget(void)
-{
-    return _sfBindTarget.getValue();
+inline GLenum& TextureGrabBackgroundBase::getBindTarget(void) {
+  return _sfBindTarget.getValue();
 }
 
 //! Get the value of the TextureGrabBackground::_sfBindTarget field.
-inline
-const GLenum &TextureGrabBackgroundBase::getBindTarget(void) const
-{
-    return _sfBindTarget.getValue();
+inline const GLenum& TextureGrabBackgroundBase::getBindTarget(void) const {
+  return _sfBindTarget.getValue();
 }
 
 //! Set the value of the TextureGrabBackground::_sfBindTarget field.
-inline
-void TextureGrabBackgroundBase::setBindTarget(const GLenum &value)
-{
-    _sfBindTarget.setValue(value);
+inline void TextureGrabBackgroundBase::setBindTarget(const GLenum& value) {
+  _sfBindTarget.setValue(value);
 }
 
 //! Get the value of the TextureGrabBackground::_sfCopyTarget field.
-inline
-GLenum &TextureGrabBackgroundBase::getCopyTarget(void)
-{
-    return _sfCopyTarget.getValue();
+inline GLenum& TextureGrabBackgroundBase::getCopyTarget(void) {
+  return _sfCopyTarget.getValue();
 }
 
 //! Get the value of the TextureGrabBackground::_sfCopyTarget field.
-inline
-const GLenum &TextureGrabBackgroundBase::getCopyTarget(void) const
-{
-    return _sfCopyTarget.getValue();
+inline const GLenum& TextureGrabBackgroundBase::getCopyTarget(void) const {
+  return _sfCopyTarget.getValue();
 }
 
 //! Set the value of the TextureGrabBackground::_sfCopyTarget field.
-inline
-void TextureGrabBackgroundBase::setCopyTarget(const GLenum &value)
-{
-    _sfCopyTarget.setValue(value);
+inline void TextureGrabBackgroundBase::setCopyTarget(const GLenum& value) {
+  _sfCopyTarget.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGTEXTUREGRABBACKGROUNDBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGTEXTUREGRABBACKGROUNDBASE_INLINE_CVSID                                                  \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

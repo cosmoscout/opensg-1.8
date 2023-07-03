@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILESHAREDFONTSTYLEINST
 
 #include <stdlib.h>
@@ -61,206 +60,150 @@
 #include "OSGSharedFontStyleBase.h"
 #include "OSGSharedFontStyle.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  SharedFontStyleBase::ContainedFontStyleFieldMask = 
+const OSG::BitVector SharedFontStyleBase::ContainedFontStyleFieldMask =
     (TypeTraits<BitVector>::One << SharedFontStyleBase::ContainedFontStyleFieldId);
 
-const OSG::BitVector SharedFontStyleBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector SharedFontStyleBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
 /*! \var FontStyleP      SharedFontStyleBase::_sfContainedFontStyle
-    
+
 */
 
 //! SharedFontStyle description
 
-FieldDescription *SharedFontStyleBase::_desc[] = 
-{
-    new FieldDescription(SFFontStyleP::getClassType(), 
-                     "ContainedFontStyle", 
-                     ContainedFontStyleFieldId, ContainedFontStyleFieldMask,
-                     false,
-                     (FieldAccessMethod) &SharedFontStyleBase::getSFContainedFontStyle)
-};
+FieldDescription* SharedFontStyleBase::_desc[] = {new FieldDescription(SFFontStyleP::getClassType(),
+    "ContainedFontStyle", ContainedFontStyleFieldId, ContainedFontStyleFieldMask, false,
+    (FieldAccessMethod)&SharedFontStyleBase::getSFContainedFontStyle)};
 
-
-FieldContainerType SharedFontStyleBase::_type(
-    "SharedFontStyle",
-    "FieldContainer",
-    NULL,
-    (PrototypeCreateF) &SharedFontStyleBase::createEmpty,
-    SharedFontStyle::initMethod,
-    _desc,
+FieldContainerType SharedFontStyleBase::_type("SharedFontStyle", "FieldContainer", NULL,
+    (PrototypeCreateF)&SharedFontStyleBase::createEmpty, SharedFontStyle::initMethod, _desc,
     sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(SharedFontStyleBase, SharedFontStylePtr)
+// OSG_FIELD_CONTAINER_DEF(SharedFontStyleBase, SharedFontStylePtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &SharedFontStyleBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &SharedFontStyleBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr SharedFontStyleBase::shallowCopy(void) const 
-{ 
-    SharedFontStylePtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const SharedFontStyle *>(this)); 
-
-    return returnValue; 
+FieldContainerType& SharedFontStyleBase::getType(void) {
+  return _type;
 }
 
-UInt32 SharedFontStyleBase::getContainerSize(void) const 
-{ 
-    return sizeof(SharedFontStyle); 
+const FieldContainerType& SharedFontStyleBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr SharedFontStyleBase::shallowCopy(void) const {
+  SharedFontStylePtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const SharedFontStyle*>(this));
+
+  return returnValue;
+}
+
+UInt32 SharedFontStyleBase::getContainerSize(void) const {
+  return sizeof(SharedFontStyle);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void SharedFontStyleBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((SharedFontStyleBase *) &other, whichField);
+void SharedFontStyleBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((SharedFontStyleBase*)&other, whichField);
 }
 #else
-void SharedFontStyleBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((SharedFontStyleBase *) &other, whichField, sInfo);
+void SharedFontStyleBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((SharedFontStyleBase*)&other, whichField, sInfo);
 }
-void SharedFontStyleBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void SharedFontStyleBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void SharedFontStyleBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void SharedFontStyleBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-SharedFontStyleBase::SharedFontStyleBase(void) :
-    _sfContainedFontStyle     (), 
-    Inherited() 
-{
+SharedFontStyleBase::SharedFontStyleBase(void)
+    : _sfContainedFontStyle()
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-SharedFontStyleBase::SharedFontStyleBase(const SharedFontStyleBase &source) :
-    _sfContainedFontStyle     (source._sfContainedFontStyle     ), 
-    Inherited                 (source)
-{
+SharedFontStyleBase::SharedFontStyleBase(const SharedFontStyleBase& source)
+    : _sfContainedFontStyle(source._sfContainedFontStyle)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-SharedFontStyleBase::~SharedFontStyleBase(void)
-{
+SharedFontStyleBase::~SharedFontStyleBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 SharedFontStyleBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 SharedFontStyleBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (ContainedFontStyleFieldMask & whichField))
-    {
-        returnValue += _sfContainedFontStyle.getBinSize();
-    }
+  if (FieldBits::NoField != (ContainedFontStyleFieldMask & whichField)) {
+    returnValue += _sfContainedFontStyle.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void SharedFontStyleBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void SharedFontStyleBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ContainedFontStyleFieldMask & whichField))
-    {
-        _sfContainedFontStyle.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (ContainedFontStyleFieldMask & whichField)) {
+    _sfContainedFontStyle.copyToBin(pMem);
+  }
 }
 
-void SharedFontStyleBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void SharedFontStyleBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ContainedFontStyleFieldMask & whichField))
-    {
-        _sfContainedFontStyle.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (ContainedFontStyleFieldMask & whichField)) {
+    _sfContainedFontStyle.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void SharedFontStyleBase::executeSyncImpl(      SharedFontStyleBase *pOther,
-                                        const BitVector         &whichField)
-{
+void SharedFontStyleBase::executeSyncImpl(
+    SharedFontStyleBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (ContainedFontStyleFieldMask & whichField))
-        _sfContainedFontStyle.syncWith(pOther->_sfContainedFontStyle);
-
-
+  if (FieldBits::NoField != (ContainedFontStyleFieldMask & whichField))
+    _sfContainedFontStyle.syncWith(pOther->_sfContainedFontStyle);
 }
 #else
-void SharedFontStyleBase::executeSyncImpl(      SharedFontStyleBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void SharedFontStyleBase::executeSyncImpl(
+    SharedFontStyleBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (ContainedFontStyleFieldMask & whichField))
-        _sfContainedFontStyle.syncWith(pOther->_sfContainedFontStyle);
-
-
-
+  if (FieldBits::NoField != (ContainedFontStyleFieldMask & whichField))
+    _sfContainedFontStyle.syncWith(pOther->_sfContainedFontStyle);
 }
 
-void SharedFontStyleBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void SharedFontStyleBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 

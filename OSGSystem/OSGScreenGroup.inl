@@ -44,5 +44,5 @@ OSG_BEGIN_NAMESPACE
 
 OSG_END_NAMESPACE
 
-#define OSGSCREENGROUP_INLINE_CVSID "@(#)$Id: OSGScreenGroup.inl,v 1.1 2007/05/07 11:50:36 pdaehne Exp $"
-
+#define OSGSCREENGROUP_INLINE_CVSID                                                                \
+  "@(#)$Id: OSGScreenGroup.inl,v 1.1 2007/05/07 11:50:36 pdaehne Exp $"

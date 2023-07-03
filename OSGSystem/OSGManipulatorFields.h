@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGMANIPULATORFIELDS_H_
 #define _OSGMANIPULATORFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class Manipulator;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! ManipulatorPtr
 
 typedef FCPtr<TransformPtr, Manipulator> ManipulatorPtr;
@@ -81,18 +80,22 @@ typedef FCPtr<TransformPtr, Manipulator> ManipulatorPtr;
 #endif
 
 template <>
-struct FieldDataTraits<ManipulatorPtr> : 
-    public FieldTraitsRecurseMapper<ManipulatorPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<ManipulatorPtr> : public FieldTraitsRecurseMapper<ManipulatorPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getSName(void) { return "SFManipulatorPtr"; }
-    static const char *getMName(void) { return "MFManipulatorPtr"; }
+  static const char* getSName(void) {
+    return "SFManipulatorPtr";
+  }
+  static const char* getMName(void) {
+    return "MFManipulatorPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -102,7 +105,6 @@ struct FieldDataTraits<ManipulatorPtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
@@ -126,6 +128,7 @@ OSG_DLLEXPORT_DECL1(MField, ManipulatorPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 
 OSG_END_NAMESPACE
 
-#define OSGMANIPULATORFIELDS_HEADER_CVSID "@(#)$Id: OSGManipulatorFields.h,v 1.4 2006/02/20 17:04:35 dirk Exp $"
+#define OSGMANIPULATORFIELDS_HEADER_CVSID                                                          \
+  "@(#)$Id: OSGManipulatorFields.h,v 1.4 2006/02/20 17:04:35 dirk Exp $"
 
 #endif /* _OSGMANIPULATORFIELDS_H_ */

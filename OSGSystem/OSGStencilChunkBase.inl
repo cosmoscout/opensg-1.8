@@ -52,277 +52,199 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &StencilChunkBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& StencilChunkBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 StencilChunkBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 StencilChunkBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-StencilChunkPtr StencilChunkBase::create(void) 
-{
-    StencilChunkPtr fc; 
+inline StencilChunkPtr StencilChunkBase::create(void) {
+  StencilChunkPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = StencilChunkPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = StencilChunkPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-StencilChunkPtr StencilChunkBase::createEmpty(void) 
-{ 
-    StencilChunkPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline StencilChunkPtr StencilChunkBase::createEmpty(void) {
+  StencilChunkPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the StencilChunk::_sfStencilFunc field.
-inline
-SFGLenum *StencilChunkBase::getSFStencilFunc(void)
-{
-    return &_sfStencilFunc;
+inline SFGLenum* StencilChunkBase::getSFStencilFunc(void) {
+  return &_sfStencilFunc;
 }
 
 //! Get the StencilChunk::_sfStencilValue field.
-inline
-SFInt32 *StencilChunkBase::getSFStencilValue(void)
-{
-    return &_sfStencilValue;
+inline SFInt32* StencilChunkBase::getSFStencilValue(void) {
+  return &_sfStencilValue;
 }
 
 //! Get the StencilChunk::_sfStencilMask field.
-inline
-SFUInt32 *StencilChunkBase::getSFStencilMask(void)
-{
-    return &_sfStencilMask;
+inline SFUInt32* StencilChunkBase::getSFStencilMask(void) {
+  return &_sfStencilMask;
 }
 
 //! Get the StencilChunk::_sfStencilOpFail field.
-inline
-SFGLenum *StencilChunkBase::getSFStencilOpFail(void)
-{
-    return &_sfStencilOpFail;
+inline SFGLenum* StencilChunkBase::getSFStencilOpFail(void) {
+  return &_sfStencilOpFail;
 }
 
 //! Get the StencilChunk::_sfStencilOpZFail field.
-inline
-SFGLenum *StencilChunkBase::getSFStencilOpZFail(void)
-{
-    return &_sfStencilOpZFail;
+inline SFGLenum* StencilChunkBase::getSFStencilOpZFail(void) {
+  return &_sfStencilOpZFail;
 }
 
 //! Get the StencilChunk::_sfStencilOpZPass field.
-inline
-SFGLenum *StencilChunkBase::getSFStencilOpZPass(void)
-{
-    return &_sfStencilOpZPass;
+inline SFGLenum* StencilChunkBase::getSFStencilOpZPass(void) {
+  return &_sfStencilOpZPass;
 }
 
 //! Get the StencilChunk::_sfClearBuffer field.
-inline
-SFInt32 *StencilChunkBase::getSFClearBuffer(void)
-{
-    return &_sfClearBuffer;
+inline SFInt32* StencilChunkBase::getSFClearBuffer(void) {
+  return &_sfClearBuffer;
 }
 
 //! Get the StencilChunk::_sfBitMask field.
-inline
-SFUInt32 *StencilChunkBase::getSFBitMask(void)
-{
-    return &_sfBitMask;
-}
-
-
-//! Get the value of the StencilChunk::_sfStencilFunc field.
-inline
-GLenum &StencilChunkBase::getStencilFunc(void)
-{
-    return _sfStencilFunc.getValue();
+inline SFUInt32* StencilChunkBase::getSFBitMask(void) {
+  return &_sfBitMask;
 }
 
 //! Get the value of the StencilChunk::_sfStencilFunc field.
-inline
-const GLenum &StencilChunkBase::getStencilFunc(void) const
-{
-    return _sfStencilFunc.getValue();
+inline GLenum& StencilChunkBase::getStencilFunc(void) {
+  return _sfStencilFunc.getValue();
+}
+
+//! Get the value of the StencilChunk::_sfStencilFunc field.
+inline const GLenum& StencilChunkBase::getStencilFunc(void) const {
+  return _sfStencilFunc.getValue();
 }
 
 //! Set the value of the StencilChunk::_sfStencilFunc field.
-inline
-void StencilChunkBase::setStencilFunc(const GLenum &value)
-{
-    _sfStencilFunc.setValue(value);
+inline void StencilChunkBase::setStencilFunc(const GLenum& value) {
+  _sfStencilFunc.setValue(value);
 }
 
 //! Get the value of the StencilChunk::_sfStencilValue field.
-inline
-Int32 &StencilChunkBase::getStencilValue(void)
-{
-    return _sfStencilValue.getValue();
+inline Int32& StencilChunkBase::getStencilValue(void) {
+  return _sfStencilValue.getValue();
 }
 
 //! Get the value of the StencilChunk::_sfStencilValue field.
-inline
-const Int32 &StencilChunkBase::getStencilValue(void) const
-{
-    return _sfStencilValue.getValue();
+inline const Int32& StencilChunkBase::getStencilValue(void) const {
+  return _sfStencilValue.getValue();
 }
 
 //! Set the value of the StencilChunk::_sfStencilValue field.
-inline
-void StencilChunkBase::setStencilValue(const Int32 &value)
-{
-    _sfStencilValue.setValue(value);
+inline void StencilChunkBase::setStencilValue(const Int32& value) {
+  _sfStencilValue.setValue(value);
 }
 
 //! Get the value of the StencilChunk::_sfStencilMask field.
-inline
-UInt32 &StencilChunkBase::getStencilMask(void)
-{
-    return _sfStencilMask.getValue();
+inline UInt32& StencilChunkBase::getStencilMask(void) {
+  return _sfStencilMask.getValue();
 }
 
 //! Get the value of the StencilChunk::_sfStencilMask field.
-inline
-const UInt32 &StencilChunkBase::getStencilMask(void) const
-{
-    return _sfStencilMask.getValue();
+inline const UInt32& StencilChunkBase::getStencilMask(void) const {
+  return _sfStencilMask.getValue();
 }
 
 //! Set the value of the StencilChunk::_sfStencilMask field.
-inline
-void StencilChunkBase::setStencilMask(const UInt32 &value)
-{
-    _sfStencilMask.setValue(value);
+inline void StencilChunkBase::setStencilMask(const UInt32& value) {
+  _sfStencilMask.setValue(value);
 }
 
 //! Get the value of the StencilChunk::_sfStencilOpFail field.
-inline
-GLenum &StencilChunkBase::getStencilOpFail(void)
-{
-    return _sfStencilOpFail.getValue();
+inline GLenum& StencilChunkBase::getStencilOpFail(void) {
+  return _sfStencilOpFail.getValue();
 }
 
 //! Get the value of the StencilChunk::_sfStencilOpFail field.
-inline
-const GLenum &StencilChunkBase::getStencilOpFail(void) const
-{
-    return _sfStencilOpFail.getValue();
+inline const GLenum& StencilChunkBase::getStencilOpFail(void) const {
+  return _sfStencilOpFail.getValue();
 }
 
 //! Set the value of the StencilChunk::_sfStencilOpFail field.
-inline
-void StencilChunkBase::setStencilOpFail(const GLenum &value)
-{
-    _sfStencilOpFail.setValue(value);
+inline void StencilChunkBase::setStencilOpFail(const GLenum& value) {
+  _sfStencilOpFail.setValue(value);
 }
 
 //! Get the value of the StencilChunk::_sfStencilOpZFail field.
-inline
-GLenum &StencilChunkBase::getStencilOpZFail(void)
-{
-    return _sfStencilOpZFail.getValue();
+inline GLenum& StencilChunkBase::getStencilOpZFail(void) {
+  return _sfStencilOpZFail.getValue();
 }
 
 //! Get the value of the StencilChunk::_sfStencilOpZFail field.
-inline
-const GLenum &StencilChunkBase::getStencilOpZFail(void) const
-{
-    return _sfStencilOpZFail.getValue();
+inline const GLenum& StencilChunkBase::getStencilOpZFail(void) const {
+  return _sfStencilOpZFail.getValue();
 }
 
 //! Set the value of the StencilChunk::_sfStencilOpZFail field.
-inline
-void StencilChunkBase::setStencilOpZFail(const GLenum &value)
-{
-    _sfStencilOpZFail.setValue(value);
+inline void StencilChunkBase::setStencilOpZFail(const GLenum& value) {
+  _sfStencilOpZFail.setValue(value);
 }
 
 //! Get the value of the StencilChunk::_sfStencilOpZPass field.
-inline
-GLenum &StencilChunkBase::getStencilOpZPass(void)
-{
-    return _sfStencilOpZPass.getValue();
+inline GLenum& StencilChunkBase::getStencilOpZPass(void) {
+  return _sfStencilOpZPass.getValue();
 }
 
 //! Get the value of the StencilChunk::_sfStencilOpZPass field.
-inline
-const GLenum &StencilChunkBase::getStencilOpZPass(void) const
-{
-    return _sfStencilOpZPass.getValue();
+inline const GLenum& StencilChunkBase::getStencilOpZPass(void) const {
+  return _sfStencilOpZPass.getValue();
 }
 
 //! Set the value of the StencilChunk::_sfStencilOpZPass field.
-inline
-void StencilChunkBase::setStencilOpZPass(const GLenum &value)
-{
-    _sfStencilOpZPass.setValue(value);
+inline void StencilChunkBase::setStencilOpZPass(const GLenum& value) {
+  _sfStencilOpZPass.setValue(value);
 }
 
 //! Get the value of the StencilChunk::_sfClearBuffer field.
-inline
-Int32 &StencilChunkBase::getClearBuffer(void)
-{
-    return _sfClearBuffer.getValue();
+inline Int32& StencilChunkBase::getClearBuffer(void) {
+  return _sfClearBuffer.getValue();
 }
 
 //! Get the value of the StencilChunk::_sfClearBuffer field.
-inline
-const Int32 &StencilChunkBase::getClearBuffer(void) const
-{
-    return _sfClearBuffer.getValue();
+inline const Int32& StencilChunkBase::getClearBuffer(void) const {
+  return _sfClearBuffer.getValue();
 }
 
 //! Set the value of the StencilChunk::_sfClearBuffer field.
-inline
-void StencilChunkBase::setClearBuffer(const Int32 &value)
-{
-    _sfClearBuffer.setValue(value);
+inline void StencilChunkBase::setClearBuffer(const Int32& value) {
+  _sfClearBuffer.setValue(value);
 }
 
 //! Get the value of the StencilChunk::_sfBitMask field.
-inline
-UInt32 &StencilChunkBase::getBitMask(void)
-{
-    return _sfBitMask.getValue();
+inline UInt32& StencilChunkBase::getBitMask(void) {
+  return _sfBitMask.getValue();
 }
 
 //! Get the value of the StencilChunk::_sfBitMask field.
-inline
-const UInt32 &StencilChunkBase::getBitMask(void) const
-{
-    return _sfBitMask.getValue();
+inline const UInt32& StencilChunkBase::getBitMask(void) const {
+  return _sfBitMask.getValue();
 }
 
 //! Set the value of the StencilChunk::_sfBitMask field.
-inline
-void StencilChunkBase::setBitMask(const UInt32 &value)
-{
-    _sfBitMask.setValue(value);
+inline void StencilChunkBase::setBitMask(const UInt32& value) {
+  _sfBitMask.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGSTENCILCHUNKBASE_INLINE_CVSID "@(#)$Id: OSGStencilChunkBase.inl,v 1.6 2006/09/08 13:45:30 yjung Exp $"
-
+#define OSGSTENCILCHUNKBASE_INLINE_CVSID                                                           \
+  "@(#)$Id: OSGStencilChunkBase.inl,v 1.6 2006/09/08 13:45:30 yjung Exp $"

@@ -44,21 +44,20 @@
 #include <OSGAttachment.h>
 #include <OSGSimpleAttachments.h>
 
-extern "C"
-{
+extern "C" {
 extern int v2a_parse(void);
 
 extern int   v2aLineNumber;
 extern float v2aDuration;
 
-//extern OSG::Animation* _animations;
+// extern OSG::Animation* _animations;
 }
 
-extern FILE *v2a_in;
+extern FILE* v2a_in;
 
-//extern FILE *v2a_in;
-//extern int   v2LineNumber;
-//extern int   v2a_parse(void);
+// extern FILE *v2a_in;
+// extern int   v2LineNumber;
+// extern int   v2a_parse(void);
 
 OSG_BEGIN_NAMESPACE
 
@@ -88,18 +87,15 @@ Animation* Animation::_theAnim = NULL;
  -  public                                                                 -
 \*-------------------------------------------------------------------------*/
 
-Animation* Animation::getAnim(void) 
-{ 
-    if(_theAnim == NULL)
-    {
-        std::cerr << "GlobalAnimation is NULL. Creating one.\n";
+Animation* Animation::getAnim(void) {
+  if (_theAnim == NULL) {
+    std::cerr << "GlobalAnimation is NULL. Creating one.\n";
 
-        _theAnim = new Animation();
-    }
-    
-    return _theAnim; 
+    _theAnim = new Animation();
+  }
+
+  return _theAnim;
 }
-
 
 /***************************************************************************\
  *                           Instance methods                              *
@@ -113,191 +109,151 @@ Animation* Animation::getAnim(void)
  -  private                                                                -
 \*-------------------------------------------------------------------------*/
 
-
 /*-------------------------------------------------------------------------*\
  -  public                                                                 -
 \*-------------------------------------------------------------------------*/
 
 /*-------------------------- constructor ----------------------------------*/
 
-Animation::Animation(void) :
-    _currentInterpol(-1)        
-{
+Animation::Animation(void)
+    : _currentInterpol(-1) {
 }
 
-Animation::~Animation(void)
-{
+Animation::~Animation(void) {
 }
 /*-------------------------- other ---------------------------------------*/
 
-void Animation::addInterpolator(InterpolatorBase* interpol)
-{
-    std::cerr << "Animation::addInterpolator() ";
+void Animation::addInterpolator(InterpolatorBase* interpol) {
+  std::cerr << "Animation::addInterpolator() ";
 
-    _interpols.push_back(interpol);
-    
-    _currentInterpol = _interpols.size() - 1;
+  _interpols.push_back(interpol);
 
-    std::cerr << _interpols.size() << " " << _currentInterpol << std::endl;
+  _currentInterpol = _interpols.size() - 1;
+
+  std::cerr << _interpols.size() << " " << _currentInterpol << std::endl;
 }
 
-InterpolatorBase* Animation::currentInterpolator(void) 
-{ 
-    InterpolatorBase *returnValue = NULL;
+InterpolatorBase* Animation::currentInterpolator(void) {
+  InterpolatorBase* returnValue = NULL;
 
-    if(_currentInterpol != -1)
-    {
-        returnValue = _interpols[_currentInterpol]; 
-    }
+  if (_currentInterpol != -1) {
+    returnValue = _interpols[_currentInterpol];
+  }
 
-    return returnValue;
+  return returnValue;
 }
 
-int Animation::getNrOfInterpols() const
-{
-    return _interpols.size();
+int Animation::getNrOfInterpols() const {
+  return _interpols.size();
 }
 
-InterpolatorBase* Animation::getInterpolator(UInt32 index)
-{
-    if(index < _interpols.size())
-    {
-        return _interpols[index];
-    }
-    else
-    {
-        return NULL;
-    }
+InterpolatorBase* Animation::getInterpolator(UInt32 index) {
+  if (index < _interpols.size()) {
+    return _interpols[index];
+  } else {
+    return NULL;
+  }
 }
 
-bool Animation::parse(const std::string& filename)
-{
-    FILE *f = fopen(filename.c_str(), "r");
-    
-    if(f == NULL)
-    {
-        return false;
-    }
-   
-    ::v2a_in        = f;
-    ::v2aLineNumber = 1;
+bool Animation::parse(const std::string& filename) {
+  FILE* f = fopen(filename.c_str(), "r");
 
-    ::v2a_parse();
-    
-    return true;
+  if (f == NULL) {
+    return false;
+  }
+
+  ::v2a_in        = f;
+  ::v2aLineNumber = 1;
+
+  ::v2a_parse();
+
+  return true;
 }
 
 /*! \brief Traverses the scenegraph and checks for ComponentTransforms.
-    
+
     If there are any transformations with viewpoint attachment these
-    are stored in a global vector. These transformations act as camera 
+    are stored in a global vector. These transformations act as camera
     beacons.
-    
-    \todo Perhaps add code for moving the collected transformations 
+
+    \todo Perhaps add code for moving the collected transformations
     under the root node of the scenegraph.
- */ 
-    
-Animation::InterpolatorVec Animation::findInterpolator(const Char8 *szName)
-{
-    std::vector<InterpolatorBase *>::iterator interpolIt;
-    std::vector<InterpolatorBase *>::iterator interpolEnd = _interpols.end();
+ */
 
-    InterpolatorVec returnValue;
+Animation::InterpolatorVec Animation::findInterpolator(const Char8* szName) {
+  std::vector<InterpolatorBase*>::iterator interpolIt;
+  std::vector<InterpolatorBase*>::iterator interpolEnd = _interpols.end();
 
-    for(  interpolIt  = _interpols.begin(); 
-          interpolIt !=  interpolEnd;
-        ++interpolIt                      )
-    {
-        if(strcmp(szName, 
-                  (*interpolIt)->getTargetName().c_str())==0)
-        {
-            std::cerr << "Got "
-                      << (*interpolIt)
-                      << " for "
-                      << szName 
-                      << std::endl;
+  InterpolatorVec returnValue;
 
-            returnValue.push_back((*interpolIt));
-        }
+  for (interpolIt = _interpols.begin(); interpolIt != interpolEnd; ++interpolIt) {
+    if (strcmp(szName, (*interpolIt)->getTargetName().c_str()) == 0) {
+      std::cerr << "Got " << (*interpolIt) << " for " << szName << std::endl;
+
+      returnValue.push_back((*interpolIt));
     }
+  }
 
-    return returnValue;
+  return returnValue;
 }
 
-void Animation::resolveTransform(      ComponentTransformPtr  pTransform, 
-                                 const Char8            *szName)
-{
-    InterpolatorVec           vInterpol   = findInterpolator(szName);
-    InterpolatorVec::iterator interpolIt  = vInterpol.begin ();
-    InterpolatorVec::iterator interpolEnd = vInterpol.end   ();
+void Animation::resolveTransform(ComponentTransformPtr pTransform, const Char8* szName) {
+  InterpolatorVec           vInterpol   = findInterpolator(szName);
+  InterpolatorVec::iterator interpolIt  = vInterpol.begin();
+  InterpolatorVec::iterator interpolEnd = vInterpol.end();
 
-    for(; interpolIt != interpolEnd; ++interpolIt)
-    {
-        (*interpolIt)->setTargetTransform(pTransform);
-    }
+  for (; interpolIt != interpolEnd; ++interpolIt) {
+    (*interpolIt)->setTargetTransform(pTransform);
+  }
 }
 
-OSG::Action::ResultE animResolver(OSG::CNodePtr &, OSG::Action *action)
-{
-    OSG::NodePtr            node        = action->getActNode();
-    OSG::ComponentTransformPtr   vrmlTrans   = OSG::NullFC;
-    OSG::NamePtr            namePtr;
-    std::string             targetName;
-                    
-    vrmlTrans = OSG::ComponentTransformPtr::dcast(node->getCore());
-        
-    if(!vrmlTrans)
-    {
-        std::cerr << "ERROR! The Node " << node << " does not have a core.\n";
-    }
-    else
-    {
-        namePtr = OSG::NamePtr::dcast(
-            node->findAttachment(OSG::Name::getClassType().getGroupId()) ); 
+OSG::Action::ResultE animResolver(OSG::CNodePtr&, OSG::Action* action) {
+  OSG::NodePtr               node      = action->getActNode();
+  OSG::ComponentTransformPtr vrmlTrans = OSG::NullFC;
+  OSG::NamePtr               namePtr;
+  std::string                targetName;
 
-        if(namePtr != NullFC)
-        {
-            OSG::Animation::getAnim()->resolveTransform(
-                vrmlTrans, 
-                namePtr->getFieldPtr()->getValue().c_str());
-        }
+  vrmlTrans = OSG::ComponentTransformPtr::dcast(node->getCore());
+
+  if (!vrmlTrans) {
+    std::cerr << "ERROR! The Node " << node << " does not have a core.\n";
+  } else {
+    namePtr = OSG::NamePtr::dcast(node->findAttachment(OSG::Name::getClassType().getGroupId()));
+
+    if (namePtr != NullFC) {
+      OSG::Animation::getAnim()->resolveTransform(
+          vrmlTrans, namePtr->getFieldPtr()->getValue().c_str());
     }
-    
-    return OSG::Action::Continue;
+  }
+
+  return OSG::Action::Continue;
 }
 
-void Animation::resolve(NodePtr pRoot)
-{
-    if(pRoot == NullFC)
-        return;
+void Animation::resolve(NodePtr pRoot) {
+  if (pRoot == NullFC)
+    return;
 
-    std::cerr << "Checking interpolator target nodes..." << std::endl;
-    
+  std::cerr << "Checking interpolator target nodes..." << std::endl;
+
 #ifndef OSG_NOFUNCTORS
 
-    OSG::Action *act2;  
+  OSG::Action* act2;
 
-    act2 = OSG::Action::create (                                      );   
-    act2->registerEnterFunction(OSG::ComponentTransform::getClassType(),
-                                OSG::osgTypedFunctionFunctor2CPtrRef<
-                                     OSG::Action::ResultE, 
-                                     OSG::CNodePtr,
-                                     OSG::Action *         >(animResolver));      
-    act2->apply(pRoot);
+  act2 = OSG::Action::create();
+  act2->registerEnterFunction(OSG::ComponentTransform::getClassType(),
+      OSG::osgTypedFunctionFunctor2CPtrRef<OSG::Action::ResultE, OSG::CNodePtr, OSG::Action*>(
+          animResolver));
+  act2->apply(pRoot);
 
 #endif
-    
-    std::cerr << "done !\n";    
+
+  std::cerr << "done !\n";
 }
 
-void Animation::setRelTime(Time relTime)
-{
-    for(OSG::Int32 i = 0; i < _interpols.size(); ++i)
-    {
-        _interpols[i]->setTime(relTime);
-    }
+void Animation::setRelTime(Time relTime) {
+  for (OSG::Int32 i = 0; i < _interpols.size(); ++i) {
+    _interpols[i]->setTime(relTime);
+  }
 }
 
 OSG_END_NAMESPACE
-
-

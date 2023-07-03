@@ -50,123 +50,110 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief *put brief class description here* 
+/*! \brief *put brief class description here*
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING DVRClipObjects : public DVRClipObjectsBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING DVRClipObjects : public DVRClipObjectsBase {
+ private:
+  typedef DVRClipObjectsBase Inherited;
 
-    typedef DVRClipObjectsBase Inherited;
+  /*==========================  PUBLIC  =================================*/
 
-    /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Constants                               */
+  /*! \{                                                                 */
 
-  public:
+  enum ClipMode { Off = 0, Intersection = 1, Difference = 2 };
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Constants                               */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    enum ClipMode 
-    {
-        Off          = 0, 
-        Intersection = 1, 
-        Difference   = 2
-    }; 
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Info                                     */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  //! Returns the number of clip objects set
+  UInt32 count(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Info                                     */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Objects                                    */
+  /*! \{                                                                 */
 
-    //! Returns the number of clip objects set
-    UInt32 count(void) const;
+  //! Get the ith object
+  DVRClipGeometryPtr get(UInt32 i);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Objects                                    */
-    /*! \{                                                                 */
-  
-    //! Get the ith object
-    DVRClipGeometryPtr get   (UInt32             i  );
+  //! Add a clip object
+  void add(DVRClipGeometryPtr obj);
 
-    //! Add a clip object
-    void               add   (DVRClipGeometryPtr obj);
+  //! Remove a clip object
+  void remove(DVRClipGeometryPtr obj);
 
-    //! Remove a clip object
-    void               remove(DVRClipGeometryPtr obj);
+  //! Remove the i-th clip object
+  void remove(UInt32 i);
 
-    //! Remove the i-th clip object
-    void               remove(UInt32             i  );
-  
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Clipping                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Clipping                                 */
+  /*! \{                                                                 */
 
-    //! Prepare the clip objects for clipping a volume's slices
-    void initialize(const Matrix &volumeToWorld, 
-                    const Plane  &referencePlane);
+  //! Prepare the clip objects for clipping a volume's slices
+  void initialize(const Matrix& volumeToWorld, const Plane& referencePlane);
 
-    //! Prepare the clip objects for clipping a volume's slices
-    // deprecated -> remove
-    void initialize(const Matrix &volumeToWorld);
+  //! Prepare the clip objects for clipping a volume's slices
+  // deprecated -> remove
+  void initialize(const Matrix& volumeToWorld);
 
-    //! Set the reference plane used in clipping
-    // deprecated -> remove
-    void setReferencePlane(const Plane &referencePlane);
+  //! Set the reference plane used in clipping
+  // deprecated -> remove
+  void setReferencePlane(const Plane& referencePlane);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-  protected:
+ protected:
+  // Variables should all be in DVRClipObjectsBase.
 
-    // Variables should all be in DVRClipObjectsBase.
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  DVRClipObjects(void);
+  DVRClipObjects(const DVRClipObjects& source);
 
-    DVRClipObjects(void);
-    DVRClipObjects(const DVRClipObjects &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  virtual ~DVRClipObjects(void);
 
-    virtual ~DVRClipObjects(void); 
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class DVRClipObjectsBase;
 
-    friend class FieldContainer;
-    friend class DVRClipObjectsBase;
+  static void initMethod(void);
 
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const DVRClipObjects &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const DVRClipObjects& source);
 };
 
-typedef DVRClipObjects *DVRClipObjectsP;
+typedef DVRClipObjects* DVRClipObjectsP;
 
 OSG_END_NAMESPACE
 

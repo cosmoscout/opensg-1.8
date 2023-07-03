@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGIMAGEFORGROUND_H_
 #define _OSGIMAGEFORGROUND_H_
 #ifdef __sgi
@@ -49,94 +48,88 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief Foreground class for displaying an image. See \ref 
+/*! \brief Foreground class for displaying an image. See \ref
     PageSystemWindowForegroundImage for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING ImageForeground : public ImageForegroundBase
-{
-    /*==========================  PRIVATE  ================================*/  
+class OSG_SYSTEMLIB_DLLMAPPING ImageForeground : public ImageForegroundBase {
+  /*==========================  PRIVATE  ================================*/
  private:
+  typedef ImageForegroundBase Inherited;
 
-    typedef ImageForegroundBase Inherited;
-
-    /*==========================  PUBLIC  =================================*/ 
+  /*==========================  PUBLIC  =================================*/
  public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
-   
-    static const char *getClassname(void) { return "ImageForeground"; };
+  static const char* getClassname(void) {
+    return "ImageForeground";
+  };
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     transformation                           */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     transformation                           */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector whichField, 
-                         UInt32    origin    );
- 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     dump                                     */
-    /*! \{                                                                 */
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    virtual void dump(      UInt32    uiIndent = 0, 
-                      const BitVector bvFlags  = 0) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     dump                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    access fields                             */
-    /*! \{                                                                 */
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    inline void addImage(ImagePtr image, Pnt2f position);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    access fields                             */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    draw                                      */
-    /*! \{                                                                 */
+  inline void addImage(ImagePtr image, Pnt2f position);
 
-    virtual void draw( DrawActionBase *, Viewport *);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    draw                                      */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  virtual void draw(DrawActionBase*, Viewport*);
+
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
  protected:
-  
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    ImageForeground(void);
-    ImageForeground(const ImageForeground &source);
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
- 
-    virtual ~ImageForeground(void); 
- 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/  
+  ImageForeground(void);
+  ImageForeground(const ImageForeground& source);
+
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
+
+  virtual ~ImageForeground(void);
+
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
  private:
+  friend class FieldContainer;
+  friend class ImageForegroundBase;
 
-    friend class FieldContainer;
-    friend class ImageForegroundBase;
+  static void initMethod(void);
 
-    static void initMethod( void );
-
-    void operator =(const ImageForeground &source);
+  void operator=(const ImageForeground& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
-
 /** \brief class pointer
  */
-typedef ImageForeground *ImageForegroundP;
+typedef ImageForeground* ImageForegroundP;
 
 OSG_END_NAMESPACE
 
@@ -146,5 +139,3 @@ OSG_END_NAMESPACE
 #define OSGIMAGEFOREGROUND_HEADER_CVSID "@(#)$Id: $"
 
 #endif /* _OSGIMAGEFORGROUND_H_ */
-
-

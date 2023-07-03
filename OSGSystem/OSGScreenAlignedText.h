@@ -48,81 +48,74 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief *put brief class description here* 
+/*! \brief *put brief class description here*
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING ScreenAlignedText : public ScreenAlignedTextBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING ScreenAlignedText : public ScreenAlignedTextBase {
+ private:
+  typedef ScreenAlignedTextBase Inherited;
 
-    typedef ScreenAlignedTextBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  void adjustVolume(Volume& volume);
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  /*! \}
+   */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in ScreenAlignedTextBase.
 
-	void adjustVolume( Volume & volume );
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
+  ScreenAlignedText(void);
+  ScreenAlignedText(const ScreenAlignedText& source);
 
-    /*! \}                       
-                                          */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    // Variables should all be in ScreenAlignedTextBase.
+  virtual ~ScreenAlignedText(void);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  void                    tessellate(void);
+  virtual Action::ResultE drawPrimitives(DrawActionBase* action);
 
-    ScreenAlignedText(void);
-    ScreenAlignedText(const ScreenAlignedText &source);
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class ScreenAlignedTextBase;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  static void initMethod(void);
 
-    virtual ~ScreenAlignedText(void); 
+  // prohibit default functions (move to 'public' if you need one)
 
-    /*! \}                                                                 */
-	void tessellate(void);
-	virtual Action::ResultE drawPrimitives( DrawActionBase * action );
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
-
-    friend class FieldContainer;
-    friend class ScreenAlignedTextBase;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const ScreenAlignedText &source);
+  void operator=(const ScreenAlignedText& source);
 };
 
-typedef ScreenAlignedText *ScreenAlignedTextP;
+typedef ScreenAlignedText* ScreenAlignedTextP;
 
 OSG_END_NAMESPACE
 
 #include <OSGScreenAlignedTextBase.inl>
 #include <OSGScreenAlignedText.inl>
 
-#define OSGSCREENALIGNEDTEXT_HEADER_CVSID "@(#)$Id: FCTemplate_h.h,v 1.15 2002/06/01 10:37:25 vossg Exp $"
+#define OSGSCREENALIGNEDTEXT_HEADER_CVSID                                                          \
+  "@(#)$Id: FCTemplate_h.h,v 1.15 2002/06/01 10:37:25 vossg Exp $"
 
 #endif /* _OSGSCREENALIGNEDTEXT_H_ */

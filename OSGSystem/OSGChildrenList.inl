@@ -48,133 +48,99 @@ OSG_BEGIN_NAMESPACE
 /*-------------------------------------------------------------------------*/
 /*    PRIVATE Types                                                        */
 
-inline
-ChildrenList::ChildrenListEntry::ChildrenListEntry(void)
-    : _active  (true                                ),
-      _priority(PriorityTypeTraits::getZeroElement())
-{
+inline ChildrenList::ChildrenListEntry::ChildrenListEntry(void)
+    : _active(true)
+    , _priority(PriorityTypeTraits::getZeroElement()) {
 }
 
-inline
-ChildrenList::ChildrenListEntry::ChildrenListEntry(bool         active,
-                                                   PriorityType prio   )
-    : _active  (active),
-      _priority(prio  )
-{
+inline ChildrenList::ChildrenListEntry::ChildrenListEntry(bool active, PriorityType prio)
+    : _active(active)
+    , _priority(prio) {
 }
 
-inline bool
-ChildrenList::ChildrenListEntry::getActive(void) const
-{
-    return _active;
+inline bool ChildrenList::ChildrenListEntry::getActive(void) const {
+  return _active;
 }
 
-inline void
-ChildrenList::ChildrenListEntry::setActive(bool active)
-{
-    _active = active;
+inline void ChildrenList::ChildrenListEntry::setActive(bool active) {
+  _active = active;
 }
 
-inline ChildrenList::PriorityType
-ChildrenList::ChildrenListEntry::getPriority(void) const
-{
-    return _priority;
+inline ChildrenList::PriorityType ChildrenList::ChildrenListEntry::getPriority(void) const {
+  return _priority;
 }
 
-inline void
-ChildrenList::ChildrenListEntry::setPriority(PriorityType prio)
-{
-    _priority = prio;
+inline void ChildrenList::ChildrenListEntry::setPriority(PriorityType prio) {
+  _priority = prio;
 }
 
 /*-------------------------------------------------------------------------*/
 /*    Constructors                                                         */
 
-inline
-ChildrenList::ChildrenList(void)
-    : _pParentNode(NullFC),
-      _childrenList(      )
-{
+inline ChildrenList::ChildrenList(void)
+    : _pParentNode(NullFC)
+    , _childrenList() {
 }
 
 /*-------------------------------------------------------------------------*/
 /*    Destructor                                                           */
 
-inline
-ChildrenList::~ChildrenList(void)
-{
+inline ChildrenList::~ChildrenList(void) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*    Parent                                                               */
 
-inline void
-ChildrenList::reset(void)
-{
-    _childrenList.assign(_pParentNode->getNChildren(), ChildrenListEntry());
+inline void ChildrenList::reset(void) {
+  _childrenList.assign(_pParentNode->getNChildren(), ChildrenListEntry());
 }
 
-inline NodePtr
-ChildrenList::getParentNode(void) const
-{
-    return _pParentNode;
+inline NodePtr ChildrenList::getParentNode(void) const {
+  return _pParentNode;
 }
 
-inline void
-ChildrenList::setParentNode(const NodePtr &pParentNode)
-{
-    _pParentNode = pParentNode;
+inline void ChildrenList::setParentNode(const NodePtr& pParentNode) {
+  _pParentNode = pParentNode;
 }
 
 /*-------------------------------------------------------------------------*/
 /*    Child                                                                */
 
-inline NodePtr
-ChildrenList::getChild(UInt32 childIndex) const
-{
-    return _pParentNode->getChild(childIndex);
+inline NodePtr ChildrenList::getChild(UInt32 childIndex) const {
+  return _pParentNode->getChild(childIndex);
 }
 
 /*-------------------------------------------------------------------------*/
 /*    Active                                                               */
 
-inline bool
-ChildrenList::getActive(UInt32 childIndex) const
-{
-    return _childrenList[childIndex].getActive();
+inline bool ChildrenList::getActive(UInt32 childIndex) const {
+  return _childrenList[childIndex].getActive();
 }
 
-inline void
-ChildrenList::setActive(UInt32 childIndex, bool active)
-{
-    _childrenList[childIndex].setActive(active);
+inline void ChildrenList::setActive(UInt32 childIndex, bool active) {
+  _childrenList[childIndex].setActive(active);
 }
 
 /*-------------------------------------------------------------------------*/
 /*    Priority                                                             */
 
-inline ChildrenList::PriorityType
-ChildrenList::getPriority(UInt32 childIndex) const
-{
-    return _childrenList[childIndex].getPriority();
+inline ChildrenList::PriorityType ChildrenList::getPriority(UInt32 childIndex) const {
+  return _childrenList[childIndex].getPriority();
 }
 
-inline void
-ChildrenList::setPriority(UInt32 childIndex, PriorityType prio)
-{
-    _childrenList[childIndex].setPriority(prio);
+inline void ChildrenList::setPriority(UInt32 childIndex, PriorityType prio) {
+  _childrenList[childIndex].setPriority(prio);
 }
 
 /*-------------------------------------------------------------------------*/
 /*    Misc                                                                 */
 
-inline UInt32
-ChildrenList::getSize(void) const
-{
-    //return _childrenList.size();
-    return _pParentNode->getNChildren();
+inline UInt32 ChildrenList::getSize(void) const {
+  // return _childrenList.size();
+  return _pParentNode->getNChildren();
 }
 
 OSG_END_NAMESPACE
 
-#define OSGCHILDRENLIST_INLINE_CVSID "@(#)$Id: OSGChildrenList.inl,v 1.2 2004/09/17 14:09:42 neumannc Exp $"
+#define OSGCHILDRENLIST_INLINE_CVSID                                                               \
+  "@(#)$Id: OSGChildrenList.inl,v 1.2 2004/09/17 14:09:42 neumannc Exp $"

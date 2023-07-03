@@ -51,79 +51,70 @@ OSG_BEGIN_NAMESPACE
 class Viewport;
 class DrawActionBase;
 
-
-/*! \brief using an image as the background class. See \ref 
+/*! \brief using an image as the background class. See \ref
     PageSystemWindowBackgroundImage for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING ImageBackground : public ImageBackgroundBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING ImageBackground : public ImageBackgroundBase {
+ private:
+  typedef ImageBackgroundBase Inherited;
 
-    typedef ImageBackgroundBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Actions                                   */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void clear(DrawActionBase*, Viewport*);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Actions                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    virtual void clear(DrawActionBase *, Viewport *);
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-     
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector whichField, 
-                         UInt32    origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in ImageBackgroundBase.
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  ImageBackground(void);
+  ImageBackground(const ImageBackground& source);
 
-    // Variables should all be in ImageBackgroundBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~ImageBackground(void);
 
-    ImageBackground(void);
-    ImageBackground(const ImageBackground &source);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class ImageBackgroundBase;
 
-    virtual ~ImageBackground(void); 
+  static void initMethod(void);
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  // prohibit default functions (move to 'public' if you need one)
 
-    friend class FieldContainer;
-    friend class ImageBackgroundBase;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const ImageBackground &source);
+  void operator=(const ImageBackground& source);
 };
 
-typedef ImageBackground *ImageBackgroundP;
+typedef ImageBackground* ImageBackgroundP;
 
 OSG_END_NAMESPACE
 

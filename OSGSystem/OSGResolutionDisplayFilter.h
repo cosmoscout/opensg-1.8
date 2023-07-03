@@ -49,84 +49,77 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief ResolutionDisplayFilter class. See \ref 
+/*! \brief ResolutionDisplayFilter class. See \ref
            PageSystemResolutionDisplayFilter for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING ResolutionDisplayFilter : public ResolutionDisplayFilterBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING ResolutionDisplayFilter : public ResolutionDisplayFilterBase {
+ private:
+  typedef ResolutionDisplayFilterBase Inherited;
 
-    typedef ResolutionDisplayFilterBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in ResolutionDisplayFilterBase.
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  ResolutionDisplayFilter(void);
+  ResolutionDisplayFilter(const ResolutionDisplayFilter& source);
 
-    // Variables should all be in ResolutionDisplayFilterBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~ResolutionDisplayFilter(void);
 
-    ResolutionDisplayFilter(void);
-    ResolutionDisplayFilter(const ResolutionDisplayFilter &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   filter handling                            */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  virtual void createFilter(DisplayFilterForeground* fg, Viewport* port);
 
-    virtual ~ResolutionDisplayFilter(void); 
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   filter handling                            */
-    /*! \{                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class ResolutionDisplayFilterBase;
 
-    virtual void createFilter(DisplayFilterForeground *fg,
-                              Viewport *port);
+  static void initMethod(void);
 
-    /*! \}                                                                 */
+  // prohibit default functions (move to 'public' if you need one)
 
-    /*==========================  PRIVATE  ================================*/
-  private:
-
-    friend class FieldContainer;
-    friend class ResolutionDisplayFilterBase;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const ResolutionDisplayFilter &source);
+  void operator=(const ResolutionDisplayFilter& source);
 };
 
-typedef ResolutionDisplayFilter *ResolutionDisplayFilterP;
+typedef ResolutionDisplayFilter* ResolutionDisplayFilterP;
 
 OSG_END_NAMESPACE
 
 #include "OSGResolutionDisplayFilterBase.inl"
 #include "OSGResolutionDisplayFilter.inl"
 
-#define OSGRESOLUTIONDISPLAYFILTER_HEADER_CVSID "@(#)$Id: FCTemplate_h.h,v 1.22 2004/08/03 05:53:03 dirk Exp $"
+#define OSGRESOLUTIONDISPLAYFILTER_HEADER_CVSID                                                    \
+  "@(#)$Id: FCTemplate_h.h,v 1.22 2004/08/03 05:53:03 dirk Exp $"
 
 #endif /* _OSGRESOLUTIONDISPLAYFILTER_H_ */

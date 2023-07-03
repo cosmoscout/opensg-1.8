@@ -42,19 +42,14 @@
 
 OSG_BEGIN_NAMESPACE
 
-inline
-UInt32 RegisterCombinersChunk::getStaticClassId(void)
-{
-    return getStaticClass()->getId();
+inline UInt32 RegisterCombinersChunk::getStaticClassId(void) {
+  return getStaticClass()->getId();
 }
 
-inline
-const StateChunkClass *RegisterCombinersChunk::getStaticClass(void)
-{
-    return &RegisterCombinersChunk::_class;
+inline const StateChunkClass* RegisterCombinersChunk::getStaticClass(void) {
+  return &RegisterCombinersChunk::_class;
 }
 
 OSG_END_NAMESPACE
 
 #define OSGREGISTERCOMBINERSCHUNK_INLINE_CVSID "@(#)$Id: $"
-

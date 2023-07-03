@@ -52,137 +52,99 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &ImageBackgroundBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& ImageBackgroundBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 ImageBackgroundBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 ImageBackgroundBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-ImageBackgroundPtr ImageBackgroundBase::create(void) 
-{
-    ImageBackgroundPtr fc; 
+inline ImageBackgroundPtr ImageBackgroundBase::create(void) {
+  ImageBackgroundPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = ImageBackgroundPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = ImageBackgroundPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-ImageBackgroundPtr ImageBackgroundBase::createEmpty(void) 
-{ 
-    ImageBackgroundPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline ImageBackgroundPtr ImageBackgroundBase::createEmpty(void) {
+  ImageBackgroundPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the ImageBackground::_sfColor field.
-inline
-SFColor3f *ImageBackgroundBase::getSFColor(void)
-{
-    return &_sfColor;
+inline SFColor3f* ImageBackgroundBase::getSFColor(void) {
+  return &_sfColor;
 }
 
 //! Get the ImageBackground::_sfImage field.
-inline
-SFImagePtr *ImageBackgroundBase::getSFImage(void)
-{
-    return &_sfImage;
+inline SFImagePtr* ImageBackgroundBase::getSFImage(void) {
+  return &_sfImage;
 }
 
 //! Get the ImageBackground::_sfScale field.
-inline
-SFBool *ImageBackgroundBase::getSFScale(void)
-{
-    return &_sfScale;
-}
-
-
-//! Get the value of the ImageBackground::_sfColor field.
-inline
-Color3f &ImageBackgroundBase::getColor(void)
-{
-    return _sfColor.getValue();
+inline SFBool* ImageBackgroundBase::getSFScale(void) {
+  return &_sfScale;
 }
 
 //! Get the value of the ImageBackground::_sfColor field.
-inline
-const Color3f &ImageBackgroundBase::getColor(void) const
-{
-    return _sfColor.getValue();
+inline Color3f& ImageBackgroundBase::getColor(void) {
+  return _sfColor.getValue();
+}
+
+//! Get the value of the ImageBackground::_sfColor field.
+inline const Color3f& ImageBackgroundBase::getColor(void) const {
+  return _sfColor.getValue();
 }
 
 //! Set the value of the ImageBackground::_sfColor field.
-inline
-void ImageBackgroundBase::setColor(const Color3f &value)
-{
-    _sfColor.setValue(value);
+inline void ImageBackgroundBase::setColor(const Color3f& value) {
+  _sfColor.setValue(value);
 }
 
 //! Get the value of the ImageBackground::_sfImage field.
-inline
-ImagePtr &ImageBackgroundBase::getImage(void)
-{
-    return _sfImage.getValue();
+inline ImagePtr& ImageBackgroundBase::getImage(void) {
+  return _sfImage.getValue();
 }
 
 //! Get the value of the ImageBackground::_sfImage field.
-inline
-const ImagePtr &ImageBackgroundBase::getImage(void) const
-{
-    return _sfImage.getValue();
+inline const ImagePtr& ImageBackgroundBase::getImage(void) const {
+  return _sfImage.getValue();
 }
 
 //! Set the value of the ImageBackground::_sfImage field.
-inline
-void ImageBackgroundBase::setImage(const ImagePtr &value)
-{
-    _sfImage.setValue(value);
+inline void ImageBackgroundBase::setImage(const ImagePtr& value) {
+  _sfImage.setValue(value);
 }
 
 //! Get the value of the ImageBackground::_sfScale field.
-inline
-bool &ImageBackgroundBase::getScale(void)
-{
-    return _sfScale.getValue();
+inline bool& ImageBackgroundBase::getScale(void) {
+  return _sfScale.getValue();
 }
 
 //! Get the value of the ImageBackground::_sfScale field.
-inline
-const bool &ImageBackgroundBase::getScale(void) const
-{
-    return _sfScale.getValue();
+inline const bool& ImageBackgroundBase::getScale(void) const {
+  return _sfScale.getValue();
 }
 
 //! Set the value of the ImageBackground::_sfScale field.
-inline
-void ImageBackgroundBase::setScale(const bool &value)
-{
-    _sfScale.setValue(value);
+inline void ImageBackgroundBase::setScale(const bool& value) {
+  _sfScale.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGIMAGEBACKGROUNDBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGIMAGEBACKGROUNDBASE_INLINE_CVSID                                                        \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

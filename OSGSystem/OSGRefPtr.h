@@ -55,85 +55,82 @@ OSG_BEGIN_NAMESPACE
 /*! \ingroup GrpSystemFieldContainer
  */
 
-template< class Ref >
-class RefPtr
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
-    /** The full type of the FC Ptr wrapped. */
-    typedef  Ref FCPtrType;
-    /** The full type of the object referenced by the wrapped fcptr. */
-    typedef  typename Ref::StoredObjectType  StoredObjectType;
-    typedef  const Ref RefPtr::*unspecified_bool_type;
-    
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-  
-    RefPtr(void);
-    
-    // make it explicit to prevent unexpected construction/cast paths
-    
-    explicit RefPtr(const Ref& fcp);
-     
-    RefPtr(const RefPtr<Ref>& ptr);
-     
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
- 
-    virtual ~RefPtr();
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Access                                  */
-    /*! \{                                                                 */
-    
-    operator Ref(void) const;
-    
-    typename Ref::StoredObjectType* operator->(void) const;
-    typename Ref::StoredObjectType* getCPtr   (void) const;
-    
-    Ref get(void) const;
-    
-    RefPtr<Ref>& operator =(const Ref &fcp);    
-    RefPtr<Ref>& operator =(const RefPtr<Ref> &rcp);
-    RefPtr<Ref>& operator =(const NullFieldContainerPtr& );    
-   
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Comparison                                */
-    /*! \{                                                                 */
+template <class Ref>
+class RefPtr {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /** The full type of the FC Ptr wrapped. */
+  typedef Ref FCPtrType;
+  /** The full type of the object referenced by the wrapped fcptr. */
+  typedef typename Ref::StoredObjectType StoredObjectType;
+  typedef const Ref RefPtr::*unspecified_bool_type;
 
-    bool operator <  (const NullFieldContainerPtr &     ) const;   
-    bool operator == (const NullFieldContainerPtr &other) const;
-    bool operator != (const NullFieldContainerPtr &other) const;
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    bool operator <  (const FieldContainerPtr     &other) const;
-    bool operator == (const FieldContainerPtr     &other) const;
-    bool operator != (const FieldContainerPtr     &other) const;
+  RefPtr(void);
 
-    bool operator <  (const RefPtr<Ref>           &other) const;
-    bool operator == (const RefPtr<Ref>           &other) const;
-    bool operator != (const RefPtr<Ref>           &other) const;
+  // make it explicit to prevent unexpected construction/cast paths
 
-    bool operator !  (void                              ) const;
+  explicit RefPtr(const Ref& fcp);
 
-    operator unspecified_bool_type() const;
-   
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
+  RefPtr(const RefPtr<Ref>& ptr);
 
-    /*=========================  PROTECTED  ===============================*/    
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*==========================  PRIVATE  ================================*/
-  private:
-  
-    void setRef(const Ref& ref);
-    
-    Ref _ref;
+  virtual ~RefPtr();
+
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Access                                  */
+  /*! \{                                                                 */
+
+  operator Ref(void) const;
+
+  typename Ref::StoredObjectType* operator->(void) const;
+  typename Ref::StoredObjectType* getCPtr(void) const;
+
+  Ref get(void) const;
+
+  RefPtr<Ref>& operator=(const Ref& fcp);
+  RefPtr<Ref>& operator=(const RefPtr<Ref>& rcp);
+  RefPtr<Ref>& operator=(const NullFieldContainerPtr&);
+
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Comparison                                */
+  /*! \{                                                                 */
+
+  bool operator<(const NullFieldContainerPtr&) const;
+  bool operator==(const NullFieldContainerPtr& other) const;
+  bool operator!=(const NullFieldContainerPtr& other) const;
+
+  bool operator<(const FieldContainerPtr& other) const;
+  bool operator==(const FieldContainerPtr& other) const;
+  bool operator!=(const FieldContainerPtr& other) const;
+
+  bool operator<(const RefPtr<Ref>& other) const;
+  bool operator==(const RefPtr<Ref>& other) const;
+  bool operator!=(const RefPtr<Ref>& other) const;
+
+  bool operator!(void) const;
+
+  operator unspecified_bool_type() const;
+
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*==========================  PRIVATE  ================================*/
+ private:
+  void setRef(const Ref& ref);
+
+  Ref _ref;
 };
 
 // Some base types

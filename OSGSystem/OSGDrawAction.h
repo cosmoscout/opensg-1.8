@@ -71,154 +71,149 @@ class Material;
 /*! \brief DrawAction class
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING DrawAction : public DrawActionBase
-{
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING DrawAction : public DrawActionBase {
+ public:
+  //-----------------------------------------------------------------------
+  //   enums
+  //-----------------------------------------------------------------------
 
-    //-----------------------------------------------------------------------
-    //   enums                                                               
-    //-----------------------------------------------------------------------
+  //-----------------------------------------------------------------------
+  //   types
+  //-----------------------------------------------------------------------
 
-    //-----------------------------------------------------------------------
-    //   types                                                               
-    //-----------------------------------------------------------------------
+  //-----------------------------------------------------------------------
+  //   class functions
+  //-----------------------------------------------------------------------
 
-    //-----------------------------------------------------------------------
-    //   class functions                                                     
-    //-----------------------------------------------------------------------
+  static const char* getClassname(void) {
+    return "DrawAction";
+  };
 
-    static const char *getClassname(void) { return "DrawAction"; };
+  // create a new DrawAction by cloning the prototype
+  static DrawAction* create(void);
 
-    // create a new DrawAction by cloning the prototype
-    static DrawAction * create( void );
-    
-    // prototype access
-    // after setting the prototype all new DrawActions are clones of it
-    static void        setPrototype( DrawAction * proto );
-    static DrawAction *getPrototype( void );
+  // prototype access
+  // after setting the prototype all new DrawActions are clones of it
+  static void        setPrototype(DrawAction* proto);
+  static DrawAction* getPrototype(void);
 
-    //-----------------------------------------------------------------------
-    //   instance functions                                                  
-    //-----------------------------------------------------------------------
+  //-----------------------------------------------------------------------
+  //   instance functions
+  //-----------------------------------------------------------------------
 
-    virtual ~DrawAction(void); 
+  virtual ~DrawAction(void);
 
-    // default registration. static, so it can be called during static init
-    
-    static void registerEnterDefault(   const FieldContainerType &type, 
-                                        const Action::Functor    &func);
-    
-    static void registerLeaveDefault(   const FieldContainerType &type, 
-                                        const Action::Functor    &func);
+  // default registration. static, so it can be called during static init
 
-    /*------------------------- your_category -------------------------------*/
-    
-    UInt32      getLightCount(void) const;
-    void        incLightCount(void);
-    void        decLightCount(void);
+  static void registerEnterDefault(const FieldContainerType& type, const Action::Functor& func);
 
+  static void registerLeaveDefault(const FieldContainerType& type, const Action::Functor& func);
 
-    // initialisation
-    virtual Action::ResultE start( void );
+  /*------------------------- your_category -------------------------------*/
 
-    /*------------------------- your_operators ------------------------------*/
+  UInt32 getLightCount(void) const;
+  void   incLightCount(void);
+  void   decLightCount(void);
 
-    // test a single node
-    bool            isVisible( Node* node );
-    
-    /*------------------------- assignment ----------------------------------*/
+  // initialisation
+  virtual Action::ResultE start(void);
 
-    /*------------------------- comparison ----------------------------------*/
+  /*------------------------- your_operators ------------------------------*/
 
-    bool operator < (const DrawAction &other) const;
-    
-    bool operator == (const DrawAction &other) const;
-    bool operator != (const DrawAction &other) const;
+  // test a single node
+  bool isVisible(Node* node);
 
-  protected:
+  /*------------------------- assignment ----------------------------------*/
 
-    //-----------------------------------------------------------------------
-    //   enums                                                               
-    //-----------------------------------------------------------------------
+  /*------------------------- comparison ----------------------------------*/
 
-    //-----------------------------------------------------------------------
-    //   types                                                               
-    //-----------------------------------------------------------------------
+  bool operator<(const DrawAction& other) const;
 
-    //-----------------------------------------------------------------------
-    //   class variables                                                     
-    //-----------------------------------------------------------------------
+  bool operator==(const DrawAction& other) const;
+  bool operator!=(const DrawAction& other) const;
 
-    //-----------------------------------------------------------------------
-    //   class functions                                                     
-    //-----------------------------------------------------------------------
+ protected:
+  //-----------------------------------------------------------------------
+  //   enums
+  //-----------------------------------------------------------------------
 
-    //-----------------------------------------------------------------------
-    //   instance variables                                                  
-    //-----------------------------------------------------------------------
+  //-----------------------------------------------------------------------
+  //   types
+  //-----------------------------------------------------------------------
 
-    //-----------------------------------------------------------------------
-    //   instance functions                                                  
-    //-----------------------------------------------------------------------
+  //-----------------------------------------------------------------------
+  //   class variables
+  //-----------------------------------------------------------------------
 
-    DrawAction(void);
-    DrawAction(const DrawAction &source);
+  //-----------------------------------------------------------------------
+  //   class functions
+  //-----------------------------------------------------------------------
 
-    // access default functors
+  //-----------------------------------------------------------------------
+  //   instance variables
+  //-----------------------------------------------------------------------
 
-    virtual std::vector<Functor>* getDefaultEnterFunctors(void);
-    virtual std::vector<Functor>* getDefaultLeaveFunctors(void);
+  //-----------------------------------------------------------------------
+  //   instance functions
+  //-----------------------------------------------------------------------
 
-  private:
+  DrawAction(void);
+  DrawAction(const DrawAction& source);
 
-    //-----------------------------------------------------------------------
-    //   enums                                                               
-    //-----------------------------------------------------------------------
+  // access default functors
 
-    //-----------------------------------------------------------------------
-    //   types                                                               
-    //-----------------------------------------------------------------------
+  virtual std::vector<Functor>* getDefaultEnterFunctors(void);
+  virtual std::vector<Functor>* getDefaultLeaveFunctors(void);
 
-    typedef DrawActionBase Inherited;
+ private:
+  //-----------------------------------------------------------------------
+  //   enums
+  //-----------------------------------------------------------------------
 
-    //-----------------------------------------------------------------------
-    //   friend classes                                                      
-    //-----------------------------------------------------------------------
+  //-----------------------------------------------------------------------
+  //   types
+  //-----------------------------------------------------------------------
 
-    //-----------------------------------------------------------------------
-    //   friend functions                                                    
-    //-----------------------------------------------------------------------
+  typedef DrawActionBase Inherited;
 
-    //-----------------------------------------------------------------------
-    //   class variables                                                     
-    //-----------------------------------------------------------------------
+  //-----------------------------------------------------------------------
+  //   friend classes
+  //-----------------------------------------------------------------------
 
-    static char cvsid[];
+  //-----------------------------------------------------------------------
+  //   friend functions
+  //-----------------------------------------------------------------------
 
-    // the prototype which is copied to create new actions
-    static DrawAction * _prototype;
+  //-----------------------------------------------------------------------
+  //   class variables
+  //-----------------------------------------------------------------------
 
-    // default functors for instantiation
-    static std::vector<Functor> *_defaultEnterFunctors;
-    static std::vector<Functor> *_defaultLeaveFunctors;
-    
-    //-----------------------------------------------------------------------
-    //   class functions                                                     
-    //-----------------------------------------------------------------------
+  static char cvsid[];
 
-    //-----------------------------------------------------------------------
-    //   instance variables                                                  
-    //-----------------------------------------------------------------------
-    
-    UInt32 _lightCount;
-    
-    //-----------------------------------------------------------------------
-    //   instance functions                                                  
-    //-----------------------------------------------------------------------
+  // the prototype which is copied to create new actions
+  static DrawAction* _prototype;
 
-    // prohibit default functions (move to 'public' if you need one)
+  // default functors for instantiation
+  static std::vector<Functor>* _defaultEnterFunctors;
+  static std::vector<Functor>* _defaultLeaveFunctors;
 
-    DrawAction& operator =(const DrawAction &source);
+  //-----------------------------------------------------------------------
+  //   class functions
+  //-----------------------------------------------------------------------
+
+  //-----------------------------------------------------------------------
+  //   instance variables
+  //-----------------------------------------------------------------------
+
+  UInt32 _lightCount;
+
+  //-----------------------------------------------------------------------
+  //   instance functions
+  //-----------------------------------------------------------------------
+
+  // prohibit default functions (move to 'public' if you need one)
+
+  DrawAction& operator=(const DrawAction& source);
 };
 
 //---------------------------------------------------------------------------
@@ -227,12 +222,10 @@ class OSG_SYSTEMLIB_DLLMAPPING DrawAction : public DrawActionBase
 
 // class pointer
 
-typedef DrawAction *DrawActionP;
+typedef DrawAction* DrawActionP;
 
 OSG_END_NAMESPACE
 
 #include "OSGDrawAction.inl"
 
 #endif /* _OSGDRAWACTION_H_ */
-
-

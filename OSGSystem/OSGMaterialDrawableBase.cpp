@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEMATERIALDRAWABLEINST
 
 #include <stdlib.h>
@@ -61,16 +60,13 @@
 #include "OSGMaterialDrawableBase.h"
 #include "OSGMaterialDrawable.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  MaterialDrawableBase::MaterialFieldMask = 
+const OSG::BitVector MaterialDrawableBase::MaterialFieldMask =
     (TypeTraits<BitVector>::One << MaterialDrawableBase::MaterialFieldId);
 
-const OSG::BitVector MaterialDrawableBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector MaterialDrawableBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
@@ -80,178 +76,125 @@ const OSG::BitVector MaterialDrawableBase::MTInfluenceMask =
 
 //! MaterialDrawable description
 
-FieldDescription *MaterialDrawableBase::_desc[] = 
-{
-    new FieldDescription(SFMaterialPtr::getClassType(), 
-                     "material", 
-                     MaterialFieldId, MaterialFieldMask,
-                     false,
-                     (FieldAccessMethod) &MaterialDrawableBase::getSFMaterial)
-};
-
+FieldDescription* MaterialDrawableBase::_desc[] = {
+    new FieldDescription(SFMaterialPtr::getClassType(), "material", MaterialFieldId,
+        MaterialFieldMask, false, (FieldAccessMethod)&MaterialDrawableBase::getSFMaterial)};
 
 FieldContainerType MaterialDrawableBase::_type(
-    "MaterialDrawable",
-    "Drawable",
-    NULL,
-    NULL, 
-    MaterialDrawable::initMethod,
-    _desc,
-    sizeof(_desc));
+    "MaterialDrawable", "Drawable", NULL, NULL, MaterialDrawable::initMethod, _desc, sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(MaterialDrawableBase, MaterialDrawablePtr)
+// OSG_FIELD_CONTAINER_DEF(MaterialDrawableBase, MaterialDrawablePtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &MaterialDrawableBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &MaterialDrawableBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-UInt32 MaterialDrawableBase::getContainerSize(void) const 
-{ 
-    return sizeof(MaterialDrawable); 
+FieldContainerType& MaterialDrawableBase::getType(void) {
+  return _type;
 }
 
+const FieldContainerType& MaterialDrawableBase::getType(void) const {
+  return _type;
+}
+
+UInt32 MaterialDrawableBase::getContainerSize(void) const {
+  return sizeof(MaterialDrawable);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void MaterialDrawableBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((MaterialDrawableBase *) &other, whichField);
+void MaterialDrawableBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((MaterialDrawableBase*)&other, whichField);
 }
 #else
-void MaterialDrawableBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((MaterialDrawableBase *) &other, whichField, sInfo);
+void MaterialDrawableBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((MaterialDrawableBase*)&other, whichField, sInfo);
 }
-void MaterialDrawableBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void MaterialDrawableBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void MaterialDrawableBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void MaterialDrawableBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-MaterialDrawableBase::MaterialDrawableBase(void) :
-    _sfMaterial               (), 
-    Inherited() 
-{
+MaterialDrawableBase::MaterialDrawableBase(void)
+    : _sfMaterial()
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-MaterialDrawableBase::MaterialDrawableBase(const MaterialDrawableBase &source) :
-    _sfMaterial               (source._sfMaterial               ), 
-    Inherited                 (source)
-{
+MaterialDrawableBase::MaterialDrawableBase(const MaterialDrawableBase& source)
+    : _sfMaterial(source._sfMaterial)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-MaterialDrawableBase::~MaterialDrawableBase(void)
-{
+MaterialDrawableBase::~MaterialDrawableBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 MaterialDrawableBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 MaterialDrawableBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (MaterialFieldMask & whichField))
-    {
-        returnValue += _sfMaterial.getBinSize();
-    }
+  if (FieldBits::NoField != (MaterialFieldMask & whichField)) {
+    returnValue += _sfMaterial.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void MaterialDrawableBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void MaterialDrawableBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (MaterialFieldMask & whichField))
-    {
-        _sfMaterial.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (MaterialFieldMask & whichField)) {
+    _sfMaterial.copyToBin(pMem);
+  }
 }
 
-void MaterialDrawableBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void MaterialDrawableBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (MaterialFieldMask & whichField))
-    {
-        _sfMaterial.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (MaterialFieldMask & whichField)) {
+    _sfMaterial.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void MaterialDrawableBase::executeSyncImpl(      MaterialDrawableBase *pOther,
-                                        const BitVector         &whichField)
-{
+void MaterialDrawableBase::executeSyncImpl(
+    MaterialDrawableBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (MaterialFieldMask & whichField))
-        _sfMaterial.syncWith(pOther->_sfMaterial);
-
-
+  if (FieldBits::NoField != (MaterialFieldMask & whichField))
+    _sfMaterial.syncWith(pOther->_sfMaterial);
 }
 #else
-void MaterialDrawableBase::executeSyncImpl(      MaterialDrawableBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void MaterialDrawableBase::executeSyncImpl(
+    MaterialDrawableBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (MaterialFieldMask & whichField))
-        _sfMaterial.syncWith(pOther->_sfMaterial);
-
-
-
+  if (FieldBits::NoField != (MaterialFieldMask & whichField))
+    _sfMaterial.syncWith(pOther->_sfMaterial);
 }
 
-void MaterialDrawableBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void MaterialDrawableBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>

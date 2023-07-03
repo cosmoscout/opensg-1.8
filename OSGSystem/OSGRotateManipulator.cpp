@@ -59,7 +59,8 @@ OSG_USING_NAMESPACE
 \***************************************************************************/
 
 /*! \class osg::RotateManipulator
-The MoveHandle is used for moving objects. It consist of three axis which can be picked and translated and one center box to translate freely in 3D. 
+The MoveHandle is used for moving objects. It consist of three axis which can be picked and
+translated and one center box to translate freely in 3D.
 */
 
 /***************************************************************************\
@@ -70,49 +71,30 @@ The MoveHandle is used for moving objects. It consist of three axis which can be
  *                           Class methods                                 *
 \***************************************************************************/
 
-void RotateManipulator::initMethod (void)
-{
-	
-	DrawAction::registerEnterDefault( 
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE,
-                                          RotateManipulatorPtr  , 
-                                          CNodePtr  ,  
-                                          Action   *>(&RotateManipulator::drawEnter));
-    DrawAction::registerLeaveDefault( 
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE,
-                                          RotateManipulatorPtr  , 
-                                          CNodePtr  ,  
-                                          Action   *>(&RotateManipulator::drawLeave));
+void RotateManipulator::initMethod(void) {
 
-    RenderAction::registerEnterDefault( 
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE,
-                                          RotateManipulatorPtr  , 
-                                          CNodePtr  ,  
-                                          Action   *>(&RotateManipulator::renderEnter));
+  DrawAction::registerEnterDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, RotateManipulatorPtr, CNodePtr, Action*>(
+          &RotateManipulator::drawEnter));
+  DrawAction::registerLeaveDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, RotateManipulatorPtr, CNodePtr, Action*>(
+          &RotateManipulator::drawLeave));
 
-    RenderAction::registerLeaveDefault( 
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE,
-                                          RotateManipulatorPtr  , 
-                                          CNodePtr  ,  
-                                          Action   *>(&RotateManipulator::renderLeave));
+  RenderAction::registerEnterDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, RotateManipulatorPtr, CNodePtr, Action*>(
+          &RotateManipulator::renderEnter));
 
-    IntersectAction::registerEnterDefault( 
-        getClassType(),
-        osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE,
-                                          RotateManipulatorPtr  ,
-                                          CNodePtr  ,
-                                          Action   *>(&RotateManipulator::intersectEnter));
-										  
-    IntersectAction::registerLeaveDefault( 
-        getClassType(),
-        osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE,
-                                          RotateManipulatorPtr  ,
-                                          CNodePtr  ,
-                                          Action   *>(&RotateManipulator::intersectLeave));
+  RenderAction::registerLeaveDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, RotateManipulatorPtr, CNodePtr, Action*>(
+          &RotateManipulator::renderLeave));
+
+  IntersectAction::registerEnterDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, RotateManipulatorPtr, CNodePtr, Action*>(
+          &RotateManipulator::intersectEnter));
+
+  IntersectAction::registerLeaveDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, RotateManipulatorPtr, CNodePtr, Action*>(
+          &RotateManipulator::intersectLeave));
 }
 
 /***************************************************************************\
@@ -125,64 +107,52 @@ void RotateManipulator::initMethod (void)
 
 /*----------------------- constructors & destructors ----------------------*/
 
-RotateManipulator::RotateManipulator(void) :
-    Inherited()
-{
+RotateManipulator::RotateManipulator(void)
+    : Inherited() {
 }
 
-RotateManipulator::RotateManipulator(const RotateManipulator &source) :
-    Inherited(source)
-{
+RotateManipulator::RotateManipulator(const RotateManipulator& source)
+    : Inherited(source) {
 }
 
-RotateManipulator::~RotateManipulator(void)
-{
+RotateManipulator::~RotateManipulator(void) {
 }
 
 /*----------------------------- class specific ----------------------------*/
 
-void RotateManipulator::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void RotateManipulator::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
-void RotateManipulator::dump(      UInt32    , 
-                         const BitVector ) const
-{
-    SLOG << "Dump RotateManipulator NI" << std::endl;
+void RotateManipulator::dump(UInt32, const BitVector) const {
+  SLOG << "Dump RotateManipulator NI" << std::endl;
 }
 
-NodePtr RotateManipulator::makeHandleGeo()
-{
-	return makeSphere(2, 0.2);
+NodePtr RotateManipulator::makeHandleGeo() {
+  return makeSphere(2, 0.2);
 }
 
-void  RotateManipulator::doMovement(TransformPtr t,
-								  Int32 coord,
-								  Real32 value,
-								  const Vec3f		&translation,
-								  const Quaternion	&rotation,
-								  const Vec3f		&scaleFactor,
-								  const Quaternion	&scaleOrientation )
-{
-	Vec3f axis(0.0f, 0.0f, 0.0f);
-	axis[coord] = 1.0;
-	Quaternion rot(axis, value);
-	
-	Matrix ma, mb, mc, md, me;
-	
-	ma.setTranslate( -translation        );
-	mb.setRotate   (  rotation.inverse() );
-	mc.setRotate   (  rot                );
-	md.setRotate   (  rotation           );
-	me.setTranslate(  translation        );
-	beginEditCP(t, Transform::MatrixFieldMask);
-	{
-		t->getMatrix().multLeft(ma);
-		t->getMatrix().multLeft(mb);
-		t->getMatrix().multLeft(mc);
-		t->getMatrix().multLeft(md);
-		t->getMatrix().multLeft(me);
-	}	
-	endEditCP(t, Transform::MatrixFieldMask);
+void RotateManipulator::doMovement(TransformPtr t, Int32 coord, Real32 value,
+    const Vec3f& translation, const Quaternion& rotation, const Vec3f& scaleFactor,
+    const Quaternion& scaleOrientation) {
+  Vec3f axis(0.0f, 0.0f, 0.0f);
+  axis[coord] = 1.0;
+  Quaternion rot(axis, value);
+
+  Matrix ma, mb, mc, md, me;
+
+  ma.setTranslate(-translation);
+  mb.setRotate(rotation.inverse());
+  mc.setRotate(rot);
+  md.setRotate(rotation);
+  me.setTranslate(translation);
+  beginEditCP(t, Transform::MatrixFieldMask);
+  {
+    t->getMatrix().multLeft(ma);
+    t->getMatrix().multLeft(mb);
+    t->getMatrix().multLeft(mc);
+    t->getMatrix().multLeft(md);
+    t->getMatrix().multLeft(me);
+  }
+  endEditCP(t, Transform::MatrixFieldMask);
 }

@@ -50,31 +50,23 @@ OSG_BEGIN_NAMESPACE
 /*-------------------------------------------------------------------------*/
 /*                           Prototype                                     */
 
-inline
-FieldContainerPtr FieldContainerType::getPrototype(void) const
-{
-    return _pPrototype;
+inline FieldContainerPtr FieldContainerType::getPrototype(void) const {
+  return _pPrototype;
 }
 
-inline
-bool FieldContainerType::setPrototype(FieldContainerPtr pPrototype)
-{
-    bool returnValue = false;
+inline bool FieldContainerType::setPrototype(FieldContainerPtr pPrototype) {
+  bool returnValue = false;
 
-    if(pPrototype != NullFC)
-    {
-        setRefdCP(_pPrototype, pPrototype);
-        returnValue = true;
-    }
+  if (pPrototype != NullFC) {
+    setRefdCP(_pPrototype, pPrototype);
+    returnValue = true;
+  }
 
-    return returnValue;
+  return returnValue;
 }
 
-inline
-bool FieldContainerType::isAbstract(void) const
-{
-    return (_pPrototype != NullFC) ? false : true;
-
+inline bool FieldContainerType::isAbstract(void) const {
+  return (_pPrototype != NullFC) ? false : true;
 }
 
 OSG_END_NAMESPACE

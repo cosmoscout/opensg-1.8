@@ -56,113 +56,94 @@ class DVRVolume;
 class DVRRenderSlice;
 class Brick;
 
-/*! \brief *put brief class description here* 
+/*! \brief *put brief class description here*
  */
 
+class OSG_SYSTEMLIB_DLLMAPPING DVRShader : public DVRShaderBase {
+ private:
+  typedef DVRShaderBase Inherited;
 
-class OSG_SYSTEMLIB_DLLMAPPING DVRShader : public DVRShaderBase
-{
-  private:
+  /*==========================  PUBLIC  =================================*/
 
-    typedef DVRShaderBase Inherited;
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
+  virtual void changed(BitVector whichField, UInt32 from);
 
-  public:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     from);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                 Volume Rendering                             */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  // Callback to set up shader - register textures here
+  virtual bool initialize(DVRVolume* volume, DrawActionBase* action);
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  // Callback before any slice is rendered - setup per volume
+  virtual void activate(DVRVolume* volume, DrawActionBase* action);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                 Volume Rendering                             */
-    /*! \{                                                                 */
+  // Callback before any brick - state setup per brick
+  virtual void brickActivate(DVRVolume* volume, DrawActionBase* action, Brick* brick);
 
-    // Callback to set up shader - register textures here
-    virtual bool initialize       (DVRVolume      *volume, 
-                                   DrawActionBase *action      );
+  // Callback after all rendering of the volume is done
+  virtual void deactivate(DVRVolume* volume, DrawActionBase* action);
 
-    // Callback before any slice is rendered - setup per volume
-    virtual void activate         (DVRVolume      *volume, 
-                                   DrawActionBase *action      );
+  // Callback for rendering non-clipped slices
+  virtual void renderSlice(
+      DVRVolume* volume, DrawActionBase* action, Real32* data, UInt32 vertices, UInt32 values);
 
-    // Callback before any brick - state setup per brick
-    virtual void brickActivate    (DVRVolume      *volume, 
-                                   DrawActionBase *action,
-                                   Brick          *brick       );
+  // Callback for rendering clipped slices
+  virtual void renderSlice(DVRVolume* volume, DrawActionBase* action, DVRRenderSlice* clippedSlice);
 
-    // Callback after all rendering of the volume is done
-    virtual void deactivate       (DVRVolume      *volume, 
-                                   DrawActionBase *action      );
+  // Returns whether the shader has an implementation of 'renderSlice'
+  virtual bool hasRenderCallback(void);
 
-    // Callback for rendering non-clipped slices
-    virtual void renderSlice      (DVRVolume      *volume, 
-                                   DrawActionBase *action,
-                                   Real32         *data, 
-                                   UInt32          vertices, 
-                                   UInt32          values      ); 
-    
-    // Callback for rendering clipped slices
-    virtual void renderSlice      (DVRVolume      *volume, 
-                                   DrawActionBase *action,
-                                   DVRRenderSlice *clippedSlice);
+  // Returns whether the shader requires multitextured slabs instead
+  // of bricks
+  virtual bool useMTSlabs(void);
 
-    // Returns whether the shader has an implementation of 'renderSlice'
-    virtual bool hasRenderCallback(void                        );
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    // Returns whether the shader requires multitextured slabs instead
-    // of bricks
-    virtual bool useMTSlabs       (void                        );
+ protected:
+  // Variables should all be in DVRShaderBase.
 
-    
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-  protected:
+  DVRShader(void);
+  DVRShader(const DVRShader& source);
 
-    // Variables should all be in DVRShaderBase.
+  /*! \}
+   */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~DVRShader(void);
 
-    DVRShader(void);
-    DVRShader(const DVRShader &source);
+  /*! \}                                                                 */
 
-    /*! \}
-     */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-    virtual ~DVRShader(void); 
+ private:
+  friend class FieldContainer;
+  friend class DVRShaderBase;
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
+  static void initMethod(void);
 
-  private:
+  // prohibit default functions (move to 'public' if you need one)
 
-    friend class FieldContainer;
-    friend class DVRShaderBase;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const DVRShader &source);
+  void operator=(const DVRShader& source);
 };
 
 OSG_END_NAMESPACE

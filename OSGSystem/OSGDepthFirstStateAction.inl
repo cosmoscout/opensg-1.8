@@ -48,73 +48,63 @@ OSG_BEGIN_NAMESPACE
 /*! Calls the enterNode method of the attached actors.
  */
 
-inline DepthFirstStateAction::ResultE
-DepthFirstStateAction::enterNode(const NodePtr &pNode, UInt32 pass)
-{
-    FunctorArgumentType funcArg(NULL, pNode, pass);
-    ResultE             result    = NewActionTypes::Continue;
+inline DepthFirstStateAction::ResultE DepthFirstStateAction::enterNode(
+    const NodePtr& pNode, UInt32 pass) {
+  FunctorArgumentType funcArg(NULL, pNode, pass);
+  ResultE             result = NewActionTypes::Continue;
 
-    ExtendActorStoreIt  itExtend  = _extendEnterActors.begin();
-    ExtendActorStoreIt  endExtend = _extendEnterActors.end  ();
+  ExtendActorStoreIt itExtend  = _extendEnterActors.begin();
+  ExtendActorStoreIt endExtend = _extendEnterActors.end();
 
-    for(;  (itExtend != endExtend                                    )  &&
-          !(result   &  (NewActionTypes::Break | NewActionTypes::Quit));
-        ++itExtend                                                         )
-    {
-        funcArg.setActor(*itExtend);
+  for (; (itExtend != endExtend) && !(result & (NewActionTypes::Break | NewActionTypes::Quit));
+       ++itExtend) {
+    funcArg.setActor(*itExtend);
 
-        result = static_cast<ResultE>(result | (*itExtend)->enterNode(funcArg));
-    }
+    result = static_cast<ResultE>(result | (*itExtend)->enterNode(funcArg));
+  }
 
-    BasicActorStoreIt   itBasic   = _basicEnterActors.begin();
-    BasicActorStoreIt   endBasic  = _basicEnterActors.end  ();
+  BasicActorStoreIt itBasic  = _basicEnterActors.begin();
+  BasicActorStoreIt endBasic = _basicEnterActors.end();
 
-    for(;  (itBasic != endBasic                                     )  &&
-          !(result  &  (NewActionTypes::Break | NewActionTypes::Quit));
-        ++itBasic                                                        )
-    {
-        funcArg.setActor(*itBasic);
+  for (; (itBasic != endBasic) && !(result & (NewActionTypes::Break | NewActionTypes::Quit));
+       ++itBasic) {
+    funcArg.setActor(*itBasic);
 
-        result = static_cast<ResultE>(result | (*itBasic)->enterNode(funcArg));
-    }
+    result = static_cast<ResultE>(result | (*itBasic)->enterNode(funcArg));
+  }
 
-    return result;
+  return result;
 }
 
 /*! Calls the leaveNode method of the attached actors.
  */
 
-inline DepthFirstStateAction::ResultE
-DepthFirstStateAction::leaveNode(const NodePtr &pNode, UInt32 pass)
-{
-    FunctorArgumentType funcArg(NULL, pNode, pass);
-    ResultE             result    = NewActionTypes::Continue;
+inline DepthFirstStateAction::ResultE DepthFirstStateAction::leaveNode(
+    const NodePtr& pNode, UInt32 pass) {
+  FunctorArgumentType funcArg(NULL, pNode, pass);
+  ResultE             result = NewActionTypes::Continue;
 
-    ExtendActorStoreIt  itExtend  = _extendLeaveActors.begin();
-    ExtendActorStoreIt  endExtend = _extendLeaveActors.end  ();
+  ExtendActorStoreIt itExtend  = _extendLeaveActors.begin();
+  ExtendActorStoreIt endExtend = _extendLeaveActors.end();
 
-    for(;  (itExtend != endExtend                                    )  &&
-          !(result   &  (NewActionTypes::Break | NewActionTypes::Quit));
-        ++itExtend                                                         )
-    {
-        funcArg.setActor(*itExtend);
+  for (; (itExtend != endExtend) && !(result & (NewActionTypes::Break | NewActionTypes::Quit));
+       ++itExtend) {
+    funcArg.setActor(*itExtend);
 
-        result = static_cast<ResultE>(result | (*itExtend)->leaveNode(funcArg));
-    }
+    result = static_cast<ResultE>(result | (*itExtend)->leaveNode(funcArg));
+  }
 
-    BasicActorStoreIt  itBasic   = _basicLeaveActors.begin();
-    BasicActorStoreIt  endBasic  = _basicLeaveActors.end  ();
+  BasicActorStoreIt itBasic  = _basicLeaveActors.begin();
+  BasicActorStoreIt endBasic = _basicLeaveActors.end();
 
-    for(;  (itBasic != endBasic                                     )  &&
-          !(result  &  (NewActionTypes::Break | NewActionTypes::Quit));
-        ++itBasic                                                         )
-    {
-        funcArg.setActor(*itBasic);
+  for (; (itBasic != endBasic) && !(result & (NewActionTypes::Break | NewActionTypes::Quit));
+       ++itBasic) {
+    funcArg.setActor(*itBasic);
 
-        result = static_cast<ResultE>(result | (*itBasic)->leaveNode(funcArg));
-    }
+    result = static_cast<ResultE>(result | (*itBasic)->leaveNode(funcArg));
+  }
 
-    return result;
+  return result;
 }
 
 //----------------------------------------------------------------------------
@@ -131,11 +121,9 @@ DepthFirstStateAction::leaveNode(const NodePtr &pNode, UInt32 pass)
 \enddev
  */
 
-inline
-DepthFirstStateAction::StateRefCount::StateRefCount(const StateRefCount &source)
-    : _stateSlot(source._stateSlot),
-      _refCount (source._refCount )
-{
+inline DepthFirstStateAction::StateRefCount::StateRefCount(const StateRefCount& source)
+    : _stateSlot(source._stateSlot)
+    , _refCount(source._refCount) {
 }
 
 /*! Constructor.
@@ -145,68 +133,53 @@ DepthFirstStateAction::StateRefCount::StateRefCount(const StateRefCount &source)
 \enddev
  */
 
-inline
-DepthFirstStateAction::StateRefCount::StateRefCount(UInt32 stateSlot)
-    : _stateSlot(stateSlot),
-      _refCount (0        )
-{
+inline DepthFirstStateAction::StateRefCount::StateRefCount(UInt32 stateSlot)
+    : _stateSlot(stateSlot)
+    , _refCount(0) {
 }
 
 /*! Constructor.
  */
 
-inline
-DepthFirstStateAction::StateRefCount::StateRefCount
-    (UInt32 stateSlot, Int32 refCount)
+inline DepthFirstStateAction::StateRefCount::StateRefCount(UInt32 stateSlot, Int32 refCount)
 
-    : _stateSlot(stateSlot),
-      _refCount (refCount )
-{
+    : _stateSlot(stateSlot)
+    , _refCount(refCount) {
 }
 
 /*! Return the state slot.
  */
 
-inline UInt32
-DepthFirstStateAction::StateRefCount::getStateSlot(void) const
-{
-    return _stateSlot;
+inline UInt32 DepthFirstStateAction::StateRefCount::getStateSlot(void) const {
+  return _stateSlot;
 }
 
 /* Set the state slot.
  */
 
-inline void
-DepthFirstStateAction::StateRefCount::setStateSlot(UInt32 stateSlot)
-{
-    _stateSlot = stateSlot;
+inline void DepthFirstStateAction::StateRefCount::setStateSlot(UInt32 stateSlot) {
+  _stateSlot = stateSlot;
 }
 
 /*! Return the ref count.
  */
 
-inline Int32
-DepthFirstStateAction::StateRefCount::getRefCount(void) const
-{
-    return _refCount;
+inline Int32 DepthFirstStateAction::StateRefCount::getRefCount(void) const {
+  return _refCount;
 }
 
 /*! Increment the ref count by ref.
  */
 
-inline void
-DepthFirstStateAction::StateRefCount::incRefCount(Int32 inc)
-{
-    _refCount += inc;
+inline void DepthFirstStateAction::StateRefCount::incRefCount(Int32 inc) {
+  _refCount += inc;
 }
 
 /*! Decrement the ref count by ref.
  */
 
-inline void
-DepthFirstStateAction::StateRefCount::decRefCount(Int32 dec)
-{
-    _refCount -= inc;
+inline void DepthFirstStateAction::StateRefCount::decRefCount(Int32 dec) {
+  _refCount -= inc;
 }
 
 #else /* OSG_NEWACTION_STATESLOTINTERFACE */
@@ -219,11 +192,9 @@ DepthFirstStateAction::StateRefCount::decRefCount(Int32 dec)
 \enddev
  */
 
-inline
-DepthFirstStateAction::StateRefCount::StateRefCount(const StateRefCount &source)
-    : _itState (source._itState ),
-      _refCount(source._refCount)
-{
+inline DepthFirstStateAction::StateRefCount::StateRefCount(const StateRefCount& source)
+    : _itState(source._itState)
+    , _refCount(source._refCount) {
 }
 
 /*! Constructor.
@@ -233,188 +204,152 @@ DepthFirstStateAction::StateRefCount::StateRefCount(const StateRefCount &source)
 \enddev
  */
 
-inline
-DepthFirstStateAction::StateRefCount::StateRefCount(const StateStoreIt &itState)
-    : _itState (itState),
-      _refCount(0      )
-{
+inline DepthFirstStateAction::StateRefCount::StateRefCount(const StateStoreIt& itState)
+    : _itState(itState)
+    , _refCount(0) {
 }
 
 /*! Constructor.
  */
 
-inline
-DepthFirstStateAction::StateRefCount::StateRefCount(
-    const StateStoreIt &itState, Int32 refCount)
+inline DepthFirstStateAction::StateRefCount::StateRefCount(
+    const StateStoreIt& itState, Int32 refCount)
 
-    : _itState (itState ),
-      _refCount(refCount)
-{
+    : _itState(itState)
+    , _refCount(refCount) {
 }
 
 /*! Return the state store iterator.
  */
 
-inline DepthFirstStateAction::StateStoreIt
-DepthFirstStateAction::StateRefCount::getState(void) const
-{
-    return _itState;
+inline DepthFirstStateAction::StateStoreIt DepthFirstStateAction::StateRefCount::getState(
+    void) const {
+  return _itState;
 }
 
 /*! Set the state store iterator.
  */
 
-inline void
-DepthFirstStateAction::StateRefCount::setState(const StateStoreIt &itState)
-{
-    _itState = itState;
+inline void DepthFirstStateAction::StateRefCount::setState(const StateStoreIt& itState) {
+  _itState = itState;
 }
 
 /*! Return the ref count.
  */
 
-inline Int32
-DepthFirstStateAction::StateRefCount::getRefCount(void) const
-{
-    return _refCount;
+inline Int32 DepthFirstStateAction::StateRefCount::getRefCount(void) const {
+  return _refCount;
 }
 
 /*! Increment the ref count.
  */
 
-inline void
-DepthFirstStateAction::StateRefCount::incRefCount(Int32 inc)
-{
-    _refCount += inc;
+inline void DepthFirstStateAction::StateRefCount::incRefCount(Int32 inc) {
+  _refCount += inc;
 }
 
 /*! Decrement the ref count.
  */
 
-inline void
-DepthFirstStateAction::StateRefCount::decRefCount(Int32 dec)
-{
-    _refCount -= dec;
+inline void DepthFirstStateAction::StateRefCount::decRefCount(Int32 dec) {
+  _refCount -= dec;
 }
 
 #endif /* OSG_NEWACTION_STATESLOTINTERFACE */
 
-inline
-DepthFirstStateAction::NodeStackEntry::NodeStackEntry(void)
+inline DepthFirstStateAction::NodeStackEntry::NodeStackEntry(void)
 
-    : _pNode          (NullFC),
-      _itStateRefCount(      ),
-      _passCount      (0     )
-{
+    : _pNode(NullFC)
+    , _itStateRefCount()
+    , _passCount(0) {
 }
 
-inline
-DepthFirstStateAction::NodeStackEntry::NodeStackEntry(
-    const NodeStackEntry &source)
+inline DepthFirstStateAction::NodeStackEntry::NodeStackEntry(const NodeStackEntry& source)
 
-    : _pNode          (source._pNode          ),
-      _itStateRefCount(source._itStateRefCount),
-      _passCount      (source._passCount      )
-{
+    : _pNode(source._pNode)
+    , _itStateRefCount(source._itStateRefCount)
+    , _passCount(source._passCount) {
 }
 
-inline
-DepthFirstStateAction::NodeStackEntry::NodeStackEntry(
-    const NodePtr &pNode,     const StateRefCountStoreIt &itStateRefCount,
-          Int32    passCount                                              )
+inline DepthFirstStateAction::NodeStackEntry::NodeStackEntry(
+    const NodePtr& pNode, const StateRefCountStoreIt& itStateRefCount, Int32 passCount)
 
-    : _pNode          (pNode          ),
-      _itStateRefCount(itStateRefCount),
-      _passCount      (passCount      )
-{
+    : _pNode(pNode)
+    , _itStateRefCount(itStateRefCount)
+    , _passCount(passCount) {
 }
 
-inline NodePtr
-DepthFirstStateAction::NodeStackEntry::getNode(void) const
-{
-    return _pNode;
+inline NodePtr DepthFirstStateAction::NodeStackEntry::getNode(void) const {
+  return _pNode;
 }
 
-inline Int32
-DepthFirstStateAction::NodeStackEntry::getPassCount(void) const
-{
-    return _passCount;
+inline Int32 DepthFirstStateAction::NodeStackEntry::getPassCount(void) const {
+  return _passCount;
 }
 
-inline void
-DepthFirstStateAction::NodeStackEntry::setPassCount(Int32 passCount)
-{
-    _passCount = passCount;
+inline void DepthFirstStateAction::NodeStackEntry::setPassCount(Int32 passCount) {
+  _passCount = passCount;
 }
 
 inline DepthFirstStateAction::StateRefCountStoreIt
-DepthFirstStateAction::NodeStackEntry::getStateRefCount(void) const
-{
-    return _itStateRefCount;
+DepthFirstStateAction::NodeStackEntry::getStateRefCount(void) const {
+  return _itStateRefCount;
 }
 
-inline void
-DepthFirstStateAction::NodeStackEntry::setStateRefCount(
-    const StateRefCountStoreIt &itStateRefCount)
-{
-    _itStateRefCount = itStateRefCount;
+inline void DepthFirstStateAction::NodeStackEntry::setStateRefCount(
+    const StateRefCountStoreIt& itStateRefCount) {
+  _itStateRefCount = itStateRefCount;
 }
 
 /*! Creates a copy of the state currently used by the attached actors.
  */
 
-inline DepthFirstStateAction::StateRefCountStoreIt
-DepthFirstStateAction::cloneState(void)
-{
+inline DepthFirstStateAction::StateRefCountStoreIt DepthFirstStateAction::cloneState(void) {
 #ifdef OSG_NEWACTION_STATESLOTINTERFACE
 
-    UInt32               stateSlot;
-    StateRefCountStoreIt itStateRefCount = --(_stateRefCountStore.end());
+  UInt32               stateSlot;
+  StateRefCountStoreIt itStateRefCount = --(_stateRefCountStore.end());
 
-    ExtendActorStoreIt   itExtend        =    beginExtend();
-    ExtendActorStoreIt   endItExtend     =    endExtend  ();
+  ExtendActorStoreIt itExtend    = beginExtend();
+  ExtendActorStoreIt endItExtend = endExtend();
 
-    for(; itExtend != endItExtend; ++itExtend)
-    {
-        stateSlot = (*itExtend)->createStateClone();
-    }
+  for (; itExtend != endItExtend; ++itExtend) {
+    stateSlot = (*itExtend)->createStateClone();
+  }
 
-    BasicActorStoreIt itBasic    = beginBasic();
-    BasicActorStoreIt endItBasic = endBasic  ();
+  BasicActorStoreIt itBasic    = beginBasic();
+  BasicActorStoreIt endItBasic = endBasic();
 
-    for(; itBasic != endItBasic; ++itBasic)
-    {
-        stateSlot = (*itBasic)->createStateClone();
-    }
+  for (; itBasic != endItBasic; ++itBasic) {
+    stateSlot = (*itBasic)->createStateClone();
+  }
 
-    _stateRefCountStore.push_back(StateRefCount(stateSlot));
+  _stateRefCountStore.push_back(StateRefCount(stateSlot));
 
-    return ++itStateRefCount;
+  return ++itStateRefCount;
 
-#else  /* OSG_NEWACTION_STATESLOTINTERFACE */
+#else /* OSG_NEWACTION_STATESLOTINTERFACE */
 
-    StateStoreIt         itState         = --(_stateStore        .end  ());
-    StateRefCountStoreIt itStateRefCount = --(_stateRefCountStore.end  ());
+  StateStoreIt         itState         = --(_stateStore.end());
+  StateRefCountStoreIt itStateRefCount = --(_stateRefCountStore.end());
 
-    ExtendActorStoreIt   itExtend        =    beginExtend();
-    ExtendActorStoreIt   endItExtend     =    endExtend  ();
+  ExtendActorStoreIt itExtend    = beginExtend();
+  ExtendActorStoreIt endItExtend = endExtend();
 
-    for(; itExtend != endItExtend; ++itExtend)
-    {
-        _stateStore.push_back((*itExtend)->createStateClone());
-    }
+  for (; itExtend != endItExtend; ++itExtend) {
+    _stateStore.push_back((*itExtend)->createStateClone());
+  }
 
-    BasicActorStoreIt itBasic    = beginBasic();
-    BasicActorStoreIt endItBasic = endBasic  ();
+  BasicActorStoreIt itBasic    = beginBasic();
+  BasicActorStoreIt endItBasic = endBasic();
 
-    for(; itBasic != endItBasic; ++itBasic)
-    {
-        _stateStore.push_back((*itBasic)->createStateClone());
-    }
+  for (; itBasic != endItBasic; ++itBasic) {
+    _stateStore.push_back((*itBasic)->createStateClone());
+  }
 
-    _stateRefCountStore.push_back(StateRefCount(++itState));
+  _stateRefCountStore.push_back(StateRefCount(++itState));
 
-    return ++itStateRefCount;
+  return ++itStateRefCount;
 
 #endif /* OSG_NEWACTION_STATESLOTINTERFACE */
 }
@@ -422,62 +357,56 @@ DepthFirstStateAction::cloneState(void)
 /*! Stores the state currently used by the attached actors.
  */
 
-inline DepthFirstStateAction::StateRefCountStoreIt
-DepthFirstStateAction::getState(void)
-{
+inline DepthFirstStateAction::StateRefCountStoreIt DepthFirstStateAction::getState(void) {
 #ifdef OSG_NEWACTION_STATESLOTINTERFACE
 
-    UInt32               stateSlot;
-    StateRefCountStoreIt itStateRefCount = --(_stateRefCountStore.end  ());
+  UInt32               stateSlot;
+  StateRefCountStoreIt itStateRefCount = --(_stateRefCountStore.end());
 
-    ExtendActorStoreIt   itExtend        =    beginExtend();
-    ExtendActorStoreIt   endItExtend     =    endExtend  ();
+  ExtendActorStoreIt itExtend    = beginExtend();
+  ExtendActorStoreIt endItExtend = endExtend();
 
-    for(; itExtend != endItExtend; ++itExtend)
-    {
-        stateSlot = (*itExtend)->getSlotMap().size();
+  for (; itExtend != endItExtend; ++itExtend) {
+    stateSlot = (*itExtend)->getSlotMap().size();
 
-        (*itExtend)->getSlotMap().push_back((*itExtend)->getState());
-    }
+    (*itExtend)->getSlotMap().push_back((*itExtend)->getState());
+  }
 
-    BasicActorStoreIt itBasic    = beginBasic();
-    BasicActorStoreIt endItBasic = endBasic  ();
+  BasicActorStoreIt itBasic    = beginBasic();
+  BasicActorStoreIt endItBasic = endBasic();
 
-    for(; itBasic != endItBasic; ++itBasic)
-    {
-        stateSlot = (*itExtend)->getSlotMap().size();
+  for (; itBasic != endItBasic; ++itBasic) {
+    stateSlot = (*itExtend)->getSlotMap().size();
 
-        (*itExtend)->getSlotMap().push_back((*itExtend)->getState());
-    }
+    (*itExtend)->getSlotMap().push_back((*itExtend)->getState());
+  }
 
-    _stateRefCountStore.push_back(StateRefCount(stateSlot));
+  _stateRefCountStore.push_back(StateRefCount(stateSlot));
 
-    return ++itStateRefCount;
+  return ++itStateRefCount;
 
-#else  /* OSG_NEWACTION_STATESLOTINTERFACE */
+#else /* OSG_NEWACTION_STATESLOTINTERFACE */
 
-    StateStoreIt         itState         = --(_stateStore        .end  ());
-    StateRefCountStoreIt itStateRefCount = --(_stateRefCountStore.end  ());
+  StateStoreIt         itState         = --(_stateStore.end());
+  StateRefCountStoreIt itStateRefCount = --(_stateRefCountStore.end());
 
-    ExtendActorStoreIt   itExtend        =    beginExtend();
-    ExtendActorStoreIt   endItExtend     =    endExtend  ();
+  ExtendActorStoreIt itExtend    = beginExtend();
+  ExtendActorStoreIt endItExtend = endExtend();
 
-    for(; itExtend != endItExtend; ++itExtend)
-    {
-        _stateStore.push_back((*itExtend)->getState());
-    }
+  for (; itExtend != endItExtend; ++itExtend) {
+    _stateStore.push_back((*itExtend)->getState());
+  }
 
-    BasicActorStoreIt itBasic    = beginBasic();
-    BasicActorStoreIt endItBasic = endBasic  ();
+  BasicActorStoreIt itBasic    = beginBasic();
+  BasicActorStoreIt endItBasic = endBasic();
 
-    for(; itBasic != endItBasic; ++itBasic)
-    {
-        _stateStore.push_back((*itBasic)->getState());
-    }
+  for (; itBasic != endItBasic; ++itBasic) {
+    _stateStore.push_back((*itBasic)->getState());
+  }
 
-    _stateRefCountStore.push_back(StateRefCount(++itState));
+  _stateRefCountStore.push_back(StateRefCount(++itState));
 
-    return ++itStateRefCount;
+  return ++itStateRefCount;
 
 #endif /* OSG_NEWACTION_STATESLOTINTERFACE */
 }
@@ -485,48 +414,42 @@ DepthFirstStateAction::getState(void)
 /*! Sets the state to use for the attached actors.
  */
 
-inline void
-DepthFirstStateAction::setState(StateRefCountStoreIt itStateRefCount)
-{
+inline void DepthFirstStateAction::setState(StateRefCountStoreIt itStateRefCount) {
 #ifdef OSG_NEWACTION_STATESLOTINTERFACE
 
-    UInt32             stateSlot   = itStateRefCount->getStateSlot();
+  UInt32 stateSlot = itStateRefCount->getStateSlot();
 
-    ExtendActorStoreIt   itExtend        =    beginExtend();
-    ExtendActorStoreIt   endItExtend     =    endExtend  ();
+  ExtendActorStoreIt itExtend    = beginExtend();
+  ExtendActorStoreIt endItExtend = endExtend();
 
-    for(; itExtend != endItExtend; ++itExtend, ++itState)
-    {
-        (*itExtend)->setState((*itExtend)->getSlotMap()[stateSlot]);
-    }
+  for (; itExtend != endItExtend; ++itExtend, ++itState) {
+    (*itExtend)->setState((*itExtend)->getSlotMap()[stateSlot]);
+  }
 
-    BasicActorStoreIt itBasic    = beginBasic();
-    BasicActorStoreIt endItBasic = endBasic  ();
+  BasicActorStoreIt itBasic    = beginBasic();
+  BasicActorStoreIt endItBasic = endBasic();
 
-    for(; itBasic != endItBasic; ++itBasic, ++itState)
-    {
-        (*itBasic)->setState((*itBasic)->getSlotMap()[stateSlot]);
-    }
+  for (; itBasic != endItBasic; ++itBasic, ++itState) {
+    (*itBasic)->setState((*itBasic)->getSlotMap()[stateSlot]);
+  }
 
-#else  /* OSG_NEWACTION_STATESLOTINTERFACE */
+#else /* OSG_NEWACTION_STATESLOTINTERFACE */
 
-    StateStoreIt       itState     = itStateRefCount->getState();
+  StateStoreIt itState = itStateRefCount->getState();
 
-    ExtendActorStoreIt itExtend    = beginExtend();
-    ExtendActorStoreIt endItExtend = endExtend  ();
+  ExtendActorStoreIt itExtend    = beginExtend();
+  ExtendActorStoreIt endItExtend = endExtend();
 
-    for(; itExtend != endItExtend; ++itExtend, ++itState)
-    {
-        (*itExtend)->setState(*itState);
-    }
+  for (; itExtend != endItExtend; ++itExtend, ++itState) {
+    (*itExtend)->setState(*itState);
+  }
 
-    BasicActorStoreIt itBasic    = beginBasic();
-    BasicActorStoreIt endItBasic = endBasic  ();
+  BasicActorStoreIt itBasic    = beginBasic();
+  BasicActorStoreIt endItBasic = endBasic();
 
-    for(; itBasic != endItBasic; ++itBasic, ++itState)
-    {
-        (*itBasic)->setState(*itState);
-    }
+  for (; itBasic != endItBasic; ++itBasic, ++itState) {
+    (*itBasic)->setState(*itState);
+  }
 
 #endif /* OSG_NEWACTION_STATESLOTINTERFACE */
 }
@@ -534,87 +457,78 @@ DepthFirstStateAction::setState(StateRefCountStoreIt itStateRefCount)
 /*! Increment the ref count by inc.
  */
 
-inline void
-DepthFirstStateAction::incRefCount(StateRefCountStoreIt itStateRefCount, Int32 inc)
-{
-    itStateRefCount->incRefCount(inc);
+inline void DepthFirstStateAction::incRefCount(StateRefCountStoreIt itStateRefCount, Int32 inc) {
+  itStateRefCount->incRefCount(inc);
 }
 
 /*! Decrement the ref count by dec. If it reaches 0 the state is delete.
  */
 
-inline void
-DepthFirstStateAction::decRefCount(StateRefCountStoreIt itStateRefCount, Int32 dec)
-{
+inline void DepthFirstStateAction::decRefCount(StateRefCountStoreIt itStateRefCount, Int32 dec) {
 #ifdef OSG_NEWACTION_STATESLOTINTERFACE
 
-    itStateRefCount->decRefCount(dec);
+  itStateRefCount->decRefCount(dec);
 
-    if(itStateRefCount->getRefCount() <= 0)
-    {
-        UInt32             stateSlot   = itStateRefCount->getStateSlot();
+  if (itStateRefCount->getRefCount() <= 0) {
+    UInt32 stateSlot = itStateRefCount->getStateSlot();
 
-        ExtendActorStoreIt itExtend    = beginExtend();
-        ExtendActorStoreIt endItExtend = endExtend  ();
+    ExtendActorStoreIt itExtend    = beginExtend();
+    ExtendActorStoreIt endItExtend = endExtend();
 
-        for(; itExtend != endExtend; ++itExtend)
-        {
-            delete (*itExtend)->getSlotMap()[stateSlot];
+    for (; itExtend != endExtend; ++itExtend) {
+      delete (*itExtend)->getSlotMap()[stateSlot];
 
-            //(*itExtend)->destroyStateClone(stateSlot);
-        }
-
-        BasicActorStoreIt itBasic    = beginBasic();
-        BasicActorStoreIt endItBasic = endBasic  ();
-
-        for(; itBasic != endBasic; ++itBasic)
-        {
-            delete (*itBasic)->getSlotMap()[stateSlot];
-
-            //(*itBasic)->destroyStateClone(stateSlot);
-        }
-
-        _stateRefCountStore.erase(itStateRefCount);
+      //(*itExtend)->destroyStateClone(stateSlot);
     }
+
+    BasicActorStoreIt itBasic    = beginBasic();
+    BasicActorStoreIt endItBasic = endBasic();
+
+    for (; itBasic != endBasic; ++itBasic) {
+      delete (*itBasic)->getSlotMap()[stateSlot];
+
+      //(*itBasic)->destroyStateClone(stateSlot);
+    }
+
+    _stateRefCountStore.erase(itStateRefCount);
+  }
 
 #else /* OSG_NEWACTION_STATESLOTINTERFACE */
 
-    itStateRefCount->decRefCount(dec);
+  itStateRefCount->decRefCount(dec);
 
-    if(itStateRefCount->getRefCount() <= 0)
-    {
-        StateStoreIt       itState     = itStateRefCount->getState();
+  if (itStateRefCount->getRefCount() <= 0) {
+    StateStoreIt itState = itStateRefCount->getState();
 
-        ExtendActorStoreIt itExtend    = beginExtend();
-        ExtendActorStoreIt endItExtend = endExtend  ();
+    ExtendActorStoreIt itExtend    = beginExtend();
+    ExtendActorStoreIt endItExtend = endExtend();
 
-        for(; itExtend != endItExtend; ++itExtend)
-        {
-            delete *itState;
+    for (; itExtend != endItExtend; ++itExtend) {
+      delete *itState;
 
-            //(*itExtend)->destroyStateClone(*itState);
+      //(*itExtend)->destroyStateClone(*itState);
 
-            itState = _stateStore.erase(itState);
-        }
-
-        BasicActorStoreIt itBasic    = beginBasic();
-        BasicActorStoreIt endItBasic = endBasic  ();
-
-        for(; itBasic != endItBasic; ++itBasic)
-        {
-            delete *itState;
-
-            //(*itBasic)->destroyStateClone(*itState);
-
-            itState = _stateStore.erase(itState);
-        }
-
-        _stateRefCountStore.erase(itStateRefCount);
+      itState = _stateStore.erase(itState);
     }
+
+    BasicActorStoreIt itBasic    = beginBasic();
+    BasicActorStoreIt endItBasic = endBasic();
+
+    for (; itBasic != endItBasic; ++itBasic) {
+      delete *itState;
+
+      //(*itBasic)->destroyStateClone(*itState);
+
+      itState = _stateStore.erase(itState);
+    }
+
+    _stateRefCountStore.erase(itStateRefCount);
+  }
 
 #endif /* OSG_NEWACTION_STATESLOTINTERFACE */
 }
 
 OSG_END_NAMESPACE
 
-#define OSGDEPTHFIRSTSTATEACTION_INLINE_CVSID "@(#)$Id: OSGDepthFirstStateAction.inl,v 1.2 2004/09/17 14:09:43 neumannc Exp $"
+#define OSGDEPTHFIRSTSTATEACTION_INLINE_CVSID                                                      \
+  "@(#)$Id: OSGDepthFirstStateAction.inl,v 1.2 2004/09/17 14:09:43 neumannc Exp $"

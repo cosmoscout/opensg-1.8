@@ -37,7 +37,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 //---------------------------------------------------------------------------
 //  Includes
 //---------------------------------------------------------------------------
@@ -50,10 +49,10 @@
 #include <iostream>
 
 #ifdef WIN32
-  #include <time.h>
+#include <time.h>
 #else
-  #include <sys/types.h>
-  #include <sys/time.h>
+#include <sys/types.h>
+#include <sys/time.h>
 #endif
 
 #include "OSGTime.h"

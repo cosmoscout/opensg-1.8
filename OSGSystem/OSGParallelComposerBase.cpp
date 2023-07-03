@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEPARALLELCOMPOSERINST
 
 #include <stdlib.h>
@@ -61,274 +60,206 @@
 #include "OSGParallelComposerBase.h"
 #include "OSGParallelComposer.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  ParallelComposerBase::ShortFieldMask = 
+const OSG::BitVector ParallelComposerBase::ShortFieldMask =
     (TypeTraits<BitVector>::One << ParallelComposerBase::ShortFieldId);
 
-const OSG::BitVector  ParallelComposerBase::AlphaFieldMask = 
+const OSG::BitVector ParallelComposerBase::AlphaFieldMask =
     (TypeTraits<BitVector>::One << ParallelComposerBase::AlphaFieldId);
 
-const OSG::BitVector  ParallelComposerBase::PcLibPathFieldMask = 
+const OSG::BitVector ParallelComposerBase::PcLibPathFieldMask =
     (TypeTraits<BitVector>::One << ParallelComposerBase::PcLibPathFieldId);
 
-const OSG::BitVector ParallelComposerBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector ParallelComposerBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
 /*! \var bool            ParallelComposerBase::_sfShort
-    
+
 */
 /*! \var bool            ParallelComposerBase::_sfAlpha
-    
+
 */
 /*! \var std::string     ParallelComposerBase::_sfPcLibPath
-    
+
 */
 
 //! ParallelComposer description
 
-FieldDescription *ParallelComposerBase::_desc[] = 
-{
-    new FieldDescription(SFBool::getClassType(), 
-                     "short", 
-                     ShortFieldId, ShortFieldMask,
-                     false,
-                     (FieldAccessMethod) &ParallelComposerBase::getSFShort),
-    new FieldDescription(SFBool::getClassType(), 
-                     "alpha", 
-                     AlphaFieldId, AlphaFieldMask,
-                     false,
-                     (FieldAccessMethod) &ParallelComposerBase::getSFAlpha),
-    new FieldDescription(SFString::getClassType(), 
-                     "pcLibPath", 
-                     PcLibPathFieldId, PcLibPathFieldMask,
-                     false,
-                     (FieldAccessMethod) &ParallelComposerBase::getSFPcLibPath)
-};
+FieldDescription* ParallelComposerBase::_desc[] = {
+    new FieldDescription(SFBool::getClassType(), "short", ShortFieldId, ShortFieldMask, false,
+        (FieldAccessMethod)&ParallelComposerBase::getSFShort),
+    new FieldDescription(SFBool::getClassType(), "alpha", AlphaFieldId, AlphaFieldMask, false,
+        (FieldAccessMethod)&ParallelComposerBase::getSFAlpha),
+    new FieldDescription(SFString::getClassType(), "pcLibPath", PcLibPathFieldId,
+        PcLibPathFieldMask, false, (FieldAccessMethod)&ParallelComposerBase::getSFPcLibPath)};
 
-
-FieldContainerType ParallelComposerBase::_type(
-    "ParallelComposer",
-    "ImageComposer",
-    NULL,
-    (PrototypeCreateF) &ParallelComposerBase::createEmpty,
-    ParallelComposer::initMethod,
-    _desc,
+FieldContainerType ParallelComposerBase::_type("ParallelComposer", "ImageComposer", NULL,
+    (PrototypeCreateF)&ParallelComposerBase::createEmpty, ParallelComposer::initMethod, _desc,
     sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(ParallelComposerBase, ParallelComposerPtr)
+// OSG_FIELD_CONTAINER_DEF(ParallelComposerBase, ParallelComposerPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &ParallelComposerBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &ParallelComposerBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr ParallelComposerBase::shallowCopy(void) const 
-{ 
-    ParallelComposerPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const ParallelComposer *>(this)); 
-
-    return returnValue; 
+FieldContainerType& ParallelComposerBase::getType(void) {
+  return _type;
 }
 
-UInt32 ParallelComposerBase::getContainerSize(void) const 
-{ 
-    return sizeof(ParallelComposer); 
+const FieldContainerType& ParallelComposerBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr ParallelComposerBase::shallowCopy(void) const {
+  ParallelComposerPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const ParallelComposer*>(this));
+
+  return returnValue;
+}
+
+UInt32 ParallelComposerBase::getContainerSize(void) const {
+  return sizeof(ParallelComposer);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ParallelComposerBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((ParallelComposerBase *) &other, whichField);
+void ParallelComposerBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((ParallelComposerBase*)&other, whichField);
 }
 #else
-void ParallelComposerBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((ParallelComposerBase *) &other, whichField, sInfo);
+void ParallelComposerBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((ParallelComposerBase*)&other, whichField, sInfo);
 }
-void ParallelComposerBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void ParallelComposerBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void ParallelComposerBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void ParallelComposerBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-ParallelComposerBase::ParallelComposerBase(void) :
-    _sfShort                  (bool(true)), 
-    _sfAlpha                  (bool(false)), 
-    _sfPcLibPath              (), 
-    Inherited() 
-{
+ParallelComposerBase::ParallelComposerBase(void)
+    : _sfShort(bool(true))
+    , _sfAlpha(bool(false))
+    , _sfPcLibPath()
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-ParallelComposerBase::ParallelComposerBase(const ParallelComposerBase &source) :
-    _sfShort                  (source._sfShort                  ), 
-    _sfAlpha                  (source._sfAlpha                  ), 
-    _sfPcLibPath              (source._sfPcLibPath              ), 
-    Inherited                 (source)
-{
+ParallelComposerBase::ParallelComposerBase(const ParallelComposerBase& source)
+    : _sfShort(source._sfShort)
+    , _sfAlpha(source._sfAlpha)
+    , _sfPcLibPath(source._sfPcLibPath)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-ParallelComposerBase::~ParallelComposerBase(void)
-{
+ParallelComposerBase::~ParallelComposerBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 ParallelComposerBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 ParallelComposerBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (ShortFieldMask & whichField))
-    {
-        returnValue += _sfShort.getBinSize();
-    }
+  if (FieldBits::NoField != (ShortFieldMask & whichField)) {
+    returnValue += _sfShort.getBinSize();
+  }
 
-    if(FieldBits::NoField != (AlphaFieldMask & whichField))
-    {
-        returnValue += _sfAlpha.getBinSize();
-    }
+  if (FieldBits::NoField != (AlphaFieldMask & whichField)) {
+    returnValue += _sfAlpha.getBinSize();
+  }
 
-    if(FieldBits::NoField != (PcLibPathFieldMask & whichField))
-    {
-        returnValue += _sfPcLibPath.getBinSize();
-    }
+  if (FieldBits::NoField != (PcLibPathFieldMask & whichField)) {
+    returnValue += _sfPcLibPath.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void ParallelComposerBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void ParallelComposerBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ShortFieldMask & whichField))
-    {
-        _sfShort.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (ShortFieldMask & whichField)) {
+    _sfShort.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (AlphaFieldMask & whichField))
-    {
-        _sfAlpha.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (AlphaFieldMask & whichField)) {
+    _sfAlpha.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (PcLibPathFieldMask & whichField))
-    {
-        _sfPcLibPath.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (PcLibPathFieldMask & whichField)) {
+    _sfPcLibPath.copyToBin(pMem);
+  }
 }
 
-void ParallelComposerBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void ParallelComposerBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ShortFieldMask & whichField))
-    {
-        _sfShort.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (ShortFieldMask & whichField)) {
+    _sfShort.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (AlphaFieldMask & whichField))
-    {
-        _sfAlpha.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (AlphaFieldMask & whichField)) {
+    _sfAlpha.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (PcLibPathFieldMask & whichField))
-    {
-        _sfPcLibPath.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (PcLibPathFieldMask & whichField)) {
+    _sfPcLibPath.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ParallelComposerBase::executeSyncImpl(      ParallelComposerBase *pOther,
-                                        const BitVector         &whichField)
-{
+void ParallelComposerBase::executeSyncImpl(
+    ParallelComposerBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (ShortFieldMask & whichField))
-        _sfShort.syncWith(pOther->_sfShort);
+  if (FieldBits::NoField != (ShortFieldMask & whichField))
+    _sfShort.syncWith(pOther->_sfShort);
 
-    if(FieldBits::NoField != (AlphaFieldMask & whichField))
-        _sfAlpha.syncWith(pOther->_sfAlpha);
+  if (FieldBits::NoField != (AlphaFieldMask & whichField))
+    _sfAlpha.syncWith(pOther->_sfAlpha);
 
-    if(FieldBits::NoField != (PcLibPathFieldMask & whichField))
-        _sfPcLibPath.syncWith(pOther->_sfPcLibPath);
-
-
+  if (FieldBits::NoField != (PcLibPathFieldMask & whichField))
+    _sfPcLibPath.syncWith(pOther->_sfPcLibPath);
 }
 #else
-void ParallelComposerBase::executeSyncImpl(      ParallelComposerBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void ParallelComposerBase::executeSyncImpl(
+    ParallelComposerBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (ShortFieldMask & whichField))
-        _sfShort.syncWith(pOther->_sfShort);
+  if (FieldBits::NoField != (ShortFieldMask & whichField))
+    _sfShort.syncWith(pOther->_sfShort);
 
-    if(FieldBits::NoField != (AlphaFieldMask & whichField))
-        _sfAlpha.syncWith(pOther->_sfAlpha);
+  if (FieldBits::NoField != (AlphaFieldMask & whichField))
+    _sfAlpha.syncWith(pOther->_sfAlpha);
 
-    if(FieldBits::NoField != (PcLibPathFieldMask & whichField))
-        _sfPcLibPath.syncWith(pOther->_sfPcLibPath);
-
-
-
+  if (FieldBits::NoField != (PcLibPathFieldMask & whichField))
+    _sfPcLibPath.syncWith(pOther->_sfPcLibPath);
 }
 
-void ParallelComposerBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void ParallelComposerBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 OSG_BEGIN_NAMESPACE
 
@@ -336,6 +267,4 @@ OSG_BEGIN_NAMESPACE
 DataType FieldDataTraits<ParallelComposerPtr>::_type("ParallelComposerPtr", "ImageComposerPtr");
 #endif
 
-
 OSG_END_NAMESPACE
-

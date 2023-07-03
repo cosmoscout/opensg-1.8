@@ -40,9 +40,8 @@
 #define _OSGTEXTTXFPARAM_H_
 
 #ifdef _MSC_VER
-# pragma once
+#pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -50,78 +49,72 @@
 
 #include <string>
 
-
 OSG_BEGIN_NAMESPACE
-
 
 /**
  * Defines a set of parameters used when creating new
  * TXF faces.
  * @author Patrick D&auml;hne
  */
-class OSG_SYSTEMLIB_DLLMAPPING TextTXFParam
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING TextTXFParam {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /**
+   * Creates a new TextTXFParam object.
+   */
+  inline TextTXFParam();
 
-    /**
-     * Creates a new TextTXFParam object.
-     */
-    inline TextTXFParam();
+  /** The size of the glyphs in pixels */
+  UInt32 size;
 
-    /** The size of the glyphs in pixels */
-    UInt32 size;
+  /** The gap between glyphs in pixels */
+  UInt32 gap;
 
-    /** The gap between glyphs in pixels */
-    UInt32 gap;
+  /** The width of the texture in pixels */
+  UInt32 textureWidth;
 
-    /** The width of the texture in pixels */
-    UInt32 textureWidth;
+  /**
+   * Sets the characters contained in the texture.
+   * @param The UTF-8 encoded characters contained in the texture.
+   */
+  inline void setCharacters(const std::string& utf8Characters);
 
-    /**
-     * Sets the characters contained in the texture.
-     * @param The UTF-8 encoded characters contained in the texture.
-     */
-    inline void setCharacters(const std::string &utf8Characters);
+  /**
+   * Sets the characters contained in the texture.
+   * @param The unicode characters contained in the texture.
+   */
+  inline void setCharacters(const std::wstring& characters);
 
-    /**
-     * Sets the characters contained in the texture.
-     * @param The unicode characters contained in the texture.
-     */
-    inline void setCharacters(const std::wstring &characters);
+  /**
+   * Returns the characters contained in the texture.
+   * @return The characters contained in the texture.
+   */
+  inline const std::wstring& getCharacters() const;
 
-    /**
-     * Returns the characters contained in the texture.
-     * @return The characters contained in the texture.
-     */
-    inline const std::wstring &getCharacters() const;
+  /**
+   * Compares the TextTXFParam object with another TextTXFParam object.
+   * @param other The other %TextTXFParam object.
+   * @return true when both %TextTXFParam objects are the same.
+   */
+  bool operator==(const TextTXFParam& other) const;
 
-    /**
-     * Compares the TextTXFParam object with another TextTXFParam object.
-     * @param other The other %TextTXFParam object.
-     * @return true when both %TextTXFParam objects are the same.
-     */
-    bool operator==(const TextTXFParam &other) const;
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /** The characters contained in the texture */
+  std::wstring _characters;
 
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /** The default character set */
+  static std::wstring _defaultCharacters;
 
-    /** The characters contained in the texture */
-    std::wstring _characters;
-
-    /** The default character set */
-    static std::wstring _defaultCharacters;
-
-    /** Sorts the characters in the character string and removes duplicates */
-    void normalizeCharacters();
+  /** Sorts the characters in the character string and removes duplicates */
+  void normalizeCharacters();
 };
-
 
 OSG_END_NAMESPACE
 
-
 #include <OSGTextTXFParam.inl>
 
-#define OSGTEXTTXFPARAM_HEADER_CVSID "@(#)$Id: OSGTextTXFParam.h,v 1.1 2005/03/03 13:43:07 a-m-z Exp $"
+#define OSGTEXTTXFPARAM_HEADER_CVSID                                                               \
+  "@(#)$Id: OSGTextTXFParam.h,v 1.1 2005/03/03 13:43:07 a-m-z Exp $"
 
 #endif /* _OSGTEXTTXFPARAM_H_ */

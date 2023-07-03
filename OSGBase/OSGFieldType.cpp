@@ -55,68 +55,49 @@ OSG_USING_NAMESPACE
 /*-------------------------------------------------------------------------*/
 /*                            Constructors                                 */
 
-FieldType::FieldType(const Char8             *szName,
-                     const Char8             *szParentName,
-                     const DataType          &contentType,
-                           CreateFieldMethod  createMethod,
-                           Cardinality        cardinality) :
-     Inherited   (szName, szParentName),
-    _cardinality (cardinality         ),
-    _contentType (contentType         ),
-    _pScanAsType (NULL                ),
-    _createMethod(createMethod        )
-{
-    FieldFactory::addType(this);
-    FDEBUG (("Initialized FieldType : %s %p\n", getCName(), this));
+FieldType::FieldType(const Char8* szName, const Char8* szParentName, const DataType& contentType,
+    CreateFieldMethod createMethod, Cardinality cardinality)
+    : Inherited(szName, szParentName)
+    , _cardinality(cardinality)
+    , _contentType(contentType)
+    , _pScanAsType(NULL)
+    , _createMethod(createMethod) {
+  FieldFactory::addType(this);
+  FDEBUG(("Initialized FieldType : %s %p\n", getCName(), this));
 }
 
-FieldType::FieldType(const Char8              *szName,
-                     const Char8              *szParentName,
-                     const DataType           &contentType,
-                           CreateFieldMethod   createMethod,
-                           Cardinality         cardinality,
-                     const FieldType          &pScanAsType ) :
-     Inherited   ( szName, szParentName),
-    _cardinality ( cardinality         ),
-    _contentType ( contentType         ),
-    _pScanAsType (&pScanAsType         ),
-    _createMethod( createMethod        )
-{
-    FieldFactory::addType(this);
-    FDEBUG (("Initialized FieldType : %s %p\n", getCName(), this));
+FieldType::FieldType(const Char8* szName, const Char8* szParentName, const DataType& contentType,
+    CreateFieldMethod createMethod, Cardinality cardinality, const FieldType& pScanAsType)
+    : Inherited(szName, szParentName)
+    , _cardinality(cardinality)
+    , _contentType(contentType)
+    , _pScanAsType(&pScanAsType)
+    , _createMethod(createMethod) {
+  FieldFactory::addType(this);
+  FDEBUG(("Initialized FieldType : %s %p\n", getCName(), this));
 }
-
 
 /*-------------------------------------------------------------------------*/
 /*                             Destructor                                  */
 
-FieldType::~FieldType(void)
-{
+FieldType::~FieldType(void) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                                Get                                      */
 
-const DataType &FieldType::getContentType(void) const
-{
-    return _contentType;
+const DataType& FieldType::getContentType(void) const {
+  return _contentType;
 }
 
-FieldType::Cardinality FieldType::getCardinality(void) const
-{
-    return _cardinality;
+FieldType::Cardinality FieldType::getCardinality(void) const {
+  return _cardinality;
 }
 
-UInt32 FieldType::getScanTypeId(void) const
-{
-    if(_pScanAsType == NULL)
-    {
-        return getId();
-    }
-    else
-    {
-        return _pScanAsType->getId();
-    }
+UInt32 FieldType::getScanTypeId(void) const {
+  if (_pScanAsType == NULL) {
+    return getId();
+  } else {
+    return _pScanAsType->getId();
+  }
 }
-
-

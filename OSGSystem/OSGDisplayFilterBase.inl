@@ -52,55 +52,38 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &DisplayFilterBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& DisplayFilterBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 DisplayFilterBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
-
+inline OSG::UInt32 DisplayFilterBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the DisplayFilter::_sfEnabled field.
-inline
-SFBool *DisplayFilterBase::getSFEnabled(void)
-{
-    return &_sfEnabled;
-}
-
-
-//! Get the value of the DisplayFilter::_sfEnabled field.
-inline
-bool &DisplayFilterBase::getEnabled(void)
-{
-    return _sfEnabled.getValue();
+inline SFBool* DisplayFilterBase::getSFEnabled(void) {
+  return &_sfEnabled;
 }
 
 //! Get the value of the DisplayFilter::_sfEnabled field.
-inline
-const bool &DisplayFilterBase::getEnabled(void) const
-{
-    return _sfEnabled.getValue();
+inline bool& DisplayFilterBase::getEnabled(void) {
+  return _sfEnabled.getValue();
+}
+
+//! Get the value of the DisplayFilter::_sfEnabled field.
+inline const bool& DisplayFilterBase::getEnabled(void) const {
+  return _sfEnabled.getValue();
 }
 
 //! Set the value of the DisplayFilter::_sfEnabled field.
-inline
-void DisplayFilterBase::setEnabled(const bool &value)
-{
-    _sfEnabled.setValue(value);
+inline void DisplayFilterBase::setEnabled(const bool& value) {
+  _sfEnabled.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
 #define OSGDISPLAYFILTERBASE_INLINE_CVSID "@(#)$Id: $"
-

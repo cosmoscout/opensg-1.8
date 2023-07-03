@@ -38,89 +38,55 @@
 
 #ifndef _OSGDATE_INL_
 #define _OSGDATE_INL_
-#ifdef  __sgi
-#pragma  once
+#ifdef __sgi
+#pragma once
 #endif
 
 OSG_BEGIN_NAMESPACE
 
-inline 
-void Date::setSecond(UInt32 second)
-{
-    _second = second;
+inline void Date::setSecond(UInt32 second) {
+  _second = second;
 }
 
-
-inline 
-UInt32 Date::getSecond(void)
-{ 
-    return _second;
+inline UInt32 Date::getSecond(void) {
+  return _second;
 }
 
-
-inline
-void Date::setMinute(UInt32 minute)
-{ 
-    _minute = minute;
+inline void Date::setMinute(UInt32 minute) {
+  _minute = minute;
 }
 
-
-inline
-UInt32 Date::getMinute(void)
-{ 
-    return _minute;
+inline UInt32 Date::getMinute(void) {
+  return _minute;
 }
 
-
-inline
-void Date::setHour(UInt32 hour)
-{
-    _hour = hour;
+inline void Date::setHour(UInt32 hour) {
+  _hour = hour;
 }
 
-
-inline
-UInt32 Date::getHour(void)
-{
-    return _hour;
+inline UInt32 Date::getHour(void) {
+  return _hour;
 }
 
-
-inline 
-void Date::setDay(UInt32 day)
-{
-    _day = day; 
+inline void Date::setDay(UInt32 day) {
+  _day = day;
 }
 
-
-inline 
-UInt32 Date::getDay(void)
-{ 
-    return _day;
+inline UInt32 Date::getDay(void) {
+  return _day;
 }
 
-
-
-inline 
-void Date::setYear(Int32 year)
-{
-    _year = year;
+inline void Date::setYear(Int32 year) {
+  _year = year;
 }
 
-
-inline 
-Int32 Date::getYear(void)
-{ 
-    return _year;
-}
- 
-
-inline
-bool Date::operator !=(const Date &other)
-{
-    return !(*this == other);
+inline Int32 Date::getYear(void) {
+  return _year;
 }
 
+inline bool Date::operator!=(const Date& other) {
+  return !(*this == other);
+}
 
 OSG_END_NAMESPACE
 

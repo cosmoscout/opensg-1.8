@@ -52,53 +52,39 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &SepiaComposerBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& SepiaComposerBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 SepiaComposerBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 SepiaComposerBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-SepiaComposerPtr SepiaComposerBase::create(void) 
-{
-    SepiaComposerPtr fc; 
+inline SepiaComposerPtr SepiaComposerBase::create(void) {
+  SepiaComposerPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = SepiaComposerPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = SepiaComposerPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-SepiaComposerPtr SepiaComposerBase::createEmpty(void) 
-{ 
-    SepiaComposerPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline SepiaComposerPtr SepiaComposerBase::createEmpty(void) {
+  SepiaComposerPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
-
-
 OSG_END_NAMESPACE
 
-#define OSGSEPIACOMPOSERBASE_INLINE_CVSID "@(#)$Id: OSGSepiaComposerBase.inl,v 1.5 2006/02/20 16:54:21 dirk Exp $"
-
+#define OSGSEPIACOMPOSERBASE_INLINE_CVSID                                                          \
+  "@(#)$Id: OSGSepiaComposerBase.inl,v 1.5 2006/02/20 16:54:21 dirk Exp $"

@@ -51,134 +51,118 @@ OSG_BEGIN_NAMESPACE
 // forward reference
 class DVRRenderSlice;
 
-/*! \brief *put brief class description here* 
+/*! \brief *put brief class description here*
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING DVRMtexLUTShader : public DVRMtexLUTShaderBase
-{
-private:
+class OSG_SYSTEMLIB_DLLMAPPING DVRMtexLUTShader : public DVRMtexLUTShaderBase {
+ private:
+  typedef DVRMtexLUTShaderBase Inherited;
 
-    typedef DVRMtexLUTShaderBase Inherited;
+  /*==========================  PUBLIC  =================================*/
 
-    /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-  public:
+  virtual void changed(BitVector whichField, UInt32 from);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     from);
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                 Volume Rendering                             */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  // Callback to set up shader - register textures here
+  virtual bool initialize(DVRVolume* volume, DrawActionBase* action);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                 Volume Rendering                             */
-    /*! \{                                                                 */
-    
-    // Callback to set up shader - register textures here
-    virtual bool initialize       (DVRVolume      *volume, 
-                                   DrawActionBase *action      );
+  // Callback before any slice is rendered - setup per volume
+  virtual void activate(DVRVolume* volume, DrawActionBase* action);
 
-    // Callback before any slice is rendered - setup per volume
-    virtual void activate         (DVRVolume      *volume, 
-                                   DrawActionBase *action      );
+  // Callback after all rendering of the volume is done
+  virtual void deactivate(DVRVolume* volume, DrawActionBase* action);
 
-    // Callback after all rendering of the volume is done
-    virtual void deactivate       (DVRVolume      *volume, 
-                                   DrawActionBase *action      );
+  // Callback for rendering slices
+  virtual void renderSlice(
+      DVRVolume* volume, DrawActionBase* action, Real32* data, UInt32 vertices, UInt32 values);
 
-    // Callback for rendering slices
-    virtual void renderSlice      (DVRVolume      *volume, 
-                                   DrawActionBase *action,
-                                   Real32         *data, 
-                                   UInt32          vertices, 
-                                   UInt32          values      );
+  // Callback for rendering slices
+  virtual void renderSlice(DVRVolume* volume, DrawActionBase* action, DVRRenderSlice* clippedSlice);
 
-    // Callback for rendering slices
-    virtual void renderSlice      (DVRVolume      *volume, 
-                                   DrawActionBase *action,
-                                   DVRRenderSlice *clippedSlice);
+  // Callback to clean up shader resources
+  virtual void cleanup(DVRVolume* volume, DrawActionBase* action);
 
-    // Callback to clean up shader resources
-    virtual void cleanup          (DVRVolume      *volume, 
-                                   DrawActionBase *action      );
+  // Returns whether the shader has an implementation of 'renderSlice'
+  virtual bool hasRenderCallback(void);
 
-    // Returns whether the shader has an implementation of 'renderSlice'
-    virtual bool hasRenderCallback(void                        );
-    
-    // Returns whether the shader requires multitextured slabs instead of
-    // bricks
-    virtual bool useMTSlabs       (void                        ); 
+  // Returns whether the shader requires multitextured slabs instead of
+  // bricks
+  virtual bool useMTSlabs(void);
 
-    /*! \{                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  
-  protected:
+  /*! \{                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    // Variables should all be in DVRMtexLUTShaderBase.
+ protected:
+  // Variables should all be in DVRMtexLUTShaderBase.
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    DVRMtexLUTShader(void);
-    DVRMtexLUTShader(const DVRMtexLUTShader &source);
+  DVRMtexLUTShader(void);
+  DVRMtexLUTShader(const DVRMtexLUTShader& source);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    virtual ~DVRMtexLUTShader(void); 
+  virtual ~DVRMtexLUTShader(void);
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
+  /*! \}                                                                 */
 
-  private:
+  /*==========================  PRIVATE  ================================*/
 
-    // extension indices for used extensions;
-    static UInt32 _arbMultitexture;
-    static UInt32 _nvRegisterCombiners;
-    
-    // extension indices for used fucntions;
-    static UInt32 _funcMultiTexCoord2dARB;
-    static UInt32 _funcCombinerParameteriNV;
-    static UInt32 _funcCombinerParameterfvNV;
-    static UInt32 _funcCombinerInputNV;
-    static UInt32 _funcCombinerOutputNV;
-    static UInt32 _funcFinalCombinerInputNV;
+ private:
+  // extension indices for used extensions;
+  static UInt32 _arbMultitexture;
+  static UInt32 _nvRegisterCombiners;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                 Volume Rendering                             */
-    /*! \{                                                                 */
+  // extension indices for used fucntions;
+  static UInt32 _funcMultiTexCoord2dARB;
+  static UInt32 _funcCombinerParameteriNV;
+  static UInt32 _funcCombinerParameterfvNV;
+  static UInt32 _funcCombinerInputNV;
+  static UInt32 _funcCombinerOutputNV;
+  static UInt32 _funcFinalCombinerInputNV;
 
-    // Set up correct register combiner state
-    void initCombiners(DrawActionBase *action); 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                 Volume Rendering                             */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    
-    friend class FieldContainer;
-    friend class DVRMtexLUTShaderBase;
+  // Set up correct register combiner state
+  void initCombiners(DrawActionBase* action);
 
-    static void initMethod(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
 
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const DVRMtexLUTShader &source);
+  friend class FieldContainer;
+  friend class DVRMtexLUTShaderBase;
+
+  static void initMethod(void);
+
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const DVRMtexLUTShader& source);
 };
 
-typedef DVRMtexLUTShader *DVRMtexLUTShaderP;
+typedef DVRMtexLUTShader* DVRMtexLUTShaderP;
 
 OSG_END_NAMESPACE
 

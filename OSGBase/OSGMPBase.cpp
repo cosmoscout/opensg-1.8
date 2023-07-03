@@ -57,19 +57,12 @@ OSG_USING_NAMESPACE
 /*! \class osg::MPType
  */
 
-MPType::MPType(const Char8 *szName, 
-               const Char8 *szParentName) :
-    Inherited(szName, szParentName)
-{
+MPType::MPType(const Char8* szName, const Char8* szParentName)
+    : Inherited(szName, szParentName) {
 }
 
-
-MPType::~MPType(void)
-{
+MPType::~MPType(void) {
 }
-
-
-
 
 //---------------------------------------------------------------------------
 //  Class
@@ -80,49 +73,35 @@ MPType::~MPType(void)
 
 UInt32 MPThreadType::_uiThreadCount = 0;
 
+MPThreadType::MPThreadType(const Char8* szName, const Char8* szParentName,
+    CreateThreadF fCreateThread, InitThreadingF fInitThreading)
+    : Inherited(szName, szParentName)
+    , _fCreateThread(fCreateThread) {
+  ThreadManager::the()->registerThreadType(this);
 
-MPThreadType::MPThreadType(const Char8          *szName, 
-                           const Char8          *szParentName,
-                                 CreateThreadF   fCreateThread,
-                                 InitThreadingF  fInitThreading) :
-     Inherited    (szName, szParentName),
-    _fCreateThread(fCreateThread       )
-{
-    ThreadManager::the()->registerThreadType(this);
-
-    if(fInitThreading != NULL)
-        fInitThreading();
+  if (fInitThreading != NULL)
+    fInitThreading();
 }
 
-
-MPThreadType::~MPThreadType(void)
-{
+MPThreadType::~MPThreadType(void) {
 }
 
+BaseThread* MPThreadType::create(const Char8* szName) {
+  Char8* szTmp;
+  UInt32 uiNewId = _uiThreadCount++;
 
-BaseThread *MPThreadType::create(const Char8 *szName)
-{
-    Char8  *szTmp;
-    UInt32  uiNewId = _uiThreadCount++;
+  if (szName == NULL) {
+    szTmp = new Char8[16];
+    sprintf(szTmp, "OSGThread_%u", uiNewId);
+  } else {
+    szTmp = const_cast<Char8*>(szName);
+  }
 
-    if(szName == NULL)
-    {
-        szTmp = new Char8[16];
-        sprintf(szTmp, "OSGThread_%u", uiNewId);
-    }
-    else
-    {
-        szTmp = const_cast<Char8 *>(szName);
-    }
-
-    if(_fCreateThread != NULL)
-        return _fCreateThread(szTmp, uiNewId);
-    else
-        return NULL;
+  if (_fCreateThread != NULL)
+    return _fCreateThread(szTmp, uiNewId);
+  else
+    return NULL;
 }
-
-
-
 
 //---------------------------------------------------------------------------
 //  Class
@@ -133,34 +112,24 @@ BaseThread *MPThreadType::create(const Char8 *szName)
 
 UInt32 MPBarrierType::_uiBarrierCount = 0;
 
-
-MPBarrierType::MPBarrierType(const Char8          *szName, 
-                             const Char8          *szParentName,
-                                   CreateBarrierF  fCreateBarrier) :
-     Inherited     (szName, szParentName),
-    _fCreateBarrier(fCreateBarrier      )
-{
-    ThreadManager::the()->registerBarrierType(this);
+MPBarrierType::MPBarrierType(
+    const Char8* szName, const Char8* szParentName, CreateBarrierF fCreateBarrier)
+    : Inherited(szName, szParentName)
+    , _fCreateBarrier(fCreateBarrier) {
+  ThreadManager::the()->registerBarrierType(this);
 }
 
-
-MPBarrierType::~MPBarrierType(void)
-{
+MPBarrierType::~MPBarrierType(void) {
 }
 
+Barrier* MPBarrierType::create(const Char8* szName) {
+  UInt32 uiNewId = _uiBarrierCount++;
 
-Barrier *MPBarrierType::create(const Char8 *szName)
-{
-    UInt32 uiNewId = _uiBarrierCount++;
-
-    if(_fCreateBarrier != NULL)
-        return _fCreateBarrier(szName, uiNewId);
-    else
-        return NULL;
+  if (_fCreateBarrier != NULL)
+    return _fCreateBarrier(szName, uiNewId);
+  else
+    return NULL;
 }
-
-
-
 
 //---------------------------------------------------------------------------
 //  Class
@@ -171,34 +140,23 @@ Barrier *MPBarrierType::create(const Char8 *szName)
 
 UInt32 MPLockType::_uiLockCount = 0;
 
-
-MPLockType::MPLockType(const Char8       *szName, 
-                       const Char8       *szParentName,
-                             CreateLockF  fCreateLock) :
-     Inherited(szName, szParentName),
-    _fCreateLock(fCreateLock       )
-{
-    ThreadManager::the()->registerLockType(this);
+MPLockType::MPLockType(const Char8* szName, const Char8* szParentName, CreateLockF fCreateLock)
+    : Inherited(szName, szParentName)
+    , _fCreateLock(fCreateLock) {
+  ThreadManager::the()->registerLockType(this);
 }
 
-
-MPLockType::~MPLockType(void)
-{
+MPLockType::~MPLockType(void) {
 }
 
+Lock* MPLockType::create(const Char8* szName) {
+  UInt32 uiNewId = _uiLockCount++;
 
-Lock *MPLockType::create(const Char8 *szName)
-{
-    UInt32 uiNewId = _uiLockCount++;
-
-    if(_fCreateLock != NULL)
-        return _fCreateLock(szName, uiNewId);
-    else
-        return NULL;
+  if (_fCreateLock != NULL)
+    return _fCreateLock(szName, uiNewId);
+  else
+    return NULL;
 }
-
-
-
 
 //---------------------------------------------------------------------------
 //  Class
@@ -209,36 +167,26 @@ Lock *MPLockType::create(const Char8 *szName)
 
 UInt32 MPLockPoolType::_uiLockPoolCount = 0;
 
-
 MPLockPoolType::MPLockPoolType(
-    const Char8           *szName, 
-    const Char8           *szParentName,
-          CreateLockPoolF  fCreateLockPool) :
+    const Char8* szName, const Char8* szParentName, CreateLockPoolF fCreateLockPool)
+    :
 
-     Inherited      (szName, szParentName),
-    _fCreateLockPool(fCreateLockPool     )
-{
-    ThreadManager::the()->registerLockPoolType(this);
+    Inherited(szName, szParentName)
+    , _fCreateLockPool(fCreateLockPool) {
+  ThreadManager::the()->registerLockPoolType(this);
 }
 
-
-MPLockPoolType::~MPLockPoolType(void)
-{
+MPLockPoolType::~MPLockPoolType(void) {
 }
 
+LockPool* MPLockPoolType::create(const Char8* szName) {
+  UInt32 uiNewId = _uiLockPoolCount++;
 
-LockPool *MPLockPoolType::create(const Char8 *szName)
-{
-    UInt32 uiNewId = _uiLockPoolCount++;
-
-    if(_fCreateLockPool != NULL)
-        return _fCreateLockPool(szName, uiNewId);
-    else
-        return NULL;
+  if (_fCreateLockPool != NULL)
+    return _fCreateLockPool(szName, uiNewId);
+  else
+    return NULL;
 }
-
-
-
 
 //---------------------------------------------------------------------------
 //  Class
@@ -249,56 +197,38 @@ LockPool *MPLockPoolType::create(const Char8 *szName)
 
 MPType MPBase::_type("OSGMPBase", NULL);
 
-
-const MPType &MPBase::getStaticType(void)
-{
-    return _type;
+const MPType& MPBase::getStaticType(void) {
+  return _type;
 }
 
-
-UInt32 MPBase::getStaticTypeId(void)
-{
-    return 0;
+UInt32 MPBase::getStaticTypeId(void) {
+  return 0;
 }
 
-
-MPType &MPBase::getType(void)
-{
-    return _type;
+MPType& MPBase::getType(void) {
+  return _type;
 }
 
-
-const MPType &MPBase::getType(void) const
-{
-    return _type;
+const MPType& MPBase::getType(void) const {
+  return _type;
 }
 
-
-UInt32 MPBase::getTypeId(void)
-{
-    return getType().getId();
+UInt32 MPBase::getTypeId(void) {
+  return getType().getId();
 }
 
-
-const Char8 *MPBase::getCName(void) const
-{
-    return _szName;
+const Char8* MPBase::getCName(void) const {
+  return _szName;
 }
 
+MPBase::MPBase(const Char8* szName)
+    : Inherited()
+    ,
 
-MPBase::MPBase(const Char8 *szName) :
-     Inherited(    ),
-    
-    _szName   (NULL)
-{
-    stringDup(szName, _szName);
+    _szName(NULL) {
+  stringDup(szName, _szName);
 }
 
-
-MPBase::~MPBase(void)
-{
-    delete [] _szName;
+MPBase::~MPBase(void) {
+  delete[] _szName;
 }
-
-
-

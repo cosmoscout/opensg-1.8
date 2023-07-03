@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEDVRVOLUMEINST
 
 #include <stdlib.h>
@@ -61,103 +60,101 @@
 #include "OSGDVRVolumeBase.h"
 #include "OSGDVRVolume.h"
 
-#include <OSGTextureManager.h>            // BrickingMode default header
+#include <OSGTextureManager.h> // BrickingMode default header
 
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  DVRVolumeBase::AppearanceFieldMask = 
+const OSG::BitVector DVRVolumeBase::AppearanceFieldMask =
     (TypeTraits<BitVector>::One << DVRVolumeBase::AppearanceFieldId);
 
-const OSG::BitVector  DVRVolumeBase::GeometryFieldMask = 
+const OSG::BitVector DVRVolumeBase::GeometryFieldMask =
     (TypeTraits<BitVector>::One << DVRVolumeBase::GeometryFieldId);
 
-const OSG::BitVector  DVRVolumeBase::ShaderFieldMask = 
+const OSG::BitVector DVRVolumeBase::ShaderFieldMask =
     (TypeTraits<BitVector>::One << DVRVolumeBase::ShaderFieldId);
 
-const OSG::BitVector  DVRVolumeBase::FileNameFieldMask = 
+const OSG::BitVector DVRVolumeBase::FileNameFieldMask =
     (TypeTraits<BitVector>::One << DVRVolumeBase::FileNameFieldId);
 
-const OSG::BitVector  DVRVolumeBase::SamplingFieldMask = 
+const OSG::BitVector DVRVolumeBase::SamplingFieldMask =
     (TypeTraits<BitVector>::One << DVRVolumeBase::SamplingFieldId);
 
-const OSG::BitVector  DVRVolumeBase::SamplingInteractiveFieldMask = 
+const OSG::BitVector DVRVolumeBase::SamplingInteractiveFieldMask =
     (TypeTraits<BitVector>::One << DVRVolumeBase::SamplingInteractiveFieldId);
 
-const OSG::BitVector  DVRVolumeBase::BaseAlphaFieldMask = 
+const OSG::BitVector DVRVolumeBase::BaseAlphaFieldMask =
     (TypeTraits<BitVector>::One << DVRVolumeBase::BaseAlphaFieldId);
 
-const OSG::BitVector  DVRVolumeBase::DoTexturesFieldMask = 
+const OSG::BitVector DVRVolumeBase::DoTexturesFieldMask =
     (TypeTraits<BitVector>::One << DVRVolumeBase::DoTexturesFieldId);
 
-const OSG::BitVector  DVRVolumeBase::BrickOverlapFieldMask = 
+const OSG::BitVector DVRVolumeBase::BrickOverlapFieldMask =
     (TypeTraits<BitVector>::One << DVRVolumeBase::BrickOverlapFieldId);
 
-const OSG::BitVector  DVRVolumeBase::Textures2DFieldMask = 
+const OSG::BitVector DVRVolumeBase::Textures2DFieldMask =
     (TypeTraits<BitVector>::One << DVRVolumeBase::Textures2DFieldId);
 
-const OSG::BitVector  DVRVolumeBase::BrickStaticMemoryMBFieldMask = 
+const OSG::BitVector DVRVolumeBase::BrickStaticMemoryMBFieldMask =
     (TypeTraits<BitVector>::One << DVRVolumeBase::BrickStaticMemoryMBFieldId);
 
-const OSG::BitVector  DVRVolumeBase::RenderMaterialFieldMask = 
+const OSG::BitVector DVRVolumeBase::RenderMaterialFieldMask =
     (TypeTraits<BitVector>::One << DVRVolumeBase::RenderMaterialFieldId);
 
-const OSG::BitVector  DVRVolumeBase::BrickingModeFieldMask = 
+const OSG::BitVector DVRVolumeBase::BrickingModeFieldMask =
     (TypeTraits<BitVector>::One << DVRVolumeBase::BrickingModeFieldId);
 
-const OSG::BitVector  DVRVolumeBase::BrickStaticSubdivisionFieldMask = 
+const OSG::BitVector DVRVolumeBase::BrickStaticSubdivisionFieldMask =
     (TypeTraits<BitVector>::One << DVRVolumeBase::BrickStaticSubdivisionFieldId);
 
-const OSG::BitVector  DVRVolumeBase::BrickMaxSizeFieldMask = 
+const OSG::BitVector DVRVolumeBase::BrickMaxSizeFieldMask =
     (TypeTraits<BitVector>::One << DVRVolumeBase::BrickMaxSizeFieldId);
 
-const OSG::BitVector  DVRVolumeBase::ShowBricksFieldMask = 
+const OSG::BitVector DVRVolumeBase::ShowBricksFieldMask =
     (TypeTraits<BitVector>::One << DVRVolumeBase::ShowBricksFieldId);
 
-const OSG::BitVector  DVRVolumeBase::DrawStyleFieldMask = 
+const OSG::BitVector DVRVolumeBase::DrawStyleFieldMask =
     (TypeTraits<BitVector>::One << DVRVolumeBase::DrawStyleFieldId);
 
-const OSG::BitVector  DVRVolumeBase::DrawStyleNamesFieldMask = 
+const OSG::BitVector DVRVolumeBase::DrawStyleNamesFieldMask =
     (TypeTraits<BitVector>::One << DVRVolumeBase::DrawStyleNamesFieldId);
 
-const OSG::BitVector  DVRVolumeBase::TextureStorageFieldMask = 
+const OSG::BitVector DVRVolumeBase::TextureStorageFieldMask =
     (TypeTraits<BitVector>::One << DVRVolumeBase::TextureStorageFieldId);
 
-const OSG::BitVector DVRVolumeBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector DVRVolumeBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
 /*! \var DVRAppearancePtr DVRVolumeBase::_sfAppearance
-    
+
 */
 /*! \var DVRGeometryPtr  DVRVolumeBase::_sfGeometry
-    
+
 */
 /*! \var DVRShaderPtr    DVRVolumeBase::_sfShader
-    
+
 */
 /*! \var std::string     DVRVolumeBase::_sfFileName
-    
+
 */
 /*! \var Real32          DVRVolumeBase::_sfSampling
-    
+
 */
 /*! \var Real32          DVRVolumeBase::_sfSamplingInteractive
-    
+
 */
 /*! \var Real32          DVRVolumeBase::_sfBaseAlpha
-    
+
 */
 /*! \var bool            DVRVolumeBase::_sfDoTextures
-    
+
 */
 /*! \var UInt32          DVRVolumeBase::_sfBrickOverlap
     FIXME: temporary parameter. Overlap between adjacent bricks.
 */
 /*! \var QBit            DVRVolumeBase::_sfTextures2D
-    
+
 */
 /*! \var UInt16          DVRVolumeBase::_sfBrickStaticMemoryMB
     FIXME: temporary parameter. Max. texture memory to be used for brick size.
@@ -189,701 +186,542 @@ const OSG::BitVector DVRVolumeBase::MTInfluenceMask =
 
 //! DVRVolume description
 
-FieldDescription *DVRVolumeBase::_desc[] = 
-{
-    new FieldDescription(SFDVRAppearancePtr::getClassType(), 
-                     "appearance", 
-                     AppearanceFieldId, AppearanceFieldMask,
-                     false,
-                     (FieldAccessMethod) &DVRVolumeBase::getSFAppearance),
-    new FieldDescription(SFDVRGeometryPtr::getClassType(), 
-                     "geometry", 
-                     GeometryFieldId, GeometryFieldMask,
-                     false,
-                     (FieldAccessMethod) &DVRVolumeBase::getSFGeometry),
-    new FieldDescription(SFDVRShaderPtr::getClassType(), 
-                     "shader", 
-                     ShaderFieldId, ShaderFieldMask,
-                     false,
-                     (FieldAccessMethod) &DVRVolumeBase::getSFShader),
-    new FieldDescription(SFString::getClassType(), 
-                     "fileName", 
-                     FileNameFieldId, FileNameFieldMask,
-                     false,
-                     (FieldAccessMethod) &DVRVolumeBase::getSFFileName),
-    new FieldDescription(SFReal32::getClassType(), 
-                     "sampling", 
-                     SamplingFieldId, SamplingFieldMask,
-                     false,
-                     (FieldAccessMethod) &DVRVolumeBase::getSFSampling),
-    new FieldDescription(SFReal32::getClassType(), 
-                     "samplingInteractive", 
-                     SamplingInteractiveFieldId, SamplingInteractiveFieldMask,
-                     false,
-                     (FieldAccessMethod) &DVRVolumeBase::getSFSamplingInteractive),
-    new FieldDescription(SFReal32::getClassType(), 
-                     "baseAlpha", 
-                     BaseAlphaFieldId, BaseAlphaFieldMask,
-                     false,
-                     (FieldAccessMethod) &DVRVolumeBase::getSFBaseAlpha),
-    new FieldDescription(SFBool::getClassType(), 
-                     "doTextures", 
-                     DoTexturesFieldId, DoTexturesFieldMask,
-                     false,
-                     (FieldAccessMethod) &DVRVolumeBase::getSFDoTextures),
-    new FieldDescription(SFUInt32::getClassType(), 
-                     "brickOverlap", 
-                     BrickOverlapFieldId, BrickOverlapFieldMask,
-                     false,
-                     (FieldAccessMethod) &DVRVolumeBase::getSFBrickOverlap),
-    new FieldDescription(SFQBit::getClassType(), 
-                     "textures2D", 
-                     Textures2DFieldId, Textures2DFieldMask,
-                     true,
-                     (FieldAccessMethod) &DVRVolumeBase::getSFTextures2D),
-    new FieldDescription(SFUInt16::getClassType(), 
-                     "brickStaticMemoryMB", 
-                     BrickStaticMemoryMBFieldId, BrickStaticMemoryMBFieldMask,
-                     false,
-                     (FieldAccessMethod) &DVRVolumeBase::getSFBrickStaticMemoryMB),
-    new FieldDescription(SFMaterialPtr::getClassType(), 
-                     "renderMaterial", 
-                     RenderMaterialFieldId, RenderMaterialFieldMask,
-                     true,
-                     (FieldAccessMethod) &DVRVolumeBase::getSFRenderMaterial),
-    new FieldDescription(SFUInt16::getClassType(), 
-                     "brickingMode", 
-                     BrickingModeFieldId, BrickingModeFieldMask,
-                     true,
-                     (FieldAccessMethod) &DVRVolumeBase::getSFBrickingMode),
-    new FieldDescription(SFVec3f::getClassType(), 
-                     "brickStaticSubdivision", 
-                     BrickStaticSubdivisionFieldId, BrickStaticSubdivisionFieldMask,
-                     true,
-                     (FieldAccessMethod) &DVRVolumeBase::getSFBrickStaticSubdivision),
-    new FieldDescription(SFVec3f::getClassType(), 
-                     "brickMaxSize", 
-                     BrickMaxSizeFieldId, BrickMaxSizeFieldMask,
-                     true,
-                     (FieldAccessMethod) &DVRVolumeBase::getSFBrickMaxSize),
-    new FieldDescription(SFBool::getClassType(), 
-                     "showBricks", 
-                     ShowBricksFieldId, ShowBricksFieldMask,
-                     true,
-                     (FieldAccessMethod) &DVRVolumeBase::getSFShowBricks),
-    new FieldDescription(SFUInt32::getClassType(), 
-                     "drawStyle", 
-                     DrawStyleFieldId, DrawStyleFieldMask,
-                     true,
-                     (FieldAccessMethod) &DVRVolumeBase::getSFDrawStyle),
-    new FieldDescription(MFString::getClassType(), 
-                     "drawStyleNames", 
-                     DrawStyleNamesFieldId, DrawStyleNamesFieldMask,
-                     true,
-                     (FieldAccessMethod) &DVRVolumeBase::getMFDrawStyleNames),
-    new FieldDescription(SFChunkMaterialPtr::getClassType(), 
-                     "textureStorage", 
-                     TextureStorageFieldId, TextureStorageFieldMask,
-                     true,
-                     (FieldAccessMethod) &DVRVolumeBase::getSFTextureStorage)
-};
+FieldDescription* DVRVolumeBase::_desc[] = {
+    new FieldDescription(SFDVRAppearancePtr::getClassType(), "appearance", AppearanceFieldId,
+        AppearanceFieldMask, false, (FieldAccessMethod)&DVRVolumeBase::getSFAppearance),
+    new FieldDescription(SFDVRGeometryPtr::getClassType(), "geometry", GeometryFieldId,
+        GeometryFieldMask, false, (FieldAccessMethod)&DVRVolumeBase::getSFGeometry),
+    new FieldDescription(SFDVRShaderPtr::getClassType(), "shader", ShaderFieldId, ShaderFieldMask,
+        false, (FieldAccessMethod)&DVRVolumeBase::getSFShader),
+    new FieldDescription(SFString::getClassType(), "fileName", FileNameFieldId, FileNameFieldMask,
+        false, (FieldAccessMethod)&DVRVolumeBase::getSFFileName),
+    new FieldDescription(SFReal32::getClassType(), "sampling", SamplingFieldId, SamplingFieldMask,
+        false, (FieldAccessMethod)&DVRVolumeBase::getSFSampling),
+    new FieldDescription(SFReal32::getClassType(), "samplingInteractive",
+        SamplingInteractiveFieldId, SamplingInteractiveFieldMask, false,
+        (FieldAccessMethod)&DVRVolumeBase::getSFSamplingInteractive),
+    new FieldDescription(SFReal32::getClassType(), "baseAlpha", BaseAlphaFieldId,
+        BaseAlphaFieldMask, false, (FieldAccessMethod)&DVRVolumeBase::getSFBaseAlpha),
+    new FieldDescription(SFBool::getClassType(), "doTextures", DoTexturesFieldId,
+        DoTexturesFieldMask, false, (FieldAccessMethod)&DVRVolumeBase::getSFDoTextures),
+    new FieldDescription(SFUInt32::getClassType(), "brickOverlap", BrickOverlapFieldId,
+        BrickOverlapFieldMask, false, (FieldAccessMethod)&DVRVolumeBase::getSFBrickOverlap),
+    new FieldDescription(SFQBit::getClassType(), "textures2D", Textures2DFieldId,
+        Textures2DFieldMask, true, (FieldAccessMethod)&DVRVolumeBase::getSFTextures2D),
+    new FieldDescription(SFUInt16::getClassType(), "brickStaticMemoryMB",
+        BrickStaticMemoryMBFieldId, BrickStaticMemoryMBFieldMask, false,
+        (FieldAccessMethod)&DVRVolumeBase::getSFBrickStaticMemoryMB),
+    new FieldDescription(SFMaterialPtr::getClassType(), "renderMaterial", RenderMaterialFieldId,
+        RenderMaterialFieldMask, true, (FieldAccessMethod)&DVRVolumeBase::getSFRenderMaterial),
+    new FieldDescription(SFUInt16::getClassType(), "brickingMode", BrickingModeFieldId,
+        BrickingModeFieldMask, true, (FieldAccessMethod)&DVRVolumeBase::getSFBrickingMode),
+    new FieldDescription(SFVec3f::getClassType(), "brickStaticSubdivision",
+        BrickStaticSubdivisionFieldId, BrickStaticSubdivisionFieldMask, true,
+        (FieldAccessMethod)&DVRVolumeBase::getSFBrickStaticSubdivision),
+    new FieldDescription(SFVec3f::getClassType(), "brickMaxSize", BrickMaxSizeFieldId,
+        BrickMaxSizeFieldMask, true, (FieldAccessMethod)&DVRVolumeBase::getSFBrickMaxSize),
+    new FieldDescription(SFBool::getClassType(), "showBricks", ShowBricksFieldId,
+        ShowBricksFieldMask, true, (FieldAccessMethod)&DVRVolumeBase::getSFShowBricks),
+    new FieldDescription(SFUInt32::getClassType(), "drawStyle", DrawStyleFieldId,
+        DrawStyleFieldMask, true, (FieldAccessMethod)&DVRVolumeBase::getSFDrawStyle),
+    new FieldDescription(MFString::getClassType(), "drawStyleNames", DrawStyleNamesFieldId,
+        DrawStyleNamesFieldMask, true, (FieldAccessMethod)&DVRVolumeBase::getMFDrawStyleNames),
+    new FieldDescription(SFChunkMaterialPtr::getClassType(), "textureStorage",
+        TextureStorageFieldId, TextureStorageFieldMask, true,
+        (FieldAccessMethod)&DVRVolumeBase::getSFTextureStorage)};
 
+FieldContainerType DVRVolumeBase::_type("DVRVolume", "NodeCore", NULL,
+    (PrototypeCreateF)&DVRVolumeBase::createEmpty, DVRVolume::initMethod, _desc, sizeof(_desc));
 
-FieldContainerType DVRVolumeBase::_type(
-    "DVRVolume",
-    "NodeCore",
-    NULL,
-    (PrototypeCreateF) &DVRVolumeBase::createEmpty,
-    DVRVolume::initMethod,
-    _desc,
-    sizeof(_desc));
-
-//OSG_FIELD_CONTAINER_DEF(DVRVolumeBase, DVRVolumePtr)
+// OSG_FIELD_CONTAINER_DEF(DVRVolumeBase, DVRVolumePtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &DVRVolumeBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &DVRVolumeBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr DVRVolumeBase::shallowCopy(void) const 
-{ 
-    DVRVolumePtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const DVRVolume *>(this)); 
-
-    return returnValue; 
+FieldContainerType& DVRVolumeBase::getType(void) {
+  return _type;
 }
 
-UInt32 DVRVolumeBase::getContainerSize(void) const 
-{ 
-    return sizeof(DVRVolume); 
+const FieldContainerType& DVRVolumeBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr DVRVolumeBase::shallowCopy(void) const {
+  DVRVolumePtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const DVRVolume*>(this));
+
+  return returnValue;
+}
+
+UInt32 DVRVolumeBase::getContainerSize(void) const {
+  return sizeof(DVRVolume);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void DVRVolumeBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((DVRVolumeBase *) &other, whichField);
+void DVRVolumeBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((DVRVolumeBase*)&other, whichField);
 }
 #else
-void DVRVolumeBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((DVRVolumeBase *) &other, whichField, sInfo);
+void DVRVolumeBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((DVRVolumeBase*)&other, whichField, sInfo);
 }
-void DVRVolumeBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void DVRVolumeBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void DVRVolumeBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
+void DVRVolumeBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 
-    _mfDrawStyleNames.terminateShare(uiAspect, this->getContainerSize());
+  _mfDrawStyleNames.terminateShare(uiAspect, this->getContainerSize());
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-DVRVolumeBase::DVRVolumeBase(void) :
-    _sfAppearance             (DVRAppearancePtr(NullFC)), 
-    _sfGeometry               (DVRGeometryPtr(NullFC)), 
-    _sfShader                 (DVRShaderPtr(NullFC)), 
-    _sfFileName               (), 
-    _sfSampling               (Real32(1.0)), 
-    _sfSamplingInteractive    (Real32(1.0)), 
-    _sfBaseAlpha              (Real32(0.9)), 
-    _sfDoTextures             (bool(true)), 
-    _sfBrickOverlap           (UInt32(1)), 
-    _sfTextures2D             (QBit(2)), 
-    _sfBrickStaticMemoryMB    (UInt16(16)), 
-    _sfRenderMaterial         (MaterialPtr(NullFC)), 
-    _sfBrickingMode           (UInt16(TextureManager::BRICK_SUBDIVIDE_ON_TEXTURE_MEMORY)), 
-    _sfBrickStaticSubdivision (Vec3f(Vec3f(2, 2, 2))), 
-    _sfBrickMaxSize           (Vec3f(Vec3f(256, 256, 256))), 
-    _sfShowBricks             (bool(false)), 
-    _sfDrawStyle              (UInt32(0)), 
-    _mfDrawStyleNames         (), 
-    _sfTextureStorage         (ChunkMaterialPtr(NullFC)), 
-    Inherited() 
-{
+DVRVolumeBase::DVRVolumeBase(void)
+    : _sfAppearance(DVRAppearancePtr(NullFC))
+    , _sfGeometry(DVRGeometryPtr(NullFC))
+    , _sfShader(DVRShaderPtr(NullFC))
+    , _sfFileName()
+    , _sfSampling(Real32(1.0))
+    , _sfSamplingInteractive(Real32(1.0))
+    , _sfBaseAlpha(Real32(0.9))
+    , _sfDoTextures(bool(true))
+    , _sfBrickOverlap(UInt32(1))
+    , _sfTextures2D(QBit(2))
+    , _sfBrickStaticMemoryMB(UInt16(16))
+    , _sfRenderMaterial(MaterialPtr(NullFC))
+    , _sfBrickingMode(UInt16(TextureManager::BRICK_SUBDIVIDE_ON_TEXTURE_MEMORY))
+    , _sfBrickStaticSubdivision(Vec3f(Vec3f(2, 2, 2)))
+    , _sfBrickMaxSize(Vec3f(Vec3f(256, 256, 256)))
+    , _sfShowBricks(bool(false))
+    , _sfDrawStyle(UInt32(0))
+    , _mfDrawStyleNames()
+    , _sfTextureStorage(ChunkMaterialPtr(NullFC))
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-DVRVolumeBase::DVRVolumeBase(const DVRVolumeBase &source) :
-    _sfAppearance             (source._sfAppearance             ), 
-    _sfGeometry               (source._sfGeometry               ), 
-    _sfShader                 (source._sfShader                 ), 
-    _sfFileName               (source._sfFileName               ), 
-    _sfSampling               (source._sfSampling               ), 
-    _sfSamplingInteractive    (source._sfSamplingInteractive    ), 
-    _sfBaseAlpha              (source._sfBaseAlpha              ), 
-    _sfDoTextures             (source._sfDoTextures             ), 
-    _sfBrickOverlap           (source._sfBrickOverlap           ), 
-    _sfTextures2D             (source._sfTextures2D             ), 
-    _sfBrickStaticMemoryMB    (source._sfBrickStaticMemoryMB    ), 
-    _sfRenderMaterial         (source._sfRenderMaterial         ), 
-    _sfBrickingMode           (source._sfBrickingMode           ), 
-    _sfBrickStaticSubdivision (source._sfBrickStaticSubdivision ), 
-    _sfBrickMaxSize           (source._sfBrickMaxSize           ), 
-    _sfShowBricks             (source._sfShowBricks             ), 
-    _sfDrawStyle              (source._sfDrawStyle              ), 
-    _mfDrawStyleNames         (source._mfDrawStyleNames         ), 
-    _sfTextureStorage         (source._sfTextureStorage         ), 
-    Inherited                 (source)
-{
+DVRVolumeBase::DVRVolumeBase(const DVRVolumeBase& source)
+    : _sfAppearance(source._sfAppearance)
+    , _sfGeometry(source._sfGeometry)
+    , _sfShader(source._sfShader)
+    , _sfFileName(source._sfFileName)
+    , _sfSampling(source._sfSampling)
+    , _sfSamplingInteractive(source._sfSamplingInteractive)
+    , _sfBaseAlpha(source._sfBaseAlpha)
+    , _sfDoTextures(source._sfDoTextures)
+    , _sfBrickOverlap(source._sfBrickOverlap)
+    , _sfTextures2D(source._sfTextures2D)
+    , _sfBrickStaticMemoryMB(source._sfBrickStaticMemoryMB)
+    , _sfRenderMaterial(source._sfRenderMaterial)
+    , _sfBrickingMode(source._sfBrickingMode)
+    , _sfBrickStaticSubdivision(source._sfBrickStaticSubdivision)
+    , _sfBrickMaxSize(source._sfBrickMaxSize)
+    , _sfShowBricks(source._sfShowBricks)
+    , _sfDrawStyle(source._sfDrawStyle)
+    , _mfDrawStyleNames(source._mfDrawStyleNames)
+    , _sfTextureStorage(source._sfTextureStorage)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-DVRVolumeBase::~DVRVolumeBase(void)
-{
+DVRVolumeBase::~DVRVolumeBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 DVRVolumeBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 DVRVolumeBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (AppearanceFieldMask & whichField))
-    {
-        returnValue += _sfAppearance.getBinSize();
-    }
+  if (FieldBits::NoField != (AppearanceFieldMask & whichField)) {
+    returnValue += _sfAppearance.getBinSize();
+  }
 
-    if(FieldBits::NoField != (GeometryFieldMask & whichField))
-    {
-        returnValue += _sfGeometry.getBinSize();
-    }
+  if (FieldBits::NoField != (GeometryFieldMask & whichField)) {
+    returnValue += _sfGeometry.getBinSize();
+  }
 
-    if(FieldBits::NoField != (ShaderFieldMask & whichField))
-    {
-        returnValue += _sfShader.getBinSize();
-    }
+  if (FieldBits::NoField != (ShaderFieldMask & whichField)) {
+    returnValue += _sfShader.getBinSize();
+  }
 
-    if(FieldBits::NoField != (FileNameFieldMask & whichField))
-    {
-        returnValue += _sfFileName.getBinSize();
-    }
+  if (FieldBits::NoField != (FileNameFieldMask & whichField)) {
+    returnValue += _sfFileName.getBinSize();
+  }
 
-    if(FieldBits::NoField != (SamplingFieldMask & whichField))
-    {
-        returnValue += _sfSampling.getBinSize();
-    }
+  if (FieldBits::NoField != (SamplingFieldMask & whichField)) {
+    returnValue += _sfSampling.getBinSize();
+  }
 
-    if(FieldBits::NoField != (SamplingInteractiveFieldMask & whichField))
-    {
-        returnValue += _sfSamplingInteractive.getBinSize();
-    }
+  if (FieldBits::NoField != (SamplingInteractiveFieldMask & whichField)) {
+    returnValue += _sfSamplingInteractive.getBinSize();
+  }
 
-    if(FieldBits::NoField != (BaseAlphaFieldMask & whichField))
-    {
-        returnValue += _sfBaseAlpha.getBinSize();
-    }
+  if (FieldBits::NoField != (BaseAlphaFieldMask & whichField)) {
+    returnValue += _sfBaseAlpha.getBinSize();
+  }
 
-    if(FieldBits::NoField != (DoTexturesFieldMask & whichField))
-    {
-        returnValue += _sfDoTextures.getBinSize();
-    }
+  if (FieldBits::NoField != (DoTexturesFieldMask & whichField)) {
+    returnValue += _sfDoTextures.getBinSize();
+  }
 
-    if(FieldBits::NoField != (BrickOverlapFieldMask & whichField))
-    {
-        returnValue += _sfBrickOverlap.getBinSize();
-    }
+  if (FieldBits::NoField != (BrickOverlapFieldMask & whichField)) {
+    returnValue += _sfBrickOverlap.getBinSize();
+  }
 
-    if(FieldBits::NoField != (Textures2DFieldMask & whichField))
-    {
-        returnValue += _sfTextures2D.getBinSize();
-    }
+  if (FieldBits::NoField != (Textures2DFieldMask & whichField)) {
+    returnValue += _sfTextures2D.getBinSize();
+  }
 
-    if(FieldBits::NoField != (BrickStaticMemoryMBFieldMask & whichField))
-    {
-        returnValue += _sfBrickStaticMemoryMB.getBinSize();
-    }
+  if (FieldBits::NoField != (BrickStaticMemoryMBFieldMask & whichField)) {
+    returnValue += _sfBrickStaticMemoryMB.getBinSize();
+  }
 
-    if(FieldBits::NoField != (RenderMaterialFieldMask & whichField))
-    {
-        returnValue += _sfRenderMaterial.getBinSize();
-    }
+  if (FieldBits::NoField != (RenderMaterialFieldMask & whichField)) {
+    returnValue += _sfRenderMaterial.getBinSize();
+  }
 
-    if(FieldBits::NoField != (BrickingModeFieldMask & whichField))
-    {
-        returnValue += _sfBrickingMode.getBinSize();
-    }
+  if (FieldBits::NoField != (BrickingModeFieldMask & whichField)) {
+    returnValue += _sfBrickingMode.getBinSize();
+  }
 
-    if(FieldBits::NoField != (BrickStaticSubdivisionFieldMask & whichField))
-    {
-        returnValue += _sfBrickStaticSubdivision.getBinSize();
-    }
+  if (FieldBits::NoField != (BrickStaticSubdivisionFieldMask & whichField)) {
+    returnValue += _sfBrickStaticSubdivision.getBinSize();
+  }
 
-    if(FieldBits::NoField != (BrickMaxSizeFieldMask & whichField))
-    {
-        returnValue += _sfBrickMaxSize.getBinSize();
-    }
+  if (FieldBits::NoField != (BrickMaxSizeFieldMask & whichField)) {
+    returnValue += _sfBrickMaxSize.getBinSize();
+  }
 
-    if(FieldBits::NoField != (ShowBricksFieldMask & whichField))
-    {
-        returnValue += _sfShowBricks.getBinSize();
-    }
+  if (FieldBits::NoField != (ShowBricksFieldMask & whichField)) {
+    returnValue += _sfShowBricks.getBinSize();
+  }
 
-    if(FieldBits::NoField != (DrawStyleFieldMask & whichField))
-    {
-        returnValue += _sfDrawStyle.getBinSize();
-    }
+  if (FieldBits::NoField != (DrawStyleFieldMask & whichField)) {
+    returnValue += _sfDrawStyle.getBinSize();
+  }
 
-    if(FieldBits::NoField != (DrawStyleNamesFieldMask & whichField))
-    {
-        returnValue += _mfDrawStyleNames.getBinSize();
-    }
+  if (FieldBits::NoField != (DrawStyleNamesFieldMask & whichField)) {
+    returnValue += _mfDrawStyleNames.getBinSize();
+  }
 
-    if(FieldBits::NoField != (TextureStorageFieldMask & whichField))
-    {
-        returnValue += _sfTextureStorage.getBinSize();
-    }
+  if (FieldBits::NoField != (TextureStorageFieldMask & whichField)) {
+    returnValue += _sfTextureStorage.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void DVRVolumeBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void DVRVolumeBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (AppearanceFieldMask & whichField))
-    {
-        _sfAppearance.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (AppearanceFieldMask & whichField)) {
+    _sfAppearance.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GeometryFieldMask & whichField))
-    {
-        _sfGeometry.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (GeometryFieldMask & whichField)) {
+    _sfGeometry.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ShaderFieldMask & whichField))
-    {
-        _sfShader.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (ShaderFieldMask & whichField)) {
+    _sfShader.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (FileNameFieldMask & whichField))
-    {
-        _sfFileName.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (FileNameFieldMask & whichField)) {
+    _sfFileName.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (SamplingFieldMask & whichField))
-    {
-        _sfSampling.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (SamplingFieldMask & whichField)) {
+    _sfSampling.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (SamplingInteractiveFieldMask & whichField))
-    {
-        _sfSamplingInteractive.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (SamplingInteractiveFieldMask & whichField)) {
+    _sfSamplingInteractive.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BaseAlphaFieldMask & whichField))
-    {
-        _sfBaseAlpha.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (BaseAlphaFieldMask & whichField)) {
+    _sfBaseAlpha.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (DoTexturesFieldMask & whichField))
-    {
-        _sfDoTextures.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (DoTexturesFieldMask & whichField)) {
+    _sfDoTextures.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BrickOverlapFieldMask & whichField))
-    {
-        _sfBrickOverlap.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (BrickOverlapFieldMask & whichField)) {
+    _sfBrickOverlap.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (Textures2DFieldMask & whichField))
-    {
-        _sfTextures2D.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (Textures2DFieldMask & whichField)) {
+    _sfTextures2D.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BrickStaticMemoryMBFieldMask & whichField))
-    {
-        _sfBrickStaticMemoryMB.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (BrickStaticMemoryMBFieldMask & whichField)) {
+    _sfBrickStaticMemoryMB.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (RenderMaterialFieldMask & whichField))
-    {
-        _sfRenderMaterial.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (RenderMaterialFieldMask & whichField)) {
+    _sfRenderMaterial.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BrickingModeFieldMask & whichField))
-    {
-        _sfBrickingMode.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (BrickingModeFieldMask & whichField)) {
+    _sfBrickingMode.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BrickStaticSubdivisionFieldMask & whichField))
-    {
-        _sfBrickStaticSubdivision.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (BrickStaticSubdivisionFieldMask & whichField)) {
+    _sfBrickStaticSubdivision.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BrickMaxSizeFieldMask & whichField))
-    {
-        _sfBrickMaxSize.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (BrickMaxSizeFieldMask & whichField)) {
+    _sfBrickMaxSize.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ShowBricksFieldMask & whichField))
-    {
-        _sfShowBricks.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (ShowBricksFieldMask & whichField)) {
+    _sfShowBricks.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (DrawStyleFieldMask & whichField))
-    {
-        _sfDrawStyle.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (DrawStyleFieldMask & whichField)) {
+    _sfDrawStyle.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (DrawStyleNamesFieldMask & whichField))
-    {
-        _mfDrawStyleNames.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (DrawStyleNamesFieldMask & whichField)) {
+    _mfDrawStyleNames.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (TextureStorageFieldMask & whichField))
-    {
-        _sfTextureStorage.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (TextureStorageFieldMask & whichField)) {
+    _sfTextureStorage.copyToBin(pMem);
+  }
 }
 
-void DVRVolumeBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void DVRVolumeBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (AppearanceFieldMask & whichField))
-    {
-        _sfAppearance.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (AppearanceFieldMask & whichField)) {
+    _sfAppearance.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GeometryFieldMask & whichField))
-    {
-        _sfGeometry.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (GeometryFieldMask & whichField)) {
+    _sfGeometry.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ShaderFieldMask & whichField))
-    {
-        _sfShader.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (ShaderFieldMask & whichField)) {
+    _sfShader.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (FileNameFieldMask & whichField))
-    {
-        _sfFileName.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (FileNameFieldMask & whichField)) {
+    _sfFileName.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (SamplingFieldMask & whichField))
-    {
-        _sfSampling.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (SamplingFieldMask & whichField)) {
+    _sfSampling.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (SamplingInteractiveFieldMask & whichField))
-    {
-        _sfSamplingInteractive.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (SamplingInteractiveFieldMask & whichField)) {
+    _sfSamplingInteractive.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BaseAlphaFieldMask & whichField))
-    {
-        _sfBaseAlpha.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (BaseAlphaFieldMask & whichField)) {
+    _sfBaseAlpha.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (DoTexturesFieldMask & whichField))
-    {
-        _sfDoTextures.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (DoTexturesFieldMask & whichField)) {
+    _sfDoTextures.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BrickOverlapFieldMask & whichField))
-    {
-        _sfBrickOverlap.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (BrickOverlapFieldMask & whichField)) {
+    _sfBrickOverlap.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (Textures2DFieldMask & whichField))
-    {
-        _sfTextures2D.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (Textures2DFieldMask & whichField)) {
+    _sfTextures2D.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BrickStaticMemoryMBFieldMask & whichField))
-    {
-        _sfBrickStaticMemoryMB.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (BrickStaticMemoryMBFieldMask & whichField)) {
+    _sfBrickStaticMemoryMB.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (RenderMaterialFieldMask & whichField))
-    {
-        _sfRenderMaterial.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (RenderMaterialFieldMask & whichField)) {
+    _sfRenderMaterial.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BrickingModeFieldMask & whichField))
-    {
-        _sfBrickingMode.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (BrickingModeFieldMask & whichField)) {
+    _sfBrickingMode.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BrickStaticSubdivisionFieldMask & whichField))
-    {
-        _sfBrickStaticSubdivision.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (BrickStaticSubdivisionFieldMask & whichField)) {
+    _sfBrickStaticSubdivision.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BrickMaxSizeFieldMask & whichField))
-    {
-        _sfBrickMaxSize.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (BrickMaxSizeFieldMask & whichField)) {
+    _sfBrickMaxSize.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ShowBricksFieldMask & whichField))
-    {
-        _sfShowBricks.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (ShowBricksFieldMask & whichField)) {
+    _sfShowBricks.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (DrawStyleFieldMask & whichField))
-    {
-        _sfDrawStyle.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (DrawStyleFieldMask & whichField)) {
+    _sfDrawStyle.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (DrawStyleNamesFieldMask & whichField))
-    {
-        _mfDrawStyleNames.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (DrawStyleNamesFieldMask & whichField)) {
+    _mfDrawStyleNames.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (TextureStorageFieldMask & whichField))
-    {
-        _sfTextureStorage.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (TextureStorageFieldMask & whichField)) {
+    _sfTextureStorage.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void DVRVolumeBase::executeSyncImpl(      DVRVolumeBase *pOther,
-                                        const BitVector         &whichField)
-{
+void DVRVolumeBase::executeSyncImpl(DVRVolumeBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (AppearanceFieldMask & whichField))
-        _sfAppearance.syncWith(pOther->_sfAppearance);
+  if (FieldBits::NoField != (AppearanceFieldMask & whichField))
+    _sfAppearance.syncWith(pOther->_sfAppearance);
 
-    if(FieldBits::NoField != (GeometryFieldMask & whichField))
-        _sfGeometry.syncWith(pOther->_sfGeometry);
+  if (FieldBits::NoField != (GeometryFieldMask & whichField))
+    _sfGeometry.syncWith(pOther->_sfGeometry);
 
-    if(FieldBits::NoField != (ShaderFieldMask & whichField))
-        _sfShader.syncWith(pOther->_sfShader);
+  if (FieldBits::NoField != (ShaderFieldMask & whichField))
+    _sfShader.syncWith(pOther->_sfShader);
 
-    if(FieldBits::NoField != (FileNameFieldMask & whichField))
-        _sfFileName.syncWith(pOther->_sfFileName);
+  if (FieldBits::NoField != (FileNameFieldMask & whichField))
+    _sfFileName.syncWith(pOther->_sfFileName);
 
-    if(FieldBits::NoField != (SamplingFieldMask & whichField))
-        _sfSampling.syncWith(pOther->_sfSampling);
+  if (FieldBits::NoField != (SamplingFieldMask & whichField))
+    _sfSampling.syncWith(pOther->_sfSampling);
 
-    if(FieldBits::NoField != (SamplingInteractiveFieldMask & whichField))
-        _sfSamplingInteractive.syncWith(pOther->_sfSamplingInteractive);
+  if (FieldBits::NoField != (SamplingInteractiveFieldMask & whichField))
+    _sfSamplingInteractive.syncWith(pOther->_sfSamplingInteractive);
 
-    if(FieldBits::NoField != (BaseAlphaFieldMask & whichField))
-        _sfBaseAlpha.syncWith(pOther->_sfBaseAlpha);
+  if (FieldBits::NoField != (BaseAlphaFieldMask & whichField))
+    _sfBaseAlpha.syncWith(pOther->_sfBaseAlpha);
 
-    if(FieldBits::NoField != (DoTexturesFieldMask & whichField))
-        _sfDoTextures.syncWith(pOther->_sfDoTextures);
+  if (FieldBits::NoField != (DoTexturesFieldMask & whichField))
+    _sfDoTextures.syncWith(pOther->_sfDoTextures);
 
-    if(FieldBits::NoField != (BrickOverlapFieldMask & whichField))
-        _sfBrickOverlap.syncWith(pOther->_sfBrickOverlap);
+  if (FieldBits::NoField != (BrickOverlapFieldMask & whichField))
+    _sfBrickOverlap.syncWith(pOther->_sfBrickOverlap);
 
-    if(FieldBits::NoField != (Textures2DFieldMask & whichField))
-        _sfTextures2D.syncWith(pOther->_sfTextures2D);
+  if (FieldBits::NoField != (Textures2DFieldMask & whichField))
+    _sfTextures2D.syncWith(pOther->_sfTextures2D);
 
-    if(FieldBits::NoField != (BrickStaticMemoryMBFieldMask & whichField))
-        _sfBrickStaticMemoryMB.syncWith(pOther->_sfBrickStaticMemoryMB);
+  if (FieldBits::NoField != (BrickStaticMemoryMBFieldMask & whichField))
+    _sfBrickStaticMemoryMB.syncWith(pOther->_sfBrickStaticMemoryMB);
 
-    if(FieldBits::NoField != (RenderMaterialFieldMask & whichField))
-        _sfRenderMaterial.syncWith(pOther->_sfRenderMaterial);
+  if (FieldBits::NoField != (RenderMaterialFieldMask & whichField))
+    _sfRenderMaterial.syncWith(pOther->_sfRenderMaterial);
 
-    if(FieldBits::NoField != (BrickingModeFieldMask & whichField))
-        _sfBrickingMode.syncWith(pOther->_sfBrickingMode);
+  if (FieldBits::NoField != (BrickingModeFieldMask & whichField))
+    _sfBrickingMode.syncWith(pOther->_sfBrickingMode);
 
-    if(FieldBits::NoField != (BrickStaticSubdivisionFieldMask & whichField))
-        _sfBrickStaticSubdivision.syncWith(pOther->_sfBrickStaticSubdivision);
+  if (FieldBits::NoField != (BrickStaticSubdivisionFieldMask & whichField))
+    _sfBrickStaticSubdivision.syncWith(pOther->_sfBrickStaticSubdivision);
 
-    if(FieldBits::NoField != (BrickMaxSizeFieldMask & whichField))
-        _sfBrickMaxSize.syncWith(pOther->_sfBrickMaxSize);
+  if (FieldBits::NoField != (BrickMaxSizeFieldMask & whichField))
+    _sfBrickMaxSize.syncWith(pOther->_sfBrickMaxSize);
 
-    if(FieldBits::NoField != (ShowBricksFieldMask & whichField))
-        _sfShowBricks.syncWith(pOther->_sfShowBricks);
+  if (FieldBits::NoField != (ShowBricksFieldMask & whichField))
+    _sfShowBricks.syncWith(pOther->_sfShowBricks);
 
-    if(FieldBits::NoField != (DrawStyleFieldMask & whichField))
-        _sfDrawStyle.syncWith(pOther->_sfDrawStyle);
+  if (FieldBits::NoField != (DrawStyleFieldMask & whichField))
+    _sfDrawStyle.syncWith(pOther->_sfDrawStyle);
 
-    if(FieldBits::NoField != (DrawStyleNamesFieldMask & whichField))
-        _mfDrawStyleNames.syncWith(pOther->_mfDrawStyleNames);
+  if (FieldBits::NoField != (DrawStyleNamesFieldMask & whichField))
+    _mfDrawStyleNames.syncWith(pOther->_mfDrawStyleNames);
 
-    if(FieldBits::NoField != (TextureStorageFieldMask & whichField))
-        _sfTextureStorage.syncWith(pOther->_sfTextureStorage);
-
-
+  if (FieldBits::NoField != (TextureStorageFieldMask & whichField))
+    _sfTextureStorage.syncWith(pOther->_sfTextureStorage);
 }
 #else
-void DVRVolumeBase::executeSyncImpl(      DVRVolumeBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void DVRVolumeBase::executeSyncImpl(
+    DVRVolumeBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (AppearanceFieldMask & whichField))
-        _sfAppearance.syncWith(pOther->_sfAppearance);
+  if (FieldBits::NoField != (AppearanceFieldMask & whichField))
+    _sfAppearance.syncWith(pOther->_sfAppearance);
 
-    if(FieldBits::NoField != (GeometryFieldMask & whichField))
-        _sfGeometry.syncWith(pOther->_sfGeometry);
+  if (FieldBits::NoField != (GeometryFieldMask & whichField))
+    _sfGeometry.syncWith(pOther->_sfGeometry);
 
-    if(FieldBits::NoField != (ShaderFieldMask & whichField))
-        _sfShader.syncWith(pOther->_sfShader);
+  if (FieldBits::NoField != (ShaderFieldMask & whichField))
+    _sfShader.syncWith(pOther->_sfShader);
 
-    if(FieldBits::NoField != (FileNameFieldMask & whichField))
-        _sfFileName.syncWith(pOther->_sfFileName);
+  if (FieldBits::NoField != (FileNameFieldMask & whichField))
+    _sfFileName.syncWith(pOther->_sfFileName);
 
-    if(FieldBits::NoField != (SamplingFieldMask & whichField))
-        _sfSampling.syncWith(pOther->_sfSampling);
+  if (FieldBits::NoField != (SamplingFieldMask & whichField))
+    _sfSampling.syncWith(pOther->_sfSampling);
 
-    if(FieldBits::NoField != (SamplingInteractiveFieldMask & whichField))
-        _sfSamplingInteractive.syncWith(pOther->_sfSamplingInteractive);
+  if (FieldBits::NoField != (SamplingInteractiveFieldMask & whichField))
+    _sfSamplingInteractive.syncWith(pOther->_sfSamplingInteractive);
 
-    if(FieldBits::NoField != (BaseAlphaFieldMask & whichField))
-        _sfBaseAlpha.syncWith(pOther->_sfBaseAlpha);
+  if (FieldBits::NoField != (BaseAlphaFieldMask & whichField))
+    _sfBaseAlpha.syncWith(pOther->_sfBaseAlpha);
 
-    if(FieldBits::NoField != (DoTexturesFieldMask & whichField))
-        _sfDoTextures.syncWith(pOther->_sfDoTextures);
+  if (FieldBits::NoField != (DoTexturesFieldMask & whichField))
+    _sfDoTextures.syncWith(pOther->_sfDoTextures);
 
-    if(FieldBits::NoField != (BrickOverlapFieldMask & whichField))
-        _sfBrickOverlap.syncWith(pOther->_sfBrickOverlap);
+  if (FieldBits::NoField != (BrickOverlapFieldMask & whichField))
+    _sfBrickOverlap.syncWith(pOther->_sfBrickOverlap);
 
-    if(FieldBits::NoField != (Textures2DFieldMask & whichField))
-        _sfTextures2D.syncWith(pOther->_sfTextures2D);
+  if (FieldBits::NoField != (Textures2DFieldMask & whichField))
+    _sfTextures2D.syncWith(pOther->_sfTextures2D);
 
-    if(FieldBits::NoField != (BrickStaticMemoryMBFieldMask & whichField))
-        _sfBrickStaticMemoryMB.syncWith(pOther->_sfBrickStaticMemoryMB);
+  if (FieldBits::NoField != (BrickStaticMemoryMBFieldMask & whichField))
+    _sfBrickStaticMemoryMB.syncWith(pOther->_sfBrickStaticMemoryMB);
 
-    if(FieldBits::NoField != (RenderMaterialFieldMask & whichField))
-        _sfRenderMaterial.syncWith(pOther->_sfRenderMaterial);
+  if (FieldBits::NoField != (RenderMaterialFieldMask & whichField))
+    _sfRenderMaterial.syncWith(pOther->_sfRenderMaterial);
 
-    if(FieldBits::NoField != (BrickingModeFieldMask & whichField))
-        _sfBrickingMode.syncWith(pOther->_sfBrickingMode);
+  if (FieldBits::NoField != (BrickingModeFieldMask & whichField))
+    _sfBrickingMode.syncWith(pOther->_sfBrickingMode);
 
-    if(FieldBits::NoField != (BrickStaticSubdivisionFieldMask & whichField))
-        _sfBrickStaticSubdivision.syncWith(pOther->_sfBrickStaticSubdivision);
+  if (FieldBits::NoField != (BrickStaticSubdivisionFieldMask & whichField))
+    _sfBrickStaticSubdivision.syncWith(pOther->_sfBrickStaticSubdivision);
 
-    if(FieldBits::NoField != (BrickMaxSizeFieldMask & whichField))
-        _sfBrickMaxSize.syncWith(pOther->_sfBrickMaxSize);
+  if (FieldBits::NoField != (BrickMaxSizeFieldMask & whichField))
+    _sfBrickMaxSize.syncWith(pOther->_sfBrickMaxSize);
 
-    if(FieldBits::NoField != (ShowBricksFieldMask & whichField))
-        _sfShowBricks.syncWith(pOther->_sfShowBricks);
+  if (FieldBits::NoField != (ShowBricksFieldMask & whichField))
+    _sfShowBricks.syncWith(pOther->_sfShowBricks);
 
-    if(FieldBits::NoField != (DrawStyleFieldMask & whichField))
-        _sfDrawStyle.syncWith(pOther->_sfDrawStyle);
+  if (FieldBits::NoField != (DrawStyleFieldMask & whichField))
+    _sfDrawStyle.syncWith(pOther->_sfDrawStyle);
 
-    if(FieldBits::NoField != (TextureStorageFieldMask & whichField))
-        _sfTextureStorage.syncWith(pOther->_sfTextureStorage);
+  if (FieldBits::NoField != (TextureStorageFieldMask & whichField))
+    _sfTextureStorage.syncWith(pOther->_sfTextureStorage);
 
-
-    if(FieldBits::NoField != (DrawStyleNamesFieldMask & whichField))
-        _mfDrawStyleNames.syncWith(pOther->_mfDrawStyleNames, sInfo);
-
-
+  if (FieldBits::NoField != (DrawStyleNamesFieldMask & whichField))
+    _mfDrawStyleNames.syncWith(pOther->_mfDrawStyleNames, sInfo);
 }
 
-void DVRVolumeBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void DVRVolumeBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (DrawStyleNamesFieldMask & whichField))
-        _mfDrawStyleNames.beginEdit(uiAspect, uiContainerSize);
-
+  if (FieldBits::NoField != (DrawStyleNamesFieldMask & whichField))
+    _mfDrawStyleNames.beginEdit(uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 OSG_BEGIN_NAMESPACE
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_DEV)
 DataType FieldDataTraits<DVRVolumePtr>::_type("DVRVolumePtr", "NodeCorePtr");
 #endif
-
 
 OSG_END_NAMESPACE

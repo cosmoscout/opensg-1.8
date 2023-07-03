@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGBINARYSWAPCOMPOSERBASE_H_
 #define _OSGBINARYSWAPCOMPOSERBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -67,8 +65,8 @@
 
 #include <OSGImageComposer.h> // Parent
 
-#include <OSGBoolFields.h> // Short type
-#include <OSGBoolFields.h> // Alpha type
+#include <OSGBoolFields.h>   // Short type
+#include <OSGBoolFields.h>   // Alpha type
 #include <OSGUInt32Fields.h> // TileSize type
 
 #include <OSGBinarySwapComposerFields.h>
@@ -80,195 +78,175 @@ class BinaryDataHandler;
 
 //! \brief BinarySwapComposer Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING BinarySwapComposerBase : public ImageComposer
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING BinarySwapComposerBase : public ImageComposer {
+ private:
+  typedef ImageComposer Inherited;
 
-    typedef ImageComposer    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef BinarySwapComposerPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    ShortFieldId    = Inherited::NextFieldId,
+    AlphaFieldId    = ShortFieldId + 1,
+    TileSizeFieldId = AlphaFieldId + 1,
+    NextFieldId     = TileSizeFieldId + 1
+  };
 
-    typedef BinarySwapComposerPtr  Ptr;
+  static const OSG::BitVector ShortFieldMask;
+  static const OSG::BitVector AlphaFieldMask;
+  static const OSG::BitVector TileSizeFieldMask;
 
-    enum
-    {
-        ShortFieldId    = Inherited::NextFieldId,
-        AlphaFieldId    = ShortFieldId    + 1,
-        TileSizeFieldId = AlphaFieldId    + 1,
-        NextFieldId     = TileSizeFieldId + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector ShortFieldMask;
-    static const OSG::BitVector AlphaFieldMask;
-    static const OSG::BitVector TileSizeFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFBool*   getSFShort(void);
+  SFBool*   getSFAlpha(void);
+  SFUInt32* getSFTileSize(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  bool&         getShort(void);
+  const bool&   getShort(void) const;
+  bool&         getAlpha(void);
+  const bool&   getAlpha(void) const;
+  UInt32&       getTileSize(void);
+  const UInt32& getTileSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFBool              *getSFShort          (void);
-           SFBool              *getSFAlpha          (void);
-           SFUInt32            *getSFTileSize       (void);
+  void setShort(const bool& value);
+  void setAlpha(const bool& value);
+  void setTileSize(const UInt32& value);
 
-           bool                &getShort          (void);
-     const bool                &getShort          (void) const;
-           bool                &getAlpha          (void);
-     const bool                &getAlpha          (void) const;
-           UInt32              &getTileSize       (void);
-     const UInt32              &getTileSize       (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setShort          ( const bool &value );
-     void setAlpha          ( const bool &value );
-     void setTileSize       ( const UInt32 &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static BinarySwapComposerPtr create(void);
+  static BinarySwapComposerPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  BinarySwapComposerPtr      create          (void); 
-    static  BinarySwapComposerPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFBool   _sfShort;
+  SFBool   _sfAlpha;
+  SFUInt32 _sfTileSize;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  BinarySwapComposerBase(void);
+  BinarySwapComposerBase(const BinarySwapComposerBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~BinarySwapComposerBase(void);
 
-    SFBool              _sfShort;
-    SFBool              _sfAlpha;
-    SFUInt32            _sfTileSize;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    BinarySwapComposerBase(void);
-    BinarySwapComposerBase(const BinarySwapComposerBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~BinarySwapComposerBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      BinarySwapComposerBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(BinarySwapComposerBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      BinarySwapComposerBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      BinarySwapComposerBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const BinarySwapComposerBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const BinarySwapComposerBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef BinarySwapComposerBase* BinarySwapComposerBaseP;
 
-typedef BinarySwapComposerBase *BinarySwapComposerBaseP;
-
-typedef osgIF<BinarySwapComposerBase::isNodeCore,
-              CoredNodePtr<BinarySwapComposer>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet BinarySwapComposerNodePtr;
+typedef osgIF<BinarySwapComposerBase::isNodeCore, CoredNodePtr<BinarySwapComposer>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet
+    BinarySwapComposerNodePtr;
 
 typedef RefPtr<BinarySwapComposerPtr> BinarySwapComposerRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGBINARYSWAPCOMPOSERBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGBINARYSWAPCOMPOSERBASE_HEADER_CVSID                                                     \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGBINARYSWAPCOMPOSERBASE_H_ */

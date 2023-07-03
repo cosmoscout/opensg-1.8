@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGSHADERPARAMETERVEC2FFIELDS_H_
 #define _OSGSHADERPARAMETERVEC2FFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class ShaderParameterVec2f;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! ShaderParameterVec2fPtr
 
 typedef FCPtr<ShaderParameterPtr, ShaderParameterVec2f> ShaderParameterVec2fPtr;
@@ -81,18 +80,23 @@ typedef FCPtr<ShaderParameterPtr, ShaderParameterVec2f> ShaderParameterVec2fPtr;
 #endif
 
 template <>
-struct FieldDataTraits<ShaderParameterVec2fPtr> : 
-    public FieldTraitsRecurseMapper<ShaderParameterVec2fPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<ShaderParameterVec2fPtr>
+    : public FieldTraitsRecurseMapper<ShaderParameterVec2fPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getSName(void) { return "SFShaderParameterVec2fPtr"; }
-    static const char *getMName(void) { return "MFShaderParameterVec2fPtr"; }
+  static const char* getSName(void) {
+    return "SFShaderParameterVec2fPtr";
+  }
+  static const char* getMName(void) {
+    return "MFShaderParameterVec2fPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -102,7 +106,6 @@ struct FieldDataTraits<ShaderParameterVec2fPtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
@@ -126,6 +129,7 @@ OSG_DLLEXPORT_DECL1(MField, ShaderParameterVec2fPtr, OSG_SYSTEMLIB_DLLTMPLMAPPIN
 
 OSG_END_NAMESPACE
 
-#define OSGSHADERPARAMETERVEC2FFIELDS_HEADER_CVSID "@(#)$Id: OSGShaderParameterVec2fFields.h,v 1.5 2006/02/20 17:04:38 dirk Exp $"
+#define OSGSHADERPARAMETERVEC2FFIELDS_HEADER_CVSID                                                 \
+  "@(#)$Id: OSGShaderParameterVec2fFields.h,v 1.5 2006/02/20 17:04:38 dirk Exp $"
 
 #endif /* _OSGSHADERPARAMETERVEC2FFIELDS_H_ */

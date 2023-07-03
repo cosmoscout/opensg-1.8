@@ -76,10 +76,8 @@ UInt32 VertexProgramChunk::_arbVertexProgram;
  *                           Class methods                                 *
 \***************************************************************************/
 
-void VertexProgramChunk::initMethod (void)
-{
+void VertexProgramChunk::initMethod(void) {
 }
-
 
 /***************************************************************************\
  *                           Instance methods                              *
@@ -91,66 +89,53 @@ void VertexProgramChunk::initMethod (void)
 
 /*----------------------- constructors & destructors ----------------------*/
 
-VertexProgramChunk::VertexProgramChunk(void) :
-    Inherited()
-{
-    _arbVertexProgram = Window::registerExtension("GL_ARB_vertex_program");
+VertexProgramChunk::VertexProgramChunk(void)
+    : Inherited() {
+  _arbVertexProgram = Window::registerExtension("GL_ARB_vertex_program");
 }
 
-VertexProgramChunk::VertexProgramChunk(const VertexProgramChunk &source) :
-    Inherited(source)
-{
+VertexProgramChunk::VertexProgramChunk(const VertexProgramChunk& source)
+    : Inherited(source) {
 }
 
-VertexProgramChunk::~VertexProgramChunk(void)
-{
+VertexProgramChunk::~VertexProgramChunk(void) {
 }
 
 /*----------------------------- onCreate --------------------------------*/
 
-void VertexProgramChunk::onCreate(const VertexProgramChunk *)
-{
-    if(GlobalSystemState == Startup)
-        return;
+void VertexProgramChunk::onCreate(const VertexProgramChunk*) {
+  if (GlobalSystemState == Startup)
+    return;
 
-    // !!! this temporary is needed to work around compiler problems (sgi)
-    // CHECK CHECK
-    //  VertexProgramChunkPtr tmpPtr = FieldContainer::getPtr<ProgramChunkPtr>(*this);
-    VertexProgramChunkPtr tmpPtr(*this);
+  // !!! this temporary is needed to work around compiler problems (sgi)
+  // CHECK CHECK
+  //  VertexProgramChunkPtr tmpPtr = FieldContainer::getPtr<ProgramChunkPtr>(*this);
+  VertexProgramChunkPtr tmpPtr(*this);
 
-    beginEditCP(tmpPtr, VertexProgramChunk::GLIdFieldMask);
+  beginEditCP(tmpPtr, VertexProgramChunk::GLIdFieldMask);
 
-    setGLId(
-        Window::registerGLObject(
-            osgTypedMethodVoidFunctor2ObjCPtrPtr<VertexProgramChunkPtr, 
-                                                 Window , 
-                                                 UInt32>(
-                                                     tmpPtr, 
-                                                     &VertexProgramChunk::handleGL),
-            1));
+  setGLId(Window::registerGLObject(
+      osgTypedMethodVoidFunctor2ObjCPtrPtr<VertexProgramChunkPtr, Window, UInt32>(
+          tmpPtr, &VertexProgramChunk::handleGL),
+      1));
 
-    endEditCP(tmpPtr, VertexProgramChunk::GLIdFieldMask);
+  endEditCP(tmpPtr, VertexProgramChunk::GLIdFieldMask);
 }
-
 
 /*------------------------- Chunk Class Access ---------------------------*/
 
-const StateChunkClass *VertexProgramChunk::getClass(void) const
-{
-    return &_class;
+const StateChunkClass* VertexProgramChunk::getClass(void) const {
+  return &_class;
 }
 
 /*----------------------------- class specific ----------------------------*/
 
-void VertexProgramChunk::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void VertexProgramChunk::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
-void VertexProgramChunk::dump(      UInt32    , 
-                         const BitVector ) const
-{
-    SLOG << "Dump VertexProgramChunk NI" << std::endl;
+void VertexProgramChunk::dump(UInt32, const BitVector) const {
+  SLOG << "Dump VertexProgramChunk NI" << std::endl;
 }
 
 /*------------------------------ State ------------------------------------*/
@@ -158,22 +143,18 @@ void VertexProgramChunk::dump(      UInt32    ,
 /*! GL object handler
     create the program and destroy it
 */
-void VertexProgramChunk::handleGL(Window *win, UInt32 idstatus)
-{
-    Inherited::handleGL(win, idstatus, GL_VERTEX_PROGRAM_ARB, _arbVertexProgram);
+void VertexProgramChunk::handleGL(Window* win, UInt32 idstatus) {
+  Inherited::handleGL(win, idstatus, GL_VERTEX_PROGRAM_ARB, _arbVertexProgram);
 }
 
-UInt32 VertexProgramChunk::getExtension(void) const
-{
-    return _arbVertexProgram;
+UInt32 VertexProgramChunk::getExtension(void) const {
+  return _arbVertexProgram;
 }
 
-GLenum VertexProgramChunk::getTarget(void) const
-{
-    return GL_VERTEX_PROGRAM_ARB;
+GLenum VertexProgramChunk::getTarget(void) const {
+  return GL_VERTEX_PROGRAM_ARB;
 }
 
-const char *VertexProgramChunk::getTargetName(void) const
-{
-    return "Vertex Program";
+const char* VertexProgramChunk::getTargetName(void) const {
+  return "Vertex Program";
 }

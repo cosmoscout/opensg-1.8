@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEDVRSHADERINST
 
 #include <stdlib.h>
@@ -61,154 +60,105 @@
 #include "OSGDVRShaderBase.h"
 #include "OSGDVRShader.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector DVRShaderBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
-
+const OSG::BitVector DVRShaderBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 FieldContainerType DVRShaderBase::_type(
-    "DVRShader",
-    "FieldContainer",
-    NULL,
-    NULL, 
-    DVRShader::initMethod,
-    NULL,
-    0);
+    "DVRShader", "FieldContainer", NULL, NULL, DVRShader::initMethod, NULL, 0);
 
-//OSG_FIELD_CONTAINER_DEF(DVRShaderBase, DVRShaderPtr)
+// OSG_FIELD_CONTAINER_DEF(DVRShaderBase, DVRShaderPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &DVRShaderBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &DVRShaderBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-UInt32 DVRShaderBase::getContainerSize(void) const 
-{ 
-    return sizeof(DVRShader); 
+FieldContainerType& DVRShaderBase::getType(void) {
+  return _type;
 }
 
+const FieldContainerType& DVRShaderBase::getType(void) const {
+  return _type;
+}
+
+UInt32 DVRShaderBase::getContainerSize(void) const {
+  return sizeof(DVRShader);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void DVRShaderBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((DVRShaderBase *) &other, whichField);
+void DVRShaderBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((DVRShaderBase*)&other, whichField);
 }
 #else
-void DVRShaderBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((DVRShaderBase *) &other, whichField, sInfo);
+void DVRShaderBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((DVRShaderBase*)&other, whichField, sInfo);
 }
-void DVRShaderBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void DVRShaderBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void DVRShaderBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void DVRShaderBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-DVRShaderBase::DVRShaderBase(void) :
-    Inherited() 
-{
+DVRShaderBase::DVRShaderBase(void)
+    : Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-DVRShaderBase::DVRShaderBase(const DVRShaderBase &source) :
-    Inherited                 (source)
-{
+DVRShaderBase::DVRShaderBase(const DVRShaderBase& source)
+    : Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-DVRShaderBase::~DVRShaderBase(void)
-{
+DVRShaderBase::~DVRShaderBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 DVRShaderBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 DVRShaderBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void DVRShaderBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
-
-
+void DVRShaderBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 }
 
-void DVRShaderBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
-
-
+void DVRShaderBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void DVRShaderBase::executeSyncImpl(      DVRShaderBase *pOther,
-                                        const BitVector         &whichField)
-{
+void DVRShaderBase::executeSyncImpl(DVRShaderBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
-
-
+  Inherited::executeSyncImpl(pOther, whichField);
 }
 #else
-void DVRShaderBase::executeSyncImpl(      DVRShaderBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void DVRShaderBase::executeSyncImpl(
+    DVRShaderBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
-
-
-
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 }
 
-void DVRShaderBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void DVRShaderBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 
@@ -221,4 +171,3 @@ DataType FieldDataTraits<DVRShaderPtr>::_type("DVRShaderPtr", "FieldContainerPtr
 OSG_DLLEXPORT_SFIELD_DEF1(DVRShaderPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
-

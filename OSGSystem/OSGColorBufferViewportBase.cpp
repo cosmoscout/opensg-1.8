@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILECOLORBUFFERVIEWPORTINST
 
 #include <stdlib.h>
@@ -61,29 +60,27 @@
 #include "OSGColorBufferViewportBase.h"
 #include "OSGColorBufferViewport.h"
 
-#include <OSGGL.h>                        // Red default header
-#include <OSGGL.h>                        // Blue default header
-#include <OSGGL.h>                        // Green default header
-#include <OSGGL.h>                        // Alpha default header
+#include <OSGGL.h> // Red default header
+#include <OSGGL.h> // Blue default header
+#include <OSGGL.h> // Green default header
+#include <OSGGL.h> // Alpha default header
 
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  ColorBufferViewportBase::RedFieldMask = 
+const OSG::BitVector ColorBufferViewportBase::RedFieldMask =
     (TypeTraits<BitVector>::One << ColorBufferViewportBase::RedFieldId);
 
-const OSG::BitVector  ColorBufferViewportBase::BlueFieldMask = 
+const OSG::BitVector ColorBufferViewportBase::BlueFieldMask =
     (TypeTraits<BitVector>::One << ColorBufferViewportBase::BlueFieldId);
 
-const OSG::BitVector  ColorBufferViewportBase::GreenFieldMask = 
+const OSG::BitVector ColorBufferViewportBase::GreenFieldMask =
     (TypeTraits<BitVector>::One << ColorBufferViewportBase::GreenFieldId);
 
-const OSG::BitVector  ColorBufferViewportBase::AlphaFieldMask = 
+const OSG::BitVector ColorBufferViewportBase::AlphaFieldMask =
     (TypeTraits<BitVector>::One << ColorBufferViewportBase::AlphaFieldId);
 
-const OSG::BitVector ColorBufferViewportBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector ColorBufferViewportBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
@@ -102,271 +99,200 @@ const OSG::BitVector ColorBufferViewportBase::MTInfluenceMask =
 
 //! ColorBufferViewport description
 
-FieldDescription *ColorBufferViewportBase::_desc[] = 
-{
-    new FieldDescription(SFBool::getClassType(), 
-                     "red", 
-                     RedFieldId, RedFieldMask,
-                     false,
-                     (FieldAccessMethod) &ColorBufferViewportBase::getSFRed),
-    new FieldDescription(SFBool::getClassType(), 
-                     "blue", 
-                     BlueFieldId, BlueFieldMask,
-                     false,
-                     (FieldAccessMethod) &ColorBufferViewportBase::getSFBlue),
-    new FieldDescription(SFBool::getClassType(), 
-                     "green", 
-                     GreenFieldId, GreenFieldMask,
-                     false,
-                     (FieldAccessMethod) &ColorBufferViewportBase::getSFGreen),
-    new FieldDescription(SFBool::getClassType(), 
-                     "alpha", 
-                     AlphaFieldId, AlphaFieldMask,
-                     false,
-                     (FieldAccessMethod) &ColorBufferViewportBase::getSFAlpha)
-};
+FieldDescription* ColorBufferViewportBase::_desc[] = {
+    new FieldDescription(SFBool::getClassType(), "red", RedFieldId, RedFieldMask, false,
+        (FieldAccessMethod)&ColorBufferViewportBase::getSFRed),
+    new FieldDescription(SFBool::getClassType(), "blue", BlueFieldId, BlueFieldMask, false,
+        (FieldAccessMethod)&ColorBufferViewportBase::getSFBlue),
+    new FieldDescription(SFBool::getClassType(), "green", GreenFieldId, GreenFieldMask, false,
+        (FieldAccessMethod)&ColorBufferViewportBase::getSFGreen),
+    new FieldDescription(SFBool::getClassType(), "alpha", AlphaFieldId, AlphaFieldMask, false,
+        (FieldAccessMethod)&ColorBufferViewportBase::getSFAlpha)};
 
-
-FieldContainerType ColorBufferViewportBase::_type(
-    "ColorBufferViewport",
-    "Viewport",
-    NULL,
-    (PrototypeCreateF) &ColorBufferViewportBase::createEmpty,
-    ColorBufferViewport::initMethod,
-    _desc,
+FieldContainerType ColorBufferViewportBase::_type("ColorBufferViewport", "Viewport", NULL,
+    (PrototypeCreateF)&ColorBufferViewportBase::createEmpty, ColorBufferViewport::initMethod, _desc,
     sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(ColorBufferViewportBase, ColorBufferViewportPtr)
+// OSG_FIELD_CONTAINER_DEF(ColorBufferViewportBase, ColorBufferViewportPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &ColorBufferViewportBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &ColorBufferViewportBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr ColorBufferViewportBase::shallowCopy(void) const 
-{ 
-    ColorBufferViewportPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const ColorBufferViewport *>(this)); 
-
-    return returnValue; 
+FieldContainerType& ColorBufferViewportBase::getType(void) {
+  return _type;
 }
 
-UInt32 ColorBufferViewportBase::getContainerSize(void) const 
-{ 
-    return sizeof(ColorBufferViewport); 
+const FieldContainerType& ColorBufferViewportBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr ColorBufferViewportBase::shallowCopy(void) const {
+  ColorBufferViewportPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const ColorBufferViewport*>(this));
+
+  return returnValue;
+}
+
+UInt32 ColorBufferViewportBase::getContainerSize(void) const {
+  return sizeof(ColorBufferViewport);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ColorBufferViewportBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((ColorBufferViewportBase *) &other, whichField);
+void ColorBufferViewportBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((ColorBufferViewportBase*)&other, whichField);
 }
 #else
-void ColorBufferViewportBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((ColorBufferViewportBase *) &other, whichField, sInfo);
+void ColorBufferViewportBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((ColorBufferViewportBase*)&other, whichField, sInfo);
 }
-void ColorBufferViewportBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void ColorBufferViewportBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void ColorBufferViewportBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void ColorBufferViewportBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-ColorBufferViewportBase::ColorBufferViewportBase(void) :
-    _sfRed                    (bool(GL_TRUE)), 
-    _sfBlue                   (bool(GL_TRUE)), 
-    _sfGreen                  (bool(GL_TRUE)), 
-    _sfAlpha                  (bool(GL_TRUE)), 
-    Inherited() 
-{
+ColorBufferViewportBase::ColorBufferViewportBase(void)
+    : _sfRed(bool(GL_TRUE))
+    , _sfBlue(bool(GL_TRUE))
+    , _sfGreen(bool(GL_TRUE))
+    , _sfAlpha(bool(GL_TRUE))
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-ColorBufferViewportBase::ColorBufferViewportBase(const ColorBufferViewportBase &source) :
-    _sfRed                    (source._sfRed                    ), 
-    _sfBlue                   (source._sfBlue                   ), 
-    _sfGreen                  (source._sfGreen                  ), 
-    _sfAlpha                  (source._sfAlpha                  ), 
-    Inherited                 (source)
-{
+ColorBufferViewportBase::ColorBufferViewportBase(const ColorBufferViewportBase& source)
+    : _sfRed(source._sfRed)
+    , _sfBlue(source._sfBlue)
+    , _sfGreen(source._sfGreen)
+    , _sfAlpha(source._sfAlpha)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-ColorBufferViewportBase::~ColorBufferViewportBase(void)
-{
+ColorBufferViewportBase::~ColorBufferViewportBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 ColorBufferViewportBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 ColorBufferViewportBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (RedFieldMask & whichField))
-    {
-        returnValue += _sfRed.getBinSize();
-    }
+  if (FieldBits::NoField != (RedFieldMask & whichField)) {
+    returnValue += _sfRed.getBinSize();
+  }
 
-    if(FieldBits::NoField != (BlueFieldMask & whichField))
-    {
-        returnValue += _sfBlue.getBinSize();
-    }
+  if (FieldBits::NoField != (BlueFieldMask & whichField)) {
+    returnValue += _sfBlue.getBinSize();
+  }
 
-    if(FieldBits::NoField != (GreenFieldMask & whichField))
-    {
-        returnValue += _sfGreen.getBinSize();
-    }
+  if (FieldBits::NoField != (GreenFieldMask & whichField)) {
+    returnValue += _sfGreen.getBinSize();
+  }
 
-    if(FieldBits::NoField != (AlphaFieldMask & whichField))
-    {
-        returnValue += _sfAlpha.getBinSize();
-    }
+  if (FieldBits::NoField != (AlphaFieldMask & whichField)) {
+    returnValue += _sfAlpha.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void ColorBufferViewportBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void ColorBufferViewportBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (RedFieldMask & whichField))
-    {
-        _sfRed.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (RedFieldMask & whichField)) {
+    _sfRed.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BlueFieldMask & whichField))
-    {
-        _sfBlue.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (BlueFieldMask & whichField)) {
+    _sfBlue.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GreenFieldMask & whichField))
-    {
-        _sfGreen.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (GreenFieldMask & whichField)) {
+    _sfGreen.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (AlphaFieldMask & whichField))
-    {
-        _sfAlpha.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (AlphaFieldMask & whichField)) {
+    _sfAlpha.copyToBin(pMem);
+  }
 }
 
-void ColorBufferViewportBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void ColorBufferViewportBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (RedFieldMask & whichField))
-    {
-        _sfRed.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (RedFieldMask & whichField)) {
+    _sfRed.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BlueFieldMask & whichField))
-    {
-        _sfBlue.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (BlueFieldMask & whichField)) {
+    _sfBlue.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GreenFieldMask & whichField))
-    {
-        _sfGreen.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (GreenFieldMask & whichField)) {
+    _sfGreen.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (AlphaFieldMask & whichField))
-    {
-        _sfAlpha.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (AlphaFieldMask & whichField)) {
+    _sfAlpha.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ColorBufferViewportBase::executeSyncImpl(      ColorBufferViewportBase *pOther,
-                                        const BitVector         &whichField)
-{
+void ColorBufferViewportBase::executeSyncImpl(
+    ColorBufferViewportBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (RedFieldMask & whichField))
-        _sfRed.syncWith(pOther->_sfRed);
+  if (FieldBits::NoField != (RedFieldMask & whichField))
+    _sfRed.syncWith(pOther->_sfRed);
 
-    if(FieldBits::NoField != (BlueFieldMask & whichField))
-        _sfBlue.syncWith(pOther->_sfBlue);
+  if (FieldBits::NoField != (BlueFieldMask & whichField))
+    _sfBlue.syncWith(pOther->_sfBlue);
 
-    if(FieldBits::NoField != (GreenFieldMask & whichField))
-        _sfGreen.syncWith(pOther->_sfGreen);
+  if (FieldBits::NoField != (GreenFieldMask & whichField))
+    _sfGreen.syncWith(pOther->_sfGreen);
 
-    if(FieldBits::NoField != (AlphaFieldMask & whichField))
-        _sfAlpha.syncWith(pOther->_sfAlpha);
-
-
+  if (FieldBits::NoField != (AlphaFieldMask & whichField))
+    _sfAlpha.syncWith(pOther->_sfAlpha);
 }
 #else
-void ColorBufferViewportBase::executeSyncImpl(      ColorBufferViewportBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void ColorBufferViewportBase::executeSyncImpl(
+    ColorBufferViewportBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (RedFieldMask & whichField))
-        _sfRed.syncWith(pOther->_sfRed);
+  if (FieldBits::NoField != (RedFieldMask & whichField))
+    _sfRed.syncWith(pOther->_sfRed);
 
-    if(FieldBits::NoField != (BlueFieldMask & whichField))
-        _sfBlue.syncWith(pOther->_sfBlue);
+  if (FieldBits::NoField != (BlueFieldMask & whichField))
+    _sfBlue.syncWith(pOther->_sfBlue);
 
-    if(FieldBits::NoField != (GreenFieldMask & whichField))
-        _sfGreen.syncWith(pOther->_sfGreen);
+  if (FieldBits::NoField != (GreenFieldMask & whichField))
+    _sfGreen.syncWith(pOther->_sfGreen);
 
-    if(FieldBits::NoField != (AlphaFieldMask & whichField))
-        _sfAlpha.syncWith(pOther->_sfAlpha);
-
-
-
+  if (FieldBits::NoField != (AlphaFieldMask & whichField))
+    _sfAlpha.syncWith(pOther->_sfAlpha);
 }
 
-void ColorBufferViewportBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void ColorBufferViewportBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>

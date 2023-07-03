@@ -52,81 +52,59 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &MultiPassMaterialBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& MultiPassMaterialBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 MultiPassMaterialBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 MultiPassMaterialBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-MultiPassMaterialPtr MultiPassMaterialBase::create(void) 
-{
-    MultiPassMaterialPtr fc; 
+inline MultiPassMaterialPtr MultiPassMaterialBase::create(void) {
+  MultiPassMaterialPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = MultiPassMaterialPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = MultiPassMaterialPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-MultiPassMaterialPtr MultiPassMaterialBase::createEmpty(void) 
-{ 
-    MultiPassMaterialPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline MultiPassMaterialPtr MultiPassMaterialBase::createEmpty(void) {
+  MultiPassMaterialPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the MultiPassMaterial::_mfMaterials field.
-inline
-MFMaterialPtr *MultiPassMaterialBase::getMFMaterials(void)
-{
-    return &_mfMaterials;
+inline MFMaterialPtr* MultiPassMaterialBase::getMFMaterials(void) {
+  return &_mfMaterials;
 }
-
-
 
 //! Get the value of the \a index element the MultiPassMaterial::_mfMaterials field.
-inline
-MaterialPtr &MultiPassMaterialBase::getMaterials(const UInt32 index)
-{
-    return _mfMaterials[index];
+inline MaterialPtr& MultiPassMaterialBase::getMaterials(const UInt32 index) {
+  return _mfMaterials[index];
 }
 
 //! Get the MultiPassMaterial::_mfMaterials field.
-inline
-MFMaterialPtr &MultiPassMaterialBase::getMaterials(void)
-{
-    return _mfMaterials;
+inline MFMaterialPtr& MultiPassMaterialBase::getMaterials(void) {
+  return _mfMaterials;
 }
 
 //! Get the MultiPassMaterial::_mfMaterials field.
-inline
-const MFMaterialPtr &MultiPassMaterialBase::getMaterials(void) const
-{
-    return _mfMaterials;
+inline const MFMaterialPtr& MultiPassMaterialBase::getMaterials(void) const {
+  return _mfMaterials;
 }
 
 OSG_END_NAMESPACE
 
-#define OSGMULTIPASSMATERIALBASE_INLINE_CVSID "@(#)$Id: OSGMultiPassMaterialBase.inl,v 1.5 2006/02/20 17:04:44 dirk Exp $"
-
+#define OSGMULTIPASSMATERIALBASE_INLINE_CVSID                                                      \
+  "@(#)$Id: OSGMultiPassMaterialBase.inl,v 1.5 2006/02/20 17:04:44 dirk Exp $"

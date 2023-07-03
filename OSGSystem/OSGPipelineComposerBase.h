@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGPIPELINECOMPOSERBASE_H_
 #define _OSGPIPELINECOMPOSERBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -67,10 +65,10 @@
 
 #include <OSGImageComposer.h> // Parent
 
-#include <OSGBoolFields.h> // Short type
-#include <OSGBoolFields.h> // Alpha type
+#include <OSGBoolFields.h>   // Short type
+#include <OSGBoolFields.h>   // Alpha type
 #include <OSGUInt32Fields.h> // TileSize type
-#include <OSGBoolFields.h> // Pipelined type
+#include <OSGBoolFields.h>   // Pipelined type
 
 #include <OSGPipelineComposerFields.h>
 
@@ -81,202 +79,182 @@ class BinaryDataHandler;
 
 //! \brief PipelineComposer Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING PipelineComposerBase : public ImageComposer
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING PipelineComposerBase : public ImageComposer {
+ private:
+  typedef ImageComposer Inherited;
 
-    typedef ImageComposer    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef PipelineComposerPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    ShortFieldId     = Inherited::NextFieldId,
+    AlphaFieldId     = ShortFieldId + 1,
+    TileSizeFieldId  = AlphaFieldId + 1,
+    PipelinedFieldId = TileSizeFieldId + 1,
+    NextFieldId      = PipelinedFieldId + 1
+  };
 
-    typedef PipelineComposerPtr  Ptr;
+  static const OSG::BitVector ShortFieldMask;
+  static const OSG::BitVector AlphaFieldMask;
+  static const OSG::BitVector TileSizeFieldMask;
+  static const OSG::BitVector PipelinedFieldMask;
 
-    enum
-    {
-        ShortFieldId     = Inherited::NextFieldId,
-        AlphaFieldId     = ShortFieldId     + 1,
-        TileSizeFieldId  = AlphaFieldId     + 1,
-        PipelinedFieldId = TileSizeFieldId  + 1,
-        NextFieldId      = PipelinedFieldId + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector ShortFieldMask;
-    static const OSG::BitVector AlphaFieldMask;
-    static const OSG::BitVector TileSizeFieldMask;
-    static const OSG::BitVector PipelinedFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFBool*   getSFShort(void);
+  SFBool*   getSFAlpha(void);
+  SFUInt32* getSFTileSize(void);
+  SFBool*   getSFPipelined(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  bool&         getShort(void);
+  const bool&   getShort(void) const;
+  bool&         getAlpha(void);
+  const bool&   getAlpha(void) const;
+  UInt32&       getTileSize(void);
+  const UInt32& getTileSize(void) const;
+  bool&         getPipelined(void);
+  const bool&   getPipelined(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFBool              *getSFShort          (void);
-           SFBool              *getSFAlpha          (void);
-           SFUInt32            *getSFTileSize       (void);
-           SFBool              *getSFPipelined      (void);
+  void setShort(const bool& value);
+  void setAlpha(const bool& value);
+  void setTileSize(const UInt32& value);
+  void setPipelined(const bool& value);
 
-           bool                &getShort          (void);
-     const bool                &getShort          (void) const;
-           bool                &getAlpha          (void);
-     const bool                &getAlpha          (void) const;
-           UInt32              &getTileSize       (void);
-     const UInt32              &getTileSize       (void) const;
-           bool                &getPipelined      (void);
-     const bool                &getPipelined      (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setShort          ( const bool &value );
-     void setAlpha          ( const bool &value );
-     void setTileSize       ( const UInt32 &value );
-     void setPipelined      ( const bool &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static PipelineComposerPtr create(void);
+  static PipelineComposerPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  PipelineComposerPtr      create          (void); 
-    static  PipelineComposerPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFBool   _sfShort;
+  SFBool   _sfAlpha;
+  SFUInt32 _sfTileSize;
+  SFBool   _sfPipelined;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  PipelineComposerBase(void);
+  PipelineComposerBase(const PipelineComposerBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~PipelineComposerBase(void);
 
-    SFBool              _sfShort;
-    SFBool              _sfAlpha;
-    SFUInt32            _sfTileSize;
-    SFBool              _sfPipelined;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    PipelineComposerBase(void);
-    PipelineComposerBase(const PipelineComposerBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~PipelineComposerBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      PipelineComposerBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(PipelineComposerBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      PipelineComposerBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      PipelineComposerBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const PipelineComposerBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const PipelineComposerBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef PipelineComposerBase* PipelineComposerBaseP;
 
-typedef PipelineComposerBase *PipelineComposerBaseP;
-
-typedef osgIF<PipelineComposerBase::isNodeCore,
-              CoredNodePtr<PipelineComposer>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet PipelineComposerNodePtr;
+typedef osgIF<PipelineComposerBase::isNodeCore, CoredNodePtr<PipelineComposer>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet
+    PipelineComposerNodePtr;
 
 typedef RefPtr<PipelineComposerPtr> PipelineComposerRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGPIPELINECOMPOSERBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.38 2005/07/08 06:37:35 vossg Exp $"
+#define OSGPIPELINECOMPOSERBASE_HEADER_CVSID                                                       \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.38 2005/07/08 06:37:35 vossg Exp $"
 
 #endif /* _OSGPIPELINECOMPOSERBASE_H_ */

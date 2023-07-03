@@ -56,7 +56,6 @@
 
 #include <map>
 
-
 OSG_BEGIN_NAMESPACE
 
 //---------------------------------------------------------------------------
@@ -78,335 +77,283 @@ class Material;
 /*! \brief DrawAction class
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING VRMLWriteAction : public Action
-{
-  public:
-
-    //-----------------------------------------------------------------------
-    //   enums                                                               
-    //-----------------------------------------------------------------------
-
-    enum TraversalMode
-    {
-        OSGCollectFC = 0x0001,
-        OSGWrite     = 0x0002
-    };
-
-    enum WriterOption
-    {
-        OSGNoOptions        = 0x0000,
-        OSGNoIndent         = 0x0001,
-        OSGNoNormals        = 0x0002,
-        OSGPixelTextures    = 0x0004
-    };
+class OSG_SYSTEMLIB_DLLMAPPING VRMLWriteAction : public Action {
+ public:
+  //-----------------------------------------------------------------------
+  //   enums
+  //-----------------------------------------------------------------------
 
-    //-----------------------------------------------------------------------
-    //   types                                                               
-    //-----------------------------------------------------------------------
+  enum TraversalMode { OSGCollectFC = 0x0001, OSGWrite = 0x0002 };
 
-    //-----------------------------------------------------------------------
-    //   class functions                                                     
-    //-----------------------------------------------------------------------
+  enum WriterOption {
+    OSGNoOptions     = 0x0000,
+    OSGNoIndent      = 0x0001,
+    OSGNoNormals     = 0x0002,
+    OSGPixelTextures = 0x0004
+  };
 
-    static const char *getClassname(void) { return "VRMLWriteAction"; };
+  //-----------------------------------------------------------------------
+  //   types
+  //-----------------------------------------------------------------------
 
-    // create a new DrawAction by cloning the prototype
-    static VRMLWriteAction * create( void );
-    
-    // prototype access
-    // after setting the prototype all new DrawActions are clones of it
-    static void             setPrototype(VRMLWriteAction * proto);
-    static VRMLWriteAction *getPrototype(void);
+  //-----------------------------------------------------------------------
+  //   class functions
+  //-----------------------------------------------------------------------
 
-    //-----------------------------------------------------------------------
-    //   instance functions                                                  
-    //-----------------------------------------------------------------------
+  static const char* getClassname(void) {
+    return "VRMLWriteAction";
+  };
 
-    virtual ~VRMLWriteAction(void); 
+  // create a new DrawAction by cloning the prototype
+  static VRMLWriteAction* create(void);
 
-    /*------------------------- your_category -------------------------------*/
-    
-    // default registration. static, so it can be called during static init
-    
-    static void registerEnterDefault(   const FieldContainerType &type, 
-                                        const Functor            &func);
-    
-    static void registerLeaveDefault(   const FieldContainerType &type, 
-                                        const Functor            &func);
+  // prototype access
+  // after setting the prototype all new DrawActions are clones of it
+  static void             setPrototype(VRMLWriteAction* proto);
+  static VRMLWriteAction* getPrototype(void);
 
-    
-    // rendering state handling
-    
-    MaterialPtr    getMaterial(void) const;
-    void           setMaterial(MaterialPtr material);
+  //-----------------------------------------------------------------------
+  //   instance functions
+  //-----------------------------------------------------------------------
 
-    FILE          *getFilePtr(void) const;
-    TraversalMode  getMode   (void) const;
+  virtual ~VRMLWriteAction(void);
 
-    /*------------------------- your_operators ------------------------------*/
+  /*------------------------- your_category -------------------------------*/
 
-    bool open (const Char8 *szFilename);
-    void close(void);
+  // default registration. static, so it can be called during static init
 
-    /*------------------------- assignment ----------------------------------*/
+  static void registerEnterDefault(const FieldContainerType& type, const Functor& func);
 
-    void   addOptions(UInt32 uiOptions);
-    void   subOptions(UInt32 uiOptions);
+  static void registerLeaveDefault(const FieldContainerType& type, const Functor& func);
 
-    UInt32 getOptions(void            );
+  // rendering state handling
 
-    virtual Action::ResultE write(NodePtr node);
+  MaterialPtr getMaterial(void) const;
+  void        setMaterial(MaterialPtr material);
 
-    /*------------------------- comparison ----------------------------------*/
+  FILE*         getFilePtr(void) const;
+  TraversalMode getMode(void) const;
 
-    bool operator < (const VRMLWriteAction &other) const;
-    
-    bool operator == (const VRMLWriteAction &other) const;
-    bool operator != (const VRMLWriteAction &other) const;
+  /*------------------------- your_operators ------------------------------*/
 
-  protected:
+  bool open(const Char8* szFilename);
+  void close(void);
 
-    //-----------------------------------------------------------------------
-    //   enums                                                               
-    //-----------------------------------------------------------------------
+  /*------------------------- assignment ----------------------------------*/
 
-    //-----------------------------------------------------------------------
-    //   types                                                               
-    //-----------------------------------------------------------------------
+  void addOptions(UInt32 uiOptions);
+  void subOptions(UInt32 uiOptions);
 
-    //-----------------------------------------------------------------------
-    //   class variables                                                     
-    //-----------------------------------------------------------------------
+  UInt32 getOptions(void);
 
-    //-----------------------------------------------------------------------
-    //   class functions                                                     
-    //-----------------------------------------------------------------------
+  virtual Action::ResultE write(NodePtr node);
 
-    //-----------------------------------------------------------------------
-    //   instance variables                                                  
-    //-----------------------------------------------------------------------
+  /*------------------------- comparison ----------------------------------*/
 
-    //-----------------------------------------------------------------------
-    //   instance functions                                                  
-    //-----------------------------------------------------------------------
+  bool operator<(const VRMLWriteAction& other) const;
 
-    // access default functors
+  bool operator==(const VRMLWriteAction& other) const;
+  bool operator!=(const VRMLWriteAction& other) const;
 
-    virtual std::vector<Functor> *getDefaultEnterFunctors( void );
-    virtual std::vector<Functor> *getDefaultLeaveFunctors( void );
+ protected:
+  //-----------------------------------------------------------------------
+  //   enums
+  //-----------------------------------------------------------------------
 
-    virtual Action::ResultE apply(std::vector<NodePtr>::iterator begin, 
-                                  std::vector<NodePtr>::iterator end);
+  //-----------------------------------------------------------------------
+  //   types
+  //-----------------------------------------------------------------------
 
-    virtual Action::ResultE apply(NodePtr node);
+  //-----------------------------------------------------------------------
+  //   class variables
+  //-----------------------------------------------------------------------
 
-  private:
+  //-----------------------------------------------------------------------
+  //   class functions
+  //-----------------------------------------------------------------------
 
-    //-----------------------------------------------------------------------
-    //   enums                                                               
-    //-----------------------------------------------------------------------
+  //-----------------------------------------------------------------------
+  //   instance variables
+  //-----------------------------------------------------------------------
 
-    //-----------------------------------------------------------------------
-    //   types                                                               
-    //-----------------------------------------------------------------------
+  //-----------------------------------------------------------------------
+  //   instance functions
+  //-----------------------------------------------------------------------
 
-    typedef Action Inherited;
-
-    struct ActionInitializer
-    {
-        ActionInitializer(void);
-        ~ActionInitializer(void);
-    };
-
-    struct FCInfo
-    {
-      private:
-
-        Int32  _iTimesUsed;
-        bool   _bOwnName;
-        Char8 *_szName;
-        bool   _bWritten;
+  // access default functors
 
-      public:
-
-        FCInfo(void);
-        FCInfo(const FCInfo &source);
-        ~FCInfo(void);
-
-        Char8 mapChar    (      Char8 c);
-        void  convertName(      Char8 *&szName);
-
-        void setName    (const Char8  *szName);
-        void buildName  (const Char8  *szTypename,
-                             UInt32  uiContainerId);
-        void incUse     (void);
-        
-              UInt32  getUse (void) const;
-        const Char8  *getName(void) const;
-
-        bool  getWritten(void) const;
-        void  setWritten (void);
-
-        // returnvalue required by MS
-        Int32 clear    (void);
-    };
-
-    //-----------------------------------------------------------------------
-    //   friend classes                                                      
-    //-----------------------------------------------------------------------
-
-    friend struct ActionInitializer;
-
-    //-----------------------------------------------------------------------
-    //   friend functions                                                    
-    //-----------------------------------------------------------------------
-
-    //-----------------------------------------------------------------------
-    //   class variables                                                     
-    //-----------------------------------------------------------------------
-
-    static char cvsid[];
-
-    // the prototype which is copied to create new actions
-    static VRMLWriteAction * _prototype;
-
-    // default functors for instantiation
-    static std::vector<Functor> *_defaultEnterFunctors;
-    static std::vector<Functor> *_defaultLeaveFunctors;
-    
-    static ActionInitializer _actionInitializer;
-
-    //-----------------------------------------------------------------------
-    //   class functions                                                     
-    //-----------------------------------------------------------------------
-
-
-    static Action::ResultE writeGroupEnter(CNodePtr &pGroup,
-                                           Action   *pAction);
-    static Action::ResultE writeGroupLeave(CNodePtr &pGroup,
-                                           Action   *pAction);
-
-    static Action::ResultE writeMatGroupEnter(CNodePtr &pGroup,
-                                              Action   *pAction);
-    static Action::ResultE writeMatGroupLeave(CNodePtr &pGroup,
-                                              Action   *pAction);
+  virtual std::vector<Functor>* getDefaultEnterFunctors(void);
+  virtual std::vector<Functor>* getDefaultLeaveFunctors(void);
 
-    static Action::ResultE writeComponentTransformEnter(CNodePtr &pGroup,
-                                                Action   *pAction);
-    static Action::ResultE writeComponentTransformLeave(CNodePtr &pGroup,
-                                                Action   *pAction);
-
-    static Action::ResultE writeTransformEnter(CNodePtr &pGroup,
-                                                Action   *pAction);
-    static Action::ResultE writeTransformLeave(CNodePtr &pGroup,
-                                                Action   *pAction);
+  virtual Action::ResultE apply(
+      std::vector<NodePtr>::iterator begin, std::vector<NodePtr>::iterator end);
 
-    static void writePoints   (      GeometryPtr      pGeo, 
-                                     FILE            *pFile,
-                                     VRMLWriteAction *pWriter);
-    static void writeNormals  (      GeometryPtr      pGeo, 
-                                     FILE            *pFile,
-                                     VRMLWriteAction *pWriter);
-    static void writeColors   (      GeometryPtr      pGeo, 
-                                     FILE            *pFile,
-                                     VRMLWriteAction *pWriter);
-    static void writeTexCoords(      GeometryPtr      pGeo, 
-                                     FILE            *pFile,
-                                     VRMLWriteAction *pWriter);
+  virtual Action::ResultE apply(NodePtr node);
 
-    static void writeIndex    (      GeometryPtr      pGeo, 
-                                     FILE            *pFile,
-                                     VRMLWriteAction *pWriter);
+ private:
+  //-----------------------------------------------------------------------
+  //   enums
+  //-----------------------------------------------------------------------
 
-    static void writeLineIndex(      GeometryPtr      pGeo, 
-                                     FILE            *pFile,
-                                     VRMLWriteAction *pWriter);
+  //-----------------------------------------------------------------------
+  //   types
+  //-----------------------------------------------------------------------
 
-    static void writeMaterial (      GeometryPtr      pGeo, 
-                                     FILE            *pFile,
-                                     VRMLWriteAction *pWriter);
+  typedef Action Inherited;
 
-    static bool writeGeoCommon(      NodePtr          pNode,
-                                     GeometryPtr      pGeo, 
-                                     FILE            *pFile,
-                                     VRMLWriteAction *pWriter,
-                               const Char8           *setTypename);
+  struct ActionInitializer {
+    ActionInitializer(void);
+    ~ActionInitializer(void);
+  };
 
-    static void writePointSet (      NodePtr          pNode,
-                                     GeometryPtr      pGeo, 
-                                     FILE            *pFile,
-                                     VRMLWriteAction *pWriter);
+  struct FCInfo {
+   private:
+    Int32  _iTimesUsed;
+    bool   _bOwnName;
+    Char8* _szName;
+    bool   _bWritten;
 
-    static void writeLineSet  (      NodePtr          pNode,
-                                     GeometryPtr      pGeo, 
-                                     FILE            *pFile,
-                                     VRMLWriteAction *pWriter,
-                                     bool             bSinglePrimitiveGeo);
+   public:
+    FCInfo(void);
+    FCInfo(const FCInfo& source);
+    ~FCInfo(void);
 
-    static void writeFaceSet  (      NodePtr          pNode,
-                                     GeometryPtr      pGeo, 
-                                     FILE            *pFile,
-                                     VRMLWriteAction *pWriter,
-                                     bool             bSinglePrimitiveGeo);
+    Char8 mapChar(Char8 c);
+    void  convertName(Char8*& szName);
 
-    static Action::ResultE writeGeoEnter(CNodePtr &pGroup,
-                                         Action   *pAction);
-    static Action::ResultE writeGeoLeave(CNodePtr &pGroup,
-                                         Action   *pAction);
+    void setName(const Char8* szName);
+    void buildName(const Char8* szTypename, UInt32 uiContainerId);
+    void incUse(void);
 
-    static bool initializeAction(void);
-    static bool terminateAction (void);
+    UInt32       getUse(void) const;
+    const Char8* getName(void) const;
 
-    //-----------------------------------------------------------------------
-    //   instance variables                                                  
-    //-----------------------------------------------------------------------
+    bool getWritten(void) const;
+    void setWritten(void);
 
-    MaterialPtr          _material;
+    // returnvalue required by MS
+    Int32 clear(void);
+  };
 
-    UInt32               _uiIndent;
-    FILE                *_pFile;
+  //-----------------------------------------------------------------------
+  //   friend classes
+  //-----------------------------------------------------------------------
 
-    TraversalMode        _eTraversalMode;    
-    bool                 _currentUse;
-    UInt32               _uiOptions;
+  friend struct ActionInitializer;
 
-    std::vector<FCInfo>  _vFCInfos;
+  //-----------------------------------------------------------------------
+  //   friend functions
+  //-----------------------------------------------------------------------
 
-    // this is a quick hack to get material sharing to work. 
-    // I don't understand the reasoning and design of the FCInfo stuff and 
-    // don't have time to do it right. :( DR 040106
-    std::vector<FieldContainerPtr>        _writtenFCs;
+  //-----------------------------------------------------------------------
+  //   class variables
+  //-----------------------------------------------------------------------
 
-    UInt32 _nodeCount;
-    UInt32 _currentNodeCount;
+  static char cvsid[];
 
-    //-----------------------------------------------------------------------
-    //   instance functions                                                  
-    //-----------------------------------------------------------------------
+  // the prototype which is copied to create new actions
+  static VRMLWriteAction* _prototype;
 
-    // prohibit default functions (move to 'public' if you need one)
+  // default functors for instantiation
+  static std::vector<Functor>* _defaultEnterFunctors;
+  static std::vector<Functor>* _defaultLeaveFunctors;
 
-    VRMLWriteAction(void);
-    VRMLWriteAction(const VRMLWriteAction &source);
-    VRMLWriteAction& operator =(const VRMLWriteAction &source);
+  static ActionInitializer _actionInitializer;
 
-    void incIndent  (UInt32 uiDelta);
-    void decIndent  (UInt32 uiDelta);
-    void printIndent(void);
+  //-----------------------------------------------------------------------
+  //   class functions
+  //-----------------------------------------------------------------------
 
-    void    setCurrentUse  (bool bVal                    );
-    bool    isCurrentUse   (void                         );
+  static Action::ResultE writeGroupEnter(CNodePtr& pGroup, Action* pAction);
+  static Action::ResultE writeGroupLeave(CNodePtr& pGroup, Action* pAction);
 
-    void    addNodeUse     (CNodePtr          &pNode     );
-    void    addContainerUse(FieldContainerPtr &pContainer);
+  static Action::ResultE writeMatGroupEnter(CNodePtr& pGroup, Action* pAction);
+  static Action::ResultE writeMatGroupLeave(CNodePtr& pGroup, Action* pAction);
 
-    FCInfo *getInfo        (FieldContainerPtr &pContainer);
+  static Action::ResultE writeComponentTransformEnter(CNodePtr& pGroup, Action* pAction);
+  static Action::ResultE writeComponentTransformLeave(CNodePtr& pGroup, Action* pAction);
 
-    void    updateProgress (void                         );
+  static Action::ResultE writeTransformEnter(CNodePtr& pGroup, Action* pAction);
+  static Action::ResultE writeTransformLeave(CNodePtr& pGroup, Action* pAction);
 
-    inline bool        isWritten(FieldContainerPtr &fc);
-    inline UInt32      getIndex(FieldContainerPtr &fc);
-    inline UInt32      setWritten(FieldContainerPtr &fc);
+  static void writePoints(GeometryPtr pGeo, FILE* pFile, VRMLWriteAction* pWriter);
+  static void writeNormals(GeometryPtr pGeo, FILE* pFile, VRMLWriteAction* pWriter);
+  static void writeColors(GeometryPtr pGeo, FILE* pFile, VRMLWriteAction* pWriter);
+  static void writeTexCoords(GeometryPtr pGeo, FILE* pFile, VRMLWriteAction* pWriter);
+
+  static void writeIndex(GeometryPtr pGeo, FILE* pFile, VRMLWriteAction* pWriter);
+
+  static void writeLineIndex(GeometryPtr pGeo, FILE* pFile, VRMLWriteAction* pWriter);
+
+  static void writeMaterial(GeometryPtr pGeo, FILE* pFile, VRMLWriteAction* pWriter);
+
+  static bool writeGeoCommon(NodePtr pNode, GeometryPtr pGeo, FILE* pFile, VRMLWriteAction* pWriter,
+      const Char8* setTypename);
+
+  static void writePointSet(NodePtr pNode, GeometryPtr pGeo, FILE* pFile, VRMLWriteAction* pWriter);
+
+  static void writeLineSet(NodePtr pNode, GeometryPtr pGeo, FILE* pFile, VRMLWriteAction* pWriter,
+      bool bSinglePrimitiveGeo);
+
+  static void writeFaceSet(NodePtr pNode, GeometryPtr pGeo, FILE* pFile, VRMLWriteAction* pWriter,
+      bool bSinglePrimitiveGeo);
+
+  static Action::ResultE writeGeoEnter(CNodePtr& pGroup, Action* pAction);
+  static Action::ResultE writeGeoLeave(CNodePtr& pGroup, Action* pAction);
+
+  static bool initializeAction(void);
+  static bool terminateAction(void);
+
+  //-----------------------------------------------------------------------
+  //   instance variables
+  //-----------------------------------------------------------------------
+
+  MaterialPtr _material;
+
+  UInt32 _uiIndent;
+  FILE*  _pFile;
+
+  TraversalMode _eTraversalMode;
+  bool          _currentUse;
+  UInt32        _uiOptions;
+
+  std::vector<FCInfo> _vFCInfos;
+
+  // this is a quick hack to get material sharing to work.
+  // I don't understand the reasoning and design of the FCInfo stuff and
+  // don't have time to do it right. :( DR 040106
+  std::vector<FieldContainerPtr> _writtenFCs;
+
+  UInt32 _nodeCount;
+  UInt32 _currentNodeCount;
+
+  //-----------------------------------------------------------------------
+  //   instance functions
+  //-----------------------------------------------------------------------
+
+  // prohibit default functions (move to 'public' if you need one)
+
+  VRMLWriteAction(void);
+  VRMLWriteAction(const VRMLWriteAction& source);
+  VRMLWriteAction& operator=(const VRMLWriteAction& source);
+
+  void incIndent(UInt32 uiDelta);
+  void decIndent(UInt32 uiDelta);
+  void printIndent(void);
+
+  void setCurrentUse(bool bVal);
+  bool isCurrentUse(void);
+
+  void addNodeUse(CNodePtr& pNode);
+  void addContainerUse(FieldContainerPtr& pContainer);
+
+  FCInfo* getInfo(FieldContainerPtr& pContainer);
+
+  void updateProgress(void);
+
+  inline bool   isWritten(FieldContainerPtr& fc);
+  inline UInt32 getIndex(FieldContainerPtr& fc);
+  inline UInt32 setWritten(FieldContainerPtr& fc);
 };
 
 //---------------------------------------------------------------------------
@@ -415,7 +362,7 @@ class OSG_SYSTEMLIB_DLLMAPPING VRMLWriteAction : public Action
 
 // class pointer
 
-typedef VRMLWriteAction *VRMLWriteActionP;
+typedef VRMLWriteAction* VRMLWriteActionP;
 
 OSG_END_NAMESPACE
 

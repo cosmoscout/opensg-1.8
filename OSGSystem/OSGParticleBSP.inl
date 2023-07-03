@@ -45,53 +45,39 @@
 
 OSG_BEGIN_NAMESPACE
 
-inline
-bool ParticleBSPNode::isLeaf(void) const
-{
-    return _axis == Leaf;
+inline bool ParticleBSPNode::isLeaf(void) const {
+  return _axis == Leaf;
 }
 
-inline
-Int32 ParticleBSPNode::getValue(void) const
-{
-    return _value;
+inline Int32 ParticleBSPNode::getValue(void) const {
+  return _value;
 }
 
-inline
-Real32 ParticleBSPNode::getSplitValue(void) const
-{
-    return _splitvalue;
+inline Real32 ParticleBSPNode::getSplitValue(void) const {
+  return _splitvalue;
 }
 
-inline
-UInt8 ParticleBSPNode::getAxis(void) const
-{
-    return _axis;
+inline UInt8 ParticleBSPNode::getAxis(void) const {
+  return _axis;
 }
 
-inline
-void ParticleBSPNode::setValue(Int32 value)
-{
-    _value = value;
-    _axis = Leaf;
+inline void ParticleBSPNode::setValue(Int32 value) {
+  _value = value;
+  _axis  = Leaf;
 }
 
-inline
-void ParticleBSPNode::setSplit(UInt8 axis, Real32 splitvalue)
-{
-    _splitvalue = splitvalue;
-    _axis       = axis;
+inline void ParticleBSPNode::setSplit(UInt8 axis, Real32 splitvalue) {
+  _splitvalue = splitvalue;
+  _axis       = axis;
 }
 
-inline 
-bool ParticleBSPTree::created(void)
-{
-    return _tree.size() > 1;
+inline bool ParticleBSPTree::created(void) {
+  return _tree.size() > 1;
 }
 
 OSG_END_NAMESPACE
 
 #endif // Doc exclude
 
-#define OSGPARTICLEBSP_INLINE_CVSID "@(#)$Id: OSGParticleBSP.inl,v 1.1 2002/01/10 21:14:10 dirk Exp $"
-
+#define OSGPARTICLEBSP_INLINE_CVSID                                                                \
+  "@(#)$Id: OSGParticleBSP.inl,v 1.1 2002/01/10 21:14:10 dirk Exp $"

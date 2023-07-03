@@ -48,40 +48,31 @@ OSG_USING_NAMESPACE
 //    Destructor
 //----------------------------------------------------------------------------
 
-ExtendActorBase::~ExtendActorBase(void)
-{
+ExtendActorBase::~ExtendActorBase(void) {
 }
 
 //----------------------------------------------------------------------------
 //    Start/Stop
 //----------------------------------------------------------------------------
 
-ExtendActorBase::ResultE
-ExtendActorBase::start(void)
-{
-    return Inherited::start();
+ExtendActorBase::ResultE ExtendActorBase::start(void) {
+  return Inherited::start();
 }
 
-ExtendActorBase::ResultE
-ExtendActorBase::stop(void)
-{
-    return Inherited::stop();
+ExtendActorBase::ResultE ExtendActorBase::stop(void) {
+  return Inherited::stop();
 }
 
 //----------------------------------------------------------------------------
 //    Enter/Leave
 //----------------------------------------------------------------------------
 
-ExtendActorBase::ResultE
-ExtendActorBase::enterNode(FunctorArgumentType &funcArg)
-{
-    return NewActionTypes::Continue;
+ExtendActorBase::ResultE ExtendActorBase::enterNode(FunctorArgumentType& funcArg) {
+  return NewActionTypes::Continue;
 }
 
-ExtendActorBase::ResultE
-ExtendActorBase::leaveNode(FunctorArgumentType &funcArg)
-{
-    return NewActionTypes::Continue;
+ExtendActorBase::ResultE ExtendActorBase::leaveNode(FunctorArgumentType& funcArg) {
+  return NewActionTypes::Continue;
 }
 
 //----------------------------------------------------------------------------
@@ -92,38 +83,29 @@ ExtendActorBase::leaveNode(FunctorArgumentType &funcArg)
  */
 
 ExtendActorBase::ExtendActorBase(void)
-    : Inherited()
-{
+    : Inherited() {
 }
 
 //----------------------------------------------------------------------------
 //    Add, Sub and Find helper
 //----------------------------------------------------------------------------
 
-UInt32
-ExtendActorBase::addHelper(NewActionBase *pAction)
-{
-    return pAction->addExtendActor(this);
+UInt32 ExtendActorBase::addHelper(NewActionBase* pAction) {
+  return pAction->addExtendActor(this);
 }
 
-void
-ExtendActorBase::subHelper(NewActionBase *pAction)
-{
-    UInt32 actorIndex = pAction->findExtendActor(this);
+void ExtendActorBase::subHelper(NewActionBase* pAction) {
+  UInt32 actorIndex = pAction->findExtendActor(this);
 
-    if(actorIndex == TypeTraits<UInt32>::getMax())
-    {
-        SWARNING << "ExtendActorBase::subHelper: Illegal actor index."
-                 << endLog;
+  if (actorIndex == TypeTraits<UInt32>::getMax()) {
+    SWARNING << "ExtendActorBase::subHelper: Illegal actor index." << endLog;
 
-        return;
-    }
+    return;
+  }
 
-    pAction->subExtendActor(actorIndex);
+  pAction->subExtendActor(actorIndex);
 }
 
-UInt32
-ExtendActorBase::findHelper(const NewActionBase *pAction)
-{
-    return pAction->findExtendActor(this);
+UInt32 ExtendActorBase::findHelper(const NewActionBase* pAction) {
+  return pAction->findExtendActor(this);
 }

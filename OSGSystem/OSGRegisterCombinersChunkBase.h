@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGREGISTERCOMBINERSCHUNKBASE_H_
 #define _OSGREGISTERCOMBINERSCHUNKBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -69,35 +67,35 @@
 
 #include <OSGColor4fFields.h> // Color0 type
 #include <OSGColor4fFields.h> // Color1 type
-#include <OSGBoolFields.h> // ColorSumClamp type
-#include <OSGGLenumFields.h> // VariableArgb type
-#include <OSGGLenumFields.h> // VariableBrgb type
-#include <OSGGLenumFields.h> // VariableCrgb type
-#include <OSGGLenumFields.h> // VariableDrgb type
-#include <OSGGLenumFields.h> // VariableAalpha type
-#include <OSGGLenumFields.h> // VariableBalpha type
-#include <OSGGLenumFields.h> // VariableCalpha type
-#include <OSGGLenumFields.h> // VariableDalpha type
-#include <OSGGLenumFields.h> // OutputABrgb type
-#include <OSGGLenumFields.h> // OutputCDrgb type
-#include <OSGGLenumFields.h> // OutputSumrgb type
-#include <OSGGLenumFields.h> // Scalergb type
-#include <OSGGLenumFields.h> // Biasrgb type
-#include <OSGGLenumFields.h> // OutputABalpha type
-#include <OSGGLenumFields.h> // OutputCDalpha type
-#include <OSGGLenumFields.h> // OutputSumalpha type
-#include <OSGUInt8Fields.h> // DotABrgb type
-#include <OSGUInt8Fields.h> // DotCDrgb type
-#include <OSGUInt8Fields.h> // MuxSumrgb type
-#include <OSGGLenumFields.h> // Scalealpha type
-#include <OSGGLenumFields.h> // Biasalpha type
-#include <OSGUInt8Fields.h> // MuxSumalpha type
-#include <OSGGLenumFields.h> // VariableE type
-#include <OSGGLenumFields.h> // VariableF type
-#include <OSGGLenumFields.h> // VariableG type
+#include <OSGBoolFields.h>    // ColorSumClamp type
+#include <OSGGLenumFields.h>  // VariableArgb type
+#include <OSGGLenumFields.h>  // VariableBrgb type
+#include <OSGGLenumFields.h>  // VariableCrgb type
+#include <OSGGLenumFields.h>  // VariableDrgb type
+#include <OSGGLenumFields.h>  // VariableAalpha type
+#include <OSGGLenumFields.h>  // VariableBalpha type
+#include <OSGGLenumFields.h>  // VariableCalpha type
+#include <OSGGLenumFields.h>  // VariableDalpha type
+#include <OSGGLenumFields.h>  // OutputABrgb type
+#include <OSGGLenumFields.h>  // OutputCDrgb type
+#include <OSGGLenumFields.h>  // OutputSumrgb type
+#include <OSGGLenumFields.h>  // Scalergb type
+#include <OSGGLenumFields.h>  // Biasrgb type
+#include <OSGGLenumFields.h>  // OutputABalpha type
+#include <OSGGLenumFields.h>  // OutputCDalpha type
+#include <OSGGLenumFields.h>  // OutputSumalpha type
+#include <OSGUInt8Fields.h>   // DotABrgb type
+#include <OSGUInt8Fields.h>   // DotCDrgb type
+#include <OSGUInt8Fields.h>   // MuxSumrgb type
+#include <OSGGLenumFields.h>  // Scalealpha type
+#include <OSGGLenumFields.h>  // Biasalpha type
+#include <OSGUInt8Fields.h>   // MuxSumalpha type
+#include <OSGGLenumFields.h>  // VariableE type
+#include <OSGGLenumFields.h>  // VariableF type
+#include <OSGGLenumFields.h>  // VariableG type
 #include <OSGColor4fFields.h> // CombinerColor0 type
 #include <OSGColor4fFields.h> // CombinerColor1 type
-#include <OSGUInt8Fields.h> // PerStageConstants type
+#include <OSGUInt8Fields.h>   // PerStageConstants type
 
 #include <OSGRegisterCombinersChunkFields.h>
 
@@ -108,391 +106,371 @@ class BinaryDataHandler;
 
 //! \brief RegisterCombinersChunk Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING RegisterCombinersChunkBase : public StateChunk
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING RegisterCombinersChunkBase : public StateChunk {
+ private:
+  typedef StateChunk Inherited;
 
-    typedef StateChunk    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef RegisterCombinersChunkPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    Color0FieldId            = Inherited::NextFieldId,
+    Color1FieldId            = Color0FieldId + 1,
+    ColorSumClampFieldId     = Color1FieldId + 1,
+    VariableArgbFieldId      = ColorSumClampFieldId + 1,
+    VariableBrgbFieldId      = VariableArgbFieldId + 1,
+    VariableCrgbFieldId      = VariableBrgbFieldId + 1,
+    VariableDrgbFieldId      = VariableCrgbFieldId + 1,
+    VariableAalphaFieldId    = VariableDrgbFieldId + 1,
+    VariableBalphaFieldId    = VariableAalphaFieldId + 1,
+    VariableCalphaFieldId    = VariableBalphaFieldId + 1,
+    VariableDalphaFieldId    = VariableCalphaFieldId + 1,
+    OutputABrgbFieldId       = VariableDalphaFieldId + 1,
+    OutputCDrgbFieldId       = OutputABrgbFieldId + 1,
+    OutputSumrgbFieldId      = OutputCDrgbFieldId + 1,
+    ScalergbFieldId          = OutputSumrgbFieldId + 1,
+    BiasrgbFieldId           = ScalergbFieldId + 1,
+    OutputABalphaFieldId     = BiasrgbFieldId + 1,
+    OutputCDalphaFieldId     = OutputABalphaFieldId + 1,
+    OutputSumalphaFieldId    = OutputCDalphaFieldId + 1,
+    DotABrgbFieldId          = OutputSumalphaFieldId + 1,
+    DotCDrgbFieldId          = DotABrgbFieldId + 1,
+    MuxSumrgbFieldId         = DotCDrgbFieldId + 1,
+    ScalealphaFieldId        = MuxSumrgbFieldId + 1,
+    BiasalphaFieldId         = ScalealphaFieldId + 1,
+    MuxSumalphaFieldId       = BiasalphaFieldId + 1,
+    VariableEFieldId         = MuxSumalphaFieldId + 1,
+    VariableFFieldId         = VariableEFieldId + 1,
+    VariableGFieldId         = VariableFFieldId + 1,
+    CombinerColor0FieldId    = VariableGFieldId + 1,
+    CombinerColor1FieldId    = CombinerColor0FieldId + 1,
+    PerStageConstantsFieldId = CombinerColor1FieldId + 1,
+    NextFieldId              = PerStageConstantsFieldId + 1
+  };
 
-    typedef RegisterCombinersChunkPtr  Ptr;
+  static const OSG::BitVector Color0FieldMask;
+  static const OSG::BitVector Color1FieldMask;
+  static const OSG::BitVector ColorSumClampFieldMask;
+  static const OSG::BitVector VariableArgbFieldMask;
+  static const OSG::BitVector VariableBrgbFieldMask;
+  static const OSG::BitVector VariableCrgbFieldMask;
+  static const OSG::BitVector VariableDrgbFieldMask;
+  static const OSG::BitVector VariableAalphaFieldMask;
+  static const OSG::BitVector VariableBalphaFieldMask;
+  static const OSG::BitVector VariableCalphaFieldMask;
+  static const OSG::BitVector VariableDalphaFieldMask;
+  static const OSG::BitVector OutputABrgbFieldMask;
+  static const OSG::BitVector OutputCDrgbFieldMask;
+  static const OSG::BitVector OutputSumrgbFieldMask;
+  static const OSG::BitVector ScalergbFieldMask;
+  static const OSG::BitVector BiasrgbFieldMask;
+  static const OSG::BitVector OutputABalphaFieldMask;
+  static const OSG::BitVector OutputCDalphaFieldMask;
+  static const OSG::BitVector OutputSumalphaFieldMask;
+  static const OSG::BitVector DotABrgbFieldMask;
+  static const OSG::BitVector DotCDrgbFieldMask;
+  static const OSG::BitVector MuxSumrgbFieldMask;
+  static const OSG::BitVector ScalealphaFieldMask;
+  static const OSG::BitVector BiasalphaFieldMask;
+  static const OSG::BitVector MuxSumalphaFieldMask;
+  static const OSG::BitVector VariableEFieldMask;
+  static const OSG::BitVector VariableFFieldMask;
+  static const OSG::BitVector VariableGFieldMask;
+  static const OSG::BitVector CombinerColor0FieldMask;
+  static const OSG::BitVector CombinerColor1FieldMask;
+  static const OSG::BitVector PerStageConstantsFieldMask;
 
-    enum
-    {
-        Color0FieldId            = Inherited::NextFieldId,
-        Color1FieldId            = Color0FieldId            + 1,
-        ColorSumClampFieldId     = Color1FieldId            + 1,
-        VariableArgbFieldId      = ColorSumClampFieldId     + 1,
-        VariableBrgbFieldId      = VariableArgbFieldId      + 1,
-        VariableCrgbFieldId      = VariableBrgbFieldId      + 1,
-        VariableDrgbFieldId      = VariableCrgbFieldId      + 1,
-        VariableAalphaFieldId    = VariableDrgbFieldId      + 1,
-        VariableBalphaFieldId    = VariableAalphaFieldId    + 1,
-        VariableCalphaFieldId    = VariableBalphaFieldId    + 1,
-        VariableDalphaFieldId    = VariableCalphaFieldId    + 1,
-        OutputABrgbFieldId       = VariableDalphaFieldId    + 1,
-        OutputCDrgbFieldId       = OutputABrgbFieldId       + 1,
-        OutputSumrgbFieldId      = OutputCDrgbFieldId       + 1,
-        ScalergbFieldId          = OutputSumrgbFieldId      + 1,
-        BiasrgbFieldId           = ScalergbFieldId          + 1,
-        OutputABalphaFieldId     = BiasrgbFieldId           + 1,
-        OutputCDalphaFieldId     = OutputABalphaFieldId     + 1,
-        OutputSumalphaFieldId    = OutputCDalphaFieldId     + 1,
-        DotABrgbFieldId          = OutputSumalphaFieldId    + 1,
-        DotCDrgbFieldId          = DotABrgbFieldId          + 1,
-        MuxSumrgbFieldId         = DotCDrgbFieldId          + 1,
-        ScalealphaFieldId        = MuxSumrgbFieldId         + 1,
-        BiasalphaFieldId         = ScalealphaFieldId        + 1,
-        MuxSumalphaFieldId       = BiasalphaFieldId         + 1,
-        VariableEFieldId         = MuxSumalphaFieldId       + 1,
-        VariableFFieldId         = VariableEFieldId         + 1,
-        VariableGFieldId         = VariableFFieldId         + 1,
-        CombinerColor0FieldId    = VariableGFieldId         + 1,
-        CombinerColor1FieldId    = CombinerColor0FieldId    + 1,
-        PerStageConstantsFieldId = CombinerColor1FieldId    + 1,
-        NextFieldId              = PerStageConstantsFieldId + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector Color0FieldMask;
-    static const OSG::BitVector Color1FieldMask;
-    static const OSG::BitVector ColorSumClampFieldMask;
-    static const OSG::BitVector VariableArgbFieldMask;
-    static const OSG::BitVector VariableBrgbFieldMask;
-    static const OSG::BitVector VariableCrgbFieldMask;
-    static const OSG::BitVector VariableDrgbFieldMask;
-    static const OSG::BitVector VariableAalphaFieldMask;
-    static const OSG::BitVector VariableBalphaFieldMask;
-    static const OSG::BitVector VariableCalphaFieldMask;
-    static const OSG::BitVector VariableDalphaFieldMask;
-    static const OSG::BitVector OutputABrgbFieldMask;
-    static const OSG::BitVector OutputCDrgbFieldMask;
-    static const OSG::BitVector OutputSumrgbFieldMask;
-    static const OSG::BitVector ScalergbFieldMask;
-    static const OSG::BitVector BiasrgbFieldMask;
-    static const OSG::BitVector OutputABalphaFieldMask;
-    static const OSG::BitVector OutputCDalphaFieldMask;
-    static const OSG::BitVector OutputSumalphaFieldMask;
-    static const OSG::BitVector DotABrgbFieldMask;
-    static const OSG::BitVector DotCDrgbFieldMask;
-    static const OSG::BitVector MuxSumrgbFieldMask;
-    static const OSG::BitVector ScalealphaFieldMask;
-    static const OSG::BitVector BiasalphaFieldMask;
-    static const OSG::BitVector MuxSumalphaFieldMask;
-    static const OSG::BitVector VariableEFieldMask;
-    static const OSG::BitVector VariableFFieldMask;
-    static const OSG::BitVector VariableGFieldMask;
-    static const OSG::BitVector CombinerColor0FieldMask;
-    static const OSG::BitVector CombinerColor1FieldMask;
-    static const OSG::BitVector PerStageConstantsFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFColor4f* getSFColor0(void);
+  SFColor4f* getSFColor1(void);
+  SFBool*    getSFColorSumClamp(void);
+  MFGLenum*  getMFVariableArgb(void);
+  MFGLenum*  getMFVariableBrgb(void);
+  MFGLenum*  getMFVariableCrgb(void);
+  MFGLenum*  getMFVariableDrgb(void);
+  MFGLenum*  getMFVariableAalpha(void);
+  MFGLenum*  getMFVariableBalpha(void);
+  MFGLenum*  getMFVariableCalpha(void);
+  MFGLenum*  getMFVariableDalpha(void);
+  MFGLenum*  getMFOutputABrgb(void);
+  MFGLenum*  getMFOutputCDrgb(void);
+  MFGLenum*  getMFOutputSumrgb(void);
+  MFGLenum*  getMFScalergb(void);
+  MFGLenum*  getMFBiasrgb(void);
+  MFGLenum*  getMFOutputABalpha(void);
+  MFGLenum*  getMFOutputCDalpha(void);
+  MFGLenum*  getMFOutputSumalpha(void);
+  MFUInt8*   getMFDotABrgb(void);
+  MFUInt8*   getMFDotCDrgb(void);
+  MFUInt8*   getMFMuxSumrgb(void);
+  MFGLenum*  getMFScalealpha(void);
+  MFGLenum*  getMFBiasalpha(void);
+  MFUInt8*   getMFMuxSumalpha(void);
+  MFGLenum*  getMFVariableE(void);
+  MFGLenum*  getMFVariableF(void);
+  MFGLenum*  getMFVariableG(void);
+  MFColor4f* getMFCombinerColor0(void);
+  MFColor4f* getMFCombinerColor1(void);
+  SFUInt8*   getSFPerStageConstants(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  Color4f&         getColor0(void);
+  const Color4f&   getColor0(void) const;
+  Color4f&         getColor1(void);
+  const Color4f&   getColor1(void) const;
+  bool&            getColorSumClamp(void);
+  const bool&      getColorSumClamp(void) const;
+  UInt8&           getPerStageConstants(void);
+  const UInt8&     getPerStageConstants(void) const;
+  GLenum&          getVariableArgb(const UInt32 index);
+  MFGLenum&        getVariableArgb(void);
+  const MFGLenum&  getVariableArgb(void) const;
+  GLenum&          getVariableBrgb(const UInt32 index);
+  MFGLenum&        getVariableBrgb(void);
+  const MFGLenum&  getVariableBrgb(void) const;
+  GLenum&          getVariableCrgb(const UInt32 index);
+  MFGLenum&        getVariableCrgb(void);
+  const MFGLenum&  getVariableCrgb(void) const;
+  GLenum&          getVariableDrgb(const UInt32 index);
+  MFGLenum&        getVariableDrgb(void);
+  const MFGLenum&  getVariableDrgb(void) const;
+  GLenum&          getVariableAalpha(const UInt32 index);
+  MFGLenum&        getVariableAalpha(void);
+  const MFGLenum&  getVariableAalpha(void) const;
+  GLenum&          getVariableBalpha(const UInt32 index);
+  MFGLenum&        getVariableBalpha(void);
+  const MFGLenum&  getVariableBalpha(void) const;
+  GLenum&          getVariableCalpha(const UInt32 index);
+  MFGLenum&        getVariableCalpha(void);
+  const MFGLenum&  getVariableCalpha(void) const;
+  GLenum&          getVariableDalpha(const UInt32 index);
+  MFGLenum&        getVariableDalpha(void);
+  const MFGLenum&  getVariableDalpha(void) const;
+  GLenum&          getOutputABrgb(const UInt32 index);
+  MFGLenum&        getOutputABrgb(void);
+  const MFGLenum&  getOutputABrgb(void) const;
+  GLenum&          getOutputCDrgb(const UInt32 index);
+  MFGLenum&        getOutputCDrgb(void);
+  const MFGLenum&  getOutputCDrgb(void) const;
+  GLenum&          getOutputSumrgb(const UInt32 index);
+  MFGLenum&        getOutputSumrgb(void);
+  const MFGLenum&  getOutputSumrgb(void) const;
+  GLenum&          getScalergb(const UInt32 index);
+  MFGLenum&        getScalergb(void);
+  const MFGLenum&  getScalergb(void) const;
+  GLenum&          getBiasrgb(const UInt32 index);
+  MFGLenum&        getBiasrgb(void);
+  const MFGLenum&  getBiasrgb(void) const;
+  GLenum&          getOutputABalpha(const UInt32 index);
+  MFGLenum&        getOutputABalpha(void);
+  const MFGLenum&  getOutputABalpha(void) const;
+  GLenum&          getOutputCDalpha(const UInt32 index);
+  MFGLenum&        getOutputCDalpha(void);
+  const MFGLenum&  getOutputCDalpha(void) const;
+  GLenum&          getOutputSumalpha(const UInt32 index);
+  MFGLenum&        getOutputSumalpha(void);
+  const MFGLenum&  getOutputSumalpha(void) const;
+  UInt8&           getDotABrgb(const UInt32 index);
+  MFUInt8&         getDotABrgb(void);
+  const MFUInt8&   getDotABrgb(void) const;
+  UInt8&           getDotCDrgb(const UInt32 index);
+  MFUInt8&         getDotCDrgb(void);
+  const MFUInt8&   getDotCDrgb(void) const;
+  UInt8&           getMuxSumrgb(const UInt32 index);
+  MFUInt8&         getMuxSumrgb(void);
+  const MFUInt8&   getMuxSumrgb(void) const;
+  GLenum&          getScalealpha(const UInt32 index);
+  MFGLenum&        getScalealpha(void);
+  const MFGLenum&  getScalealpha(void) const;
+  GLenum&          getBiasalpha(const UInt32 index);
+  MFGLenum&        getBiasalpha(void);
+  const MFGLenum&  getBiasalpha(void) const;
+  UInt8&           getMuxSumalpha(const UInt32 index);
+  MFUInt8&         getMuxSumalpha(void);
+  const MFUInt8&   getMuxSumalpha(void) const;
+  GLenum&          getVariableE(const UInt32 index);
+  MFGLenum&        getVariableE(void);
+  const MFGLenum&  getVariableE(void) const;
+  GLenum&          getVariableF(const UInt32 index);
+  MFGLenum&        getVariableF(void);
+  const MFGLenum&  getVariableF(void) const;
+  GLenum&          getVariableG(const UInt32 index);
+  MFGLenum&        getVariableG(void);
+  const MFGLenum&  getVariableG(void) const;
+  Color4f&         getCombinerColor0(const UInt32 index);
+  MFColor4f&       getCombinerColor0(void);
+  const MFColor4f& getCombinerColor0(void) const;
+  Color4f&         getCombinerColor1(const UInt32 index);
+  MFColor4f&       getCombinerColor1(void);
+  const MFColor4f& getCombinerColor1(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFColor4f           *getSFColor0         (void);
-           SFColor4f           *getSFColor1         (void);
-           SFBool              *getSFColorSumClamp  (void);
-           MFGLenum            *getMFVariableArgb   (void);
-           MFGLenum            *getMFVariableBrgb   (void);
-           MFGLenum            *getMFVariableCrgb   (void);
-           MFGLenum            *getMFVariableDrgb   (void);
-           MFGLenum            *getMFVariableAalpha (void);
-           MFGLenum            *getMFVariableBalpha (void);
-           MFGLenum            *getMFVariableCalpha (void);
-           MFGLenum            *getMFVariableDalpha (void);
-           MFGLenum            *getMFOutputABrgb    (void);
-           MFGLenum            *getMFOutputCDrgb    (void);
-           MFGLenum            *getMFOutputSumrgb   (void);
-           MFGLenum            *getMFScalergb       (void);
-           MFGLenum            *getMFBiasrgb        (void);
-           MFGLenum            *getMFOutputABalpha  (void);
-           MFGLenum            *getMFOutputCDalpha  (void);
-           MFGLenum            *getMFOutputSumalpha (void);
-           MFUInt8             *getMFDotABrgb       (void);
-           MFUInt8             *getMFDotCDrgb       (void);
-           MFUInt8             *getMFMuxSumrgb      (void);
-           MFGLenum            *getMFScalealpha     (void);
-           MFGLenum            *getMFBiasalpha      (void);
-           MFUInt8             *getMFMuxSumalpha    (void);
-           MFGLenum            *getMFVariableE      (void);
-           MFGLenum            *getMFVariableF      (void);
-           MFGLenum            *getMFVariableG      (void);
-           MFColor4f           *getMFCombinerColor0 (void);
-           MFColor4f           *getMFCombinerColor1 (void);
-           SFUInt8             *getSFPerStageConstants(void);
+  void setColor0(const Color4f& value);
+  void setColor1(const Color4f& value);
+  void setColorSumClamp(const bool& value);
+  void setPerStageConstants(const UInt8& value);
 
-           Color4f             &getColor0         (void);
-     const Color4f             &getColor0         (void) const;
-           Color4f             &getColor1         (void);
-     const Color4f             &getColor1         (void) const;
-           bool                &getColorSumClamp  (void);
-     const bool                &getColorSumClamp  (void) const;
-           UInt8               &getPerStageConstants(void);
-     const UInt8               &getPerStageConstants(void) const;
-           GLenum              &getVariableArgb   (const UInt32 index);
-           MFGLenum            &getVariableArgb   (void);
-     const MFGLenum            &getVariableArgb   (void) const;
-           GLenum              &getVariableBrgb   (const UInt32 index);
-           MFGLenum            &getVariableBrgb   (void);
-     const MFGLenum            &getVariableBrgb   (void) const;
-           GLenum              &getVariableCrgb   (const UInt32 index);
-           MFGLenum            &getVariableCrgb   (void);
-     const MFGLenum            &getVariableCrgb   (void) const;
-           GLenum              &getVariableDrgb   (const UInt32 index);
-           MFGLenum            &getVariableDrgb   (void);
-     const MFGLenum            &getVariableDrgb   (void) const;
-           GLenum              &getVariableAalpha (const UInt32 index);
-           MFGLenum            &getVariableAalpha (void);
-     const MFGLenum            &getVariableAalpha (void) const;
-           GLenum              &getVariableBalpha (const UInt32 index);
-           MFGLenum            &getVariableBalpha (void);
-     const MFGLenum            &getVariableBalpha (void) const;
-           GLenum              &getVariableCalpha (const UInt32 index);
-           MFGLenum            &getVariableCalpha (void);
-     const MFGLenum            &getVariableCalpha (void) const;
-           GLenum              &getVariableDalpha (const UInt32 index);
-           MFGLenum            &getVariableDalpha (void);
-     const MFGLenum            &getVariableDalpha (void) const;
-           GLenum              &getOutputABrgb    (const UInt32 index);
-           MFGLenum            &getOutputABrgb    (void);
-     const MFGLenum            &getOutputABrgb    (void) const;
-           GLenum              &getOutputCDrgb    (const UInt32 index);
-           MFGLenum            &getOutputCDrgb    (void);
-     const MFGLenum            &getOutputCDrgb    (void) const;
-           GLenum              &getOutputSumrgb   (const UInt32 index);
-           MFGLenum            &getOutputSumrgb   (void);
-     const MFGLenum            &getOutputSumrgb   (void) const;
-           GLenum              &getScalergb       (const UInt32 index);
-           MFGLenum            &getScalergb       (void);
-     const MFGLenum            &getScalergb       (void) const;
-           GLenum              &getBiasrgb        (const UInt32 index);
-           MFGLenum            &getBiasrgb        (void);
-     const MFGLenum            &getBiasrgb        (void) const;
-           GLenum              &getOutputABalpha  (const UInt32 index);
-           MFGLenum            &getOutputABalpha  (void);
-     const MFGLenum            &getOutputABalpha  (void) const;
-           GLenum              &getOutputCDalpha  (const UInt32 index);
-           MFGLenum            &getOutputCDalpha  (void);
-     const MFGLenum            &getOutputCDalpha  (void) const;
-           GLenum              &getOutputSumalpha (const UInt32 index);
-           MFGLenum            &getOutputSumalpha (void);
-     const MFGLenum            &getOutputSumalpha (void) const;
-           UInt8               &getDotABrgb       (const UInt32 index);
-           MFUInt8             &getDotABrgb       (void);
-     const MFUInt8             &getDotABrgb       (void) const;
-           UInt8               &getDotCDrgb       (const UInt32 index);
-           MFUInt8             &getDotCDrgb       (void);
-     const MFUInt8             &getDotCDrgb       (void) const;
-           UInt8               &getMuxSumrgb      (const UInt32 index);
-           MFUInt8             &getMuxSumrgb      (void);
-     const MFUInt8             &getMuxSumrgb      (void) const;
-           GLenum              &getScalealpha     (const UInt32 index);
-           MFGLenum            &getScalealpha     (void);
-     const MFGLenum            &getScalealpha     (void) const;
-           GLenum              &getBiasalpha      (const UInt32 index);
-           MFGLenum            &getBiasalpha      (void);
-     const MFGLenum            &getBiasalpha      (void) const;
-           UInt8               &getMuxSumalpha    (const UInt32 index);
-           MFUInt8             &getMuxSumalpha    (void);
-     const MFUInt8             &getMuxSumalpha    (void) const;
-           GLenum              &getVariableE      (const UInt32 index);
-           MFGLenum            &getVariableE      (void);
-     const MFGLenum            &getVariableE      (void) const;
-           GLenum              &getVariableF      (const UInt32 index);
-           MFGLenum            &getVariableF      (void);
-     const MFGLenum            &getVariableF      (void) const;
-           GLenum              &getVariableG      (const UInt32 index);
-           MFGLenum            &getVariableG      (void);
-     const MFGLenum            &getVariableG      (void) const;
-           Color4f             &getCombinerColor0 (const UInt32 index);
-           MFColor4f           &getCombinerColor0 (void);
-     const MFColor4f           &getCombinerColor0 (void) const;
-           Color4f             &getCombinerColor1 (const UInt32 index);
-           MFColor4f           &getCombinerColor1 (void);
-     const MFColor4f           &getCombinerColor1 (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setColor0         ( const Color4f &value );
-     void setColor1         ( const Color4f &value );
-     void setColorSumClamp  ( const bool &value );
-     void setPerStageConstants( const UInt8 &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static RegisterCombinersChunkPtr create(void);
+  static RegisterCombinersChunkPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  RegisterCombinersChunkPtr      create          (void); 
-    static  RegisterCombinersChunkPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFColor4f _sfColor0;
+  SFColor4f _sfColor1;
+  SFBool    _sfColorSumClamp;
+  MFGLenum  _mfVariableArgb;
+  MFGLenum  _mfVariableBrgb;
+  MFGLenum  _mfVariableCrgb;
+  MFGLenum  _mfVariableDrgb;
+  MFGLenum  _mfVariableAalpha;
+  MFGLenum  _mfVariableBalpha;
+  MFGLenum  _mfVariableCalpha;
+  MFGLenum  _mfVariableDalpha;
+  MFGLenum  _mfOutputABrgb;
+  MFGLenum  _mfOutputCDrgb;
+  MFGLenum  _mfOutputSumrgb;
+  MFGLenum  _mfScalergb;
+  MFGLenum  _mfBiasrgb;
+  MFGLenum  _mfOutputABalpha;
+  MFGLenum  _mfOutputCDalpha;
+  MFGLenum  _mfOutputSumalpha;
+  MFUInt8   _mfDotABrgb;
+  MFUInt8   _mfDotCDrgb;
+  MFUInt8   _mfMuxSumrgb;
+  MFGLenum  _mfScalealpha;
+  MFGLenum  _mfBiasalpha;
+  MFUInt8   _mfMuxSumalpha;
+  MFGLenum  _mfVariableE;
+  MFGLenum  _mfVariableF;
+  MFGLenum  _mfVariableG;
+  MFColor4f _mfCombinerColor0;
+  MFColor4f _mfCombinerColor1;
+  SFUInt8   _sfPerStageConstants;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  RegisterCombinersChunkBase(void);
+  RegisterCombinersChunkBase(const RegisterCombinersChunkBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~RegisterCombinersChunkBase(void);
 
-    SFColor4f           _sfColor0;
-    SFColor4f           _sfColor1;
-    SFBool              _sfColorSumClamp;
-    MFGLenum            _mfVariableArgb;
-    MFGLenum            _mfVariableBrgb;
-    MFGLenum            _mfVariableCrgb;
-    MFGLenum            _mfVariableDrgb;
-    MFGLenum            _mfVariableAalpha;
-    MFGLenum            _mfVariableBalpha;
-    MFGLenum            _mfVariableCalpha;
-    MFGLenum            _mfVariableDalpha;
-    MFGLenum            _mfOutputABrgb;
-    MFGLenum            _mfOutputCDrgb;
-    MFGLenum            _mfOutputSumrgb;
-    MFGLenum            _mfScalergb;
-    MFGLenum            _mfBiasrgb;
-    MFGLenum            _mfOutputABalpha;
-    MFGLenum            _mfOutputCDalpha;
-    MFGLenum            _mfOutputSumalpha;
-    MFUInt8             _mfDotABrgb;
-    MFUInt8             _mfDotCDrgb;
-    MFUInt8             _mfMuxSumrgb;
-    MFGLenum            _mfScalealpha;
-    MFGLenum            _mfBiasalpha;
-    MFUInt8             _mfMuxSumalpha;
-    MFGLenum            _mfVariableE;
-    MFGLenum            _mfVariableF;
-    MFGLenum            _mfVariableG;
-    MFColor4f           _mfCombinerColor0;
-    MFColor4f           _mfCombinerColor1;
-    SFUInt8             _sfPerStageConstants;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    RegisterCombinersChunkBase(void);
-    RegisterCombinersChunkBase(const RegisterCombinersChunkBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~RegisterCombinersChunkBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      RegisterCombinersChunkBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(RegisterCombinersChunkBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      RegisterCombinersChunkBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      RegisterCombinersChunkBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const RegisterCombinersChunkBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const RegisterCombinersChunkBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef RegisterCombinersChunkBase* RegisterCombinersChunkBaseP;
 
-typedef RegisterCombinersChunkBase *RegisterCombinersChunkBaseP;
-
-typedef osgIF<RegisterCombinersChunkBase::isNodeCore,
-              CoredNodePtr<RegisterCombinersChunk>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet RegisterCombinersChunkNodePtr;
+typedef osgIF<RegisterCombinersChunkBase::isNodeCore, CoredNodePtr<RegisterCombinersChunk>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet
+    RegisterCombinersChunkNodePtr;
 
 typedef RefPtr<RegisterCombinersChunkPtr> RegisterCombinersChunkRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGREGISTERCOMBINERSCHUNKBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGREGISTERCOMBINERSCHUNKBASE_HEADER_CVSID                                                 \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGREGISTERCOMBINERSCHUNKBASE_H_ */

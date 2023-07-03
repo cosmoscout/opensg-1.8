@@ -23,21 +23,17 @@
 #include "OSGMaterial.h"
 #include "OSGSimpleMaterial.h"
 
-
 OSG_USING_NAMESPACE
 
+DrawAction* dact;
 
-DrawAction * dact;
+NodePtr plane, torus;
 
-NodePtr plane,torus;
+void display(void) {
+  // do the motion in OpenGl, to stay independent of the ransform node
+  // use the draw action to check the material
 
-void
-display(void)
-{
-    // do the motion in OpenGl, to stay independent of the ransform node
-    // use the draw action to check the material
-
-    float a = glutGet( GLUT_ELAPSED_TIME );
+  float a = glutGet(GLUT_ELAPSED_TIME);
 
 #if 0
     if ( (int) ( a / 2000 ) & 1 )
@@ -46,121 +42,115 @@ display(void)
         glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 #endif
 
-    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glPushMatrix();
-    glRotatef( a / 20, 0,0,1 );
+  glPushMatrix();
+  glRotatef(a / 20, 0, 0, 1);
 
-    dact->apply( plane );
+  dact->apply(plane);
 
-    glPushMatrix();
-    glTranslatef( 0,0,fabs(osgsin(a/3000 * Pi))*2 );
-    glRotatef( (a/3000) * 360 / 2, 1,0,0 );
+  glPushMatrix();
+  glTranslatef(0, 0, fabs(osgsin(a / 3000 * Pi)) * 2);
+  glRotatef((a / 3000) * 360 / 2, 1, 0, 0);
 
-    dact->apply( torus );
+  dact->apply(torus);
 
-    glPopMatrix();
+  glPopMatrix();
 
-    glPopMatrix();
+  glPopMatrix();
 
-    glutSwapBuffers();
+  glutSwapBuffers();
 }
 
-int main (int argc, char **argv)
-{
-    // GLUT init
+int main(int argc, char** argv) {
+  // GLUT init
 
-    osgInit(argc, argv);
+  osgInit(argc, argv);
 
-    FieldContainerPtr pProto = Geometry::getClassType().getPrototype();
+  FieldContainerPtr pProto = Geometry::getClassType().getPrototype();
 
-    GeometryPtr pGeoProto = GeometryPtr::dcast(pProto);
+  GeometryPtr pGeoProto = GeometryPtr::dcast(pProto);
 
-    if(pGeoProto != NullFC)
-    {
-        pGeoProto->setDlistCache(false);
-    }
+  if (pGeoProto != NullFC) {
+    pGeoProto->setDlistCache(false);
+  }
 
-    glutInit(&argc, argv);
-    glutInitDisplayMode( GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
-    glutCreateWindow("OpenSG");
-    // glutKeyboardFunc(key);
-    // glutReshapeFunc(resize);
-    glutDisplayFunc(display);
-    // glutMouseFunc(mouse);
-    // glutMotionFunc(motion);
+  glutInit(&argc, argv);
+  glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
+  glutCreateWindow("OpenSG");
+  // glutKeyboardFunc(key);
+  // glutReshapeFunc(resize);
+  glutDisplayFunc(display);
+  // glutMouseFunc(mouse);
+  // glutMotionFunc(motion);
 
-    glutIdleFunc(display);
+  glutIdleFunc(display);
 
-    glMatrixMode( GL_PROJECTION );
-    glLoadIdentity();
-    gluPerspective( 60, 1, 0.1, 10 );
-    glMatrixMode( GL_MODELVIEW );
-    glLoadIdentity();
-    gluLookAt( 3, 3, 3,  0, 0, 0,   0, 0, 1 );
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  gluPerspective(60, 1, 0.1, 10);
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+  gluLookAt(3, 3, 3, 0, 0, 0, 0, 0, 1);
 
-    glEnable( GL_DEPTH_TEST );
-    glEnable( GL_LIGHTING );
-    glEnable( GL_LIGHT0 );
+  glEnable(GL_DEPTH_TEST);
+  glEnable(GL_LIGHTING);
+  glEnable(GL_LIGHT0);
 
-    // OSG
+  // OSG
 
-    plane = makePlane( 2, 2, 2, 2 );
-    torus = makeTorus( .2, 1, 16, 8 );
+  plane = makePlane(2, 2, 2, 2);
+  torus = makeTorus(.2, 1, 16, 8);
 
-    GeometryPtr plane_geo, torus_geo;
-    plane_geo = GeometryPtr::dcast(plane->getCore());
-    torus_geo = GeometryPtr::dcast(torus->getCore());
+  GeometryPtr plane_geo, torus_geo;
+  plane_geo = GeometryPtr::dcast(plane->getCore());
+  torus_geo = GeometryPtr::dcast(torus->getCore());
 
-    unsigned int ntris = 0;
-    unsigned int nquads = 0;
-    unsigned int ngons = 0;
+  unsigned int ntris  = 0;
+  unsigned int nquads = 0;
+  unsigned int ngons  = 0;
 
-    OSG::FaceIterator fi       = plane_geo->beginFaces();
-    OSG::FaceIterator endFaces = plane_geo->endFaces();
+  OSG::FaceIterator fi       = plane_geo->beginFaces();
+  OSG::FaceIterator endFaces = plane_geo->endFaces();
 
-    for(; fi != endFaces; ++fi)
-    {
-        if ( fi.getLength() == 3 )
-            ntris ++ ;
-        else
-            if ( fi.getLength() == 4 )
-                nquads ++ ;
-            else
-                ngons ++ ;
+  for (; fi != endFaces; ++fi) {
+    if (fi.getLength() == 3)
+      ntris++;
+    else if (fi.getLength() == 4)
+      nquads++;
+    else
+      ngons++;
 
-        fi.getLength();
-    }
+    fi.getLength();
+  }
 
-    fprintf(stderr, "%d tris %d quats %d gons\n", ntris, nquads, ngons);
+  fprintf(stderr, "%d tris %d quats %d gons\n", ntris, nquads, ngons);
 
-    SimpleMaterialPtr pm, tm;
+  SimpleMaterialPtr pm, tm;
 
-    pm = SimpleMaterial::create();
+  pm = SimpleMaterial::create();
 
-    pm->setDiffuse( Color3f( 1,0,0 ) );
-    pm->setAmbient( Color3f( 1,0,0 ) );
-    pm->setSpecular( Color3f( 1,1,1 ) );
-    pm->setShininess( 10 );
+  pm->setDiffuse(Color3f(1, 0, 0));
+  pm->setAmbient(Color3f(1, 0, 0));
+  pm->setSpecular(Color3f(1, 1, 1));
+  pm->setShininess(10);
 
-    plane_geo->setMaterial( pm );
+  plane_geo->setMaterial(pm);
 
+  tm = SimpleMaterial::create();
 
-    tm = SimpleMaterial::create();
+  tm->setDiffuse(Color3f(0, 1, 0));
+  tm->setAmbient(Color3f(0, 1, 0));
+  tm->setTransparency(0.6);
 
-    tm->setDiffuse( Color3f( 0,1,0 ) );
-    tm->setAmbient( Color3f( 0,1,0 ) );
-    tm->setTransparency(0.6);
+  torus_geo->setMaterial(tm);
 
-    torus_geo->setMaterial( tm );
+  // as there no useful except Material yet adding Chunks will
+  // have to wait a little...
 
-    // as there no useful except Material yet adding Chunks will
-    // have to wait a little...
+  dact = DrawAction::create();
 
-    dact = DrawAction::create();
+  glutMainLoop();
 
-    glutMainLoop();
-
-    return 0;
+  return 0;
 }
-

@@ -36,52 +36,56 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifdef __sgi
-# include <assert.h>
+#include <assert.h>
 #else
-# include <cassert>
+#include <cassert>
 #endif
-
 
 OSG_BEGIN_NAMESPACE
 
-
-inline UInt32 TextTXFGlyph::getX() const { return _x; }
-
-
-inline UInt32 TextTXFGlyph::getY() const { return _y; }
-
-
-inline UInt32 TextTXFGlyph::getPixmapWidth() const { return _width; }
-
-
-inline UInt32 TextTXFGlyph::getPixmapHeight() const { return _height; }
-
-
-inline Int32 TextTXFGlyph::getPixmapHoriBearingX() const { return _horiBearingX; }
-
-
-inline Int32 TextTXFGlyph::getPixmapHoriBearingY() const { return _horiBearingY; }
-
-
-inline Int32 TextTXFGlyph::getPixmapVertBearingX() const { return _vertBearingX; }
-
-
-inline Int32 TextTXFGlyph::getPixmapVertBearingY() const { return _vertBearingY; }
-
-
-inline Real32 TextTXFGlyph::getScale() const { return _scale; }
-
-
-inline Real32 TextTXFGlyph::getTexCoord(UInt32 index) const
-{
-    assert(index < 4);
-    return _texCoord[index];
+inline UInt32 TextTXFGlyph::getX() const {
+  return _x;
 }
 
+inline UInt32 TextTXFGlyph::getY() const {
+  return _y;
+}
+
+inline UInt32 TextTXFGlyph::getPixmapWidth() const {
+  return _width;
+}
+
+inline UInt32 TextTXFGlyph::getPixmapHeight() const {
+  return _height;
+}
+
+inline Int32 TextTXFGlyph::getPixmapHoriBearingX() const {
+  return _horiBearingX;
+}
+
+inline Int32 TextTXFGlyph::getPixmapHoriBearingY() const {
+  return _horiBearingY;
+}
+
+inline Int32 TextTXFGlyph::getPixmapVertBearingX() const {
+  return _vertBearingX;
+}
+
+inline Int32 TextTXFGlyph::getPixmapVertBearingY() const {
+  return _vertBearingY;
+}
+
+inline Real32 TextTXFGlyph::getScale() const {
+  return _scale;
+}
+
+inline Real32 TextTXFGlyph::getTexCoord(UInt32 index) const {
+  assert(index < 4);
+  return _texCoord[index];
+}
 
 OSG_END_NAMESPACE
 
-
-#define OSGTEXTTXFGLYPH_INLINE_CVSID "@(#)$Id: OSGTextTXFGlyph.inl,v 1.1 2005/03/03 13:43:07 a-m-z Exp $"
+#define OSGTEXTTXFGLYPH_INLINE_CVSID                                                               \
+  "@(#)$Id: OSGTextTXFGlyph.inl,v 1.1 2005/03/03 13:43:07 a-m-z Exp $"

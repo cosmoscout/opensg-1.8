@@ -56,111 +56,104 @@ OSG_BEGIN_NAMESPACE
            PageKernelSHLParameterChunk for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING SHLParameterChunk : public SHLParameterChunkBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING SHLParameterChunk : public SHLParameterChunkBase {
+ private:
+  typedef SHLParameterChunkBase Inherited;
 
-    typedef SHLParameterChunkBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  virtual const StateChunkClass* getClass(void) const;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    virtual const StateChunkClass * getClass         (void) const;
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField,
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       State                                  */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0,
-                      const BitVector  bvFlags  = 0) const;
+  virtual void activate(DrawActionBase* action, UInt32 index = 0);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       State                                  */
-    /*! \{                                                                 */
+  virtual void changeFrom(DrawActionBase* action, StateChunk* old, UInt32 index = 0);
 
-    virtual void activate   ( DrawActionBase * action, UInt32 index = 0 );
+  virtual void deactivate(DrawActionBase* action, UInt32 index = 0);
 
-    virtual void changeFrom ( DrawActionBase * action, StateChunk * old,
-                             UInt32 index = 0 );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Comparison                                */
+  /*! \{                                                                 */
 
-    virtual void deactivate ( DrawActionBase * action, UInt32 index = 0 );
+  virtual Real32 switchCost(StateChunk* chunk);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Comparison                                */
-    /*! \{                                                                 */
+  virtual bool operator<(const StateChunk& other) const;
 
-    virtual Real32 switchCost  ( StateChunk * chunk );
+  virtual bool operator==(const StateChunk& other) const;
+  virtual bool operator!=(const StateChunk& other) const;
 
-    virtual bool   operator <  (const StateChunk &other) const;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in SHLParameterChunkBase.
 
-    virtual bool   operator == (const StateChunk &other) const;
-    virtual bool   operator != (const StateChunk &other) const;
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  SHLParameterChunk(void);
+  SHLParameterChunk(const SHLParameterChunk& source);
 
-    // Variables should all be in SHLParameterChunkBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~SHLParameterChunk(void);
 
-    SHLParameterChunk(void);
-    SHLParameterChunk(const SHLParameterChunk &source);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class SHLParameterChunkBase;
 
-    virtual ~SHLParameterChunk(void);
+  // class. Used for indexing in State
+  static StateChunkClass _class;
 
-    /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name            OpenGL Extension Handling                         */
+  /*! \{                                                                 */
 
-    /*==========================  PRIVATE  ================================*/
-  private:
+  static UInt32 _shl_extension;
 
-    friend class FieldContainer;
-    friend class SHLParameterChunkBase;
+  /*! \}                                                                 */
 
-    // class. Used for indexing in State
-    static StateChunkClass _class;
+  static void initMethod(void);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name            OpenGL Extension Handling                         */
-    /*! \{                                                                 */
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const SHLParameterChunk& source);
 
-    static UInt32 _shl_extension;
-
-    /*! \}                                                                 */
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const SHLParameterChunk &source);
-
-    void updateProgram(Window *win);
-    void updateParameters(Window *win);
+  void updateProgram(Window* win);
+  void updateParameters(Window* win);
 };
 
-typedef SHLParameterChunk *SHLParameterChunkP;
+typedef SHLParameterChunk* SHLParameterChunkP;
 
 OSG_END_NAMESPACE
 
 #include <OSGSHLParameterChunkBase.inl>
 #include <OSGSHLParameterChunk.inl>
 
-#define OSGSHLPARAMETERCHUNK_HEADER_CVSID "@(#)$Id: OSGSHLParameterChunk.h,v 1.2 2004/08/27 12:50:51 a-m-z Exp $"
+#define OSGSHLPARAMETERCHUNK_HEADER_CVSID                                                          \
+  "@(#)$Id: OSGSHLParameterChunk.h,v 1.2 2004/08/27 12:50:51 a-m-z Exp $"
 
 #endif /* _OSGSHLPARAMETERCHUNK_H_ */

@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGTWOSIDEDLIGHTINGCHUNKFIELDS_H_
 #define _OSGTWOSIDEDLIGHTINGCHUNKFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class TwoSidedLightingChunk;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! TwoSidedLightingChunkPtr
 
 typedef FCPtr<StateChunkPtr, TwoSidedLightingChunk> TwoSidedLightingChunkPtr;
@@ -81,13 +80,12 @@ typedef FCPtr<StateChunkPtr, TwoSidedLightingChunk> TwoSidedLightingChunkPtr;
 #endif
 
 template <>
-struct FieldDataTraits<TwoSidedLightingChunkPtr> : 
-    public FieldTraitsRecurseMapper<TwoSidedLightingChunkPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<TwoSidedLightingChunkPtr>
+    : public FieldTraitsRecurseMapper<TwoSidedLightingChunkPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -98,10 +96,9 @@ struct FieldDataTraits<TwoSidedLightingChunkPtr> :
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
 
-
-
 OSG_END_NAMESPACE
 
-#define OSGTWOSIDEDLIGHTINGCHUNKFIELDS_HEADER_CVSID "@(#)$Id: OSGTwoSidedLightingChunkFields.h,v 1.3 2006/02/20 16:54:19 dirk Exp $"
+#define OSGTWOSIDEDLIGHTINGCHUNKFIELDS_HEADER_CVSID                                                \
+  "@(#)$Id: OSGTwoSidedLightingChunkFields.h,v 1.3 2006/02/20 16:54:19 dirk Exp $"
 
 #endif /* _OSGTWOSIDEDLIGHTINGCHUNKFIELDS_H_ */

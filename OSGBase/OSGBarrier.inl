@@ -72,317 +72,212 @@
 
 \*---------------------------------------------------------------------------*/
 
-
-
 OSG_BEGIN_NAMESPACE
-
-
 
 inline
 
-void BarrierCommonBase::setNumWaitFor(UInt32 uiNumWaitFor)
+    void
+    BarrierCommonBase::setNumWaitFor(UInt32 uiNumWaitFor)
 
 {
 
-    _uiNumWaitFor = uiNumWaitFor;
-
+  _uiNumWaitFor = uiNumWaitFor;
 }
 
-
-
-
-
-#if defined (OSG_USE_PTHREADS)
-
-
+#if defined(OSG_USE_PTHREADS)
 
 /*------------------------------- Enter -----------------------------------*/
 
-
-
 inline
 
-void PThreadBarrierBase::enter(void)
+    void
+    PThreadBarrierBase::enter(void)
 
 {
 
-    if(_uiNumWaitFor <= 1)
+  if (_uiNumWaitFor <= 1)
 
-        return;
+    return;
 
+  pthread_mutex_lock(&(_pLockOne));
 
+  _uiCount++;
 
-    pthread_mutex_lock(&(_pLockOne));
+  if (_uiCount < _uiNumWaitFor)
 
+  {
 
+    /* not enough threads are waiting => wait */
 
-    _uiCount++;
+    pthread_cond_wait(&(_pWakeupCondition[_uiCurrentCond]), &(_pLockOne));
 
+  }
 
+  else
 
-    if(_uiCount < _uiNumWaitFor)
+  {
 
-    {
+    /* ok, enough threads are waiting
 
-        /* not enough threads are waiting => wait */
+       => wake up all waiting threads
 
+    */
 
+    pthread_cond_broadcast(&(_pWakeupCondition[_uiCurrentCond]));
 
-        pthread_cond_wait(&(_pWakeupCondition[_uiCurrentCond]), &(_pLockOne));
+    _uiCount = 0;
 
-    }
+    _uiCurrentCond = 1 - _uiCurrentCond;
+  }
 
-    else
-
-    {
-
-        /* ok, enough threads are waiting
-
-           => wake up all waiting threads
-
-        */
-
-
-
-        pthread_cond_broadcast(&(_pWakeupCondition[_uiCurrentCond]));
-
-
-
-        _uiCount       = 0;
-
-        _uiCurrentCond = 1 - _uiCurrentCond;
-
-    }
-
-
-
-    pthread_mutex_unlock(&(_pLockOne));
-
+  pthread_mutex_unlock(&(_pLockOne));
 }
-
-
 
 inline
 
-void PThreadBarrierBase::enter(UInt32 uiNumWaitFor)
+    void
+    PThreadBarrierBase::enter(UInt32 uiNumWaitFor)
 
 {
 
-    _uiNumWaitFor = uiNumWaitFor;
+  _uiNumWaitFor = uiNumWaitFor;
 
-
-
-    enter();
-
+  enter();
 }
-
-
 
 #endif /* OSG_USE_PTHREADS */
 
-
-
-
-
-
-
-#if defined (OSG_USE_SPROC)
-
-
+#if defined(OSG_USE_SPROC)
 
 /*------------------------------ Enter ------------------------------------*/
 
-
-
 inline
 
-void SprocBarrierBase::enter(void)
+    void
+    SprocBarrierBase::enter(void)
 
 {
 
-    if(_pBarrier != NULL)
+  if (_pBarrier != NULL)
 
-        barrier(_pBarrier, _uiNumWaitFor);
-
+    barrier(_pBarrier, _uiNumWaitFor);
 }
-
-
 
 inline
 
-void SprocBarrierBase::enter(UInt32 uiNumWaitFor)
+    void
+    SprocBarrierBase::enter(UInt32 uiNumWaitFor)
 
 {
 
-    _uiNumWaitFor = uiNumWaitFor;
+  _uiNumWaitFor = uiNumWaitFor;
 
-
-
-    enter();
-
+  enter();
 }
-
-
 
 #endif /* OSG_USE_SPROC */
 
-
-
-
-
-
-
-#if defined (OSG_USE_WINTHREADS)
-
-
+#if defined(OSG_USE_WINTHREADS)
 
 /*------------------------------ Enter ------------------------------------*/
 
-
-
 inline
 
-void WinThreadBarrierBase::enter(void)
+    void
+    WinThreadBarrierBase::enter(void)
 
 {
 
-	WaitForSingleObject(_pMutex1, INFINITE);
+  WaitForSingleObject(_pMutex1, INFINITE);
 
+  ++_uiNumWaiters;
 
+  if (_uiNumWaiters == _uiNumWaitFor)
 
-	++_uiNumWaiters;
+  {
 
+    --_uiNumWaiters;
 
+    ReleaseMutex(_pMutex1);
 
-	if(_uiNumWaiters == _uiNumWaitFor) 
+    ReleaseSemaphore(_pBarrierSema, _uiNumWaitFor - 1, NULL);
 
-	{
+    return;
 
-		--_uiNumWaiters;
+  }
 
+  else
 
+  {
 
-		ReleaseMutex(_pMutex1);
+    ReleaseMutex(_pMutex1);
 
+    WaitForSingleObject(_pBarrierSema, INFINITE);
 
+    WaitForSingleObject(_pMutex1, INFINITE);
 
-		ReleaseSemaphore(_pBarrierSema, _uiNumWaitFor - 1, NULL);
+    --_uiNumWaiters;
 
-
-
-		return;
-
-	}
-
-	else
-
-	{
-
-		ReleaseMutex(_pMutex1);
-
-
-
-		WaitForSingleObject(_pBarrierSema, INFINITE);
-
-		
-
-		WaitForSingleObject(_pMutex1, INFINITE);
-
-
-
-		--_uiNumWaiters;
-
-
-
-		ReleaseMutex(_pMutex1);
-
-	}
-
+    ReleaseMutex(_pMutex1);
+  }
 }
-
-
 
 inline
 
-void WinThreadBarrierBase::enter(UInt32 uiNumWaitFor)
+    void
+    WinThreadBarrierBase::enter(UInt32 uiNumWaitFor)
 
 {
 
-    _uiNumWaitFor = uiNumWaitFor;
+  _uiNumWaitFor = uiNumWaitFor;
 
-
-
-    enter();
-
+  enter();
 }
-
-
 
 #endif /* OSG_USE_WINTHREADS */
 
-
-
 inline
 
-Barrier *Barrier::create(void)
+    Barrier*
+    Barrier::create(void)
 
 {
 
-    return Barrier::get(NULL);
-
+  return Barrier::get(NULL);
 }
-
-
 
 inline
 
-const MPBarrierType &Barrier::getClassType(void)
+    const MPBarrierType&
+    Barrier::getClassType(void)
 
 {
 
-    return _type;
-
+  return _type;
 }
-
-
 
 /*------------------------------- Enter -----------------------------------*/
 
-
-
-
-
 inline
 
-void Barrier::enter(void)
+    void
+    Barrier::enter(void)
 
 {
 
-    Inherited::enter();
-
+  Inherited::enter();
 }
-
-
 
 inline
 
-void Barrier::enter(UInt32 uiNumWaitFor)
+    void
+    Barrier::enter(UInt32 uiNumWaitFor)
 
 {
 
-    Inherited::enter(uiNumWaitFor);
-
+  Inherited::enter(uiNumWaitFor);
 }
-
-
-
-
 
 OSG_END_NAMESPACE
 
-
-
 #define OSGBARRIER_INLINE_CVSID "@(#)$Id: $"
-
-
-

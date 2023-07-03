@@ -36,7 +36,6 @@
 *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGGEOTYPEGRAPHOP_H_
 #define _OSGGEOTYPEGRAPHOP_H_
 #ifdef __sgi
@@ -50,28 +49,28 @@
 
 OSG_BEGIN_NAMESPACE
 
-class OSG_SYSTEMLIB_DLLMAPPING GeoTypeGraphOp
-    : public SingleTypeGraphOp<Geometry>
-{
-public:
-    static const char *getClassname(void) { return "GeoTypeGraphOp"; };
+class OSG_SYSTEMLIB_DLLMAPPING GeoTypeGraphOp : public SingleTypeGraphOp<Geometry> {
+ public:
+  static const char* getClassname(void) {
+    return "GeoTypeGraphOp";
+  };
 
-    GeoTypeGraphOp(const char* name = "GeoType");
+  GeoTypeGraphOp(const char* name = "GeoType");
 
-    GraphOp* create();
+  GraphOp* create();
 
-    void setParams(const std::string params);
-    
-    std::string usage(void);
-    
-    // Individual sets
-    void setFilter(const OSG::BitVector &filter);
+  void setParams(const std::string params);
 
-private:
-    bool travNodeEnter(NodePtr node);
-    bool travNodeLeave(NodePtr node);
+  std::string usage(void);
 
-    OSG::BitVector _filter;
+  // Individual sets
+  void setFilter(const OSG::BitVector& filter);
+
+ private:
+  bool travNodeEnter(NodePtr node);
+  bool travNodeLeave(NodePtr node);
+
+  OSG::BitVector _filter;
 };
 
 OSG_END_NAMESPACE

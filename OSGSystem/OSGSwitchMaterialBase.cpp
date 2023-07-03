@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILESWITCHMATERIALINST
 
 #include <stdlib.h>
@@ -61,244 +60,182 @@
 #include "OSGSwitchMaterialBase.h"
 #include "OSGSwitchMaterial.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  SwitchMaterialBase::MaterialsFieldMask = 
+const OSG::BitVector SwitchMaterialBase::MaterialsFieldMask =
     (TypeTraits<BitVector>::One << SwitchMaterialBase::MaterialsFieldId);
 
-const OSG::BitVector  SwitchMaterialBase::ChoiceFieldMask = 
+const OSG::BitVector SwitchMaterialBase::ChoiceFieldMask =
     (TypeTraits<BitVector>::One << SwitchMaterialBase::ChoiceFieldId);
 
-const OSG::BitVector SwitchMaterialBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector SwitchMaterialBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
 /*! \var MaterialPtr     SwitchMaterialBase::_mfMaterials
-    
+
 */
 /*! \var UInt32          SwitchMaterialBase::_sfChoice
-    
+
 */
 
 //! SwitchMaterial description
 
-FieldDescription *SwitchMaterialBase::_desc[] = 
-{
-    new FieldDescription(MFMaterialPtr::getClassType(), 
-                     "materials", 
-                     MaterialsFieldId, MaterialsFieldMask,
-                     false,
-                     (FieldAccessMethod) &SwitchMaterialBase::getMFMaterials),
-    new FieldDescription(SFUInt32::getClassType(), 
-                     "choice", 
-                     ChoiceFieldId, ChoiceFieldMask,
-                     false,
-                     (FieldAccessMethod) &SwitchMaterialBase::getSFChoice)
-};
+FieldDescription* SwitchMaterialBase::_desc[] = {
+    new FieldDescription(MFMaterialPtr::getClassType(), "materials", MaterialsFieldId,
+        MaterialsFieldMask, false, (FieldAccessMethod)&SwitchMaterialBase::getMFMaterials),
+    new FieldDescription(SFUInt32::getClassType(), "choice", ChoiceFieldId, ChoiceFieldMask, false,
+        (FieldAccessMethod)&SwitchMaterialBase::getSFChoice)};
 
-
-FieldContainerType SwitchMaterialBase::_type(
-    "SwitchMaterial",
-    "Material",
-    NULL,
-    (PrototypeCreateF) &SwitchMaterialBase::createEmpty,
-    SwitchMaterial::initMethod,
-    _desc,
+FieldContainerType SwitchMaterialBase::_type("SwitchMaterial", "Material", NULL,
+    (PrototypeCreateF)&SwitchMaterialBase::createEmpty, SwitchMaterial::initMethod, _desc,
     sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(SwitchMaterialBase, SwitchMaterialPtr)
+// OSG_FIELD_CONTAINER_DEF(SwitchMaterialBase, SwitchMaterialPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &SwitchMaterialBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &SwitchMaterialBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr SwitchMaterialBase::shallowCopy(void) const 
-{ 
-    SwitchMaterialPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const SwitchMaterial *>(this)); 
-
-    return returnValue; 
+FieldContainerType& SwitchMaterialBase::getType(void) {
+  return _type;
 }
 
-UInt32 SwitchMaterialBase::getContainerSize(void) const 
-{ 
-    return sizeof(SwitchMaterial); 
+const FieldContainerType& SwitchMaterialBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr SwitchMaterialBase::shallowCopy(void) const {
+  SwitchMaterialPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const SwitchMaterial*>(this));
+
+  return returnValue;
+}
+
+UInt32 SwitchMaterialBase::getContainerSize(void) const {
+  return sizeof(SwitchMaterial);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void SwitchMaterialBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((SwitchMaterialBase *) &other, whichField);
+void SwitchMaterialBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((SwitchMaterialBase*)&other, whichField);
 }
 #else
-void SwitchMaterialBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((SwitchMaterialBase *) &other, whichField, sInfo);
+void SwitchMaterialBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((SwitchMaterialBase*)&other, whichField, sInfo);
 }
-void SwitchMaterialBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void SwitchMaterialBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void SwitchMaterialBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
+void SwitchMaterialBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 
-    _mfMaterials.terminateShare(uiAspect, this->getContainerSize());
+  _mfMaterials.terminateShare(uiAspect, this->getContainerSize());
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-SwitchMaterialBase::SwitchMaterialBase(void) :
-    _mfMaterials              (), 
-    _sfChoice                 (), 
-    Inherited() 
-{
+SwitchMaterialBase::SwitchMaterialBase(void)
+    : _mfMaterials()
+    , _sfChoice()
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-SwitchMaterialBase::SwitchMaterialBase(const SwitchMaterialBase &source) :
-    _mfMaterials              (source._mfMaterials              ), 
-    _sfChoice                 (source._sfChoice                 ), 
-    Inherited                 (source)
-{
+SwitchMaterialBase::SwitchMaterialBase(const SwitchMaterialBase& source)
+    : _mfMaterials(source._mfMaterials)
+    , _sfChoice(source._sfChoice)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-SwitchMaterialBase::~SwitchMaterialBase(void)
-{
+SwitchMaterialBase::~SwitchMaterialBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 SwitchMaterialBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 SwitchMaterialBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (MaterialsFieldMask & whichField))
-    {
-        returnValue += _mfMaterials.getBinSize();
-    }
+  if (FieldBits::NoField != (MaterialsFieldMask & whichField)) {
+    returnValue += _mfMaterials.getBinSize();
+  }
 
-    if(FieldBits::NoField != (ChoiceFieldMask & whichField))
-    {
-        returnValue += _sfChoice.getBinSize();
-    }
+  if (FieldBits::NoField != (ChoiceFieldMask & whichField)) {
+    returnValue += _sfChoice.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void SwitchMaterialBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void SwitchMaterialBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (MaterialsFieldMask & whichField))
-    {
-        _mfMaterials.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (MaterialsFieldMask & whichField)) {
+    _mfMaterials.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ChoiceFieldMask & whichField))
-    {
-        _sfChoice.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (ChoiceFieldMask & whichField)) {
+    _sfChoice.copyToBin(pMem);
+  }
 }
 
-void SwitchMaterialBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void SwitchMaterialBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (MaterialsFieldMask & whichField))
-    {
-        _mfMaterials.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (MaterialsFieldMask & whichField)) {
+    _mfMaterials.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ChoiceFieldMask & whichField))
-    {
-        _sfChoice.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (ChoiceFieldMask & whichField)) {
+    _sfChoice.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void SwitchMaterialBase::executeSyncImpl(      SwitchMaterialBase *pOther,
-                                        const BitVector         &whichField)
-{
+void SwitchMaterialBase::executeSyncImpl(SwitchMaterialBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (MaterialsFieldMask & whichField))
-        _mfMaterials.syncWith(pOther->_mfMaterials);
+  if (FieldBits::NoField != (MaterialsFieldMask & whichField))
+    _mfMaterials.syncWith(pOther->_mfMaterials);
 
-    if(FieldBits::NoField != (ChoiceFieldMask & whichField))
-        _sfChoice.syncWith(pOther->_sfChoice);
-
-
+  if (FieldBits::NoField != (ChoiceFieldMask & whichField))
+    _sfChoice.syncWith(pOther->_sfChoice);
 }
 #else
-void SwitchMaterialBase::executeSyncImpl(      SwitchMaterialBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void SwitchMaterialBase::executeSyncImpl(
+    SwitchMaterialBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (ChoiceFieldMask & whichField))
-        _sfChoice.syncWith(pOther->_sfChoice);
+  if (FieldBits::NoField != (ChoiceFieldMask & whichField))
+    _sfChoice.syncWith(pOther->_sfChoice);
 
-
-    if(FieldBits::NoField != (MaterialsFieldMask & whichField))
-        _mfMaterials.syncWith(pOther->_mfMaterials, sInfo);
-
-
+  if (FieldBits::NoField != (MaterialsFieldMask & whichField))
+    _mfMaterials.syncWith(pOther->_mfMaterials, sInfo);
 }
 
-void SwitchMaterialBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void SwitchMaterialBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (MaterialsFieldMask & whichField))
-        _mfMaterials.beginEdit(uiAspect, uiContainerSize);
-
+  if (FieldBits::NoField != (MaterialsFieldMask & whichField))
+    _mfMaterials.beginEdit(uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>

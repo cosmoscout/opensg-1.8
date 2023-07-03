@@ -47,81 +47,70 @@
 
 OSG_BEGIN_NAMESPACE
 
-//! FieldTypeMapper, provides functions to map from system to scanner types  
-//! \ingroup GrpSystemDrawablesGeometrymetryLoaderLib 
+//! FieldTypeMapper, provides functions to map from system to scanner types
+//! \ingroup GrpSystemDrawablesGeometrymetryLoaderLib
 
 template <class BaseT>
-class ScanParseFieldTypeMapper : public BaseT 
-{
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+class ScanParseFieldTypeMapper : public BaseT {
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  typedef BaseT Inherited;
 
-    typedef          BaseT                       Inherited;
+  typedef typename Inherited::BuildInFieldType BuildInFieldTypes;
 
-    typedef typename Inherited::BuildInFieldType BuildInFieldTypes;
+  typedef std::map<BuildInFieldTypes, UInt32> IntExtMap;
+  typedef std::map<UInt32, BuildInFieldTypes> ExtIntMap;
 
-    typedef          std::map<BuildInFieldTypes, 
-                              UInt32           > IntExtMap;
-    typedef          std::map<UInt32,        
-                              BuildInFieldTypes> ExtIntMap;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public :
+  ScanParseFieldTypeMapper(void);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    ScanParseFieldTypeMapper(void);
+  virtual ~ScanParseFieldTypeMapper(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Set                                     */
+  /*! \{                                                                 */
 
-    virtual ~ScanParseFieldTypeMapper(void); 
+  void setExtIntMapping(BuildInFieldTypes eBuildInType, UInt32 uiMappedType);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Set                                     */
-    /*! \{                                                                 */
+  void setIntExtMapping(UInt32 uiMappedType, BuildInFieldTypes eBuildInType);
 
-    void setExtIntMapping(BuildInFieldTypes eBuildInType, 
-                          UInt32            uiMappedType);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Map                                     */
+  /*! \{                                                                 */
 
-    void setIntExtMapping(UInt32            uiMappedType, 
-                          BuildInFieldTypes eBuildInType);
+  virtual Int32 mapExtIntFieldType(const Char8* szFieldname, const Int32 iFieldTypeId);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Map                                     */
-    /*! \{                                                                 */
+  virtual Int32 mapIntExtFieldType(const Char8* szFieldname, const Int32 iFieldTypeId);
 
-    virtual Int32 mapExtIntFieldType(const Char8 *szFieldname,
-                                     const Int32  iFieldTypeId);
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Member                                  */
+  /*! \{                                                                 */
 
-    virtual Int32 mapIntExtFieldType(const Char8 *szFieldname,
-                                     const Int32  iFieldTypeId);
+  IntExtMap _mIntExt;
+  ExtIntMap _mExtInt;
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
-
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Member                                  */
-    /*! \{                                                                 */
-
-    IntExtMap _mIntExt;
-    ExtIntMap _mExtInt;
-
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    ScanParseFieldTypeMapper(const ScanParseFieldTypeMapper &source);
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const ScanParseFieldTypeMapper &source);
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  ScanParseFieldTypeMapper(const ScanParseFieldTypeMapper& source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const ScanParseFieldTypeMapper& source);
 };
 
 OSG_END_NAMESPACE

@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGORTHOGRAPHICCAMERAFIELDS_H_
 #define _OSGORTHOGRAPHICCAMERAFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class OrthographicCamera;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! OrthographicCameraPtr
 
 typedef FCPtr<CameraPtr, OrthographicCamera> OrthographicCameraPtr;
@@ -81,18 +80,23 @@ typedef FCPtr<CameraPtr, OrthographicCamera> OrthographicCameraPtr;
 #endif
 
 template <>
-struct FieldDataTraits<OrthographicCameraPtr> : 
-    public FieldTraitsRecurseMapper<OrthographicCameraPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<OrthographicCameraPtr>
+    : public FieldTraitsRecurseMapper<OrthographicCameraPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getSName(void) { return "SFOrthographicCameraPtr"; }
-    static const char *getMName(void) { return "MFOrthographicCameraPtr"; }
+  static const char* getSName(void) {
+    return "SFOrthographicCameraPtr";
+  }
+  static const char* getMName(void) {
+    return "MFOrthographicCameraPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -102,7 +106,6 @@ struct FieldDataTraits<OrthographicCameraPtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
@@ -126,6 +129,7 @@ OSG_DLLEXPORT_DECL1(MField, OrthographicCameraPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 
 OSG_END_NAMESPACE
 
-#define OSGORTHOGRAPHICCAMERAFIELDS_HEADER_CVSID "@(#)$Id: OSGOrthographicCameraFields.h,v 1.2 2006/02/20 16:54:30 dirk Exp $"
+#define OSGORTHOGRAPHICCAMERAFIELDS_HEADER_CVSID                                                   \
+  "@(#)$Id: OSGOrthographicCameraFields.h,v 1.2 2006/02/20 16:54:30 dirk Exp $"
 
 #endif /* _OSGORTHOGRAPHICCAMERAFIELDS_H_ */

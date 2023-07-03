@@ -70,180 +70,163 @@ OSG_BEGIN_NAMESPACE
  *  functions there should not be any performance issues.
  */
 
-inline bool DCTPVecIsLesser(const Vec3d v1, const Vec3d v2)
-{
+inline bool DCTPVecIsLesser(const Vec3d v1, const Vec3d v2) {
   // this should be better...
-  if( v2[2] - v1[2] >= DCTP_EPS ) // z < vec.z
-      return true;
-  if( v1[2] - v2[2] >= DCTP_EPS ) // z > vec.z
-      return false;
-  if( v2[1] - v1[1] >= DCTP_EPS ) // y < vec.y
-      return true;
-  if( v1[1] - v2[1] >= DCTP_EPS ) // y > vec.y
-      return false;
-  if( v2[0] - v1[0] >= DCTP_EPS ) // x < vec.x
-      return true;
+  if (v2[2] - v1[2] >= DCTP_EPS) // z < vec.z
+    return true;
+  if (v1[2] - v2[2] >= DCTP_EPS) // z > vec.z
+    return false;
+  if (v2[1] - v1[1] >= DCTP_EPS) // y < vec.y
+    return true;
+  if (v1[1] - v2[1] >= DCTP_EPS) // y > vec.y
+    return false;
+  if (v2[0] - v1[0] >= DCTP_EPS) // x < vec.x
+    return true;
   return false;
 }
 
-inline bool DCTPVecIsLesser(const Vec4d v1, const Vec4d v2)
-{
+inline bool DCTPVecIsLesser(const Vec4d v1, const Vec4d v2) {
   // this should be better...
-  if( v2[3] - v1[3] >= DCTP_EPS ) // w < vec.w
-      return true;
-  if( v1[3] - v2[3] >= DCTP_EPS ) // w > vec.w
-      return false;
-  if( v2[2] - v1[2] >= DCTP_EPS ) // z < vec.z
-      return true;
-  if( v1[2] - v2[2] >= DCTP_EPS ) // z > vec.z
-      return false;
-  if( v2[1] - v1[1] >= DCTP_EPS ) // y < vec.y
-      return true;
-  if( v1[1] - v2[1] >= DCTP_EPS ) // y > vec.y
-      return false;
-  if( v2[0] - v1[0] >= DCTP_EPS ) // x < vec.x
-      return true;
+  if (v2[3] - v1[3] >= DCTP_EPS) // w < vec.w
+    return true;
+  if (v1[3] - v2[3] >= DCTP_EPS) // w > vec.w
+    return false;
+  if (v2[2] - v1[2] >= DCTP_EPS) // z < vec.z
+    return true;
+  if (v1[2] - v2[2] >= DCTP_EPS) // z > vec.z
+    return false;
+  if (v2[1] - v1[1] >= DCTP_EPS) // y < vec.y
+    return true;
+  if (v1[1] - v2[1] >= DCTP_EPS) // y > vec.y
+    return false;
+  if (v2[0] - v1[0] >= DCTP_EPS) // x < vec.x
+    return true;
   return false;
 }
 
-inline bool DCTPVecIsLesser(const Vec2d v1, const Vec2d v2)
-{
+inline bool DCTPVecIsLesser(const Vec2d v1, const Vec2d v2) {
   // this should be better...
-  if( v2[1] - v1[1] >= DCTP_EPS ) // y < vec.y
-      return true;
-  if( v1[1] - v2[1] >= DCTP_EPS ) // y > vec.y
-      return false;
-  if( v2[0] - v1[0] >= DCTP_EPS ) // x < vec.x
-      return true;
+  if (v2[1] - v1[1] >= DCTP_EPS) // y < vec.y
+    return true;
+  if (v1[1] - v2[1] >= DCTP_EPS) // y > vec.y
+    return false;
+  if (v2[0] - v1[0] >= DCTP_EPS) // x < vec.x
+    return true;
   return false;
 }
 
-inline bool DCTPVecIsGreater(const Vec4d v1, const Vec4d v2)
-{
+inline bool DCTPVecIsGreater(const Vec4d v1, const Vec4d v2) {
   // this should be better...
-  if( v1[3] - v2[3] >= DCTP_EPS )
-      return true;
-  if( v2[3] - v1[3] >= DCTP_EPS )
-      return false;
-  if( v1[2] - v2[2] >= DCTP_EPS )
-      return true;
-  if( v2[2] - v1[2] >= DCTP_EPS )
-      return false;
-  if( v1[1] - v2[1] >= DCTP_EPS )
-      return true;
-  if( v2[1] - v1[1] >= DCTP_EPS )
-      return false;
-  if( v1[0] - v2[0] >= DCTP_EPS )
-      return true;
+  if (v1[3] - v2[3] >= DCTP_EPS)
+    return true;
+  if (v2[3] - v1[3] >= DCTP_EPS)
+    return false;
+  if (v1[2] - v2[2] >= DCTP_EPS)
+    return true;
+  if (v2[2] - v1[2] >= DCTP_EPS)
+    return false;
+  if (v1[1] - v2[1] >= DCTP_EPS)
+    return true;
+  if (v2[1] - v1[1] >= DCTP_EPS)
+    return false;
+  if (v1[0] - v2[0] >= DCTP_EPS)
+    return true;
   return false;
 }
 
-inline bool DCTPVecIsGreater(const Vec3d v1, const Vec3d v2)
-{
+inline bool DCTPVecIsGreater(const Vec3d v1, const Vec3d v2) {
   // this should be better...
-  if( v1[2] - v2[2] >= DCTP_EPS )
-      return true;
-  if( v2[2] - v1[2] >= DCTP_EPS )
-      return false;
-  if( v1[1] - v2[1] >= DCTP_EPS )
-      return true;
-  if( v2[1] - v1[1] >= DCTP_EPS )
-      return false;
-  if( v1[0] - v2[0] >= DCTP_EPS )
-      return true;
+  if (v1[2] - v2[2] >= DCTP_EPS)
+    return true;
+  if (v2[2] - v1[2] >= DCTP_EPS)
+    return false;
+  if (v1[1] - v2[1] >= DCTP_EPS)
+    return true;
+  if (v2[1] - v1[1] >= DCTP_EPS)
+    return false;
+  if (v1[0] - v2[0] >= DCTP_EPS)
+    return true;
   return false;
 }
 
-inline bool DCTPVecIsGreater(const Vec2d v1, const Vec2d v2)
-{
+inline bool DCTPVecIsGreater(const Vec2d v1, const Vec2d v2) {
   // this should be better...
-  if( v1[1] - v2[1] >= DCTP_EPS )
-      return true;
-  if( v2[1] - v1[1] >= DCTP_EPS )
-      return false;
-  if( v1[0] - v2[0] >= DCTP_EPS )
-      return true;
+  if (v1[1] - v2[1] >= DCTP_EPS)
+    return true;
+  if (v2[1] - v1[1] >= DCTP_EPS)
+    return false;
+  if (v1[0] - v2[0] >= DCTP_EPS)
+    return true;
   return false;
 }
 
-inline bool DCTPVecIsEqual(const Vec3d v1, const Vec3d v2)
-{
-    if( ( osgabs( v1[0] - v2[0] ) < DCTP_EPS ) &&
-        ( osgabs( v1[1] - v2[1] ) < DCTP_EPS ) &&
-        ( osgabs( v1[2] - v2[2] ) < DCTP_EPS ) )
-        return true;
-    else
-        return false;
+inline bool DCTPVecIsEqual(const Vec3d v1, const Vec3d v2) {
+  if ((osgabs(v1[0] - v2[0]) < DCTP_EPS) && (osgabs(v1[1] - v2[1]) < DCTP_EPS) &&
+      (osgabs(v1[2] - v2[2]) < DCTP_EPS))
+    return true;
+  else
+    return false;
 }
 
-inline bool DCTPVecIsEqual(const Vec2d v1, const Vec2d v2)
-{
-    if ( ( osgabs( v1[0] - v2[0] ) < DCTP_EPS ) &&
-         ( osgabs( v1[1] - v2[1] ) < DCTP_EPS ) )
-        return true;
-    else
-        return false;
+inline bool DCTPVecIsEqual(const Vec2d v1, const Vec2d v2) {
+  if ((osgabs(v1[0] - v2[0]) < DCTP_EPS) && (osgabs(v1[1] - v2[1]) < DCTP_EPS))
+    return true;
+  else
+    return false;
 }
 
-inline bool DCTPVecIsNotEqual(const Vec3d v1, const Vec3d v2)
-{
-    if( ( osgabs( v1[0] - v2[0] ) < DCTP_EPS ) &&
-        ( osgabs( v1[1] - v2[1] ) < DCTP_EPS ) &&
-        ( osgabs( v1[2] - v2[2] ) < DCTP_EPS ) )
-        return false;
-    else
-        return true;
-//    return ( v1 != v2 );
+inline bool DCTPVecIsNotEqual(const Vec3d v1, const Vec3d v2) {
+  if ((osgabs(v1[0] - v2[0]) < DCTP_EPS) && (osgabs(v1[1] - v2[1]) < DCTP_EPS) &&
+      (osgabs(v1[2] - v2[2]) < DCTP_EPS))
+    return false;
+  else
+    return true;
+  //    return ( v1 != v2 );
 }
 
-inline bool DCTPVecIsNotEqual(const Vec2d v1, const Vec2d v2)
-{
-    if ( ( osgabs( v1[0] - v2[0] ) < DCTP_EPS ) &&
-         ( osgabs( v1[1] - v2[1] ) < DCTP_EPS ) )
-        return false;
-    else
-        return true;
+inline bool DCTPVecIsNotEqual(const Vec2d v1, const Vec2d v2) {
+  if ((osgabs(v1[0] - v2[0]) < DCTP_EPS) && (osgabs(v1[1] - v2[1]) < DCTP_EPS))
+    return false;
+  else
+    return true;
 
-//    return ( v1 != v2 );
+  //    return ( v1 != v2 );
 }
 
 /*************************************************************************/
 
 struct DCTPSVec2dless {
-  inline bool operator()(const Vec2d v1, const Vec2d v2) const
-  {
-    return DCTPVecIsLesser( v1, v2 );
+  inline bool operator()(const Vec2d v1, const Vec2d v2) const {
+    return DCTPVecIsLesser(v1, v2);
   }
 };
 
 struct DCTPSVec3dless {
-  inline bool operator()(const Vec3d v1, const Vec3d v2) const
-  {
-    return DCTPVecIsLesser( v1, v2 );
+  inline bool operator()(const Vec3d v1, const Vec3d v2) const {
+    return DCTPVecIsLesser(v1, v2);
   }
 };
 struct DCTPSVec4dless {
-  inline bool operator()(const Vec4d v1, const Vec4d v2) const
-  {
-    return DCTPVecIsLesser( v1, v2 );
+  inline bool operator()(const Vec4d v1, const Vec4d v2) const {
+    return DCTPVecIsLesser(v1, v2);
   }
 };
 
 /*************************************************************************/
 
-typedef std::vector< double > DCTPdvector;
-typedef std::vector< int > DCTPivector;
-typedef std::vector< DCTPivector > DCTPimatrix;
-typedef std::vector< Vec2d > DCTPVec2dvector;
-typedef std::vector< Vec3d > DCTPVec3dvector;
-typedef std::vector< Vec4d > DCTPVec4dvector;
-typedef std::vector< DCTPVec3dvector > DCTPVec3dmatrix;
-typedef std::vector< DCTPVec4dvector > DCTPVec4dmatrix;
-typedef std::list< double > DCTPdlist;
-typedef std::set< double > DCTPdset;
-typedef std::set< Vec2d, DCTPSVec2dless > DCTPVec2dset;
-typedef std::set< Vec3d, DCTPSVec3dless > DCTPVec3dset;
-typedef std::set< Vec4d, DCTPSVec4dless > DCTPVec4dset;
+typedef std::vector<double>             DCTPdvector;
+typedef std::vector<int>                DCTPivector;
+typedef std::vector<DCTPivector>        DCTPimatrix;
+typedef std::vector<Vec2d>              DCTPVec2dvector;
+typedef std::vector<Vec3d>              DCTPVec3dvector;
+typedef std::vector<Vec4d>              DCTPVec4dvector;
+typedef std::vector<DCTPVec3dvector>    DCTPVec3dmatrix;
+typedef std::vector<DCTPVec4dvector>    DCTPVec4dmatrix;
+typedef std::list<double>               DCTPdlist;
+typedef std::set<double>                DCTPdset;
+typedef std::set<Vec2d, DCTPSVec2dless> DCTPVec2dset;
+typedef std::set<Vec3d, DCTPSVec3dless> DCTPVec3dset;
+typedef std::set<Vec4d, DCTPSVec4dless> DCTPVec4dset;
 
 OSG_END_NAMESPACE
 

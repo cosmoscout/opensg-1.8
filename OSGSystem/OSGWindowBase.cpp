@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEWINDOWINST
 
 #include <stdlib.h>
@@ -61,51 +60,49 @@
 #include "OSGWindowBase.h"
 #include "OSGWindow.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  WindowBase::WidthFieldMask = 
+const OSG::BitVector WindowBase::WidthFieldMask =
     (TypeTraits<BitVector>::One << WindowBase::WidthFieldId);
 
-const OSG::BitVector  WindowBase::HeightFieldMask = 
+const OSG::BitVector WindowBase::HeightFieldMask =
     (TypeTraits<BitVector>::One << WindowBase::HeightFieldId);
 
-const OSG::BitVector  WindowBase::PortFieldMask = 
+const OSG::BitVector WindowBase::PortFieldMask =
     (TypeTraits<BitVector>::One << WindowBase::PortFieldId);
 
-const OSG::BitVector  WindowBase::ResizePendingFieldMask = 
+const OSG::BitVector WindowBase::ResizePendingFieldMask =
     (TypeTraits<BitVector>::One << WindowBase::ResizePendingFieldId);
 
-const OSG::BitVector  WindowBase::GlObjectEventCounterFieldMask = 
+const OSG::BitVector WindowBase::GlObjectEventCounterFieldMask =
     (TypeTraits<BitVector>::One << WindowBase::GlObjectEventCounterFieldId);
 
-const OSG::BitVector  WindowBase::GlObjectLastRefreshFieldMask = 
+const OSG::BitVector WindowBase::GlObjectLastRefreshFieldMask =
     (TypeTraits<BitVector>::One << WindowBase::GlObjectLastRefreshFieldId);
 
-const OSG::BitVector  WindowBase::GlObjectLastReinitializeFieldMask = 
+const OSG::BitVector WindowBase::GlObjectLastReinitializeFieldMask =
     (TypeTraits<BitVector>::One << WindowBase::GlObjectLastReinitializeFieldId);
 
-const OSG::BitVector WindowBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector WindowBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
 /*! \var UInt16          WindowBase::_sfWidth
-    
+
 */
 /*! \var UInt16          WindowBase::_sfHeight
-    
+
 */
 /*! \var ViewportPtr     WindowBase::_mfPort
-    
+
 */
 /*! \var bool            WindowBase::_sfResizePending
-    
+
 */
 /*! \var UInt32          WindowBase::_sfGlObjectEventCounter
-    Counter for GL object events. Needed for multi-aspect updates.         Is used in glObjectLastRefresh and glObjectLastReinitialize.
+    Counter for GL object events. Needed for multi-aspect updates.         Is used in
+   glObjectLastRefresh and glObjectLastReinitialize.
 */
 /*! \var UInt32          WindowBase::_mfGlObjectLastRefresh
     indicates the last refresh for the GL object
@@ -116,358 +113,272 @@ const OSG::BitVector WindowBase::MTInfluenceMask =
 
 //! Window description
 
-FieldDescription *WindowBase::_desc[] = 
-{
-    new FieldDescription(SFUInt16::getClassType(), 
-                     "width", 
-                     WidthFieldId, WidthFieldMask,
-                     false,
-                     (FieldAccessMethod) &WindowBase::getSFWidth),
-    new FieldDescription(SFUInt16::getClassType(), 
-                     "height", 
-                     HeightFieldId, HeightFieldMask,
-                     false,
-                     (FieldAccessMethod) &WindowBase::getSFHeight),
-    new FieldDescription(MFViewportPtr::getClassType(), 
-                     "port", 
-                     PortFieldId, PortFieldMask,
-                     false,
-                     (FieldAccessMethod) &WindowBase::getMFPort),
-    new FieldDescription(SFBool::getClassType(), 
-                     "resizePending", 
-                     ResizePendingFieldId, ResizePendingFieldMask,
-                     true,
-                     (FieldAccessMethod) &WindowBase::getSFResizePending),
-    new FieldDescription(SFUInt32::getClassType(), 
-                     "glObjectEventCounter", 
-                     GlObjectEventCounterFieldId, GlObjectEventCounterFieldMask,
-                     true,
-                     (FieldAccessMethod) &WindowBase::getSFGlObjectEventCounter),
-    new FieldDescription(MFUInt32::getClassType(), 
-                     "glObjectLastRefresh", 
-                     GlObjectLastRefreshFieldId, GlObjectLastRefreshFieldMask,
-                     true,
-                     (FieldAccessMethod) &WindowBase::getMFGlObjectLastRefresh),
-    new FieldDescription(MFUInt32::getClassType(), 
-                     "glObjectLastReinitialize", 
-                     GlObjectLastReinitializeFieldId, GlObjectLastReinitializeFieldMask,
-                     true,
-                     (FieldAccessMethod) &WindowBase::getMFGlObjectLastReinitialize)
-};
-
+FieldDescription* WindowBase::_desc[] = {
+    new FieldDescription(SFUInt16::getClassType(), "width", WidthFieldId, WidthFieldMask, false,
+        (FieldAccessMethod)&WindowBase::getSFWidth),
+    new FieldDescription(SFUInt16::getClassType(), "height", HeightFieldId, HeightFieldMask, false,
+        (FieldAccessMethod)&WindowBase::getSFHeight),
+    new FieldDescription(MFViewportPtr::getClassType(), "port", PortFieldId, PortFieldMask, false,
+        (FieldAccessMethod)&WindowBase::getMFPort),
+    new FieldDescription(SFBool::getClassType(), "resizePending", ResizePendingFieldId,
+        ResizePendingFieldMask, true, (FieldAccessMethod)&WindowBase::getSFResizePending),
+    new FieldDescription(SFUInt32::getClassType(), "glObjectEventCounter",
+        GlObjectEventCounterFieldId, GlObjectEventCounterFieldMask, true,
+        (FieldAccessMethod)&WindowBase::getSFGlObjectEventCounter),
+    new FieldDescription(MFUInt32::getClassType(), "glObjectLastRefresh",
+        GlObjectLastRefreshFieldId, GlObjectLastRefreshFieldMask, true,
+        (FieldAccessMethod)&WindowBase::getMFGlObjectLastRefresh),
+    new FieldDescription(MFUInt32::getClassType(), "glObjectLastReinitialize",
+        GlObjectLastReinitializeFieldId, GlObjectLastReinitializeFieldMask, true,
+        (FieldAccessMethod)&WindowBase::getMFGlObjectLastReinitialize)};
 
 FieldContainerType WindowBase::_type(
-    "Window",
-    "AttachmentContainer",
-    NULL,
-    NULL, 
-    Window::initMethod,
-    _desc,
-    sizeof(_desc));
+    "Window", "AttachmentContainer", NULL, NULL, Window::initMethod, _desc, sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(WindowBase, WindowPtr)
+// OSG_FIELD_CONTAINER_DEF(WindowBase, WindowPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &WindowBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &WindowBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-UInt32 WindowBase::getContainerSize(void) const 
-{ 
-    return sizeof(Window); 
+FieldContainerType& WindowBase::getType(void) {
+  return _type;
 }
 
+const FieldContainerType& WindowBase::getType(void) const {
+  return _type;
+}
+
+UInt32 WindowBase::getContainerSize(void) const {
+  return sizeof(Window);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void WindowBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((WindowBase *) &other, whichField);
+void WindowBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((WindowBase*)&other, whichField);
 }
 #else
-void WindowBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((WindowBase *) &other, whichField, sInfo);
+void WindowBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((WindowBase*)&other, whichField, sInfo);
 }
-void WindowBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void WindowBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void WindowBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
+void WindowBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 
-    _mfPort.terminateShare(uiAspect, this->getContainerSize());
-    _mfGlObjectLastRefresh.terminateShare(uiAspect, this->getContainerSize());
-    _mfGlObjectLastReinitialize.terminateShare(uiAspect, this->getContainerSize());
+  _mfPort.terminateShare(uiAspect, this->getContainerSize());
+  _mfGlObjectLastRefresh.terminateShare(uiAspect, this->getContainerSize());
+  _mfGlObjectLastReinitialize.terminateShare(uiAspect, this->getContainerSize());
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-WindowBase::WindowBase(void) :
-    _sfWidth                  (), 
-    _sfHeight                 (), 
-    _mfPort                   (), 
-    _sfResizePending          (), 
-    _sfGlObjectEventCounter   (UInt32(1)), 
-    _mfGlObjectLastRefresh    (), 
-    _mfGlObjectLastReinitialize(), 
-    Inherited() 
-{
+WindowBase::WindowBase(void)
+    : _sfWidth()
+    , _sfHeight()
+    , _mfPort()
+    , _sfResizePending()
+    , _sfGlObjectEventCounter(UInt32(1))
+    , _mfGlObjectLastRefresh()
+    , _mfGlObjectLastReinitialize()
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-WindowBase::WindowBase(const WindowBase &source) :
-    _sfWidth                  (source._sfWidth                  ), 
-    _sfHeight                 (source._sfHeight                 ), 
-    _mfPort                   (source._mfPort                   ), 
-    _sfResizePending          (source._sfResizePending          ), 
-    _sfGlObjectEventCounter   (source._sfGlObjectEventCounter   ), 
-    _mfGlObjectLastRefresh    (source._mfGlObjectLastRefresh    ), 
-    _mfGlObjectLastReinitialize(source._mfGlObjectLastReinitialize), 
-    Inherited                 (source)
-{
+WindowBase::WindowBase(const WindowBase& source)
+    : _sfWidth(source._sfWidth)
+    , _sfHeight(source._sfHeight)
+    , _mfPort(source._mfPort)
+    , _sfResizePending(source._sfResizePending)
+    , _sfGlObjectEventCounter(source._sfGlObjectEventCounter)
+    , _mfGlObjectLastRefresh(source._mfGlObjectLastRefresh)
+    , _mfGlObjectLastReinitialize(source._mfGlObjectLastReinitialize)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-WindowBase::~WindowBase(void)
-{
+WindowBase::~WindowBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 WindowBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 WindowBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (WidthFieldMask & whichField))
-    {
-        returnValue += _sfWidth.getBinSize();
-    }
+  if (FieldBits::NoField != (WidthFieldMask & whichField)) {
+    returnValue += _sfWidth.getBinSize();
+  }
 
-    if(FieldBits::NoField != (HeightFieldMask & whichField))
-    {
-        returnValue += _sfHeight.getBinSize();
-    }
+  if (FieldBits::NoField != (HeightFieldMask & whichField)) {
+    returnValue += _sfHeight.getBinSize();
+  }
 
-    if(FieldBits::NoField != (PortFieldMask & whichField))
-    {
-        returnValue += _mfPort.getBinSize();
-    }
+  if (FieldBits::NoField != (PortFieldMask & whichField)) {
+    returnValue += _mfPort.getBinSize();
+  }
 
-    if(FieldBits::NoField != (ResizePendingFieldMask & whichField))
-    {
-        returnValue += _sfResizePending.getBinSize();
-    }
+  if (FieldBits::NoField != (ResizePendingFieldMask & whichField)) {
+    returnValue += _sfResizePending.getBinSize();
+  }
 
-    if(FieldBits::NoField != (GlObjectEventCounterFieldMask & whichField))
-    {
-        returnValue += _sfGlObjectEventCounter.getBinSize();
-    }
+  if (FieldBits::NoField != (GlObjectEventCounterFieldMask & whichField)) {
+    returnValue += _sfGlObjectEventCounter.getBinSize();
+  }
 
-    if(FieldBits::NoField != (GlObjectLastRefreshFieldMask & whichField))
-    {
-        returnValue += _mfGlObjectLastRefresh.getBinSize();
-    }
+  if (FieldBits::NoField != (GlObjectLastRefreshFieldMask & whichField)) {
+    returnValue += _mfGlObjectLastRefresh.getBinSize();
+  }
 
-    if(FieldBits::NoField != (GlObjectLastReinitializeFieldMask & whichField))
-    {
-        returnValue += _mfGlObjectLastReinitialize.getBinSize();
-    }
+  if (FieldBits::NoField != (GlObjectLastReinitializeFieldMask & whichField)) {
+    returnValue += _mfGlObjectLastReinitialize.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void WindowBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void WindowBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (WidthFieldMask & whichField))
-    {
-        _sfWidth.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (WidthFieldMask & whichField)) {
+    _sfWidth.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (HeightFieldMask & whichField))
-    {
-        _sfHeight.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (HeightFieldMask & whichField)) {
+    _sfHeight.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (PortFieldMask & whichField))
-    {
-        _mfPort.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (PortFieldMask & whichField)) {
+    _mfPort.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ResizePendingFieldMask & whichField))
-    {
-        _sfResizePending.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (ResizePendingFieldMask & whichField)) {
+    _sfResizePending.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GlObjectEventCounterFieldMask & whichField))
-    {
-        _sfGlObjectEventCounter.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (GlObjectEventCounterFieldMask & whichField)) {
+    _sfGlObjectEventCounter.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GlObjectLastRefreshFieldMask & whichField))
-    {
-        _mfGlObjectLastRefresh.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (GlObjectLastRefreshFieldMask & whichField)) {
+    _mfGlObjectLastRefresh.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GlObjectLastReinitializeFieldMask & whichField))
-    {
-        _mfGlObjectLastReinitialize.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (GlObjectLastReinitializeFieldMask & whichField)) {
+    _mfGlObjectLastReinitialize.copyToBin(pMem);
+  }
 }
 
-void WindowBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void WindowBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (WidthFieldMask & whichField))
-    {
-        _sfWidth.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (WidthFieldMask & whichField)) {
+    _sfWidth.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (HeightFieldMask & whichField))
-    {
-        _sfHeight.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (HeightFieldMask & whichField)) {
+    _sfHeight.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (PortFieldMask & whichField))
-    {
-        _mfPort.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (PortFieldMask & whichField)) {
+    _mfPort.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ResizePendingFieldMask & whichField))
-    {
-        _sfResizePending.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (ResizePendingFieldMask & whichField)) {
+    _sfResizePending.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GlObjectEventCounterFieldMask & whichField))
-    {
-        _sfGlObjectEventCounter.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (GlObjectEventCounterFieldMask & whichField)) {
+    _sfGlObjectEventCounter.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GlObjectLastRefreshFieldMask & whichField))
-    {
-        _mfGlObjectLastRefresh.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (GlObjectLastRefreshFieldMask & whichField)) {
+    _mfGlObjectLastRefresh.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (GlObjectLastReinitializeFieldMask & whichField))
-    {
-        _mfGlObjectLastReinitialize.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (GlObjectLastReinitializeFieldMask & whichField)) {
+    _mfGlObjectLastReinitialize.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void WindowBase::executeSyncImpl(      WindowBase *pOther,
-                                        const BitVector         &whichField)
-{
+void WindowBase::executeSyncImpl(WindowBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (WidthFieldMask & whichField))
-        _sfWidth.syncWith(pOther->_sfWidth);
+  if (FieldBits::NoField != (WidthFieldMask & whichField))
+    _sfWidth.syncWith(pOther->_sfWidth);
 
-    if(FieldBits::NoField != (HeightFieldMask & whichField))
-        _sfHeight.syncWith(pOther->_sfHeight);
+  if (FieldBits::NoField != (HeightFieldMask & whichField))
+    _sfHeight.syncWith(pOther->_sfHeight);
 
-    if(FieldBits::NoField != (PortFieldMask & whichField))
-        _mfPort.syncWith(pOther->_mfPort);
+  if (FieldBits::NoField != (PortFieldMask & whichField))
+    _mfPort.syncWith(pOther->_mfPort);
 
-    if(FieldBits::NoField != (ResizePendingFieldMask & whichField))
-        _sfResizePending.syncWith(pOther->_sfResizePending);
+  if (FieldBits::NoField != (ResizePendingFieldMask & whichField))
+    _sfResizePending.syncWith(pOther->_sfResizePending);
 
-    if(FieldBits::NoField != (GlObjectEventCounterFieldMask & whichField))
-        _sfGlObjectEventCounter.syncWith(pOther->_sfGlObjectEventCounter);
+  if (FieldBits::NoField != (GlObjectEventCounterFieldMask & whichField))
+    _sfGlObjectEventCounter.syncWith(pOther->_sfGlObjectEventCounter);
 
-    if(FieldBits::NoField != (GlObjectLastRefreshFieldMask & whichField))
-        _mfGlObjectLastRefresh.syncWith(pOther->_mfGlObjectLastRefresh);
+  if (FieldBits::NoField != (GlObjectLastRefreshFieldMask & whichField))
+    _mfGlObjectLastRefresh.syncWith(pOther->_mfGlObjectLastRefresh);
 
-    if(FieldBits::NoField != (GlObjectLastReinitializeFieldMask & whichField))
-        _mfGlObjectLastReinitialize.syncWith(pOther->_mfGlObjectLastReinitialize);
-
-
+  if (FieldBits::NoField != (GlObjectLastReinitializeFieldMask & whichField))
+    _mfGlObjectLastReinitialize.syncWith(pOther->_mfGlObjectLastReinitialize);
 }
 #else
-void WindowBase::executeSyncImpl(      WindowBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void WindowBase::executeSyncImpl(
+    WindowBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (WidthFieldMask & whichField))
-        _sfWidth.syncWith(pOther->_sfWidth);
+  if (FieldBits::NoField != (WidthFieldMask & whichField))
+    _sfWidth.syncWith(pOther->_sfWidth);
 
-    if(FieldBits::NoField != (HeightFieldMask & whichField))
-        _sfHeight.syncWith(pOther->_sfHeight);
+  if (FieldBits::NoField != (HeightFieldMask & whichField))
+    _sfHeight.syncWith(pOther->_sfHeight);
 
-    if(FieldBits::NoField != (ResizePendingFieldMask & whichField))
-        _sfResizePending.syncWith(pOther->_sfResizePending);
+  if (FieldBits::NoField != (ResizePendingFieldMask & whichField))
+    _sfResizePending.syncWith(pOther->_sfResizePending);
 
-    if(FieldBits::NoField != (GlObjectEventCounterFieldMask & whichField))
-        _sfGlObjectEventCounter.syncWith(pOther->_sfGlObjectEventCounter);
+  if (FieldBits::NoField != (GlObjectEventCounterFieldMask & whichField))
+    _sfGlObjectEventCounter.syncWith(pOther->_sfGlObjectEventCounter);
 
+  if (FieldBits::NoField != (PortFieldMask & whichField))
+    _mfPort.syncWith(pOther->_mfPort, sInfo);
 
-    if(FieldBits::NoField != (PortFieldMask & whichField))
-        _mfPort.syncWith(pOther->_mfPort, sInfo);
+  if (FieldBits::NoField != (GlObjectLastRefreshFieldMask & whichField))
+    _mfGlObjectLastRefresh.syncWith(pOther->_mfGlObjectLastRefresh, sInfo);
 
-    if(FieldBits::NoField != (GlObjectLastRefreshFieldMask & whichField))
-        _mfGlObjectLastRefresh.syncWith(pOther->_mfGlObjectLastRefresh, sInfo);
-
-    if(FieldBits::NoField != (GlObjectLastReinitializeFieldMask & whichField))
-        _mfGlObjectLastReinitialize.syncWith(pOther->_mfGlObjectLastReinitialize, sInfo);
-
-
+  if (FieldBits::NoField != (GlObjectLastReinitializeFieldMask & whichField))
+    _mfGlObjectLastReinitialize.syncWith(pOther->_mfGlObjectLastReinitialize, sInfo);
 }
 
-void WindowBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void WindowBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (PortFieldMask & whichField))
-        _mfPort.beginEdit(uiAspect, uiContainerSize);
+  if (FieldBits::NoField != (PortFieldMask & whichField))
+    _mfPort.beginEdit(uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (GlObjectLastRefreshFieldMask & whichField))
-        _mfGlObjectLastRefresh.beginEdit(uiAspect, uiContainerSize);
+  if (FieldBits::NoField != (GlObjectLastRefreshFieldMask & whichField))
+    _mfGlObjectLastRefresh.beginEdit(uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (GlObjectLastReinitializeFieldMask & whichField))
-        _mfGlObjectLastReinitialize.beginEdit(uiAspect, uiContainerSize);
-
+  if (FieldBits::NoField != (GlObjectLastReinitializeFieldMask & whichField))
+    _mfGlObjectLastReinitialize.beginEdit(uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>
@@ -482,5 +393,3 @@ OSG_DLLEXPORT_SFIELD_DEF1(WindowPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 OSG_DLLEXPORT_MFIELD_DEF1(WindowPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
-
-

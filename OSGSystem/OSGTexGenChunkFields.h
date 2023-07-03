@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGTEXGENCHUNKFIELDS_H_
 #define _OSGTEXGENCHUNKFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class TexGenChunk;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! TexGenChunkPtr
 
 typedef FCPtr<StateChunkPtr, TexGenChunk> TexGenChunkPtr;
@@ -81,18 +80,22 @@ typedef FCPtr<StateChunkPtr, TexGenChunk> TexGenChunkPtr;
 #endif
 
 template <>
-struct FieldDataTraits<TexGenChunkPtr> : 
-    public FieldTraitsRecurseMapper<TexGenChunkPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<TexGenChunkPtr> : public FieldTraitsRecurseMapper<TexGenChunkPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getSName(void) { return "SFTexGenChunkPtr"; }
-    static const char *getMName(void) { return "MFTexGenChunkPtr"; }
+  static const char* getSName(void) {
+    return "SFTexGenChunkPtr";
+  }
+  static const char* getMName(void) {
+    return "MFTexGenChunkPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -102,7 +105,6 @@ struct FieldDataTraits<TexGenChunkPtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
@@ -126,6 +128,7 @@ OSG_DLLEXPORT_DECL1(MField, TexGenChunkPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 
 OSG_END_NAMESPACE
 
-#define OSGTEXGENCHUNKFIELDS_HEADER_CVSID "@(#)$Id: FCFieldsTemplate_h.h,v 1.25 2005/04/04 14:51:48 dirk Exp $"
+#define OSGTEXGENCHUNKFIELDS_HEADER_CVSID                                                          \
+  "@(#)$Id: FCFieldsTemplate_h.h,v 1.25 2005/04/04 14:51:48 dirk Exp $"
 
 #endif /* _OSGTEXGENCHUNKFIELDS_H_ */

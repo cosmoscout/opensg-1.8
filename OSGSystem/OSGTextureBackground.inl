@@ -44,4 +44,5 @@ OSG_BEGIN_NAMESPACE
 
 OSG_END_NAMESPACE
 
-#define OSGTEXTUREBACKGROUND_INLINE_CVSID "@(#)$Id: OSGTextureBackground.inl,v 1.1 2004/01/23 14:16:07 a-m-z Exp $"
+#define OSGTEXTUREBACKGROUND_INLINE_CVSID                                                          \
+  "@(#)$Id: OSGTextureBackground.inl,v 1.1 2004/01/23 14:16:07 a-m-z Exp $"

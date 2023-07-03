@@ -48,83 +48,76 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief StringAttributeMap class. See \ref 
+/*! \brief StringAttributeMap class. See \ref
            PageSystemStringAttributeMap for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING StringAttributeMap : public StringAttributeMapBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING StringAttributeMap : public StringAttributeMapBase {
+ private:
+  typedef StringAttributeMapBase Inherited;
 
-    typedef StringAttributeMapBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  inline const MFString& getKeys() const;
 
-    /*! \}                                                                 */
+  void setAttribute(const std::string& key, const std::string& value);
 
-    inline const MFString& getKeys() const;
+  inline bool hasAttribute(const std::string& key) const;
 
-    void setAttribute(const std::string& key, const std::string& value);
+  bool getAttribute(const std::string& key, std::string& value) const;
 
-    inline bool hasAttribute(const std::string& key) const;
+  inline const std::string getAttribute(const std::string& key) const;
 
-    bool getAttribute(const std::string& key, std::string& value) const;
+  inline std::string& operator[](const std::string& key);
 
-    inline const std::string getAttribute(const std::string& key) const;
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in StringAttributeMapBase.
 
-    inline std::string& operator[](const std::string& key);
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  StringAttributeMap(void);
+  StringAttributeMap(const StringAttributeMap& source);
 
-    // Variables should all be in StringAttributeMapBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~StringAttributeMap(void);
 
-    StringAttributeMap(void);
-    StringAttributeMap(const StringAttributeMap &source);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class StringAttributeMapBase;
 
-    virtual ~StringAttributeMap(void); 
+  static void initMethod(void);
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  // prohibit default functions (move to 'public' if you need one)
 
-    friend class FieldContainer;
-    friend class StringAttributeMapBase;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const StringAttributeMap &source);
+  void operator=(const StringAttributeMap& source);
 };
 
-typedef StringAttributeMap *StringAttributeMapP;
+typedef StringAttributeMap* StringAttributeMapP;
 
 class AttachmentContainerPtr;
 
@@ -136,6 +129,7 @@ OSG_END_NAMESPACE
 #include <OSGStringAttributeMapBase.inl>
 #include <OSGStringAttributeMap.inl>
 
-#define OSGSTRINGATTRIBUTEMAP_HEADER_CVSID "@(#)$Id: OSGStringAttributeMap.h,v 1.1 2005/09/25 23:00:54 dirk Exp $"
+#define OSGSTRINGATTRIBUTEMAP_HEADER_CVSID                                                         \
+  "@(#)$Id: OSGStringAttributeMap.h,v 1.1 2005/09/25 23:00:54 dirk Exp $"
 
 #endif /* _OSGSTRINGATTRIBUTEMAP_H_ */

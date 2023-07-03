@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGSTATECHUNK_H_
 #define _OSGSTATECHUNK_H_
 #ifdef __sgi
@@ -54,164 +53,154 @@ OSG_BEGIN_NAMESPACE
 class TextureTransformChunk;
 
 /*! \brief The classification class for StateChunks, see \ref StateChunkClass
-    for a description. 
+    for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING StateChunkClass
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructor                                */
-    /*! \{                                                                 */
+class OSG_SYSTEMLIB_DLLMAPPING StateChunkClass {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructor                                */
+  /*! \{                                                                 */
 
-    StateChunkClass( Char8 *name, UInt32 numslots = 1 );
+  StateChunkClass(Char8* name, UInt32 numslots = 1);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                 Instance Access                              */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                 Instance Access                              */
+  /*! \{                                                                 */
 
-          UInt32   getId       (void) const;
-    const Char8   *getName     (void) const;
-          Int32    getNumSlots (void) const;
+  UInt32       getId(void) const;
+  const Char8* getName(void) const;
+  Int32        getNumSlots(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Class Access                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Class Access                                */
+  /*! \{                                                                 */
 
-           static const Char8 * getName     (UInt32 index);
-           static       Int32   getNumSlots (UInt32 index);
-    inline static       UInt32  getUsedSlots(void) ;
+  static const Char8*  getName(UInt32 index);
+  static Int32         getNumSlots(UInt32 index);
+  inline static UInt32 getUsedSlots(void);
 
-    typedef std::vector<std::string>::const_iterator iterator;
+  typedef std::vector<std::string>::const_iterator iterator;
 
-    static iterator begin();
-    static iterator end();
-    /*! \}                                                                 */
+  static iterator begin();
+  static iterator end();
+  /*! \}                                                                 */
 
-    /*==========================  PRIVATE  ================================*/
+  /*==========================  PRIVATE  ================================*/
 
-  protected:
+ protected:
+  friend class TextureTransformChunk;
 
-    friend class TextureTransformChunk;
+  void swap(StateChunkClass& other);
 
-    void swap(StateChunkClass &other);
-
-  private:
-
-           UInt32               _classId;
-    static std::vector<std::string>* _classNames;
-    static std::vector<UInt32>* _numslots;
+ private:
+  UInt32                           _classId;
+  static std::vector<std::string>* _classNames;
+  static std::vector<UInt32>*      _numslots;
 };
 
 /*! \brief The abstract base class for StateChunks, see \ref StateChunk
-    for a description. 
+    for a description.
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING StateChunk : public StateChunkBase
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING StateChunk : public StateChunkBase {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                 Chunk Class Access                           */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                 Chunk Class Access                           */
-    /*! \{                                                                 */
+  UInt32                         getClassId(void) const;
+  virtual const StateChunkClass* getClass(void) const;
 
-                         UInt32           getClassId      (void) const;
-           virtual const StateChunkClass *getClass        (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name              Static Chunk Class Access                       */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name              Static Chunk Class Access                       */
-    /*! \{                                                                 */
+  inline static UInt32                 getStaticClassId(void);
+  inline static const StateChunkClass* getStaticClass(void);
 
-    inline static        UInt32           getStaticClassId(void);
-    inline static  const StateChunkClass *getStaticClass  (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    virtual void changed(BitVector  whichField,
-                         UInt32     origin    );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Output                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Output                                  */
-    /*! \{                                                                 */
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    virtual void dump(      UInt32    uiIndent = 0,
-                      const BitVector bvFlags  = 0) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      State                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      State                                   */
-    /*! \{                                                                 */
+  virtual void update(DrawActionBase* action);
 
-    virtual void update        ( DrawActionBase * action );
+  virtual void activate(DrawActionBase* action, UInt32 index = 0);
 
-    virtual void activate      ( DrawActionBase * action, UInt32 index = 0 );
+  virtual void changeFrom(DrawActionBase* action, StateChunk* old, UInt32 index = 0);
 
-    virtual void changeFrom    ( DrawActionBase * action, StateChunk * old,
-                                 UInt32 index = 0 );
+  virtual void deactivate(DrawActionBase* action, UInt32 index = 0);
 
-    virtual void deactivate    ( DrawActionBase * action, UInt32 index = 0 );
+  virtual bool isTransparent(void) const;
 
-    virtual bool isTransparent (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Comparison                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Comparison                                */
-    /*! \{                                                                 */
+  virtual Real32 switchCost(StateChunk* chunk);
 
-    virtual Real32 switchCost  ( StateChunk * chunk );
+  virtual bool operator<(const StateChunk& other) const;
 
-    virtual bool   operator <  (const StateChunk &other) const;
+  virtual bool operator==(const StateChunk& other) const;
+  virtual bool operator!=(const StateChunk& other) const;
 
-    virtual bool   operator == (const StateChunk &other) const;
-    virtual bool   operator != (const StateChunk &other) const;
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  StateChunk(void);
+  StateChunk(const StateChunk& source);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    StateChunk(void);
-    StateChunk(const StateChunk &source);
+  virtual ~StateChunk(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    virtual ~StateChunk(void);
+  static void initMethod(void);
 
-    /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  typedef StateChunkBase Inherited;
 
-    static void initMethod(void);
+  friend class FieldContainer;
+  friend class StateChunkBase;
 
-    /*==========================  PRIVATE  ================================*/
-  private:
+  static char cvsid[];
 
-    typedef StateChunkBase Inherited;
-
-    friend class FieldContainer;
-    friend class StateChunkBase;
-
-    static char cvsid[];
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const StateChunk &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const StateChunk& source);
 };
 
-typedef StateChunk *StateChunkP;
+typedef StateChunk* StateChunkP;
 
 OSG_END_NAMESPACE
 

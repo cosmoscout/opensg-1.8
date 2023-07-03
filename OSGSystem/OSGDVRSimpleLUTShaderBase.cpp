@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEDVRSIMPLELUTSHADERINST
 
 #include <stdlib.h>
@@ -61,19 +60,16 @@
 #include "OSGDVRSimpleLUTShaderBase.h"
 #include "OSGDVRSimpleLUTShader.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  DVRSimpleLUTShaderBase::LutModeFieldMask = 
+const OSG::BitVector DVRSimpleLUTShaderBase::LutModeFieldMask =
     (TypeTraits<BitVector>::One << DVRSimpleLUTShaderBase::LutModeFieldId);
 
-const OSG::BitVector  DVRSimpleLUTShaderBase::ActiveLutModeFieldMask = 
+const OSG::BitVector DVRSimpleLUTShaderBase::ActiveLutModeFieldMask =
     (TypeTraits<BitVector>::One << DVRSimpleLUTShaderBase::ActiveLutModeFieldId);
 
-const OSG::BitVector DVRSimpleLUTShaderBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector DVRSimpleLUTShaderBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
@@ -86,223 +82,163 @@ const OSG::BitVector DVRSimpleLUTShaderBase::MTInfluenceMask =
 
 //! DVRSimpleLUTShader description
 
-FieldDescription *DVRSimpleLUTShaderBase::_desc[] = 
-{
-    new FieldDescription(SFInt8::getClassType(), 
-                     "lutMode", 
-                     LutModeFieldId, LutModeFieldMask,
-                     true,
-                     (FieldAccessMethod) &DVRSimpleLUTShaderBase::getSFLutMode),
-    new FieldDescription(SFInt8::getClassType(), 
-                     "activeLutMode", 
-                     ActiveLutModeFieldId, ActiveLutModeFieldMask,
-                     true,
-                     (FieldAccessMethod) &DVRSimpleLUTShaderBase::getSFActiveLutMode)
-};
+FieldDescription* DVRSimpleLUTShaderBase::_desc[] = {
+    new FieldDescription(SFInt8::getClassType(), "lutMode", LutModeFieldId, LutModeFieldMask, true,
+        (FieldAccessMethod)&DVRSimpleLUTShaderBase::getSFLutMode),
+    new FieldDescription(SFInt8::getClassType(), "activeLutMode", ActiveLutModeFieldId,
+        ActiveLutModeFieldMask, true,
+        (FieldAccessMethod)&DVRSimpleLUTShaderBase::getSFActiveLutMode)};
 
-
-FieldContainerType DVRSimpleLUTShaderBase::_type(
-    "DVRSimpleLUTShader",
-    "DVRSimpleShader",
-    NULL,
-    (PrototypeCreateF) &DVRSimpleLUTShaderBase::createEmpty,
-    DVRSimpleLUTShader::initMethod,
-    _desc,
+FieldContainerType DVRSimpleLUTShaderBase::_type("DVRSimpleLUTShader", "DVRSimpleShader", NULL,
+    (PrototypeCreateF)&DVRSimpleLUTShaderBase::createEmpty, DVRSimpleLUTShader::initMethod, _desc,
     sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(DVRSimpleLUTShaderBase, DVRSimpleLUTShaderPtr)
+// OSG_FIELD_CONTAINER_DEF(DVRSimpleLUTShaderBase, DVRSimpleLUTShaderPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &DVRSimpleLUTShaderBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &DVRSimpleLUTShaderBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr DVRSimpleLUTShaderBase::shallowCopy(void) const 
-{ 
-    DVRSimpleLUTShaderPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const DVRSimpleLUTShader *>(this)); 
-
-    return returnValue; 
+FieldContainerType& DVRSimpleLUTShaderBase::getType(void) {
+  return _type;
 }
 
-UInt32 DVRSimpleLUTShaderBase::getContainerSize(void) const 
-{ 
-    return sizeof(DVRSimpleLUTShader); 
+const FieldContainerType& DVRSimpleLUTShaderBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr DVRSimpleLUTShaderBase::shallowCopy(void) const {
+  DVRSimpleLUTShaderPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const DVRSimpleLUTShader*>(this));
+
+  return returnValue;
+}
+
+UInt32 DVRSimpleLUTShaderBase::getContainerSize(void) const {
+  return sizeof(DVRSimpleLUTShader);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void DVRSimpleLUTShaderBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((DVRSimpleLUTShaderBase *) &other, whichField);
+void DVRSimpleLUTShaderBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((DVRSimpleLUTShaderBase*)&other, whichField);
 }
 #else
-void DVRSimpleLUTShaderBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((DVRSimpleLUTShaderBase *) &other, whichField, sInfo);
+void DVRSimpleLUTShaderBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((DVRSimpleLUTShaderBase*)&other, whichField, sInfo);
 }
-void DVRSimpleLUTShaderBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void DVRSimpleLUTShaderBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void DVRSimpleLUTShaderBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void DVRSimpleLUTShaderBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-DVRSimpleLUTShaderBase::DVRSimpleLUTShaderBase(void) :
-    _sfLutMode                (Int8(0)), 
-    _sfActiveLutMode          (), 
-    Inherited() 
-{
+DVRSimpleLUTShaderBase::DVRSimpleLUTShaderBase(void)
+    : _sfLutMode(Int8(0))
+    , _sfActiveLutMode()
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-DVRSimpleLUTShaderBase::DVRSimpleLUTShaderBase(const DVRSimpleLUTShaderBase &source) :
-    _sfLutMode                (source._sfLutMode                ), 
-    _sfActiveLutMode          (source._sfActiveLutMode          ), 
-    Inherited                 (source)
-{
+DVRSimpleLUTShaderBase::DVRSimpleLUTShaderBase(const DVRSimpleLUTShaderBase& source)
+    : _sfLutMode(source._sfLutMode)
+    , _sfActiveLutMode(source._sfActiveLutMode)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-DVRSimpleLUTShaderBase::~DVRSimpleLUTShaderBase(void)
-{
+DVRSimpleLUTShaderBase::~DVRSimpleLUTShaderBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 DVRSimpleLUTShaderBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 DVRSimpleLUTShaderBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (LutModeFieldMask & whichField))
-    {
-        returnValue += _sfLutMode.getBinSize();
-    }
+  if (FieldBits::NoField != (LutModeFieldMask & whichField)) {
+    returnValue += _sfLutMode.getBinSize();
+  }
 
-    if(FieldBits::NoField != (ActiveLutModeFieldMask & whichField))
-    {
-        returnValue += _sfActiveLutMode.getBinSize();
-    }
+  if (FieldBits::NoField != (ActiveLutModeFieldMask & whichField)) {
+    returnValue += _sfActiveLutMode.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void DVRSimpleLUTShaderBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void DVRSimpleLUTShaderBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (LutModeFieldMask & whichField))
-    {
-        _sfLutMode.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (LutModeFieldMask & whichField)) {
+    _sfLutMode.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ActiveLutModeFieldMask & whichField))
-    {
-        _sfActiveLutMode.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (ActiveLutModeFieldMask & whichField)) {
+    _sfActiveLutMode.copyToBin(pMem);
+  }
 }
 
-void DVRSimpleLUTShaderBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void DVRSimpleLUTShaderBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (LutModeFieldMask & whichField))
-    {
-        _sfLutMode.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (LutModeFieldMask & whichField)) {
+    _sfLutMode.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ActiveLutModeFieldMask & whichField))
-    {
-        _sfActiveLutMode.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (ActiveLutModeFieldMask & whichField)) {
+    _sfActiveLutMode.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void DVRSimpleLUTShaderBase::executeSyncImpl(      DVRSimpleLUTShaderBase *pOther,
-                                        const BitVector         &whichField)
-{
+void DVRSimpleLUTShaderBase::executeSyncImpl(
+    DVRSimpleLUTShaderBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (LutModeFieldMask & whichField))
-        _sfLutMode.syncWith(pOther->_sfLutMode);
+  if (FieldBits::NoField != (LutModeFieldMask & whichField))
+    _sfLutMode.syncWith(pOther->_sfLutMode);
 
-    if(FieldBits::NoField != (ActiveLutModeFieldMask & whichField))
-        _sfActiveLutMode.syncWith(pOther->_sfActiveLutMode);
-
-
+  if (FieldBits::NoField != (ActiveLutModeFieldMask & whichField))
+    _sfActiveLutMode.syncWith(pOther->_sfActiveLutMode);
 }
 #else
-void DVRSimpleLUTShaderBase::executeSyncImpl(      DVRSimpleLUTShaderBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void DVRSimpleLUTShaderBase::executeSyncImpl(
+    DVRSimpleLUTShaderBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (LutModeFieldMask & whichField))
-        _sfLutMode.syncWith(pOther->_sfLutMode);
+  if (FieldBits::NoField != (LutModeFieldMask & whichField))
+    _sfLutMode.syncWith(pOther->_sfLutMode);
 
-    if(FieldBits::NoField != (ActiveLutModeFieldMask & whichField))
-        _sfActiveLutMode.syncWith(pOther->_sfActiveLutMode);
-
-
-
+  if (FieldBits::NoField != (ActiveLutModeFieldMask & whichField))
+    _sfActiveLutMode.syncWith(pOther->_sfActiveLutMode);
 }
 
-void DVRSimpleLUTShaderBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void DVRSimpleLUTShaderBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 OSG_BEGIN_NAMESPACE
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_DEV)
-DataType FieldDataTraits<DVRSimpleLUTShaderPtr>::_type("DVRSimpleLUTShaderPtr", "DVRSimpleShaderPtr");
+DataType FieldDataTraits<DVRSimpleLUTShaderPtr>::_type(
+    "DVRSimpleLUTShaderPtr", "DVRSimpleShaderPtr");
 #endif
 
-
 OSG_END_NAMESPACE
-
-

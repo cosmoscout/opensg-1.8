@@ -41,62 +41,50 @@ OSG_BEGIN_NAMESPACE
 /*-------------------------------------------------------------------------*/
 /*    Constructors                                                         */
 
-inline
-SimpleFunctorStore::SimpleFunctorStore(void)
-    : _func       (     ),
-      _bHasFunctor(false)
-{
+inline SimpleFunctorStore::SimpleFunctorStore(void)
+    : _func()
+    , _bHasFunctor(false) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*    Destructor                                                           */
 
-inline
-SimpleFunctorStore::~SimpleFunctorStore(void)
-{
+inline SimpleFunctorStore::~SimpleFunctorStore(void) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*    Empty                                                                */
 
-inline bool
-SimpleFunctorStore::empty(void) const
-{
-    return _bHasFunctor;
+inline bool SimpleFunctorStore::empty(void) const {
+  return _bHasFunctor;
 }
 
 /*-------------------------------------------------------------------------*/
 /*    Functor Registration                                                 */
 
-inline void 
-SimpleFunctorStore::regFunctor(const Functor &refFunc)
-{
-    _func        = refFunc;
-    _bHasFunctor = true;
+inline void SimpleFunctorStore::regFunctor(const Functor& refFunc) {
+  _func        = refFunc;
+  _bHasFunctor = true;
 }
 
-inline void
-SimpleFunctorStore::unregFunctor(void)
-{
-    _bHasFunctor = false;
+inline void SimpleFunctorStore::unregFunctor(void) {
+  _bHasFunctor = false;
 }
 
 /*-------------------------------------------------------------------------*/
 /*    Functor Access                                                       */
 
-inline SimpleFunctorStore::Functor *
-SimpleFunctorStore::getFunctor(void)
-{
-    Functor *pRetFunc = NULL;
+inline SimpleFunctorStore::Functor* SimpleFunctorStore::getFunctor(void) {
+  Functor* pRetFunc = NULL;
 
-    if(_bHasFunctor)
-    {
-        pRetFunc =  &_func;
-    }
- 
-    return pRetFunc;
+  if (_bHasFunctor) {
+    pRetFunc = &_func;
+  }
+
+  return pRetFunc;
 }
 
 OSG_END_NAMESPACE
 
-#define OSGSIMPLEFUNCTORSTORE_INLINE_CVSID "@(#)$Id: OSGSimpleFunctorStore.inl,v 1.4 2004/04/20 13:47:08 neumannc Exp $"
+#define OSGSIMPLEFUNCTORSTORE_INLINE_CVSID                                                         \
+  "@(#)$Id: OSGSimpleFunctorStore.inl,v 1.4 2004/04/20 13:47:08 neumannc Exp $"

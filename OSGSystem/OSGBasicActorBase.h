@@ -53,65 +53,65 @@
 
 OSG_BEGIN_NAMESPACE
 
-class OSG_SYSTEMLIB_DLLMAPPING BasicActorBase : public ActorBase
-{
-    /*==== PUBLIC ===========================================================*/
-  public:
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Destructor                                                  */
-    /*! \{                                                                   */
+class OSG_SYSTEMLIB_DLLMAPPING BasicActorBase : public ActorBase {
+  /*==== PUBLIC ===========================================================*/
+ public:
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Destructor                                                  */
+  /*! \{                                                                   */
 
-    virtual ~BasicActorBase(void);
+  virtual ~BasicActorBase(void);
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Start/Stop                                                  */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Start/Stop                                                  */
+  /*! \{                                                                   */
 
-    virtual ResultE start(void) = 0;
-    virtual ResultE stop (void) = 0;
+  virtual ResultE start(void) = 0;
+  virtual ResultE stop(void)  = 0;
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Enter/Leave Callback                                        */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Enter/Leave Callback                                        */
+  /*! \{                                                                   */
 
-    virtual ResultE enterNode(FunctorArgumentType &funcArg) = 0;
-    virtual ResultE leaveNode(FunctorArgumentType &funcArg) = 0;
+  virtual ResultE enterNode(FunctorArgumentType& funcArg) = 0;
+  virtual ResultE leaveNode(FunctorArgumentType& funcArg) = 0;
 
-    /*! \}                                                                   */
-    /*==== PROTECTED ========================================================*/
-  protected:
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Types                                                       */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*==== PROTECTED ========================================================*/
+ protected:
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Types                                                       */
+  /*! \{                                                                   */
 
-    typedef ActorBase            Inherited;
-    typedef Inherited::StateType StateType;
+  typedef ActorBase            Inherited;
+  typedef Inherited::StateType StateType;
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Constructor                                                 */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Constructor                                                 */
+  /*! \{                                                                   */
 
-    BasicActorBase(void);
+  BasicActorBase(void);
 
-    /*! \}                                                                   */
-    /*-----------------------------------------------------------------------*/
-    /*! \name    Add, Sub and Find Helper                                    */
-    /*! \{                                                                   */
+  /*! \}                                                                   */
+  /*-----------------------------------------------------------------------*/
+  /*! \name    Add, Sub and Find Helper                                    */
+  /*! \{                                                                   */
 
-    virtual UInt32 addHelper (      NewActionBase *pAction);
-    virtual void   subHelper (      NewActionBase *pAction);
-    virtual UInt32 findHelper(const NewActionBase *pAction);
+  virtual UInt32 addHelper(NewActionBase* pAction);
+  virtual void   subHelper(NewActionBase* pAction);
+  virtual UInt32 findHelper(const NewActionBase* pAction);
 
-    /*! \}                                                                   */
+  /*! \}                                                                   */
 };
 
 OSG_END_NAMESPACE
 
 #include "OSGBasicActorBase.inl"
 
-#define OSGBASICACTORBASE_HEADER_CVSID "@(#)$Id: OSGBasicActorBase.h,v 1.4 2004/09/17 14:09:42 neumannc Exp $"
+#define OSGBASICACTORBASE_HEADER_CVSID                                                             \
+  "@(#)$Id: OSGBasicActorBase.h,v 1.4 2004/09/17 14:09:42 neumannc Exp $"
 
 #endif /* _OSGBASICACTORBASE_H_ */

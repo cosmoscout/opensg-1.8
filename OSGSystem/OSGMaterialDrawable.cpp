@@ -62,103 +62,82 @@ OSG_USING_NAMESPACE
 
 //! Constructor
 
-MaterialDrawable::MaterialDrawable(void) :
-    Inherited()
-{
+MaterialDrawable::MaterialDrawable(void)
+    : Inherited() {
 }
 
 //! Copy Constructor
 
-MaterialDrawable::MaterialDrawable(const MaterialDrawable &source) :
-    Inherited(source)
-{
+MaterialDrawable::MaterialDrawable(const MaterialDrawable& source)
+    : Inherited(source) {
 }
 
 //! Destructor
 
-MaterialDrawable::~MaterialDrawable(void)
-{
+MaterialDrawable::~MaterialDrawable(void) {
 }
 
 /*----------------------------- class specific ----------------------------*/
 
 //! initialize the static features of the class, e.g. action callbacks
 
-Action::ResultE MaterialDrawable::drawPrimitives (DrawActionBase *)
-{
-  FWARNING (("You should overload drawPrimitives in your code\n"));
+Action::ResultE MaterialDrawable::drawPrimitives(DrawActionBase*) {
+  FWARNING(("You should overload drawPrimitives in your code\n"));
 
   return Action::Continue;
 }
 
-Action::ResultE MaterialDrawable::renderActionHandler(Action *action)
-{
-    RenderAction *a = dynamic_cast<RenderAction *>(action);
+Action::ResultE MaterialDrawable::renderActionHandler(Action* action) {
+  RenderAction* a = dynamic_cast<RenderAction*>(action);
 
-    Material::DrawFunctor func;
-    func = osgTypedMethodFunctor1ObjPtr(this, 
-                                        &MaterialDrawable::drawPrimitives);
+  Material::DrawFunctor func;
+  func = osgTypedMethodFunctor1ObjPtr(this, &MaterialDrawable::drawPrimitives);
 
-    Material* m = a->getMaterial();
+  Material* m = a->getMaterial();
 
-    if(m == NULL)
-    {
-        if(getMaterial() != NullFC)
-        {
-            m = getMaterial().getCPtr();
-        }
-        else
-        {
-            m = getDefaultMaterial().getCPtr();
-            FNOTICE(("MaterialDrawable::render: no Material!?!\n"));
-        }
+  if (m == NULL) {
+    if (getMaterial() != NullFC) {
+      m = getMaterial().getCPtr();
+    } else {
+      m = getDefaultMaterial().getCPtr();
+      FNOTICE(("MaterialDrawable::render: no Material!?!\n"));
     }
+  }
 
-    a->dropFunctor(func, m);
+  a->dropFunctor(func, m);
 
-    return Action::Continue;
+  return Action::Continue;
 }
 
-Action::ResultE MaterialDrawable::drawActionHandler(Action * action )
-{
-    DrawAction *a = dynamic_cast<DrawAction*>(action);
-    Material::DrawFunctor func;
+Action::ResultE MaterialDrawable::drawActionHandler(Action* action) {
+  DrawAction*           a = dynamic_cast<DrawAction*>(action);
+  Material::DrawFunctor func;
 
-    func=osgTypedMethodFunctor1ObjPtr(&(*this), 
-                                      &MaterialDrawable::drawPrimitives);
+  func = osgTypedMethodFunctor1ObjPtr(&(*this), &MaterialDrawable::drawPrimitives);
 
-    if(a->getMaterial() != NULL)
-    {
-        a->getMaterial()->draw(func, a);
-    }
-    else if ( getMaterial() != NullFC )
-    {
-        getMaterial()->draw( func, a );
-    }
-    else
-    {
-        getDefaultMaterial()->draw( func, a );
-        FWARNING(("MaterialDrawable::draw:: no material!\n"));;
-    }
-    return Action::Continue;
+  if (a->getMaterial() != NULL) {
+    a->getMaterial()->draw(func, a);
+  } else if (getMaterial() != NullFC) {
+    getMaterial()->draw(func, a);
+  } else {
+    getDefaultMaterial()->draw(func, a);
+    FWARNING(("MaterialDrawable::draw:: no material!\n"));
+    ;
+  }
+  return Action::Continue;
 }
-    
 
-void MaterialDrawable::initMethod (void)
-{
+void MaterialDrawable::initMethod(void) {
 }
 
 //! react to field changes
 
-void MaterialDrawable::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void MaterialDrawable::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
 //! output the instance for debug purposes
 
-void MaterialDrawable::dump(      UInt32    , 
-                         const BitVector ) const
-{
-    SLOG << "Dump MaterialDrawable NI" << std::endl;
+void MaterialDrawable::dump(UInt32, const BitVector) const {
+  SLOG << "Dump MaterialDrawable NI" << std::endl;
 }

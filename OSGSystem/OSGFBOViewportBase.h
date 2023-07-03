@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGFBOVIEWPORTBASE_H_
 #define _OSGFBOVIEWPORTBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -67,20 +65,20 @@
 
 #include <OSGViewport.h> // Parent
 
-#include <OSGBoolFields.h> // Enabled type
-#include <OSGNodeFields.h> // ExcludeNodes type
-#include <OSGNodeFields.h> // RenderNodes type
+#include <OSGBoolFields.h>         // Enabled type
+#include <OSGNodeFields.h>         // ExcludeNodes type
+#include <OSGNodeFields.h>         // RenderNodes type
 #include <OSGTextureChunkFields.h> // Textures type
-#include <OSGBoolFields.h> // FboOn type
-#include <OSGInt32Fields.h> // StorageWidth type
-#include <OSGInt32Fields.h> // StorageHeight type
-#include <OSGBoolFields.h> // GenCubemaps type
-#include <OSGBoolFields.h> // GenDepthmaps type
-#include <OSGUInt32Fields.h> // FrameBufferIndex type
-#include <OSGUInt32Fields.h> // DepthBufferIndex type
-#include <OSGUInt32Fields.h> // StencilBufferIndex type
-#include <OSGBoolFields.h> // Dirty type
-#include <OSGBoolFields.h> // ReadBuffer type
+#include <OSGBoolFields.h>         // FboOn type
+#include <OSGInt32Fields.h>        // StorageWidth type
+#include <OSGInt32Fields.h>        // StorageHeight type
+#include <OSGBoolFields.h>         // GenCubemaps type
+#include <OSGBoolFields.h>         // GenDepthmaps type
+#include <OSGUInt32Fields.h>       // FrameBufferIndex type
+#include <OSGUInt32Fields.h>       // DepthBufferIndex type
+#include <OSGUInt32Fields.h>       // StencilBufferIndex type
+#include <OSGBoolFields.h>         // Dirty type
+#include <OSGBoolFields.h>         // ReadBuffer type
 
 #include <OSGFBOViewportFields.h>
 
@@ -91,285 +89,263 @@ class BinaryDataHandler;
 
 //! \brief FBOViewport Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING FBOViewportBase : public Viewport
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING FBOViewportBase : public Viewport {
+ private:
+  typedef Viewport Inherited;
 
-    typedef Viewport    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef FBOViewportPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    EnabledFieldId            = Inherited::NextFieldId,
+    ExcludeNodesFieldId       = EnabledFieldId + 1,
+    RenderNodesFieldId        = ExcludeNodesFieldId + 1,
+    TexturesFieldId           = RenderNodesFieldId + 1,
+    FboOnFieldId              = TexturesFieldId + 1,
+    StorageWidthFieldId       = FboOnFieldId + 1,
+    StorageHeightFieldId      = StorageWidthFieldId + 1,
+    GenCubemapsFieldId        = StorageHeightFieldId + 1,
+    GenDepthmapsFieldId       = GenCubemapsFieldId + 1,
+    FrameBufferIndexFieldId   = GenDepthmapsFieldId + 1,
+    DepthBufferIndexFieldId   = FrameBufferIndexFieldId + 1,
+    StencilBufferIndexFieldId = DepthBufferIndexFieldId + 1,
+    DirtyFieldId              = StencilBufferIndexFieldId + 1,
+    ReadBufferFieldId         = DirtyFieldId + 1,
+    NextFieldId               = ReadBufferFieldId + 1
+  };
 
-    typedef FBOViewportPtr  Ptr;
+  static const OSG::BitVector EnabledFieldMask;
+  static const OSG::BitVector ExcludeNodesFieldMask;
+  static const OSG::BitVector RenderNodesFieldMask;
+  static const OSG::BitVector TexturesFieldMask;
+  static const OSG::BitVector FboOnFieldMask;
+  static const OSG::BitVector StorageWidthFieldMask;
+  static const OSG::BitVector StorageHeightFieldMask;
+  static const OSG::BitVector GenCubemapsFieldMask;
+  static const OSG::BitVector GenDepthmapsFieldMask;
+  static const OSG::BitVector FrameBufferIndexFieldMask;
+  static const OSG::BitVector DepthBufferIndexFieldMask;
+  static const OSG::BitVector StencilBufferIndexFieldMask;
+  static const OSG::BitVector DirtyFieldMask;
+  static const OSG::BitVector ReadBufferFieldMask;
 
-    enum
-    {
-        EnabledFieldId            = Inherited::NextFieldId,
-        ExcludeNodesFieldId       = EnabledFieldId            + 1,
-        RenderNodesFieldId        = ExcludeNodesFieldId       + 1,
-        TexturesFieldId           = RenderNodesFieldId        + 1,
-        FboOnFieldId              = TexturesFieldId           + 1,
-        StorageWidthFieldId       = FboOnFieldId              + 1,
-        StorageHeightFieldId      = StorageWidthFieldId       + 1,
-        GenCubemapsFieldId        = StorageHeightFieldId      + 1,
-        GenDepthmapsFieldId       = GenCubemapsFieldId        + 1,
-        FrameBufferIndexFieldId   = GenDepthmapsFieldId       + 1,
-        DepthBufferIndexFieldId   = FrameBufferIndexFieldId   + 1,
-        StencilBufferIndexFieldId = DepthBufferIndexFieldId   + 1,
-        DirtyFieldId              = StencilBufferIndexFieldId + 1,
-        ReadBufferFieldId         = DirtyFieldId              + 1,
-        NextFieldId               = ReadBufferFieldId         + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector EnabledFieldMask;
-    static const OSG::BitVector ExcludeNodesFieldMask;
-    static const OSG::BitVector RenderNodesFieldMask;
-    static const OSG::BitVector TexturesFieldMask;
-    static const OSG::BitVector FboOnFieldMask;
-    static const OSG::BitVector StorageWidthFieldMask;
-    static const OSG::BitVector StorageHeightFieldMask;
-    static const OSG::BitVector GenCubemapsFieldMask;
-    static const OSG::BitVector GenDepthmapsFieldMask;
-    static const OSG::BitVector FrameBufferIndexFieldMask;
-    static const OSG::BitVector DepthBufferIndexFieldMask;
-    static const OSG::BitVector StencilBufferIndexFieldMask;
-    static const OSG::BitVector DirtyFieldMask;
-    static const OSG::BitVector ReadBufferFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFBool*            getSFEnabled(void);
+  MFNodePtr*         getMFExcludeNodes(void);
+  MFNodePtr*         getMFRenderNodes(void);
+  MFTextureChunkPtr* getMFTextures(void);
+  SFBool*            getSFFboOn(void);
+  SFInt32*           getSFStorageWidth(void);
+  SFInt32*           getSFStorageHeight(void);
+  SFBool*            getSFGenCubemaps(void);
+  SFBool*            getSFGenDepthmaps(void);
+  SFBool*            getSFDirty(void);
+  SFBool*            getSFReadBuffer(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  bool&                    getEnabled(void);
+  const bool&              getEnabled(void) const;
+  bool&                    getFboOn(void);
+  const bool&              getFboOn(void) const;
+  Int32&                   getStorageWidth(void);
+  const Int32&             getStorageWidth(void) const;
+  Int32&                   getStorageHeight(void);
+  const Int32&             getStorageHeight(void) const;
+  bool&                    getGenCubemaps(void);
+  const bool&              getGenCubemaps(void) const;
+  bool&                    getGenDepthmaps(void);
+  const bool&              getGenDepthmaps(void) const;
+  bool&                    getDirty(void);
+  const bool&              getDirty(void) const;
+  bool&                    getReadBuffer(void);
+  const bool&              getReadBuffer(void) const;
+  NodePtr&                 getExcludeNodes(const UInt32 index);
+  MFNodePtr&               getExcludeNodes(void);
+  const MFNodePtr&         getExcludeNodes(void) const;
+  NodePtr&                 getRenderNodes(const UInt32 index);
+  MFNodePtr&               getRenderNodes(void);
+  const MFNodePtr&         getRenderNodes(void) const;
+  TextureChunkPtr&         getTextures(const UInt32 index);
+  MFTextureChunkPtr&       getTextures(void);
+  const MFTextureChunkPtr& getTextures(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFBool              *getSFEnabled        (void);
-           MFNodePtr           *getMFExcludeNodes   (void);
-           MFNodePtr           *getMFRenderNodes    (void);
-           MFTextureChunkPtr   *getMFTextures       (void);
-           SFBool              *getSFFboOn          (void);
-           SFInt32             *getSFStorageWidth   (void);
-           SFInt32             *getSFStorageHeight  (void);
-           SFBool              *getSFGenCubemaps    (void);
-           SFBool              *getSFGenDepthmaps   (void);
-           SFBool              *getSFDirty          (void);
-           SFBool              *getSFReadBuffer     (void);
+  void setEnabled(const bool& value);
+  void setFboOn(const bool& value);
+  void setStorageWidth(const Int32& value);
+  void setStorageHeight(const Int32& value);
+  void setGenCubemaps(const bool& value);
+  void setGenDepthmaps(const bool& value);
+  void setDirty(const bool& value);
+  void setReadBuffer(const bool& value);
 
-           bool                &getEnabled        (void);
-     const bool                &getEnabled        (void) const;
-           bool                &getFboOn          (void);
-     const bool                &getFboOn          (void) const;
-           Int32               &getStorageWidth   (void);
-     const Int32               &getStorageWidth   (void) const;
-           Int32               &getStorageHeight  (void);
-     const Int32               &getStorageHeight  (void) const;
-           bool                &getGenCubemaps    (void);
-     const bool                &getGenCubemaps    (void) const;
-           bool                &getGenDepthmaps   (void);
-     const bool                &getGenDepthmaps   (void) const;
-           bool                &getDirty          (void);
-     const bool                &getDirty          (void) const;
-           bool                &getReadBuffer     (void);
-     const bool                &getReadBuffer     (void) const;
-           NodePtr             &getExcludeNodes   (const UInt32 index);
-           MFNodePtr           &getExcludeNodes   (void);
-     const MFNodePtr           &getExcludeNodes   (void) const;
-           NodePtr             &getRenderNodes    (const UInt32 index);
-           MFNodePtr           &getRenderNodes    (void);
-     const MFNodePtr           &getRenderNodes    (void) const;
-           TextureChunkPtr     &getTextures       (const UInt32 index);
-           MFTextureChunkPtr   &getTextures       (void);
-     const MFTextureChunkPtr   &getTextures       (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setEnabled        ( const bool &value );
-     void setFboOn          ( const bool &value );
-     void setStorageWidth   ( const Int32 &value );
-     void setStorageHeight  ( const Int32 &value );
-     void setGenCubemaps    ( const bool &value );
-     void setGenDepthmaps   ( const bool &value );
-     void setDirty          ( const bool &value );
-     void setReadBuffer     ( const bool &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static FBOViewportPtr create(void);
+  static FBOViewportPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  FBOViewportPtr      create          (void); 
-    static  FBOViewportPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFBool            _sfEnabled;
+  MFNodePtr         _mfExcludeNodes;
+  MFNodePtr         _mfRenderNodes;
+  MFTextureChunkPtr _mfTextures;
+  SFBool            _sfFboOn;
+  SFInt32           _sfStorageWidth;
+  SFInt32           _sfStorageHeight;
+  SFBool            _sfGenCubemaps;
+  SFBool            _sfGenDepthmaps;
+  SFUInt32          _sfFrameBufferIndex;
+  SFUInt32          _sfDepthBufferIndex;
+  SFUInt32          _sfStencilBufferIndex;
+  SFBool            _sfDirty;
+  SFBool            _sfReadBuffer;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  FBOViewportBase(void);
+  FBOViewportBase(const FBOViewportBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~FBOViewportBase(void);
 
-    SFBool              _sfEnabled;
-    MFNodePtr           _mfExcludeNodes;
-    MFNodePtr           _mfRenderNodes;
-    MFTextureChunkPtr   _mfTextures;
-    SFBool              _sfFboOn;
-    SFInt32             _sfStorageWidth;
-    SFInt32             _sfStorageHeight;
-    SFBool              _sfGenCubemaps;
-    SFBool              _sfGenDepthmaps;
-    SFUInt32            _sfFrameBufferIndex;
-    SFUInt32            _sfDepthBufferIndex;
-    SFUInt32            _sfStencilBufferIndex;
-    SFBool              _sfDirty;
-    SFBool              _sfReadBuffer;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  SFUInt32* getSFFrameBufferIndex(void);
+  SFUInt32* getSFDepthBufferIndex(void);
+  SFUInt32* getSFStencilBufferIndex(void);
 
-    FBOViewportBase(void);
-    FBOViewportBase(const FBOViewportBase &source);
+  UInt32&       getFrameBufferIndex(void);
+  const UInt32& getFrameBufferIndex(void) const;
+  UInt32&       getDepthBufferIndex(void);
+  const UInt32& getDepthBufferIndex(void) const;
+  UInt32&       getStencilBufferIndex(void);
+  const UInt32& getStencilBufferIndex(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-    virtual ~FBOViewportBase(void); 
+  void setFrameBufferIndex(const UInt32& value);
+  void setDepthBufferIndex(const UInt32& value);
+  void setStencilBufferIndex(const UInt32& value);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
-
-           SFUInt32            *getSFFrameBufferIndex(void);
-           SFUInt32            *getSFDepthBufferIndex(void);
-           SFUInt32            *getSFStencilBufferIndex(void);
-
-           UInt32              &getFrameBufferIndex(void);
-     const UInt32              &getFrameBufferIndex(void) const;
-           UInt32              &getDepthBufferIndex(void);
-     const UInt32              &getDepthBufferIndex(void) const;
-           UInt32              &getStencilBufferIndex(void);
-     const UInt32              &getStencilBufferIndex(void) const;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
-
-     void setFrameBufferIndex(const UInt32 &value);
-     void setDepthBufferIndex(const UInt32 &value);
-     void setStencilBufferIndex(const UInt32 &value);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      FBOViewportBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(FBOViewportBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      FBOViewportBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(FBOViewportBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const FBOViewportBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const FBOViewportBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef FBOViewportBase* FBOViewportBaseP;
 
-typedef FBOViewportBase *FBOViewportBaseP;
-
-typedef osgIF<FBOViewportBase::isNodeCore,
-              CoredNodePtr<FBOViewport>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet FBOViewportNodePtr;
+typedef osgIF<FBOViewportBase::isNodeCore, CoredNodePtr<FBOViewport>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet FBOViewportNodePtr;
 
 typedef RefPtr<FBOViewportPtr> FBOViewportRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGFBOVIEWPORTBASE_HEADER_CVSID "@(#)$Id: OSGFBOViewportBase.h,v 1.1 2007/03/12 15:03:02 a-m-z Exp $"
+#define OSGFBOVIEWPORTBASE_HEADER_CVSID                                                            \
+  "@(#)$Id: OSGFBOViewportBase.h,v 1.1 2007/03/12 15:03:02 a-m-z Exp $"
 
 #endif /* _OSGFBOVIEWPORTBASE_H_ */

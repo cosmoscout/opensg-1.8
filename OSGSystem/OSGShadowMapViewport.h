@@ -62,7 +62,6 @@
 #include <OSGPassiveBackground.h>
 #include <OSGDynamicVolume.h>
 
-
 #include <OSGTexGenChunk.h>
 #include <OSGTextureTransformChunk.h>
 #include <OSGPolygonChunk.h>
@@ -71,136 +70,129 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 /*! \brief ShadowMapViewport class. See \ref
 ShadowMapViewport for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING ShadowMapViewport : public ShadowMapViewportBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING ShadowMapViewport : public ShadowMapViewportBase {
+ private:
+  typedef ShadowMapViewportBase Inherited;
 
-    typedef ShadowMapViewportBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  virtual void activateSize(void);
+  virtual void activate(void);
+  virtual void deactivate(void);
+  virtual void render(RenderActionBase* action);
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    virtual void activateSize(void);
-    virtual void activate    (void);
-    virtual void deactivate  (void);
-    virtual void render      (RenderActionBase* action);
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField,
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  void triggerMapUpdate(void);
 
-    virtual void dump(      UInt32     uiIndent = 0,
-                      const BitVector  bvFlags  = 0) const;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  virtual void checkLights(RenderActionBase* action);
+  virtual void updateLights(void);
+  virtual void initializeLights(RenderActionBase* action);
+  virtual void clearLights(UInt32 size);
+  virtual void createShadowMaps(RenderActionBase* action);
+  virtual void projectShadowMaps(RenderActionBase* action);
+  virtual bool extensionCheck();
+  virtual void checkMapResolution();
 
-    void triggerMapUpdate(void);
+  Action::ResultE findLight(NodePtr& node);
+  Action::ResultE findTransparent(NodePtr& node);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  UInt32 _mapRenderSize;
+  bool   _mapSizeChanged;
+  UInt32 _windowW;
+  UInt32 _windowH;
 
-    virtual void checkLights(RenderActionBase* action);
-    virtual void updateLights(void);
-    virtual void initializeLights(RenderActionBase *action);
-    virtual void clearLights(UInt32 size);
-    virtual void createShadowMaps(RenderActionBase* action);
-    virtual void projectShadowMaps(RenderActionBase* action);
-    virtual bool extensionCheck();
-    virtual void checkMapResolution();
+  TexGenChunkPtr         _texGen;
+  PolygonChunkPtr        _poly;
+  PolygonChunkPtr        _offset;
+  BlendChunkPtr          _blender;
+  NodePtr                _dummy;
+  PassiveBackgroundPtr   _silentBack;
+  TileCameraDecoratorPtr _tiledeco;
 
-    Action::ResultE findLight(NodePtr& node);
-    Action::ResultE findTransparent(NodePtr& node);
+  std::vector<NodePtr>         _transparent;
+  std::vector<LightPtr>        _allLights;
+  std::vector<LightPtr>        _lights;
+  std::vector<LightPtr>        _oldLights;
+  std::vector<CameraPtr>       _lightCameras;
+  std::vector<TransformPtr>    _lightCamTrans;
+  std::vector<NodePtr>         _lightCamBeacons;
+  std::vector<UInt32>          _lightStates;
+  std::vector<ImagePtr>        _shadowImages;
+  std::vector<TextureChunkPtr> _texChunks;
 
-    UInt32                  _mapRenderSize;
-    bool                    _mapSizeChanged;
-    UInt32                  _windowW;
-    UInt32                  _windowH;
+  SimpleMaterialPtr _unlitMat;
 
-    TexGenChunkPtr          _texGen;
-    PolygonChunkPtr         _poly;
-    PolygonChunkPtr         _offset;
-    BlendChunkPtr           _blender;
-    NodePtr                 _dummy;
-    PassiveBackgroundPtr    _silentBack;
-    TileCameraDecoratorPtr  _tiledeco;
+  bool _trigger_update;
 
-    std::vector<NodePtr>            _transparent;
-    std::vector<LightPtr>           _allLights;
-    std::vector<LightPtr>           _lights;
-    std::vector<LightPtr>           _oldLights;
-    std::vector<CameraPtr>          _lightCameras;
-    std::vector<TransformPtr>       _lightCamTrans;
-    std::vector<NodePtr>            _lightCamBeacons;
-    std::vector<UInt32>             _lightStates;
-    std::vector<ImagePtr>           _shadowImages;
-    std::vector<TextureChunkPtr>    _texChunks;
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    SimpleMaterialPtr               _unlitMat;
+  ShadowMapViewport(void);
+  ShadowMapViewport(const ShadowMapViewport& source);
 
-    bool                            _trigger_update;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~ShadowMapViewport(void);
 
-    ShadowMapViewport(void);
-    ShadowMapViewport(const ShadowMapViewport &source);
+  void onCreate(const ShadowMapViewport* source = NULL);
+  void onDestroy(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    virtual ~ShadowMapViewport(void);
-    
-    void onCreate(const ShadowMapViewport *source = NULL);
-    void onDestroy(void);
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class ShadowMapViewportBase;
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*---------------------------------------------------------------------*/
+  /*! \name            OpenGL Extension Handling                         */
+  /*! \{                                                                 */
 
-    friend class FieldContainer;
-    friend class ShadowMapViewportBase;
+  static UInt32 _depth_texture_extension;
+  static UInt32 _shadow_extension;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name            OpenGL Extension Handling                         */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    static UInt32 _depth_texture_extension;
-    static UInt32 _shadow_extension;
+  static void initMethod(void);
 
-    /*! \}                                                                 */
+  void Initialize();
 
-    static void initMethod(void);
+  // prohibit default functions (move to 'public' if you need one)
 
-    void Initialize();
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const ShadowMapViewport &source);
+  void operator=(const ShadowMapViewport& source);
 };
 
-typedef ShadowMapViewport *ShadowMapViewportP;
+typedef ShadowMapViewport* ShadowMapViewportP;
 
 OSG_END_NAMESPACE
 
 #include "OSGShadowMapViewportBase.inl"
 #include "OSGShadowMapViewport.inl"
 
-#define OSGSHADOWMAPVIEWPORT_HEADER_CVSID "@(#)$Id: OSGShadowMapViewport.h,v 1.9 2007/04/03 03:16:54 dirk Exp $"
+#define OSGSHADOWMAPVIEWPORT_HEADER_CVSID                                                          \
+  "@(#)$Id: OSGShadowMapViewport.h,v 1.9 2007/04/03 03:16:54 dirk Exp $"
 
 #endif /* _OSGSHADOWMAPVIEWPORT_H_ */

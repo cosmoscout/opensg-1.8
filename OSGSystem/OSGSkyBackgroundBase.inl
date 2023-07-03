@@ -52,613 +52,439 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &SkyBackgroundBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& SkyBackgroundBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 SkyBackgroundBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 SkyBackgroundBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-SkyBackgroundPtr SkyBackgroundBase::create(void) 
-{
-    SkyBackgroundPtr fc; 
+inline SkyBackgroundPtr SkyBackgroundBase::create(void) {
+  SkyBackgroundPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = SkyBackgroundPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = SkyBackgroundPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-SkyBackgroundPtr SkyBackgroundBase::createEmpty(void) 
-{ 
-    SkyBackgroundPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline SkyBackgroundPtr SkyBackgroundBase::createEmpty(void) {
+  SkyBackgroundPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the SkyBackground::_mfSkyColor field.
-inline
-MFColor4f *SkyBackgroundBase::getMFSkyColor(void)
-{
-    return &_mfSkyColor;
+inline MFColor4f* SkyBackgroundBase::getMFSkyColor(void) {
+  return &_mfSkyColor;
 }
 
 //! Get the SkyBackground::_mfSkyAngle field.
-inline
-MFReal32 *SkyBackgroundBase::getMFSkyAngle(void)
-{
-    return &_mfSkyAngle;
+inline MFReal32* SkyBackgroundBase::getMFSkyAngle(void) {
+  return &_mfSkyAngle;
 }
 
 //! Get the SkyBackground::_mfGroundColor field.
-inline
-MFColor4f *SkyBackgroundBase::getMFGroundColor(void)
-{
-    return &_mfGroundColor;
+inline MFColor4f* SkyBackgroundBase::getMFGroundColor(void) {
+  return &_mfGroundColor;
 }
 
 //! Get the SkyBackground::_mfGroundAngle field.
-inline
-MFReal32 *SkyBackgroundBase::getMFGroundAngle(void)
-{
-    return &_mfGroundAngle;
+inline MFReal32* SkyBackgroundBase::getMFGroundAngle(void) {
+  return &_mfGroundAngle;
 }
 
 //! Get the SkyBackground::_sfSphereRes field.
-inline
-SFUInt32 *SkyBackgroundBase::getSFSphereRes(void)
-{
-    return &_sfSphereRes;
+inline SFUInt32* SkyBackgroundBase::getSFSphereRes(void) {
+  return &_sfSphereRes;
 }
 
 //! Get the SkyBackground::_sfBackTexture field.
-inline
-SFTextureChunkPtr *SkyBackgroundBase::getSFBackTexture(void)
-{
-    return &_sfBackTexture;
+inline SFTextureChunkPtr* SkyBackgroundBase::getSFBackTexture(void) {
+  return &_sfBackTexture;
 }
 
 //! Get the SkyBackground::_sfBottomTexture field.
-inline
-SFTextureChunkPtr *SkyBackgroundBase::getSFBottomTexture(void)
-{
-    return &_sfBottomTexture;
+inline SFTextureChunkPtr* SkyBackgroundBase::getSFBottomTexture(void) {
+  return &_sfBottomTexture;
 }
 
 //! Get the SkyBackground::_sfFrontTexture field.
-inline
-SFTextureChunkPtr *SkyBackgroundBase::getSFFrontTexture(void)
-{
-    return &_sfFrontTexture;
+inline SFTextureChunkPtr* SkyBackgroundBase::getSFFrontTexture(void) {
+  return &_sfFrontTexture;
 }
 
 //! Get the SkyBackground::_sfLeftTexture field.
-inline
-SFTextureChunkPtr *SkyBackgroundBase::getSFLeftTexture(void)
-{
-    return &_sfLeftTexture;
+inline SFTextureChunkPtr* SkyBackgroundBase::getSFLeftTexture(void) {
+  return &_sfLeftTexture;
 }
 
 //! Get the SkyBackground::_sfRightTexture field.
-inline
-SFTextureChunkPtr *SkyBackgroundBase::getSFRightTexture(void)
-{
-    return &_sfRightTexture;
+inline SFTextureChunkPtr* SkyBackgroundBase::getSFRightTexture(void) {
+  return &_sfRightTexture;
 }
 
 //! Get the SkyBackground::_sfTopTexture field.
-inline
-SFTextureChunkPtr *SkyBackgroundBase::getSFTopTexture(void)
-{
-    return &_sfTopTexture;
+inline SFTextureChunkPtr* SkyBackgroundBase::getSFTopTexture(void) {
+  return &_sfTopTexture;
 }
 
 //! Get the SkyBackground::_sfBoxInside field.
-inline
-SFBool *SkyBackgroundBase::getSFBoxInside(void)
-{
-    return &_sfBoxInside;
+inline SFBool* SkyBackgroundBase::getSFBoxInside(void) {
+  return &_sfBoxInside;
 }
 
 //! Get the SkyBackground::_mfTopTexCoord field.
-inline
-MFVec3f *SkyBackgroundBase::getMFTopTexCoord(void)
-{
-    return &_mfTopTexCoord;
+inline MFVec3f* SkyBackgroundBase::getMFTopTexCoord(void) {
+  return &_mfTopTexCoord;
 }
 
 //! Get the SkyBackground::_mfBottomTexCoord field.
-inline
-MFVec3f *SkyBackgroundBase::getMFBottomTexCoord(void)
-{
-    return &_mfBottomTexCoord;
+inline MFVec3f* SkyBackgroundBase::getMFBottomTexCoord(void) {
+  return &_mfBottomTexCoord;
 }
 
 //! Get the SkyBackground::_mfRightTexCoord field.
-inline
-MFVec3f *SkyBackgroundBase::getMFRightTexCoord(void)
-{
-    return &_mfRightTexCoord;
+inline MFVec3f* SkyBackgroundBase::getMFRightTexCoord(void) {
+  return &_mfRightTexCoord;
 }
 
 //! Get the SkyBackground::_mfLeftTexCoord field.
-inline
-MFVec3f *SkyBackgroundBase::getMFLeftTexCoord(void)
-{
-    return &_mfLeftTexCoord;
+inline MFVec3f* SkyBackgroundBase::getMFLeftTexCoord(void) {
+  return &_mfLeftTexCoord;
 }
 
 //! Get the SkyBackground::_mfFrontTexCoord field.
-inline
-MFVec3f *SkyBackgroundBase::getMFFrontTexCoord(void)
-{
-    return &_mfFrontTexCoord;
+inline MFVec3f* SkyBackgroundBase::getMFFrontTexCoord(void) {
+  return &_mfFrontTexCoord;
 }
 
 //! Get the SkyBackground::_mfBackTexCoord field.
-inline
-MFVec3f *SkyBackgroundBase::getMFBackTexCoord(void)
-{
-    return &_mfBackTexCoord;
+inline MFVec3f* SkyBackgroundBase::getMFBackTexCoord(void) {
+  return &_mfBackTexCoord;
 }
 
 //! Get the SkyBackground::_sfBeacon field.
-inline
-SFNodePtr *SkyBackgroundBase::getSFBeacon(void)
-{
-    return &_sfBeacon;
+inline SFNodePtr* SkyBackgroundBase::getSFBeacon(void) {
+  return &_sfBeacon;
 }
 
 //! Get the SkyBackground::_sfClearStencilBit field.
-inline
-SFInt32 *SkyBackgroundBase::getSFClearStencilBit(void)
-{
-    return &_sfClearStencilBit;
-}
-
-
-//! Get the value of the SkyBackground::_sfSphereRes field.
-inline
-UInt32 &SkyBackgroundBase::getSphereRes(void)
-{
-    return _sfSphereRes.getValue();
+inline SFInt32* SkyBackgroundBase::getSFClearStencilBit(void) {
+  return &_sfClearStencilBit;
 }
 
 //! Get the value of the SkyBackground::_sfSphereRes field.
-inline
-const UInt32 &SkyBackgroundBase::getSphereRes(void) const
-{
-    return _sfSphereRes.getValue();
+inline UInt32& SkyBackgroundBase::getSphereRes(void) {
+  return _sfSphereRes.getValue();
+}
+
+//! Get the value of the SkyBackground::_sfSphereRes field.
+inline const UInt32& SkyBackgroundBase::getSphereRes(void) const {
+  return _sfSphereRes.getValue();
 }
 
 //! Set the value of the SkyBackground::_sfSphereRes field.
-inline
-void SkyBackgroundBase::setSphereRes(const UInt32 &value)
-{
-    _sfSphereRes.setValue(value);
+inline void SkyBackgroundBase::setSphereRes(const UInt32& value) {
+  _sfSphereRes.setValue(value);
 }
 
 //! Get the value of the SkyBackground::_sfBackTexture field.
-inline
-TextureChunkPtr &SkyBackgroundBase::getBackTexture(void)
-{
-    return _sfBackTexture.getValue();
+inline TextureChunkPtr& SkyBackgroundBase::getBackTexture(void) {
+  return _sfBackTexture.getValue();
 }
 
 //! Get the value of the SkyBackground::_sfBackTexture field.
-inline
-const TextureChunkPtr &SkyBackgroundBase::getBackTexture(void) const
-{
-    return _sfBackTexture.getValue();
+inline const TextureChunkPtr& SkyBackgroundBase::getBackTexture(void) const {
+  return _sfBackTexture.getValue();
 }
 
 //! Set the value of the SkyBackground::_sfBackTexture field.
-inline
-void SkyBackgroundBase::setBackTexture(const TextureChunkPtr &value)
-{
-    _sfBackTexture.setValue(value);
+inline void SkyBackgroundBase::setBackTexture(const TextureChunkPtr& value) {
+  _sfBackTexture.setValue(value);
 }
 
 //! Get the value of the SkyBackground::_sfBottomTexture field.
-inline
-TextureChunkPtr &SkyBackgroundBase::getBottomTexture(void)
-{
-    return _sfBottomTexture.getValue();
+inline TextureChunkPtr& SkyBackgroundBase::getBottomTexture(void) {
+  return _sfBottomTexture.getValue();
 }
 
 //! Get the value of the SkyBackground::_sfBottomTexture field.
-inline
-const TextureChunkPtr &SkyBackgroundBase::getBottomTexture(void) const
-{
-    return _sfBottomTexture.getValue();
+inline const TextureChunkPtr& SkyBackgroundBase::getBottomTexture(void) const {
+  return _sfBottomTexture.getValue();
 }
 
 //! Set the value of the SkyBackground::_sfBottomTexture field.
-inline
-void SkyBackgroundBase::setBottomTexture(const TextureChunkPtr &value)
-{
-    _sfBottomTexture.setValue(value);
+inline void SkyBackgroundBase::setBottomTexture(const TextureChunkPtr& value) {
+  _sfBottomTexture.setValue(value);
 }
 
 //! Get the value of the SkyBackground::_sfFrontTexture field.
-inline
-TextureChunkPtr &SkyBackgroundBase::getFrontTexture(void)
-{
-    return _sfFrontTexture.getValue();
+inline TextureChunkPtr& SkyBackgroundBase::getFrontTexture(void) {
+  return _sfFrontTexture.getValue();
 }
 
 //! Get the value of the SkyBackground::_sfFrontTexture field.
-inline
-const TextureChunkPtr &SkyBackgroundBase::getFrontTexture(void) const
-{
-    return _sfFrontTexture.getValue();
+inline const TextureChunkPtr& SkyBackgroundBase::getFrontTexture(void) const {
+  return _sfFrontTexture.getValue();
 }
 
 //! Set the value of the SkyBackground::_sfFrontTexture field.
-inline
-void SkyBackgroundBase::setFrontTexture(const TextureChunkPtr &value)
-{
-    _sfFrontTexture.setValue(value);
+inline void SkyBackgroundBase::setFrontTexture(const TextureChunkPtr& value) {
+  _sfFrontTexture.setValue(value);
 }
 
 //! Get the value of the SkyBackground::_sfLeftTexture field.
-inline
-TextureChunkPtr &SkyBackgroundBase::getLeftTexture(void)
-{
-    return _sfLeftTexture.getValue();
+inline TextureChunkPtr& SkyBackgroundBase::getLeftTexture(void) {
+  return _sfLeftTexture.getValue();
 }
 
 //! Get the value of the SkyBackground::_sfLeftTexture field.
-inline
-const TextureChunkPtr &SkyBackgroundBase::getLeftTexture(void) const
-{
-    return _sfLeftTexture.getValue();
+inline const TextureChunkPtr& SkyBackgroundBase::getLeftTexture(void) const {
+  return _sfLeftTexture.getValue();
 }
 
 //! Set the value of the SkyBackground::_sfLeftTexture field.
-inline
-void SkyBackgroundBase::setLeftTexture(const TextureChunkPtr &value)
-{
-    _sfLeftTexture.setValue(value);
+inline void SkyBackgroundBase::setLeftTexture(const TextureChunkPtr& value) {
+  _sfLeftTexture.setValue(value);
 }
 
 //! Get the value of the SkyBackground::_sfRightTexture field.
-inline
-TextureChunkPtr &SkyBackgroundBase::getRightTexture(void)
-{
-    return _sfRightTexture.getValue();
+inline TextureChunkPtr& SkyBackgroundBase::getRightTexture(void) {
+  return _sfRightTexture.getValue();
 }
 
 //! Get the value of the SkyBackground::_sfRightTexture field.
-inline
-const TextureChunkPtr &SkyBackgroundBase::getRightTexture(void) const
-{
-    return _sfRightTexture.getValue();
+inline const TextureChunkPtr& SkyBackgroundBase::getRightTexture(void) const {
+  return _sfRightTexture.getValue();
 }
 
 //! Set the value of the SkyBackground::_sfRightTexture field.
-inline
-void SkyBackgroundBase::setRightTexture(const TextureChunkPtr &value)
-{
-    _sfRightTexture.setValue(value);
+inline void SkyBackgroundBase::setRightTexture(const TextureChunkPtr& value) {
+  _sfRightTexture.setValue(value);
 }
 
 //! Get the value of the SkyBackground::_sfTopTexture field.
-inline
-TextureChunkPtr &SkyBackgroundBase::getTopTexture(void)
-{
-    return _sfTopTexture.getValue();
+inline TextureChunkPtr& SkyBackgroundBase::getTopTexture(void) {
+  return _sfTopTexture.getValue();
 }
 
 //! Get the value of the SkyBackground::_sfTopTexture field.
-inline
-const TextureChunkPtr &SkyBackgroundBase::getTopTexture(void) const
-{
-    return _sfTopTexture.getValue();
+inline const TextureChunkPtr& SkyBackgroundBase::getTopTexture(void) const {
+  return _sfTopTexture.getValue();
 }
 
 //! Set the value of the SkyBackground::_sfTopTexture field.
-inline
-void SkyBackgroundBase::setTopTexture(const TextureChunkPtr &value)
-{
-    _sfTopTexture.setValue(value);
+inline void SkyBackgroundBase::setTopTexture(const TextureChunkPtr& value) {
+  _sfTopTexture.setValue(value);
 }
 
 //! Get the value of the SkyBackground::_sfBoxInside field.
-inline
-bool &SkyBackgroundBase::getBoxInside(void)
-{
-    return _sfBoxInside.getValue();
+inline bool& SkyBackgroundBase::getBoxInside(void) {
+  return _sfBoxInside.getValue();
 }
 
 //! Get the value of the SkyBackground::_sfBoxInside field.
-inline
-const bool &SkyBackgroundBase::getBoxInside(void) const
-{
-    return _sfBoxInside.getValue();
+inline const bool& SkyBackgroundBase::getBoxInside(void) const {
+  return _sfBoxInside.getValue();
 }
 
 //! Set the value of the SkyBackground::_sfBoxInside field.
-inline
-void SkyBackgroundBase::setBoxInside(const bool &value)
-{
-    _sfBoxInside.setValue(value);
+inline void SkyBackgroundBase::setBoxInside(const bool& value) {
+  _sfBoxInside.setValue(value);
 }
 
 //! Get the value of the SkyBackground::_sfBeacon field.
-inline
-NodePtr &SkyBackgroundBase::getBeacon(void)
-{
-    return _sfBeacon.getValue();
+inline NodePtr& SkyBackgroundBase::getBeacon(void) {
+  return _sfBeacon.getValue();
 }
 
 //! Get the value of the SkyBackground::_sfBeacon field.
-inline
-const NodePtr &SkyBackgroundBase::getBeacon(void) const
-{
-    return _sfBeacon.getValue();
+inline const NodePtr& SkyBackgroundBase::getBeacon(void) const {
+  return _sfBeacon.getValue();
 }
 
 //! Set the value of the SkyBackground::_sfBeacon field.
-inline
-void SkyBackgroundBase::setBeacon(const NodePtr &value)
-{
-    _sfBeacon.setValue(value);
+inline void SkyBackgroundBase::setBeacon(const NodePtr& value) {
+  _sfBeacon.setValue(value);
 }
 
 //! Get the value of the SkyBackground::_sfClearStencilBit field.
-inline
-Int32 &SkyBackgroundBase::getClearStencilBit(void)
-{
-    return _sfClearStencilBit.getValue();
+inline Int32& SkyBackgroundBase::getClearStencilBit(void) {
+  return _sfClearStencilBit.getValue();
 }
 
 //! Get the value of the SkyBackground::_sfClearStencilBit field.
-inline
-const Int32 &SkyBackgroundBase::getClearStencilBit(void) const
-{
-    return _sfClearStencilBit.getValue();
+inline const Int32& SkyBackgroundBase::getClearStencilBit(void) const {
+  return _sfClearStencilBit.getValue();
 }
 
 //! Set the value of the SkyBackground::_sfClearStencilBit field.
-inline
-void SkyBackgroundBase::setClearStencilBit(const Int32 &value)
-{
-    _sfClearStencilBit.setValue(value);
+inline void SkyBackgroundBase::setClearStencilBit(const Int32& value) {
+  _sfClearStencilBit.setValue(value);
 }
-
 
 //! Get the value of the \a index element the SkyBackground::_mfSkyColor field.
-inline
-Color4f &SkyBackgroundBase::getSkyColor(const UInt32 index)
-{
-    return _mfSkyColor[index];
+inline Color4f& SkyBackgroundBase::getSkyColor(const UInt32 index) {
+  return _mfSkyColor[index];
 }
 
 //! Get the SkyBackground::_mfSkyColor field.
-inline
-MFColor4f &SkyBackgroundBase::getSkyColor(void)
-{
-    return _mfSkyColor;
+inline MFColor4f& SkyBackgroundBase::getSkyColor(void) {
+  return _mfSkyColor;
 }
 
 //! Get the SkyBackground::_mfSkyColor field.
-inline
-const MFColor4f &SkyBackgroundBase::getSkyColor(void) const
-{
-    return _mfSkyColor;
+inline const MFColor4f& SkyBackgroundBase::getSkyColor(void) const {
+  return _mfSkyColor;
 }
 
 //! Get the value of the \a index element the SkyBackground::_mfSkyAngle field.
-inline
-Real32 &SkyBackgroundBase::getSkyAngle(const UInt32 index)
-{
-    return _mfSkyAngle[index];
+inline Real32& SkyBackgroundBase::getSkyAngle(const UInt32 index) {
+  return _mfSkyAngle[index];
 }
 
 //! Get the SkyBackground::_mfSkyAngle field.
-inline
-MFReal32 &SkyBackgroundBase::getSkyAngle(void)
-{
-    return _mfSkyAngle;
+inline MFReal32& SkyBackgroundBase::getSkyAngle(void) {
+  return _mfSkyAngle;
 }
 
 //! Get the SkyBackground::_mfSkyAngle field.
-inline
-const MFReal32 &SkyBackgroundBase::getSkyAngle(void) const
-{
-    return _mfSkyAngle;
+inline const MFReal32& SkyBackgroundBase::getSkyAngle(void) const {
+  return _mfSkyAngle;
 }
 
 //! Get the value of the \a index element the SkyBackground::_mfGroundColor field.
-inline
-Color4f &SkyBackgroundBase::getGroundColor(const UInt32 index)
-{
-    return _mfGroundColor[index];
+inline Color4f& SkyBackgroundBase::getGroundColor(const UInt32 index) {
+  return _mfGroundColor[index];
 }
 
 //! Get the SkyBackground::_mfGroundColor field.
-inline
-MFColor4f &SkyBackgroundBase::getGroundColor(void)
-{
-    return _mfGroundColor;
+inline MFColor4f& SkyBackgroundBase::getGroundColor(void) {
+  return _mfGroundColor;
 }
 
 //! Get the SkyBackground::_mfGroundColor field.
-inline
-const MFColor4f &SkyBackgroundBase::getGroundColor(void) const
-{
-    return _mfGroundColor;
+inline const MFColor4f& SkyBackgroundBase::getGroundColor(void) const {
+  return _mfGroundColor;
 }
 
 //! Get the value of the \a index element the SkyBackground::_mfGroundAngle field.
-inline
-Real32 &SkyBackgroundBase::getGroundAngle(const UInt32 index)
-{
-    return _mfGroundAngle[index];
+inline Real32& SkyBackgroundBase::getGroundAngle(const UInt32 index) {
+  return _mfGroundAngle[index];
 }
 
 //! Get the SkyBackground::_mfGroundAngle field.
-inline
-MFReal32 &SkyBackgroundBase::getGroundAngle(void)
-{
-    return _mfGroundAngle;
+inline MFReal32& SkyBackgroundBase::getGroundAngle(void) {
+  return _mfGroundAngle;
 }
 
 //! Get the SkyBackground::_mfGroundAngle field.
-inline
-const MFReal32 &SkyBackgroundBase::getGroundAngle(void) const
-{
-    return _mfGroundAngle;
+inline const MFReal32& SkyBackgroundBase::getGroundAngle(void) const {
+  return _mfGroundAngle;
 }
 
 //! Get the value of the \a index element the SkyBackground::_mfTopTexCoord field.
-inline
-Vec3f &SkyBackgroundBase::getTopTexCoord(const UInt32 index)
-{
-    return _mfTopTexCoord[index];
+inline Vec3f& SkyBackgroundBase::getTopTexCoord(const UInt32 index) {
+  return _mfTopTexCoord[index];
 }
 
 //! Get the SkyBackground::_mfTopTexCoord field.
-inline
-MFVec3f &SkyBackgroundBase::getTopTexCoord(void)
-{
-    return _mfTopTexCoord;
+inline MFVec3f& SkyBackgroundBase::getTopTexCoord(void) {
+  return _mfTopTexCoord;
 }
 
 //! Get the SkyBackground::_mfTopTexCoord field.
-inline
-const MFVec3f &SkyBackgroundBase::getTopTexCoord(void) const
-{
-    return _mfTopTexCoord;
+inline const MFVec3f& SkyBackgroundBase::getTopTexCoord(void) const {
+  return _mfTopTexCoord;
 }
 
 //! Get the value of the \a index element the SkyBackground::_mfBottomTexCoord field.
-inline
-Vec3f &SkyBackgroundBase::getBottomTexCoord(const UInt32 index)
-{
-    return _mfBottomTexCoord[index];
+inline Vec3f& SkyBackgroundBase::getBottomTexCoord(const UInt32 index) {
+  return _mfBottomTexCoord[index];
 }
 
 //! Get the SkyBackground::_mfBottomTexCoord field.
-inline
-MFVec3f &SkyBackgroundBase::getBottomTexCoord(void)
-{
-    return _mfBottomTexCoord;
+inline MFVec3f& SkyBackgroundBase::getBottomTexCoord(void) {
+  return _mfBottomTexCoord;
 }
 
 //! Get the SkyBackground::_mfBottomTexCoord field.
-inline
-const MFVec3f &SkyBackgroundBase::getBottomTexCoord(void) const
-{
-    return _mfBottomTexCoord;
+inline const MFVec3f& SkyBackgroundBase::getBottomTexCoord(void) const {
+  return _mfBottomTexCoord;
 }
 
 //! Get the value of the \a index element the SkyBackground::_mfRightTexCoord field.
-inline
-Vec3f &SkyBackgroundBase::getRightTexCoord(const UInt32 index)
-{
-    return _mfRightTexCoord[index];
+inline Vec3f& SkyBackgroundBase::getRightTexCoord(const UInt32 index) {
+  return _mfRightTexCoord[index];
 }
 
 //! Get the SkyBackground::_mfRightTexCoord field.
-inline
-MFVec3f &SkyBackgroundBase::getRightTexCoord(void)
-{
-    return _mfRightTexCoord;
+inline MFVec3f& SkyBackgroundBase::getRightTexCoord(void) {
+  return _mfRightTexCoord;
 }
 
 //! Get the SkyBackground::_mfRightTexCoord field.
-inline
-const MFVec3f &SkyBackgroundBase::getRightTexCoord(void) const
-{
-    return _mfRightTexCoord;
+inline const MFVec3f& SkyBackgroundBase::getRightTexCoord(void) const {
+  return _mfRightTexCoord;
 }
 
 //! Get the value of the \a index element the SkyBackground::_mfLeftTexCoord field.
-inline
-Vec3f &SkyBackgroundBase::getLeftTexCoord(const UInt32 index)
-{
-    return _mfLeftTexCoord[index];
+inline Vec3f& SkyBackgroundBase::getLeftTexCoord(const UInt32 index) {
+  return _mfLeftTexCoord[index];
 }
 
 //! Get the SkyBackground::_mfLeftTexCoord field.
-inline
-MFVec3f &SkyBackgroundBase::getLeftTexCoord(void)
-{
-    return _mfLeftTexCoord;
+inline MFVec3f& SkyBackgroundBase::getLeftTexCoord(void) {
+  return _mfLeftTexCoord;
 }
 
 //! Get the SkyBackground::_mfLeftTexCoord field.
-inline
-const MFVec3f &SkyBackgroundBase::getLeftTexCoord(void) const
-{
-    return _mfLeftTexCoord;
+inline const MFVec3f& SkyBackgroundBase::getLeftTexCoord(void) const {
+  return _mfLeftTexCoord;
 }
 
 //! Get the value of the \a index element the SkyBackground::_mfFrontTexCoord field.
-inline
-Vec3f &SkyBackgroundBase::getFrontTexCoord(const UInt32 index)
-{
-    return _mfFrontTexCoord[index];
+inline Vec3f& SkyBackgroundBase::getFrontTexCoord(const UInt32 index) {
+  return _mfFrontTexCoord[index];
 }
 
 //! Get the SkyBackground::_mfFrontTexCoord field.
-inline
-MFVec3f &SkyBackgroundBase::getFrontTexCoord(void)
-{
-    return _mfFrontTexCoord;
+inline MFVec3f& SkyBackgroundBase::getFrontTexCoord(void) {
+  return _mfFrontTexCoord;
 }
 
 //! Get the SkyBackground::_mfFrontTexCoord field.
-inline
-const MFVec3f &SkyBackgroundBase::getFrontTexCoord(void) const
-{
-    return _mfFrontTexCoord;
+inline const MFVec3f& SkyBackgroundBase::getFrontTexCoord(void) const {
+  return _mfFrontTexCoord;
 }
 
 //! Get the value of the \a index element the SkyBackground::_mfBackTexCoord field.
-inline
-Vec3f &SkyBackgroundBase::getBackTexCoord(const UInt32 index)
-{
-    return _mfBackTexCoord[index];
+inline Vec3f& SkyBackgroundBase::getBackTexCoord(const UInt32 index) {
+  return _mfBackTexCoord[index];
 }
 
 //! Get the SkyBackground::_mfBackTexCoord field.
-inline
-MFVec3f &SkyBackgroundBase::getBackTexCoord(void)
-{
-    return _mfBackTexCoord;
+inline MFVec3f& SkyBackgroundBase::getBackTexCoord(void) {
+  return _mfBackTexCoord;
 }
 
 //! Get the SkyBackground::_mfBackTexCoord field.
-inline
-const MFVec3f &SkyBackgroundBase::getBackTexCoord(void) const
-{
-    return _mfBackTexCoord;
+inline const MFVec3f& SkyBackgroundBase::getBackTexCoord(void) const {
+  return _mfBackTexCoord;
 }
 
 OSG_END_NAMESPACE
 
-#define OSGSKYBACKGROUNDBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGSKYBACKGROUNDBASE_INLINE_CVSID                                                          \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

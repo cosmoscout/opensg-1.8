@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGOFFCENTERPERSPECTIVECAMERAFIELDS_H_
 #define _OSGOFFCENTERPERSPECTIVECAMERAFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class OffCenterPerspectiveCamera;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! OffCenterPerspectiveCameraPtr
 
 typedef FCPtr<PerspectiveCameraPtr, OffCenterPerspectiveCamera> OffCenterPerspectiveCameraPtr;
@@ -81,18 +80,23 @@ typedef FCPtr<PerspectiveCameraPtr, OffCenterPerspectiveCamera> OffCenterPerspec
 #endif
 
 template <>
-struct FieldDataTraits<OffCenterPerspectiveCameraPtr> : 
-    public FieldTraitsRecurseMapper<OffCenterPerspectiveCameraPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<OffCenterPerspectiveCameraPtr>
+    : public FieldTraitsRecurseMapper<OffCenterPerspectiveCameraPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getSName(void) { return "SFOffCenterPerspectiveCameraPtr"; }
-    static const char *getMName(void) { return "MFOffCenterPerspectiveCameraPtr"; }
+  static const char* getSName(void) {
+    return "SFOffCenterPerspectiveCameraPtr";
+  }
+  static const char* getMName(void) {
+    return "MFOffCenterPerspectiveCameraPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -102,7 +106,6 @@ struct FieldDataTraits<OffCenterPerspectiveCameraPtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
@@ -126,6 +129,7 @@ OSG_DLLEXPORT_DECL1(MField, OffCenterPerspectiveCameraPtr, OSG_SYSTEMLIB_DLLTMPL
 
 OSG_END_NAMESPACE
 
-#define OSGOFFCENTERPERSPECTIVECAMERAFIELDS_HEADER_CVSID "@(#)$Id: OSGOffCenterPerspectiveCameraFields.h,v 1.2 2006/02/20 16:54:30 dirk Exp $"
+#define OSGOFFCENTERPERSPECTIVECAMERAFIELDS_HEADER_CVSID                                           \
+  "@(#)$Id: OSGOffCenterPerspectiveCameraFields.h,v 1.2 2006/02/20 16:54:30 dirk Exp $"
 
 #endif /* _OSGOFFCENTERPERSPECTIVECAMERAFIELDS_H_ */

@@ -39,8 +39,8 @@
 #ifndef _OSGDATE_H_
 #define _OSGDATE_H_
 
-#ifdef  __sgi
-#pragma  once
+#ifdef __sgi
+#pragma once
 #endif
 
 #include <OSGConfig.h>
@@ -52,94 +52,82 @@ OSG_BEGIN_NAMESPACE
 /*! \ingroup GrpBaseBase
  */
 
-class OSG_BASE_DLLMAPPING Date
-{
-    /*==========================  PUBLIC  =================================*/
+class OSG_BASE_DLLMAPPING Date {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  Date(void);
+  Date(const Date& obj);
 
-    Date(void);
-    Date(const Date &obj);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  virtual ~Date(void);
 
-    virtual ~Date(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Access                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Access                                     */
-    /*! \{                                                                 */
+  void   setSecond(UInt32 second);
+  UInt32 getSecond(void);
 
-    void   setSecond    (      UInt32  second   );
-    UInt32 getSecond    (      void             );
+  void   setMinute(UInt32 minute);
+  UInt32 getMinute(void);
 
-    void   setMinute    (      UInt32  minute   );
-    UInt32 getMinute    (      void             );
+  void   setHour(UInt32 hour);
+  UInt32 getHour(void);
 
-    void   setHour      (      UInt32  hour     );
-    UInt32 getHour      (      void             );
+  void   setDay(UInt32 day);
+  UInt32 getDay(void);
 
-    void   setDay       (      UInt32  day      );
-    UInt32 getDay       (      void             );
+  void  setYear(Int32 year);
+  Int32 getYear(void);
 
-    void   setYear      (      Int32   year     );
-     Int32 getYear      (      void             );
-    
-    void   clear        (      void             );
-    void   setSystemDate(      void             );
+  void clear(void);
+  void setSystemDate(void);
 
-    void   set          (const Char8  *stringP  );
+  void set(const Char8* stringP);
 
-    bool   isLeapYear   (      void             );
-    bool   valid        (      void             );
+  bool isLeapYear(void);
+  bool valid(void);
 
-    void   set          (      UInt32 day, 
-                               UInt32 month, 
-                                Int32 year,
-                               UInt32 hour   = 0, 
-                               UInt32 minute = 0,
-                               UInt32 second = 0);
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Operators                                  */
-    /*! \{                                                                 */
+  void set(
+      UInt32 day, UInt32 month, Int32 year, UInt32 hour = 0, UInt32 minute = 0, UInt32 second = 0);
 
-    bool operator ==(const Date &other);
-    bool operator !=(const Date &other);
-    bool operator < (const Date &other);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Operators                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*===========================  PRIVATE  ===============================*/
-  private:
+  bool operator==(const Date& other);
+  bool operator!=(const Date& other);
+  bool operator<(const Date& other);
 
-    UInt32 _second;
-    UInt32 _minute;
-    UInt32 _hour;
-    UInt32 _day;
-    UInt32 _month;
-    UInt32 _year;
-    
-         
-    friend 
-    std::ostream &operator <<(      std::ostream &os, 
-                              const Date         &obj);
-    friend 
-    std::istream &operator >>(      std::istream &is, 
-                                    Date         &obj);
+  /*! \}                                                                 */
+  /*===========================  PRIVATE  ===============================*/
+ private:
+  UInt32 _second;
+  UInt32 _minute;
+  UInt32 _hour;
+  UInt32 _day;
+  UInt32 _month;
+  UInt32 _year;
+
+  friend std::ostream& operator<<(std::ostream& os, const Date& obj);
+  friend std::istream& operator>>(std::istream& is, Date& obj);
 };
 
 typedef Date* DateP;
 
-std::ostream &operator <<(std::ostream &outStream, const Date &obj);
-std::istream &operator >>(std::istream &inStream,        Date &obj);
+std::ostream& operator<<(std::ostream& outStream, const Date& obj);
+std::istream& operator>>(std::istream& inStream, Date& obj);
 
 OSG_END_NAMESPACE
 

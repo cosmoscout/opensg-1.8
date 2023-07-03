@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGDVRAPPEARANCEFIELDS_H_
 #define _OSGDVRAPPEARANCEFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class DVRAppearance;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! DVRAppearancePtr
 
 typedef FCPtr<ChunkMaterialPtr, DVRAppearance> DVRAppearancePtr;
@@ -81,17 +80,19 @@ typedef FCPtr<ChunkMaterialPtr, DVRAppearance> DVRAppearancePtr;
 #endif
 
 template <>
-struct FieldDataTraits<DVRAppearancePtr> : 
-    public FieldTraitsRecurseMapper<DVRAppearancePtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<DVRAppearancePtr> : public FieldTraitsRecurseMapper<DVRAppearancePtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getSName(void) { return "SFDVRAppearancePtr"; }
+  static const char* getSName(void) {
+    return "SFDVRAppearancePtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -101,7 +102,6 @@ struct FieldDataTraits<DVRAppearancePtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
@@ -115,6 +115,7 @@ OSG_DLLEXPORT_DECL1(SField, DVRAppearancePtr, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 
 OSG_END_NAMESPACE
 
-#define OSGDVRAPPEARANCEFIELDS_HEADER_CVSID "@(#)$Id: FCFieldsTemplate_h.h,v 1.25 2005/04/04 14:51:48 dirk Exp $"
+#define OSGDVRAPPEARANCEFIELDS_HEADER_CVSID                                                        \
+  "@(#)$Id: FCFieldsTemplate_h.h,v 1.25 2005/04/04 14:51:48 dirk Exp $"
 
 #endif /* _OSGDVRAPPEARANCEFIELDS_H_ */

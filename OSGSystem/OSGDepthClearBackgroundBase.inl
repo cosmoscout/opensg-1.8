@@ -52,137 +52,99 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &DepthClearBackgroundBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& DepthClearBackgroundBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 DepthClearBackgroundBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 DepthClearBackgroundBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-DepthClearBackgroundPtr DepthClearBackgroundBase::create(void) 
-{
-    DepthClearBackgroundPtr fc; 
+inline DepthClearBackgroundPtr DepthClearBackgroundBase::create(void) {
+  DepthClearBackgroundPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = DepthClearBackgroundPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = DepthClearBackgroundPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-DepthClearBackgroundPtr DepthClearBackgroundBase::createEmpty(void) 
-{ 
-    DepthClearBackgroundPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline DepthClearBackgroundPtr DepthClearBackgroundBase::createEmpty(void) {
+  DepthClearBackgroundPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the DepthClearBackground::_sfClearDepth field.
-inline
-SFBool *DepthClearBackgroundBase::getSFClearDepth(void)
-{
-    return &_sfClearDepth;
+inline SFBool* DepthClearBackgroundBase::getSFClearDepth(void) {
+  return &_sfClearDepth;
 }
 
 //! Get the DepthClearBackground::_sfDepth field.
-inline
-SFReal32 *DepthClearBackgroundBase::getSFDepth(void)
-{
-    return &_sfDepth;
+inline SFReal32* DepthClearBackgroundBase::getSFDepth(void) {
+  return &_sfDepth;
 }
 
 //! Get the DepthClearBackground::_sfClearStencilBit field.
-inline
-SFInt32 *DepthClearBackgroundBase::getSFClearStencilBit(void)
-{
-    return &_sfClearStencilBit;
-}
-
-
-//! Get the value of the DepthClearBackground::_sfClearDepth field.
-inline
-bool &DepthClearBackgroundBase::getClearDepth(void)
-{
-    return _sfClearDepth.getValue();
+inline SFInt32* DepthClearBackgroundBase::getSFClearStencilBit(void) {
+  return &_sfClearStencilBit;
 }
 
 //! Get the value of the DepthClearBackground::_sfClearDepth field.
-inline
-const bool &DepthClearBackgroundBase::getClearDepth(void) const
-{
-    return _sfClearDepth.getValue();
+inline bool& DepthClearBackgroundBase::getClearDepth(void) {
+  return _sfClearDepth.getValue();
+}
+
+//! Get the value of the DepthClearBackground::_sfClearDepth field.
+inline const bool& DepthClearBackgroundBase::getClearDepth(void) const {
+  return _sfClearDepth.getValue();
 }
 
 //! Set the value of the DepthClearBackground::_sfClearDepth field.
-inline
-void DepthClearBackgroundBase::setClearDepth(const bool &value)
-{
-    _sfClearDepth.setValue(value);
+inline void DepthClearBackgroundBase::setClearDepth(const bool& value) {
+  _sfClearDepth.setValue(value);
 }
 
 //! Get the value of the DepthClearBackground::_sfDepth field.
-inline
-Real32 &DepthClearBackgroundBase::getDepth(void)
-{
-    return _sfDepth.getValue();
+inline Real32& DepthClearBackgroundBase::getDepth(void) {
+  return _sfDepth.getValue();
 }
 
 //! Get the value of the DepthClearBackground::_sfDepth field.
-inline
-const Real32 &DepthClearBackgroundBase::getDepth(void) const
-{
-    return _sfDepth.getValue();
+inline const Real32& DepthClearBackgroundBase::getDepth(void) const {
+  return _sfDepth.getValue();
 }
 
 //! Set the value of the DepthClearBackground::_sfDepth field.
-inline
-void DepthClearBackgroundBase::setDepth(const Real32 &value)
-{
-    _sfDepth.setValue(value);
+inline void DepthClearBackgroundBase::setDepth(const Real32& value) {
+  _sfDepth.setValue(value);
 }
 
 //! Get the value of the DepthClearBackground::_sfClearStencilBit field.
-inline
-Int32 &DepthClearBackgroundBase::getClearStencilBit(void)
-{
-    return _sfClearStencilBit.getValue();
+inline Int32& DepthClearBackgroundBase::getClearStencilBit(void) {
+  return _sfClearStencilBit.getValue();
 }
 
 //! Get the value of the DepthClearBackground::_sfClearStencilBit field.
-inline
-const Int32 &DepthClearBackgroundBase::getClearStencilBit(void) const
-{
-    return _sfClearStencilBit.getValue();
+inline const Int32& DepthClearBackgroundBase::getClearStencilBit(void) const {
+  return _sfClearStencilBit.getValue();
 }
 
 //! Set the value of the DepthClearBackground::_sfClearStencilBit field.
-inline
-void DepthClearBackgroundBase::setClearStencilBit(const Int32 &value)
-{
-    _sfClearStencilBit.setValue(value);
+inline void DepthClearBackgroundBase::setClearStencilBit(const Int32& value) {
+  _sfClearStencilBit.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGDEPTHCLEARBACKGROUNDBASE_INLINE_CVSID "@(#)$Id: OSGDepthClearBackgroundBase.inl,v 1.8 2007/05/10 15:57:23 yjung Exp $"
-
+#define OSGDEPTHCLEARBACKGROUNDBASE_INLINE_CVSID                                                   \
+  "@(#)$Id: OSGDepthClearBackgroundBase.inl,v 1.8 2007/05/10 15:57:23 yjung Exp $"

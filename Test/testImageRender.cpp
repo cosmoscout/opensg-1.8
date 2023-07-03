@@ -9,101 +9,94 @@
 
 OSG_USING_NAMESPACE
 
-SimpleSceneManager *mgr;
+SimpleSceneManager* mgr;
 
-ImagePtr pImage;
+ImagePtr        pImage;
 TextureChunkPtr tc;
 
-int setupGLUT( int *argc, char *argv[] );
+int setupGLUT(int* argc, char* argv[]);
 
-int main(int argc, char **argv)
-{
-    // OSG init
-    osgInit(argc,argv);
+int main(int argc, char** argv) {
+  // OSG init
+  osgInit(argc, argv);
 
-    SimpleMaterialPtr pm = SimpleMaterial::create();
-    beginEditCP(pm);
-    pm->setDiffuse( Color3f( 1,0,0 ) );
-    pm->setAmbient( Color3f( 1,0,0 ) );
-    pm->setSpecular( Color3f( 1,1,1 ) );
-    pm->setShininess( 10 );
+  SimpleMaterialPtr pm = SimpleMaterial::create();
+  beginEditCP(pm);
+  pm->setDiffuse(Color3f(1, 0, 0));
+  pm->setAmbient(Color3f(1, 0, 0));
+  pm->setSpecular(Color3f(1, 1, 1));
+  pm->setShininess(10);
 
-    tc = TextureChunk::create();
+  tc = TextureChunk::create();
 
-    pm->addChunk(tc);
-    
-    beginEditCP(tc);
-    
-    UChar8 imgdata[512*256*4];
-    UChar8 *data=&imgdata[0];
+  pm->addChunk(tc);
 
-    for(int l=8; l >= 0; l--)
-    {
-        int size=1<<l;
-        for(int x=0;x<size;x++)
-            for(int y = 0; y < size; y++)
-            {
-                *data++ = ((l>>3)&1)*255;
-                *data++ = ((l>>2)&1)*255;
-                *data++ = ((l>>1)&1)*255;
-                *data++ = 128;
-            }
-    }
+  beginEditCP(tc);
 
-    pImage = Image::create();
-    if(argc>1)
-    {
-        pImage->read(argv[1]);
-    }
-    else
-    {
-        pImage->set( Image::OSG_RGBA_PF, 256, 256, 1, 9, 1, 0, imgdata );
-//        pImage->write("xxx.mtd");
-    }
-    if(pImage->getMipMapCount()==1)
-        pImage->createMipmap(-1);
-    if(argc>2)
-    {
-        pImage->write(argv[2]);
-    }
-    pImage->dump();
-    tc->setImage( pImage ); 
-    tc->setMinFilter( GL_NEAREST );
-    tc->setMagFilter( GL_NEAREST );
+  UChar8  imgdata[512 * 256 * 4];
+  UChar8* data = &imgdata[0];
 
-    if(pImage->hasAlphaChannel())
-        pm->setTransparency(0.1);
-    endEditCP(pm);
+  for (int l = 8; l >= 0; l--) {
+    int size = 1 << l;
+    for (int x = 0; x < size; x++)
+      for (int y = 0; y < size; y++) {
+        *data++ = ((l >> 3) & 1) * 255;
+        *data++ = ((l >> 2) & 1) * 255;
+        *data++ = ((l >> 1) & 1) * 255;
+        *data++ = 128;
+      }
+  }
 
-    // create the scene
-    NodePtr scene = makePlane( pImage->getWidth(), pImage->getHeight(), 1, 1 );
+  pImage = Image::create();
+  if (argc > 1) {
+    pImage->read(argv[1]);
+  } else {
+    pImage->set(Image::OSG_RGBA_PF, 256, 256, 1, 9, 1, 0, imgdata);
+    //        pImage->write("xxx.mtd");
+  }
+  if (pImage->getMipMapCount() == 1)
+    pImage->createMipmap(-1);
+  if (argc > 2) {
+    pImage->write(argv[2]);
+  }
+  pImage->dump();
+  tc->setImage(pImage);
+  tc->setMinFilter(GL_NEAREST);
+  tc->setMagFilter(GL_NEAREST);
 
-    GeometryPtr plane_geo = GeometryPtr::dcast(scene->getCore());
+  if (pImage->hasAlphaChannel())
+    pm->setTransparency(0.1);
+  endEditCP(pm);
 
-    plane_geo->setMaterial( pm );
+  // create the scene
+  NodePtr scene = makePlane(pImage->getWidth(), pImage->getHeight(), 1, 1);
 
-    // GLUT init
-    int winid = setupGLUT(&argc, argv);
+  GeometryPtr plane_geo = GeometryPtr::dcast(scene->getCore());
 
-    // the connection between GLUT and OpenSG
-    GLUTWindowPtr gwin= GLUTWindow::create();
-    gwin->setId(winid);
-    gwin->init();
+  plane_geo->setMaterial(pm);
 
-    // create the SimpleSceneManager helper
-    mgr = new SimpleSceneManager;
+  // GLUT init
+  int winid = setupGLUT(&argc, argv);
 
-    // tell the manager what to manage
-    mgr->setWindow(gwin );
-    mgr->setRoot  (scene);
+  // the connection between GLUT and OpenSG
+  GLUTWindowPtr gwin = GLUTWindow::create();
+  gwin->setId(winid);
+  gwin->init();
 
-    // show the whole scene
-    mgr->showAll();
-    
-    // GLUT main loop
-    glutMainLoop();
+  // create the SimpleSceneManager helper
+  mgr = new SimpleSceneManager;
 
-    return 0;
+  // tell the manager what to manage
+  mgr->setWindow(gwin);
+  mgr->setRoot(scene);
+
+  // show the whole scene
+  mgr->showAll();
+
+  // GLUT main loop
+  glutMainLoop();
+
+  return 0;
 }
 
 //
@@ -111,70 +104,61 @@ int main(int argc, char **argv)
 //
 
 // redraw the window
-void display(void)
-{
-    if(pImage->getFrameCount() > 1)
-    {
-        int time = (glutGet(GLUT_ELAPSED_TIME) / 1000) / pImage->getFrameDelay();
-    
-        beginEditCP(tc, TextureChunk::FrameFieldMask);
-        tc->setFrame(time % pImage->getFrameCount());
-        endEditCP(tc, TextureChunk::FrameFieldMask);
-    }
-    mgr->redraw();
+void display(void) {
+  if (pImage->getFrameCount() > 1) {
+    int time = (glutGet(GLUT_ELAPSED_TIME) / 1000) / pImage->getFrameDelay();
+
+    beginEditCP(tc, TextureChunk::FrameFieldMask);
+    tc->setFrame(time % pImage->getFrameCount());
+    endEditCP(tc, TextureChunk::FrameFieldMask);
+  }
+  mgr->redraw();
 }
 
 // react to size changes
-void reshape(int w, int h)
-{
-    mgr->resize(w, h);
-    glutPostRedisplay();
+void reshape(int w, int h) {
+  mgr->resize(w, h);
+  glutPostRedisplay();
 }
 
 // react to mouse button presses
-void mouse(int button, int state, int x, int y)
-{
-    if (state)
-        mgr->mouseButtonRelease(button, x, y);
-    else
-        mgr->mouseButtonPress(button, x, y);
-        
-    glutPostRedisplay();
+void mouse(int button, int state, int x, int y) {
+  if (state)
+    mgr->mouseButtonRelease(button, x, y);
+  else
+    mgr->mouseButtonPress(button, x, y);
+
+  glutPostRedisplay();
 }
 
 // react to mouse motions with pressed buttons
-void motion(int x, int y)
-{
-    mgr->mouseMove(x, y);
-    glutPostRedisplay();
+void motion(int x, int y) {
+  mgr->mouseMove(x, y);
+  glutPostRedisplay();
 }
 
 // react to keys
-void keyboard(unsigned char k, 
-              int /* x */,
-              int /* y */)
-{
-    switch(k)
-    {
-        case 27:    exit(1);
-    }
+void keyboard(unsigned char k, int /* x */, int /* y */) {
+  switch (k) {
+  case 27:
+    exit(1);
+  }
 }
 
 // setup the GLUT library which handles the windows for us
-int setupGLUT(int *argc, char *argv[])
-{
-    glutInit(argc, argv);
-    glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
-    
-    int winid = glutCreateWindow("OpenSG");
-    
-    glutReshapeFunc(reshape);
-    glutDisplayFunc(display);
-    if(pImage->getFrameCount() > 1)
-        glutIdleFunc(display);
-    glutMouseFunc(mouse);
-    glutMotionFunc(motion);
-    glutKeyboardFunc(keyboard);
+int setupGLUT(int* argc, char* argv[]) {
+  glutInit(argc, argv);
+  glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
 
-    return winid;
+  int winid = glutCreateWindow("OpenSG");
+
+  glutReshapeFunc(reshape);
+  glutDisplayFunc(display);
+  if (pImage->getFrameCount() > 1)
+    glutIdleFunc(display);
+  glutMouseFunc(mouse);
+  glutMotionFunc(motion);
+  glutKeyboardFunc(keyboard);
+
+  return winid;
 }

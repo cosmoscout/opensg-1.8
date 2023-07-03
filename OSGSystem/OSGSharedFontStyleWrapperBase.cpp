@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILESHAREDFONTSTYLEWRAPPERINST
 
 #include <stdlib.h>
@@ -61,16 +60,13 @@
 #include "OSGSharedFontStyleWrapperBase.h"
 #include "OSGSharedFontStyleWrapper.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  SharedFontStyleWrapperBase::FStyleContainerFieldMask = 
+const OSG::BitVector SharedFontStyleWrapperBase::FStyleContainerFieldMask =
     (TypeTraits<BitVector>::One << SharedFontStyleWrapperBase::FStyleContainerFieldId);
 
-const OSG::BitVector SharedFontStyleWrapperBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector SharedFontStyleWrapperBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
@@ -80,187 +76,135 @@ const OSG::BitVector SharedFontStyleWrapperBase::MTInfluenceMask =
 
 //! SharedFontStyleWrapper description
 
-FieldDescription *SharedFontStyleWrapperBase::_desc[] = 
-{
-    new FieldDescription(SFSharedFontStylePtr::getClassType(), 
-                     "FStyleContainer", 
-                     FStyleContainerFieldId, FStyleContainerFieldMask,
-                     false,
-                     (FieldAccessMethod) &SharedFontStyleWrapperBase::getSFFStyleContainer)
-};
+FieldDescription* SharedFontStyleWrapperBase::_desc[] = {
+    new FieldDescription(SFSharedFontStylePtr::getClassType(), "FStyleContainer",
+        FStyleContainerFieldId, FStyleContainerFieldMask, false,
+        (FieldAccessMethod)&SharedFontStyleWrapperBase::getSFFStyleContainer)};
 
+FieldContainerType SharedFontStyleWrapperBase::_type("SharedFontStyleWrapper", "FieldContainer",
+    NULL, (PrototypeCreateF)&SharedFontStyleWrapperBase::createEmpty,
+    SharedFontStyleWrapper::initMethod, _desc, sizeof(_desc));
 
-FieldContainerType SharedFontStyleWrapperBase::_type(
-    "SharedFontStyleWrapper",
-    "FieldContainer",
-    NULL,
-    (PrototypeCreateF) &SharedFontStyleWrapperBase::createEmpty,
-    SharedFontStyleWrapper::initMethod,
-    _desc,
-    sizeof(_desc));
-
-//OSG_FIELD_CONTAINER_DEF(SharedFontStyleWrapperBase, SharedFontStyleWrapperPtr)
+// OSG_FIELD_CONTAINER_DEF(SharedFontStyleWrapperBase, SharedFontStyleWrapperPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &SharedFontStyleWrapperBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &SharedFontStyleWrapperBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr SharedFontStyleWrapperBase::shallowCopy(void) const 
-{ 
-    SharedFontStyleWrapperPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const SharedFontStyleWrapper *>(this)); 
-
-    return returnValue; 
+FieldContainerType& SharedFontStyleWrapperBase::getType(void) {
+  return _type;
 }
 
-UInt32 SharedFontStyleWrapperBase::getContainerSize(void) const 
-{ 
-    return sizeof(SharedFontStyleWrapper); 
+const FieldContainerType& SharedFontStyleWrapperBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr SharedFontStyleWrapperBase::shallowCopy(void) const {
+  SharedFontStyleWrapperPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const SharedFontStyleWrapper*>(this));
+
+  return returnValue;
+}
+
+UInt32 SharedFontStyleWrapperBase::getContainerSize(void) const {
+  return sizeof(SharedFontStyleWrapper);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void SharedFontStyleWrapperBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((SharedFontStyleWrapperBase *) &other, whichField);
+void SharedFontStyleWrapperBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((SharedFontStyleWrapperBase*)&other, whichField);
 }
 #else
-void SharedFontStyleWrapperBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((SharedFontStyleWrapperBase *) &other, whichField, sInfo);
+void SharedFontStyleWrapperBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((SharedFontStyleWrapperBase*)&other, whichField, sInfo);
 }
-void SharedFontStyleWrapperBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void SharedFontStyleWrapperBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void SharedFontStyleWrapperBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void SharedFontStyleWrapperBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-SharedFontStyleWrapperBase::SharedFontStyleWrapperBase(void) :
-    _sfFStyleContainer        (), 
-    Inherited() 
-{
+SharedFontStyleWrapperBase::SharedFontStyleWrapperBase(void)
+    : _sfFStyleContainer()
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-SharedFontStyleWrapperBase::SharedFontStyleWrapperBase(const SharedFontStyleWrapperBase &source) :
-    _sfFStyleContainer        (source._sfFStyleContainer        ), 
-    Inherited                 (source)
-{
+SharedFontStyleWrapperBase::SharedFontStyleWrapperBase(const SharedFontStyleWrapperBase& source)
+    : _sfFStyleContainer(source._sfFStyleContainer)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-SharedFontStyleWrapperBase::~SharedFontStyleWrapperBase(void)
-{
+SharedFontStyleWrapperBase::~SharedFontStyleWrapperBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 SharedFontStyleWrapperBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 SharedFontStyleWrapperBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (FStyleContainerFieldMask & whichField))
-    {
-        returnValue += _sfFStyleContainer.getBinSize();
-    }
+  if (FieldBits::NoField != (FStyleContainerFieldMask & whichField)) {
+    returnValue += _sfFStyleContainer.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void SharedFontStyleWrapperBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void SharedFontStyleWrapperBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (FStyleContainerFieldMask & whichField))
-    {
-        _sfFStyleContainer.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (FStyleContainerFieldMask & whichField)) {
+    _sfFStyleContainer.copyToBin(pMem);
+  }
 }
 
-void SharedFontStyleWrapperBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void SharedFontStyleWrapperBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (FStyleContainerFieldMask & whichField))
-    {
-        _sfFStyleContainer.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (FStyleContainerFieldMask & whichField)) {
+    _sfFStyleContainer.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void SharedFontStyleWrapperBase::executeSyncImpl(      SharedFontStyleWrapperBase *pOther,
-                                        const BitVector         &whichField)
-{
+void SharedFontStyleWrapperBase::executeSyncImpl(
+    SharedFontStyleWrapperBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (FStyleContainerFieldMask & whichField))
-        _sfFStyleContainer.syncWith(pOther->_sfFStyleContainer);
-
-
+  if (FieldBits::NoField != (FStyleContainerFieldMask & whichField))
+    _sfFStyleContainer.syncWith(pOther->_sfFStyleContainer);
 }
 #else
-void SharedFontStyleWrapperBase::executeSyncImpl(      SharedFontStyleWrapperBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void SharedFontStyleWrapperBase::executeSyncImpl(
+    SharedFontStyleWrapperBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (FStyleContainerFieldMask & whichField))
-        _sfFStyleContainer.syncWith(pOther->_sfFStyleContainer);
-
-
-
+  if (FieldBits::NoField != (FStyleContainerFieldMask & whichField))
+    _sfFStyleContainer.syncWith(pOther->_sfFStyleContainer);
 }
 
-void SharedFontStyleWrapperBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void SharedFontStyleWrapperBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>
@@ -268,7 +212,8 @@ void SharedFontStyleWrapperBase::execBeginEditImpl (const BitVector &whichField,
 OSG_BEGIN_NAMESPACE
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_DEV)
-DataType FieldDataTraits<SharedFontStyleWrapperPtr>::_type("SharedFontStyleWrapperPtr", "FieldContainerPtr");
+DataType FieldDataTraits<SharedFontStyleWrapperPtr>::_type(
+    "SharedFontStyleWrapperPtr", "FieldContainerPtr");
 #endif
 
 OSG_DLLEXPORT_SFIELD_DEF1(SharedFontStyleWrapperPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);

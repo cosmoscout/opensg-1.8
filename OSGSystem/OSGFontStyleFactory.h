@@ -6,36 +6,30 @@
 
 #include <list>
 
-OSG_BEGIN_NAMESPACE 
+OSG_BEGIN_NAMESPACE
 
 class FontStyle;
 
-class OSG_SYSTEMLIB_DLLMAPPING FontStyleFactory
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING FontStyleFactory {
+ private:
+  FontStyleFactory(const FontStyleFactory&);
+  void operator=(const FontStyleFactory&);
 
-    FontStyleFactory(const FontStyleFactory &);
-    void operator =(const FontStyleFactory &);
+ protected:
+  static FontStyleFactory _the;
 
-  protected:
+  std::list<FontStyle*> _instances;
 
-    static FontStyleFactory       _the;
+  FontStyleFactory(void);
 
-           std::list<FontStyle *> _instances;
+ public:
+  static FontStyleFactory& the(void);
 
-    FontStyleFactory(void);
-  
-  public:
+  virtual ~FontStyleFactory(void);
 
-    static FontStyleFactory &the(void);
+  FontStyle* create(PathHandler& paths, const Char8* fontName, Real32 size);
 
-    virtual ~FontStyleFactory(void);
-
-    FontStyle *create (      PathHandler &paths,
-                       const Char8       *fontName,
-                             Real32       size    );
-    
-    bool       discard(      FontStyle   *        );
+  bool discard(FontStyle*);
 };
 
 OSG_END_NAMESPACE

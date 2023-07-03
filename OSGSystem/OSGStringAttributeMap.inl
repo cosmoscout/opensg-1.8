@@ -47,9 +47,8 @@ OSG_BEGIN_NAMESPACE
     this attribute map.
  */
 
-inline const MFString& StringAttributeMap::getKeys() const
-{
-    return StringAttributeMapBase::getKeys();
+inline const MFString& StringAttributeMap::getKeys() const {
+  return StringAttributeMapBase::getKeys();
 }
 
 /*! Queries this attribute map attachment to determine if it includes the
@@ -57,9 +56,8 @@ inline const MFString& StringAttributeMap::getKeys() const
     returned.
  */
 
-inline bool StringAttributeMap::hasAttribute(const std::string& key) const
-{
-    return getKeys().find(key) != getKeys().end();
+inline bool StringAttributeMap::hasAttribute(const std::string& key) const {
+  return getKeys().find(key) != getKeys().end();
 }
 
 /*! Attempts to look up the value associated with the named key in this
@@ -67,13 +65,11 @@ inline bool StringAttributeMap::hasAttribute(const std::string& key) const
     empty string is returned. Otherwise, a copy of the value associated
     with the named key is returned.
  */
- 
-inline const std::string StringAttributeMap::getAttribute(const std::string& key)
-    const
-{
-    std::string value;
-    getAttribute(key, value);
-    return value;
+
+inline const std::string StringAttributeMap::getAttribute(const std::string& key) const {
+  std::string value;
+  getAttribute(key, value);
+  return value;
 }
 
 /*! Provides index access to this attribute map following the semantics of
@@ -95,28 +91,25 @@ inline const std::string StringAttributeMap::getAttribute(const std::string& key
     @see getAttribute()
  */
 
-inline std::string& StringAttributeMap::operator[](const std::string& key)
-{
-    MFString& keys   = this->StringAttributeMapBase::getKeys();
-    MFString& values = this->StringAttributeMapBase::getValues();
+inline std::string& StringAttributeMap::operator[](const std::string& key) {
+  MFString& keys   = this->StringAttributeMapBase::getKeys();
+  MFString& values = this->StringAttributeMapBase::getValues();
 
-    unsigned int index(0);
-    for ( MFString::iterator i = keys.begin(); i != keys.end(); ++i, ++index )
-    {
-        if ( *i == key )
-        {
-            return values[index];
-        }
+  unsigned int index(0);
+  for (MFString::iterator i = keys.begin(); i != keys.end(); ++i, ++index) {
+    if (*i == key) {
+      return values[index];
     }
+  }
 
-    keys.push_back(key);
-    values.push_back(std::string(""));
+  keys.push_back(key);
+  values.push_back(std::string(""));
 
-    // The value we want to return is at the end of _mfValues.
-    return values[values.size() - 1];
+  // The value we want to return is at the end of _mfValues.
+  return values[values.size() - 1];
 }
 
 OSG_END_NAMESPACE
 
-#define OSGSTRINGATTRIBUTEMAP_INLINE_CVSID "@(#)$Id: OSGStringAttributeMap.inl,v 1.2 2005/09/28 03:01:44 vossg Exp $"
-
+#define OSGSTRINGATTRIBUTEMAP_INLINE_CVSID                                                         \
+  "@(#)$Id: OSGStringAttributeMap.inl,v 1.2 2005/09/28 03:01:44 vossg Exp $"

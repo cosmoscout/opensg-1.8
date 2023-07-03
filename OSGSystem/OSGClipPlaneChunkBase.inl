@@ -52,137 +52,99 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &ClipPlaneChunkBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& ClipPlaneChunkBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 ClipPlaneChunkBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 ClipPlaneChunkBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-ClipPlaneChunkPtr ClipPlaneChunkBase::create(void) 
-{
-    ClipPlaneChunkPtr fc; 
+inline ClipPlaneChunkPtr ClipPlaneChunkBase::create(void) {
+  ClipPlaneChunkPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = ClipPlaneChunkPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = ClipPlaneChunkPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-ClipPlaneChunkPtr ClipPlaneChunkBase::createEmpty(void) 
-{ 
-    ClipPlaneChunkPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline ClipPlaneChunkPtr ClipPlaneChunkBase::createEmpty(void) {
+  ClipPlaneChunkPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the ClipPlaneChunk::_sfEquation field.
-inline
-SFVec4f *ClipPlaneChunkBase::getSFEquation(void)
-{
-    return &_sfEquation;
+inline SFVec4f* ClipPlaneChunkBase::getSFEquation(void) {
+  return &_sfEquation;
 }
 
 //! Get the ClipPlaneChunk::_sfEnable field.
-inline
-SFBool *ClipPlaneChunkBase::getSFEnable(void)
-{
-    return &_sfEnable;
+inline SFBool* ClipPlaneChunkBase::getSFEnable(void) {
+  return &_sfEnable;
 }
 
 //! Get the ClipPlaneChunk::_sfBeacon field.
-inline
-SFNodePtr *ClipPlaneChunkBase::getSFBeacon(void)
-{
-    return &_sfBeacon;
-}
-
-
-//! Get the value of the ClipPlaneChunk::_sfEquation field.
-inline
-Vec4f &ClipPlaneChunkBase::getEquation(void)
-{
-    return _sfEquation.getValue();
+inline SFNodePtr* ClipPlaneChunkBase::getSFBeacon(void) {
+  return &_sfBeacon;
 }
 
 //! Get the value of the ClipPlaneChunk::_sfEquation field.
-inline
-const Vec4f &ClipPlaneChunkBase::getEquation(void) const
-{
-    return _sfEquation.getValue();
+inline Vec4f& ClipPlaneChunkBase::getEquation(void) {
+  return _sfEquation.getValue();
+}
+
+//! Get the value of the ClipPlaneChunk::_sfEquation field.
+inline const Vec4f& ClipPlaneChunkBase::getEquation(void) const {
+  return _sfEquation.getValue();
 }
 
 //! Set the value of the ClipPlaneChunk::_sfEquation field.
-inline
-void ClipPlaneChunkBase::setEquation(const Vec4f &value)
-{
-    _sfEquation.setValue(value);
+inline void ClipPlaneChunkBase::setEquation(const Vec4f& value) {
+  _sfEquation.setValue(value);
 }
 
 //! Get the value of the ClipPlaneChunk::_sfEnable field.
-inline
-bool &ClipPlaneChunkBase::getEnable(void)
-{
-    return _sfEnable.getValue();
+inline bool& ClipPlaneChunkBase::getEnable(void) {
+  return _sfEnable.getValue();
 }
 
 //! Get the value of the ClipPlaneChunk::_sfEnable field.
-inline
-const bool &ClipPlaneChunkBase::getEnable(void) const
-{
-    return _sfEnable.getValue();
+inline const bool& ClipPlaneChunkBase::getEnable(void) const {
+  return _sfEnable.getValue();
 }
 
 //! Set the value of the ClipPlaneChunk::_sfEnable field.
-inline
-void ClipPlaneChunkBase::setEnable(const bool &value)
-{
-    _sfEnable.setValue(value);
+inline void ClipPlaneChunkBase::setEnable(const bool& value) {
+  _sfEnable.setValue(value);
 }
 
 //! Get the value of the ClipPlaneChunk::_sfBeacon field.
-inline
-NodePtr &ClipPlaneChunkBase::getBeacon(void)
-{
-    return _sfBeacon.getValue();
+inline NodePtr& ClipPlaneChunkBase::getBeacon(void) {
+  return _sfBeacon.getValue();
 }
 
 //! Get the value of the ClipPlaneChunk::_sfBeacon field.
-inline
-const NodePtr &ClipPlaneChunkBase::getBeacon(void) const
-{
-    return _sfBeacon.getValue();
+inline const NodePtr& ClipPlaneChunkBase::getBeacon(void) const {
+  return _sfBeacon.getValue();
 }
 
 //! Set the value of the ClipPlaneChunk::_sfBeacon field.
-inline
-void ClipPlaneChunkBase::setBeacon(const NodePtr &value)
-{
-    _sfBeacon.setValue(value);
+inline void ClipPlaneChunkBase::setBeacon(const NodePtr& value) {
+  _sfBeacon.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGCLIPPLANECHUNKBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGCLIPPLANECHUNKBASE_INLINE_CVSID                                                         \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

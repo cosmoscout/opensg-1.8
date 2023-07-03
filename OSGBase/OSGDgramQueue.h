@@ -57,60 +57,56 @@ OSG_BEGIN_NAMESPACE
 
 class BaseThread;
 
-class OSG_BASE_DLLMAPPING DgramQueue 
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_BASE_DLLMAPPING DgramQueue {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef std::list<Dgram*> QueueT;
 
-    typedef std::list<Dgram*>          QueueT;
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
- 
-    DgramQueue();
+  DgramQueue();
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    virtual ~DgramQueue(); 
+  virtual ~DgramQueue();
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name               data put,get                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name               data put,get                                   */
+  /*! \{                                                                 */
 
-    void   put           ( Dgram *dgram );
-    Dgram *get           ( Lock  *lock  );
-    bool   empty         ( void         );
-    void   wait          ( Lock  *lock  );
-    bool   waiting       ( void         );
+  void   put(Dgram* dgram);
+  Dgram* get(Lock* lock);
+  bool   empty(void);
+  void   wait(Lock* lock);
+  bool   waiting(void);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-protected:
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name               member                                         */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name               member                                         */
-    /*! \{                                                                 */
+  Barrier* _barrier;
+  QueueT   _queue;
+  bool     _waiting;
 
-    Barrier   *_barrier;
-    QueueT     _queue;
-    bool       _waiting;
-
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
-
-	/*!\brief prohibit default function (move to 'public' if needed) */
-    DgramQueue(const DgramQueue &source);
-    void operator =(const DgramQueue &source);
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  DgramQueue(const DgramQueue& source);
+  void operator=(const DgramQueue& source);
 };
 
 // class pointer
-typedef DgramQueue *DgramQueueP;
+typedef DgramQueue* DgramQueueP;
 
 OSG_END_NAMESPACE
 

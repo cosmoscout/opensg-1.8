@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEDVRCLIPGEOMETRYINST
 
 #include <stdlib.h>
@@ -61,19 +60,16 @@
 #include "OSGDVRClipGeometryBase.h"
 #include "OSGDVRClipGeometry.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  DVRClipGeometryBase::GeometryNodeFieldMask = 
+const OSG::BitVector DVRClipGeometryBase::GeometryNodeFieldMask =
     (TypeTraits<BitVector>::One << DVRClipGeometryBase::GeometryNodeFieldId);
 
-const OSG::BitVector  DVRClipGeometryBase::BeaconFieldMask = 
+const OSG::BitVector DVRClipGeometryBase::BeaconFieldMask =
     (TypeTraits<BitVector>::One << DVRClipGeometryBase::BeaconFieldId);
 
-const OSG::BitVector DVRClipGeometryBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector DVRClipGeometryBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
@@ -86,215 +82,156 @@ const OSG::BitVector DVRClipGeometryBase::MTInfluenceMask =
 
 //! DVRClipGeometry description
 
-FieldDescription *DVRClipGeometryBase::_desc[] = 
-{
-    new FieldDescription(SFNodePtr::getClassType(), 
-                     "geometryNode", 
-                     GeometryNodeFieldId, GeometryNodeFieldMask,
-                     false,
-                     (FieldAccessMethod) &DVRClipGeometryBase::getSFGeometryNode),
-    new FieldDescription(SFNodePtr::getClassType(), 
-                     "beacon", 
-                     BeaconFieldId, BeaconFieldMask,
-                     false,
-                     (FieldAccessMethod) &DVRClipGeometryBase::getSFBeacon)
-};
+FieldDescription* DVRClipGeometryBase::_desc[] = {
+    new FieldDescription(SFNodePtr::getClassType(), "geometryNode", GeometryNodeFieldId,
+        GeometryNodeFieldMask, false, (FieldAccessMethod)&DVRClipGeometryBase::getSFGeometryNode),
+    new FieldDescription(SFNodePtr::getClassType(), "beacon", BeaconFieldId, BeaconFieldMask, false,
+        (FieldAccessMethod)&DVRClipGeometryBase::getSFBeacon)};
 
-
-FieldContainerType DVRClipGeometryBase::_type(
-    "DVRClipGeometry",
-    "FieldContainer",
-    NULL,
-    (PrototypeCreateF) &DVRClipGeometryBase::createEmpty,
-    DVRClipGeometry::initMethod,
-    _desc,
+FieldContainerType DVRClipGeometryBase::_type("DVRClipGeometry", "FieldContainer", NULL,
+    (PrototypeCreateF)&DVRClipGeometryBase::createEmpty, DVRClipGeometry::initMethod, _desc,
     sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(DVRClipGeometryBase, DVRClipGeometryPtr)
+// OSG_FIELD_CONTAINER_DEF(DVRClipGeometryBase, DVRClipGeometryPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &DVRClipGeometryBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &DVRClipGeometryBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr DVRClipGeometryBase::shallowCopy(void) const 
-{ 
-    DVRClipGeometryPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const DVRClipGeometry *>(this)); 
-
-    return returnValue; 
+FieldContainerType& DVRClipGeometryBase::getType(void) {
+  return _type;
 }
 
-UInt32 DVRClipGeometryBase::getContainerSize(void) const 
-{ 
-    return sizeof(DVRClipGeometry); 
+const FieldContainerType& DVRClipGeometryBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr DVRClipGeometryBase::shallowCopy(void) const {
+  DVRClipGeometryPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const DVRClipGeometry*>(this));
+
+  return returnValue;
+}
+
+UInt32 DVRClipGeometryBase::getContainerSize(void) const {
+  return sizeof(DVRClipGeometry);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void DVRClipGeometryBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((DVRClipGeometryBase *) &other, whichField);
+void DVRClipGeometryBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((DVRClipGeometryBase*)&other, whichField);
 }
 #else
-void DVRClipGeometryBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((DVRClipGeometryBase *) &other, whichField, sInfo);
+void DVRClipGeometryBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((DVRClipGeometryBase*)&other, whichField, sInfo);
 }
-void DVRClipGeometryBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void DVRClipGeometryBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void DVRClipGeometryBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void DVRClipGeometryBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-DVRClipGeometryBase::DVRClipGeometryBase(void) :
-    _sfGeometryNode           (NodePtr(NullFC)), 
-    _sfBeacon                 (NodePtr(NullFC)), 
-    Inherited() 
-{
+DVRClipGeometryBase::DVRClipGeometryBase(void)
+    : _sfGeometryNode(NodePtr(NullFC))
+    , _sfBeacon(NodePtr(NullFC))
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-DVRClipGeometryBase::DVRClipGeometryBase(const DVRClipGeometryBase &source) :
-    _sfGeometryNode           (source._sfGeometryNode           ), 
-    _sfBeacon                 (source._sfBeacon                 ), 
-    Inherited                 (source)
-{
+DVRClipGeometryBase::DVRClipGeometryBase(const DVRClipGeometryBase& source)
+    : _sfGeometryNode(source._sfGeometryNode)
+    , _sfBeacon(source._sfBeacon)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-DVRClipGeometryBase::~DVRClipGeometryBase(void)
-{
+DVRClipGeometryBase::~DVRClipGeometryBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 DVRClipGeometryBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 DVRClipGeometryBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (GeometryNodeFieldMask & whichField))
-    {
-        returnValue += _sfGeometryNode.getBinSize();
-    }
+  if (FieldBits::NoField != (GeometryNodeFieldMask & whichField)) {
+    returnValue += _sfGeometryNode.getBinSize();
+  }
 
-    if(FieldBits::NoField != (BeaconFieldMask & whichField))
-    {
-        returnValue += _sfBeacon.getBinSize();
-    }
+  if (FieldBits::NoField != (BeaconFieldMask & whichField)) {
+    returnValue += _sfBeacon.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void DVRClipGeometryBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void DVRClipGeometryBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (GeometryNodeFieldMask & whichField))
-    {
-        _sfGeometryNode.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (GeometryNodeFieldMask & whichField)) {
+    _sfGeometryNode.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BeaconFieldMask & whichField))
-    {
-        _sfBeacon.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (BeaconFieldMask & whichField)) {
+    _sfBeacon.copyToBin(pMem);
+  }
 }
 
-void DVRClipGeometryBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void DVRClipGeometryBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (GeometryNodeFieldMask & whichField))
-    {
-        _sfGeometryNode.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (GeometryNodeFieldMask & whichField)) {
+    _sfGeometryNode.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BeaconFieldMask & whichField))
-    {
-        _sfBeacon.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (BeaconFieldMask & whichField)) {
+    _sfBeacon.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void DVRClipGeometryBase::executeSyncImpl(      DVRClipGeometryBase *pOther,
-                                        const BitVector         &whichField)
-{
+void DVRClipGeometryBase::executeSyncImpl(
+    DVRClipGeometryBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (GeometryNodeFieldMask & whichField))
-        _sfGeometryNode.syncWith(pOther->_sfGeometryNode);
+  if (FieldBits::NoField != (GeometryNodeFieldMask & whichField))
+    _sfGeometryNode.syncWith(pOther->_sfGeometryNode);
 
-    if(FieldBits::NoField != (BeaconFieldMask & whichField))
-        _sfBeacon.syncWith(pOther->_sfBeacon);
-
-
+  if (FieldBits::NoField != (BeaconFieldMask & whichField))
+    _sfBeacon.syncWith(pOther->_sfBeacon);
 }
 #else
-void DVRClipGeometryBase::executeSyncImpl(      DVRClipGeometryBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void DVRClipGeometryBase::executeSyncImpl(
+    DVRClipGeometryBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (GeometryNodeFieldMask & whichField))
-        _sfGeometryNode.syncWith(pOther->_sfGeometryNode);
+  if (FieldBits::NoField != (GeometryNodeFieldMask & whichField))
+    _sfGeometryNode.syncWith(pOther->_sfGeometryNode);
 
-    if(FieldBits::NoField != (BeaconFieldMask & whichField))
-        _sfBeacon.syncWith(pOther->_sfBeacon);
-
-
-
+  if (FieldBits::NoField != (BeaconFieldMask & whichField))
+    _sfBeacon.syncWith(pOther->_sfBeacon);
 }
 
-void DVRClipGeometryBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void DVRClipGeometryBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>

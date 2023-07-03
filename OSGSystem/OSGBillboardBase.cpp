@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEBILLBOARDINST
 
 #include <stdlib.h>
@@ -61,342 +60,260 @@
 #include "OSGBillboardBase.h"
 #include "OSGBillboard.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  BillboardBase::AxisOfRotationFieldMask = 
+const OSG::BitVector BillboardBase::AxisOfRotationFieldMask =
     (TypeTraits<BitVector>::One << BillboardBase::AxisOfRotationFieldId);
 
-const OSG::BitVector  BillboardBase::FocusOnCameraFieldMask = 
+const OSG::BitVector BillboardBase::FocusOnCameraFieldMask =
     (TypeTraits<BitVector>::One << BillboardBase::FocusOnCameraFieldId);
 
-const OSG::BitVector  BillboardBase::AlignToScreenFieldMask = 
+const OSG::BitVector BillboardBase::AlignToScreenFieldMask =
     (TypeTraits<BitVector>::One << BillboardBase::AlignToScreenFieldId);
 
-const OSG::BitVector  BillboardBase::MinAngleFieldMask = 
+const OSG::BitVector BillboardBase::MinAngleFieldMask =
     (TypeTraits<BitVector>::One << BillboardBase::MinAngleFieldId);
 
-const OSG::BitVector  BillboardBase::MaxAngleFieldMask = 
+const OSG::BitVector BillboardBase::MaxAngleFieldMask =
     (TypeTraits<BitVector>::One << BillboardBase::MaxAngleFieldId);
 
-const OSG::BitVector BillboardBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector BillboardBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
 /*! \var Vec3f           BillboardBase::_sfAxisOfRotation
-    
+
 */
 /*! \var bool            BillboardBase::_sfFocusOnCamera
-    
+
 */
 /*! \var bool            BillboardBase::_sfAlignToScreen
-    
+
 */
 /*! \var Real32          BillboardBase::_sfMinAngle
-    
+
 */
 /*! \var Real32          BillboardBase::_sfMaxAngle
-    
+
 */
 
 //! Billboard description
 
-FieldDescription *BillboardBase::_desc[] = 
-{
-    new FieldDescription(SFVec3f::getClassType(), 
-                     "axisOfRotation", 
-                     AxisOfRotationFieldId, AxisOfRotationFieldMask,
-                     true,
-                     (FieldAccessMethod) &BillboardBase::getSFAxisOfRotation),
-    new FieldDescription(SFBool::getClassType(), 
-                     "focusOnCamera", 
-                     FocusOnCameraFieldId, FocusOnCameraFieldMask,
-                     true,
-                     (FieldAccessMethod) &BillboardBase::getSFFocusOnCamera),
-    new FieldDescription(SFBool::getClassType(), 
-                     "alignToScreen", 
-                     AlignToScreenFieldId, AlignToScreenFieldMask,
-                     true,
-                     (FieldAccessMethod) &BillboardBase::getSFAlignToScreen),
-    new FieldDescription(SFReal32::getClassType(), 
-                     "minAngle", 
-                     MinAngleFieldId, MinAngleFieldMask,
-                     true,
-                     (FieldAccessMethod) &BillboardBase::getSFMinAngle),
-    new FieldDescription(SFReal32::getClassType(), 
-                     "maxAngle", 
-                     MaxAngleFieldId, MaxAngleFieldMask,
-                     true,
-                     (FieldAccessMethod) &BillboardBase::getSFMaxAngle)
-};
+FieldDescription* BillboardBase::_desc[] = {
+    new FieldDescription(SFVec3f::getClassType(), "axisOfRotation", AxisOfRotationFieldId,
+        AxisOfRotationFieldMask, true, (FieldAccessMethod)&BillboardBase::getSFAxisOfRotation),
+    new FieldDescription(SFBool::getClassType(), "focusOnCamera", FocusOnCameraFieldId,
+        FocusOnCameraFieldMask, true, (FieldAccessMethod)&BillboardBase::getSFFocusOnCamera),
+    new FieldDescription(SFBool::getClassType(), "alignToScreen", AlignToScreenFieldId,
+        AlignToScreenFieldMask, true, (FieldAccessMethod)&BillboardBase::getSFAlignToScreen),
+    new FieldDescription(SFReal32::getClassType(), "minAngle", MinAngleFieldId, MinAngleFieldMask,
+        true, (FieldAccessMethod)&BillboardBase::getSFMinAngle),
+    new FieldDescription(SFReal32::getClassType(), "maxAngle", MaxAngleFieldId, MaxAngleFieldMask,
+        true, (FieldAccessMethod)&BillboardBase::getSFMaxAngle)};
 
+FieldContainerType BillboardBase::_type("Billboard", "Group", NULL,
+    (PrototypeCreateF)&BillboardBase::createEmpty, Billboard::initMethod, _desc, sizeof(_desc));
 
-FieldContainerType BillboardBase::_type(
-    "Billboard",
-    "Group",
-    NULL,
-    (PrototypeCreateF) &BillboardBase::createEmpty,
-    Billboard::initMethod,
-    _desc,
-    sizeof(_desc));
-
-//OSG_FIELD_CONTAINER_DEF(BillboardBase, BillboardPtr)
+// OSG_FIELD_CONTAINER_DEF(BillboardBase, BillboardPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &BillboardBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &BillboardBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr BillboardBase::shallowCopy(void) const 
-{ 
-    BillboardPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const Billboard *>(this)); 
-
-    return returnValue; 
+FieldContainerType& BillboardBase::getType(void) {
+  return _type;
 }
 
-UInt32 BillboardBase::getContainerSize(void) const 
-{ 
-    return sizeof(Billboard); 
+const FieldContainerType& BillboardBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr BillboardBase::shallowCopy(void) const {
+  BillboardPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const Billboard*>(this));
+
+  return returnValue;
+}
+
+UInt32 BillboardBase::getContainerSize(void) const {
+  return sizeof(Billboard);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void BillboardBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((BillboardBase *) &other, whichField);
+void BillboardBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((BillboardBase*)&other, whichField);
 }
 #else
-void BillboardBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((BillboardBase *) &other, whichField, sInfo);
+void BillboardBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((BillboardBase*)&other, whichField, sInfo);
 }
-void BillboardBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void BillboardBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void BillboardBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void BillboardBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-BillboardBase::BillboardBase(void) :
-    _sfAxisOfRotation         (Vec3f(0.f, 1.f, 0.f)), 
-    _sfFocusOnCamera          (bool(true)), 
-    _sfAlignToScreen          (bool(false)), 
-    _sfMinAngle               (Real32(0.0f)), 
-    _sfMaxAngle               (Real32(-1.0f)), 
-    Inherited() 
-{
+BillboardBase::BillboardBase(void)
+    : _sfAxisOfRotation(Vec3f(0.f, 1.f, 0.f))
+    , _sfFocusOnCamera(bool(true))
+    , _sfAlignToScreen(bool(false))
+    , _sfMinAngle(Real32(0.0f))
+    , _sfMaxAngle(Real32(-1.0f))
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-BillboardBase::BillboardBase(const BillboardBase &source) :
-    _sfAxisOfRotation         (source._sfAxisOfRotation         ), 
-    _sfFocusOnCamera          (source._sfFocusOnCamera          ), 
-    _sfAlignToScreen          (source._sfAlignToScreen          ), 
-    _sfMinAngle               (source._sfMinAngle               ), 
-    _sfMaxAngle               (source._sfMaxAngle               ), 
-    Inherited                 (source)
-{
+BillboardBase::BillboardBase(const BillboardBase& source)
+    : _sfAxisOfRotation(source._sfAxisOfRotation)
+    , _sfFocusOnCamera(source._sfFocusOnCamera)
+    , _sfAlignToScreen(source._sfAlignToScreen)
+    , _sfMinAngle(source._sfMinAngle)
+    , _sfMaxAngle(source._sfMaxAngle)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-BillboardBase::~BillboardBase(void)
-{
+BillboardBase::~BillboardBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 BillboardBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 BillboardBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (AxisOfRotationFieldMask & whichField))
-    {
-        returnValue += _sfAxisOfRotation.getBinSize();
-    }
+  if (FieldBits::NoField != (AxisOfRotationFieldMask & whichField)) {
+    returnValue += _sfAxisOfRotation.getBinSize();
+  }
 
-    if(FieldBits::NoField != (FocusOnCameraFieldMask & whichField))
-    {
-        returnValue += _sfFocusOnCamera.getBinSize();
-    }
+  if (FieldBits::NoField != (FocusOnCameraFieldMask & whichField)) {
+    returnValue += _sfFocusOnCamera.getBinSize();
+  }
 
-    if(FieldBits::NoField != (AlignToScreenFieldMask & whichField))
-    {
-        returnValue += _sfAlignToScreen.getBinSize();
-    }
+  if (FieldBits::NoField != (AlignToScreenFieldMask & whichField)) {
+    returnValue += _sfAlignToScreen.getBinSize();
+  }
 
-    if(FieldBits::NoField != (MinAngleFieldMask & whichField))
-    {
-        returnValue += _sfMinAngle.getBinSize();
-    }
+  if (FieldBits::NoField != (MinAngleFieldMask & whichField)) {
+    returnValue += _sfMinAngle.getBinSize();
+  }
 
-    if(FieldBits::NoField != (MaxAngleFieldMask & whichField))
-    {
-        returnValue += _sfMaxAngle.getBinSize();
-    }
+  if (FieldBits::NoField != (MaxAngleFieldMask & whichField)) {
+    returnValue += _sfMaxAngle.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void BillboardBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void BillboardBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (AxisOfRotationFieldMask & whichField))
-    {
-        _sfAxisOfRotation.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (AxisOfRotationFieldMask & whichField)) {
+    _sfAxisOfRotation.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (FocusOnCameraFieldMask & whichField))
-    {
-        _sfFocusOnCamera.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (FocusOnCameraFieldMask & whichField)) {
+    _sfFocusOnCamera.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (AlignToScreenFieldMask & whichField))
-    {
-        _sfAlignToScreen.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (AlignToScreenFieldMask & whichField)) {
+    _sfAlignToScreen.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (MinAngleFieldMask & whichField))
-    {
-        _sfMinAngle.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (MinAngleFieldMask & whichField)) {
+    _sfMinAngle.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (MaxAngleFieldMask & whichField))
-    {
-        _sfMaxAngle.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (MaxAngleFieldMask & whichField)) {
+    _sfMaxAngle.copyToBin(pMem);
+  }
 }
 
-void BillboardBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void BillboardBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (AxisOfRotationFieldMask & whichField))
-    {
-        _sfAxisOfRotation.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (AxisOfRotationFieldMask & whichField)) {
+    _sfAxisOfRotation.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (FocusOnCameraFieldMask & whichField))
-    {
-        _sfFocusOnCamera.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (FocusOnCameraFieldMask & whichField)) {
+    _sfFocusOnCamera.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (AlignToScreenFieldMask & whichField))
-    {
-        _sfAlignToScreen.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (AlignToScreenFieldMask & whichField)) {
+    _sfAlignToScreen.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (MinAngleFieldMask & whichField))
-    {
-        _sfMinAngle.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (MinAngleFieldMask & whichField)) {
+    _sfMinAngle.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (MaxAngleFieldMask & whichField))
-    {
-        _sfMaxAngle.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (MaxAngleFieldMask & whichField)) {
+    _sfMaxAngle.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void BillboardBase::executeSyncImpl(      BillboardBase *pOther,
-                                        const BitVector         &whichField)
-{
+void BillboardBase::executeSyncImpl(BillboardBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (AxisOfRotationFieldMask & whichField))
-        _sfAxisOfRotation.syncWith(pOther->_sfAxisOfRotation);
+  if (FieldBits::NoField != (AxisOfRotationFieldMask & whichField))
+    _sfAxisOfRotation.syncWith(pOther->_sfAxisOfRotation);
 
-    if(FieldBits::NoField != (FocusOnCameraFieldMask & whichField))
-        _sfFocusOnCamera.syncWith(pOther->_sfFocusOnCamera);
+  if (FieldBits::NoField != (FocusOnCameraFieldMask & whichField))
+    _sfFocusOnCamera.syncWith(pOther->_sfFocusOnCamera);
 
-    if(FieldBits::NoField != (AlignToScreenFieldMask & whichField))
-        _sfAlignToScreen.syncWith(pOther->_sfAlignToScreen);
+  if (FieldBits::NoField != (AlignToScreenFieldMask & whichField))
+    _sfAlignToScreen.syncWith(pOther->_sfAlignToScreen);
 
-    if(FieldBits::NoField != (MinAngleFieldMask & whichField))
-        _sfMinAngle.syncWith(pOther->_sfMinAngle);
+  if (FieldBits::NoField != (MinAngleFieldMask & whichField))
+    _sfMinAngle.syncWith(pOther->_sfMinAngle);
 
-    if(FieldBits::NoField != (MaxAngleFieldMask & whichField))
-        _sfMaxAngle.syncWith(pOther->_sfMaxAngle);
-
-
+  if (FieldBits::NoField != (MaxAngleFieldMask & whichField))
+    _sfMaxAngle.syncWith(pOther->_sfMaxAngle);
 }
 #else
-void BillboardBase::executeSyncImpl(      BillboardBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void BillboardBase::executeSyncImpl(
+    BillboardBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (AxisOfRotationFieldMask & whichField))
-        _sfAxisOfRotation.syncWith(pOther->_sfAxisOfRotation);
+  if (FieldBits::NoField != (AxisOfRotationFieldMask & whichField))
+    _sfAxisOfRotation.syncWith(pOther->_sfAxisOfRotation);
 
-    if(FieldBits::NoField != (FocusOnCameraFieldMask & whichField))
-        _sfFocusOnCamera.syncWith(pOther->_sfFocusOnCamera);
+  if (FieldBits::NoField != (FocusOnCameraFieldMask & whichField))
+    _sfFocusOnCamera.syncWith(pOther->_sfFocusOnCamera);
 
-    if(FieldBits::NoField != (AlignToScreenFieldMask & whichField))
-        _sfAlignToScreen.syncWith(pOther->_sfAlignToScreen);
+  if (FieldBits::NoField != (AlignToScreenFieldMask & whichField))
+    _sfAlignToScreen.syncWith(pOther->_sfAlignToScreen);
 
-    if(FieldBits::NoField != (MinAngleFieldMask & whichField))
-        _sfMinAngle.syncWith(pOther->_sfMinAngle);
+  if (FieldBits::NoField != (MinAngleFieldMask & whichField))
+    _sfMinAngle.syncWith(pOther->_sfMinAngle);
 
-    if(FieldBits::NoField != (MaxAngleFieldMask & whichField))
-        _sfMaxAngle.syncWith(pOther->_sfMaxAngle);
-
-
-
+  if (FieldBits::NoField != (MaxAngleFieldMask & whichField))
+    _sfMaxAngle.syncWith(pOther->_sfMaxAngle);
 }
 
-void BillboardBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void BillboardBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>
@@ -411,5 +328,3 @@ OSG_DLLEXPORT_SFIELD_DEF1(BillboardPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 OSG_DLLEXPORT_MFIELD_DEF1(BillboardPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
-
-

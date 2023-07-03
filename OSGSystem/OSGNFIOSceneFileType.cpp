@@ -70,9 +70,8 @@ OSG_USING_NAMESPACE
 
 /*! get instance
  */
-NFIOSceneFileType &NFIOSceneFileType::the(void)
-{
-    return _the;
+NFIOSceneFileType& NFIOSceneFileType::the(void) {
+  return _the;
 }
 
 /*-------------------------------------------------------------------------*/
@@ -80,9 +79,8 @@ NFIOSceneFileType &NFIOSceneFileType::the(void)
 
 /*! destructor
  */
-NFIOSceneFileType::~NFIOSceneFileType(void)
-{
-    return;
+NFIOSceneFileType::~NFIOSceneFileType(void) {
+  return;
 }
 
 #ifdef __sgi
@@ -94,9 +92,8 @@ NFIOSceneFileType::~NFIOSceneFileType(void)
 
 /*! read filename
  */
-NodePtr NFIOSceneFileType::read(std::istream &is, const Char8 *) const
-{
-    return NFIOBase::read(is, _options);
+NodePtr NFIOSceneFileType::read(std::istream& is, const Char8*) const {
+  return NFIOBase::read(is, _options);
 }
 
 #ifdef __sgi
@@ -108,10 +105,8 @@ NodePtr NFIOSceneFileType::read(std::istream &is, const Char8 *) const
 
 /*! write node and its subtree to the given fileName
  */
-bool NFIOSceneFileType::write(const NodePtr &node,
-                             std::ostream &os, const Char8 *) const
-{
-    return NFIOBase::write(node, os, _options);
+bool NFIOSceneFileType::write(const NodePtr& node, std::ostream& os, const Char8*) const {
+  return NFIOBase::write(node, os, _options);
 }
 
 /*-------------------------------------------------------------------------*/
@@ -119,37 +114,27 @@ bool NFIOSceneFileType::write(const NodePtr &node,
 
 /*! constructor
  */
-NFIOSceneFileType::NFIOSceneFileType(const Char8 *suffixArray[],
-                                     UInt16 suffixByteCount, bool override,
-                                     UInt32 overridePriority,
-                                     UInt32 flags) :
-        SceneFileType(suffixArray, suffixByteCount, override,
-                      overridePriority, flags)
-{
+NFIOSceneFileType::NFIOSceneFileType(const Char8* suffixArray[], UInt16 suffixByteCount,
+    bool override, UInt32 overridePriority, UInt32 flags)
+    : SceneFileType(suffixArray, suffixByteCount, override, overridePriority, flags) {
 }
 
 /*! copy constructor
  */
-NFIOSceneFileType::NFIOSceneFileType(const NFIOSceneFileType &obj) :
-    SceneFileType(obj)
-{
-    return;
+NFIOSceneFileType::NFIOSceneFileType(const NFIOSceneFileType& obj)
+    : SceneFileType(obj) {
+  return;
 }
 
 /*! get name
  */
-const Char8 *NFIOSceneFileType::getName(void) const
-{
-    return "OpenSG Binary Geometry";
+const Char8* NFIOSceneFileType::getName(void) const {
+  return "OpenSG Binary Geometry";
 }
 
 /*-------------------------------------------------------------------------*/
 /*                              static elements                            */
 
-const Char8 *    NFIOSceneFileType::_suffixA[] = { "osb" };
-NFIOSceneFileType NFIOSceneFileType:: _the(_suffixA,
-                                         sizeof(_suffixA), false, 10,
-                                         OSG_READ_SUPPORTED | 
-                                         OSG_WRITE_SUPPORTED);
-
-
+const Char8*      NFIOSceneFileType::_suffixA[] = {"osb"};
+NFIOSceneFileType NFIOSceneFileType::_the(
+    _suffixA, sizeof(_suffixA), false, 10, OSG_READ_SUPPORTED | OSG_WRITE_SUPPORTED);

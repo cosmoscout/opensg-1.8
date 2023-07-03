@@ -48,74 +48,68 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief ShaderParameterVec3f class. See \ref 
+/*! \brief ShaderParameterVec3f class. See \ref
            PageSystemShaderParameterVec3f for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING ShaderParameterVec3f : public ShaderParameterVec3fBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING ShaderParameterVec3f : public ShaderParameterVec3fBase {
+ private:
+  typedef ShaderParameterVec3fBase Inherited;
 
-    typedef ShaderParameterVec3fBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  ShaderParameterVec3f(void);
+  ShaderParameterVec3f(const ShaderParameterVec3f& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~ShaderParameterVec3f(void);
 
-    ShaderParameterVec3f(void);
-    ShaderParameterVec3f(const ShaderParameterVec3f &source);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class ShaderParameterVec3fBase;
 
-    virtual ~ShaderParameterVec3f(void); 
+  static void initMethod(void);
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  // prohibit default functions (move to 'public' if you need one)
 
-    friend class FieldContainer;
-    friend class ShaderParameterVec3fBase;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const ShaderParameterVec3f &source);
+  void operator=(const ShaderParameterVec3f& source);
 };
 
-typedef ShaderParameterVec3f *ShaderParameterVec3fP;
+typedef ShaderParameterVec3f* ShaderParameterVec3fP;
 
 OSG_END_NAMESPACE
 
 #include <OSGShaderParameterVec3fBase.inl>
 #include <OSGShaderParameterVec3f.inl>
 
-#define OSGSHADERPARAMETERVEC3F_HEADER_CVSID "@(#)$Id: OSGShaderParameterVec3f.h,v 1.2 2005/02/24 17:29:15 a-m-z Exp $"
+#define OSGSHADERPARAMETERVEC3F_HEADER_CVSID                                                       \
+  "@(#)$Id: OSGShaderParameterVec3f.h,v 1.2 2005/02/24 17:29:15 a-m-z Exp $"
 
 #endif /* _OSGSHADERPARAMETERVEC3F_H_ */

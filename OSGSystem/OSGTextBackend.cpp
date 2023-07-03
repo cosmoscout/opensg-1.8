@@ -37,52 +37,46 @@
 \*---------------------------------------------------------------------------*/
 
 #ifdef _MSC_VER
-# pragma warning (disable: 4786)
+#pragma warning(disable : 4786)
 #endif
 
 #include "OSGTextBackend.h"
 
-
 using namespace std;
 
-
 OSG_BEGIN_NAMESPACE
-
 
 //----------------------------------------------------------------------
 // Destructor
 // Author: pdaehne
 //----------------------------------------------------------------------
-TextBackend::~TextBackend() {}
-
+TextBackend::~TextBackend() {
+}
 
 //----------------------------------------------------------------------
 // Creates a new vector face
 // Author: pdaehne
 //----------------------------------------------------------------------
-TextVectorFace *TextBackend::createVectorFace(const string &family,
-                                              TextFace::Style style)
-{ return 0; }
-
+TextVectorFace* TextBackend::createVectorFace(const string& family, TextFace::Style style) {
+  return 0;
+}
 
 //----------------------------------------------------------------------
 // Creates a new pixmap face
 // Author: pdaehne
 //----------------------------------------------------------------------
-TextPixmapFace *TextBackend::createPixmapFace(const string &family,
-                                              TextFace::Style style,
-                                              UInt32 size)
-{ return 0; }
-
+TextPixmapFace* TextBackend::createPixmapFace(
+    const string& family, TextFace::Style style, UInt32 size) {
+  return 0;
+}
 
 //----------------------------------------------------------------------
 // Creates a new TXF face
 // Author: pdaehne
 //----------------------------------------------------------------------
-TextTXFFace *TextBackend::createTXFFace(const string &family,
-                                        TextFace::Style style,
-                                        const TextTXFParam &param)
-{ return 0; }
-
+TextTXFFace* TextBackend::createTXFFace(
+    const string& family, TextFace::Style style, const TextTXFParam& param) {
+  return 0;
+}
 
 OSG_END_NAMESPACE

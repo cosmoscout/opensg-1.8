@@ -52,55 +52,39 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &ShaderParameterBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& ShaderParameterBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 ShaderParameterBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
-
+inline OSG::UInt32 ShaderParameterBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the ShaderParameter::_sfName field.
-inline
-SFString *ShaderParameterBase::getSFName(void)
-{
-    return &_sfName;
-}
-
-
-//! Get the value of the ShaderParameter::_sfName field.
-inline
-std::string &ShaderParameterBase::getName(void)
-{
-    return _sfName.getValue();
+inline SFString* ShaderParameterBase::getSFName(void) {
+  return &_sfName;
 }
 
 //! Get the value of the ShaderParameter::_sfName field.
-inline
-const std::string &ShaderParameterBase::getName(void) const
-{
-    return _sfName.getValue();
+inline std::string& ShaderParameterBase::getName(void) {
+  return _sfName.getValue();
+}
+
+//! Get the value of the ShaderParameter::_sfName field.
+inline const std::string& ShaderParameterBase::getName(void) const {
+  return _sfName.getValue();
 }
 
 //! Set the value of the ShaderParameter::_sfName field.
-inline
-void ShaderParameterBase::setName(const std::string &value)
-{
-    _sfName.setValue(value);
+inline void ShaderParameterBase::setName(const std::string& value) {
+  _sfName.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGSHADERPARAMETERBASE_INLINE_CVSID "@(#)$Id: OSGShaderParameterBase.inl,v 1.8 2006/02/20 17:04:38 dirk Exp $"
-
+#define OSGSHADERPARAMETERBASE_INLINE_CVSID                                                        \
+  "@(#)$Id: OSGShaderParameterBase.inl,v 1.8 2006/02/20 17:04:38 dirk Exp $"

@@ -36,7 +36,6 @@
 *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGMERGEGRAPHOP_H_
 #define _OSGMERGEGRAPHOP_H_
 #ifdef __sgi
@@ -54,83 +53,82 @@ OSG_BEGIN_NAMESPACE
 //! \ingroup GrpSystemRenderingBackend
 //! MergeGraphOp class
 
-class OSG_SYSTEMLIB_DLLMAPPING MergeGraphOp : public GraphOp
-{
-    /*==========================  PUBLIC  =================================*/
-public:
+class OSG_SYSTEMLIB_DLLMAPPING MergeGraphOp : public GraphOp {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  static const char* getClassname(void) {
+    return "MergeGraphOp";
+  };
 
-    static const char *getClassname(void) { return "MergeGraphOp"; };
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-    
-    MergeGraphOp(const char* name = "Merge");
+  MergeGraphOp(const char* name = "Merge");
 
-    GraphOp* create();
+  GraphOp* create();
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    virtual ~MergeGraphOp(void);
+  virtual ~MergeGraphOp(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Main methods                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Main methods                               */
+  /*! \{                                                                 */
 
-    bool traverse(NodePtr& node);
+  bool traverse(NodePtr& node);
 
-    //virtual const std::string getName(void) { return _name; };
+  // virtual const std::string getName(void) { return _name; };
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Parameters                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Parameters                                */
+  /*! \{                                                                 */
 
-    void setParams(const std::string params);
-    
-    std::string usage(void);
+  void setParams(const std::string params);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-protected:    
+  std::string usage(void);
 
-    /*==========================  PRIVATE  ================================*/
-private:
-    // Use these params to transform tangent space vectors, just like normals.
-    bool _color_is_vector;
-    bool _secondary_color_is_vector;
-    bool _texcoord0_is_vector;
-    bool _texcoord1_is_vector;
-    bool _texcoord2_is_vector;
-    bool _texcoord3_is_vector;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*==========================  PRIVATE  ================================*/
+ private:
+  // Use these params to transform tangent space vectors, just like normals.
+  bool _color_is_vector;
+  bool _secondary_color_is_vector;
+  bool _texcoord0_is_vector;
+  bool _texcoord1_is_vector;
+  bool _texcoord2_is_vector;
+  bool _texcoord3_is_vector;
 
-    bool mergeOnce(NodePtr& node);
+  bool mergeOnce(NodePtr& node);
 
-    void makeExcludeList        (NodePtr& node);
-    void processGroups          (NodePtr& node);
-    void processTransformations (NodePtr& node);
-    void processGeometries      (NodePtr& node);
+  void makeExcludeList(NodePtr& node);
+  void processGroups(NodePtr& node);
+  void processTransformations(NodePtr& node);
+  void processGeometries(NodePtr& node);
 
-    bool isLeaf        (NodePtr& node);
-    bool isGroup       (NodePtr& node);
+  bool isLeaf(NodePtr& node);
+  bool isGroup(NodePtr& node);
 
-    Action::ResultE excludeListEnter(NodePtr& node);
-    Action::ResultE excludeListLeave(NodePtr& node, Action::ResultE res);
+  Action::ResultE excludeListEnter(NodePtr& node);
+  Action::ResultE excludeListLeave(NodePtr& node, Action::ResultE res);
 
-    Action::ResultE traverseEnter(NodePtr& node);
-    Action::ResultE traverseLeave(NodePtr& node, Action::ResultE res);
+  Action::ResultE traverseEnter(NodePtr& node);
+  Action::ResultE traverseLeave(NodePtr& node, Action::ResultE res);
 };
 
-typedef MergeGraphOp *MergeGraphOpP;
+typedef MergeGraphOp* MergeGraphOpP;
 OSG_END_NAMESPACE
 
 #endif /* _OSGMERGEGRAPHOP_H_ */

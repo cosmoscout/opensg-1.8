@@ -52,27 +52,19 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &DrawableBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& DrawableBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 DrawableBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
-
+inline OSG::UInt32 DrawableBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 /*------------------------------ get -----------------------------------*/
 
-
-
 OSG_END_NAMESPACE
 
-#define OSGDRAWABLEBASE_INLINE_CVSID "@(#)$Id: OSGDrawableBase.inl,v 1.9 2006/02/20 16:54:27 dirk Exp $"
-
+#define OSGDRAWABLEBASE_INLINE_CVSID                                                               \
+  "@(#)$Id: OSGDrawableBase.inl,v 1.9 2006/02/20 16:54:27 dirk Exp $"

@@ -52,55 +52,39 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &StateChunkBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& StateChunkBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 StateChunkBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
-
+inline OSG::UInt32 StateChunkBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the StateChunk::_sfIgnore field.
-inline
-SFBool *StateChunkBase::getSFIgnore(void)
-{
-    return &_sfIgnore;
-}
-
-
-//! Get the value of the StateChunk::_sfIgnore field.
-inline
-bool &StateChunkBase::getIgnore(void)
-{
-    return _sfIgnore.getValue();
+inline SFBool* StateChunkBase::getSFIgnore(void) {
+  return &_sfIgnore;
 }
 
 //! Get the value of the StateChunk::_sfIgnore field.
-inline
-const bool &StateChunkBase::getIgnore(void) const
-{
-    return _sfIgnore.getValue();
+inline bool& StateChunkBase::getIgnore(void) {
+  return _sfIgnore.getValue();
+}
+
+//! Get the value of the StateChunk::_sfIgnore field.
+inline const bool& StateChunkBase::getIgnore(void) const {
+  return _sfIgnore.getValue();
 }
 
 //! Set the value of the StateChunk::_sfIgnore field.
-inline
-void StateChunkBase::setIgnore(const bool &value)
-{
-    _sfIgnore.setValue(value);
+inline void StateChunkBase::setIgnore(const bool& value) {
+  _sfIgnore.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGSTATECHUNKBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGSTATECHUNKBASE_INLINE_CVSID                                                             \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

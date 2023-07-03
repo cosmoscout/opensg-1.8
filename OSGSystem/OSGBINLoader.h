@@ -50,94 +50,88 @@
 
 OSG_BEGIN_NAMESPACE
 
-class OSG_SYSTEMLIB_DLLMAPPING BINLoader
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors/Destructor                    */
-    /*! \{                                                                 */
+class OSG_SYSTEMLIB_DLLMAPPING BINLoader {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors/Destructor                    */
+  /*! \{                                                                 */
 
-             BINLoader(std::istream &is);
-    virtual ~BINLoader();
+  BINLoader(std::istream& is);
+  virtual ~BINLoader();
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   read / root access                         */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   read / root access                         */
+  /*! \{                                                                 */
 
-         void            read        (void);
-         NodePtr         getRootNode (void);
-    std::vector<NodePtr> getRootNodes(void);
+  void                 read(void);
+  NodePtr              getRootNode(void);
+  std::vector<NodePtr> getRootNodes(void);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Type information                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Type information                            */
+  /*! \{                                                                 */
 
-    struct FCIdMapper;
-    friend class FCIdMapper;
+  struct FCIdMapper;
+  friend class FCIdMapper;
 
-    /*! \hideinhierarchy */
-    struct FCInfoStruct
-    {
-        UInt32            newId;
-        FieldContainerPtr ptr;
-        bool              read;
-        FCInfoStruct();
-    };
-    //          oldID	newId + FCPtr
-    typedef std::map<UInt32, FCInfoStruct> IDLookupMap;
+  /*! \hideinhierarchy */
+  struct FCInfoStruct {
+    UInt32            newId;
+    FieldContainerPtr ptr;
+    bool              read;
+    FCInfoStruct();
+  };
+  //          oldID	newId + FCPtr
+  typedef std::map<UInt32, FCInfoStruct> IDLookupMap;
 
-    /*! \hideinhierarchy */
-    struct FCIdMapper : public FieldContainerMapper
-    {
-      public:
-        const IDLookupMap *ptrMap;
-        FCIdMapper(IDLookupMap *m);
+  /*! \hideinhierarchy */
+  struct FCIdMapper : public FieldContainerMapper {
+   public:
+    const IDLookupMap* ptrMap;
+    FCIdMapper(IDLookupMap* m);
 
-        virtual UInt32 map(UInt32 uiId);
-    };
+    virtual UInt32 map(UInt32 uiId);
+  };
 
-    /*! \hideinhierarchy */
-    class BinaryFileHandler : public BinaryDataHandler
-    {
-      public:
-        BinaryFileHandler(std::istream &is);
-        virtual ~BinaryFileHandler();
+  /*! \hideinhierarchy */
+  class BinaryFileHandler : public BinaryDataHandler {
+   public:
+    BinaryFileHandler(std::istream& is);
+    virtual ~BinaryFileHandler();
 
-        void read (MemoryHandle mem, UInt32 size);
+    void read(MemoryHandle mem, UInt32 size);
 
-      private:
+   private:
+    std::vector<UInt8> _readMemory;
+    std::istream&      _is;
+  };
 
-        std::vector<UInt8>  _readMemory;
-        std::istream &_is;
-    };
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   private helper functions                   */
+  /*! \{                                                                 */
 
-    /*==========================  PRIVATE  ================================*/
-  private:
+  bool createFieldContainers(void);
+  void chargeFieldContainers(void);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   private helper functions                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   provate members                            */
+  /*! \{                                                                 */
 
-    bool createFieldContainers(void);
-    void chargeFieldContainers(void);
+  BinaryFileHandler    _inFileHandler;
+  IDLookupMap          _fcInfoMap;
+  UInt32               _countContainers;
+  std::vector<NodePtr> _vec_pRootNodes;
+  bool                 _valid_stream;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   provate members                            */
-    /*! \{                                                                 */
-
-         BinaryFileHandler _inFileHandler;
-         IDLookupMap       _fcInfoMap;
-         UInt32            _countContainers;
-    std::vector<NodePtr>   _vec_pRootNodes;
-         bool              _valid_stream;
-
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 };
 
 OSG_END_NAMESPACE

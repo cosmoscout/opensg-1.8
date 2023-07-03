@@ -52,87 +52,88 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 class DCTPFace;
 class DCTPEdge;
 
 class OSG_SYSTEMLIB_DLLMAPPING DCTPVertex {
-public:
-  DCTPVertex() { vertexinfo = NULL; }
-  ~DCTPVertex() {}
+ public:
+  DCTPVertex() {
+    vertexinfo = NULL;
+  }
+  ~DCTPVertex() {
+  }
 
-
-  std::vector< DCTPEdge* > edges;
-  std::vector< DCTPFace* > faces;
+  std::vector<DCTPEdge*> edges;
+  std::vector<DCTPFace*> faces;
 #ifdef OSG_INTEGER_MESH
   vec3i coords;
 #else
   Vec3d coords;
 #endif
-  unsigned long id; // unique id of this vertex
+  unsigned long id;      // unique id of this vertex
   unsigned long node_id; // uniqe ID of the surface graph node
-  void *vertexinfo;
-  
-  void RemoveFace( DCTPFace *f ) {
-    std::vector< DCTPFace* >::iterator fe = faces.end();
-    bool erased = false;
-    for ( std::vector< DCTPFace* >::iterator i = faces.begin(); i != fe; ++i )
-      if ( (*i) == f ) {
-//        faces.erase( i );
-		*i = faces[ faces.size( ) - 1 ];
-		faces.pop_back( );
-        erased = true; 
+  void*         vertexinfo;
+
+  void RemoveFace(DCTPFace* f) {
+    std::vector<DCTPFace*>::iterator fe     = faces.end();
+    bool                             erased = false;
+    for (std::vector<DCTPFace*>::iterator i = faces.begin(); i != fe; ++i)
+      if ((*i) == f) {
+        //        faces.erase( i );
+        *i = faces[faces.size() - 1];
+        faces.pop_back();
+        erased = true;
         break;
       }
-    if ( !erased )
-	{
-		std::cerr << "DCTPVertex::RemoveFace: trying to remove nonexistant face..." << std::endl;
-	}
-  }	 
-  void AddFace( DCTPFace *f ) {
-    std::vector< DCTPFace* >::iterator fe = faces.end();
-    bool found = false;
-    for ( std::vector< DCTPFace* >::iterator i = faces.begin(); i != fe; ++i )
-      if ( (*i) == f ) {
-        found = true; break;
-      }
-    if ( !found ) faces.push_back( f );
-  }	 
-  void RemoveEdge( DCTPEdge *e ) {
-    std::vector< DCTPEdge* >::iterator ee = edges.end();
-    bool erased = false;
-    for ( std::vector< DCTPEdge* >::iterator i = edges.begin(); i != ee; ++i )
-      if ( (*i) == e ) {
-//        edges.erase( i );
-		*i = edges[ edges.size( ) - 1 ];
-		edges.pop_back( );
-        erased = true; 
-        break;
-      }
-    if ( !erased ) std::cerr << "DCTPVertex::RemoveEdge: trying to remove nonexistant edge..." << std::endl;
-  }	 
-  
-struct DCTPVertexless {
-  bool operator()(DCTPVertex* v1, DCTPVertex* v2) const
-  {
-//    std::cerr << "comparing: " << v1->coords << " and" << std::endl;
-//    std::cerr << "           " << v2->coords << std::endl;
-//    std::cerr << "pointers:  " << v1 << " and" << std::endl;
-//    std::cerr << "           " << v2 << std::endl;
-//    bool k = v1->coords < v2->coords;
-//    std::cerr << "result:    " << k << std::endl;
-//    return k;
-//    return (v1->coords < v2->coords);
-    return DCTPVecIsLesser(v1->coords, v2->coords);
+    if (!erased) {
+      std::cerr << "DCTPVertex::RemoveFace: trying to remove nonexistant face..." << std::endl;
+    }
   }
-};   
-          
+  void AddFace(DCTPFace* f) {
+    std::vector<DCTPFace*>::iterator fe    = faces.end();
+    bool                             found = false;
+    for (std::vector<DCTPFace*>::iterator i = faces.begin(); i != fe; ++i)
+      if ((*i) == f) {
+        found = true;
+        break;
+      }
+    if (!found)
+      faces.push_back(f);
+  }
+  void RemoveEdge(DCTPEdge* e) {
+    std::vector<DCTPEdge*>::iterator ee     = edges.end();
+    bool                             erased = false;
+    for (std::vector<DCTPEdge*>::iterator i = edges.begin(); i != ee; ++i)
+      if ((*i) == e) {
+        //        edges.erase( i );
+        *i = edges[edges.size() - 1];
+        edges.pop_back();
+        erased = true;
+        break;
+      }
+    if (!erased)
+      std::cerr << "DCTPVertex::RemoveEdge: trying to remove nonexistant edge..." << std::endl;
+  }
+
+  struct DCTPVertexless {
+    bool operator()(DCTPVertex* v1, DCTPVertex* v2) const {
+      //    std::cerr << "comparing: " << v1->coords << " and" << std::endl;
+      //    std::cerr << "           " << v2->coords << std::endl;
+      //    std::cerr << "pointers:  " << v1 << " and" << std::endl;
+      //    std::cerr << "           " << v2 << std::endl;
+      //    bool k = v1->coords < v2->coords;
+      //    std::cerr << "result:    " << k << std::endl;
+      //    return k;
+      //    return (v1->coords < v2->coords);
+      return DCTPVecIsLesser(v1->coords, v2->coords);
+    }
+  };
 };
 
-typedef std::set< DCTPVertex*, DCTPVertex::DCTPVertexless > dctpvertexset;
+typedef std::set<DCTPVertex*, DCTPVertex::DCTPVertexless> dctpvertexset;
 
-typedef std::vector< DCTPVertex* > dctpvertexvector;
-typedef std::vector< dctpvertexvector > dctpvertexmatrix;
+typedef std::vector<DCTPVertex*>      dctpvertexvector;
+typedef std::vector<dctpvertexvector> dctpvertexmatrix;
 
 OSG_END_NAMESPACE
 

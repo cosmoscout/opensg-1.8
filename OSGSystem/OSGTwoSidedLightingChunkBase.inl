@@ -52,53 +52,39 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &TwoSidedLightingChunkBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& TwoSidedLightingChunkBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 TwoSidedLightingChunkBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 TwoSidedLightingChunkBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-TwoSidedLightingChunkPtr TwoSidedLightingChunkBase::create(void) 
-{
-    TwoSidedLightingChunkPtr fc; 
+inline TwoSidedLightingChunkPtr TwoSidedLightingChunkBase::create(void) {
+  TwoSidedLightingChunkPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = TwoSidedLightingChunkPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = TwoSidedLightingChunkPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-TwoSidedLightingChunkPtr TwoSidedLightingChunkBase::createEmpty(void) 
-{ 
-    TwoSidedLightingChunkPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline TwoSidedLightingChunkPtr TwoSidedLightingChunkBase::createEmpty(void) {
+  TwoSidedLightingChunkPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
-
-
 OSG_END_NAMESPACE
 
-#define OSGTWOSIDEDLIGHTINGCHUNKBASE_INLINE_CVSID "@(#)$Id: OSGTwoSidedLightingChunkBase.inl,v 1.3 2006/02/20 17:04:46 dirk Exp $"
-
+#define OSGTWOSIDEDLIGHTINGCHUNKBASE_INLINE_CVSID                                                  \
+  "@(#)$Id: OSGTwoSidedLightingChunkBase.inl,v 1.3 2006/02/20 17:04:46 dirk Exp $"

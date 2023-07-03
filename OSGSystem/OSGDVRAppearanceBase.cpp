@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEDVRAPPEARANCEINST
 
 #include <stdlib.h>
@@ -61,163 +60,113 @@
 #include "OSGDVRAppearanceBase.h"
 #include "OSGDVRAppearance.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector DVRAppearanceBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
+const OSG::BitVector DVRAppearanceBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
+FieldContainerType DVRAppearanceBase::_type("DVRAppearance", "ChunkMaterial", NULL,
+    (PrototypeCreateF)&DVRAppearanceBase::createEmpty, DVRAppearance::initMethod, NULL, 0);
 
-
-FieldContainerType DVRAppearanceBase::_type(
-    "DVRAppearance",
-    "ChunkMaterial",
-    NULL,
-    (PrototypeCreateF) &DVRAppearanceBase::createEmpty,
-    DVRAppearance::initMethod,
-    NULL,
-    0);
-
-//OSG_FIELD_CONTAINER_DEF(DVRAppearanceBase, DVRAppearancePtr)
+// OSG_FIELD_CONTAINER_DEF(DVRAppearanceBase, DVRAppearancePtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &DVRAppearanceBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &DVRAppearanceBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr DVRAppearanceBase::shallowCopy(void) const 
-{ 
-    DVRAppearancePtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const DVRAppearance *>(this)); 
-
-    return returnValue; 
+FieldContainerType& DVRAppearanceBase::getType(void) {
+  return _type;
 }
 
-UInt32 DVRAppearanceBase::getContainerSize(void) const 
-{ 
-    return sizeof(DVRAppearance); 
+const FieldContainerType& DVRAppearanceBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr DVRAppearanceBase::shallowCopy(void) const {
+  DVRAppearancePtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const DVRAppearance*>(this));
+
+  return returnValue;
+}
+
+UInt32 DVRAppearanceBase::getContainerSize(void) const {
+  return sizeof(DVRAppearance);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void DVRAppearanceBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((DVRAppearanceBase *) &other, whichField);
+void DVRAppearanceBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((DVRAppearanceBase*)&other, whichField);
 }
 #else
-void DVRAppearanceBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((DVRAppearanceBase *) &other, whichField, sInfo);
+void DVRAppearanceBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((DVRAppearanceBase*)&other, whichField, sInfo);
 }
-void DVRAppearanceBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void DVRAppearanceBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void DVRAppearanceBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void DVRAppearanceBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-DVRAppearanceBase::DVRAppearanceBase(void) :
-    Inherited() 
-{
+DVRAppearanceBase::DVRAppearanceBase(void)
+    : Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-DVRAppearanceBase::DVRAppearanceBase(const DVRAppearanceBase &source) :
-    Inherited                 (source)
-{
+DVRAppearanceBase::DVRAppearanceBase(const DVRAppearanceBase& source)
+    : Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-DVRAppearanceBase::~DVRAppearanceBase(void)
-{
+DVRAppearanceBase::~DVRAppearanceBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 DVRAppearanceBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 DVRAppearanceBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void DVRAppearanceBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
-
-
+void DVRAppearanceBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 }
 
-void DVRAppearanceBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
-
-
+void DVRAppearanceBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void DVRAppearanceBase::executeSyncImpl(      DVRAppearanceBase *pOther,
-                                        const BitVector         &whichField)
-{
+void DVRAppearanceBase::executeSyncImpl(DVRAppearanceBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
-
-
+  Inherited::executeSyncImpl(pOther, whichField);
 }
 #else
-void DVRAppearanceBase::executeSyncImpl(      DVRAppearanceBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void DVRAppearanceBase::executeSyncImpl(
+    DVRAppearanceBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
-
-
-
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 }
 
-void DVRAppearanceBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void DVRAppearanceBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 

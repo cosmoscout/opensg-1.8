@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 OSG_BEGIN_NAMESPACE
 
 //----------------------------------------------------------------------------
@@ -61,20 +60,17 @@ OSG_BEGIN_NAMESPACE
  *  IntersectActorBaseState
  */
 
-inline const IntersectActorBase::IntersectActorBaseState *
-IntersectActorBase::getCastState(void) const
-{
-    return reinterpret_cast<const IntersectActorBaseState *>(getState());
+inline const IntersectActorBase::IntersectActorBaseState* IntersectActorBase::getCastState(
+    void) const {
+  return reinterpret_cast<const IntersectActorBaseState*>(getState());
 }
 
 /*! Return the StatePtr, cast to this actor's state class
  *  IntersectActorBaseState
  */
 
-inline IntersectActorBase::IntersectActorBaseState *
-IntersectActorBase::getCastState(void)
-{
-    return reinterpret_cast<IntersectActorBaseState *>(getState());
+inline IntersectActorBase::IntersectActorBaseState* IntersectActorBase::getCastState(void) {
+  return reinterpret_cast<IntersectActorBaseState*>(getState());
 }
 
 //----------------------------------------------------------------------------
@@ -84,59 +80,47 @@ IntersectActorBase::getCastState(void)
 /*! Default constructor.
  */
 
-inline
-IntersectActorBase::IntersectActorBaseState::IntersectActorBaseState(void) :
-      _stateScaleFactor(1.0),
-      _stateRay(),
-      ParentStateType()
-{
+inline IntersectActorBase::IntersectActorBaseState::IntersectActorBaseState(void)
+    : _stateScaleFactor(1.0)
+    , _stateRay()
+    , ParentStateType() {
 }
 
 /*! Copy constructor.
  */
 
-inline
-IntersectActorBase::IntersectActorBaseState::IntersectActorBaseState(
-    const IntersectActorBaseState &source) :
-      _stateScaleFactor(source._stateScaleFactor),
-      _stateRay(source._stateRay),
-      ParentStateType(source)
-{
+inline IntersectActorBase::IntersectActorBaseState::IntersectActorBaseState(
+    const IntersectActorBaseState& source)
+    : _stateScaleFactor(source._stateScaleFactor)
+    , _stateRay(source._stateRay)
+    , ParentStateType(source) {
 }
 
 /*! Return the state element ScaleFactor. For internal use only.
  */
 
-inline const Real32 &
-IntersectActorBase::IntersectActorBaseState::getScaleFactor(void) const
-{
-    return _stateScaleFactor;
+inline const Real32& IntersectActorBase::IntersectActorBaseState::getScaleFactor(void) const {
+  return _stateScaleFactor;
 }
 
 /*! Return the state element ScaleFactor. For internal use only.
  */
 
-inline Real32 &
-IntersectActorBase::IntersectActorBaseState::getScaleFactor(void)
-{
-    return _stateScaleFactor;
+inline Real32& IntersectActorBase::IntersectActorBaseState::getScaleFactor(void) {
+  return _stateScaleFactor;
 }
 /*! Return the state element Ray. For internal use only.
  */
 
-inline const Line &
-IntersectActorBase::IntersectActorBaseState::getRay(void) const
-{
-    return _stateRay;
+inline const Line& IntersectActorBase::IntersectActorBaseState::getRay(void) const {
+  return _stateRay;
 }
 
 /*! Return the state element Ray. For internal use only.
  */
 
-inline Line &
-IntersectActorBase::IntersectActorBaseState::getRay(void)
-{
-    return _stateRay;
+inline Line& IntersectActorBase::IntersectActorBaseState::getRay(void) {
+  return _stateRay;
 }
 
 //----------------------------------------------------------------------------
@@ -146,168 +130,130 @@ IntersectActorBase::IntersectActorBaseState::getRay(void)
 /*! Return the state element HitDistance.
  */
 
-inline const Real32 &
-IntersectActorBase::getHitDistance(void) const
-{
-    return _stateHitDistance;
+inline const Real32& IntersectActorBase::getHitDistance(void) const {
+  return _stateHitDistance;
 }
 
 /*! Return the state element HitDistance.
  */
 
-inline Real32 &
-IntersectActorBase::getHitDistance(void)
-{
-    return _stateHitDistance;
+inline Real32& IntersectActorBase::getHitDistance(void) {
+  return _stateHitDistance;
 }
 
 /*! Set the state element HitDistance.
  */
 
-inline void
-IntersectActorBase::setHitDistance(const Real32 &stateVal)
-{
-    _stateHitDistance = stateVal;
+inline void IntersectActorBase::setHitDistance(const Real32& stateVal) {
+  _stateHitDistance = stateVal;
 }
 /*! Return the state element Hit.
  */
 
-inline const bool &
-IntersectActorBase::getHit(void) const
-{
-    return _stateHit;
+inline const bool& IntersectActorBase::getHit(void) const {
+  return _stateHit;
 }
 
 /*! Return the state element Hit.
  */
 
-inline bool &
-IntersectActorBase::getHit(void)
-{
-    return _stateHit;
+inline bool& IntersectActorBase::getHit(void) {
+  return _stateHit;
 }
 
 /*! Set the state element Hit.
  */
 
-inline void
-IntersectActorBase::setHit(const bool &stateVal)
-{
-    _stateHit = stateVal;
+inline void IntersectActorBase::setHit(const bool& stateVal) {
+  _stateHit = stateVal;
 }
 /*! Return the state element HitObject.
  */
 
-inline const NodePtr &
-IntersectActorBase::getHitObject(void) const
-{
-    return _stateHitObject;
+inline const NodePtr& IntersectActorBase::getHitObject(void) const {
+  return _stateHitObject;
 }
 
 /*! Return the state element HitObject.
  */
 
-inline NodePtr &
-IntersectActorBase::getHitObject(void)
-{
-    return _stateHitObject;
+inline NodePtr& IntersectActorBase::getHitObject(void) {
+  return _stateHitObject;
 }
 
 /*! Set the state element HitObject.
  */
 
-inline void
-IntersectActorBase::setHitObject(const NodePtr &stateVal)
-{
-    _stateHitObject = stateVal;
+inline void IntersectActorBase::setHitObject(const NodePtr& stateVal) {
+  _stateHitObject = stateVal;
 }
 /*! Return the state element HitTriangleIndex.
  */
 
-inline const Int32 &
-IntersectActorBase::getHitTriangleIndex(void) const
-{
-    return _stateHitTriangleIndex;
+inline const Int32& IntersectActorBase::getHitTriangleIndex(void) const {
+  return _stateHitTriangleIndex;
 }
 
 /*! Return the state element HitTriangleIndex.
  */
 
-inline Int32 &
-IntersectActorBase::getHitTriangleIndex(void)
-{
-    return _stateHitTriangleIndex;
+inline Int32& IntersectActorBase::getHitTriangleIndex(void) {
+  return _stateHitTriangleIndex;
 }
 
 /*! Set the state element HitTriangleIndex.
  */
 
-inline void
-IntersectActorBase::setHitTriangleIndex(const Int32 &stateVal)
-{
-    _stateHitTriangleIndex = stateVal;
+inline void IntersectActorBase::setHitTriangleIndex(const Int32& stateVal) {
+  _stateHitTriangleIndex = stateVal;
 }
 /*! Return the state element HitNormal.
  */
 
-inline const Vec3f &
-IntersectActorBase::getHitNormal(void) const
-{
-    return _stateHitNormal;
+inline const Vec3f& IntersectActorBase::getHitNormal(void) const {
+  return _stateHitNormal;
 }
 
 /*! Return the state element HitNormal.
  */
 
-inline Vec3f &
-IntersectActorBase::getHitNormal(void)
-{
-    return _stateHitNormal;
+inline Vec3f& IntersectActorBase::getHitNormal(void) {
+  return _stateHitNormal;
 }
 
 /*! Set the state element HitNormal.
  */
 
-inline void
-IntersectActorBase::setHitNormal(const Vec3f &stateVal)
-{
-    _stateHitNormal = stateVal;
+inline void IntersectActorBase::setHitNormal(const Vec3f& stateVal) {
+  _stateHitNormal = stateVal;
 }
 /*! Return the state element MaxDistance.
  */
 
-inline const Real32 &
-IntersectActorBase::getMaxDistance(void) const
-{
-    return _stateMaxDistance;
+inline const Real32& IntersectActorBase::getMaxDistance(void) const {
+  return _stateMaxDistance;
 }
 
 /*! Return the state element MaxDistance.
  */
 
-inline Real32 &
-IntersectActorBase::getMaxDistance(void)
-{
-    return _stateMaxDistance;
+inline Real32& IntersectActorBase::getMaxDistance(void) {
+  return _stateMaxDistance;
 }
 
 /*! Set the state element MaxDistance.
  */
 
-inline void
-IntersectActorBase::setMaxDistance(const Real32 &stateVal)
-{
-    _stateMaxDistance = stateVal;
+inline void IntersectActorBase::setMaxDistance(const Real32& stateVal) {
+  _stateMaxDistance = stateVal;
 }
 /*! Return the state element ScaleFactor.
  *  \warning This state element can only be accessed after the actor was
  *  attached to an action.
  */
 
-inline const Real32 &
-IntersectActorBase::getScaleFactor(void) const
-{
-    return getCastState()->getScaleFactor();
+inline const Real32& IntersectActorBase::getScaleFactor(void) const {
+  return getCastState()->getScaleFactor();
 }
 
 /*! Return the state element ScaleFactor.
@@ -315,10 +261,8 @@ IntersectActorBase::getScaleFactor(void) const
  *  attached to an action.
  */
 
-inline Real32 &
-IntersectActorBase::getScaleFactor(void)
-{
-    return getCastState()->getScaleFactor();
+inline Real32& IntersectActorBase::getScaleFactor(void) {
+  return getCastState()->getScaleFactor();
 }
 
 /*! Set the state element ScaleFactor.
@@ -326,20 +270,16 @@ IntersectActorBase::getScaleFactor(void)
  *  attached to an action.
  */
 
-inline void
-IntersectActorBase::setScaleFactor(const Real32 &stateVal)
-{
-    getCastState()->getScaleFactor() = stateVal;
+inline void IntersectActorBase::setScaleFactor(const Real32& stateVal) {
+  getCastState()->getScaleFactor() = stateVal;
 }
 /*! Return the state element Ray.
  *  \warning This state element can only be accessed after the actor was
  *  attached to an action.
  */
 
-inline const Line &
-IntersectActorBase::getRay(void) const
-{
-    return getCastState()->getRay();
+inline const Line& IntersectActorBase::getRay(void) const {
+  return getCastState()->getRay();
 }
 
 /*! Return the state element Ray.
@@ -347,10 +287,8 @@ IntersectActorBase::getRay(void) const
  *  attached to an action.
  */
 
-inline Line &
-IntersectActorBase::getRay(void)
-{
-    return getCastState()->getRay();
+inline Line& IntersectActorBase::getRay(void) {
+  return getCastState()->getRay();
 }
 
 /*! Set the state element Ray.
@@ -358,17 +296,15 @@ IntersectActorBase::getRay(void)
  *  attached to an action.
  */
 
-inline void
-IntersectActorBase::setRay(const Line &stateVal)
-{
-    getCastState()->getRay() = stateVal;
+inline void IntersectActorBase::setRay(const Line& stateVal) {
+  getCastState()->getRay() = stateVal;
 }
 
 //----------------------------------------------------------------------------
 //    Protected State Access
 //----------------------------------------------------------------------------
 
-
 OSG_END_NAMESPACE
 
-#define OSGINTERSECTACTORBASE_INLINE_CVSID "@(#)$Id: OSGIntersectActorBase.inl,v 1.6 2004/09/17 14:09:47 neumannc Exp $"
+#define OSGINTERSECTACTORBASE_INLINE_CVSID                                                         \
+  "@(#)$Id: OSGIntersectActorBase.inl,v 1.6 2004/09/17 14:09:47 neumannc Exp $"

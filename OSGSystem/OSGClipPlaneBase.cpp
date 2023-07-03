@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILECLIPPLANEINST
 
 #include <stdlib.h>
@@ -61,274 +60,206 @@
 #include "OSGClipPlaneBase.h"
 #include "OSGClipPlane.h"
 
-
 OSG_BEGIN_NAMESPACE
 
-const OSG::BitVector  ClipPlaneBase::EquationFieldMask = 
+const OSG::BitVector ClipPlaneBase::EquationFieldMask =
     (TypeTraits<BitVector>::One << ClipPlaneBase::EquationFieldId);
 
-const OSG::BitVector  ClipPlaneBase::OnFieldMask = 
+const OSG::BitVector ClipPlaneBase::OnFieldMask =
     (TypeTraits<BitVector>::One << ClipPlaneBase::OnFieldId);
 
-const OSG::BitVector  ClipPlaneBase::BeaconFieldMask = 
+const OSG::BitVector ClipPlaneBase::BeaconFieldMask =
     (TypeTraits<BitVector>::One << ClipPlaneBase::BeaconFieldId);
 
-const OSG::BitVector ClipPlaneBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector ClipPlaneBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
 /*! \var Vec4f           ClipPlaneBase::_sfEquation
-    Defines the equation of the clip plane. Standard format, if (a,b,c,d) is         the plane a point (x,y,z) is visible if a*x+b*y+c*z+d &gt;= 0.
+    Defines the equation of the clip plane. Standard format, if (a,b,c,d) is         the plane a
+   point (x,y,z) is visible if a*x+b*y+c*z+d &gt;= 0.
 */
 /*! \var bool            ClipPlaneBase::_sfOn
     Defines activation state of the clip plane.
 */
 /*! \var NodePtr         ClipPlaneBase::_sfBeacon
-    The object that defines the clip planes's coordinate system. The clip         plane is positioned relative to this system.
+    The object that defines the clip planes's coordinate system. The clip         plane is
+   positioned relative to this system.
 */
 
 //! ClipPlane description
 
-FieldDescription *ClipPlaneBase::_desc[] = 
-{
-    new FieldDescription(SFVec4f::getClassType(), 
-                     "equation", 
-                     EquationFieldId, EquationFieldMask,
-                     false,
-                     (FieldAccessMethod) &ClipPlaneBase::getSFEquation),
-    new FieldDescription(SFBool::getClassType(), 
-                     "on", 
-                     OnFieldId, OnFieldMask,
-                     false,
-                     (FieldAccessMethod) &ClipPlaneBase::getSFOn),
-    new FieldDescription(SFNodePtr::getClassType(), 
-                     "beacon", 
-                     BeaconFieldId, BeaconFieldMask,
-                     false,
-                     (FieldAccessMethod) &ClipPlaneBase::getSFBeacon)
-};
+FieldDescription* ClipPlaneBase::_desc[] = {
+    new FieldDescription(SFVec4f::getClassType(), "equation", EquationFieldId, EquationFieldMask,
+        false, (FieldAccessMethod)&ClipPlaneBase::getSFEquation),
+    new FieldDescription(SFBool::getClassType(), "on", OnFieldId, OnFieldMask, false,
+        (FieldAccessMethod)&ClipPlaneBase::getSFOn),
+    new FieldDescription(SFNodePtr::getClassType(), "beacon", BeaconFieldId, BeaconFieldMask, false,
+        (FieldAccessMethod)&ClipPlaneBase::getSFBeacon)};
 
+FieldContainerType ClipPlaneBase::_type("ClipPlane", "Group", NULL,
+    (PrototypeCreateF)&ClipPlaneBase::createEmpty, ClipPlane::initMethod, _desc, sizeof(_desc));
 
-FieldContainerType ClipPlaneBase::_type(
-    "ClipPlane",
-    "Group",
-    NULL,
-    (PrototypeCreateF) &ClipPlaneBase::createEmpty,
-    ClipPlane::initMethod,
-    _desc,
-    sizeof(_desc));
-
-//OSG_FIELD_CONTAINER_DEF(ClipPlaneBase, ClipPlanePtr)
+// OSG_FIELD_CONTAINER_DEF(ClipPlaneBase, ClipPlanePtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &ClipPlaneBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &ClipPlaneBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr ClipPlaneBase::shallowCopy(void) const 
-{ 
-    ClipPlanePtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const ClipPlane *>(this)); 
-
-    return returnValue; 
+FieldContainerType& ClipPlaneBase::getType(void) {
+  return _type;
 }
 
-UInt32 ClipPlaneBase::getContainerSize(void) const 
-{ 
-    return sizeof(ClipPlane); 
+const FieldContainerType& ClipPlaneBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr ClipPlaneBase::shallowCopy(void) const {
+  ClipPlanePtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const ClipPlane*>(this));
+
+  return returnValue;
+}
+
+UInt32 ClipPlaneBase::getContainerSize(void) const {
+  return sizeof(ClipPlane);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ClipPlaneBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((ClipPlaneBase *) &other, whichField);
+void ClipPlaneBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((ClipPlaneBase*)&other, whichField);
 }
 #else
-void ClipPlaneBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((ClipPlaneBase *) &other, whichField, sInfo);
+void ClipPlaneBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((ClipPlaneBase*)&other, whichField, sInfo);
 }
-void ClipPlaneBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void ClipPlaneBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void ClipPlaneBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void ClipPlaneBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-ClipPlaneBase::ClipPlaneBase(void) :
-    _sfEquation               (Vec4f(0, 0, 1, 0)), 
-    _sfOn                     (bool(true)), 
-    _sfBeacon                 (NodePtr(NullFC)), 
-    Inherited() 
-{
+ClipPlaneBase::ClipPlaneBase(void)
+    : _sfEquation(Vec4f(0, 0, 1, 0))
+    , _sfOn(bool(true))
+    , _sfBeacon(NodePtr(NullFC))
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-ClipPlaneBase::ClipPlaneBase(const ClipPlaneBase &source) :
-    _sfEquation               (source._sfEquation               ), 
-    _sfOn                     (source._sfOn                     ), 
-    _sfBeacon                 (source._sfBeacon                 ), 
-    Inherited                 (source)
-{
+ClipPlaneBase::ClipPlaneBase(const ClipPlaneBase& source)
+    : _sfEquation(source._sfEquation)
+    , _sfOn(source._sfOn)
+    , _sfBeacon(source._sfBeacon)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-ClipPlaneBase::~ClipPlaneBase(void)
-{
+ClipPlaneBase::~ClipPlaneBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 ClipPlaneBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 ClipPlaneBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (EquationFieldMask & whichField))
-    {
-        returnValue += _sfEquation.getBinSize();
-    }
+  if (FieldBits::NoField != (EquationFieldMask & whichField)) {
+    returnValue += _sfEquation.getBinSize();
+  }
 
-    if(FieldBits::NoField != (OnFieldMask & whichField))
-    {
-        returnValue += _sfOn.getBinSize();
-    }
+  if (FieldBits::NoField != (OnFieldMask & whichField)) {
+    returnValue += _sfOn.getBinSize();
+  }
 
-    if(FieldBits::NoField != (BeaconFieldMask & whichField))
-    {
-        returnValue += _sfBeacon.getBinSize();
-    }
+  if (FieldBits::NoField != (BeaconFieldMask & whichField)) {
+    returnValue += _sfBeacon.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void ClipPlaneBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void ClipPlaneBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (EquationFieldMask & whichField))
-    {
-        _sfEquation.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (EquationFieldMask & whichField)) {
+    _sfEquation.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (OnFieldMask & whichField))
-    {
-        _sfOn.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (OnFieldMask & whichField)) {
+    _sfOn.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BeaconFieldMask & whichField))
-    {
-        _sfBeacon.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (BeaconFieldMask & whichField)) {
+    _sfBeacon.copyToBin(pMem);
+  }
 }
 
-void ClipPlaneBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void ClipPlaneBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (EquationFieldMask & whichField))
-    {
-        _sfEquation.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (EquationFieldMask & whichField)) {
+    _sfEquation.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (OnFieldMask & whichField))
-    {
-        _sfOn.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (OnFieldMask & whichField)) {
+    _sfOn.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BeaconFieldMask & whichField))
-    {
-        _sfBeacon.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (BeaconFieldMask & whichField)) {
+    _sfBeacon.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ClipPlaneBase::executeSyncImpl(      ClipPlaneBase *pOther,
-                                        const BitVector         &whichField)
-{
+void ClipPlaneBase::executeSyncImpl(ClipPlaneBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (EquationFieldMask & whichField))
-        _sfEquation.syncWith(pOther->_sfEquation);
+  if (FieldBits::NoField != (EquationFieldMask & whichField))
+    _sfEquation.syncWith(pOther->_sfEquation);
 
-    if(FieldBits::NoField != (OnFieldMask & whichField))
-        _sfOn.syncWith(pOther->_sfOn);
+  if (FieldBits::NoField != (OnFieldMask & whichField))
+    _sfOn.syncWith(pOther->_sfOn);
 
-    if(FieldBits::NoField != (BeaconFieldMask & whichField))
-        _sfBeacon.syncWith(pOther->_sfBeacon);
-
-
+  if (FieldBits::NoField != (BeaconFieldMask & whichField))
+    _sfBeacon.syncWith(pOther->_sfBeacon);
 }
 #else
-void ClipPlaneBase::executeSyncImpl(      ClipPlaneBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void ClipPlaneBase::executeSyncImpl(
+    ClipPlaneBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (EquationFieldMask & whichField))
-        _sfEquation.syncWith(pOther->_sfEquation);
+  if (FieldBits::NoField != (EquationFieldMask & whichField))
+    _sfEquation.syncWith(pOther->_sfEquation);
 
-    if(FieldBits::NoField != (OnFieldMask & whichField))
-        _sfOn.syncWith(pOther->_sfOn);
+  if (FieldBits::NoField != (OnFieldMask & whichField))
+    _sfOn.syncWith(pOther->_sfOn);
 
-    if(FieldBits::NoField != (BeaconFieldMask & whichField))
-        _sfBeacon.syncWith(pOther->_sfBeacon);
-
-
-
+  if (FieldBits::NoField != (BeaconFieldMask & whichField))
+    _sfBeacon.syncWith(pOther->_sfBeacon);
 }
 
-void ClipPlaneBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void ClipPlaneBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 OSG_END_NAMESPACE
 
@@ -343,4 +274,3 @@ DataType FieldDataTraits<ClipPlanePtr>::_type("ClipPlanePtr", "GroupPtr");
 OSG_DLLEXPORT_SFIELD_DEF1(ClipPlanePtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
-

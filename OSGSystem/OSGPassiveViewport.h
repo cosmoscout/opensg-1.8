@@ -50,81 +50,74 @@ OSG_BEGIN_NAMESPACE
 
 class RenderActionBase;
 
-/*! \brief Passive Viewport class. See \ref 
+/*! \brief Passive Viewport class. See \ref
     PageSystemWindowViewportsPassive for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING PassiveViewport : public PassiveViewportBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING PassiveViewport : public PassiveViewportBase {
+ private:
+  typedef PassiveViewportBase Inherited;
 
-    typedef PassiveViewportBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector whichField, 
-                         UInt32    origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    your_category                             */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  virtual void activateSize(void);
+  virtual void activate(void);
+  virtual void deactivate(void);
+  virtual void draw(DrawAction* action);
+  virtual void render(RenderActionBase* action);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    your_category                             */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in PassiveViewportBase.
 
-    virtual void activateSize(void);
-    virtual void activate    (void);
-    virtual void deactivate  (void);
-    virtual void draw        (DrawAction       *action);
-    virtual void render      (RenderActionBase *action);
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  PassiveViewport(void);
+  PassiveViewport(const PassiveViewport& source);
 
-    // Variables should all be in PassiveViewportBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~PassiveViewport(void);
 
-    PassiveViewport(void);
-    PassiveViewport(const PassiveViewport &source);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class PassiveViewportBase;
 
-    virtual ~PassiveViewport(void); 
+  static void initMethod(void);
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  // prohibit default functions (move to 'public' if you need one)
 
-    friend class FieldContainer;
-    friend class PassiveViewportBase;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const PassiveViewport &source);
+  void operator=(const PassiveViewport& source);
 };
 
-typedef PassiveViewport *PassiveViewportP;
+typedef PassiveViewport* PassiveViewportP;
 
 OSG_END_NAMESPACE
 

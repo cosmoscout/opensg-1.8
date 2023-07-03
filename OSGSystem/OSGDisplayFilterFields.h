@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGDISPLAYFILTERFIELDS_H_
 #define _OSGDISPLAYFILTERFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class DisplayFilter;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! DisplayFilterPtr
 
 typedef FCPtr<AttachmentContainerPtr, DisplayFilter> DisplayFilterPtr;
@@ -81,18 +80,22 @@ typedef FCPtr<AttachmentContainerPtr, DisplayFilter> DisplayFilterPtr;
 #endif
 
 template <>
-struct FieldDataTraits<DisplayFilterPtr> : 
-    public FieldTraitsRecurseMapper<DisplayFilterPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<DisplayFilterPtr> : public FieldTraitsRecurseMapper<DisplayFilterPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getSName(void) { return "SFDisplayFilterPtr"; }
-    static const char *getMName(void) { return "MFDisplayFilterPtr"; }
+  static const char* getSName(void) {
+    return "SFDisplayFilterPtr";
+  }
+  static const char* getMName(void) {
+    return "MFDisplayFilterPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -102,7 +105,6 @@ struct FieldDataTraits<DisplayFilterPtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
@@ -126,6 +128,7 @@ OSG_DLLEXPORT_DECL1(MField, DisplayFilterPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 
 OSG_END_NAMESPACE
 
-#define OSGDISPLAYFILTERFIELDS_HEADER_CVSID "@(#)$Id: FCFieldsTemplate_h.h,v 1.25 2005/04/04 14:51:48 dirk Exp $"
+#define OSGDISPLAYFILTERFIELDS_HEADER_CVSID                                                        \
+  "@(#)$Id: FCFieldsTemplate_h.h,v 1.25 2005/04/04 14:51:48 dirk Exp $"
 
 #endif /* _OSGDISPLAYFILTERFIELDS_H_ */

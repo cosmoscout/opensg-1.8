@@ -36,17 +36,13 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifdef _WIN32
-
 
 OSG_BEGIN_NAMESPACE
 
-
 OSG_END_NAMESPACE
-
 
 #endif // _WIN32
 
-
-#define OSGTEXTWIN32BACKEND_INLINE_CVSID "@(#)$Id: OSGTextWIN32Backend.inl,v 1.1 2005/03/03 13:43:07 a-m-z Exp $"
+#define OSGTEXTWIN32BACKEND_INLINE_CVSID                                                           \
+  "@(#)$Id: OSGTextWIN32Backend.inl,v 1.1 2005/03/03 13:43:07 a-m-z Exp $"

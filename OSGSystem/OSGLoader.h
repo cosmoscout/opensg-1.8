@@ -61,98 +61,88 @@ OSG_BEGIN_NAMESPACE
  *  \brief native osg loader (vrml syntax)
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING OSGLoader :
-    public ScanParseFieldTypeMapper<ScanParseSkel>
-{
-    /*==========================  PRIVATE  ================================*/
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING OSGLoader : public ScanParseFieldTypeMapper<ScanParseSkel> {
+  /*==========================  PRIVATE  ================================*/
+ private:
+  typedef ScanParseFieldTypeMapper<ScanParseSkel>  Inherited;
+  typedef std::map<std::string, FieldContainerPtr> NamedFCMap;
+  typedef OSGLoader                                Self;
 
-    typedef ScanParseFieldTypeMapper<ScanParseSkel    > Inherited;
-    typedef std::map                <std::string,
-                                     FieldContainerPtr> NamedFCMap;
-    typedef OSGLoader                                   Self;
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-  public :
+  OSGLoader(void);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    OSGLoader(void);
+  virtual ~OSGLoader(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                Skel replacements                             */
+  /*! \{                                                                 */
 
-    virtual ~OSGLoader(void);
+  virtual void scanStream(std::istream& is);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                Skel replacements                             */
-    /*! \{                                                                 */
+  virtual void beginNode(const Char8* szNodeTypename, const Char8* szNodename);
 
-    virtual void scanStream       (std::istream &is);
+  virtual void endNode(void);
 
-    virtual void    beginNode         (const Char8  *szNodeTypename,
-                                       const Char8  *szNodename       );
+  virtual void use(const Char8* szName);
 
-    virtual void    endNode           (void);
+  virtual void beginField(const Char8* szFieldname, const UInt32 uiFieldTypeId);
 
-    virtual void    use               (const Char8  *szName           );
+  virtual void endField(void);
 
-    virtual void    beginField        (const Char8  *szFieldname,
-                                       const UInt32  uiFieldTypeId    );
+  virtual void addFieldValue(const Char8* szFieldVal);
 
-    virtual void    endField          (void                           );
+  virtual Int32 mapExtIntFieldType(const Char8* szFieldname, const Int32 iFieldTypeId);
 
-    virtual void    addFieldValue     (const Char8  *szFieldVal       );
+  virtual UInt32 getFieldType(const Char8* szFieldname);
 
-    virtual Int32   mapExtIntFieldType(const Char8  *szFieldname,
-                                       const Int32   iFieldTypeId     );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Get                                     */
+  /*! \{                                                                 */
 
-    virtual UInt32  getFieldType      (const Char8  *szFieldname      );
+  virtual NodePtr                        getRootNode(void);
+  virtual std::vector<FieldContainerPtr> getRootNodes(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Get                                     */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr getReference(const Char8* szName);
 
-    virtual      NodePtr                   getRootNode (void);
-    virtual std::vector<FieldContainerPtr> getRootNodes(void);
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Member                                  */
+  /*! \{                                                                 */
 
-    virtual      FieldContainerPtr         getReference (const Char8 *szName);
+  FieldContainerPtr       _pCurrentFC;
+  NodePtr                 _pRootNode;
+  Field*                  _pCurrentField;
+  const FieldDescription* _pCurrentFieldDesc;
+  NamedFCMap              _defMap;
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  std::stack<FieldContainerPtr>       _fcStack;
+  std::stack<Field*>                  _fStack;
+  std::stack<const FieldDescription*> _fdStack;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Member                                  */
-    /*! \{                                                                 */
+  void initFieldTypeMapper(void);
 
-          FieldContainerPtr                     _pCurrentFC;
-          NodePtr                               _pRootNode;
-          Field                                *_pCurrentField;
-    const FieldDescription                     *_pCurrentFieldDesc;
-          NamedFCMap                            _defMap;
+  void setFieldContainerValue(FieldContainerPtr pNewNode);
 
-          std::stack<      FieldContainerPtr >  _fcStack;
-          std::stack<      Field            *>  _fStack;
-          std::stack<const FieldDescription *>  _fdStack;
-
-    void              initFieldTypeMapper   (      void                      );
-
-    void              setFieldContainerValue(      FieldContainerPtr pNewNode);
-
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    OSGLoader(const OSGLoader &source);
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const OSGLoader &source);
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  OSGLoader(const OSGLoader& source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const OSGLoader& source);
 };
 
 //---------------------------------------------------------------------------
@@ -161,7 +151,7 @@ class OSG_SYSTEMLIB_DLLMAPPING OSGLoader :
 
 // class pointer
 
-typedef OSGLoader *OSGLoaderP;
+typedef OSGLoader* OSGLoaderP;
 
 OSG_END_NAMESPACE
 

@@ -53,230 +53,214 @@ OSG_BEGIN_NAMESPACE
 
 //#define USE_NV_OCCLUSION 1
 
-/*! \brief PipelineComposer class. See \ref 
+/*! \brief PipelineComposer class. See \ref
            PageSystemPipelineComposer for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING PipelineComposer : public PipelineComposerBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING PipelineComposer : public PipelineComposerBase {
+ private:
+  typedef PipelineComposerBase Inherited;
 
-    typedef PipelineComposerBase       Inherited;
+  struct TileBuffer;
+  struct GroupInfo;
+  struct GroupInfoOrder;
+  friend struct TileBuffer;
+  friend struct GroupInfo;
+  friend struct GroupInfoOrder;
 
-    struct TileBuffer;
-    struct GroupInfo;
-    struct GroupInfoOrder;
-    friend struct TileBuffer;
-    friend struct GroupInfo;
-    friend struct GroupInfoOrder;
+  /** \brief RGB Color value */
+  struct RGBValue {
+    UInt8 red;
+    UInt8 green;
+    UInt8 blue;
+  };
+  struct DepthInfo {
+    UInt32 min;
+    UInt32 max;
+    UInt8  occlude;
+  };
+  struct TransInfo {
+    unsigned int sendTo : 13;
+    unsigned int empty : 1;
+    unsigned int sendDepth : 1;
+    unsigned int first : 1;
+  };
+  struct TileBuffer {
+    bool             empty;
+    UInt32           size;
+    UInt32           colorSize;
+    UInt32           depthSize;
+    UInt32           dataSize;
+    Connection*      dstConnection;
+    struct DepthInfo depth;
+    struct TransInfo trans;
+    struct {
+      UInt32 count;
+      UInt16 x;
+      UInt16 y;
+      UInt16 w;
+      UInt16 h;
+      UInt16 depth;
+    } header;
+    UInt8 data[1];
+  };
+  struct GroupInfo {
+    UInt32           id;
+    struct DepthInfo depth;
+    struct TransInfo trans;
+  };
+  struct GroupInfoOrder : public std::binary_function<const GroupInfo*, const GroupInfo*, bool> {
+    bool operator()(const GroupInfo* a, const GroupInfo* b);
+  };
+  struct Statistics {
+    UInt32 bytesIn;
+    UInt32 bytesOut;
+    UInt32 occluded;
+    UInt32 noDepth;
+    UInt32 noGeo;
+    UInt32 clipped;
+    double sortTime;
+    double pixelReadTime;
+    double composeTime;
+  };
+  typedef std::list<TileBuffer*> QueueT;
 
-    /** \brief RGB Color value */
-    struct RGBValue
-    {
-        UInt8 red;
-        UInt8 green;
-        UInt8 blue;
-    };
-    struct DepthInfo
-    {
-        UInt32 min;
-        UInt32 max;
-        UInt8  occlude;
-    };
-    struct TransInfo
-    {
-        unsigned int sendTo   :13;
-        unsigned int empty    :1;
-        unsigned int sendDepth:1;
-        unsigned int first    :1;
-    };
-    struct TileBuffer
-    {
-        bool empty;
-        UInt32 size;
-        UInt32 colorSize;
-        UInt32 depthSize;
-        UInt32 dataSize;
-        Connection *dstConnection;
-        struct DepthInfo depth;
-        struct TransInfo trans;
-        struct {
-            UInt32 count;
-            UInt16 x;
-            UInt16 y;
-            UInt16 w;
-            UInt16 h;
-            UInt16 depth;
-        } header;
-        UInt8 data[1];
-    };
-    struct GroupInfo
-    {
-        UInt32 id;
-        struct DepthInfo depth;
-        struct TransInfo trans;
-    };
-    struct GroupInfoOrder : public std::binary_function<
-        const GroupInfo*,const GroupInfo*, bool>
-    {
-        bool operator() (const GroupInfo *a, const GroupInfo *b);
-    };
-    struct Statistics {
-        UInt32 bytesIn;
-        UInt32 bytesOut;
-        UInt32 occluded;
-        UInt32 noDepth;
-        UInt32 noGeo;
-        UInt32 clipped;
-        double sortTime;
-        double pixelReadTime;
-        double composeTime;
-    };
-    typedef std::list<TileBuffer*> QueueT;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name      composition                                             */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  virtual void open(void);
+  virtual void startViewport(ViewportPtr port);
+  virtual void composeViewport(ViewportPtr port);
+  virtual void close(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name      composition                                             */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name      features                                                */
+  /*! \{                                                                 */
 
-    virtual void open           ( void             );
-    virtual void startViewport  ( ViewportPtr port );
-    virtual void composeViewport( ViewportPtr port );
-    virtual void close          ( void             );
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name      features                                                */
-    /*! \{                                                                 */
+  virtual bool getClientRendering(void);
 
-    virtual bool getClientRendering(void);
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  UInt32              _tileBufferSize;
+  std::vector<UInt8>  _tileA;
+  std::vector<UInt8>  _tileB;
+  std::vector<UInt8>  _workingTile;
+  std::vector<UInt8>* _readTilePtr;
+  std::vector<UInt8>* _composeTilePtr;
+  UInt32              _readTilesX;
+  UInt32              _readTilesY;
+  UInt32              _composeTilesX;
+  UInt32              _composeTilesY;
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  std::vector<TransInfo>  _transInfo;
+  std::list<GroupInfo>    _groupInfoPool;
+  std::vector<GroupInfo*> _groupInfo;
 
-    UInt32                      _tileBufferSize;
-    std::vector<UInt8>          _tileA;
-    std::vector<UInt8>          _tileB;
-    std::vector<UInt8>          _workingTile;
-    std::vector<UInt8>         *_readTilePtr;
-    std::vector<UInt8>         *_composeTilePtr;
-    UInt32                      _readTilesX;
-    UInt32                      _readTilesY;
-    UInt32                      _composeTilesX;
-    UInt32                      _composeTilesY;
+  GLenum _colorFormat;
+  GLenum _colorType;
+  GLenum _depthType;
 
-    std::vector< TransInfo              > _transInfo;
-    std::list  < GroupInfo              > _groupInfoPool;
-    std::vector< GroupInfo*             > _groupInfo;
+  Statistics _statistics;
 
-    GLenum                      _colorFormat;
-    GLenum                      _colorType;
-    GLenum                      _depthType;
+  BaseThread* _writer;
+  Thread*     _composer;
+  Barrier*    _barrier;
+  Barrier*    _composeBarrier;
+  Barrier*    _frameEndBarrier;
+  Lock*       _lock;
+  QueueT      _queue;
+  bool        _waiting;
+  GLuint      _occlusionQuery;
+  bool        _firstFrame;
 
-    Statistics                  _statistics;
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    BaseThread                 *_writer;
-    Thread                     *_composer;
-    Barrier                    *_barrier;
-    Barrier                    *_composeBarrier;
-    Barrier                    *_frameEndBarrier;
-    Lock                       *_lock;
-    QueueT                      _queue;
-    bool                        _waiting;
-    GLuint                      _occlusionQuery;
-    bool                        _firstFrame;
+  PipelineComposer(void);
+  PipelineComposer(const PipelineComposer& source);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    PipelineComposer(void);
-    PipelineComposer(const PipelineComposer &source);
+  virtual ~PipelineComposer(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      helper function                         */
+  /*! \{                                                                 */
 
-    virtual ~PipelineComposer(void); 
+  template <class DepthT, class ColorT>
+  UInt32 getMinMaxOcclude(DepthT& depth, ColorT& color, DepthInfo* buffer);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      helper function                         */
-    /*! \{                                                                 */
+  template <class DepthT, class ColorT>
+  void setTransInfo(DepthT& depth, ColorT& color);
 
-    template<class DepthT,class ColorT>
-    UInt32 getMinMaxOcclude(DepthT &depth,ColorT &color,
-                            DepthInfo *buffer);
+  template <class DepthT, class ColorT>
+  void calculateTransInfo(DepthT& depth, ColorT& color);
 
-    template<class DepthT,class ColorT>
-    void setTransInfo(DepthT &depth,ColorT &color);
+  template <class DepthT, class ColorT>
+  void clientCompose(DepthT& depth, ColorT& color);
 
-    template<class DepthT,class ColorT>
-    void calculateTransInfo(DepthT &depth,ColorT &color);
+  template <class DepthT, class ColorT>
+  void serverCompose(DepthT& depth, ColorT& color);
 
-    template<class DepthT,class ColorT>
-    void clientCompose(DepthT &depth,ColorT &color);
+  template <class DepthT, class ColorT>
+  void writeResult(DepthT& depth, ColorT& color);
 
-    template<class DepthT,class ColorT>
-    void serverCompose(DepthT &depth,ColorT &color);
+  template <class DepthT, class ColorT>
+  void readBuffer(DepthT& depth, ColorT& color, ViewportPtr port);
+  template <class DepthT, class ColorT>
+  void composeBuffer(DepthT& depth, ColorT& color);
 
-    template<class DepthT,class ColorT>
-    void writeResult(DepthT &depth,ColorT &color);
+  UInt32 compressTransInfo(std::vector<TransInfo>& transInfo);
+  void   uncompressTransInfo(std::vector<TransInfo>& transInfo, UInt32 infoCount);
 
-    template<class DepthT,class ColorT>
-    void readBuffer(DepthT &depth,ColorT &color,
-                      ViewportPtr port);
-    template<class DepthT,class ColorT>
-    void composeBuffer(DepthT &depth,ColorT &color);
+  template <class T, T empty>
+  static bool checkDepth(T* buffer, T& front, T& back, int size);
 
-    UInt32 compressTransInfo(std::vector<TransInfo> &transInfo);
-    void   uncompressTransInfo(std::vector<TransInfo> &transInfo,UInt32 infoCount);
+  TileBuffer* getComposeTileBuffer(UInt32 x, UInt32 y);
+  TileBuffer* getReadTileBuffer(UInt32 x, UInt32 y);
+  TileBuffer* getWorkingTileBuffer(void);
 
-    template <class T,T empty>
-    static bool checkDepth(T *buffer,T &front,T &back,int size);
+  /*! \}                                                                 */
 
-    TileBuffer *getComposeTileBuffer(UInt32 x,UInt32 y);
-    TileBuffer *getReadTileBuffer(UInt32 x,UInt32 y);
-    TileBuffer *getWorkingTileBuffer(void);
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class PipelineComposerBase;
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  static void writeProc(void* arg);
+  static void composeProc(void* arg);
+  static void initMethod(void);
 
-    friend class FieldContainer;
-    friend class PipelineComposerBase;
+  // prohibit default functions (move to 'public' if you need one)
 
-    static void writeProc(void *arg);
-    static void composeProc(void *arg);
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const PipelineComposer &source);
+  void operator=(const PipelineComposer& source);
 };
 
-typedef PipelineComposer *PipelineComposerP;
+typedef PipelineComposer* PipelineComposerP;
 
 OSG_END_NAMESPACE
 

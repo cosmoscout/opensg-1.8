@@ -52,109 +52,79 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &ImageForegroundBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& ImageForegroundBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 ImageForegroundBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 ImageForegroundBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-ImageForegroundPtr ImageForegroundBase::create(void) 
-{
-    ImageForegroundPtr fc; 
+inline ImageForegroundPtr ImageForegroundBase::create(void) {
+  ImageForegroundPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = ImageForegroundPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = ImageForegroundPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-ImageForegroundPtr ImageForegroundBase::createEmpty(void) 
-{ 
-    ImageForegroundPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline ImageForegroundPtr ImageForegroundBase::createEmpty(void) {
+  ImageForegroundPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the ImageForeground::_mfImages field.
-inline
-MFImagePtr *ImageForegroundBase::getMFImages(void)
-{
-    return &_mfImages;
+inline MFImagePtr* ImageForegroundBase::getMFImages(void) {
+  return &_mfImages;
 }
 
 //! Get the ImageForeground::_mfPositions field.
-inline
-MFPnt2f *ImageForegroundBase::getMFPositions(void)
-{
-    return &_mfPositions;
+inline MFPnt2f* ImageForegroundBase::getMFPositions(void) {
+  return &_mfPositions;
 }
-
-
 
 //! Get the value of the \a index element the ImageForeground::_mfImages field.
-inline
-ImagePtr &ImageForegroundBase::getImages(const UInt32 index)
-{
-    return _mfImages[index];
+inline ImagePtr& ImageForegroundBase::getImages(const UInt32 index) {
+  return _mfImages[index];
 }
 
 //! Get the ImageForeground::_mfImages field.
-inline
-MFImagePtr &ImageForegroundBase::getImages(void)
-{
-    return _mfImages;
+inline MFImagePtr& ImageForegroundBase::getImages(void) {
+  return _mfImages;
 }
 
 //! Get the ImageForeground::_mfImages field.
-inline
-const MFImagePtr &ImageForegroundBase::getImages(void) const
-{
-    return _mfImages;
+inline const MFImagePtr& ImageForegroundBase::getImages(void) const {
+  return _mfImages;
 }
 
 //! Get the value of the \a index element the ImageForeground::_mfPositions field.
-inline
-Pnt2f &ImageForegroundBase::getPositions(const UInt32 index)
-{
-    return _mfPositions[index];
+inline Pnt2f& ImageForegroundBase::getPositions(const UInt32 index) {
+  return _mfPositions[index];
 }
 
 //! Get the ImageForeground::_mfPositions field.
-inline
-MFPnt2f &ImageForegroundBase::getPositions(void)
-{
-    return _mfPositions;
+inline MFPnt2f& ImageForegroundBase::getPositions(void) {
+  return _mfPositions;
 }
 
 //! Get the ImageForeground::_mfPositions field.
-inline
-const MFPnt2f &ImageForegroundBase::getPositions(void) const
-{
-    return _mfPositions;
+inline const MFPnt2f& ImageForegroundBase::getPositions(void) const {
+  return _mfPositions;
 }
 
 OSG_END_NAMESPACE
 
-#define OSGIMAGEFOREGROUNDBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGIMAGEFOREGROUNDBASE_INLINE_CVSID                                                        \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

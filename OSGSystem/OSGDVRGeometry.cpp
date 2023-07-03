@@ -49,51 +49,39 @@
 
 OSG_USING_NAMESPACE
 
-
-
 /*! \class osg::DVRGeometry
- *  Geometry used for the OpenSG direct volume rendering module. 
+ *  Geometry used for the OpenSG direct volume rendering module.
  *  It represents the area in which the volume data is shown.
  */
 
 /*----------------------- constructors & destructors ----------------------*/
 
 //! Constructor
-DVRGeometry::DVRGeometry(void) :
-    Inherited()
-{
+DVRGeometry::DVRGeometry(void)
+    : Inherited() {
 }
 
 //! Copy Constructor
-DVRGeometry::DVRGeometry(const DVRGeometry &source) :
-    Inherited(source)
-{
+DVRGeometry::DVRGeometry(const DVRGeometry& source)
+    : Inherited(source) {
 }
 
 //! Destructor
-DVRGeometry::~DVRGeometry(void)
-{
+DVRGeometry::~DVRGeometry(void) {
 }
 
 /*----------------------------- class specific ----------------------------*/
 
 //! initialize the static features of the class, e.g. action callbacks
-void DVRGeometry::initMethod (void)
-{
+void DVRGeometry::initMethod(void) {
 }
 
 //! react to field changes
-void DVRGeometry::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void DVRGeometry::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
 //! output the instance for debug purposes
-void DVRGeometry::dump(      UInt32    , 
-                         const BitVector ) const
-{
-    SLOG << "Dump DVRGeometry NI" << std::endl;
+void DVRGeometry::dump(UInt32, const BitVector) const {
+  SLOG << "Dump DVRGeometry NI" << std::endl;
 }
-
-
-

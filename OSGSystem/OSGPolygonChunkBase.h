@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGPOLYGONCHUNKBASE_H_
 #define _OSGPOLYGONCHUNKBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -71,13 +69,13 @@
 #include <OSGGLenumFields.h> // FrontFace type
 #include <OSGGLenumFields.h> // FrontMode type
 #include <OSGGLenumFields.h> // BackMode type
-#include <OSGBoolFields.h> // Smooth type
+#include <OSGBoolFields.h>   // Smooth type
 #include <OSGReal32Fields.h> // OffsetFactor type
 #include <OSGReal32Fields.h> // OffsetBias type
-#include <OSGBoolFields.h> // OffsetPoint type
-#include <OSGBoolFields.h> // OffsetLine type
-#include <OSGBoolFields.h> // OffsetFill type
-#include <OSGInt32Fields.h> // Stipple type
+#include <OSGBoolFields.h>   // OffsetPoint type
+#include <OSGBoolFields.h>   // OffsetLine type
+#include <OSGBoolFields.h>   // OffsetFill type
+#include <OSGInt32Fields.h>  // Stipple type
 
 #include <OSGPolygonChunkFields.h>
 
@@ -88,251 +86,230 @@ class BinaryDataHandler;
 
 //! \brief PolygonChunk Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING PolygonChunkBase : public StateChunk
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING PolygonChunkBase : public StateChunk {
+ private:
+  typedef StateChunk Inherited;
 
-    typedef StateChunk    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef PolygonChunkPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    CullFaceFieldId     = Inherited::NextFieldId,
+    FrontFaceFieldId    = CullFaceFieldId + 1,
+    FrontModeFieldId    = FrontFaceFieldId + 1,
+    BackModeFieldId     = FrontModeFieldId + 1,
+    SmoothFieldId       = BackModeFieldId + 1,
+    OffsetFactorFieldId = SmoothFieldId + 1,
+    OffsetBiasFieldId   = OffsetFactorFieldId + 1,
+    OffsetPointFieldId  = OffsetBiasFieldId + 1,
+    OffsetLineFieldId   = OffsetPointFieldId + 1,
+    OffsetFillFieldId   = OffsetLineFieldId + 1,
+    StippleFieldId      = OffsetFillFieldId + 1,
+    NextFieldId         = StippleFieldId + 1
+  };
 
-    typedef PolygonChunkPtr  Ptr;
+  static const OSG::BitVector CullFaceFieldMask;
+  static const OSG::BitVector FrontFaceFieldMask;
+  static const OSG::BitVector FrontModeFieldMask;
+  static const OSG::BitVector BackModeFieldMask;
+  static const OSG::BitVector SmoothFieldMask;
+  static const OSG::BitVector OffsetFactorFieldMask;
+  static const OSG::BitVector OffsetBiasFieldMask;
+  static const OSG::BitVector OffsetPointFieldMask;
+  static const OSG::BitVector OffsetLineFieldMask;
+  static const OSG::BitVector OffsetFillFieldMask;
+  static const OSG::BitVector StippleFieldMask;
 
-    enum
-    {
-        CullFaceFieldId     = Inherited::NextFieldId,
-        FrontFaceFieldId    = CullFaceFieldId     + 1,
-        FrontModeFieldId    = FrontFaceFieldId    + 1,
-        BackModeFieldId     = FrontModeFieldId    + 1,
-        SmoothFieldId       = BackModeFieldId     + 1,
-        OffsetFactorFieldId = SmoothFieldId       + 1,
-        OffsetBiasFieldId   = OffsetFactorFieldId + 1,
-        OffsetPointFieldId  = OffsetBiasFieldId   + 1,
-        OffsetLineFieldId   = OffsetPointFieldId  + 1,
-        OffsetFillFieldId   = OffsetLineFieldId   + 1,
-        StippleFieldId      = OffsetFillFieldId   + 1,
-        NextFieldId         = StippleFieldId      + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector CullFaceFieldMask;
-    static const OSG::BitVector FrontFaceFieldMask;
-    static const OSG::BitVector FrontModeFieldMask;
-    static const OSG::BitVector BackModeFieldMask;
-    static const OSG::BitVector SmoothFieldMask;
-    static const OSG::BitVector OffsetFactorFieldMask;
-    static const OSG::BitVector OffsetBiasFieldMask;
-    static const OSG::BitVector OffsetPointFieldMask;
-    static const OSG::BitVector OffsetLineFieldMask;
-    static const OSG::BitVector OffsetFillFieldMask;
-    static const OSG::BitVector StippleFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFGLenum* getSFCullFace(void);
+  SFGLenum* getSFFrontFace(void);
+  SFGLenum* getSFFrontMode(void);
+  SFGLenum* getSFBackMode(void);
+  SFBool*   getSFSmooth(void);
+  SFReal32* getSFOffsetFactor(void);
+  SFReal32* getSFOffsetBias(void);
+  SFBool*   getSFOffsetPoint(void);
+  SFBool*   getSFOffsetLine(void);
+  SFBool*   getSFOffsetFill(void);
+  MFInt32*  getMFStipple(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  GLenum&        getCullFace(void);
+  const GLenum&  getCullFace(void) const;
+  GLenum&        getFrontFace(void);
+  const GLenum&  getFrontFace(void) const;
+  GLenum&        getFrontMode(void);
+  const GLenum&  getFrontMode(void) const;
+  GLenum&        getBackMode(void);
+  const GLenum&  getBackMode(void) const;
+  bool&          getSmooth(void);
+  const bool&    getSmooth(void) const;
+  Real32&        getOffsetFactor(void);
+  const Real32&  getOffsetFactor(void) const;
+  Real32&        getOffsetBias(void);
+  const Real32&  getOffsetBias(void) const;
+  bool&          getOffsetPoint(void);
+  const bool&    getOffsetPoint(void) const;
+  bool&          getOffsetLine(void);
+  const bool&    getOffsetLine(void) const;
+  bool&          getOffsetFill(void);
+  const bool&    getOffsetFill(void) const;
+  Int32&         getStipple(const UInt32 index);
+  MFInt32&       getStipple(void);
+  const MFInt32& getStipple(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFGLenum            *getSFCullFace       (void);
-           SFGLenum            *getSFFrontFace      (void);
-           SFGLenum            *getSFFrontMode      (void);
-           SFGLenum            *getSFBackMode       (void);
-           SFBool              *getSFSmooth         (void);
-           SFReal32            *getSFOffsetFactor   (void);
-           SFReal32            *getSFOffsetBias     (void);
-           SFBool              *getSFOffsetPoint    (void);
-           SFBool              *getSFOffsetLine     (void);
-           SFBool              *getSFOffsetFill     (void);
-           MFInt32             *getMFStipple        (void);
+  void setCullFace(const GLenum& value);
+  void setFrontFace(const GLenum& value);
+  void setFrontMode(const GLenum& value);
+  void setBackMode(const GLenum& value);
+  void setSmooth(const bool& value);
+  void setOffsetFactor(const Real32& value);
+  void setOffsetBias(const Real32& value);
+  void setOffsetPoint(const bool& value);
+  void setOffsetLine(const bool& value);
+  void setOffsetFill(const bool& value);
 
-           GLenum              &getCullFace       (void);
-     const GLenum              &getCullFace       (void) const;
-           GLenum              &getFrontFace      (void);
-     const GLenum              &getFrontFace      (void) const;
-           GLenum              &getFrontMode      (void);
-     const GLenum              &getFrontMode      (void) const;
-           GLenum              &getBackMode       (void);
-     const GLenum              &getBackMode       (void) const;
-           bool                &getSmooth         (void);
-     const bool                &getSmooth         (void) const;
-           Real32              &getOffsetFactor   (void);
-     const Real32              &getOffsetFactor   (void) const;
-           Real32              &getOffsetBias     (void);
-     const Real32              &getOffsetBias     (void) const;
-           bool                &getOffsetPoint    (void);
-     const bool                &getOffsetPoint    (void) const;
-           bool                &getOffsetLine     (void);
-     const bool                &getOffsetLine     (void) const;
-           bool                &getOffsetFill     (void);
-     const bool                &getOffsetFill     (void) const;
-           Int32               &getStipple        (const UInt32 index);
-           MFInt32             &getStipple        (void);
-     const MFInt32             &getStipple        (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setCullFace       ( const GLenum &value );
-     void setFrontFace      ( const GLenum &value );
-     void setFrontMode      ( const GLenum &value );
-     void setBackMode       ( const GLenum &value );
-     void setSmooth         ( const bool &value );
-     void setOffsetFactor   ( const Real32 &value );
-     void setOffsetBias     ( const Real32 &value );
-     void setOffsetPoint    ( const bool &value );
-     void setOffsetLine     ( const bool &value );
-     void setOffsetFill     ( const bool &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static PolygonChunkPtr create(void);
+  static PolygonChunkPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  PolygonChunkPtr      create          (void); 
-    static  PolygonChunkPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFGLenum _sfCullFace;
+  SFGLenum _sfFrontFace;
+  SFGLenum _sfFrontMode;
+  SFGLenum _sfBackMode;
+  SFBool   _sfSmooth;
+  SFReal32 _sfOffsetFactor;
+  SFReal32 _sfOffsetBias;
+  SFBool   _sfOffsetPoint;
+  SFBool   _sfOffsetLine;
+  SFBool   _sfOffsetFill;
+  MFInt32  _mfStipple;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  PolygonChunkBase(void);
+  PolygonChunkBase(const PolygonChunkBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~PolygonChunkBase(void);
 
-    SFGLenum            _sfCullFace;
-    SFGLenum            _sfFrontFace;
-    SFGLenum            _sfFrontMode;
-    SFGLenum            _sfBackMode;
-    SFBool              _sfSmooth;
-    SFReal32            _sfOffsetFactor;
-    SFReal32            _sfOffsetBias;
-    SFBool              _sfOffsetPoint;
-    SFBool              _sfOffsetLine;
-    SFBool              _sfOffsetFill;
-    MFInt32             _mfStipple;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    PolygonChunkBase(void);
-    PolygonChunkBase(const PolygonChunkBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~PolygonChunkBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      PolygonChunkBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(PolygonChunkBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      PolygonChunkBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      PolygonChunkBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const PolygonChunkBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const PolygonChunkBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef PolygonChunkBase* PolygonChunkBaseP;
 
-typedef PolygonChunkBase *PolygonChunkBaseP;
-
-typedef osgIF<PolygonChunkBase::isNodeCore,
-              CoredNodePtr<PolygonChunk>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet PolygonChunkNodePtr;
+typedef osgIF<PolygonChunkBase::isNodeCore, CoredNodePtr<PolygonChunk>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet PolygonChunkNodePtr;
 
 typedef RefPtr<PolygonChunkPtr> PolygonChunkRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGPOLYGONCHUNKBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGPOLYGONCHUNKBASE_HEADER_CVSID                                                           \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGPOLYGONCHUNKBASE_H_ */

@@ -71,203 +71,193 @@ class Node;
 /*! \brief IntersectAction class
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING IntersectAction : public Action
-{
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING IntersectAction : public Action {
+ public:
+  //-----------------------------------------------------------------------
+  //   enums
+  //-----------------------------------------------------------------------
 
-    //-----------------------------------------------------------------------
-    //   enums                                                               
-    //-----------------------------------------------------------------------
+  //-----------------------------------------------------------------------
+  //   types
+  //-----------------------------------------------------------------------
 
-    //-----------------------------------------------------------------------
-    //   types                                                               
-    //-----------------------------------------------------------------------
+  //-----------------------------------------------------------------------
+  //   class functions
+  //-----------------------------------------------------------------------
 
-    //-----------------------------------------------------------------------
-    //   class functions                                                     
-    //-----------------------------------------------------------------------
+  static const char* getClassname(void) {
+    return "IntersectAction";
+  };
 
-    static const char *getClassname(void) { return "IntersectAction"; };
+  // create a new IntersectAction by cloning the prototype
+  static IntersectAction* create(void);
+  static IntersectAction* create(const Line& line, const Real32 maxdist = Inf);
 
-    // create a new IntersectAction by cloning the prototype
-    static IntersectAction * create( void );
-    static IntersectAction * create( const Line &line, 
-                                      const Real32 maxdist = Inf );
-    
-    // prototype access
-    // after setting the prototype all new IntersectActions are clones of it
-    static void             setPrototype( IntersectAction * proto );
-    static IntersectAction *getPrototype( void );
+  // prototype access
+  // after setting the prototype all new IntersectActions are clones of it
+  static void             setPrototype(IntersectAction* proto);
+  static IntersectAction* getPrototype(void);
 
-    //-----------------------------------------------------------------------
-    //   instance functions                                                  
-    //-----------------------------------------------------------------------
- 
-    IntersectAction& operator =(const IntersectAction &source);
+  //-----------------------------------------------------------------------
+  //   instance functions
+  //-----------------------------------------------------------------------
 
-    virtual ~IntersectAction(void); 
+  IntersectAction& operator=(const IntersectAction& source);
 
-    /*------------------------- your_category -------------------------------*/
+  virtual ~IntersectAction(void);
 
-    /*------------------------- access ------------------------------*/
+  /*------------------------- your_category -------------------------------*/
 
-    // set input data
-    void setLine( const Line &line, const Real32 maxdist = Inf );
+  /*------------------------- access ------------------------------*/
 
-    // get input data
-    inline const Line& getLine( void ) const;
-    inline Real32 getMaxDist( void ) const;
-    
-    // get result data
-    inline bool didHit( void ) const;
-    
-    inline Real32 getHitT( void ) const;
-    
-    inline Pnt3f getHitPoint( void ) const;
-    
-    inline Vec3f getHitNormal( void ) const;
-    
-    inline NodePtr getHitObject( void ) const;
-    
-    inline Int32 getHitTriangle( void ) const;
+  // set input data
+  void setLine(const Line& line, const Real32 maxdist = Inf);
 
+  // get input data
+  inline const Line& getLine(void) const;
+  inline Real32      getMaxDist(void) const;
 
-    // to be used by the traversed nodes
-    // set (temporary) results
-    Action::ResultE setEnterLeave( Real32 enter, Real32 leave );
-    void setHit( Real32 t, NodePtr obj, Int32 triIndex, Vec3f &normal );
+  // get result data
+  inline bool didHit(void) const;
 
-    // when entering/leaving a different coordinate system, the values might
-    // have to be scaled
-    void scale(Real32 s);
-    
+  inline Real32 getHitT(void) const;
 
-    /*------------------------- your_operators ------------------------------*/
+  inline Pnt3f getHitPoint(void) const;
 
+  inline Vec3f getHitNormal(void) const;
 
-    /*------------------------- assignment ----------------------------------*/
+  inline NodePtr getHitObject(void) const;
 
-    /*------------------------- comparison ----------------------------------*/
+  inline Int32 getHitTriangle(void) const;
 
-    bool operator < (const IntersectAction &other) const;
-    
-    bool operator == (const IntersectAction &other) const;
-    bool operator != (const IntersectAction &other) const;
-    
-    
-    // default registration. static, so it can be called during static init
-    
-    static void registerEnterDefault(   const FieldContainerType &type, 
-                                        const Action::Functor    &func);
-    
-    static void registerLeaveDefault(   const FieldContainerType &type, 
-                                        const Action::Functor    &func);
+  // to be used by the traversed nodes
+  // set (temporary) results
+  Action::ResultE setEnterLeave(Real32 enter, Real32 leave);
+  void            setHit(Real32 t, NodePtr obj, Int32 triIndex, Vec3f& normal);
 
-  protected:
+  // when entering/leaving a different coordinate system, the values might
+  // have to be scaled
+  void scale(Real32 s);
 
-    //-----------------------------------------------------------------------
-    //   enums                                                               
-    //-----------------------------------------------------------------------
+  /*------------------------- your_operators ------------------------------*/
 
-    //-----------------------------------------------------------------------
-    //   types                                                               
-    //-----------------------------------------------------------------------
+  /*------------------------- assignment ----------------------------------*/
 
-    //-----------------------------------------------------------------------
-    //   class variables                                                     
-    //-----------------------------------------------------------------------
+  /*------------------------- comparison ----------------------------------*/
 
-    //-----------------------------------------------------------------------
-    //   class functions                                                     
-    //-----------------------------------------------------------------------
+  bool operator<(const IntersectAction& other) const;
 
-    //-----------------------------------------------------------------------
-    //   instance variables                                                  
-    //-----------------------------------------------------------------------
+  bool operator==(const IntersectAction& other) const;
+  bool operator!=(const IntersectAction& other) const;
 
-    //-----------------------------------------------------------------------
-    //   instance functions                                                  
-    //-----------------------------------------------------------------------
+  // default registration. static, so it can be called during static init
 
-    IntersectAction(void);
-    IntersectAction(const IntersectAction &source);
+  static void registerEnterDefault(const FieldContainerType& type, const Action::Functor& func);
 
-    virtual Action::ResultE start( void );  
+  static void registerLeaveDefault(const FieldContainerType& type, const Action::Functor& func);
 
-    // access default functors
+ protected:
+  //-----------------------------------------------------------------------
+  //   enums
+  //-----------------------------------------------------------------------
 
-    virtual std::vector<Functor>* getDefaultEnterFunctors( void );
-    virtual std::vector<Functor>* getDefaultLeaveFunctors( void );
+  //-----------------------------------------------------------------------
+  //   types
+  //-----------------------------------------------------------------------
 
-  private:
+  //-----------------------------------------------------------------------
+  //   class variables
+  //-----------------------------------------------------------------------
 
-    //-----------------------------------------------------------------------
-    //   enums                                                               
-    //-----------------------------------------------------------------------
+  //-----------------------------------------------------------------------
+  //   class functions
+  //-----------------------------------------------------------------------
 
-    //-----------------------------------------------------------------------
-    //   types                                                               
-    //-----------------------------------------------------------------------
+  //-----------------------------------------------------------------------
+  //   instance variables
+  //-----------------------------------------------------------------------
 
-    typedef Action Inherited;
+  //-----------------------------------------------------------------------
+  //   instance functions
+  //-----------------------------------------------------------------------
 
-    //-----------------------------------------------------------------------
-    //   friend classes                                                      
-    //-----------------------------------------------------------------------
+  IntersectAction(void);
+  IntersectAction(const IntersectAction& source);
 
-    //-----------------------------------------------------------------------
-    //   friend functions                                                    
-    //-----------------------------------------------------------------------
+  virtual Action::ResultE start(void);
 
-    //-----------------------------------------------------------------------
-    //   class variables                                                     
-    //-----------------------------------------------------------------------
+  // access default functors
 
-    static char cvsid[];
+  virtual std::vector<Functor>* getDefaultEnterFunctors(void);
+  virtual std::vector<Functor>* getDefaultLeaveFunctors(void);
 
-    // the prototype which is copied to create new actions
-    static IntersectAction * _prototype;
+ private:
+  //-----------------------------------------------------------------------
+  //   enums
+  //-----------------------------------------------------------------------
 
-    // default functors for instantiation
-    static std::vector<Functor> *_defaultEnterFunctors;
-    static std::vector<Functor> *_defaultLeaveFunctors;
-    
-    //-----------------------------------------------------------------------
-    //   class functions                                                     
-    //-----------------------------------------------------------------------
+  //-----------------------------------------------------------------------
+  //   types
+  //-----------------------------------------------------------------------
 
-    //-----------------------------------------------------------------------
-    //   instance variables                                                  
-    //-----------------------------------------------------------------------
-    
-    // Line definition
-    
-    // the line to be tested
-    Line _line;
-    
-    // the maximum distance along the line
-    Real32 _maxdist;
-    
-    // Results (also intermediate)
-    // hit at all (either bv or face)
-    bool    _hit;
-    // enter leave distance for bounding volume
-    Real32  _enterT;
-    Real32  _leaveT;
-    
-    // Hit distance
-    Real32  _hitT;
-    // Hit object   
-    NodePtr _hitObject;
-    // Index of the hit triangle ( from TriangleIterator::getIndex() )
-    Int32   _hitTriangle;
-    // Normal of the hit triangle
-    Vec3f   _hitNormal;
-    
-    //-----------------------------------------------------------------------
-    //   instance functions                                                  
-    //-----------------------------------------------------------------------
+  typedef Action Inherited;
 
+  //-----------------------------------------------------------------------
+  //   friend classes
+  //-----------------------------------------------------------------------
+
+  //-----------------------------------------------------------------------
+  //   friend functions
+  //-----------------------------------------------------------------------
+
+  //-----------------------------------------------------------------------
+  //   class variables
+  //-----------------------------------------------------------------------
+
+  static char cvsid[];
+
+  // the prototype which is copied to create new actions
+  static IntersectAction* _prototype;
+
+  // default functors for instantiation
+  static std::vector<Functor>* _defaultEnterFunctors;
+  static std::vector<Functor>* _defaultLeaveFunctors;
+
+  //-----------------------------------------------------------------------
+  //   class functions
+  //-----------------------------------------------------------------------
+
+  //-----------------------------------------------------------------------
+  //   instance variables
+  //-----------------------------------------------------------------------
+
+  // Line definition
+
+  // the line to be tested
+  Line _line;
+
+  // the maximum distance along the line
+  Real32 _maxdist;
+
+  // Results (also intermediate)
+  // hit at all (either bv or face)
+  bool _hit;
+  // enter leave distance for bounding volume
+  Real32 _enterT;
+  Real32 _leaveT;
+
+  // Hit distance
+  Real32 _hitT;
+  // Hit object
+  NodePtr _hitObject;
+  // Index of the hit triangle ( from TriangleIterator::getIndex() )
+  Int32 _hitTriangle;
+  // Normal of the hit triangle
+  Vec3f _hitNormal;
+
+  //-----------------------------------------------------------------------
+  //   instance functions
+  //-----------------------------------------------------------------------
 };
 
 //---------------------------------------------------------------------------
@@ -276,7 +266,7 @@ class OSG_SYSTEMLIB_DLLMAPPING IntersectAction : public Action
 
 // class pointer
 
-typedef IntersectAction *IntersectActionP;
+typedef IntersectAction* IntersectActionP;
 
 OSG_END_NAMESPACE
 

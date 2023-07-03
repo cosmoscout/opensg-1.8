@@ -50,104 +50,101 @@
 
 OSG_BEGIN_NAMESPACE
 
-class OSG_SYSTEMLIB_DLLMAPPING ExtraChildrenList
-{
-  public:
-    /*---------------------------------------------------------------------*/
-    /*! \name    Types                                                     */
-    /*! \{                                                                 */
+class OSG_SYSTEMLIB_DLLMAPPING ExtraChildrenList {
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name    Types                                                     */
+  /*! \{                                                                 */
 
-    typedef NewActionTypes::PriorityType       PriorityType;
-    typedef NewActionTypes::PriorityTypeTraits PriorityTypeTraits;
+  typedef NewActionTypes::PriorityType       PriorityType;
+  typedef NewActionTypes::PriorityTypeTraits PriorityTypeTraits;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name    Constructors                                              */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name    Constructors                                              */
+  /*! \{                                                                 */
 
-    inline ExtraChildrenList(void);
+  inline ExtraChildrenList(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name    Destructor                                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name    Destructor                                                */
+  /*! \{                                                                 */
 
-    inline ~ExtraChildrenList(void);
+  inline ~ExtraChildrenList(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name    Add                                                       */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name    Add                                                       */
+  /*! \{                                                                 */
 
-    inline UInt32 addChild(const NodePtr &pChild                   );
-    inline UInt32 addChild(const NodePtr &pChild, PriorityType prio);
+  inline UInt32 addChild(const NodePtr& pChild);
+  inline UInt32 addChild(const NodePtr& pChild, PriorityType prio);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name    Access                                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name    Access                                                    */
+  /*! \{                                                                 */
 
-    inline NodePtr      getChild   (UInt32       childIndex ) const;
+  inline NodePtr getChild(UInt32 childIndex) const;
 
-    inline PriorityType getPriority(UInt32       childIndex ) const;
-    inline void         setPriority(UInt32       childIndex,
-                                    PriorityType prio       );
+  inline PriorityType getPriority(UInt32 childIndex) const;
+  inline void         setPriority(UInt32 childIndex, PriorityType prio);
 
-    inline bool         getActive  (UInt32       childIndex ) const;
-    inline void         setActive  (UInt32       childIndex,
-                                    bool         active     );
+  inline bool getActive(UInt32 childIndex) const;
+  inline void setActive(UInt32 childIndex, bool active);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name    Misc                                                      */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name    Misc                                                      */
+  /*! \{                                                                 */
 
-    inline UInt32       getSize    (void                    ) const;
-    inline void         clear      (void                    );
+  inline UInt32 getSize(void) const;
+  inline void   clear(void);
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
-    /*---------------------------------------------------------------------*/
-    /*! \name    Types                                                     */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /*---------------------------------------------------------------------*/
+  /*! \name    Types                                                     */
+  /*! \{                                                                 */
 
-    class ChildrenListEntry
-    {
-      public:
-        inline ChildrenListEntry(void                                   );
-        inline ChildrenListEntry(const NodePtr &pNode                   );
-        inline ChildrenListEntry(const NodePtr &pNode, PriorityType prio);
+  class ChildrenListEntry {
+   public:
+    inline ChildrenListEntry(void);
+    inline ChildrenListEntry(const NodePtr& pNode);
+    inline ChildrenListEntry(const NodePtr& pNode, PriorityType prio);
 
-        inline NodePtr      getNode    (      void                ) const;
-        inline void         setNode    (const NodePtr      &pNode );
+    inline NodePtr getNode(void) const;
+    inline void    setNode(const NodePtr& pNode);
 
-        inline PriorityType getPriority(      void                ) const;
-        inline void         setPriority(      PriorityType  prio  );
+    inline PriorityType getPriority(void) const;
+    inline void         setPriority(PriorityType prio);
 
-        inline bool         getActive  (      void                ) const;
-        inline void         setActive  (      bool          active);
+    inline bool getActive(void) const;
+    inline void setActive(bool active);
 
-      private:
-        NodePtr      _pNode;
-        PriorityType _priority;
-        bool         _active;
-    };
+   private:
+    NodePtr      _pNode;
+    PriorityType _priority;
+    bool         _active;
+  };
 
-    typedef std::vector<ChildrenListEntry>       InternalChildrenList;
-    typedef InternalChildrenList::iterator       InternalChildrenListIt;
-    typedef InternalChildrenList::const_iterator InternalChildrenListConstIt;
+  typedef std::vector<ChildrenListEntry>       InternalChildrenList;
+  typedef InternalChildrenList::iterator       InternalChildrenListIt;
+  typedef InternalChildrenList::const_iterator InternalChildrenListConstIt;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
 
-    InternalChildrenList _childrenList;
+  InternalChildrenList _childrenList;
 };
 
 OSG_END_NAMESPACE
 
 #include "OSGExtraChildrenList.inl"
 
-#define OSGEXTRACHILDRENLIST_HEADER_CVSID "@(#)$Id: OSGExtraChildrenList.h,v 1.2 2004/09/17 14:09:43 neumannc Exp $"
+#define OSGEXTRACHILDRENLIST_HEADER_CVSID                                                          \
+  "@(#)$Id: OSGExtraChildrenList.h,v 1.2 2004/09/17 14:09:43 neumannc Exp $"
 
 #endif /* _OSGEXTRACHILDRENLIST_H_ */

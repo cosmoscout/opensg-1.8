@@ -49,86 +49,80 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief ShaderChunk class. See \ref 
+/*! \brief ShaderChunk class. See \ref
            PageSystemShaderChunk for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING ShaderChunk : public ShaderChunkBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING ShaderChunk : public ShaderChunkBase {
+ private:
+  typedef ShaderChunkBase Inherited;
 
-    typedef ShaderChunkBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                 ShaderChunk Access                           */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  bool readVertexProgram(const char* file);
+  bool readVertexProgram(std::istream& stream);
+  bool readFragmentProgram(const char* file);
+  bool readFragmentProgram(std::istream& stream);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                 ShaderChunk Access                           */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in ShaderChunkBase.
 
-            bool    readVertexProgram        (const char   *file  );
-            bool    readVertexProgram        (std::istream &stream);
-            bool    readFragmentProgram      (const char   *file  );
-            bool    readFragmentProgram      (std::istream &stream);
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  ShaderChunk(void);
+  ShaderChunk(const ShaderChunk& source);
 
-    // Variables should all be in ShaderChunkBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~ShaderChunk(void);
 
-    ShaderChunk(void);
-    ShaderChunk(const ShaderChunk &source);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class ShaderChunkBase;
 
-    virtual ~ShaderChunk(void); 
+  static void initMethod(void);
 
-    /*! \}                                                                 */
+  // prohibit default functions (move to 'public' if you need one)
 
-    /*==========================  PRIVATE  ================================*/
-  private:
-
-    friend class FieldContainer;
-    friend class ShaderChunkBase;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const ShaderChunk &source);
+  void operator=(const ShaderChunk& source);
 };
 
-typedef ShaderChunk *ShaderChunkP;
+typedef ShaderChunk* ShaderChunkP;
 
 OSG_END_NAMESPACE
 
 #include <OSGShaderChunkBase.inl>
 #include <OSGShaderChunk.inl>
 
-#define OSGSHADERCHUNK_HEADER_CVSID "@(#)$Id: OSGShaderChunk.h,v 1.3 2004/08/27 12:50:51 a-m-z Exp $"
+#define OSGSHADERCHUNK_HEADER_CVSID                                                                \
+  "@(#)$Id: OSGShaderChunk.h,v 1.3 2004/08/27 12:50:51 a-m-z Exp $"
 
 #endif /* _OSGSHADERCHUNK_H_ */

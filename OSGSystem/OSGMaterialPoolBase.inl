@@ -52,81 +52,59 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &MaterialPoolBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& MaterialPoolBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 MaterialPoolBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 MaterialPoolBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-MaterialPoolPtr MaterialPoolBase::create(void) 
-{
-    MaterialPoolPtr fc; 
+inline MaterialPoolPtr MaterialPoolBase::create(void) {
+  MaterialPoolPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = MaterialPoolPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = MaterialPoolPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-MaterialPoolPtr MaterialPoolBase::createEmpty(void) 
-{ 
-    MaterialPoolPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline MaterialPoolPtr MaterialPoolBase::createEmpty(void) {
+  MaterialPoolPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the MaterialPool::_mfMaterials field.
-inline
-MFMaterialPtr *MaterialPoolBase::getMFMaterials(void)
-{
-    return &_mfMaterials;
+inline MFMaterialPtr* MaterialPoolBase::getMFMaterials(void) {
+  return &_mfMaterials;
 }
-
-
 
 //! Get the value of the \a index element the MaterialPool::_mfMaterials field.
-inline
-MaterialPtr &MaterialPoolBase::getMaterials(const UInt32 index)
-{
-    return _mfMaterials[index];
+inline MaterialPtr& MaterialPoolBase::getMaterials(const UInt32 index) {
+  return _mfMaterials[index];
 }
 
 //! Get the MaterialPool::_mfMaterials field.
-inline
-MFMaterialPtr &MaterialPoolBase::getMaterials(void)
-{
-    return _mfMaterials;
+inline MFMaterialPtr& MaterialPoolBase::getMaterials(void) {
+  return _mfMaterials;
 }
 
 //! Get the MaterialPool::_mfMaterials field.
-inline
-const MFMaterialPtr &MaterialPoolBase::getMaterials(void) const
-{
-    return _mfMaterials;
+inline const MFMaterialPtr& MaterialPoolBase::getMaterials(void) const {
+  return _mfMaterials;
 }
 
 OSG_END_NAMESPACE
 
-#define OSGMATERIALPOOLBASE_INLINE_CVSID "@(#)$Id: OSGMaterialPoolBase.inl,v 1.5 2006/02/20 16:54:24 dirk Exp $"
-
+#define OSGMATERIALPOOLBASE_INLINE_CVSID                                                           \
+  "@(#)$Id: OSGMaterialPoolBase.inl,v 1.5 2006/02/20 16:54:24 dirk Exp $"

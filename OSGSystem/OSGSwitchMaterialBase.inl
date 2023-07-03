@@ -52,109 +52,79 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &SwitchMaterialBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& SwitchMaterialBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 SwitchMaterialBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 SwitchMaterialBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-SwitchMaterialPtr SwitchMaterialBase::create(void) 
-{
-    SwitchMaterialPtr fc; 
+inline SwitchMaterialPtr SwitchMaterialBase::create(void) {
+  SwitchMaterialPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = SwitchMaterialPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = SwitchMaterialPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-SwitchMaterialPtr SwitchMaterialBase::createEmpty(void) 
-{ 
-    SwitchMaterialPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline SwitchMaterialPtr SwitchMaterialBase::createEmpty(void) {
+  SwitchMaterialPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the SwitchMaterial::_mfMaterials field.
-inline
-MFMaterialPtr *SwitchMaterialBase::getMFMaterials(void)
-{
-    return &_mfMaterials;
+inline MFMaterialPtr* SwitchMaterialBase::getMFMaterials(void) {
+  return &_mfMaterials;
 }
 
 //! Get the SwitchMaterial::_sfChoice field.
-inline
-SFUInt32 *SwitchMaterialBase::getSFChoice(void)
-{
-    return &_sfChoice;
-}
-
-
-//! Get the value of the SwitchMaterial::_sfChoice field.
-inline
-UInt32 &SwitchMaterialBase::getChoice(void)
-{
-    return _sfChoice.getValue();
+inline SFUInt32* SwitchMaterialBase::getSFChoice(void) {
+  return &_sfChoice;
 }
 
 //! Get the value of the SwitchMaterial::_sfChoice field.
-inline
-const UInt32 &SwitchMaterialBase::getChoice(void) const
-{
-    return _sfChoice.getValue();
+inline UInt32& SwitchMaterialBase::getChoice(void) {
+  return _sfChoice.getValue();
+}
+
+//! Get the value of the SwitchMaterial::_sfChoice field.
+inline const UInt32& SwitchMaterialBase::getChoice(void) const {
+  return _sfChoice.getValue();
 }
 
 //! Set the value of the SwitchMaterial::_sfChoice field.
-inline
-void SwitchMaterialBase::setChoice(const UInt32 &value)
-{
-    _sfChoice.setValue(value);
+inline void SwitchMaterialBase::setChoice(const UInt32& value) {
+  _sfChoice.setValue(value);
 }
-
 
 //! Get the value of the \a index element the SwitchMaterial::_mfMaterials field.
-inline
-MaterialPtr &SwitchMaterialBase::getMaterials(const UInt32 index)
-{
-    return _mfMaterials[index];
+inline MaterialPtr& SwitchMaterialBase::getMaterials(const UInt32 index) {
+  return _mfMaterials[index];
 }
 
 //! Get the SwitchMaterial::_mfMaterials field.
-inline
-MFMaterialPtr &SwitchMaterialBase::getMaterials(void)
-{
-    return _mfMaterials;
+inline MFMaterialPtr& SwitchMaterialBase::getMaterials(void) {
+  return _mfMaterials;
 }
 
 //! Get the SwitchMaterial::_mfMaterials field.
-inline
-const MFMaterialPtr &SwitchMaterialBase::getMaterials(void) const
-{
-    return _mfMaterials;
+inline const MFMaterialPtr& SwitchMaterialBase::getMaterials(void) const {
+  return _mfMaterials;
 }
 
 OSG_END_NAMESPACE
 
-#define OSGSWITCHMATERIALBASE_INLINE_CVSID "@(#)$Id: OSGSwitchMaterialBase.inl,v 1.2 2006/02/20 17:04:44 dirk Exp $"
-
+#define OSGSWITCHMATERIALBASE_INLINE_CVSID                                                         \
+  "@(#)$Id: OSGSwitchMaterialBase.inl,v 1.2 2006/02/20 17:04:44 dirk Exp $"

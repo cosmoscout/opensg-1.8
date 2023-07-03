@@ -49,26 +49,19 @@
 
 OSG_USING_NAMESPACE
 
-
 /*-------------------------------------------------------------------------*/
 /*                            Constructors                                 */
 
-RenderActionBase::RenderActionBase(void) :
-    Inherited()
-{
+RenderActionBase::RenderActionBase(void)
+    : Inherited() {
 }
 
-RenderActionBase::RenderActionBase(const RenderActionBase &source) :
-     Inherited(source)
-{
+RenderActionBase::RenderActionBase(const RenderActionBase& source)
+    : Inherited(source) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Destructor                                  */
 
-RenderActionBase::~RenderActionBase(void)
-{
+RenderActionBase::~RenderActionBase(void) {
 }
-
-
-

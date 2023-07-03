@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEDVRLOOKUPTABLEINST
 
 #include <stdlib.h>
@@ -61,508 +60,403 @@
 #include "OSGDVRLookupTableBase.h"
 #include "OSGDVRLookupTable.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  DVRLookupTableBase::DimensionFieldMask = 
+const OSG::BitVector DVRLookupTableBase::DimensionFieldMask =
     (TypeTraits<BitVector>::One << DVRLookupTableBase::DimensionFieldId);
 
-const OSG::BitVector  DVRLookupTableBase::SizeFieldMask = 
+const OSG::BitVector DVRLookupTableBase::SizeFieldMask =
     (TypeTraits<BitVector>::One << DVRLookupTableBase::SizeFieldId);
 
-const OSG::BitVector  DVRLookupTableBase::ChannelFieldMask = 
+const OSG::BitVector DVRLookupTableBase::ChannelFieldMask =
     (TypeTraits<BitVector>::One << DVRLookupTableBase::ChannelFieldId);
 
-const OSG::BitVector  DVRLookupTableBase::DataFieldMask = 
+const OSG::BitVector DVRLookupTableBase::DataFieldMask =
     (TypeTraits<BitVector>::One << DVRLookupTableBase::DataFieldId);
 
-const OSG::BitVector  DVRLookupTableBase::DataRFieldMask = 
+const OSG::BitVector DVRLookupTableBase::DataRFieldMask =
     (TypeTraits<BitVector>::One << DVRLookupTableBase::DataRFieldId);
 
-const OSG::BitVector  DVRLookupTableBase::DataGFieldMask = 
+const OSG::BitVector DVRLookupTableBase::DataGFieldMask =
     (TypeTraits<BitVector>::One << DVRLookupTableBase::DataGFieldId);
 
-const OSG::BitVector  DVRLookupTableBase::DataBFieldMask = 
+const OSG::BitVector DVRLookupTableBase::DataBFieldMask =
     (TypeTraits<BitVector>::One << DVRLookupTableBase::DataBFieldId);
 
-const OSG::BitVector  DVRLookupTableBase::DataAFieldMask = 
+const OSG::BitVector DVRLookupTableBase::DataAFieldMask =
     (TypeTraits<BitVector>::One << DVRLookupTableBase::DataAFieldId);
 
-const OSG::BitVector  DVRLookupTableBase::TouchedFieldMask = 
+const OSG::BitVector DVRLookupTableBase::TouchedFieldMask =
     (TypeTraits<BitVector>::One << DVRLookupTableBase::TouchedFieldId);
 
-const OSG::BitVector DVRLookupTableBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector DVRLookupTableBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
 /*! \var UInt8           DVRLookupTableBase::_sfDimension
-    
+
 */
 /*! \var UInt32          DVRLookupTableBase::_mfSize
-    
+
 */
 /*! \var UInt8           DVRLookupTableBase::_sfChannel
-    
+
 */
 /*! \var UInt8           DVRLookupTableBase::_mfData
-    
+
 */
 /*! \var Real32          DVRLookupTableBase::_mfDataR
-    
+
 */
 /*! \var Real32          DVRLookupTableBase::_mfDataG
-    
+
 */
 /*! \var Real32          DVRLookupTableBase::_mfDataB
-    
+
 */
 /*! \var Real32          DVRLookupTableBase::_mfDataA
-    
+
 */
 /*! \var bool            DVRLookupTableBase::_sfTouched
-    
+
 */
 
 //! DVRLookupTable description
 
-FieldDescription *DVRLookupTableBase::_desc[] = 
-{
-    new FieldDescription(SFUInt8::getClassType(), 
-                     "dimension", 
-                     DimensionFieldId, DimensionFieldMask,
-                     false,
-                     (FieldAccessMethod) &DVRLookupTableBase::getSFDimension),
-    new FieldDescription(MFUInt32::getClassType(), 
-                     "size", 
-                     SizeFieldId, SizeFieldMask,
-                     false,
-                     (FieldAccessMethod) &DVRLookupTableBase::getMFSize),
-    new FieldDescription(SFUInt8::getClassType(), 
-                     "channel", 
-                     ChannelFieldId, ChannelFieldMask,
-                     false,
-                     (FieldAccessMethod) &DVRLookupTableBase::getSFChannel),
-    new FieldDescription(MFUInt8::getClassType(), 
-                     "data", 
-                     DataFieldId, DataFieldMask,
-                     false,
-                     (FieldAccessMethod) &DVRLookupTableBase::getMFData),
-    new FieldDescription(MFReal32::getClassType(), 
-                     "dataR", 
-                     DataRFieldId, DataRFieldMask,
-                     false,
-                     (FieldAccessMethod) &DVRLookupTableBase::getMFDataR),
-    new FieldDescription(MFReal32::getClassType(), 
-                     "dataG", 
-                     DataGFieldId, DataGFieldMask,
-                     false,
-                     (FieldAccessMethod) &DVRLookupTableBase::getMFDataG),
-    new FieldDescription(MFReal32::getClassType(), 
-                     "dataB", 
-                     DataBFieldId, DataBFieldMask,
-                     false,
-                     (FieldAccessMethod) &DVRLookupTableBase::getMFDataB),
-    new FieldDescription(MFReal32::getClassType(), 
-                     "dataA", 
-                     DataAFieldId, DataAFieldMask,
-                     false,
-                     (FieldAccessMethod) &DVRLookupTableBase::getMFDataA),
-    new FieldDescription(SFBool::getClassType(), 
-                     "touched", 
-                     TouchedFieldId, TouchedFieldMask,
-                     false,
-                     (FieldAccessMethod) &DVRLookupTableBase::getSFTouched)
-};
+FieldDescription* DVRLookupTableBase::_desc[] = {
+    new FieldDescription(SFUInt8::getClassType(), "dimension", DimensionFieldId, DimensionFieldMask,
+        false, (FieldAccessMethod)&DVRLookupTableBase::getSFDimension),
+    new FieldDescription(MFUInt32::getClassType(), "size", SizeFieldId, SizeFieldMask, false,
+        (FieldAccessMethod)&DVRLookupTableBase::getMFSize),
+    new FieldDescription(SFUInt8::getClassType(), "channel", ChannelFieldId, ChannelFieldMask,
+        false, (FieldAccessMethod)&DVRLookupTableBase::getSFChannel),
+    new FieldDescription(MFUInt8::getClassType(), "data", DataFieldId, DataFieldMask, false,
+        (FieldAccessMethod)&DVRLookupTableBase::getMFData),
+    new FieldDescription(MFReal32::getClassType(), "dataR", DataRFieldId, DataRFieldMask, false,
+        (FieldAccessMethod)&DVRLookupTableBase::getMFDataR),
+    new FieldDescription(MFReal32::getClassType(), "dataG", DataGFieldId, DataGFieldMask, false,
+        (FieldAccessMethod)&DVRLookupTableBase::getMFDataG),
+    new FieldDescription(MFReal32::getClassType(), "dataB", DataBFieldId, DataBFieldMask, false,
+        (FieldAccessMethod)&DVRLookupTableBase::getMFDataB),
+    new FieldDescription(MFReal32::getClassType(), "dataA", DataAFieldId, DataAFieldMask, false,
+        (FieldAccessMethod)&DVRLookupTableBase::getMFDataA),
+    new FieldDescription(SFBool::getClassType(), "touched", TouchedFieldId, TouchedFieldMask, false,
+        (FieldAccessMethod)&DVRLookupTableBase::getSFTouched)};
 
-
-FieldContainerType DVRLookupTableBase::_type(
-    "DVRLookupTable",
-    "Attachment",
-    NULL,
-    (PrototypeCreateF) &DVRLookupTableBase::createEmpty,
-    DVRLookupTable::initMethod,
-    _desc,
+FieldContainerType DVRLookupTableBase::_type("DVRLookupTable", "Attachment", NULL,
+    (PrototypeCreateF)&DVRLookupTableBase::createEmpty, DVRLookupTable::initMethod, _desc,
     sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(DVRLookupTableBase, DVRLookupTablePtr)
+// OSG_FIELD_CONTAINER_DEF(DVRLookupTableBase, DVRLookupTablePtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &DVRLookupTableBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &DVRLookupTableBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr DVRLookupTableBase::shallowCopy(void) const 
-{ 
-    DVRLookupTablePtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const DVRLookupTable *>(this)); 
-
-    return returnValue; 
+FieldContainerType& DVRLookupTableBase::getType(void) {
+  return _type;
 }
 
-UInt32 DVRLookupTableBase::getContainerSize(void) const 
-{ 
-    return sizeof(DVRLookupTable); 
+const FieldContainerType& DVRLookupTableBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr DVRLookupTableBase::shallowCopy(void) const {
+  DVRLookupTablePtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const DVRLookupTable*>(this));
+
+  return returnValue;
+}
+
+UInt32 DVRLookupTableBase::getContainerSize(void) const {
+  return sizeof(DVRLookupTable);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void DVRLookupTableBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((DVRLookupTableBase *) &other, whichField);
+void DVRLookupTableBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((DVRLookupTableBase*)&other, whichField);
 }
 #else
-void DVRLookupTableBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((DVRLookupTableBase *) &other, whichField, sInfo);
+void DVRLookupTableBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((DVRLookupTableBase*)&other, whichField, sInfo);
 }
-void DVRLookupTableBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void DVRLookupTableBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void DVRLookupTableBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
+void DVRLookupTableBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 
-    _mfSize.terminateShare(uiAspect, this->getContainerSize());
-    _mfData.terminateShare(uiAspect, this->getContainerSize());
-    _mfDataR.terminateShare(uiAspect, this->getContainerSize());
-    _mfDataG.terminateShare(uiAspect, this->getContainerSize());
-    _mfDataB.terminateShare(uiAspect, this->getContainerSize());
-    _mfDataA.terminateShare(uiAspect, this->getContainerSize());
+  _mfSize.terminateShare(uiAspect, this->getContainerSize());
+  _mfData.terminateShare(uiAspect, this->getContainerSize());
+  _mfDataR.terminateShare(uiAspect, this->getContainerSize());
+  _mfDataG.terminateShare(uiAspect, this->getContainerSize());
+  _mfDataB.terminateShare(uiAspect, this->getContainerSize());
+  _mfDataA.terminateShare(uiAspect, this->getContainerSize());
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-DVRLookupTableBase::DVRLookupTableBase(void) :
-    _sfDimension              (UInt8(1)), 
-    _mfSize                   (), 
-    _sfChannel                (UInt8(4)), 
-    _mfData                   (), 
-    _mfDataR                  (), 
-    _mfDataG                  (), 
-    _mfDataB                  (), 
-    _mfDataA                  (), 
-    _sfTouched                (bool(false)), 
-    Inherited() 
-{
+DVRLookupTableBase::DVRLookupTableBase(void)
+    : _sfDimension(UInt8(1))
+    , _mfSize()
+    , _sfChannel(UInt8(4))
+    , _mfData()
+    , _mfDataR()
+    , _mfDataG()
+    , _mfDataB()
+    , _mfDataA()
+    , _sfTouched(bool(false))
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-DVRLookupTableBase::DVRLookupTableBase(const DVRLookupTableBase &source) :
-    _sfDimension              (source._sfDimension              ), 
-    _mfSize                   (source._mfSize                   ), 
-    _sfChannel                (source._sfChannel                ), 
-    _mfData                   (source._mfData                   ), 
-    _mfDataR                  (source._mfDataR                  ), 
-    _mfDataG                  (source._mfDataG                  ), 
-    _mfDataB                  (source._mfDataB                  ), 
-    _mfDataA                  (source._mfDataA                  ), 
-    _sfTouched                (source._sfTouched                ), 
-    Inherited                 (source)
-{
+DVRLookupTableBase::DVRLookupTableBase(const DVRLookupTableBase& source)
+    : _sfDimension(source._sfDimension)
+    , _mfSize(source._mfSize)
+    , _sfChannel(source._sfChannel)
+    , _mfData(source._mfData)
+    , _mfDataR(source._mfDataR)
+    , _mfDataG(source._mfDataG)
+    , _mfDataB(source._mfDataB)
+    , _mfDataA(source._mfDataA)
+    , _sfTouched(source._sfTouched)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-DVRLookupTableBase::~DVRLookupTableBase(void)
-{
+DVRLookupTableBase::~DVRLookupTableBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 DVRLookupTableBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 DVRLookupTableBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (DimensionFieldMask & whichField))
-    {
-        returnValue += _sfDimension.getBinSize();
-    }
+  if (FieldBits::NoField != (DimensionFieldMask & whichField)) {
+    returnValue += _sfDimension.getBinSize();
+  }
 
-    if(FieldBits::NoField != (SizeFieldMask & whichField))
-    {
-        returnValue += _mfSize.getBinSize();
-    }
+  if (FieldBits::NoField != (SizeFieldMask & whichField)) {
+    returnValue += _mfSize.getBinSize();
+  }
 
-    if(FieldBits::NoField != (ChannelFieldMask & whichField))
-    {
-        returnValue += _sfChannel.getBinSize();
-    }
+  if (FieldBits::NoField != (ChannelFieldMask & whichField)) {
+    returnValue += _sfChannel.getBinSize();
+  }
 
-    if(FieldBits::NoField != (DataFieldMask & whichField))
-    {
-        returnValue += _mfData.getBinSize();
-    }
+  if (FieldBits::NoField != (DataFieldMask & whichField)) {
+    returnValue += _mfData.getBinSize();
+  }
 
-    if(FieldBits::NoField != (DataRFieldMask & whichField))
-    {
-        returnValue += _mfDataR.getBinSize();
-    }
+  if (FieldBits::NoField != (DataRFieldMask & whichField)) {
+    returnValue += _mfDataR.getBinSize();
+  }
 
-    if(FieldBits::NoField != (DataGFieldMask & whichField))
-    {
-        returnValue += _mfDataG.getBinSize();
-    }
+  if (FieldBits::NoField != (DataGFieldMask & whichField)) {
+    returnValue += _mfDataG.getBinSize();
+  }
 
-    if(FieldBits::NoField != (DataBFieldMask & whichField))
-    {
-        returnValue += _mfDataB.getBinSize();
-    }
+  if (FieldBits::NoField != (DataBFieldMask & whichField)) {
+    returnValue += _mfDataB.getBinSize();
+  }
 
-    if(FieldBits::NoField != (DataAFieldMask & whichField))
-    {
-        returnValue += _mfDataA.getBinSize();
-    }
+  if (FieldBits::NoField != (DataAFieldMask & whichField)) {
+    returnValue += _mfDataA.getBinSize();
+  }
 
-    if(FieldBits::NoField != (TouchedFieldMask & whichField))
-    {
-        returnValue += _sfTouched.getBinSize();
-    }
+  if (FieldBits::NoField != (TouchedFieldMask & whichField)) {
+    returnValue += _sfTouched.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void DVRLookupTableBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void DVRLookupTableBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (DimensionFieldMask & whichField))
-    {
-        _sfDimension.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (DimensionFieldMask & whichField)) {
+    _sfDimension.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (SizeFieldMask & whichField))
-    {
-        _mfSize.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (SizeFieldMask & whichField)) {
+    _mfSize.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ChannelFieldMask & whichField))
-    {
-        _sfChannel.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (ChannelFieldMask & whichField)) {
+    _sfChannel.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (DataFieldMask & whichField))
-    {
-        _mfData.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (DataFieldMask & whichField)) {
+    _mfData.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (DataRFieldMask & whichField))
-    {
-        _mfDataR.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (DataRFieldMask & whichField)) {
+    _mfDataR.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (DataGFieldMask & whichField))
-    {
-        _mfDataG.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (DataGFieldMask & whichField)) {
+    _mfDataG.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (DataBFieldMask & whichField))
-    {
-        _mfDataB.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (DataBFieldMask & whichField)) {
+    _mfDataB.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (DataAFieldMask & whichField))
-    {
-        _mfDataA.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (DataAFieldMask & whichField)) {
+    _mfDataA.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (TouchedFieldMask & whichField))
-    {
-        _sfTouched.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (TouchedFieldMask & whichField)) {
+    _sfTouched.copyToBin(pMem);
+  }
 }
 
-void DVRLookupTableBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void DVRLookupTableBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (DimensionFieldMask & whichField))
-    {
-        _sfDimension.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (DimensionFieldMask & whichField)) {
+    _sfDimension.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (SizeFieldMask & whichField))
-    {
-        _mfSize.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (SizeFieldMask & whichField)) {
+    _mfSize.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ChannelFieldMask & whichField))
-    {
-        _sfChannel.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (ChannelFieldMask & whichField)) {
+    _sfChannel.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (DataFieldMask & whichField))
-    {
-        _mfData.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (DataFieldMask & whichField)) {
+    _mfData.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (DataRFieldMask & whichField))
-    {
-        _mfDataR.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (DataRFieldMask & whichField)) {
+    _mfDataR.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (DataGFieldMask & whichField))
-    {
-        _mfDataG.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (DataGFieldMask & whichField)) {
+    _mfDataG.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (DataBFieldMask & whichField))
-    {
-        _mfDataB.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (DataBFieldMask & whichField)) {
+    _mfDataB.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (DataAFieldMask & whichField))
-    {
-        _mfDataA.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (DataAFieldMask & whichField)) {
+    _mfDataA.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (TouchedFieldMask & whichField))
-    {
-        _sfTouched.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (TouchedFieldMask & whichField)) {
+    _sfTouched.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void DVRLookupTableBase::executeSyncImpl(      DVRLookupTableBase *pOther,
-                                        const BitVector         &whichField)
-{
+void DVRLookupTableBase::executeSyncImpl(DVRLookupTableBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (DimensionFieldMask & whichField))
-        _sfDimension.syncWith(pOther->_sfDimension);
+  if (FieldBits::NoField != (DimensionFieldMask & whichField))
+    _sfDimension.syncWith(pOther->_sfDimension);
 
-    if(FieldBits::NoField != (SizeFieldMask & whichField))
-        _mfSize.syncWith(pOther->_mfSize);
+  if (FieldBits::NoField != (SizeFieldMask & whichField))
+    _mfSize.syncWith(pOther->_mfSize);
 
-    if(FieldBits::NoField != (ChannelFieldMask & whichField))
-        _sfChannel.syncWith(pOther->_sfChannel);
+  if (FieldBits::NoField != (ChannelFieldMask & whichField))
+    _sfChannel.syncWith(pOther->_sfChannel);
 
-    if(FieldBits::NoField != (DataFieldMask & whichField))
-        _mfData.syncWith(pOther->_mfData);
+  if (FieldBits::NoField != (DataFieldMask & whichField))
+    _mfData.syncWith(pOther->_mfData);
 
-    if(FieldBits::NoField != (DataRFieldMask & whichField))
-        _mfDataR.syncWith(pOther->_mfDataR);
+  if (FieldBits::NoField != (DataRFieldMask & whichField))
+    _mfDataR.syncWith(pOther->_mfDataR);
 
-    if(FieldBits::NoField != (DataGFieldMask & whichField))
-        _mfDataG.syncWith(pOther->_mfDataG);
+  if (FieldBits::NoField != (DataGFieldMask & whichField))
+    _mfDataG.syncWith(pOther->_mfDataG);
 
-    if(FieldBits::NoField != (DataBFieldMask & whichField))
-        _mfDataB.syncWith(pOther->_mfDataB);
+  if (FieldBits::NoField != (DataBFieldMask & whichField))
+    _mfDataB.syncWith(pOther->_mfDataB);
 
-    if(FieldBits::NoField != (DataAFieldMask & whichField))
-        _mfDataA.syncWith(pOther->_mfDataA);
+  if (FieldBits::NoField != (DataAFieldMask & whichField))
+    _mfDataA.syncWith(pOther->_mfDataA);
 
-    if(FieldBits::NoField != (TouchedFieldMask & whichField))
-        _sfTouched.syncWith(pOther->_sfTouched);
-
-
+  if (FieldBits::NoField != (TouchedFieldMask & whichField))
+    _sfTouched.syncWith(pOther->_sfTouched);
 }
 #else
-void DVRLookupTableBase::executeSyncImpl(      DVRLookupTableBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void DVRLookupTableBase::executeSyncImpl(
+    DVRLookupTableBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (DimensionFieldMask & whichField))
-        _sfDimension.syncWith(pOther->_sfDimension);
+  if (FieldBits::NoField != (DimensionFieldMask & whichField))
+    _sfDimension.syncWith(pOther->_sfDimension);
 
-    if(FieldBits::NoField != (ChannelFieldMask & whichField))
-        _sfChannel.syncWith(pOther->_sfChannel);
+  if (FieldBits::NoField != (ChannelFieldMask & whichField))
+    _sfChannel.syncWith(pOther->_sfChannel);
 
-    if(FieldBits::NoField != (TouchedFieldMask & whichField))
-        _sfTouched.syncWith(pOther->_sfTouched);
+  if (FieldBits::NoField != (TouchedFieldMask & whichField))
+    _sfTouched.syncWith(pOther->_sfTouched);
 
+  if (FieldBits::NoField != (SizeFieldMask & whichField))
+    _mfSize.syncWith(pOther->_mfSize, sInfo);
 
-    if(FieldBits::NoField != (SizeFieldMask & whichField))
-        _mfSize.syncWith(pOther->_mfSize, sInfo);
+  if (FieldBits::NoField != (DataFieldMask & whichField))
+    _mfData.syncWith(pOther->_mfData, sInfo);
 
-    if(FieldBits::NoField != (DataFieldMask & whichField))
-        _mfData.syncWith(pOther->_mfData, sInfo);
+  if (FieldBits::NoField != (DataRFieldMask & whichField))
+    _mfDataR.syncWith(pOther->_mfDataR, sInfo);
 
-    if(FieldBits::NoField != (DataRFieldMask & whichField))
-        _mfDataR.syncWith(pOther->_mfDataR, sInfo);
+  if (FieldBits::NoField != (DataGFieldMask & whichField))
+    _mfDataG.syncWith(pOther->_mfDataG, sInfo);
 
-    if(FieldBits::NoField != (DataGFieldMask & whichField))
-        _mfDataG.syncWith(pOther->_mfDataG, sInfo);
+  if (FieldBits::NoField != (DataBFieldMask & whichField))
+    _mfDataB.syncWith(pOther->_mfDataB, sInfo);
 
-    if(FieldBits::NoField != (DataBFieldMask & whichField))
-        _mfDataB.syncWith(pOther->_mfDataB, sInfo);
-
-    if(FieldBits::NoField != (DataAFieldMask & whichField))
-        _mfDataA.syncWith(pOther->_mfDataA, sInfo);
-
-
+  if (FieldBits::NoField != (DataAFieldMask & whichField))
+    _mfDataA.syncWith(pOther->_mfDataA, sInfo);
 }
 
-void DVRLookupTableBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void DVRLookupTableBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (SizeFieldMask & whichField))
-        _mfSize.beginEdit(uiAspect, uiContainerSize);
+  if (FieldBits::NoField != (SizeFieldMask & whichField))
+    _mfSize.beginEdit(uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (DataFieldMask & whichField))
-        _mfData.beginEdit(uiAspect, uiContainerSize);
+  if (FieldBits::NoField != (DataFieldMask & whichField))
+    _mfData.beginEdit(uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (DataRFieldMask & whichField))
-        _mfDataR.beginEdit(uiAspect, uiContainerSize);
+  if (FieldBits::NoField != (DataRFieldMask & whichField))
+    _mfDataR.beginEdit(uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (DataGFieldMask & whichField))
-        _mfDataG.beginEdit(uiAspect, uiContainerSize);
+  if (FieldBits::NoField != (DataGFieldMask & whichField))
+    _mfDataG.beginEdit(uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (DataBFieldMask & whichField))
-        _mfDataB.beginEdit(uiAspect, uiContainerSize);
+  if (FieldBits::NoField != (DataBFieldMask & whichField))
+    _mfDataB.beginEdit(uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (DataAFieldMask & whichField))
-        _mfDataA.beginEdit(uiAspect, uiContainerSize);
-
+  if (FieldBits::NoField != (DataAFieldMask & whichField))
+    _mfDataA.beginEdit(uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 OSG_BEGIN_NAMESPACE
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_DEV)
 DataType FieldDataTraits<DVRLookupTablePtr>::_type("DVRLookupTablePtr", "AttachmentPtr");
 #endif
-
 
 OSG_END_NAMESPACE

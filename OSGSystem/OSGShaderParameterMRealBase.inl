@@ -52,81 +52,59 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &ShaderParameterMRealBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& ShaderParameterMRealBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 ShaderParameterMRealBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 ShaderParameterMRealBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-ShaderParameterMRealPtr ShaderParameterMRealBase::create(void) 
-{
-    ShaderParameterMRealPtr fc; 
+inline ShaderParameterMRealPtr ShaderParameterMRealBase::create(void) {
+  ShaderParameterMRealPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = ShaderParameterMRealPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = ShaderParameterMRealPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-ShaderParameterMRealPtr ShaderParameterMRealBase::createEmpty(void) 
-{ 
-    ShaderParameterMRealPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline ShaderParameterMRealPtr ShaderParameterMRealBase::createEmpty(void) {
+  ShaderParameterMRealPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the ShaderParameterMReal::_mfValue field.
-inline
-MFReal32 *ShaderParameterMRealBase::getMFValue(void)
-{
-    return &_mfValue;
+inline MFReal32* ShaderParameterMRealBase::getMFValue(void) {
+  return &_mfValue;
 }
-
-
 
 //! Get the value of the \a index element the ShaderParameterMReal::_mfValue field.
-inline
-Real32 &ShaderParameterMRealBase::getValue(const UInt32 index)
-{
-    return _mfValue[index];
+inline Real32& ShaderParameterMRealBase::getValue(const UInt32 index) {
+  return _mfValue[index];
 }
 
 //! Get the ShaderParameterMReal::_mfValue field.
-inline
-MFReal32 &ShaderParameterMRealBase::getValue(void)
-{
-    return _mfValue;
+inline MFReal32& ShaderParameterMRealBase::getValue(void) {
+  return _mfValue;
 }
 
 //! Get the ShaderParameterMReal::_mfValue field.
-inline
-const MFReal32 &ShaderParameterMRealBase::getValue(void) const
-{
-    return _mfValue;
+inline const MFReal32& ShaderParameterMRealBase::getValue(void) const {
+  return _mfValue;
 }
 
 OSG_END_NAMESPACE
 
-#define OSGSHADERPARAMETERMREALBASE_INLINE_CVSID "@(#)$Id: OSGShaderParameterMRealBase.inl,v 1.1 2007/03/09 18:11:48 a-m-z Exp $"
-
+#define OSGSHADERPARAMETERMREALBASE_INLINE_CVSID                                                   \
+  "@(#)$Id: OSGShaderParameterMRealBase.inl,v 1.1 2007/03/09 18:11:48 a-m-z Exp $"

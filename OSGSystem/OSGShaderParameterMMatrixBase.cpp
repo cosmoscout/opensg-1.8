@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILESHADERPARAMETERMMATRIXINST
 
 #include <stdlib.h>
@@ -61,16 +60,13 @@
 #include "OSGShaderParameterMMatrixBase.h"
 #include "OSGShaderParameterMMatrix.h"
 
-
 OSG_BEGIN_NAMESPACE
 
-const OSG::BitVector  ShaderParameterMMatrixBase::ValueFieldMask = 
+const OSG::BitVector ShaderParameterMMatrixBase::ValueFieldMask =
     (TypeTraits<BitVector>::One << ShaderParameterMMatrixBase::ValueFieldId);
 
-const OSG::BitVector ShaderParameterMMatrixBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector ShaderParameterMMatrixBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
@@ -80,191 +76,139 @@ const OSG::BitVector ShaderParameterMMatrixBase::MTInfluenceMask =
 
 //! ShaderParameterMMatrix description
 
-FieldDescription *ShaderParameterMMatrixBase::_desc[] = 
-{
-    new FieldDescription(MFMatrix::getClassType(), 
-                     "value", 
-                     ValueFieldId, ValueFieldMask,
-                     false,
-                     (FieldAccessMethod) &ShaderParameterMMatrixBase::getMFValue)
-};
+FieldDescription* ShaderParameterMMatrixBase::_desc[] = {
+    new FieldDescription(MFMatrix::getClassType(), "value", ValueFieldId, ValueFieldMask, false,
+        (FieldAccessMethod)&ShaderParameterMMatrixBase::getMFValue)};
 
+FieldContainerType ShaderParameterMMatrixBase::_type("ShaderParameterMMatrix", "ShaderParameter",
+    NULL, (PrototypeCreateF)&ShaderParameterMMatrixBase::createEmpty,
+    ShaderParameterMMatrix::initMethod, _desc, sizeof(_desc));
 
-FieldContainerType ShaderParameterMMatrixBase::_type(
-    "ShaderParameterMMatrix",
-    "ShaderParameter",
-    NULL,
-    (PrototypeCreateF) &ShaderParameterMMatrixBase::createEmpty,
-    ShaderParameterMMatrix::initMethod,
-    _desc,
-    sizeof(_desc));
-
-//OSG_FIELD_CONTAINER_DEF(ShaderParameterMMatrixBase, ShaderParameterMMatrixPtr)
+// OSG_FIELD_CONTAINER_DEF(ShaderParameterMMatrixBase, ShaderParameterMMatrixPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &ShaderParameterMMatrixBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &ShaderParameterMMatrixBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr ShaderParameterMMatrixBase::shallowCopy(void) const 
-{ 
-    ShaderParameterMMatrixPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const ShaderParameterMMatrix *>(this)); 
-
-    return returnValue; 
+FieldContainerType& ShaderParameterMMatrixBase::getType(void) {
+  return _type;
 }
 
-UInt32 ShaderParameterMMatrixBase::getContainerSize(void) const 
-{ 
-    return sizeof(ShaderParameterMMatrix); 
+const FieldContainerType& ShaderParameterMMatrixBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr ShaderParameterMMatrixBase::shallowCopy(void) const {
+  ShaderParameterMMatrixPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const ShaderParameterMMatrix*>(this));
+
+  return returnValue;
+}
+
+UInt32 ShaderParameterMMatrixBase::getContainerSize(void) const {
+  return sizeof(ShaderParameterMMatrix);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ShaderParameterMMatrixBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((ShaderParameterMMatrixBase *) &other, whichField);
+void ShaderParameterMMatrixBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((ShaderParameterMMatrixBase*)&other, whichField);
 }
 #else
-void ShaderParameterMMatrixBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((ShaderParameterMMatrixBase *) &other, whichField, sInfo);
+void ShaderParameterMMatrixBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((ShaderParameterMMatrixBase*)&other, whichField, sInfo);
 }
-void ShaderParameterMMatrixBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void ShaderParameterMMatrixBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void ShaderParameterMMatrixBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
+void ShaderParameterMMatrixBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 
-    _mfValue.terminateShare(uiAspect, this->getContainerSize());
+  _mfValue.terminateShare(uiAspect, this->getContainerSize());
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-ShaderParameterMMatrixBase::ShaderParameterMMatrixBase(void) :
-    _mfValue                  (), 
-    Inherited() 
-{
+ShaderParameterMMatrixBase::ShaderParameterMMatrixBase(void)
+    : _mfValue()
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-ShaderParameterMMatrixBase::ShaderParameterMMatrixBase(const ShaderParameterMMatrixBase &source) :
-    _mfValue                  (source._mfValue                  ), 
-    Inherited                 (source)
-{
+ShaderParameterMMatrixBase::ShaderParameterMMatrixBase(const ShaderParameterMMatrixBase& source)
+    : _mfValue(source._mfValue)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-ShaderParameterMMatrixBase::~ShaderParameterMMatrixBase(void)
-{
+ShaderParameterMMatrixBase::~ShaderParameterMMatrixBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 ShaderParameterMMatrixBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 ShaderParameterMMatrixBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (ValueFieldMask & whichField))
-    {
-        returnValue += _mfValue.getBinSize();
-    }
+  if (FieldBits::NoField != (ValueFieldMask & whichField)) {
+    returnValue += _mfValue.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void ShaderParameterMMatrixBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void ShaderParameterMMatrixBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ValueFieldMask & whichField))
-    {
-        _mfValue.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (ValueFieldMask & whichField)) {
+    _mfValue.copyToBin(pMem);
+  }
 }
 
-void ShaderParameterMMatrixBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void ShaderParameterMMatrixBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ValueFieldMask & whichField))
-    {
-        _mfValue.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (ValueFieldMask & whichField)) {
+    _mfValue.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ShaderParameterMMatrixBase::executeSyncImpl(      ShaderParameterMMatrixBase *pOther,
-                                        const BitVector         &whichField)
-{
+void ShaderParameterMMatrixBase::executeSyncImpl(
+    ShaderParameterMMatrixBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (ValueFieldMask & whichField))
-        _mfValue.syncWith(pOther->_mfValue);
-
-
+  if (FieldBits::NoField != (ValueFieldMask & whichField))
+    _mfValue.syncWith(pOther->_mfValue);
 }
 #else
-void ShaderParameterMMatrixBase::executeSyncImpl(      ShaderParameterMMatrixBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void ShaderParameterMMatrixBase::executeSyncImpl(
+    ShaderParameterMMatrixBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-
-    if(FieldBits::NoField != (ValueFieldMask & whichField))
-        _mfValue.syncWith(pOther->_mfValue, sInfo);
-
-
+  if (FieldBits::NoField != (ValueFieldMask & whichField))
+    _mfValue.syncWith(pOther->_mfValue, sInfo);
 }
 
-void ShaderParameterMMatrixBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void ShaderParameterMMatrixBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (ValueFieldMask & whichField))
-        _mfValue.beginEdit(uiAspect, uiContainerSize);
-
+  if (FieldBits::NoField != (ValueFieldMask & whichField))
+    _mfValue.beginEdit(uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 OSG_END_NAMESPACE
 
@@ -274,11 +218,11 @@ OSG_END_NAMESPACE
 OSG_BEGIN_NAMESPACE
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_DEV)
-DataType FieldDataTraits<ShaderParameterMMatrixPtr>::_type("ShaderParameterMMatrixPtr", "ShaderParameterPtr");
+DataType FieldDataTraits<ShaderParameterMMatrixPtr>::_type(
+    "ShaderParameterMMatrixPtr", "ShaderParameterPtr");
 #endif
 
 OSG_DLLEXPORT_SFIELD_DEF1(ShaderParameterMMatrixPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 OSG_DLLEXPORT_MFIELD_DEF1(ShaderParameterMMatrixPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
-

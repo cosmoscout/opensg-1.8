@@ -50,7 +50,6 @@
 
 OSG_USING_NAMESPACE
 
-
 /***************************************************************************\
  *                            Description                                  *
 \***************************************************************************/
@@ -59,7 +58,7 @@ OSG_USING_NAMESPACE
     \ingroup GrpSystemStatistics
 
     The StatIntElem keeps a std::string for messages, states or status
-    information, see \ref PageSystemStatistics for details. 
+    information, see \ref PageSystemStatistics for details.
 */
 
 /***************************************************************************\
@@ -68,98 +67,80 @@ OSG_USING_NAMESPACE
 
 /*------------- constructors & destructors --------------------------------*/
 
-StatStringElem::StatStringElem(StatElemDescBase *desc)
-  : StatElem(desc), _value()
-{
+StatStringElem::StatStringElem(StatElemDescBase* desc)
+    : StatElem(desc)
+    , _value() {
 }
 
-StatElem *StatStringElem::create(StatElemDescBase *desc)
-{
-    return new StatStringElem(desc);
+StatElem* StatStringElem::create(StatElemDescBase* desc) {
+  return new StatStringElem(desc);
 }
 
-StatStringElem::~StatStringElem(void)
-{
+StatStringElem::~StatStringElem(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-void StatStringElem::putToString(std::string &str, const char *format) const
-{
-    if(!format)
-    {
-        str = _value;
-    }
-    else
-    {
-        char *temp = new char [strlen(format) + _value.size() + 10];
-        sprintf(temp, format, _value.c_str());
-        str = temp;
-        delete [] temp;
-    }
+void StatStringElem::putToString(std::string& str, const char* format) const {
+  if (!format) {
+    str = _value;
+  } else {
+    char* temp = new char[strlen(format) + _value.size() + 10];
+    sprintf(temp, format, _value.c_str());
+    str = temp;
+    delete[] temp;
+  }
 }
 
-bool StatStringElem::getFromString(const Char8 *&inVal)
-{
-    if(inVal != 0)
-    {
-        _value = inVal;
-    }
+bool StatStringElem::getFromString(const Char8*& inVal) {
+  if (inVal != 0) {
+    _value = inVal;
+  }
 
-    return true;
+  return true;
 }
 
-Real64 StatStringElem::getValue(void) const
-{
-    return 0;
+Real64 StatStringElem::getValue(void) const {
+  return 0;
 }
 
-
-void StatStringElem::reset(void) 
-{ 
-    _value.resize(0); 
+void StatStringElem::reset(void) {
+  _value.resize(0);
 }
 
 /*-------------------------- assignment -----------------------------------*/
 
-StatStringElem& StatStringElem::operator = (const StatStringElem &source)
-{
-    if (this == &source)
-        return *this;
-
-    set(source.get());
-
+StatStringElem& StatStringElem::operator=(const StatStringElem& source) {
+  if (this == &source)
     return *this;
+
+  set(source.get());
+
+  return *this;
 }
 
 /*-------------------------- comparison -----------------------------------*/
 
-bool StatStringElem::operator < (const StatStringElem &other) const
-{
-    return this < &other;
+bool StatStringElem::operator<(const StatStringElem& other) const {
+  return this < &other;
 }
 
 /*--------------------------- creation ------------------------------------*/
 
-StatElem *StatStringElem::clone(void) const
-{
-    StatStringElem *e = new StatStringElem(getDesc());
-    
-    *e = *this;
-    
-    return e;
+StatElem* StatStringElem::clone(void) const {
+  StatStringElem* e = new StatStringElem(getDesc());
+
+  *e = *this;
+
+  return e;
 }
 
 /*--------------------------- operators ------------------------------------*/
 
-StatElem &StatStringElem::operator += (const StatElem &other)
-{
-    const StatStringElem *o = dynamic_cast<const StatStringElem *>(&other);
-    
-    _value += " " + o->_value;
-    
-    return *this;
+StatElem& StatStringElem::operator+=(const StatElem& other) {
+  const StatStringElem* o = dynamic_cast<const StatStringElem*>(&other);
+
+  _value += " " + o->_value;
+
+  return *this;
 }
-
-
-

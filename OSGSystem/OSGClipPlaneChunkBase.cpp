@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILECLIPPLANECHUNKINST
 
 #include <stdlib.h>
@@ -61,275 +60,209 @@
 #include "OSGClipPlaneChunkBase.h"
 #include "OSGClipPlaneChunk.h"
 
-#include <OSGGL.h>                        // Enable default header
+#include <OSGGL.h> // Enable default header
 
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  ClipPlaneChunkBase::EquationFieldMask = 
+const OSG::BitVector ClipPlaneChunkBase::EquationFieldMask =
     (TypeTraits<BitVector>::One << ClipPlaneChunkBase::EquationFieldId);
 
-const OSG::BitVector  ClipPlaneChunkBase::EnableFieldMask = 
+const OSG::BitVector ClipPlaneChunkBase::EnableFieldMask =
     (TypeTraits<BitVector>::One << ClipPlaneChunkBase::EnableFieldId);
 
-const OSG::BitVector  ClipPlaneChunkBase::BeaconFieldMask = 
+const OSG::BitVector ClipPlaneChunkBase::BeaconFieldMask =
     (TypeTraits<BitVector>::One << ClipPlaneChunkBase::BeaconFieldId);
 
-const OSG::BitVector ClipPlaneChunkBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector ClipPlaneChunkBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
 /*! \var Vec4f           ClipPlaneChunkBase::_sfEquation
-    Defines the equation of the clip plane. Standard format, if (a,b,c,d) is         the plane a point (x,y,z) is visible if a*x+b*y+c*z+d &gt;= 0.
+    Defines the equation of the clip plane. Standard format, if (a,b,c,d) is         the plane a
+   point (x,y,z) is visible if a*x+b*y+c*z+d &gt;= 0.
 */
 /*! \var bool            ClipPlaneChunkBase::_sfEnable
     Defines activation state of the clip plane.
 */
 /*! \var NodePtr         ClipPlaneChunkBase::_sfBeacon
-    The object that defines the clip planes's coordinate system. The clip         plane is positioned relative to this system.
+    The object that defines the clip planes's coordinate system. The clip         plane is
+   positioned relative to this system.
 */
 
 //! ClipPlaneChunk description
 
-FieldDescription *ClipPlaneChunkBase::_desc[] = 
-{
-    new FieldDescription(SFVec4f::getClassType(), 
-                     "equation", 
-                     EquationFieldId, EquationFieldMask,
-                     false,
-                     (FieldAccessMethod) &ClipPlaneChunkBase::getSFEquation),
-    new FieldDescription(SFBool::getClassType(), 
-                     "enable", 
-                     EnableFieldId, EnableFieldMask,
-                     false,
-                     (FieldAccessMethod) &ClipPlaneChunkBase::getSFEnable),
-    new FieldDescription(SFNodePtr::getClassType(), 
-                     "beacon", 
-                     BeaconFieldId, BeaconFieldMask,
-                     false,
-                     (FieldAccessMethod) &ClipPlaneChunkBase::getSFBeacon)
-};
+FieldDescription* ClipPlaneChunkBase::_desc[] = {
+    new FieldDescription(SFVec4f::getClassType(), "equation", EquationFieldId, EquationFieldMask,
+        false, (FieldAccessMethod)&ClipPlaneChunkBase::getSFEquation),
+    new FieldDescription(SFBool::getClassType(), "enable", EnableFieldId, EnableFieldMask, false,
+        (FieldAccessMethod)&ClipPlaneChunkBase::getSFEnable),
+    new FieldDescription(SFNodePtr::getClassType(), "beacon", BeaconFieldId, BeaconFieldMask, false,
+        (FieldAccessMethod)&ClipPlaneChunkBase::getSFBeacon)};
 
-
-FieldContainerType ClipPlaneChunkBase::_type(
-    "ClipPlaneChunk",
-    "StateChunk",
-    NULL,
-    (PrototypeCreateF) &ClipPlaneChunkBase::createEmpty,
-    ClipPlaneChunk::initMethod,
-    _desc,
+FieldContainerType ClipPlaneChunkBase::_type("ClipPlaneChunk", "StateChunk", NULL,
+    (PrototypeCreateF)&ClipPlaneChunkBase::createEmpty, ClipPlaneChunk::initMethod, _desc,
     sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(ClipPlaneChunkBase, ClipPlaneChunkPtr)
+// OSG_FIELD_CONTAINER_DEF(ClipPlaneChunkBase, ClipPlaneChunkPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &ClipPlaneChunkBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &ClipPlaneChunkBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr ClipPlaneChunkBase::shallowCopy(void) const 
-{ 
-    ClipPlaneChunkPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const ClipPlaneChunk *>(this)); 
-
-    return returnValue; 
+FieldContainerType& ClipPlaneChunkBase::getType(void) {
+  return _type;
 }
 
-UInt32 ClipPlaneChunkBase::getContainerSize(void) const 
-{ 
-    return sizeof(ClipPlaneChunk); 
+const FieldContainerType& ClipPlaneChunkBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr ClipPlaneChunkBase::shallowCopy(void) const {
+  ClipPlaneChunkPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const ClipPlaneChunk*>(this));
+
+  return returnValue;
+}
+
+UInt32 ClipPlaneChunkBase::getContainerSize(void) const {
+  return sizeof(ClipPlaneChunk);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ClipPlaneChunkBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((ClipPlaneChunkBase *) &other, whichField);
+void ClipPlaneChunkBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((ClipPlaneChunkBase*)&other, whichField);
 }
 #else
-void ClipPlaneChunkBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((ClipPlaneChunkBase *) &other, whichField, sInfo);
+void ClipPlaneChunkBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((ClipPlaneChunkBase*)&other, whichField, sInfo);
 }
-void ClipPlaneChunkBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void ClipPlaneChunkBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void ClipPlaneChunkBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void ClipPlaneChunkBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-ClipPlaneChunkBase::ClipPlaneChunkBase(void) :
-    _sfEquation               (Vec4f(0, 0, 1, 0)), 
-    _sfEnable                 (bool(GL_TRUE)), 
-    _sfBeacon                 (NodePtr(NullFC)), 
-    Inherited() 
-{
+ClipPlaneChunkBase::ClipPlaneChunkBase(void)
+    : _sfEquation(Vec4f(0, 0, 1, 0))
+    , _sfEnable(bool(GL_TRUE))
+    , _sfBeacon(NodePtr(NullFC))
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-ClipPlaneChunkBase::ClipPlaneChunkBase(const ClipPlaneChunkBase &source) :
-    _sfEquation               (source._sfEquation               ), 
-    _sfEnable                 (source._sfEnable                 ), 
-    _sfBeacon                 (source._sfBeacon                 ), 
-    Inherited                 (source)
-{
+ClipPlaneChunkBase::ClipPlaneChunkBase(const ClipPlaneChunkBase& source)
+    : _sfEquation(source._sfEquation)
+    , _sfEnable(source._sfEnable)
+    , _sfBeacon(source._sfBeacon)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-ClipPlaneChunkBase::~ClipPlaneChunkBase(void)
-{
+ClipPlaneChunkBase::~ClipPlaneChunkBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 ClipPlaneChunkBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 ClipPlaneChunkBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (EquationFieldMask & whichField))
-    {
-        returnValue += _sfEquation.getBinSize();
-    }
+  if (FieldBits::NoField != (EquationFieldMask & whichField)) {
+    returnValue += _sfEquation.getBinSize();
+  }
 
-    if(FieldBits::NoField != (EnableFieldMask & whichField))
-    {
-        returnValue += _sfEnable.getBinSize();
-    }
+  if (FieldBits::NoField != (EnableFieldMask & whichField)) {
+    returnValue += _sfEnable.getBinSize();
+  }
 
-    if(FieldBits::NoField != (BeaconFieldMask & whichField))
-    {
-        returnValue += _sfBeacon.getBinSize();
-    }
+  if (FieldBits::NoField != (BeaconFieldMask & whichField)) {
+    returnValue += _sfBeacon.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void ClipPlaneChunkBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void ClipPlaneChunkBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (EquationFieldMask & whichField))
-    {
-        _sfEquation.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (EquationFieldMask & whichField)) {
+    _sfEquation.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (EnableFieldMask & whichField))
-    {
-        _sfEnable.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (EnableFieldMask & whichField)) {
+    _sfEnable.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BeaconFieldMask & whichField))
-    {
-        _sfBeacon.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (BeaconFieldMask & whichField)) {
+    _sfBeacon.copyToBin(pMem);
+  }
 }
 
-void ClipPlaneChunkBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void ClipPlaneChunkBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (EquationFieldMask & whichField))
-    {
-        _sfEquation.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (EquationFieldMask & whichField)) {
+    _sfEquation.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (EnableFieldMask & whichField))
-    {
-        _sfEnable.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (EnableFieldMask & whichField)) {
+    _sfEnable.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BeaconFieldMask & whichField))
-    {
-        _sfBeacon.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (BeaconFieldMask & whichField)) {
+    _sfBeacon.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ClipPlaneChunkBase::executeSyncImpl(      ClipPlaneChunkBase *pOther,
-                                        const BitVector         &whichField)
-{
+void ClipPlaneChunkBase::executeSyncImpl(ClipPlaneChunkBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (EquationFieldMask & whichField))
-        _sfEquation.syncWith(pOther->_sfEquation);
+  if (FieldBits::NoField != (EquationFieldMask & whichField))
+    _sfEquation.syncWith(pOther->_sfEquation);
 
-    if(FieldBits::NoField != (EnableFieldMask & whichField))
-        _sfEnable.syncWith(pOther->_sfEnable);
+  if (FieldBits::NoField != (EnableFieldMask & whichField))
+    _sfEnable.syncWith(pOther->_sfEnable);
 
-    if(FieldBits::NoField != (BeaconFieldMask & whichField))
-        _sfBeacon.syncWith(pOther->_sfBeacon);
-
-
+  if (FieldBits::NoField != (BeaconFieldMask & whichField))
+    _sfBeacon.syncWith(pOther->_sfBeacon);
 }
 #else
-void ClipPlaneChunkBase::executeSyncImpl(      ClipPlaneChunkBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void ClipPlaneChunkBase::executeSyncImpl(
+    ClipPlaneChunkBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (EquationFieldMask & whichField))
-        _sfEquation.syncWith(pOther->_sfEquation);
+  if (FieldBits::NoField != (EquationFieldMask & whichField))
+    _sfEquation.syncWith(pOther->_sfEquation);
 
-    if(FieldBits::NoField != (EnableFieldMask & whichField))
-        _sfEnable.syncWith(pOther->_sfEnable);
+  if (FieldBits::NoField != (EnableFieldMask & whichField))
+    _sfEnable.syncWith(pOther->_sfEnable);
 
-    if(FieldBits::NoField != (BeaconFieldMask & whichField))
-        _sfBeacon.syncWith(pOther->_sfBeacon);
-
-
-
+  if (FieldBits::NoField != (BeaconFieldMask & whichField))
+    _sfBeacon.syncWith(pOther->_sfBeacon);
 }
 
-void ClipPlaneChunkBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void ClipPlaneChunkBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>

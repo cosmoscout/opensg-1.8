@@ -52,53 +52,39 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &ScreenGroupBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& ScreenGroupBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 ScreenGroupBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 ScreenGroupBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-ScreenGroupPtr ScreenGroupBase::create(void) 
-{
-    ScreenGroupPtr fc; 
+inline ScreenGroupPtr ScreenGroupBase::create(void) {
+  ScreenGroupPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = ScreenGroupPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = ScreenGroupPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-ScreenGroupPtr ScreenGroupBase::createEmpty(void) 
-{ 
-    ScreenGroupPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline ScreenGroupPtr ScreenGroupBase::createEmpty(void) {
+  ScreenGroupPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
-
-
 OSG_END_NAMESPACE
 
-#define OSGSCREENGROUPBASE_INLINE_CVSID "@(#)$Id: OSGScreenGroupBase.inl,v 1.1 2007/05/07 11:50:37 pdaehne Exp $"
-
+#define OSGSCREENGROUPBASE_INLINE_CVSID                                                            \
+  "@(#)$Id: OSGScreenGroupBase.inl,v 1.1 2007/05/07 11:50:37 pdaehne Exp $"

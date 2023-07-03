@@ -52,81 +52,59 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &SharedFontStyleBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& SharedFontStyleBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 SharedFontStyleBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 SharedFontStyleBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-SharedFontStylePtr SharedFontStyleBase::create(void) 
-{
-    SharedFontStylePtr fc; 
+inline SharedFontStylePtr SharedFontStyleBase::create(void) {
+  SharedFontStylePtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = SharedFontStylePtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = SharedFontStylePtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-SharedFontStylePtr SharedFontStyleBase::createEmpty(void) 
-{ 
-    SharedFontStylePtr returnValue; 
-    
-    newPtr(returnValue); 
+inline SharedFontStylePtr SharedFontStyleBase::createEmpty(void) {
+  SharedFontStylePtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the SharedFontStyle::_sfContainedFontStyle field.
-inline
-SFFontStyleP *SharedFontStyleBase::getSFContainedFontStyle(void)
-{
-    return &_sfContainedFontStyle;
-}
-
-
-//! Get the value of the SharedFontStyle::_sfContainedFontStyle field.
-inline
-FontStyleP &SharedFontStyleBase::getContainedFontStyle(void)
-{
-    return _sfContainedFontStyle.getValue();
+inline SFFontStyleP* SharedFontStyleBase::getSFContainedFontStyle(void) {
+  return &_sfContainedFontStyle;
 }
 
 //! Get the value of the SharedFontStyle::_sfContainedFontStyle field.
-inline
-const FontStyleP &SharedFontStyleBase::getContainedFontStyle(void) const
-{
-    return _sfContainedFontStyle.getValue();
+inline FontStyleP& SharedFontStyleBase::getContainedFontStyle(void) {
+  return _sfContainedFontStyle.getValue();
+}
+
+//! Get the value of the SharedFontStyle::_sfContainedFontStyle field.
+inline const FontStyleP& SharedFontStyleBase::getContainedFontStyle(void) const {
+  return _sfContainedFontStyle.getValue();
 }
 
 //! Set the value of the SharedFontStyle::_sfContainedFontStyle field.
-inline
-void SharedFontStyleBase::setContainedFontStyle(const FontStyleP &value)
-{
-    _sfContainedFontStyle.setValue(value);
+inline void SharedFontStyleBase::setContainedFontStyle(const FontStyleP& value) {
+  _sfContainedFontStyle.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGSHAREDFONTSTYLEBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGSHAREDFONTSTYLEBASE_INLINE_CVSID                                                        \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

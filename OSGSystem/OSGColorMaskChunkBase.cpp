@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILECOLORMASKCHUNKINST
 
 #include <stdlib.h>
@@ -61,25 +60,22 @@
 #include "OSGColorMaskChunkBase.h"
 #include "OSGColorMaskChunk.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  ColorMaskChunkBase::MaskRFieldMask = 
+const OSG::BitVector ColorMaskChunkBase::MaskRFieldMask =
     (TypeTraits<BitVector>::One << ColorMaskChunkBase::MaskRFieldId);
 
-const OSG::BitVector  ColorMaskChunkBase::MaskGFieldMask = 
+const OSG::BitVector ColorMaskChunkBase::MaskGFieldMask =
     (TypeTraits<BitVector>::One << ColorMaskChunkBase::MaskGFieldId);
 
-const OSG::BitVector  ColorMaskChunkBase::MaskBFieldMask = 
+const OSG::BitVector ColorMaskChunkBase::MaskBFieldMask =
     (TypeTraits<BitVector>::One << ColorMaskChunkBase::MaskBFieldId);
 
-const OSG::BitVector  ColorMaskChunkBase::MaskAFieldMask = 
+const OSG::BitVector ColorMaskChunkBase::MaskAFieldMask =
     (TypeTraits<BitVector>::One << ColorMaskChunkBase::MaskAFieldId);
 
-const OSG::BitVector ColorMaskChunkBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector ColorMaskChunkBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
@@ -98,271 +94,199 @@ const OSG::BitVector ColorMaskChunkBase::MTInfluenceMask =
 
 //! ColorMaskChunk description
 
-FieldDescription *ColorMaskChunkBase::_desc[] = 
-{
-    new FieldDescription(SFBool::getClassType(), 
-                     "maskR", 
-                     MaskRFieldId, MaskRFieldMask,
-                     false,
-                     (FieldAccessMethod) &ColorMaskChunkBase::getSFMaskR),
-    new FieldDescription(SFBool::getClassType(), 
-                     "maskG", 
-                     MaskGFieldId, MaskGFieldMask,
-                     false,
-                     (FieldAccessMethod) &ColorMaskChunkBase::getSFMaskG),
-    new FieldDescription(SFBool::getClassType(), 
-                     "maskB", 
-                     MaskBFieldId, MaskBFieldMask,
-                     false,
-                     (FieldAccessMethod) &ColorMaskChunkBase::getSFMaskB),
-    new FieldDescription(SFBool::getClassType(), 
-                     "maskA", 
-                     MaskAFieldId, MaskAFieldMask,
-                     false,
-                     (FieldAccessMethod) &ColorMaskChunkBase::getSFMaskA)
-};
+FieldDescription* ColorMaskChunkBase::_desc[] = {
+    new FieldDescription(SFBool::getClassType(), "maskR", MaskRFieldId, MaskRFieldMask, false,
+        (FieldAccessMethod)&ColorMaskChunkBase::getSFMaskR),
+    new FieldDescription(SFBool::getClassType(), "maskG", MaskGFieldId, MaskGFieldMask, false,
+        (FieldAccessMethod)&ColorMaskChunkBase::getSFMaskG),
+    new FieldDescription(SFBool::getClassType(), "maskB", MaskBFieldId, MaskBFieldMask, false,
+        (FieldAccessMethod)&ColorMaskChunkBase::getSFMaskB),
+    new FieldDescription(SFBool::getClassType(), "maskA", MaskAFieldId, MaskAFieldMask, false,
+        (FieldAccessMethod)&ColorMaskChunkBase::getSFMaskA)};
 
-
-FieldContainerType ColorMaskChunkBase::_type(
-    "ColorMaskChunk",
-    "StateChunk",
-    NULL,
-    (PrototypeCreateF) &ColorMaskChunkBase::createEmpty,
-    ColorMaskChunk::initMethod,
-    _desc,
+FieldContainerType ColorMaskChunkBase::_type("ColorMaskChunk", "StateChunk", NULL,
+    (PrototypeCreateF)&ColorMaskChunkBase::createEmpty, ColorMaskChunk::initMethod, _desc,
     sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(ColorMaskChunkBase, ColorMaskChunkPtr)
+// OSG_FIELD_CONTAINER_DEF(ColorMaskChunkBase, ColorMaskChunkPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &ColorMaskChunkBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &ColorMaskChunkBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr ColorMaskChunkBase::shallowCopy(void) const 
-{ 
-    ColorMaskChunkPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const ColorMaskChunk *>(this)); 
-
-    return returnValue; 
+FieldContainerType& ColorMaskChunkBase::getType(void) {
+  return _type;
 }
 
-UInt32 ColorMaskChunkBase::getContainerSize(void) const 
-{ 
-    return sizeof(ColorMaskChunk); 
+const FieldContainerType& ColorMaskChunkBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr ColorMaskChunkBase::shallowCopy(void) const {
+  ColorMaskChunkPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const ColorMaskChunk*>(this));
+
+  return returnValue;
+}
+
+UInt32 ColorMaskChunkBase::getContainerSize(void) const {
+  return sizeof(ColorMaskChunk);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ColorMaskChunkBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((ColorMaskChunkBase *) &other, whichField);
+void ColorMaskChunkBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((ColorMaskChunkBase*)&other, whichField);
 }
 #else
-void ColorMaskChunkBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((ColorMaskChunkBase *) &other, whichField, sInfo);
+void ColorMaskChunkBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((ColorMaskChunkBase*)&other, whichField, sInfo);
 }
-void ColorMaskChunkBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void ColorMaskChunkBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void ColorMaskChunkBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void ColorMaskChunkBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-ColorMaskChunkBase::ColorMaskChunkBase(void) :
-    _sfMaskR                  (bool(true)), 
-    _sfMaskG                  (bool(true)), 
-    _sfMaskB                  (bool(true)), 
-    _sfMaskA                  (bool(true)), 
-    Inherited() 
-{
+ColorMaskChunkBase::ColorMaskChunkBase(void)
+    : _sfMaskR(bool(true))
+    , _sfMaskG(bool(true))
+    , _sfMaskB(bool(true))
+    , _sfMaskA(bool(true))
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-ColorMaskChunkBase::ColorMaskChunkBase(const ColorMaskChunkBase &source) :
-    _sfMaskR                  (source._sfMaskR                  ), 
-    _sfMaskG                  (source._sfMaskG                  ), 
-    _sfMaskB                  (source._sfMaskB                  ), 
-    _sfMaskA                  (source._sfMaskA                  ), 
-    Inherited                 (source)
-{
+ColorMaskChunkBase::ColorMaskChunkBase(const ColorMaskChunkBase& source)
+    : _sfMaskR(source._sfMaskR)
+    , _sfMaskG(source._sfMaskG)
+    , _sfMaskB(source._sfMaskB)
+    , _sfMaskA(source._sfMaskA)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-ColorMaskChunkBase::~ColorMaskChunkBase(void)
-{
+ColorMaskChunkBase::~ColorMaskChunkBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 ColorMaskChunkBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 ColorMaskChunkBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (MaskRFieldMask & whichField))
-    {
-        returnValue += _sfMaskR.getBinSize();
-    }
+  if (FieldBits::NoField != (MaskRFieldMask & whichField)) {
+    returnValue += _sfMaskR.getBinSize();
+  }
 
-    if(FieldBits::NoField != (MaskGFieldMask & whichField))
-    {
-        returnValue += _sfMaskG.getBinSize();
-    }
+  if (FieldBits::NoField != (MaskGFieldMask & whichField)) {
+    returnValue += _sfMaskG.getBinSize();
+  }
 
-    if(FieldBits::NoField != (MaskBFieldMask & whichField))
-    {
-        returnValue += _sfMaskB.getBinSize();
-    }
+  if (FieldBits::NoField != (MaskBFieldMask & whichField)) {
+    returnValue += _sfMaskB.getBinSize();
+  }
 
-    if(FieldBits::NoField != (MaskAFieldMask & whichField))
-    {
-        returnValue += _sfMaskA.getBinSize();
-    }
+  if (FieldBits::NoField != (MaskAFieldMask & whichField)) {
+    returnValue += _sfMaskA.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void ColorMaskChunkBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void ColorMaskChunkBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (MaskRFieldMask & whichField))
-    {
-        _sfMaskR.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (MaskRFieldMask & whichField)) {
+    _sfMaskR.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (MaskGFieldMask & whichField))
-    {
-        _sfMaskG.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (MaskGFieldMask & whichField)) {
+    _sfMaskG.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (MaskBFieldMask & whichField))
-    {
-        _sfMaskB.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (MaskBFieldMask & whichField)) {
+    _sfMaskB.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (MaskAFieldMask & whichField))
-    {
-        _sfMaskA.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (MaskAFieldMask & whichField)) {
+    _sfMaskA.copyToBin(pMem);
+  }
 }
 
-void ColorMaskChunkBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void ColorMaskChunkBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (MaskRFieldMask & whichField))
-    {
-        _sfMaskR.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (MaskRFieldMask & whichField)) {
+    _sfMaskR.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (MaskGFieldMask & whichField))
-    {
-        _sfMaskG.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (MaskGFieldMask & whichField)) {
+    _sfMaskG.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (MaskBFieldMask & whichField))
-    {
-        _sfMaskB.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (MaskBFieldMask & whichField)) {
+    _sfMaskB.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (MaskAFieldMask & whichField))
-    {
-        _sfMaskA.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (MaskAFieldMask & whichField)) {
+    _sfMaskA.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ColorMaskChunkBase::executeSyncImpl(      ColorMaskChunkBase *pOther,
-                                        const BitVector         &whichField)
-{
+void ColorMaskChunkBase::executeSyncImpl(ColorMaskChunkBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (MaskRFieldMask & whichField))
-        _sfMaskR.syncWith(pOther->_sfMaskR);
+  if (FieldBits::NoField != (MaskRFieldMask & whichField))
+    _sfMaskR.syncWith(pOther->_sfMaskR);
 
-    if(FieldBits::NoField != (MaskGFieldMask & whichField))
-        _sfMaskG.syncWith(pOther->_sfMaskG);
+  if (FieldBits::NoField != (MaskGFieldMask & whichField))
+    _sfMaskG.syncWith(pOther->_sfMaskG);
 
-    if(FieldBits::NoField != (MaskBFieldMask & whichField))
-        _sfMaskB.syncWith(pOther->_sfMaskB);
+  if (FieldBits::NoField != (MaskBFieldMask & whichField))
+    _sfMaskB.syncWith(pOther->_sfMaskB);
 
-    if(FieldBits::NoField != (MaskAFieldMask & whichField))
-        _sfMaskA.syncWith(pOther->_sfMaskA);
-
-
+  if (FieldBits::NoField != (MaskAFieldMask & whichField))
+    _sfMaskA.syncWith(pOther->_sfMaskA);
 }
 #else
-void ColorMaskChunkBase::executeSyncImpl(      ColorMaskChunkBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void ColorMaskChunkBase::executeSyncImpl(
+    ColorMaskChunkBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (MaskRFieldMask & whichField))
-        _sfMaskR.syncWith(pOther->_sfMaskR);
+  if (FieldBits::NoField != (MaskRFieldMask & whichField))
+    _sfMaskR.syncWith(pOther->_sfMaskR);
 
-    if(FieldBits::NoField != (MaskGFieldMask & whichField))
-        _sfMaskG.syncWith(pOther->_sfMaskG);
+  if (FieldBits::NoField != (MaskGFieldMask & whichField))
+    _sfMaskG.syncWith(pOther->_sfMaskG);
 
-    if(FieldBits::NoField != (MaskBFieldMask & whichField))
-        _sfMaskB.syncWith(pOther->_sfMaskB);
+  if (FieldBits::NoField != (MaskBFieldMask & whichField))
+    _sfMaskB.syncWith(pOther->_sfMaskB);
 
-    if(FieldBits::NoField != (MaskAFieldMask & whichField))
-        _sfMaskA.syncWith(pOther->_sfMaskA);
-
-
-
+  if (FieldBits::NoField != (MaskAFieldMask & whichField))
+    _sfMaskA.syncWith(pOther->_sfMaskA);
 }
 
-void ColorMaskChunkBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void ColorMaskChunkBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>
@@ -377,4 +301,3 @@ OSG_DLLEXPORT_SFIELD_DEF1(ColorMaskChunkPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 OSG_DLLEXPORT_MFIELD_DEF1(ColorMaskChunkPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
-

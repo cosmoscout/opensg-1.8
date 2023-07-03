@@ -41,10 +41,8 @@
 
 OSG_BEGIN_NAMESPACE
 
-inline
-void DirectionalLight::setDirection(const Vec3f &value)
-{
-    Inherited::setDirection(value);
+inline void DirectionalLight::setDirection(const Vec3f& value) {
+  Inherited::setDirection(value);
 }
 
 OSG_END_NAMESPACE

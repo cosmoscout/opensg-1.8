@@ -54,79 +54,74 @@ class GroupConnection;
     \ingroup GrpBaseNetwork
 */
 
-class OSG_BASE_DLLMAPPING ConnectionType 
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_BASE_DLLMAPPING ConnectionType {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Types                                  */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Types                                  */
-    /*! \{                                                                 */
+  typedef PointConnection* (*CreatePointFunction)(void);
+  typedef GroupConnection* (*CreateGroupFunction)(void);
 
-    typedef PointConnection *(*CreatePointFunction)(void);
-    typedef GroupConnection *(*CreateGroupFunction)(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  ConnectionType(CreateGroupFunction, const std::string& name);
+  ConnectionType(CreatePointFunction, const std::string& name);
+  ConnectionType(const ConnectionType& source);
 
-    ConnectionType(CreateGroupFunction,
-                   const std::string &name);
-    ConnectionType(CreatePointFunction,
-                   const std::string &name);
-    ConnectionType(const ConnectionType &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  virtual ~ConnectionType(void);
 
-    virtual ~ConnectionType(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Get                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Get                                     */
-    /*! \{                                                                 */
+  std::string         getName(void) const;
+  CreateGroupFunction getCreateGroup(void) const;
+  CreatePointFunction getCreatePoint(void) const;
 
-    std::string         getName       (void) const;
-    CreateGroupFunction getCreateGroup(void) const;
-    CreatePointFunction getCreatePoint(void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   creation                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   creation                                   */
-    /*! \{                                                                 */
+  PointConnection* createPoint(void);
+  GroupConnection* createGroup(void);
 
-    PointConnection *createPoint(void);
-    GroupConnection *createGroup(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Assignment                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Assignment                                */
-    /*! \{                                                                 */
+  ConnectionType& operator=(const ConnectionType& source);
 
-    ConnectionType &operator =(const ConnectionType &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Comparison                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Comparison                                */
-    /*! \{                                                                 */
+  bool operator<(const ConnectionType& other) const;
+  bool operator==(const ConnectionType& other) const;
+  bool operator!=(const ConnectionType& other) const;
 
-    bool operator < (const ConnectionType &other) const;
-    bool operator == (const ConnectionType &other) const;
-    bool operator != (const ConnectionType &other) const;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  CreateGroupFunction _createGroup;
+  CreatePointFunction _createPoint;
+  std::string         _name;
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
-
-    CreateGroupFunction _createGroup;
-    CreatePointFunction _createPoint;
-    std::string         _name;
-
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*==========================  PRIVATE  ================================*/
+ private:
 };
 
 OSG_END_NAMESPACE

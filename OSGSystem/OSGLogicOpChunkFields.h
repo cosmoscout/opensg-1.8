@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGLOGICOPCHUNKFIELDS_H_
 #define _OSGLOGICOPCHUNKFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class LogicOpChunk;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! LogicOpChunkPtr
 
 typedef FCPtr<StateChunkPtr, LogicOpChunk> LogicOpChunkPtr;
@@ -81,18 +80,22 @@ typedef FCPtr<StateChunkPtr, LogicOpChunk> LogicOpChunkPtr;
 #endif
 
 template <>
-struct FieldDataTraits<LogicOpChunkPtr> : 
-    public FieldTraitsRecurseMapper<LogicOpChunkPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<LogicOpChunkPtr> : public FieldTraitsRecurseMapper<LogicOpChunkPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getSName(void) { return "SFLogicOpChunkPtr"; }
-    static const char *getMName(void) { return "MFLogicOpChunkPtr"; }
+  static const char* getSName(void) {
+    return "SFLogicOpChunkPtr";
+  }
+  static const char* getMName(void) {
+    return "MFLogicOpChunkPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -102,7 +105,6 @@ struct FieldDataTraits<LogicOpChunkPtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
@@ -126,6 +128,7 @@ OSG_DLLEXPORT_DECL1(MField, LogicOpChunkPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 
 OSG_END_NAMESPACE
 
-#define OSGLOGICOPCHUNKFIELDS_HEADER_CVSID "@(#)$Id: OSGLogicOpChunkFields.h,v 1.1 2007/06/25 14:32:45 neumannc Exp $"
+#define OSGLOGICOPCHUNKFIELDS_HEADER_CVSID                                                         \
+  "@(#)$Id: OSGLogicOpChunkFields.h,v 1.1 2007/06/25 14:32:45 neumannc Exp $"
 
 #endif /* _OSGLOGICOPCHUNKFIELDS_H_ */

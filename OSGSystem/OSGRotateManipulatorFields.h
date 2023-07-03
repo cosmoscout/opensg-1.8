@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGROTATEMANIPULATORFIELDS_H_
 #define _OSGROTATEMANIPULATORFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class RotateManipulator;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! RotateManipulatorPtr
 
 typedef FCPtr<ManipulatorPtr, RotateManipulator> RotateManipulatorPtr;
@@ -81,13 +80,12 @@ typedef FCPtr<ManipulatorPtr, RotateManipulator> RotateManipulatorPtr;
 #endif
 
 template <>
-struct FieldDataTraits<RotateManipulatorPtr> : 
-    public FieldTraitsRecurseMapper<RotateManipulatorPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<RotateManipulatorPtr>
+    : public FieldTraitsRecurseMapper<RotateManipulatorPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -98,10 +96,9 @@ struct FieldDataTraits<RotateManipulatorPtr> :
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
 
-
-
 OSG_END_NAMESPACE
 
-#define OSGROTATEMANIPULATORFIELDS_HEADER_CVSID "@(#)$Id: OSGRotateManipulatorFields.h,v 1.4 2006/02/20 17:04:35 dirk Exp $"
+#define OSGROTATEMANIPULATORFIELDS_HEADER_CVSID                                                    \
+  "@(#)$Id: OSGRotateManipulatorFields.h,v 1.4 2006/02/20 17:04:35 dirk Exp $"
 
 #endif /* _OSGROTATEMANIPULATORFIELDS_H_ */

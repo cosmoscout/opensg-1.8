@@ -62,25 +62,23 @@ OSG_BEGIN_NAMESPACE
 #endif
 
 template <>
-struct FieldDataTraits<NodePtr> : 
-    public FieldTraitsRecurseMapper<NodePtr, true>
-{
-    typedef FieldDataTraits<NodePtr>  Self;
-    static  DataType                 _type;
+struct FieldDataTraits<NodePtr> : public FieldTraitsRecurseMapper<NodePtr, true> {
+  typedef FieldDataTraits<NodePtr> Self;
+  static DataType                  _type;
 
-    enum                            
-    {
-        StringConvertable = Self::ToStringConvertable
-    };
-    
-    enum
-    {
-        bHasParent        = 0x01
-    };
+  enum { StringConvertable = Self::ToStringConvertable };
 
-    static DataType &getType (void) { return _type;                          }
-    static char     *getSName(void) { return "SFNodePtr";                    }
-    static char     *getMName(void) { return "MFNodePtr";                    }
+  enum { bHasParent = 0x01 };
+
+  static DataType& getType(void) {
+    return _type;
+  }
+  static char* getSName(void) {
+    return "SFNodePtr";
+  }
+  static char* getMName(void) {
+    return "MFNodePtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -95,10 +93,3 @@ OSG_END_NAMESPACE
 #define OSGNODEFIELDDATATYPE_HEADER_CVSID "@(#)$Id: $"
 
 #endif /* _OSG_NODEFIELDDATATYPE_H_ */
-
-
-
-
-
-
-

@@ -48,5 +48,3 @@
 #include <OSGNodePtr.h>
 
 #endif
-
-

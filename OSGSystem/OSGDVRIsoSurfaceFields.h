@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGDVRISOSURFACEFIELDS_H_
 #define _OSGDVRISOSURFACEFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class DVRIsoSurface;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! DVRIsoSurfacePtr
 
 typedef FCPtr<AttachmentPtr, DVRIsoSurface> DVRIsoSurfacePtr;
@@ -81,13 +80,11 @@ typedef FCPtr<AttachmentPtr, DVRIsoSurface> DVRIsoSurfacePtr;
 #endif
 
 template <>
-struct FieldDataTraits<DVRIsoSurfacePtr> : 
-    public FieldTraitsRecurseMapper<DVRIsoSurfacePtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<DVRIsoSurfacePtr> : public FieldTraitsRecurseMapper<DVRIsoSurfacePtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -98,10 +95,9 @@ struct FieldDataTraits<DVRIsoSurfacePtr> :
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
 
-
-
 OSG_END_NAMESPACE
 
-#define OSGDVRISOSURFACEFIELDS_HEADER_CVSID "@(#)$Id: FCFieldsTemplate_h.h,v 1.25 2005/04/04 14:51:48 dirk Exp $"
+#define OSGDVRISOSURFACEFIELDS_HEADER_CVSID                                                        \
+  "@(#)$Id: FCFieldsTemplate_h.h,v 1.25 2005/04/04 14:51:48 dirk Exp $"
 
 #endif /* _OSGDVRISOSURFACEFIELDS_H_ */

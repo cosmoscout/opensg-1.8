@@ -1,39 +1,39 @@
 /*---------------------------------------------------------------------------*\
- *                                OpenSG                                     * 
- *                                                                           * 
- *                                                                           * 
- *           Copyright (C) 2000,2001,2002 by the OpenSG Forum                * 
- *                                                                           * 
- *                            www.opensg.org                                 * 
- *                                                                           * 
- *   contact: dirk@opensg.org, gerrit.voss@vossg.org, jbehr@zgdv.de          * 
- *                                                                           * 
+ *                                OpenSG                                     *
+ *                                                                           *
+ *                                                                           *
+ *           Copyright (C) 2000,2001,2002 by the OpenSG Forum                *
+ *                                                                           *
+ *                            www.opensg.org                                 *
+ *                                                                           *
+ *   contact: dirk@opensg.org, gerrit.voss@vossg.org, jbehr@zgdv.de          *
+ *                                                                           *
 \*---------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------*\
- *                                License                                    * 
- *                                                                           * 
- * This library is free software; you can redistribute it and/or modify it   * 
- * under the terms of the GNU Library General Public License as published    * 
- * by the Free Software Foundation, version 2.                               * 
- *                                                                           * 
- * This library is distributed in the hope that it will be useful, but       * 
- * WITHOUT ANY WARRANTY; without even the implied warranty of                * 
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU         * 
- * Library General Public License for more details.                          * 
- *                                                                           * 
- * You should have received a copy of the GNU Library General Public         * 
- * License along with this library; if not, write to the Free Software       * 
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.                 * 
- *                                                                           * 
+ *                                License                                    *
+ *                                                                           *
+ * This library is free software; you can redistribute it and/or modify it   *
+ * under the terms of the GNU Library General Public License as published    *
+ * by the Free Software Foundation, version 2.                               *
+ *                                                                           *
+ * This library is distributed in the hope that it will be useful, but       *
+ * WITHOUT ANY WARRANTY; without even the implied warranty of                *
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU         *
+ * Library General Public License for more details.                          *
+ *                                                                           *
+ * You should have received a copy of the GNU Library General Public         *
+ * License along with this library; if not, write to the Free Software       *
+ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.                 *
+ *                                                                           *
 \*---------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------*\
- *                                Changes                                    * 
- *                                                                           * 
- *                                                                           * 
- *                                                                           * 
- *                                                                           * 
- *                                                                           * 
- *                                                                           * 
+ *                                Changes                                    *
+ *                                                                           *
+ *                                                                           *
+ *                                                                           *
+ *                                                                           *
+ *                                                                           *
+ *                                                                           *
 \*---------------------------------------------------------------------------*/
 
 #ifndef _OSGNFIOBASE_H_
@@ -64,197 +64,174 @@ OSG_BEGIN_NAMESPACE
           Base class for native file io.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING NFIOBase
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING NFIOBase {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructor                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructor                                 */
-    /*! \{                                                                 */
+  NFIOBase(const char* name);
 
-    NFIOBase                     (const char *name);
-  
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Destructor                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Destructor                                */
+  /*! \{                                                                 */
 
-    virtual ~NFIOBase            (void);
+  virtual ~NFIOBase(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Read/Write                                */
-    /*! \{                                                                 */
-  
-    static NodePtr  read    (std::istream &is,
-                             const std::string &options);
-    static bool     write   (const NodePtr &node, std::ostream &os,
-                             const std::string &options);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Read/Write                                */
+  /*! \{                                                                 */
 
-    static FieldContainerPtr readFC (std::istream &is,
-                                     const std::string &options);
-    static bool              writeFC(const FieldContainerPtr &fc,
-                                     std::ostream &os,
-                                     const std::string &options);
+  static NodePtr read(std::istream& is, const std::string& options);
+  static bool    write(const NodePtr& node, std::ostream& os, const std::string& options);
 
-    static bool              isOSB(std::istream &is);
+  static FieldContainerPtr readFC(std::istream& is, const std::string& options);
+  static bool writeFC(const FieldContainerPtr& fc, std::ostream& os, const std::string& options);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-    
-protected:
+  static bool isOSB(std::istream& is);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Options                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    static const NFIOOptions &getOptions(void);
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Options                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*! \name                      Read                                    */
-    /*! \{                                                                 */
+  static const NFIOOptions& getOptions(void);
 
-    virtual FieldContainerPtr readFC(const std::string &typeName) = 0;
-    
-    static std::string readFCFields    (const FieldContainerPtr &fc,
-                                        const std::string &exclude = "",
-                                        const std::string &endMarkers = "");
-    static void readSFFieldContainerPtr(const FieldContainerPtr &fc,
-                                        const BitVector &mask,
-                                        Field *field                );
-    static void readMFFieldContainerPtr(const FieldContainerPtr &fc,
-                                        const BitVector &mask,
-                                        Field *field, UInt32 noe    );
+  /*! \}                                                                 */
+  /*! \name                      Read                                    */
+  /*! \{                                                                 */
 
-    static void readSFAttachmentMap    (const FieldContainerPtr &fc,
-                                        const BitVector &mask,
-                                        Field *field, UInt32 noe    );
+  virtual FieldContainerPtr readFC(const std::string& typeName) = 0;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Write                                     */
-    /*! \{                                                                 */
+  static std::string readFCFields(const FieldContainerPtr& fc, const std::string& exclude = "",
+      const std::string& endMarkers = "");
+  static void        readSFFieldContainerPtr(
+             const FieldContainerPtr& fc, const BitVector& mask, Field* field);
+  static void readMFFieldContainerPtr(
+      const FieldContainerPtr& fc, const BitVector& mask, Field* field, UInt32 noe);
 
-    virtual void writeFC(const FieldContainerPtr &fc) = 0;
+  static void readSFAttachmentMap(
+      const FieldContainerPtr& fc, const BitVector& mask, Field* field, UInt32 noe);
 
-    static void writeFCFields           (const FieldContainerPtr &fc,
-                                         const std::string &exclude = "",
-                                         bool endMarker = true);
-    static void writeSFFieldContainerPtr(SFFieldContainerPtr *field  );
-    static void writeMFFieldContainerPtr(MFFieldContainerPtr *field  );
-    static void writeSFAttachmentMap    (SFAttachmentMap *amap       );
-    
-    static void readEndMarker           (void                        );
-    static void writeEndMarker          (void                        );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Write                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Skip                                      */
-    /*! \{                                                                 */
-    
-    static void skipFCFields(void);
-        
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                 Binary Read/Write Handler                    */
-    /*! \{                                                                 */
+  virtual void writeFC(const FieldContainerPtr& fc) = 0;
 
-    class BinaryReadHandler : public BinaryDataHandler
-    {
-      public:
-        BinaryReadHandler(std::istream &is);
-        virtual ~BinaryReadHandler();
+  static void writeFCFields(
+      const FieldContainerPtr& fc, const std::string& exclude = "", bool endMarker = true);
+  static void writeSFFieldContainerPtr(SFFieldContainerPtr* field);
+  static void writeMFFieldContainerPtr(MFFieldContainerPtr* field);
+  static void writeSFAttachmentMap(SFAttachmentMap* amap);
 
-        void read(MemoryHandle mem, UInt32 size);
-        void skip(UInt32 size);
+  static void readEndMarker(void);
+  static void writeEndMarker(void);
 
-      private:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Skip                                      */
+  /*! \{                                                                 */
 
-        std::vector<UInt8>  _readMemory;
-        std::istream &_is;
-      
-        BinaryReadHandler(const BinaryReadHandler &source);
-        void operator =(const BinaryReadHandler &source);
-    };
+  static void skipFCFields(void);
 
-    class BinaryWriteHandler : public BinaryDataHandler
-    {
-      public:
-        BinaryWriteHandler(std::ostream &os);
-        virtual ~BinaryWriteHandler();
-    
-        void write(MemoryHandle mem, UInt32 size);
-    
-      private:
-    
-        std::vector<UInt8> _writeMemory;
-        std::ostream &_os;
-    
-        BinaryWriteHandler(const BinaryWriteHandler &source);
-        void operator =(const BinaryWriteHandler &source);
-    };
-    
-    static BinaryReadHandler    *_in;
-    static BinaryWriteHandler   *_out;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                 Binary Read/Write Handler                    */
+  /*! \{                                                                 */
 
-    UInt16 _version;
+  class BinaryReadHandler : public BinaryDataHandler {
+   public:
+    BinaryReadHandler(std::istream& is);
+    virtual ~BinaryReadHandler();
 
-    /*! \}                                                                 */ 
-    /*==========================  PRIVATE  ================================*/
-private:
-    
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Read                                    */
-    /*! \{                                                                 */
+    void read(MemoryHandle mem, UInt32 size);
+    void skip(UInt32 size);
 
-    static FieldContainerPtr readFieldContainer(void);
+   private:
+    std::vector<UInt8> _readMemory;
+    std::istream&      _is;
 
-    struct fcInfo
-    {
-        fcInfo(const FieldContainerPtr &fc, const BitVector &mask,
-               UInt32 id, Field *field                            );
-        fcInfo(const FieldContainerPtr &fc, const BitVector &mask,
-               Field *field                                       );
-        
-        bool isMultiField(void) const;
-        
-        FieldContainerPtr   _fc;
-        BitVector           _mask;
-        UInt32              _id;
-        Field               *_field;
-        std::vector<UInt32>  _ids;
-        std::vector<UInt16>  _ids_binding;
-    };
+    BinaryReadHandler(const BinaryReadHandler& source);
+    void operator=(const BinaryReadHandler& source);
+  };
 
-    static void addReadFieldContainer  (const FieldContainerPtr &fc,
-                                        UInt32 id                   );
-    static void chargeFieldPtr         (const fcInfo &info          );
+  class BinaryWriteHandler : public BinaryDataHandler {
+   public:
+    BinaryWriteHandler(std::ostream& os);
+    virtual ~BinaryWriteHandler();
 
-    static Action::ResultE clearAttachmentParent(NodePtr &node      );
-    static Action::ResultE addAttachmentParent  (NodePtr &node      );
-    static void            fillAttachmentParents(const NodePtr &node);
+    void write(MemoryHandle mem, UInt32 size);
 
-    typedef std::map<UInt32, FieldContainerPtr> fcMap;
-    
-    static fcMap                _fcMap;
-    static std::list<fcInfo>    _fieldList;
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Write                                  */
-    /*! \{                                                                 */
+   private:
+    std::vector<UInt8> _writeMemory;
+    std::ostream&      _os;
 
-    static void getFCCount          (const FieldContainerPtr &fc, UInt32 &count);
-    static void writeFieldContainer (const FieldContainerPtr &fc);
-    static void writeFCId           (const FieldContainerPtr &fc);
-    
-    static std::list<FieldContainerPtr>  _fcList;
-    static std::set<UInt32>              _fcSet;
-    static std::set<FieldContainerPtr>   _added_cores;
+    BinaryWriteHandler(const BinaryWriteHandler& source);
+    void operator=(const BinaryWriteHandler& source);
+  };
 
-    static NFIOOptions _options;
+  static BinaryReadHandler*  _in;
+  static BinaryWriteHandler* _out;
 
+  UInt16 _version;
+
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Read                                    */
+  /*! \{                                                                 */
+
+  static FieldContainerPtr readFieldContainer(void);
+
+  struct fcInfo {
+    fcInfo(const FieldContainerPtr& fc, const BitVector& mask, UInt32 id, Field* field);
+    fcInfo(const FieldContainerPtr& fc, const BitVector& mask, Field* field);
+
+    bool isMultiField(void) const;
+
+    FieldContainerPtr   _fc;
+    BitVector           _mask;
+    UInt32              _id;
+    Field*              _field;
+    std::vector<UInt32> _ids;
+    std::vector<UInt16> _ids_binding;
+  };
+
+  static void addReadFieldContainer(const FieldContainerPtr& fc, UInt32 id);
+  static void chargeFieldPtr(const fcInfo& info);
+
+  static Action::ResultE clearAttachmentParent(NodePtr& node);
+  static Action::ResultE addAttachmentParent(NodePtr& node);
+  static void            fillAttachmentParents(const NodePtr& node);
+
+  typedef std::map<UInt32, FieldContainerPtr> fcMap;
+
+  static fcMap             _fcMap;
+  static std::list<fcInfo> _fieldList;
+
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Write                                  */
+  /*! \{                                                                 */
+
+  static void getFCCount(const FieldContainerPtr& fc, UInt32& count);
+  static void writeFieldContainer(const FieldContainerPtr& fc);
+  static void writeFCId(const FieldContainerPtr& fc);
+
+  static std::list<FieldContainerPtr> _fcList;
+  static std::set<UInt32>             _fcSet;
+  static std::set<FieldContainerPtr>  _added_cores;
+
+  static NFIOOptions _options;
 };
 
 OSG_END_NAMESPACE

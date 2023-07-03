@@ -52,111 +52,79 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &ShaderChunkBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& ShaderChunkBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 ShaderChunkBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
-
+inline OSG::UInt32 ShaderChunkBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the ShaderChunk::_sfVertexProgram field.
-inline
-SFString *ShaderChunkBase::getSFVertexProgram(void)
-{
-    return &_sfVertexProgram;
+inline SFString* ShaderChunkBase::getSFVertexProgram(void) {
+  return &_sfVertexProgram;
 }
 
 //! Get the ShaderChunk::_sfFragmentProgram field.
-inline
-SFString *ShaderChunkBase::getSFFragmentProgram(void)
-{
-    return &_sfFragmentProgram;
+inline SFString* ShaderChunkBase::getSFFragmentProgram(void) {
+  return &_sfFragmentProgram;
 }
 
 //! Get the ShaderChunk::_sfGeometryProgram field.
-inline
-SFString *ShaderChunkBase::getSFGeometryProgram(void)
-{
-    return &_sfGeometryProgram;
-}
-
-
-//! Get the value of the ShaderChunk::_sfVertexProgram field.
-inline
-std::string &ShaderChunkBase::getVertexProgram(void)
-{
-    return _sfVertexProgram.getValue();
+inline SFString* ShaderChunkBase::getSFGeometryProgram(void) {
+  return &_sfGeometryProgram;
 }
 
 //! Get the value of the ShaderChunk::_sfVertexProgram field.
-inline
-const std::string &ShaderChunkBase::getVertexProgram(void) const
-{
-    return _sfVertexProgram.getValue();
+inline std::string& ShaderChunkBase::getVertexProgram(void) {
+  return _sfVertexProgram.getValue();
+}
+
+//! Get the value of the ShaderChunk::_sfVertexProgram field.
+inline const std::string& ShaderChunkBase::getVertexProgram(void) const {
+  return _sfVertexProgram.getValue();
 }
 
 //! Set the value of the ShaderChunk::_sfVertexProgram field.
-inline
-void ShaderChunkBase::setVertexProgram(const std::string &value)
-{
-    _sfVertexProgram.setValue(value);
+inline void ShaderChunkBase::setVertexProgram(const std::string& value) {
+  _sfVertexProgram.setValue(value);
 }
 
 //! Get the value of the ShaderChunk::_sfFragmentProgram field.
-inline
-std::string &ShaderChunkBase::getFragmentProgram(void)
-{
-    return _sfFragmentProgram.getValue();
+inline std::string& ShaderChunkBase::getFragmentProgram(void) {
+  return _sfFragmentProgram.getValue();
 }
 
 //! Get the value of the ShaderChunk::_sfFragmentProgram field.
-inline
-const std::string &ShaderChunkBase::getFragmentProgram(void) const
-{
-    return _sfFragmentProgram.getValue();
+inline const std::string& ShaderChunkBase::getFragmentProgram(void) const {
+  return _sfFragmentProgram.getValue();
 }
 
 //! Set the value of the ShaderChunk::_sfFragmentProgram field.
-inline
-void ShaderChunkBase::setFragmentProgram(const std::string &value)
-{
-    _sfFragmentProgram.setValue(value);
+inline void ShaderChunkBase::setFragmentProgram(const std::string& value) {
+  _sfFragmentProgram.setValue(value);
 }
 
 //! Get the value of the ShaderChunk::_sfGeometryProgram field.
-inline
-std::string &ShaderChunkBase::getGeometryProgram(void)
-{
-    return _sfGeometryProgram.getValue();
+inline std::string& ShaderChunkBase::getGeometryProgram(void) {
+  return _sfGeometryProgram.getValue();
 }
 
 //! Get the value of the ShaderChunk::_sfGeometryProgram field.
-inline
-const std::string &ShaderChunkBase::getGeometryProgram(void) const
-{
-    return _sfGeometryProgram.getValue();
+inline const std::string& ShaderChunkBase::getGeometryProgram(void) const {
+  return _sfGeometryProgram.getValue();
 }
 
 //! Set the value of the ShaderChunk::_sfGeometryProgram field.
-inline
-void ShaderChunkBase::setGeometryProgram(const std::string &value)
-{
-    _sfGeometryProgram.setValue(value);
+inline void ShaderChunkBase::setGeometryProgram(const std::string& value) {
+  _sfGeometryProgram.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGSHADERCHUNKBASE_INLINE_CVSID "@(#)$Id: OSGShaderChunkBase.inl,v 1.7 2006/11/17 17:16:04 a-m-z Exp $"
-
+#define OSGSHADERCHUNKBASE_INLINE_CVSID                                                            \
+  "@(#)$Id: OSGShaderChunkBase.inl,v 1.7 2006/11/17 17:16:04 a-m-z Exp $"

@@ -59,47 +59,42 @@ OSG_USING_NAMESPACE
 
 /*----------------------- constructors & destructors ----------------------*/
 
-ShaderParameterAccess::ShaderParameterAccess(MFShaderParameterPtr &parameters) :
-    _parameters(parameters),
-    _parametermap(),
-    _mapsize(0)
-{
+ShaderParameterAccess::ShaderParameterAccess(MFShaderParameterPtr& parameters)
+    : _parameters(parameters)
+    , _parametermap()
+    , _mapsize(0) {
 }
 
-ShaderParameterAccess::~ShaderParameterAccess(void)
-{
+ShaderParameterAccess::~ShaderParameterAccess(void) {
 }
 
-void ShaderParameterAccess::operator =(const ShaderParameterAccess &/*source*/)
-{
+void ShaderParameterAccess::operator=(const ShaderParameterAccess& /*source*/) {
 }
 
-bool ShaderParameterAccess::subParameter(const char *name)
-{
-    if(name == NULL)
-        return false;
+bool ShaderParameterAccess::subParameter(const char* name) {
+  if (name == NULL)
+    return false;
 
-    updateMap();
-    parameterIt it = _parametermap.find(name);
-    
-    if(it == _parametermap.end())
-        return false;
+  updateMap();
+  parameterIt it = _parametermap.find(name);
 
-    _parameters.erase(_parameters.begin() + (*it).second);
-    _parametermap.erase(it);
-    updateMap();
+  if (it == _parametermap.end())
+    return false;
 
-    return true;
+  _parameters.erase(_parameters.begin() + (*it).second);
+  _parametermap.erase(it);
+  updateMap();
+
+  return true;
 }
 
-void ShaderParameterAccess::updateMap(void)
-{
-    if(_mapsize == _parameters.size())
-        return;
-    
-    UInt32 size = _parameters.size();
-    _parametermap.clear();
-    for(UInt32 i=0;i<size;++i)
-        _parametermap.insert(std::pair<std::string, UInt32>(_parameters[i]->getName(), i));
-    _mapsize = size;
+void ShaderParameterAccess::updateMap(void) {
+  if (_mapsize == _parameters.size())
+    return;
+
+  UInt32 size = _parameters.size();
+  _parametermap.clear();
+  for (UInt32 i = 0; i < size; ++i)
+    _parametermap.insert(std::pair<std::string, UInt32>(_parameters[i]->getName(), i));
+  _mapsize = size;
 }

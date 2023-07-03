@@ -69,89 +69,72 @@ OSG_USING_NAMESPACE
 /*-------------------------------------------------------------------------*/
 /*                               Sync                                      */
 
-void ProxyGroup::changed(BitVector whichField, UInt32 origin)
-{
-    if(whichField & (UrlFieldMask))
-    {
-        if(getAbsoluteUrl().empty())
-        {
-            PathHandler *ph = SceneFileHandler::the().getPathHandler();
-            beginEditCP(ProxyGroupPtr(this),ProxyGroup::AbsoluteUrlFieldMask);
-            if(ph) 
-                getAbsoluteUrl() = ph->findFile(getUrl().c_str());
-            if(getAbsoluteUrl().empty())
-                getAbsoluteUrl() = getUrl();
-            endEditCP(ProxyGroupPtr(this),ProxyGroup::AbsoluteUrlFieldMask);
-            setState(NOT_LOADED);
-        }
+void ProxyGroup::changed(BitVector whichField, UInt32 origin) {
+  if (whichField & (UrlFieldMask)) {
+    if (getAbsoluteUrl().empty()) {
+      PathHandler* ph = SceneFileHandler::the().getPathHandler();
+      beginEditCP(ProxyGroupPtr(this), ProxyGroup::AbsoluteUrlFieldMask);
+      if (ph)
+        getAbsoluteUrl() = ph->findFile(getUrl().c_str());
+      if (getAbsoluteUrl().empty())
+        getAbsoluteUrl() = getUrl();
+      endEditCP(ProxyGroupPtr(this), ProxyGroup::AbsoluteUrlFieldMask);
+      setState(NOT_LOADED);
     }
-    if(whichField & (
-           StateFieldMask|
-           UrlFieldMask|
-           VolumeFieldMask))
-    {
-        for(UInt32 i = 0; i < _parents.size(); i++)
-        {
-            _parents[i]->invalidateVolume();
-        }
+  }
+  if (whichField & (StateFieldMask | UrlFieldMask | VolumeFieldMask)) {
+    for (UInt32 i = 0; i < _parents.size(); i++) {
+      _parents[i]->invalidateVolume();
     }
-    Inherited::changed(whichField, origin);
+  }
+  Inherited::changed(whichField, origin);
 }
 
 /*-------------------------------------------------------------------------*/
 /*                               Dump                                      */
 
-void ProxyGroup::dump(      UInt32    OSG_CHECK_ARG(uiIndent), 
-                       const BitVector OSG_CHECK_ARG(bvFlags )) const
-{
-    SLOG << "Dump ProxyGroup NI" << std::endl;
+void ProxyGroup::dump(
+    UInt32 OSG_CHECK_ARG(uiIndent), const BitVector OSG_CHECK_ARG(bvFlags)) const {
+  SLOG << "Dump ProxyGroup NI" << std::endl;
 }
 
 /*-------------------------------------------------------------------------*/
 /*                            Constructors                                 */
 
-ProxyGroup::ProxyGroup(void) :
-    Inherited()
-{
+ProxyGroup::ProxyGroup(void)
+    : Inherited() {
 }
 
-ProxyGroup::ProxyGroup(const ProxyGroup &source) :
-    Inherited(source)
-{
+ProxyGroup::ProxyGroup(const ProxyGroup& source)
+    : Inherited(source) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Destructor                                  */
 
-ProxyGroup::~ProxyGroup(void)
-{
-    if(getRoot() != NullFC)
-    {
-        subRefCP(getRoot());
-        setRoot(NullFC);
-    }
+ProxyGroup::~ProxyGroup(void) {
+  if (getRoot() != NullFC) {
+    subRefCP(getRoot());
+    setRoot(NullFC);
+  }
 }
 
-/*! 
+/*!
   If url was loaded, extend volume by loaded geometry. Otherwise
   extend volume by the volume given in the proxy object
 */
-void ProxyGroup::adjustVolume( Volume & volume )
-{
-    volume.setValid();
-    volume.setEmpty();
+void ProxyGroup::adjustVolume(Volume& volume) {
+  volume.setValid();
+  volume.setEmpty();
 
-    if(getEnabled() == false)
-        return;
+  if (getEnabled() == false)
+    return;
 
-    if(getState() == LOADED && getRoot() != NullFC)
-    {
-        volume.extendBy(getRoot()->getVolume());
-    }
-    else
-    {
-        volume.extendBy(getVolume());
-    }
+  if (getState() == LOADED && getRoot() != NullFC) {
+    volume.extendBy(getRoot()->getVolume());
+  } else {
+    volume.extendBy(getVolume());
+  }
 }
 
 /*-------------------------------------------------------------------------*/
@@ -159,74 +142,64 @@ void ProxyGroup::adjustVolume( Volume & volume )
 
 /*!
   Draw loaded geometry. If nothing was loaded until now, start
-  loading. If loading is not finished, draw the children of 
+  loading. If loading is not finished, draw the children of
   thid group.
  */
-Action::ResultE ProxyGroup::draw(Action *action)
-{
-    DrawActionBase *da        = dynamic_cast<DrawActionBase *>(action);
+Action::ResultE ProxyGroup::draw(Action* action) {
+  DrawActionBase* da = dynamic_cast<DrawActionBase*>(action);
 
-    if(getEnabled()     == false)
-        return Action::Continue;
-
-    if(getState() == NOT_LOADED)
-        startLoading();
-
-    if(getState() == LOAD_THREAD_FINISHED)
-    {
-        ProxyGroupPtr ptr(this);
-            
-        if(_loadedRoot != NullFC)
-        {
-            _loadThread=NULL;
-            beginEditCP(ptr,RootFieldMask);
-            if(getRoot() != NullFC)
-                subRefCP(getRoot());
-            setRoot(_loadedRoot);
-            getRoot()->invalidateVolume();
-            getRoot()->updateVolume();
-            endEditCP(ptr,RootFieldMask);
-            addRefCP(getRoot());
-            beginEditCP(ptr,StateFieldMask);
-            setState(LOADED);
-            endEditCP(ptr,StateFieldMask);
-            da->getActNode()->invalidateVolume();
-            da->getActNode()->updateVolume();
-        }
-        else
-        {
-            SWARNING << "failed to load " << getAbsoluteUrl() << std::endl;
-            beginEditCP(ptr,StateFieldMask);
-            setState(LOAD_ERROR);
-            endEditCP(ptr,StateFieldMask);
-        }
-    }
-
-    if(getState() == LOADED)
-    {
-        da->useNodeList();
-        if(da->isVisible(getRoot().getCPtr()))
-            da->addNode(getRoot());
-    }
-    else
-    {
-        if(da->getActNode()->getNChildren() == 0)
-        {
-            Color3f col;
-            col.setValuesRGB(.5,.3,0);            
-            dropVolume(da, da->getActNode(), col);
-        }
-    }
-
-    // thread cleanup
-    if(_loadThread && _loadQueue.empty())
-    {
-        printf("join\n");
-        BaseThread::join(_loadThread);
-        _loadThread = NULL;
-    }
-
+  if (getEnabled() == false)
     return Action::Continue;
+
+  if (getState() == NOT_LOADED)
+    startLoading();
+
+  if (getState() == LOAD_THREAD_FINISHED) {
+    ProxyGroupPtr ptr(this);
+
+    if (_loadedRoot != NullFC) {
+      _loadThread = NULL;
+      beginEditCP(ptr, RootFieldMask);
+      if (getRoot() != NullFC)
+        subRefCP(getRoot());
+      setRoot(_loadedRoot);
+      getRoot()->invalidateVolume();
+      getRoot()->updateVolume();
+      endEditCP(ptr, RootFieldMask);
+      addRefCP(getRoot());
+      beginEditCP(ptr, StateFieldMask);
+      setState(LOADED);
+      endEditCP(ptr, StateFieldMask);
+      da->getActNode()->invalidateVolume();
+      da->getActNode()->updateVolume();
+    } else {
+      SWARNING << "failed to load " << getAbsoluteUrl() << std::endl;
+      beginEditCP(ptr, StateFieldMask);
+      setState(LOAD_ERROR);
+      endEditCP(ptr, StateFieldMask);
+    }
+  }
+
+  if (getState() == LOADED) {
+    da->useNodeList();
+    if (da->isVisible(getRoot().getCPtr()))
+      da->addNode(getRoot());
+  } else {
+    if (da->getActNode()->getNChildren() == 0) {
+      Color3f col;
+      col.setValuesRGB(.5, .3, 0);
+      dropVolume(da, da->getActNode(), col);
+    }
+  }
+
+  // thread cleanup
+  if (_loadThread && _loadQueue.empty()) {
+    printf("join\n");
+    BaseThread::join(_loadThread);
+    _loadThread = NULL;
+  }
+
+  return Action::Continue;
 }
 
 /*-------------------------------------------------------------------------*/
@@ -235,120 +208,87 @@ Action::ResultE ProxyGroup::draw(Action *action)
 /*!
   Load the given URL, currently the URL is treated as a filename.
  */
-void ProxyGroup::startLoading(void)
-{
-    ProxyGroupPtr ptr(this);
+void ProxyGroup::startLoading(void) {
+  ProxyGroupPtr ptr(this);
 
-    if(getConcurrentLoad() == false)
-    {
-        if(getInline().size() == 0)
-        {
-            _loadedRoot = SceneFileHandler::the().read(getAbsoluteUrl().c_str());
-        }
-        else
-        {
-            std::stringstream tmpStream(std::ios_base::in|
-                                        std::ios_base::out|
-                                        std::ios_base::binary);
-            tmpStream.write((char*)(&getInline()[0]),getInline().size());
-            _loadedRoot = SceneFileHandler::the().read(tmpStream, "osb");
-        }
-        beginEditCP(ptr,StateFieldMask);
-        setState(LOAD_THREAD_FINISHED);
-        endEditCP(ptr,StateFieldMask);
+  if (getConcurrentLoad() == false) {
+    if (getInline().size() == 0) {
+      _loadedRoot = SceneFileHandler::the().read(getAbsoluteUrl().c_str());
+    } else {
+      std::stringstream tmpStream(std::ios_base::in | std::ios_base::out | std::ios_base::binary);
+      tmpStream.write((char*)(&getInline()[0]), getInline().size());
+      _loadedRoot = SceneFileHandler::the().read(tmpStream, "osb");
     }
-    else
-    {
-        if(_loadLock == NULL)
-        {
-            _loadLock=Lock::get("ProxyGroupLoadLock");
-        }
+    beginEditCP(ptr, StateFieldMask);
+    setState(LOAD_THREAD_FINISHED);
+    endEditCP(ptr, StateFieldMask);
+  } else {
+    if (_loadLock == NULL) {
+      _loadLock = Lock::get("ProxyGroupLoadLock");
+    }
 
-        _loadLock->aquire();
-        
-        bool noThread=_loadQueue.empty();
-        
-        _loadQueue.push(ptr);
-        beginEditCP(ptr,StateFieldMask);
-        setState(LOAD_THREAD_RUNNING);
-        endEditCP(ptr,StateFieldMask);
-        
-        _loadLock->release();
-        
-        if(noThread)
-        {
-            if(_loadThread)
-                BaseThread::join(_loadThread);
-            _loadThread=dynamic_cast<Thread *>(ThreadManager::the()
-                                               ->getThread(NULL));
-            _loadThread->runFunction( loadProc, 
-                                      Thread::getAspect(),
-                                      NULL );
-        }
+    _loadLock->aquire();
+
+    bool noThread = _loadQueue.empty();
+
+    _loadQueue.push(ptr);
+    beginEditCP(ptr, StateFieldMask);
+    setState(LOAD_THREAD_RUNNING);
+    endEditCP(ptr, StateFieldMask);
+
+    _loadLock->release();
+
+    if (noThread) {
+      if (_loadThread)
+        BaseThread::join(_loadThread);
+      _loadThread = dynamic_cast<Thread*>(ThreadManager::the()->getThread(NULL));
+      _loadThread->runFunction(loadProc, Thread::getAspect(), NULL);
     }
+  }
 }
 
 /*-------------------------------------------------------------------------*/
 /*                               Init                                      */
 
-void ProxyGroup::initMethod (void)
-{
-    DrawAction::registerEnterDefault( 
-        getClassType(),
-        osgTypedMethodFunctor2BaseCPtrRef<
-            Action::ResultE,
-            ProxyGroupPtr  ,
-            CNodePtr        ,
-            Action         *>(&ProxyGroup::draw));
+void ProxyGroup::initMethod(void) {
+  DrawAction::registerEnterDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, ProxyGroupPtr, CNodePtr, Action*>(
+          &ProxyGroup::draw));
 
-    RenderAction::registerEnterDefault(
-        getClassType(),
-        osgTypedMethodFunctor2BaseCPtrRef<
-            Action::ResultE,
-            ProxyGroupPtr  ,
-            CNodePtr        ,
-            Action         *>(&ProxyGroup::draw));
+  RenderAction::registerEnterDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, ProxyGroupPtr, CNodePtr, Action*>(
+          &ProxyGroup::draw));
 }
 
+void ProxyGroup::loadProc(void*) {
+  bool          stopThread = false;
+  ProxyGroupPtr g;
 
-void ProxyGroup::loadProc(void *)
-{
-    bool stopThread=false;
-    ProxyGroupPtr g;
+  _loadLock->aquire();
+  g = _loadQueue.front();
+  _loadLock->release();
+  while (!stopThread) {
+    if (g->getInline().size() == 0) {
+      g->_loadedRoot = SceneFileHandler::the().read(g->getAbsoluteUrl().c_str());
+    } else {
+      std::stringstream tmpStream(std::ios_base::in | std::ios_base::out | std::ios_base::binary);
+      tmpStream.write((char*)(&g->getInline()[0]), g->getInline().size());
+      g->_loadedRoot = SceneFileHandler::the().read(tmpStream, "osb");
+    }
+    beginEditCP(g, StateFieldMask);
+    g->setState(LOAD_THREAD_FINISHED);
+    endEditCP(g, StateFieldMask);
 
     _loadLock->aquire();
-    g=_loadQueue.front();
+    _loadQueue.pop();
+    if (_loadQueue.empty())
+      stopThread = true;
+    else
+      g = _loadQueue.front();
     _loadLock->release();
-    while(!stopThread)
-    {
-        if(g->getInline().size() == 0) 
-        {
-            g->_loadedRoot=SceneFileHandler::the().read(g->getAbsoluteUrl().c_str());
-        }
-        else
-        {
-            std::stringstream tmpStream(std::ios_base::in|
-                                        std::ios_base::out|
-                                        std::ios_base::binary);
-            tmpStream.write((char*)(&g->getInline()[0]),g->getInline().size());
-            g->_loadedRoot = SceneFileHandler::the().read(tmpStream, "osb");
-        }
-        beginEditCP(g,StateFieldMask);
-        g->setState(LOAD_THREAD_FINISHED);
-        endEditCP(g,StateFieldMask);
-        
-        _loadLock->aquire();
-        _loadQueue.pop();
-        if(_loadQueue.empty())
-            stopThread=true;
-        else
-            g=_loadQueue.front();
-        _loadLock->release();
-    }
+  }
 }
 
-ThreadBase                 *ProxyGroup::_loadThread=NULL;
-std::queue<ProxyGroupPtr>   ProxyGroup::_loadQueue=std::queue<ProxyGroupPtr>();
-Lock                       *ProxyGroup::_loadLock=NULL;
-
-
+ThreadBase*               ProxyGroup::_loadThread = NULL;
+std::queue<ProxyGroupPtr> ProxyGroup::_loadQueue  = std::queue<ProxyGroupPtr>();
+Lock*                     ProxyGroup::_loadLock   = NULL;

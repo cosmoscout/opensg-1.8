@@ -44,7 +44,6 @@
 #include <OSGSystemDef.h>
 #include <OSGConfig.h>
 
-
 #include "OSGdctptypes.h"
 #include "OSGBSplineBasisFunction.h"
 #include "OSGBezierCurve2D.h"
@@ -52,51 +51,58 @@
 OSG_BEGIN_NAMESPACE
 
 class OSG_SYSTEMLIB_DLLMAPPING BSplineCurve2D {
-protected:
-  DCTPVec3dvector control_points; //control points of the curve
-  int dimension; //dimension of the B-spline (degree)
-  BSplineBasisFunction basis_function; //placeholder for the knots & facility to easily compute 'em
+ protected:
+  DCTPVec3dvector control_points;      // control points of the curve
+  int dimension;                       // dimension of the B-spline (degree)
+  BSplineBasisFunction basis_function; // placeholder for the knots & facility to easily compute 'em
 
-  //file format constants
+  // file format constants
   static const char ff_const_1[];
   static const char ff_const_2[];
   static const char ff_const_3[];
   static const char ff_const_4[];
 
-  int CheckKnotPoints( const DCTPdvector& knots, int dim ); //check whether knots has a right format
+  int CheckKnotPoints(const DCTPdvector& knots, int dim); // check whether knots has a right format
 
-  // delete a knot which is on a 'bezier' curve, i.e. [0 0 0 0 1 1 1 1 2 2 2 2 3 3 3 3] -> [0 0 0 0 1 1 1 2 2 2 3 3 3 3]
-  // must have a multiplicity of (at least) dimension + 1, and its associated control point also must have a multiplicity of (at least) 2.
-  int deleteBezierKnot( double k );
+  // delete a knot which is on a 'bezier' curve, i.e. [0 0 0 0 1 1 1 1 2 2 2 2 3 3 3 3] -> [0 0 0 0
+  // 1 1 1 2 2 2 3 3 3 3] must have a multiplicity of (at least) dimension + 1, and its associated
+  // control point also must have a multiplicity of (at least) 2.
+  int deleteBezierKnot(double k);
 
-
-public:
+ public:
   BSplineCurve2D();
-  ~BSplineCurve2D() {}
- 
-  //setup functions
-  // FIXME: the setup interface is very rigid, maybe it should allow knot & dimension setting alone, eg. to resize dimension, etc
-  int setKnotsAndDimension( const DCTPdvector& knots, int dim ); //ok, acts like its name says 
-  void setControlPointVector( const DCTPVec3dvector &cps ); //set control point vector
+  ~BSplineCurve2D() {
+  }
 
-  //query functions
-  DCTPdvector& getKnotVector( void ); //return knot points of basis functions
-  DCTPVec3dvector& getControlPointVector( void ) { return control_points; } //guess what!
-  int getDimension( void ) { return dimension; } //returns dimension
-  void getParameterInterval( double &minpar, double &maxpar ); //returns minimal and maximal parameter value
+  // setup functions
+  // FIXME: the setup interface is very rigid, maybe it should allow knot & dimension setting alone,
+  // eg. to resize dimension, etc
+  int  setKnotsAndDimension(const DCTPdvector& knots, int dim); // ok, acts like its name says
+  void setControlPointVector(const DCTPVec3dvector& cps);       // set control point vector
 
-  //I/O support - FIXME: read( char *fname ) outta be supported , etc
-  int read( std::istream &infile );
-  int write( std::ostream &outfile );
+  // query functions
+  DCTPdvector& getKnotVector(void); // return knot points of basis functions
+  DCTPVec3dvector& getControlPointVector(void) {
+    return control_points;
+  } // guess what!
+  int getDimension(void) {
+    return dimension;
+  } // returns dimension
+  void getParameterInterval(
+      double& minpar, double& maxpar); // returns minimal and maximal parameter value
 
-  //some REAL functionality
-  Vec2d compute( double t, int &error ); // compute curve at parameter value t
-  int insertKnot( double k ); // insert a new knot (recalculates control points and knotvector)
+  // I/O support - FIXME: read( char *fname ) outta be supported , etc
+  int read(std::istream& infile);
+  int write(std::ostream& outfile);
+
+  // some REAL functionality
+  Vec2d compute(double t, int& error); // compute curve at parameter value t
+  int   insertKnot(double k); // insert a new knot (recalculates control points and knotvector)
 
   // convert curve into Bezier form.
-  int makeBezier( bezier2dvector &beziers, DCTPdvector &pars );
+  int makeBezier(bezier2dvector& beziers, DCTPdvector& pars);
 };
 
 OSG_END_NAMESPACE
 
-#endif //BSplineCurve2D.h
+#endif // BSplineCurve2D.h

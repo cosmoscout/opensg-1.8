@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGDVRVOLUMEBASE_H_
 #define _OSGDVRVOLUMEBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -68,23 +66,23 @@
 #include <OSGNodeCore.h> // Parent
 
 #include <OSGDVRAppearanceFields.h> // Appearance type
-#include <OSGDVRGeometryFields.h> // Geometry type
-#include <OSGDVRShader.h> // Shader type
-#include <OSGStringFields.h> // FileName type
-#include <OSGReal32Fields.h> // Sampling type
-#include <OSGReal32Fields.h> // SamplingInteractive type
-#include <OSGReal32Fields.h> // BaseAlpha type
-#include <OSGBoolFields.h> // DoTextures type
-#include <OSGUInt32Fields.h> // BrickOverlap type
-#include <OSGQBit.h> // Textures2D type
-#include <OSGUInt16Fields.h> // BrickStaticMemoryMB type
-#include <OSGMaterialFields.h> // RenderMaterial type
-#include <OSGUInt16Fields.h> // BrickingMode type
-#include <OSGVec3fFields.h> // BrickStaticSubdivision type
-#include <OSGVec3fFields.h> // BrickMaxSize type
-#include <OSGBoolFields.h> // ShowBricks type
-#include <OSGUInt32Fields.h> // DrawStyle type
-#include <OSGStringFields.h> // DrawStyleNames type
+#include <OSGDVRGeometryFields.h>   // Geometry type
+#include <OSGDVRShader.h>           // Shader type
+#include <OSGStringFields.h>        // FileName type
+#include <OSGReal32Fields.h>        // Sampling type
+#include <OSGReal32Fields.h>        // SamplingInteractive type
+#include <OSGReal32Fields.h>        // BaseAlpha type
+#include <OSGBoolFields.h>          // DoTextures type
+#include <OSGUInt32Fields.h>        // BrickOverlap type
+#include <OSGQBit.h>                // Textures2D type
+#include <OSGUInt16Fields.h>        // BrickStaticMemoryMB type
+#include <OSGMaterialFields.h>      // RenderMaterial type
+#include <OSGUInt16Fields.h>        // BrickingMode type
+#include <OSGVec3fFields.h>         // BrickStaticSubdivision type
+#include <OSGVec3fFields.h>         // BrickMaxSize type
+#include <OSGBoolFields.h>          // ShowBricks type
+#include <OSGUInt32Fields.h>        // DrawStyle type
+#include <OSGStringFields.h>        // DrawStyleNames type
 #include <OSGChunkMaterialFields.h> // TextureStorage type
 
 #include <OSGDVRVolumeFields.h>
@@ -96,320 +94,298 @@ class BinaryDataHandler;
 
 //! \brief DVRVolume Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING DVRVolumeBase : public NodeCore
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING DVRVolumeBase : public NodeCore {
+ private:
+  typedef NodeCore Inherited;
 
-    typedef NodeCore    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef DVRVolumePtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    AppearanceFieldId             = Inherited::NextFieldId,
+    GeometryFieldId               = AppearanceFieldId + 1,
+    ShaderFieldId                 = GeometryFieldId + 1,
+    FileNameFieldId               = ShaderFieldId + 1,
+    SamplingFieldId               = FileNameFieldId + 1,
+    SamplingInteractiveFieldId    = SamplingFieldId + 1,
+    BaseAlphaFieldId              = SamplingInteractiveFieldId + 1,
+    DoTexturesFieldId             = BaseAlphaFieldId + 1,
+    BrickOverlapFieldId           = DoTexturesFieldId + 1,
+    Textures2DFieldId             = BrickOverlapFieldId + 1,
+    BrickStaticMemoryMBFieldId    = Textures2DFieldId + 1,
+    RenderMaterialFieldId         = BrickStaticMemoryMBFieldId + 1,
+    BrickingModeFieldId           = RenderMaterialFieldId + 1,
+    BrickStaticSubdivisionFieldId = BrickingModeFieldId + 1,
+    BrickMaxSizeFieldId           = BrickStaticSubdivisionFieldId + 1,
+    ShowBricksFieldId             = BrickMaxSizeFieldId + 1,
+    DrawStyleFieldId              = ShowBricksFieldId + 1,
+    DrawStyleNamesFieldId         = DrawStyleFieldId + 1,
+    TextureStorageFieldId         = DrawStyleNamesFieldId + 1,
+    NextFieldId                   = TextureStorageFieldId + 1
+  };
 
-    typedef DVRVolumePtr  Ptr;
+  static const OSG::BitVector AppearanceFieldMask;
+  static const OSG::BitVector GeometryFieldMask;
+  static const OSG::BitVector ShaderFieldMask;
+  static const OSG::BitVector FileNameFieldMask;
+  static const OSG::BitVector SamplingFieldMask;
+  static const OSG::BitVector SamplingInteractiveFieldMask;
+  static const OSG::BitVector BaseAlphaFieldMask;
+  static const OSG::BitVector DoTexturesFieldMask;
+  static const OSG::BitVector BrickOverlapFieldMask;
+  static const OSG::BitVector Textures2DFieldMask;
+  static const OSG::BitVector BrickStaticMemoryMBFieldMask;
+  static const OSG::BitVector RenderMaterialFieldMask;
+  static const OSG::BitVector BrickingModeFieldMask;
+  static const OSG::BitVector BrickStaticSubdivisionFieldMask;
+  static const OSG::BitVector BrickMaxSizeFieldMask;
+  static const OSG::BitVector ShowBricksFieldMask;
+  static const OSG::BitVector DrawStyleFieldMask;
+  static const OSG::BitVector DrawStyleNamesFieldMask;
+  static const OSG::BitVector TextureStorageFieldMask;
 
-    enum
-    {
-        AppearanceFieldId             = Inherited::NextFieldId,
-        GeometryFieldId               = AppearanceFieldId             + 1,
-        ShaderFieldId                 = GeometryFieldId               + 1,
-        FileNameFieldId               = ShaderFieldId                 + 1,
-        SamplingFieldId               = FileNameFieldId               + 1,
-        SamplingInteractiveFieldId    = SamplingFieldId               + 1,
-        BaseAlphaFieldId              = SamplingInteractiveFieldId    + 1,
-        DoTexturesFieldId             = BaseAlphaFieldId              + 1,
-        BrickOverlapFieldId           = DoTexturesFieldId             + 1,
-        Textures2DFieldId             = BrickOverlapFieldId           + 1,
-        BrickStaticMemoryMBFieldId    = Textures2DFieldId             + 1,
-        RenderMaterialFieldId         = BrickStaticMemoryMBFieldId    + 1,
-        BrickingModeFieldId           = RenderMaterialFieldId         + 1,
-        BrickStaticSubdivisionFieldId = BrickingModeFieldId           + 1,
-        BrickMaxSizeFieldId           = BrickStaticSubdivisionFieldId + 1,
-        ShowBricksFieldId             = BrickMaxSizeFieldId           + 1,
-        DrawStyleFieldId              = ShowBricksFieldId             + 1,
-        DrawStyleNamesFieldId         = DrawStyleFieldId              + 1,
-        TextureStorageFieldId         = DrawStyleNamesFieldId         + 1,
-        NextFieldId                   = TextureStorageFieldId         + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector AppearanceFieldMask;
-    static const OSG::BitVector GeometryFieldMask;
-    static const OSG::BitVector ShaderFieldMask;
-    static const OSG::BitVector FileNameFieldMask;
-    static const OSG::BitVector SamplingFieldMask;
-    static const OSG::BitVector SamplingInteractiveFieldMask;
-    static const OSG::BitVector BaseAlphaFieldMask;
-    static const OSG::BitVector DoTexturesFieldMask;
-    static const OSG::BitVector BrickOverlapFieldMask;
-    static const OSG::BitVector Textures2DFieldMask;
-    static const OSG::BitVector BrickStaticMemoryMBFieldMask;
-    static const OSG::BitVector RenderMaterialFieldMask;
-    static const OSG::BitVector BrickingModeFieldMask;
-    static const OSG::BitVector BrickStaticSubdivisionFieldMask;
-    static const OSG::BitVector BrickMaxSizeFieldMask;
-    static const OSG::BitVector ShowBricksFieldMask;
-    static const OSG::BitVector DrawStyleFieldMask;
-    static const OSG::BitVector DrawStyleNamesFieldMask;
-    static const OSG::BitVector TextureStorageFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFDVRAppearancePtr* getSFAppearance(void);
+  SFDVRGeometryPtr*   getSFGeometry(void);
+  SFDVRShaderPtr*     getSFShader(void);
+  SFString*           getSFFileName(void);
+  SFReal32*           getSFSampling(void);
+  SFReal32*           getSFSamplingInteractive(void);
+  SFReal32*           getSFBaseAlpha(void);
+  SFBool*             getSFDoTextures(void);
+  SFUInt32*           getSFBrickOverlap(void);
+  SFQBit*             getSFTextures2D(void);
+  SFUInt16*           getSFBrickStaticMemoryMB(void);
+  SFChunkMaterialPtr* getSFTextureStorage(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  DVRAppearancePtr&       getAppearance(void);
+  const DVRAppearancePtr& getAppearance(void) const;
+  DVRGeometryPtr&         getGeometry(void);
+  const DVRGeometryPtr&   getGeometry(void) const;
+  DVRShaderPtr&           getShader(void);
+  const DVRShaderPtr&     getShader(void) const;
+  std::string&            getFileName(void);
+  const std::string&      getFileName(void) const;
+  Real32&                 getSampling(void);
+  const Real32&           getSampling(void) const;
+  Real32&                 getSamplingInteractive(void);
+  const Real32&           getSamplingInteractive(void) const;
+  Real32&                 getBaseAlpha(void);
+  const Real32&           getBaseAlpha(void) const;
+  bool&                   getDoTextures(void);
+  const bool&             getDoTextures(void) const;
+  UInt32&                 getBrickOverlap(void);
+  const UInt32&           getBrickOverlap(void) const;
+  QBit&                   getTextures2D(void);
+  const QBit&             getTextures2D(void) const;
+  UInt16&                 getBrickStaticMemoryMB(void);
+  const UInt16&           getBrickStaticMemoryMB(void) const;
+  ChunkMaterialPtr&       getTextureStorage(void);
+  const ChunkMaterialPtr& getTextureStorage(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFDVRAppearancePtr  *getSFAppearance     (void);
-           SFDVRGeometryPtr    *getSFGeometry       (void);
-           SFDVRShaderPtr      *getSFShader         (void);
-           SFString            *getSFFileName       (void);
-           SFReal32            *getSFSampling       (void);
-           SFReal32            *getSFSamplingInteractive(void);
-           SFReal32            *getSFBaseAlpha      (void);
-           SFBool              *getSFDoTextures     (void);
-           SFUInt32            *getSFBrickOverlap   (void);
-           SFQBit              *getSFTextures2D     (void);
-           SFUInt16            *getSFBrickStaticMemoryMB(void);
-           SFChunkMaterialPtr  *getSFTextureStorage (void);
+  void setAppearance(const DVRAppearancePtr& value);
+  void setGeometry(const DVRGeometryPtr& value);
+  void setShader(const DVRShaderPtr& value);
+  void setFileName(const std::string& value);
+  void setSampling(const Real32& value);
+  void setSamplingInteractive(const Real32& value);
+  void setBaseAlpha(const Real32& value);
+  void setDoTextures(const bool& value);
+  void setBrickOverlap(const UInt32& value);
+  void setTextures2D(const QBit& value);
+  void setBrickStaticMemoryMB(const UInt16& value);
+  void setTextureStorage(const ChunkMaterialPtr& value);
 
-           DVRAppearancePtr    &getAppearance     (void);
-     const DVRAppearancePtr    &getAppearance     (void) const;
-           DVRGeometryPtr      &getGeometry       (void);
-     const DVRGeometryPtr      &getGeometry       (void) const;
-           DVRShaderPtr        &getShader         (void);
-     const DVRShaderPtr        &getShader         (void) const;
-           std::string         &getFileName       (void);
-     const std::string         &getFileName       (void) const;
-           Real32              &getSampling       (void);
-     const Real32              &getSampling       (void) const;
-           Real32              &getSamplingInteractive(void);
-     const Real32              &getSamplingInteractive(void) const;
-           Real32              &getBaseAlpha      (void);
-     const Real32              &getBaseAlpha      (void) const;
-           bool                &getDoTextures     (void);
-     const bool                &getDoTextures     (void) const;
-           UInt32              &getBrickOverlap   (void);
-     const UInt32              &getBrickOverlap   (void) const;
-           QBit                &getTextures2D     (void);
-     const QBit                &getTextures2D     (void) const;
-           UInt16              &getBrickStaticMemoryMB(void);
-     const UInt16              &getBrickStaticMemoryMB(void) const;
-           ChunkMaterialPtr    &getTextureStorage (void);
-     const ChunkMaterialPtr    &getTextureStorage (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setAppearance     ( const DVRAppearancePtr &value );
-     void setGeometry       ( const DVRGeometryPtr &value );
-     void setShader         ( const DVRShaderPtr &value );
-     void setFileName       ( const std::string &value );
-     void setSampling       ( const Real32 &value );
-     void setSamplingInteractive( const Real32 &value );
-     void setBaseAlpha      ( const Real32 &value );
-     void setDoTextures     ( const bool &value );
-     void setBrickOverlap   ( const UInt32 &value );
-     void setTextures2D     ( const QBit &value );
-     void setBrickStaticMemoryMB( const UInt16 &value );
-     void setTextureStorage ( const ChunkMaterialPtr &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static DVRVolumePtr create(void);
+  static DVRVolumePtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  DVRVolumePtr      create          (void); 
-    static  DVRVolumePtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFDVRAppearancePtr _sfAppearance;
+  SFDVRGeometryPtr   _sfGeometry;
+  SFDVRShaderPtr     _sfShader;
+  SFString           _sfFileName;
+  SFReal32           _sfSampling;
+  SFReal32           _sfSamplingInteractive;
+  SFReal32           _sfBaseAlpha;
+  SFBool             _sfDoTextures;
+  SFUInt32           _sfBrickOverlap;
+  SFQBit             _sfTextures2D;
+  SFUInt16           _sfBrickStaticMemoryMB;
+  SFMaterialPtr      _sfRenderMaterial;
+  SFUInt16           _sfBrickingMode;
+  SFVec3f            _sfBrickStaticSubdivision;
+  SFVec3f            _sfBrickMaxSize;
+  SFBool             _sfShowBricks;
+  SFUInt32           _sfDrawStyle;
+  MFString           _mfDrawStyleNames;
+  SFChunkMaterialPtr _sfTextureStorage;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  DVRVolumeBase(void);
+  DVRVolumeBase(const DVRVolumeBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~DVRVolumeBase(void);
 
-    SFDVRAppearancePtr   _sfAppearance;
-    SFDVRGeometryPtr    _sfGeometry;
-    SFDVRShaderPtr      _sfShader;
-    SFString            _sfFileName;
-    SFReal32            _sfSampling;
-    SFReal32            _sfSamplingInteractive;
-    SFReal32            _sfBaseAlpha;
-    SFBool              _sfDoTextures;
-    SFUInt32            _sfBrickOverlap;
-    SFQBit              _sfTextures2D;
-    SFUInt16            _sfBrickStaticMemoryMB;
-    SFMaterialPtr       _sfRenderMaterial;
-    SFUInt16            _sfBrickingMode;
-    SFVec3f             _sfBrickStaticSubdivision;
-    SFVec3f             _sfBrickMaxSize;
-    SFBool              _sfShowBricks;
-    SFUInt32            _sfDrawStyle;
-    MFString            _mfDrawStyleNames;
-    SFChunkMaterialPtr   _sfTextureStorage;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  SFMaterialPtr* getSFRenderMaterial(void);
+  SFUInt16*      getSFBrickingMode(void);
+  SFVec3f*       getSFBrickStaticSubdivision(void);
+  SFVec3f*       getSFBrickMaxSize(void);
+  SFBool*        getSFShowBricks(void);
+  SFUInt32*      getSFDrawStyle(void);
+  MFString*      getMFDrawStyleNames(void);
 
-    DVRVolumeBase(void);
-    DVRVolumeBase(const DVRVolumeBase &source);
+  MaterialPtr&       getRenderMaterial(void);
+  const MaterialPtr& getRenderMaterial(void) const;
+  UInt16&            getBrickingMode(void);
+  const UInt16&      getBrickingMode(void) const;
+  Vec3f&             getBrickStaticSubdivision(void);
+  const Vec3f&       getBrickStaticSubdivision(void) const;
+  Vec3f&             getBrickMaxSize(void);
+  const Vec3f&       getBrickMaxSize(void) const;
+  bool&              getShowBricks(void);
+  const bool&        getShowBricks(void) const;
+  UInt32&            getDrawStyle(void);
+  const UInt32&      getDrawStyle(void) const;
+  std::string&       getDrawStyleNames(UInt32 index);
+  MFString&          getDrawStyleNames(void);
+  const MFString&    getDrawStyleNames(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-    virtual ~DVRVolumeBase(void); 
+  void setRenderMaterial(const MaterialPtr& value);
+  void setBrickingMode(const UInt16& value);
+  void setBrickStaticSubdivision(const Vec3f& value);
+  void setBrickMaxSize(const Vec3f& value);
+  void setShowBricks(const bool& value);
+  void setDrawStyle(const UInt32& value);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
-
-           SFMaterialPtr       *getSFRenderMaterial (void);
-           SFUInt16            *getSFBrickingMode   (void);
-           SFVec3f             *getSFBrickStaticSubdivision(void);
-           SFVec3f             *getSFBrickMaxSize   (void);
-           SFBool              *getSFShowBricks     (void);
-           SFUInt32            *getSFDrawStyle      (void);
-           MFString            *getMFDrawStyleNames (void);
-
-           MaterialPtr         &getRenderMaterial (void);
-     const MaterialPtr         &getRenderMaterial (void) const;
-           UInt16              &getBrickingMode   (void);
-     const UInt16              &getBrickingMode   (void) const;
-           Vec3f               &getBrickStaticSubdivision(void);
-     const Vec3f               &getBrickStaticSubdivision(void) const;
-           Vec3f               &getBrickMaxSize   (void);
-     const Vec3f               &getBrickMaxSize   (void) const;
-           bool                &getShowBricks     (void);
-     const bool                &getShowBricks     (void) const;
-           UInt32              &getDrawStyle      (void);
-     const UInt32              &getDrawStyle      (void) const;
-           std::string         &getDrawStyleNames (UInt32 index);
-           MFString            &getDrawStyleNames (void);
-     const MFString            &getDrawStyleNames (void) const;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
-
-     void setRenderMaterial (const MaterialPtr &value);
-     void setBrickingMode   (const UInt16 &value);
-     void setBrickStaticSubdivision(const Vec3f &value);
-     void setBrickMaxSize   (const Vec3f &value);
-     void setShowBricks     (const bool &value);
-     void setDrawStyle      (const UInt32 &value);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      DVRVolumeBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(DVRVolumeBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      DVRVolumeBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(DVRVolumeBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const DVRVolumeBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const DVRVolumeBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef DVRVolumeBase* DVRVolumeBaseP;
 
-typedef DVRVolumeBase *DVRVolumeBaseP;
-
-typedef osgIF<DVRVolumeBase::isNodeCore,
-              CoredNodePtr<DVRVolume>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet DVRVolumeNodePtr;
+typedef osgIF<DVRVolumeBase::isNodeCore, CoredNodePtr<DVRVolume>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet DVRVolumeNodePtr;
 
 typedef RefPtr<DVRVolumePtr> DVRVolumeRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGDVRVOLUMEBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGDVRVOLUMEBASE_HEADER_CVSID                                                              \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGDVRVOLUMEBASE_H_ */

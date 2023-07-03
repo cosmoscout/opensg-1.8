@@ -52,82 +52,72 @@ OSG_BEGIN_NAMESPACE
     PageSystemWindowCameraDecorators for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING CameraDecorator : public CameraDecoratorBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING CameraDecorator : public CameraDecoratorBase {
+ private:
+  typedef CameraDecoratorBase Inherited;
 
-    typedef CameraDecoratorBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      your_category                           */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector whichField, 
-                         UInt32    origin    );
+  virtual void draw(DrawAction* action, const Viewport& port);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      your_category                           */
-    /*! \{                                                                 */
+  virtual void getProjection(Matrix& result, UInt32 width, UInt32 height);
 
-    virtual void draw (DrawAction *action, const Viewport& port);
+  virtual void getProjectionTranslation(Matrix& result, UInt32 width, UInt32 height);
 
-    virtual void getProjection           (Matrix        &result, 
-                                          UInt32 width, UInt32 height);
+  virtual void getViewing(Matrix& result, UInt32 width, UInt32 height);
 
-    virtual void getProjectionTranslation(Matrix        &result, 
-                                          UInt32 width, UInt32 height);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void getViewing              (Matrix        &result, 
-                                          UInt32 width, UInt32 height);
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in CameraDecoratorBase.
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  CameraDecorator(void);
+  CameraDecorator(const CameraDecorator& source);
 
-    // Variables should all be in CameraDecoratorBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~CameraDecorator(void);
 
-    CameraDecorator(void);
-    CameraDecorator(const CameraDecorator &source);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class CameraDecoratorBase;
 
-    virtual ~CameraDecorator(void); 
+  static void initMethod(void);
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  // prohibit default functions (move to 'public' if you need one)
 
-    friend class FieldContainer;
-    friend class CameraDecoratorBase;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const CameraDecorator &source);
+  void operator=(const CameraDecorator& source);
 };
 
-typedef CameraDecorator *CameraDecoratorP;
+typedef CameraDecorator* CameraDecoratorP;
 
 OSG_END_NAMESPACE
 

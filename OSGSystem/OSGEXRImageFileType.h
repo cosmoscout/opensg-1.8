@@ -38,8 +38,8 @@
 
 #ifndef OSGEXRIMAGEFILETYPE
 #define OSGEXRIMAGEFILETYPE
-#ifdef  __sig
-#pragma  once
+#ifdef __sig
+#pragma once
 #endif
 
 #include <OSGBaseTypes.h>
@@ -53,78 +53,66 @@ OSG_BEGIN_NAMESPACE
 See \ref PageSystemImage for a detailed description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING EXRImageFileType : public ImageFileType
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING EXRImageFileType : public ImageFileType {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  virtual ~EXRImageFileType(void);
 
-    virtual ~EXRImageFileType (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Get Methods                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Get Methods                                 */
-    /*! \{                                                                 */
+  static EXRImageFileType& the(void);
 
-    static EXRImageFileType& the (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Read/Write                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Read/Write                                 */
-    /*! \{                                                                 */
+  virtual bool read(ImagePtr& image, std::istream& is, const std::string& mimeType);
 
-    virtual bool read  ( ImagePtr &image,
-                         std::istream &is, const std::string &mimeType);
+  virtual bool write(const ImagePtr& image, std::ostream& os, const std::string& mimeType);
 
-    virtual bool write ( const ImagePtr &image,
-                         std::ostream &os, const std::string &mimeType);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name               Default Constructor                            */
+  /*! \{                                                                 */
 
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  EXRImageFileType(
+      const Char8* mimeType, const Char8* suffixArray[], UInt16 suffixByteCount, UInt32 flags);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name               Default Constructor                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Buffer                                   */
+  /*! \{                                                                 */
 
-    EXRImageFileType ( const Char8 *mimeType,
-                       const Char8 *suffixArray[], UInt16 suffixByteCount,
-                       UInt32 flags );
+  virtual UInt64 restoreData(ImagePtr& image, const UChar8* buffer, Int32 memSize = -1);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Buffer                                   */
-    /*! \{                                                                 */
+  virtual UInt64 storeData(const ImagePtr& image, UChar8* buffer, Int32 memSize = -1);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     File I/O                                 */
+  /*! \{                                                                 */
 
-    virtual UInt64 restoreData ( ImagePtr &image, const UChar8 *buffer,
-                                 Int32 memSize = -1 );
+  bool isOpenExrFile(std::istream& is);
 
-    virtual UInt64 storeData   ( const ImagePtr &image, UChar8 *buffer,
-                                 Int32 memSize = -1 );
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     File I/O                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    bool isOpenExrFile(std::istream &is);
-    
-    /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  EXRImageFileType(const EXRImageFileType& obj);
 
-    /*==========================  PRIVATE  ================================*/
-  private:
+  typedef ImageFileType Inherited;
 
-    EXRImageFileType (const EXRImageFileType &obj);
-
-    
-
-    typedef ImageFileType Inherited;
-
-    static  EXRImageFileType _the;
-
+  static EXRImageFileType _the;
 };
 
 typedef EXRImageFileType* EXRImageFileTypeP;

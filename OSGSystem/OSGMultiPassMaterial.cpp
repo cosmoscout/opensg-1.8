@@ -65,10 +65,8 @@ OSG_USING_NAMESPACE
  *                           Class methods                                 *
 \***************************************************************************/
 
-void MultiPassMaterial::initMethod (void)
-{
+void MultiPassMaterial::initMethod(void) {
 }
-
 
 /***************************************************************************\
  *                           Instance methods                              *
@@ -80,98 +78,82 @@ void MultiPassMaterial::initMethod (void)
 
 /*----------------------- constructors & destructors ----------------------*/
 
-MultiPassMaterial::MultiPassMaterial(void) :
-    Inherited()
-{
+MultiPassMaterial::MultiPassMaterial(void)
+    : Inherited() {
 }
 
-MultiPassMaterial::MultiPassMaterial(const MultiPassMaterial &source) :
-    Inherited(source)
-{
+MultiPassMaterial::MultiPassMaterial(const MultiPassMaterial& source)
+    : Inherited(source) {
 }
 
-MultiPassMaterial::~MultiPassMaterial(void)
-{
-    MFMaterialPtr::iterator matIt  = _mfMaterials.begin();
-    MFMaterialPtr::iterator matEnd = _mfMaterials.end ();
-    
-    while(matIt != matEnd)
-    {
-        subRefCP(*matIt);
+MultiPassMaterial::~MultiPassMaterial(void) {
+  MFMaterialPtr::iterator matIt  = _mfMaterials.begin();
+  MFMaterialPtr::iterator matEnd = _mfMaterials.end();
 
-        ++matIt;
-    }
+  while (matIt != matEnd) {
+    subRefCP(*matIt);
+
+    ++matIt;
+  }
 }
 
 /*----------------------------- class specific ----------------------------*/
 
-void MultiPassMaterial::changed(BitVector whichField, UInt32 origin)
-{
-    if(origin & ChangedOrigin::Abstract)
-    {
-        MFMaterialPtr::iterator matIt  = _mfMaterials.begin();
-        MFMaterialPtr::iterator matEnd = _mfMaterials.end ();
-        
-        while(matIt != matEnd)
-        {
-            addRefCP(*matIt);
-           
-            ++matIt;
-        }
+void MultiPassMaterial::changed(BitVector whichField, UInt32 origin) {
+  if (origin & ChangedOrigin::Abstract) {
+    MFMaterialPtr::iterator matIt  = _mfMaterials.begin();
+    MFMaterialPtr::iterator matEnd = _mfMaterials.end();
+
+    while (matIt != matEnd) {
+      addRefCP(*matIt);
+
+      ++matIt;
     }
+  }
 
-    Inherited::changed(whichField, origin);
+  Inherited::changed(whichField, origin);
 }
 
-void MultiPassMaterial::addMaterial(MaterialPtr mat)
-{
-    if(mat == NullFC)
-        return;
+void MultiPassMaterial::addMaterial(MaterialPtr mat) {
+  if (mat == NullFC)
+    return;
 
-    _mfMaterials.push_back(mat);
-    addRefCP(mat);
+  _mfMaterials.push_back(mat);
+  addRefCP(mat);
 }
 
-void MultiPassMaterial::subMaterial(MaterialPtr mat)
-{
-    if(mat == NullFC)
-        return;
+void MultiPassMaterial::subMaterial(MaterialPtr mat) {
+  if (mat == NullFC)
+    return;
 
-    UInt32 i;
-    
-    for(i = 0; i < _mfMaterials.size(); ++i)
-    {
-        if(_mfMaterials[i] == mat)
-        {
-            subRefCP(mat);
-            _mfMaterials.erase(_mfMaterials.begin() + i);
-            return;
-        }
+  UInt32 i;
+
+  for (i = 0; i < _mfMaterials.size(); ++i) {
+    if (_mfMaterials[i] == mat) {
+      subRefCP(mat);
+      _mfMaterials.erase(_mfMaterials.begin() + i);
+      return;
     }
+  }
 
-    SWARNING << "MultiPassMaterial::subMaterial(" << this << ") has no material "
-             << mat << std::endl;
+  SWARNING << "MultiPassMaterial::subMaterial(" << this << ") has no material " << mat << std::endl;
 }
 
-bool MultiPassMaterial::hasMaterial(MaterialPtr mat)
-{
-    UInt32 i;
+bool MultiPassMaterial::hasMaterial(MaterialPtr mat) {
+  UInt32 i;
 
-    for(i = 0; i < _mfMaterials.size(); ++i)
-    {
-        if(_mfMaterials[i] == mat)
-            return true;
-    }
+  for (i = 0; i < _mfMaterials.size(); ++i) {
+    if (_mfMaterials[i] == mat)
+      return true;
+  }
 
-    return false;
+  return false;
 }
-
 
 /*! Draw the geometry with this material.
-*/
+ */
 
-void MultiPassMaterial::draw(Geometry* geo, DrawActionBase * action)
-{
+void MultiPassMaterial::draw(Geometry* geo, DrawActionBase* action) {
 }
 
 /*! Draw the function behind the functor with this material. The functored
@@ -179,76 +161,64 @@ void MultiPassMaterial::draw(Geometry* geo, DrawActionBase * action)
     glBegin(), glEnd() and the standard stuff in between.
 */
 
-void MultiPassMaterial::draw(DrawFunctor& func, DrawActionBase * action)
-{
+void MultiPassMaterial::draw(DrawFunctor& func, DrawActionBase* action) {
 }
 
 /*! Create a osg::State that represents this Material and return it.
-*/
+ */
 
-StatePtr MultiPassMaterial::makeState(void)
-{
-    return NullFC;
+StatePtr MultiPassMaterial::makeState(void) {
+  return NullFC;
 }
 
 /*! Rebuild the internal State. Just collects the chunks in the State.
-*/
+ */
 
-void MultiPassMaterial::rebuildState(void)
-{
-    for(UInt32 i = 0; i < _mfMaterials.size(); ++i)
-    {
-        if(_mfMaterials[i] != NullFC)
-            _mfMaterials[i]->rebuildState();
-    }
+void MultiPassMaterial::rebuildState(void) {
+  for (UInt32 i = 0; i < _mfMaterials.size(); ++i) {
+    if (_mfMaterials[i] != NullFC)
+      _mfMaterials[i]->rebuildState();
+  }
 }
 
-StatePtr MultiPassMaterial::getState(UInt32 index)
-{
-    if(index >= _mfMaterials.size())
-    {
-        SWARNING << "MultiPassMaterial::getState: index out of range!" << std::endl;
-        return NullFC;
-    }
-
-    if(_mfMaterials[index] != NullFC)
-        return _mfMaterials[index]->getState();
-
+StatePtr MultiPassMaterial::getState(UInt32 index) {
+  if (index >= _mfMaterials.size()) {
+    SWARNING << "MultiPassMaterial::getState: index out of range!" << std::endl;
     return NullFC;
+  }
+
+  if (_mfMaterials[index] != NullFC)
+    return _mfMaterials[index]->getState();
+
+  return NullFC;
 }
 
-bool MultiPassMaterial::isMultiPass(void) const
-{
-    return true;
+bool MultiPassMaterial::isMultiPass(void) const {
+  return true;
 }
 
-UInt32 MultiPassMaterial::getNPasses(void) const
-{
-    return _mfMaterials.size();
+UInt32 MultiPassMaterial::getNPasses(void) const {
+  return _mfMaterials.size();
 }
 
 /*! Check if the Material (i.e. any of its materials) is transparent..
-*/
-bool MultiPassMaterial::isTransparent(void) const
-{
-    Int32 tm = getTransparencyMode();
-    if(tm != Material::TransparencyAutoDetection)
-    {
-        return (tm == Material::TransparencyForceTransparent);
-    }
+ */
+bool MultiPassMaterial::isTransparent(void) const {
+  Int32 tm = getTransparencyMode();
+  if (tm != Material::TransparencyAutoDetection) {
+    return (tm == Material::TransparencyForceTransparent);
+  }
 
-    MFMaterialPtr::const_iterator it      = _mfMaterials.begin();
-    MFMaterialPtr::const_iterator matsEnd = _mfMaterials.end();
+  MFMaterialPtr::const_iterator it      = _mfMaterials.begin();
+  MFMaterialPtr::const_iterator matsEnd = _mfMaterials.end();
 
-    // ok just check the first (base) material.
-    if(it != matsEnd && (*it) != NullFC && (*it)->isTransparent())
-        return true;
+  // ok just check the first (base) material.
+  if (it != matsEnd && (*it) != NullFC && (*it)->isTransparent())
+    return true;
 
-    return false;
+  return false;
 }
 
-void MultiPassMaterial::dump(      UInt32    , 
-                         const BitVector ) const
-{
-    SLOG << "Dump MultiPassMaterial NI" << std::endl;
+void MultiPassMaterial::dump(UInt32, const BitVector) const {
+  SLOG << "Dump MultiPassMaterial NI" << std::endl;
 }

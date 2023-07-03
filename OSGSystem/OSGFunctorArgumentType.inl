@@ -72,11 +72,7 @@
 
 \*---------------------------------------------------------------------------*/
 
-
-
 OSG_BEGIN_NAMESPACE
-
-
 
 //----------------------------------------------------------------------------
 
@@ -84,27 +80,22 @@ OSG_BEGIN_NAMESPACE
 
 //----------------------------------------------------------------------------
 
-
-
 inline
 
-NewActionTypes::FunctorArgumentType::FunctorArgumentType(
+    NewActionTypes::FunctorArgumentType::FunctorArgumentType(
 
-    ActorBase *pActor, const NodePtr &pNode, UInt32 pass)
+        ActorBase* pActor, const NodePtr& pNode, UInt32 pass)
 
-    
+    : _pActor(pActor)
+    ,
 
-    : _pActor(pActor),
+    _pNode(pNode)
+    ,
 
-      _pNode (pNode ),
-
-      _pass  (pass  )
+    _pass(pass)
 
 {
-
 }
-
-
 
 //----------------------------------------------------------------------------
 
@@ -112,31 +103,23 @@ NewActionTypes::FunctorArgumentType::FunctorArgumentType(
 
 //----------------------------------------------------------------------------
 
-
-
-inline ActorBase *
+inline ActorBase*
 
 NewActionTypes::FunctorArgumentType::getActor(void) const
 
 {
 
-    return _pActor;
-
+  return _pActor;
 }
-
-
 
 inline void
 
-NewActionTypes::FunctorArgumentType::setActor(ActorBase *pActor)
+NewActionTypes::FunctorArgumentType::setActor(ActorBase* pActor)
 
 {
 
-    _pActor = pActor;
-
+  _pActor = pActor;
 }
-
-
 
 inline NodePtr
 
@@ -144,23 +127,17 @@ NewActionTypes::FunctorArgumentType::getNode(void) const
 
 {
 
-    return _pNode;
-
+  return _pNode;
 }
-
-
 
 inline void
 
-NewActionTypes::FunctorArgumentType::setNode(const NodePtr &pNode)
+NewActionTypes::FunctorArgumentType::setNode(const NodePtr& pNode)
 
 {
 
-    _pNode = pNode;
-
+  _pNode = pNode;
 }
-
-
 
 inline UInt32
 
@@ -168,11 +145,8 @@ NewActionTypes::FunctorArgumentType::getPass(void) const
 
 {
 
-    return _pass;
-
+  return _pass;
 }
-
-
 
 inline void
 
@@ -180,15 +154,10 @@ NewActionTypes::FunctorArgumentType::setPass(UInt32 pass)
 
 {
 
-    _pass = pass;
-
+  _pass = pass;
 }
-
-
 
 OSG_END_NAMESPACE
 
-
-
-#define OSGFUNCTORARGUMENTTYPE_INLINE_CVSID "@(#)$Id: OSGFunctorArgumentType.inl,v 1.2 2006/02/03 15:28:47 tbeer Exp $"
-
+#define OSGFUNCTORARGUMENTTYPE_INLINE_CVSID                                                        \
+  "@(#)$Id: OSGFunctorArgumentType.inl,v 1.2 2006/02/03 15:28:47 tbeer Exp $"

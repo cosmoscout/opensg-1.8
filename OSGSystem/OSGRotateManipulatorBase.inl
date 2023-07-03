@@ -52,53 +52,39 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &RotateManipulatorBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& RotateManipulatorBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 RotateManipulatorBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 RotateManipulatorBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-RotateManipulatorPtr RotateManipulatorBase::create(void) 
-{
-    RotateManipulatorPtr fc; 
+inline RotateManipulatorPtr RotateManipulatorBase::create(void) {
+  RotateManipulatorPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = RotateManipulatorPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = RotateManipulatorPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-RotateManipulatorPtr RotateManipulatorBase::createEmpty(void) 
-{ 
-    RotateManipulatorPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline RotateManipulatorPtr RotateManipulatorBase::createEmpty(void) {
+  RotateManipulatorPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
-
-
 OSG_END_NAMESPACE
 
-#define OSGROTATEMANIPULATORBASE_INLINE_CVSID "@(#)$Id: OSGRotateManipulatorBase.inl,v 1.4 2006/02/20 17:04:35 dirk Exp $"
-
+#define OSGROTATEMANIPULATORBASE_INLINE_CVSID                                                      \
+  "@(#)$Id: OSGRotateManipulatorBase.inl,v 1.4 2006/02/20 17:04:35 dirk Exp $"

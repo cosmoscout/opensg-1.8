@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGDRAWACTIONBASE_H_
 #define _OSGDRAWACTIONBASE_H_
 #ifdef __sgi
@@ -74,190 +73,183 @@ class Material;
 //  Class
 //---------------------------------------------------------------------------
 
-class OSG_SYSTEMLIB_DLLMAPPING DrawActionBase : public Action
-{
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING DrawActionBase : public Action {
+ public:
+  //-----------------------------------------------------------------------
+  //   constants
+  //-----------------------------------------------------------------------
 
-    //-----------------------------------------------------------------------
-    //   constants                                                           
-    //-----------------------------------------------------------------------
+  static StatElemDesc<StatTimeElem> statTravTime;
+  static StatElemDesc<StatIntElem>  statCullTestedNodes;
+  static StatElemDesc<StatIntElem>  statCulledNodes;
 
-    static StatElemDesc<StatTimeElem> statTravTime;
-    static StatElemDesc<StatIntElem>  statCullTestedNodes;
-    static StatElemDesc<StatIntElem>  statCulledNodes;
-    
-    //-----------------------------------------------------------------------
-    //   enums                                                               
-    //-----------------------------------------------------------------------
+  //-----------------------------------------------------------------------
+  //   enums
+  //-----------------------------------------------------------------------
 
-    //-----------------------------------------------------------------------
-    //   types                                                               
-    //-----------------------------------------------------------------------
+  //-----------------------------------------------------------------------
+  //   types
+  //-----------------------------------------------------------------------
 
-    //-----------------------------------------------------------------------
-    //   class functions                                                     
-    //-----------------------------------------------------------------------
- 
-    //-----------------------------------------------------------------------
-    //   instance functions                                                  
-    //-----------------------------------------------------------------------
+  //-----------------------------------------------------------------------
+  //   class functions
+  //-----------------------------------------------------------------------
 
-    virtual ~DrawActionBase(void); 
+  //-----------------------------------------------------------------------
+  //   instance functions
+  //-----------------------------------------------------------------------
 
-    /*------------------------- your_category -------------------------------*/
+  virtual ~DrawActionBase(void);
 
-    // rendering state handling
-       
-          Viewport      *getViewport     (void                  ) const;    
-          void           setViewport     (Viewport   *viewport  );
-    
-          Camera        *getCamera       (void                  ) const;    
-          void           setCamera       (Camera     *cam       );
-    const Matrix        &getCameraToWorld(void);
+  /*------------------------- your_category -------------------------------*/
 
-          Background    *getBackground   (void                  ) const;
-          void           setBackground   (Background *background);
-    
-          Window        *getWindow       (void                  ) const;
-          void           setWindow       (Window * window       );
-    
-          StatCollector *getStatistics   (void                  );
-          void           setStatistics   (StatCollector * stat  );
-    inline bool          hasOwnStat      (void                  );
+  // rendering state handling
 
-    // frustum culling functions
-    // these are just temporary, sooner or later they'll move into a 
-    // cacaded action
-    
-    // control activation of frustum culling
-    bool            getFrustumCulling( void ) const;
-    void            setFrustumCulling( bool val = true );
-    
-    // control drawing of checked volumes
-    bool            getVolumeDrawing( void ) const;
-    void            setVolumeDrawing( bool val = false );
-    
-    // control automatic frustum calculation
-    bool            getAutoFrustum( void ) const;
-    void            setAutoFrustum( bool val = true );
+  Viewport* getViewport(void) const;
+  void      setViewport(Viewport* viewport);
 
-    // control frustum
-    const FrustumVolume & getFrustum( void ) const;
-    void            setFrustum( FrustumVolume & frust );    
-    
-    virtual bool    isVisible(Node* node) = 0;
+  Camera*       getCamera(void) const;
+  void          setCamera(Camera* cam);
+  const Matrix& getCameraToWorld(void);
 
-    // select all visible nodes
-    UInt32  selectVisibles( void );
+  Background* getBackground(void) const;
+  void        setBackground(Background* background);
 
+  Window* getWindow(void) const;
+  void    setWindow(Window* window);
 
-    Material   *getMaterial    (void                             ) const;
-    NodePtr     getMaterialNode(void                             ) const;
-    void        setMaterial    (Material *pMaterial, NodePtr node);
-    
-    /*------------------------- your_operators ------------------------------*/
+  StatCollector* getStatistics(void);
+  void           setStatistics(StatCollector* stat);
+  inline bool    hasOwnStat(void);
 
-    // initialisation
-    virtual Action::ResultE start(void);
-    virtual Action::ResultE stop( Action::ResultE res );
+  // frustum culling functions
+  // these are just temporary, sooner or later they'll move into a
+  // cacaded action
 
-    /*------------------------- assignment ----------------------------------*/
+  // control activation of frustum culling
+  bool getFrustumCulling(void) const;
+  void setFrustumCulling(bool val = true);
 
-    /*------------------------- comparison ----------------------------------*/
+  // control drawing of checked volumes
+  bool getVolumeDrawing(void) const;
+  void setVolumeDrawing(bool val = false);
 
+  // control automatic frustum calculation
+  bool getAutoFrustum(void) const;
+  void setAutoFrustum(bool val = true);
 
-  protected:
+  // control frustum
+  const FrustumVolume& getFrustum(void) const;
+  void                 setFrustum(FrustumVolume& frust);
 
-    //-----------------------------------------------------------------------
-    //   enums                                                               
-    //-----------------------------------------------------------------------
+  virtual bool isVisible(Node* node) = 0;
 
-    //-----------------------------------------------------------------------
-    //   types                                                               
-    //-----------------------------------------------------------------------
+  // select all visible nodes
+  UInt32 selectVisibles(void);
 
-    //-----------------------------------------------------------------------
-    //   class variables                                                     
-    //-----------------------------------------------------------------------
+  Material* getMaterial(void) const;
+  NodePtr   getMaterialNode(void) const;
+  void      setMaterial(Material* pMaterial, NodePtr node);
 
-    //-----------------------------------------------------------------------
-    //   class functions                                                     
-    //-----------------------------------------------------------------------
+  /*------------------------- your_operators ------------------------------*/
 
-    //-----------------------------------------------------------------------
-    //   instance variables                                                  
-    //-----------------------------------------------------------------------
+  // initialisation
+  virtual Action::ResultE start(void);
+  virtual Action::ResultE stop(Action::ResultE res);
 
-    Camera        *_camera;
-    Background    *_background;
-    Window        *_window;
-    Viewport      *_viewport;
-    StatCollector *_statistics;
-    bool           _ownStat;
+  /*------------------------- assignment ----------------------------------*/
 
+  /*------------------------- comparison ----------------------------------*/
 
-    Material      *_pMaterial;
-    NodePtr        _pMaterialNode;
+ protected:
+  //-----------------------------------------------------------------------
+  //   enums
+  //-----------------------------------------------------------------------
 
-    // frustum culling attributes
-    
-    bool          _frustumCulling;
-    bool          _volumeDrawing;
-    bool          _autoFrustum;
-    FrustumVolume _frustum;
-    Matrix        _mCameraToWorld;
-    
-    //-----------------------------------------------------------------------
-    //   instance functions                                                  
-    //-----------------------------------------------------------------------
+  //-----------------------------------------------------------------------
+  //   types
+  //-----------------------------------------------------------------------
 
-    DrawActionBase(void);
+  //-----------------------------------------------------------------------
+  //   class variables
+  //-----------------------------------------------------------------------
 
-    DrawActionBase(const DrawActionBase &source);
-    void operator =(const DrawActionBase &source);
+  //-----------------------------------------------------------------------
+  //   class functions
+  //-----------------------------------------------------------------------
 
-    virtual std::vector<Functor> *getDefaultEnterFunctors(void) = 0;
-    virtual std::vector<Functor> *getDefaultLeaveFunctors(void) = 0;
+  //-----------------------------------------------------------------------
+  //   instance variables
+  //-----------------------------------------------------------------------
 
-  private:
+  Camera*        _camera;
+  Background*    _background;
+  Window*        _window;
+  Viewport*      _viewport;
+  StatCollector* _statistics;
+  bool           _ownStat;
 
-    //-----------------------------------------------------------------------
-    //   enums                                                               
-    //-----------------------------------------------------------------------
+  Material* _pMaterial;
+  NodePtr   _pMaterialNode;
 
-    //-----------------------------------------------------------------------
-    //   types                                                               
-    //-----------------------------------------------------------------------
+  // frustum culling attributes
 
-    typedef Action Inherited;
+  bool          _frustumCulling;
+  bool          _volumeDrawing;
+  bool          _autoFrustum;
+  FrustumVolume _frustum;
+  Matrix        _mCameraToWorld;
 
-    //-----------------------------------------------------------------------
-    //   friend classes                                                      
-    //-----------------------------------------------------------------------
+  //-----------------------------------------------------------------------
+  //   instance functions
+  //-----------------------------------------------------------------------
 
-    //-----------------------------------------------------------------------
-    //   friend functions                                                    
-    //-----------------------------------------------------------------------
+  DrawActionBase(void);
 
-    //-----------------------------------------------------------------------
-    //   class variables                                                     
-    //-----------------------------------------------------------------------
+  DrawActionBase(const DrawActionBase& source);
+  void operator=(const DrawActionBase& source);
 
-    static char cvsid[];
+  virtual std::vector<Functor>* getDefaultEnterFunctors(void) = 0;
+  virtual std::vector<Functor>* getDefaultLeaveFunctors(void) = 0;
 
-    //-----------------------------------------------------------------------
-    //   class functions                                                     
-    //-----------------------------------------------------------------------
+ private:
+  //-----------------------------------------------------------------------
+  //   enums
+  //-----------------------------------------------------------------------
 
-    //-----------------------------------------------------------------------
-    //   instance variables                                                  
-    //-----------------------------------------------------------------------
+  //-----------------------------------------------------------------------
+  //   types
+  //-----------------------------------------------------------------------
 
-    //-----------------------------------------------------------------------
-    //   instance functions                                                  
-    //-----------------------------------------------------------------------
+  typedef Action Inherited;
 
-    // prohibit default functions (move to 'public' if you need one)
+  //-----------------------------------------------------------------------
+  //   friend classes
+  //-----------------------------------------------------------------------
+
+  //-----------------------------------------------------------------------
+  //   friend functions
+  //-----------------------------------------------------------------------
+
+  //-----------------------------------------------------------------------
+  //   class variables
+  //-----------------------------------------------------------------------
+
+  static char cvsid[];
+
+  //-----------------------------------------------------------------------
+  //   class functions
+  //-----------------------------------------------------------------------
+
+  //-----------------------------------------------------------------------
+  //   instance variables
+  //-----------------------------------------------------------------------
+
+  //-----------------------------------------------------------------------
+  //   instance functions
+  //-----------------------------------------------------------------------
+
+  // prohibit default functions (move to 'public' if you need one)
 };
 
 //---------------------------------------------------------------------------
@@ -266,7 +258,7 @@ class OSG_SYSTEMLIB_DLLMAPPING DrawActionBase : public Action
 
 // class pointer
 
-typedef DrawActionBase *DrawActionBaseP;
+typedef DrawActionBase* DrawActionBaseP;
 
 OSG_END_NAMESPACE
 

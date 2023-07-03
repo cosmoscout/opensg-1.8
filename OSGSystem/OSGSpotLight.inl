@@ -34,7 +34,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -42,22 +41,16 @@
 
 OSG_BEGIN_NAMESPACE
 
-inline
-void SpotLight::setSpotDirection(Real32 rX, Real32 rY, Real32 rZ)
-{
-    _sfDirection.getValue().setValues(rX, rY, rZ);
+inline void SpotLight::setSpotDirection(Real32 rX, Real32 rY, Real32 rZ) {
+  _sfDirection.getValue().setValues(rX, rY, rZ);
 }
 
-inline
-void SpotLight::setSpotCutOffDeg(Real32 angle)
-{
-    _sfSpotCutOff.setValue(osgdegree2rad(angle));
+inline void SpotLight::setSpotCutOffDeg(Real32 angle) {
+  _sfSpotCutOff.setValue(osgdegree2rad(angle));
 }
 
-inline
-Real32 SpotLight::getSpotCutOffDeg(void)
-{
-    return osgrad2degree(_sfSpotCutOff.getValue());
+inline Real32 SpotLight::getSpotCutOffDeg(void) {
+  return osgrad2degree(_sfSpotCutOff.getValue());
 }
 
 OSG_END_NAMESPACE

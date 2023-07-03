@@ -53,10 +53,9 @@ OSG_USING_NAMESPACE
 
 /*! Constructor
  */
-SocketException::SocketException():
-    Exception()
-{
-    _what+="SocketLib: ";
+SocketException::SocketException()
+    : Exception() {
+  _what += "SocketLib: ";
 }
 
 /** \class osg::SocketError
@@ -66,12 +65,12 @@ SocketException::SocketException():
 
 /*! Constructor
  */
-SocketError::SocketError(const char *function):SocketException()
-{
-    char estr[6];
-    
-    sprintf(estr,"%5d",Socket::getError());
-    _what=_what + function + " " + estr + " " + Socket::getErrorStr();
+SocketError::SocketError(const char* function)
+    : SocketException() {
+  char estr[6];
+
+  sprintf(estr, "%5d", Socket::getError());
+  _what = _what + function + " " + estr + " " + Socket::getErrorStr();
 }
 
 /** \class osg::SocketHostError
@@ -81,12 +80,12 @@ SocketError::SocketError(const char *function):SocketException()
 
 /*! Constructor
  */
-SocketHostError::SocketHostError(const char *function):SocketException()
-{
-    char estr[6];
+SocketHostError::SocketHostError(const char* function)
+    : SocketException() {
+  char estr[6];
 
-    sprintf(estr,"%5d",Socket::getHostError());
-    _what=_what + function + " " + estr + " " + Socket::getHostErrorStr(); 
+  sprintf(estr, "%5d", Socket::getHostError());
+  _what = _what + function + " " + estr + " " + Socket::getHostErrorStr();
 }
 
 /** \class osg::SocketInUse
@@ -96,9 +95,8 @@ SocketHostError::SocketHostError(const char *function):SocketException()
 
 /*! Constructor
  */
-SocketInUse::SocketInUse(const char *function):
-    SocketError(function)
-{
+SocketInUse::SocketInUse(const char* function)
+    : SocketError(function) {
 }
 
 /** \class osg::SocketConnReset
@@ -108,9 +106,6 @@ SocketInUse::SocketInUse(const char *function):
 
 /*! Constructor
  */
-SocketConnReset::SocketConnReset(const char *function):
-    SocketError(function)
-{
+SocketConnReset::SocketConnReset(const char* function)
+    : SocketError(function) {
 }
-
-

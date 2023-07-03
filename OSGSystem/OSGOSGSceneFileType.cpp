@@ -50,7 +50,6 @@
 
 OSG_USING_NAMESPACE
 
-
 /*! \class osg::OSGSceneFileType
     \ingroup GrpSystemFileIO
 
@@ -64,16 +63,12 @@ OSG_USING_NAMESPACE
  *                           Class variables                               *
 \***************************************************************************/
 
-const Char8 *OSGSceneFileType::_suffixA[] =  { "osg" };
+const Char8* OSGSceneFileType::_suffixA[] = {"osg"};
 
-OSGSceneFileType OSGSceneFileType::_the(_suffixA,
-                                        sizeof(_suffixA),
-                                        false,
-                                        10,
-                                        OSG_READ_SUPPORTED | 
-                                        OSG_WRITE_SUPPORTED);
+OSGSceneFileType OSGSceneFileType::_the(
+    _suffixA, sizeof(_suffixA), false, 10, OSG_READ_SUPPORTED | OSG_WRITE_SUPPORTED);
 
-OSGLoader *OSGSceneFileType::_pFile = NULL;
+OSGLoader* OSGSceneFileType::_pFile = NULL;
 
 /***************************************************************************\
  *                           Class methods                                 *
@@ -83,9 +78,8 @@ OSGLoader *OSGSceneFileType::_pFile = NULL;
  -  public                                                                 -
 \*-------------------------------------------------------------------------*/
 
-OSGSceneFileType &OSGSceneFileType::the(void)
-{
-    return _the;
+OSGSceneFileType& OSGSceneFileType::the(void) {
+  return _the;
 }
 
 /*-------------------------------------------------------------------------*\
@@ -106,35 +100,29 @@ OSGSceneFileType &OSGSceneFileType::the(void)
 
 /*------------------------------ access -----------------------------------*/
 
-const Char8 *OSGSceneFileType::getName(void) const
-{
-    return "OpenSG Ascii Geometry";
+const Char8* OSGSceneFileType::getName(void) const {
+  return "OpenSG Ascii Geometry";
 }
 
+NodePtr OSGSceneFileType::read(std::istream& is, const Char8*) const {
+  if (_pFile == NULL)
+    _pFile = new OSGLoader;
 
-NodePtr OSGSceneFileType::read(std::istream &is, const Char8 *) const
-{
-    if(_pFile == NULL)
-        _pFile = new OSGLoader;
+  _pFile->scanStream(is);
 
-    _pFile->scanStream(is);
-
-    return _pFile->getRootNode();
+  return _pFile->getRootNode();
 }
 
-bool OSGSceneFileType::write(const NodePtr &root, std::ostream &os,
-                             const Char8 *) const
-{
-    if(!os)
-    {
-        FFATAL(("Can not open output stream!\n"));
-        return false;
-    }
+bool OSGSceneFileType::write(const NodePtr& root, std::ostream& os, const Char8*) const {
+  if (!os) {
+    FFATAL(("Can not open output stream!\n"));
+    return false;
+  }
 
-    OSGWriter writer(os, 4);
-    writer.write(root);
+  OSGWriter writer(os, 4);
+  writer.write(root);
 
-    return true;
+  return true;
 }
 
 /*---------------------------- properties ---------------------------------*/
@@ -145,36 +133,21 @@ bool OSGSceneFileType::write(const NodePtr &root, std::ostream &os,
 
 /*-------------------------- comparison -----------------------------------*/
 
-
 /*-------------------------------------------------------------------------*\
  -  protected                                                              -
 \*-------------------------------------------------------------------------*/
 
-
 /** \brief Constructor
  */
 
-OSGSceneFileType::OSGSceneFileType(const char   *suffixArray[],
-                                         UInt16  suffixByteCount,
-                                         bool    override,
-                                         UInt32  overridePriority,
-                                         UInt32  flags) :
-    Inherited(suffixArray,
-              suffixByteCount,
-              override,
-              overridePriority,
-              flags)
-{
-    return;
+OSGSceneFileType::OSGSceneFileType(const char* suffixArray[], UInt16 suffixByteCount, bool override,
+    UInt32 overridePriority, UInt32 flags)
+    : Inherited(suffixArray, suffixByteCount, override, overridePriority, flags) {
+  return;
 }
-
 
 /** \brief Destructor
  */
 
-OSGSceneFileType::~OSGSceneFileType(void)
-{
+OSGSceneFileType::~OSGSceneFileType(void) {
 }
-
-
-

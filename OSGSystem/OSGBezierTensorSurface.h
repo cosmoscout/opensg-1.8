@@ -44,7 +44,6 @@
 #include <OSGSystemDef.h>
 #include <OSGConfig.h>
 
-
 #include <iostream>
 #include <fstream>
 #include <iomanip>
@@ -57,35 +56,43 @@ OSG_BEGIN_NAMESPACE
 
 class BezierTensorSurface;
 
-typedef std::vector< BezierTensorSurface > beziersurfacevector;
-typedef std::vector< beziersurfacevector > beziersurfacematrix;
-
+typedef std::vector<BezierTensorSurface> beziersurfacevector;
+typedef std::vector<beziersurfacevector> beziersurfacematrix;
 
 class OSG_SYSTEMLIB_DLLMAPPING BezierTensorSurface {
-protected:
-  DCTPVec4dmatrix control_points; //control points of the surface
+ protected:
+  DCTPVec4dmatrix control_points; // control points of the surface
 
-public:
+ public:
   BezierTensorSurface();
-  BezierTensorSurface( const DCTPVec4dmatrix &cps ) { control_points = cps; }
-  BezierTensorSurface( const BezierTensorSurface& bts ) { control_points = bts.control_points; }
-  ~BezierTensorSurface() {}
- 
-  //setup functions
-  int setControlPointMatrix( const DCTPVec4dmatrix& cps ); //ok, acts like its name says 
+  BezierTensorSurface(const DCTPVec4dmatrix& cps) {
+    control_points = cps;
+  }
+  BezierTensorSurface(const BezierTensorSurface& bts) {
+    control_points = bts.control_points;
+  }
+  ~BezierTensorSurface() {
+  }
 
-  //query functions
-  DCTPVec4dmatrix& getControlPointMatrix( void ) { return control_points; } //guess what!
+  // setup functions
+  int setControlPointMatrix(const DCTPVec4dmatrix& cps); // ok, acts like its name says
 
-  //some REAL functionality
-  Vec3d computewdeCasteljau( Vec2d uv, int &error ); //compute curve at parameter value t
-  Vec3d computeLinearApproximation( Vec2d uv, int &error ); //ok like its name sayz
-  int midPointSubDivision( beziersurfacematrix &newbeziers ); //subdivide surface at midpoint into 4 bezier surfaces
-  int midPointSubDivision( beziersurfacevector &newbeziers ); //subdivide surface at midpoint into 4 bezier surfaces
-  int midPointSubDivisionU( BezierTensorSurface &newsurface );
-  int midPointSubDivisionV( BezierTensorSurface &newsurface );
+  // query functions
+  DCTPVec4dmatrix& getControlPointMatrix(void) {
+    return control_points;
+  } // guess what!
+
+  // some REAL functionality
+  Vec3d computewdeCasteljau(Vec2d uv, int& error);        // compute curve at parameter value t
+  Vec3d computeLinearApproximation(Vec2d uv, int& error); // ok like its name sayz
+  int midPointSubDivision(
+      beziersurfacematrix& newbeziers); // subdivide surface at midpoint into 4 bezier surfaces
+  int midPointSubDivision(
+      beziersurfacevector& newbeziers); // subdivide surface at midpoint into 4 bezier surfaces
+  int midPointSubDivisionU(BezierTensorSurface& newsurface);
+  int midPointSubDivisionV(BezierTensorSurface& newsurface);
 };
 
 OSG_END_NAMESPACE
 
-#endif //BezierTensorSurface.h
+#endif // BezierTensorSurface.h

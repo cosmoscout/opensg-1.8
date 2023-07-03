@@ -52,53 +52,39 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &ScaleManipulatorBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& ScaleManipulatorBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 ScaleManipulatorBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 ScaleManipulatorBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-ScaleManipulatorPtr ScaleManipulatorBase::create(void) 
-{
-    ScaleManipulatorPtr fc; 
+inline ScaleManipulatorPtr ScaleManipulatorBase::create(void) {
+  ScaleManipulatorPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = ScaleManipulatorPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = ScaleManipulatorPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-ScaleManipulatorPtr ScaleManipulatorBase::createEmpty(void) 
-{ 
-    ScaleManipulatorPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline ScaleManipulatorPtr ScaleManipulatorBase::createEmpty(void) {
+  ScaleManipulatorPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
-
-
 OSG_END_NAMESPACE
 
-#define OSGSCALEMANIPULATORBASE_INLINE_CVSID "@(#)$Id: OSGScaleManipulatorBase.inl,v 1.4 2006/02/20 17:04:35 dirk Exp $"
-
+#define OSGSCALEMANIPULATORBASE_INLINE_CVSID                                                       \
+  "@(#)$Id: OSGScaleManipulatorBase.inl,v 1.4 2006/02/20 17:04:35 dirk Exp $"

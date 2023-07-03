@@ -47,52 +47,46 @@ OSG_BEGIN_NAMESPACE
 
 class RenderAction;
 
-class OSG_SYSTEMLIB_DLLMAPPING RenderOptions : public RenderOptionsBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING RenderOptions : public RenderOptionsBase {
+ private:
+  typedef RenderOptionsBase Inherited;
 
-    typedef RenderOptionsBase Inherited;
+ public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-  public:
+  void      setWireframe(bool value);
+  bool      getWireframe(void);
+  BitVector getChanged(void);
+  BitVector getLastChanged(void);
+  void      activateOptions(RenderAction* action);
 
-    virtual void changed(BitVector whichField, UInt32 origin);
+ protected:
+  RenderOptions(void);
+  RenderOptions(const RenderOptions& source);
 
-    void      setWireframe   (bool value          );
-    bool      getWireframe   (void                );
-    BitVector getChanged     (void                );
-    BitVector getLastChanged (void                );
-    void      activateOptions(RenderAction *action);
+  virtual ~RenderOptions(void);
 
-  protected:
+  BitVector _changed;
+  BitVector _last_changed;
+  Real32    _gl_version;
+  GLenum    _polygon_mode;
+  bool      _backface_culling;
+  bool      _two_sided_lighting;
+  bool      _spec_tex_lighting;
 
-    RenderOptions(void);
-    RenderOptions(const RenderOptions &source);
+ private:
+  friend class FieldContainer;
+  friend class RenderOptionsBase;
 
-    virtual ~RenderOptions(void);
+  static void initMethod(void);
 
-    BitVector   _changed;
-    BitVector   _last_changed;
-    Real32      _gl_version;
-    GLenum      _polygon_mode;
-    bool        _backface_culling;
-    bool        _two_sided_lighting;
-    bool        _spec_tex_lighting;
-
-  private:
-
-    friend class FieldContainer;
-    friend class RenderOptionsBase;
-
-    static void initMethod(void);
-
-    void operator =(const RenderOptions &source);
+  void operator=(const RenderOptions& source);
 };
 
-typedef RenderOptions *RenderOptionsP;
+typedef RenderOptions* RenderOptionsP;
 
 OSG_END_NAMESPACE
 
 #include <OSGRenderOptionsBase.inl>
 
 #endif /* _OSGRENDEROPTIONS_H_ */
-

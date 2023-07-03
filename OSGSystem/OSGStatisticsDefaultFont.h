@@ -34,7 +34,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGSTATISTICSDEFAULTFONT_H_
 #define _OSGSTATISTICSDEFAULTFONT_H_
 #ifdef __sgi
@@ -54,7 +53,7 @@ OSG_BEGIN_NAMESPACE
 /*! \name                     Geometry Functions                            */
 /*! \{                                                                      */
 
-/*! \brief font data for default font 
+/*! \brief font data for default font
  *  \ingroup Statistics
  */
 
@@ -66,7 +65,7 @@ extern OSG_SYSTEMLIB_DLLMAPPING std::string StatisticsDefaultFontString;
 
 class TextTXFFace;
 
-OSG_SYSTEMLIB_DLLMAPPING TextTXFFace *getStatisticsDefaultFont();
+OSG_SYSTEMLIB_DLLMAPPING TextTXFFace* getStatisticsDefaultFont();
 
 OSG_SYSTEMLIB_DLLMAPPING TextureChunkPtr getStatisticsDefaultFontTexture();
 

@@ -52,53 +52,39 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &InverseTransformBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& InverseTransformBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 InverseTransformBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 InverseTransformBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-InverseTransformPtr InverseTransformBase::create(void) 
-{
-    InverseTransformPtr fc; 
+inline InverseTransformPtr InverseTransformBase::create(void) {
+  InverseTransformPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = InverseTransformPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = InverseTransformPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-InverseTransformPtr InverseTransformBase::createEmpty(void) 
-{ 
-    InverseTransformPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline InverseTransformPtr InverseTransformBase::createEmpty(void) {
+  InverseTransformPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
-
-
 OSG_END_NAMESPACE
 
-#define OSGINVERSETRANSFORMBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGINVERSETRANSFORMBASE_INLINE_CVSID                                                       \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

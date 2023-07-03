@@ -62,95 +62,71 @@ Viewport for quad-buffered stereo rendering, see \ref
 PageSystemWindowViewports for a description.
 
 The active buffers are selected using the _sfLeftBuffer and _sfRightBuffer
-Fields. 
+Fields.
 
 */
 
 /*----------------------- constructors & destructors ----------------------*/
 
-StereoBufferViewport::StereoBufferViewport(void) :
-    Inherited()
-{
+StereoBufferViewport::StereoBufferViewport(void)
+    : Inherited() {
 }
 
-StereoBufferViewport::StereoBufferViewport(const StereoBufferViewport &source) :
-    Inherited(source)
-{
+StereoBufferViewport::StereoBufferViewport(const StereoBufferViewport& source)
+    : Inherited(source) {
 }
 
-StereoBufferViewport::~StereoBufferViewport(void)
-{
+StereoBufferViewport::~StereoBufferViewport(void) {
 }
 
 /*----------------------------- class specific ----------------------------*/
 
-void StereoBufferViewport::initMethod (void)
-{
+void StereoBufferViewport::initMethod(void) {
 }
 
-void StereoBufferViewport::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void StereoBufferViewport::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
-void StereoBufferViewport::dump(      UInt32    , 
-                         const BitVector ) const
-{
-    SLOG << "Dump StereoBufferViewport NI" << std::endl;
+void StereoBufferViewport::dump(UInt32, const BitVector) const {
+  SLOG << "Dump StereoBufferViewport NI" << std::endl;
 }
 
-void StereoBufferViewport::activateSize(void)
-{
-    Inherited::activateSize();
+void StereoBufferViewport::activateSize(void) {
+  Inherited::activateSize();
 }
 
-void StereoBufferViewport::activate(void)
-{
-    if(getLeftBuffer())
-    {
-        if(getRightBuffer())
-        {
-            glDrawBuffer(GL_BACK);
-            glReadBuffer(GL_BACK);
-        }
-        else
-        {
-            glDrawBuffer(GL_BACK_LEFT);
-            glReadBuffer(GL_BACK_LEFT);
-        }
+void StereoBufferViewport::activate(void) {
+  if (getLeftBuffer()) {
+    if (getRightBuffer()) {
+      glDrawBuffer(GL_BACK);
+      glReadBuffer(GL_BACK);
+    } else {
+      glDrawBuffer(GL_BACK_LEFT);
+      glReadBuffer(GL_BACK_LEFT);
     }
-    else
-    {
-        if(getRightBuffer())
-        {
-            glDrawBuffer(GL_BACK_RIGHT);
-            glReadBuffer(GL_BACK_RIGHT);
-        }
-        else
-        {
-            glDrawBuffer(GL_NONE);
-            glReadBuffer(GL_NONE);
-        }
+  } else {
+    if (getRightBuffer()) {
+      glDrawBuffer(GL_BACK_RIGHT);
+      glReadBuffer(GL_BACK_RIGHT);
+    } else {
+      glDrawBuffer(GL_NONE);
+      glReadBuffer(GL_NONE);
     }
-    Inherited::activate();
+  }
+  Inherited::activate();
 }
 
-void StereoBufferViewport::deactivate(void)
-{
-    Inherited::deactivate();
-    glDrawBuffer(GL_BACK);
-    glReadBuffer(GL_BACK);
+void StereoBufferViewport::deactivate(void) {
+  Inherited::deactivate();
+  glDrawBuffer(GL_BACK);
+  glReadBuffer(GL_BACK);
 }
 
-void StereoBufferViewport::draw( DrawAction * action )
-{
-    Inherited::draw(action);
+void StereoBufferViewport::draw(DrawAction* action) {
+  Inherited::draw(action);
 }
 
-void StereoBufferViewport::render(RenderActionBase *action)
-{
-    Inherited::render(action);
+void StereoBufferViewport::render(RenderActionBase* action) {
+  Inherited::render(action);
 }
-
-
-

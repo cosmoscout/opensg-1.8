@@ -58,123 +58,115 @@ OSG_BEGIN_NAMESPACE
 class AttachmentContainer;
 
 #ifdef __sgi
-#pragma set woff 1375,1424
+#pragma set woff 1375, 1424
 #endif
 
 #ifdef OSG_LINUX_ICC
-#pragma warning( disable : 444 )
+#pragma warning(disable : 444)
 #endif
 
 /*! \ingroup GrpSystemFieldContainer
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING AttachmentContainerPtr : 
-    public FieldContainerPtr
-{
-    /*==========================  PUBLIC  =================================*/
+class OSG_SYSTEMLIB_DLLMAPPING AttachmentContainerPtr : public FieldContainerPtr {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  typedef AttachmentContainer    StoredObjectType;
+  typedef AttachmentContainerPtr ObjectType;
 
-    typedef AttachmentContainer    StoredObjectType;
-    typedef AttachmentContainerPtr ObjectType;
+  typedef FieldContainerPtr Inherited;
 
-    typedef FieldContainerPtr      Inherited;
+  /*---------------------------------------------------------------------*/
+  /*! \name                      dcast                                   */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      dcast                                   */
-    /*! \{                                                                 */
+  template <class InTypeT>
+  static AttachmentContainerPtr dcast(const InTypeT oIn);
 
-    template <class InTypeT> 
-    static AttachmentContainerPtr dcast(const InTypeT oIn);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  AttachmentContainerPtr(void);
+  AttachmentContainerPtr(const AttachmentContainerPtr& source);
+  AttachmentContainerPtr(const NullFieldContainerPtr& source);
 
-    AttachmentContainerPtr(      void                          );
-    AttachmentContainerPtr(const AttachmentContainerPtr &source);
-    AttachmentContainerPtr(const NullFieldContainerPtr  &source);
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    ~AttachmentContainerPtr(void); 
+  ~AttachmentContainerPtr(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                 Container Access                             */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                 Container Access                             */
+  /*! \{                                                                 */
 
-    AttachmentContainer *operator->(void);
-    AttachmentContainer *operator->(void) const;
+  AttachmentContainer* operator->(void);
+  AttachmentContainer* operator->(void) const;
 
-    AttachmentContainer &operator *(void);
-    AttachmentContainer &operator *(void) const;
+  AttachmentContainer& operator*(void);
+  AttachmentContainer& operator*(void) const;
 
-    AttachmentContainer *getCPtr   (void);
-    AttachmentContainer *getCPtr   (void) const;
+  AttachmentContainer* getCPtr(void);
+  AttachmentContainer* getCPtr(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Assignment                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Assignment                                */
+  /*! \{                                                                 */
 
-    void operator =(const AttachmentContainerPtr  &source);
-    void operator =(const NullFieldContainerPtr   &source);
+  void operator=(const AttachmentContainerPtr& source);
+  void operator=(const NullFieldContainerPtr& source);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name             Container Constructors                           */
-    /*! \{                                                                 */
-    /*! \brief Container Constructor, used to work around MS Bugs,  
-        use them only if you really now what you are doing ;-)             */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name             Container Constructors                           */
+  /*! \{                                                                 */
+  /*! \brief Container Constructor, used to work around MS Bugs,
+      use them only if you really now what you are doing ;-)             */
 
-    explicit AttachmentContainerPtr(const AttachmentContainer &source);
-    explicit AttachmentContainerPtr(const AttachmentContainer *source);
-    
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  explicit AttachmentContainerPtr(const AttachmentContainer& source);
+  explicit AttachmentContainerPtr(const AttachmentContainer* source);
 
-  protected:
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    /*---------------------------------------------------------------------*/
-    /*! \name             Internal Constructors                            */
-    /*! \{                                                                 */
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name             Internal Constructors                            */
+  /*! \{                                                                 */
 
-    AttachmentContainerPtr(const AttachmentContainer *source,
-                           const UInt16               uiSize,
-                           const UInt16               uiParentPos);
+  AttachmentContainerPtr(
+      const AttachmentContainer* source, const UInt16 uiSize, const UInt16 uiParentPos);
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-  private:
-
-    friend class FieldContainer;
+ private:
+  friend class FieldContainer;
 };
 
 typedef RefPtr<AttachmentContainerPtr> AttachmentContainerRefPtr;
 
 #ifdef OSG_LINUX_ICC
-#pragma warning( default : 444 )
+#pragma warning(default : 444)
 #endif
 
 #ifdef __sgi
-#pragma reset woff 1375,1424
+#pragma reset woff 1375, 1424
 #endif
 
 /*! \ingroup GrpSystemFieldContainerFuncs
  */
 
 OSG_SYSTEMLIB_DLLMAPPING
-std::ostream &operator <<(      std::ostream           &os,
-                          const AttachmentContainerPtr &fc);
+std::ostream& operator<<(std::ostream& os, const AttachmentContainerPtr& fc);
 OSG_END_NAMESPACE
 
 #define OSGATTACHMENTCONTAINERPTR_HEADER_CVSID "@(#)$Id: $"
 
 #endif /* _OSGATTACHMENTCONTAINERPTR_IMPL_ */
-

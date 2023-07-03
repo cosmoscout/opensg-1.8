@@ -37,7 +37,7 @@
 \*---------------------------------------------------------------------------*/
 
 //-------------------------------
-//      Includes                                    
+//      Includes
 //-------------------------------
 
 #include <stdlib.h>
@@ -53,8 +53,7 @@
 
 OSG_USING_NAMESPACE
 
-
-/*! \class osg::MTDImageFileType 
+/*! \class osg::MTDImageFileType
     \ingroup GrpSystemImage
 
 Image File Type to read/write and store/restore Image objects as
@@ -62,72 +61,59 @@ MTD data.
 
 All the type specific code is included in the class. Does
 not depend on external libs.
-        
+
 */
 
 /*****************************
  *   Types
  *****************************/
-// Static Class Varible implementations: 
+// Static Class Varible implementations:
 
-static const Char8 *mtdSuffixArray[] =
-{
-    "mtd","opensg","opensgImage"
-};
+static const Char8* mtdSuffixArray[] = {"mtd", "opensg", "opensgImage"};
 
-MTDImageFileType MTDImageFileType::_the("image/x-mtd",
-                                        mtdSuffixArray, sizeof(mtdSuffixArray),
-                                        OSG_READ_SUPPORTED | 
-                                        OSG_WRITE_SUPPORTED );
+MTDImageFileType MTDImageFileType::_the("image/x-mtd", mtdSuffixArray, sizeof(mtdSuffixArray),
+    OSG_READ_SUPPORTED | OSG_WRITE_SUPPORTED);
 
 /*****************************
  *    Classvariables
  *****************************/
 
-
 /********************************
  *    Class methodes
  *******************************/
-
 
 //-------------------------------------------------------------------------
 /*!
 Class method to get the singleton Object
 */
-MTDImageFileType& MTDImageFileType::the (void)
-{
+MTDImageFileType& MTDImageFileType::the(void) {
   return _the;
 }
 
 /*******************************
-*public
-*******************************/
+ *public
+ *******************************/
 
 //-------------------------------------------------------------------------
 /*!
 Tries to fill the image object with the data read from
 the given input stream. Returns true on success.
 */
-bool MTDImageFileType::read  (ImagePtr &image, std::istream &in, const std::string &mimetype)
-{
-  bool retCode = false;
-  Head head;
-  void *headData = (void*)(&head);
+bool MTDImageFileType::read(ImagePtr& image, std::istream& in, const std::string& mimetype) {
+  bool     retCode = false;
+  Head     head;
+  void*    headData = (void*)(&head);
   unsigned dataSize, headSize = sizeof(Head);
-  
-  if ( in.read(static_cast<char *>(headData), 
-               headSize) && head.netToHost() &&
-       image->set ( Image::PixelFormat(head.pixelFormat), 
-                    head.width, head.height, head.depth, head.mipmapCount, 
-                    head.frameCount, float(head.frameDelay) / 1000.0, 0,
-                    ( head.dataType ? Image::Type(head.dataType) :
-                      Image::OSG_UINT8_IMAGEDATA ), 
-                    true, head.sideCount) &&
-       (dataSize = image->getSize()) && 
-       in.read((char *)(image->getData()), dataSize ))
-      retCode = true;
+
+  if (in.read(static_cast<char*>(headData), headSize) && head.netToHost() &&
+      image->set(Image::PixelFormat(head.pixelFormat), head.width, head.height, head.depth,
+          head.mipmapCount, head.frameCount, float(head.frameDelay) / 1000.0, 0,
+          (head.dataType ? Image::Type(head.dataType) : Image::OSG_UINT8_IMAGEDATA), true,
+          head.sideCount) &&
+      (dataSize = image->getSize()) && in.read((char*)(image->getData()), dataSize))
+    retCode = true;
   else
-      retCode = false;
+    retCode = false;
 
   return retCode;
 }
@@ -137,47 +123,44 @@ bool MTDImageFileType::read  (ImagePtr &image, std::istream &in, const std::stri
 Tries to write the image object to the given output stream.
 Returns true on success.
 */
-bool MTDImageFileType::write (const ImagePtr &image, std::ostream &out, const std::string &mimetype)
-{
-    bool retCode = false;
+bool MTDImageFileType::write(
+    const ImagePtr& image, std::ostream& out, const std::string& mimetype) {
+  bool retCode = false;
 
-    Head head;
-    const void *headData = (void*)(&head);
-    unsigned dataSize = image->getSize(), headSize = sizeof(Head);
+  Head        head;
+  const void* headData = (void*)(&head);
+  unsigned    dataSize = image->getSize(), headSize = sizeof(Head);
 
-    head.pixelFormat  = image->getPixelFormat();
-    head.width        = image->getWidth();
-    head.height       = image->getHeight();
-    head.depth        = image->getDepth();
-    head.mipmapCount  = image->getMipMapCount();
-    head.frameCount   = image->getFrameCount();
-    head.frameDelay   = short(image->getFrameDelay() * 1000.0);
-    head.sideCount    = image->getSideCount();
-    head.dataType     = image->getDataType();
-    head.hostToNet();
-  
-    if ( out.write(static_cast<const char *>(headData), headSize) && 
-         dataSize && out.write((char *)(image->getData()), dataSize) )
-      retCode = true;
-    else
-      retCode = false;    
+  head.pixelFormat = image->getPixelFormat();
+  head.width       = image->getWidth();
+  head.height      = image->getHeight();
+  head.depth       = image->getDepth();
+  head.mipmapCount = image->getMipMapCount();
+  head.frameCount  = image->getFrameCount();
+  head.frameDelay  = short(image->getFrameDelay() * 1000.0);
+  head.sideCount   = image->getSideCount();
+  head.dataType    = image->getDataType();
+  head.hostToNet();
 
-    return retCode;
+  if (out.write(static_cast<const char*>(headData), headSize) && dataSize &&
+      out.write((char*)(image->getData()), dataSize))
+    retCode = true;
+  else
+    retCode = false;
+
+  return retCode;
 }
-
 
 //-------------------------------------------------------------------------
 /*!
 Tries to restore the image data from the given memblock.
 Returns the amount of data read.
 */
-UInt64 MTDImageFileType::restoreData(      ImagePtr &image, 
-                                     const UChar8   *buffer,
-                                           Int32     OSG_CHECK_ARG(memSize) )
-{
-    image->setData(buffer);
+UInt64 MTDImageFileType::restoreData(
+    ImagePtr& image, const UChar8* buffer, Int32 OSG_CHECK_ARG(memSize)) {
+  image->setData(buffer);
 
-    return image->getSize();
+  return image->getSize();
 }
 
 //-------------------------------------------------------------------------
@@ -185,33 +168,29 @@ UInt64 MTDImageFileType::restoreData(      ImagePtr &image,
 Tries to store the image data to the given memblock.
 Returns the amount of data written.
 */
-UInt64 MTDImageFileType::storeData(const ImagePtr &image, 
-                                         UChar8   *buffer,
-                                         Int32     OSG_CHECK_ARG(memSize))
-{
-    unsigned dataSize = image->getSize();
-    const UChar8 *src = image->getData();
+UInt64 MTDImageFileType::storeData(
+    const ImagePtr& image, UChar8* buffer, Int32 OSG_CHECK_ARG(memSize)) {
+  unsigned      dataSize = image->getSize();
+  const UChar8* src      = image->getData();
 
-    if ( dataSize && src && buffer )
-      memcpy( buffer, src, dataSize);
-  
-    return dataSize;
-} 
+  if (dataSize && src && buffer)
+    memcpy(buffer, src, dataSize);
 
+  return dataSize;
+}
 
 //-------------------------------------------------------------------------
 /*!
 Constructor used for the singleton object
 */
-MTDImageFileType::MTDImageFileType ( const Char8 *mimeType,
-                                     const Char8 *mtdSuffixArray[],
-                                     UInt16 suffixByteCount,
-                                     UInt32 flags )
-    : ImageFileType ( mimeType, mtdSuffixArray, suffixByteCount, flags )
-{}
+MTDImageFileType::MTDImageFileType(
+    const Char8* mimeType, const Char8* mtdSuffixArray[], UInt16 suffixByteCount, UInt32 flags)
+    : ImageFileType(mimeType, mtdSuffixArray, suffixByteCount, flags) {
+}
 
 //-------------------------------------------------------------------------
 /*!
 Destructor
 */
-MTDImageFileType::~MTDImageFileType (void ) {}
+MTDImageFileType::~MTDImageFileType(void) {
+}

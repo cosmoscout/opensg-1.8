@@ -59,16 +59,12 @@ OSG_USING_NAMESPACE
 
 /*! constructor. Use Dgram::create to get dgrams
  */
-Dgram::Dgram():
-    _size(0),
-    _earlySend(false)
-{
+Dgram::Dgram()
+    : _size(0)
+    , _earlySend(false) {
 }
 
 /*! destructor. Use Dgram::release to free dgrams
  */
-Dgram::~Dgram()
-{
+Dgram::~Dgram() {
 }
-
-

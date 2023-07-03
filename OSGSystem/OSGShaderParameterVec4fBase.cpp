@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILESHADERPARAMETERVEC4FINST
 
 #include <stdlib.h>
@@ -61,16 +60,13 @@
 #include "OSGShaderParameterVec4fBase.h"
 #include "OSGShaderParameterVec4f.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  ShaderParameterVec4fBase::ValueFieldMask = 
+const OSG::BitVector ShaderParameterVec4fBase::ValueFieldMask =
     (TypeTraits<BitVector>::One << ShaderParameterVec4fBase::ValueFieldId);
 
-const OSG::BitVector ShaderParameterVec4fBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector ShaderParameterVec4fBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
@@ -80,187 +76,134 @@ const OSG::BitVector ShaderParameterVec4fBase::MTInfluenceMask =
 
 //! ShaderParameterVec4f description
 
-FieldDescription *ShaderParameterVec4fBase::_desc[] = 
-{
-    new FieldDescription(SFVec4f::getClassType(), 
-                     "value", 
-                     ValueFieldId, ValueFieldMask,
-                     false,
-                     (FieldAccessMethod) &ShaderParameterVec4fBase::getSFValue)
-};
+FieldDescription* ShaderParameterVec4fBase::_desc[] = {
+    new FieldDescription(SFVec4f::getClassType(), "value", ValueFieldId, ValueFieldMask, false,
+        (FieldAccessMethod)&ShaderParameterVec4fBase::getSFValue)};
 
+FieldContainerType ShaderParameterVec4fBase::_type("ShaderParameterVec4f", "ShaderParameter", NULL,
+    (PrototypeCreateF)&ShaderParameterVec4fBase::createEmpty, ShaderParameterVec4f::initMethod,
+    _desc, sizeof(_desc));
 
-FieldContainerType ShaderParameterVec4fBase::_type(
-    "ShaderParameterVec4f",
-    "ShaderParameter",
-    NULL,
-    (PrototypeCreateF) &ShaderParameterVec4fBase::createEmpty,
-    ShaderParameterVec4f::initMethod,
-    _desc,
-    sizeof(_desc));
-
-//OSG_FIELD_CONTAINER_DEF(ShaderParameterVec4fBase, ShaderParameterVec4fPtr)
+// OSG_FIELD_CONTAINER_DEF(ShaderParameterVec4fBase, ShaderParameterVec4fPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &ShaderParameterVec4fBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &ShaderParameterVec4fBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr ShaderParameterVec4fBase::shallowCopy(void) const 
-{ 
-    ShaderParameterVec4fPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const ShaderParameterVec4f *>(this)); 
-
-    return returnValue; 
+FieldContainerType& ShaderParameterVec4fBase::getType(void) {
+  return _type;
 }
 
-UInt32 ShaderParameterVec4fBase::getContainerSize(void) const 
-{ 
-    return sizeof(ShaderParameterVec4f); 
+const FieldContainerType& ShaderParameterVec4fBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr ShaderParameterVec4fBase::shallowCopy(void) const {
+  ShaderParameterVec4fPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const ShaderParameterVec4f*>(this));
+
+  return returnValue;
+}
+
+UInt32 ShaderParameterVec4fBase::getContainerSize(void) const {
+  return sizeof(ShaderParameterVec4f);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ShaderParameterVec4fBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((ShaderParameterVec4fBase *) &other, whichField);
+void ShaderParameterVec4fBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((ShaderParameterVec4fBase*)&other, whichField);
 }
 #else
-void ShaderParameterVec4fBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((ShaderParameterVec4fBase *) &other, whichField, sInfo);
+void ShaderParameterVec4fBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((ShaderParameterVec4fBase*)&other, whichField, sInfo);
 }
-void ShaderParameterVec4fBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void ShaderParameterVec4fBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void ShaderParameterVec4fBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void ShaderParameterVec4fBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-ShaderParameterVec4fBase::ShaderParameterVec4fBase(void) :
-    _sfValue                  (), 
-    Inherited() 
-{
+ShaderParameterVec4fBase::ShaderParameterVec4fBase(void)
+    : _sfValue()
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-ShaderParameterVec4fBase::ShaderParameterVec4fBase(const ShaderParameterVec4fBase &source) :
-    _sfValue                  (source._sfValue                  ), 
-    Inherited                 (source)
-{
+ShaderParameterVec4fBase::ShaderParameterVec4fBase(const ShaderParameterVec4fBase& source)
+    : _sfValue(source._sfValue)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-ShaderParameterVec4fBase::~ShaderParameterVec4fBase(void)
-{
+ShaderParameterVec4fBase::~ShaderParameterVec4fBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 ShaderParameterVec4fBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 ShaderParameterVec4fBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (ValueFieldMask & whichField))
-    {
-        returnValue += _sfValue.getBinSize();
-    }
+  if (FieldBits::NoField != (ValueFieldMask & whichField)) {
+    returnValue += _sfValue.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void ShaderParameterVec4fBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void ShaderParameterVec4fBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ValueFieldMask & whichField))
-    {
-        _sfValue.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (ValueFieldMask & whichField)) {
+    _sfValue.copyToBin(pMem);
+  }
 }
 
-void ShaderParameterVec4fBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void ShaderParameterVec4fBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ValueFieldMask & whichField))
-    {
-        _sfValue.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (ValueFieldMask & whichField)) {
+    _sfValue.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ShaderParameterVec4fBase::executeSyncImpl(      ShaderParameterVec4fBase *pOther,
-                                        const BitVector         &whichField)
-{
+void ShaderParameterVec4fBase::executeSyncImpl(
+    ShaderParameterVec4fBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (ValueFieldMask & whichField))
-        _sfValue.syncWith(pOther->_sfValue);
-
-
+  if (FieldBits::NoField != (ValueFieldMask & whichField))
+    _sfValue.syncWith(pOther->_sfValue);
 }
 #else
-void ShaderParameterVec4fBase::executeSyncImpl(      ShaderParameterVec4fBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void ShaderParameterVec4fBase::executeSyncImpl(
+    ShaderParameterVec4fBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (ValueFieldMask & whichField))
-        _sfValue.syncWith(pOther->_sfValue);
-
-
-
+  if (FieldBits::NoField != (ValueFieldMask & whichField))
+    _sfValue.syncWith(pOther->_sfValue);
 }
 
-void ShaderParameterVec4fBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void ShaderParameterVec4fBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>
@@ -268,7 +211,8 @@ void ShaderParameterVec4fBase::execBeginEditImpl (const BitVector &whichField,
 OSG_BEGIN_NAMESPACE
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_DEV)
-DataType FieldDataTraits<ShaderParameterVec4fPtr>::_type("ShaderParameterVec4fPtr", "ShaderParameterPtr");
+DataType FieldDataTraits<ShaderParameterVec4fPtr>::_type(
+    "ShaderParameterVec4fPtr", "ShaderParameterPtr");
 #endif
 
 OSG_DLLEXPORT_SFIELD_DEF1(ShaderParameterVec4fPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);

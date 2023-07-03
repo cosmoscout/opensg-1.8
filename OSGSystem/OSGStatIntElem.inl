@@ -38,34 +38,28 @@
 
 OSG_BEGIN_NAMESPACE
 
-inline void StatIntElem::set(Int32 value) 
-{ 
-    _value = value; 
+inline void StatIntElem::set(Int32 value) {
+  _value = value;
 }
 
-inline Int32 StatIntElem::get(void) const
-{ 
-    return _value; 
+inline Int32 StatIntElem::get(void) const {
+  return _value;
 }
 
-inline void StatIntElem::add(Int32 v) 
-{ 
-    _value += v; 
-}
-    
-inline void StatIntElem::sub(Int32 v) 
-{ 
-    _value -= v; 
+inline void StatIntElem::add(Int32 v) {
+  _value += v;
 }
 
-inline void StatIntElem::inc(void) 
-{ 
-    _value++; 
+inline void StatIntElem::sub(Int32 v) {
+  _value -= v;
 }
 
-inline void StatIntElem::dec(void) 
-{ 
-    _value--; 
+inline void StatIntElem::inc(void) {
+  _value++;
+}
+
+inline void StatIntElem::dec(void) {
+  _value--;
 }
 
 OSG_END_NAMESPACE

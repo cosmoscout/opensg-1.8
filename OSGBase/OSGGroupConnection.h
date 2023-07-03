@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _GROUPCONNECTION_H_
 #define _GROUPCONNECTION_H_
 #ifdef __sgi
@@ -56,105 +55,103 @@
 
 OSG_BEGIN_NAMESPACE
 
-class OSG_BASE_DLLMAPPING GroupConnection : public Connection
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_BASE_DLLMAPPING GroupConnection : public Connection {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  GroupConnection(int zeroCopyThreshold);
+  virtual ~GroupConnection(void);
 
-             GroupConnection ( int zeroCopyThreshold );
-    virtual ~GroupConnection ( void                  ); 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   type info                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   type info                                  */
-    /*! \{                                                                 */
+  virtual const ConnectionType* getType(void) = 0;
 
-    virtual const ConnectionType *getType (void) = 0;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   connection                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   connection                                 */
-    /*! \{                                                                 */
+  virtual void disconnect(Channel channel) = 0;
 
-    virtual void    disconnect  (      Channel     channel   ) = 0;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   channel handling                           */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   channel handling                           */
-    /*! \{                                                                 */
-    
-    UInt32  getChannelCount  (void           );
-    void    addSelection     (Channel channel);
-    void    subSelection     (Channel channel);
-    void    clearSelection   (void           );
-    void    resetSelection   (void           );
-    UInt32  getSelectionCount(void           );
+  UInt32 getChannelCount(void);
+  void   addSelection(Channel channel);
+  void   subSelection(Channel channel);
+  void   clearSelection(void);
+  void   resetSelection(void);
+  UInt32 getSelectionCount(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   group address                              */
-    /*! \{                                                                 */
-    
-    void        setDestination(const std::string &destination);
-    std::string getDestination(void                          );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   group address                              */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  void        setDestination(const std::string& destination);
+  std::string getDestination(void);
 
-    /*=========================  PROTECTED  ===============================*/
-  protected:
-    /*---------------------------------------------------------------------*/
-    /*! \name                   protected fields                           */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    std::vector<UInt8>        _selection;
-    std::string               _destination;
-    std::set<Channel>         _disconnectedChannel;
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   protected fields                           */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   protected types                            */
-    /*! \{                                                                 */
+  std::vector<UInt8> _selection;
+  std::string        _destination;
+  std::set<Channel>  _disconnectedChannel;
 
-    typedef Int32 ChannelIndex;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   protected types                            */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   internal channel handling                  */
-    /*! \{                                                                 */
+  typedef Int32 ChannelIndex;
 
-    Channel newChannelIndex(ChannelIndex index);
-    void    delChannelIndex(ChannelIndex index);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   internal channel handling                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   channel index mapping                      */
-    /*! \{                                                                 */
+  Channel newChannelIndex(ChannelIndex index);
+  void    delChannelIndex(ChannelIndex index);
 
-    ChannelIndex channelToIndex (Channel      channel ) const;
-    Channel      indexToChannel (ChannelIndex index   ) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   channel index mapping                      */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  ChannelIndex channelToIndex(Channel channel) const;
+  Channel      indexToChannel(ChannelIndex index) const;
 
-    /*==========================  PRIVATE  ================================*/
-  private:
-    /*---------------------------------------------------------------------*/
-    /*! \name                   private fields                             */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    std::vector<ChannelIndex> _channelToIndex;
-    std::vector<Channel>      _indexToChannel;
-    std::list<Channel>        _reuseChannel;
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   private fields                             */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    typedef Connection Inherited;
+  std::vector<ChannelIndex> _channelToIndex;
+  std::vector<Channel>      _indexToChannel;
+  std::list<Channel>        _reuseChannel;
 
-	// prohibit default functions (move to 'public' if you need one)
-    GroupConnection(const GroupConnection &source);
-    GroupConnection& operator =(const GroupConnection &source);
+  /*! \}                                                                 */
+  typedef Connection Inherited;
+
+  // prohibit default functions (move to 'public' if you need one)
+  GroupConnection(const GroupConnection& source);
+  GroupConnection& operator=(const GroupConnection& source);
 };
 
 //---------------------------------------------------------------------------
@@ -163,7 +160,7 @@ class OSG_BASE_DLLMAPPING GroupConnection : public Connection
 
 // class pointer
 
-typedef GroupConnection *GroupConnectionP;
+typedef GroupConnection* GroupConnectionP;
 
 OSG_END_NAMESPACE
 

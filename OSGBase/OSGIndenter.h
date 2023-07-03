@@ -58,79 +58,73 @@ OSG_BEGIN_NAMESPACE
 /*! \ingroup GrpBaseStringConversion
  */
 
-class OSG_BASE_DLLMAPPING Indenter 
-{
-    /*==========================  PUBLIC  =================================*/
+class OSG_BASE_DLLMAPPING Indenter {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  Indenter(UInt32 indent = 0, UInt32 step = 4);
+  Indenter(const Indenter& source);
 
-    Indenter(      UInt32    indent = 0, 
-                   UInt32    step   = 4);
-    Indenter(const Indenter &source    );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  virtual ~Indenter(void);
 
-    virtual ~Indenter(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Get                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Get                                     */
-    /*! \{                                                                 */
+  UInt32 getIndent(void) const;
+  UInt32 getStep(void) const;
 
-    UInt32 getIndent(void) const;
-    UInt32 getStep  (void) const;
+  std::string str(void) const;
 
-    std::string str (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Set                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Set                                     */
-    /*! \{                                                                 */
+  void setIndent(UInt32 indent);
+  void setStep(UInt32 step);
 
-    void setIndent(UInt32 indent);
-    void setStep  (UInt32 step  );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      operators                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      operators                               */
-    /*! \{                                                                 */
+  void operator++(int);
+  void operator++(void);
 
-    void      operator++(      int             );
-    void      operator++(      void            );
+  void operator--(int);
+  void operator--(void);
 
-    void      operator--(      int             ); 
-    void      operator--(      void            );
+  Indenter& operator=(const Indenter& source);
 
-    Indenter &operator =(const Indenter &source);
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Member                                  */
+  /*! \{                                                                 */
 
-  protected:
+  UInt32 _indent;
+  UInt32 _step;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Member                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-    UInt32     _indent;
-    UInt32     _step;
-
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-
-  private:
+ private:
 };
 
-inline 
-std::ostream &operator <<(std::ostream &stream, const Indenter &indent);
-
+inline std::ostream& operator<<(std::ostream& stream, const Indenter& indent);
 
 OSG_END_NAMESPACE
 

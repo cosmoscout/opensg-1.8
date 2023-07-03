@@ -65,8 +65,8 @@ OSG_USING_NAMESPACE
 //    Static Member Init
 //----------------------------------------------------------------------------
 
-TestingExtendActorBase::EnterStoreType *TestingExtendActorBase::_pClassEnterStore = NULL;
-TestingExtendActorBase::LeaveStoreType *TestingExtendActorBase::_pClassLeaveStore = NULL;
+TestingExtendActorBase::EnterStoreType* TestingExtendActorBase::_pClassEnterStore = NULL;
+TestingExtendActorBase::LeaveStoreType* TestingExtendActorBase::_pClassLeaveStore = NULL;
 
 //----------------------------------------------------------------------------
 //    Destructor
@@ -75,8 +75,7 @@ TestingExtendActorBase::LeaveStoreType *TestingExtendActorBase::_pClassLeaveStor
 /*! Destructor.
  */
 
-TestingExtendActorBase::~TestingExtendActorBase(void)
-{
+TestingExtendActorBase::~TestingExtendActorBase(void) {
 }
 
 //----------------------------------------------------------------------------
@@ -87,20 +86,16 @@ TestingExtendActorBase::~TestingExtendActorBase(void)
  *  classes, but the inherited version must be called.
  */
 
-TestingExtendActorBase::ResultE
-TestingExtendActorBase::start(void)
-{
-    return ExtendActorBase::start();
+TestingExtendActorBase::ResultE TestingExtendActorBase::start(void) {
+  return ExtendActorBase::start();
 }
 
 /*! Called after a traversal ends. This method can be overridden in derived
  *  classes, but the inherited version must be called.
  */
 
-TestingExtendActorBase::ResultE
-TestingExtendActorBase::stop(void)
-{
-    return ExtendActorBase::stop();
+TestingExtendActorBase::ResultE TestingExtendActorBase::stop(void) {
+  return ExtendActorBase::stop();
 }
 
 //----------------------------------------------------------------------------
@@ -112,27 +107,20 @@ TestingExtendActorBase::stop(void)
  *  nothing to do for the node.
  */
 
-TestingExtendActorBase::ResultE
-TestingExtendActorBase::enterNode(FunctorArgumentType &funcArg)
-{
-    ResultE      result    = NewActionTypes::Continue;
-    NodeCorePtr  pNodeCore = funcArg.getNode()->getCore();
-    Functor     *pFunc     = NULL;
+TestingExtendActorBase::ResultE TestingExtendActorBase::enterNode(FunctorArgumentType& funcArg) {
+  ResultE     result    = NewActionTypes::Continue;
+  NodeCorePtr pNodeCore = funcArg.getNode()->getCore();
+  Functor*    pFunc     = NULL;
 
-    if((pFunc = _instanceEnterStore.getFunctor(pNodeCore->getType())) != NULL)
-    {
-        result = pFunc->call(pNodeCore, funcArg);
-    }
-    else if((pFunc = _pClassEnterStore->getFunctor(pNodeCore->getType())) != NULL)
-    {
-        result = pFunc->call(pNodeCore, funcArg);
-    }
-    else
-    {
-        result = ExtendActorBase::enterNode(funcArg);
-    }
+  if ((pFunc = _instanceEnterStore.getFunctor(pNodeCore->getType())) != NULL) {
+    result = pFunc->call(pNodeCore, funcArg);
+  } else if ((pFunc = _pClassEnterStore->getFunctor(pNodeCore->getType())) != NULL) {
+    result = pFunc->call(pNodeCore, funcArg);
+  } else {
+    result = ExtendActorBase::enterNode(funcArg);
+  }
 
-    return result;
+  return result;
 }
 
 /*! This method is called when a node is left. This method can be overridden
@@ -140,47 +128,37 @@ TestingExtendActorBase::enterNode(FunctorArgumentType &funcArg)
  *  nothing to do for the node.
  */
 
-TestingExtendActorBase::ResultE
-TestingExtendActorBase::leaveNode(FunctorArgumentType &funcArg)
-{
-    ResultE      result    = NewActionTypes::Continue;
-    NodeCorePtr  pNodeCore = funcArg.getNode()->getCore();
-    Functor     *pFunc     = NULL;
+TestingExtendActorBase::ResultE TestingExtendActorBase::leaveNode(FunctorArgumentType& funcArg) {
+  ResultE     result    = NewActionTypes::Continue;
+  NodeCorePtr pNodeCore = funcArg.getNode()->getCore();
+  Functor*    pFunc     = NULL;
 
-    if((pFunc = _instanceLeaveStore.getFunctor(pNodeCore->getType())) != NULL)
-    {
-        result = pFunc->call(pNodeCore, funcArg);
-    }
-    else if((pFunc = _pClassLeaveStore->getFunctor(pNodeCore->getType())) != NULL)
-    {
-        result = pFunc->call(pNodeCore, funcArg);
-    }
-    else
-    {
-        result = ExtendActorBase::leaveNode(funcArg);
-    }
+  if ((pFunc = _instanceLeaveStore.getFunctor(pNodeCore->getType())) != NULL) {
+    result = pFunc->call(pNodeCore, funcArg);
+  } else if ((pFunc = _pClassLeaveStore->getFunctor(pNodeCore->getType())) != NULL) {
+    result = pFunc->call(pNodeCore, funcArg);
+  } else {
+    result = ExtendActorBase::leaveNode(funcArg);
+  }
 
-    return result;
+  return result;
 }
 
 //----------------------------------------------------------------------------
 //    Enter Registration
 //----------------------------------------------------------------------------
 
-
 /*! Register a functor that is used by all instances of this class, when
  *  entering a node with a core of the specified type.
  *  For every type of NodeCore a different functor can be registerd.
  */
 
-void
-TestingExtendActorBase::regClassEnter(const Functor            &refFunc,
-                                 const FieldContainerType &refType )
-{
-    if(_pClassEnterStore == NULL)
-        _pClassEnterStore = new EnterStoreType();
+void TestingExtendActorBase::regClassEnter(
+    const Functor& refFunc, const FieldContainerType& refType) {
+  if (_pClassEnterStore == NULL)
+    _pClassEnterStore = new EnterStoreType();
 
-    _pClassEnterStore->regFunctor(refFunc, refType);
+  _pClassEnterStore->regFunctor(refFunc, refType);
 }
 
 /*! Register a functor that is used by the instance of this class, when
@@ -189,24 +167,19 @@ TestingExtendActorBase::regClassEnter(const Functor            &refFunc,
  *  Instance functors take priority over class functors.
  */
 
-void
-TestingExtendActorBase::regEnter(const Functor            &refFunc,
-                            const FieldContainerType &refType )
-{
-    _instanceEnterStore.regFunctor(refFunc, refType);
+void TestingExtendActorBase::regEnter(const Functor& refFunc, const FieldContainerType& refType) {
+  _instanceEnterStore.regFunctor(refFunc, refType);
 }
 
 /*! Register a functor that is used by all instances of this class, when
  *  entering a node with a core for which no specific functor was registerd.
  */
 
-void
-TestingExtendActorBase::regDefaultClassEnter(const Functor &refFunc)
-{
-    if(_pClassEnterStore == NULL)
-        _pClassEnterStore = new EnterStoreType();
+void TestingExtendActorBase::regDefaultClassEnter(const Functor& refFunc) {
+  if (_pClassEnterStore == NULL)
+    _pClassEnterStore = new EnterStoreType();
 
-    _pClassEnterStore->regDefaultFunctor(refFunc);
+  _pClassEnterStore->regDefaultFunctor(refFunc);
 }
 
 /*! Register a functor that is used by the instance of this class, when
@@ -214,52 +187,42 @@ TestingExtendActorBase::regDefaultClassEnter(const Functor &refFunc)
  *  Instance functors take priority over class functors.
  */
 
-void
-TestingExtendActorBase::regDefaultEnter(const Functor &refFunc)
-{
-    _instanceEnterStore.regDefaultFunctor(refFunc);
+void TestingExtendActorBase::regDefaultEnter(const Functor& refFunc) {
+  _instanceEnterStore.regDefaultFunctor(refFunc);
 }
 
 /*! Remove a functor registered with regClassEnter.
  */
 
-void
-TestingExtendActorBase::unregClassEnter(const FieldContainerType &refType)
-{
-    if(_pClassEnterStore == NULL)
-        _pClassEnterStore = new EnterStoreType();
+void TestingExtendActorBase::unregClassEnter(const FieldContainerType& refType) {
+  if (_pClassEnterStore == NULL)
+    _pClassEnterStore = new EnterStoreType();
 
-    _pClassEnterStore->unregFunctor(refType);
+  _pClassEnterStore->unregFunctor(refType);
 }
 
 /*! Remove a functor registered with regEnter.
  */
 
-void
-TestingExtendActorBase::unregEnter(const FieldContainerType &refType)
-{
-    _instanceEnterStore.unregFunctor(refType);
+void TestingExtendActorBase::unregEnter(const FieldContainerType& refType) {
+  _instanceEnterStore.unregFunctor(refType);
 }
 
 /*! Remove the functor registered with regDefaultClassEnter.
  */
 
-void
-TestingExtendActorBase::unregDefaultClassEnter(void)
-{
-    if(_pClassEnterStore == NULL)
-        _pClassEnterStore = new EnterStoreType();
+void TestingExtendActorBase::unregDefaultClassEnter(void) {
+  if (_pClassEnterStore == NULL)
+    _pClassEnterStore = new EnterStoreType();
 
-    _pClassEnterStore->unregDefaultFunctor();
+  _pClassEnterStore->unregDefaultFunctor();
 }
 
 /*! Remove the functor registered with regDefaultEnter.
  */
 
-void
-TestingExtendActorBase::unregDefaultEnter(void)
-{
-    _instanceEnterStore.unregDefaultFunctor();
+void TestingExtendActorBase::unregDefaultEnter(void) {
+  _instanceEnterStore.unregDefaultFunctor();
 }
 
 //----------------------------------------------------------------------------
@@ -271,14 +234,12 @@ TestingExtendActorBase::unregDefaultEnter(void)
  *  For every type of NodeCore a different functor can be registerd.
  */
 
-void
-TestingExtendActorBase::regClassLeave(const Functor            &refFunc,
-                                 const FieldContainerType &refType )
-{
-    if(_pClassLeaveStore == NULL)
-        _pClassLeaveStore = new LeaveStoreType();
+void TestingExtendActorBase::regClassLeave(
+    const Functor& refFunc, const FieldContainerType& refType) {
+  if (_pClassLeaveStore == NULL)
+    _pClassLeaveStore = new LeaveStoreType();
 
-    _pClassLeaveStore->regFunctor(refFunc, refType);
+  _pClassLeaveStore->regFunctor(refFunc, refType);
 }
 
 /*! Register a functor that is used by the instance of this class, when
@@ -287,24 +248,19 @@ TestingExtendActorBase::regClassLeave(const Functor            &refFunc,
  *  Instance functors take priority over class functors.
  */
 
-void
-TestingExtendActorBase::regLeave(const Functor            &refFunc,
-                            const FieldContainerType &refType )
-{
-    _instanceLeaveStore.regFunctor(refFunc, refType);
+void TestingExtendActorBase::regLeave(const Functor& refFunc, const FieldContainerType& refType) {
+  _instanceLeaveStore.regFunctor(refFunc, refType);
 }
 
 /*! Register a functor that is used by all instances of this class, when
  *  leaveing a node with a core for which no specific functor was registerd.
  */
 
-void
-TestingExtendActorBase::regDefaultClassLeave(const Functor &refFunc)
-{
-    if(_pClassLeaveStore == NULL)
-        _pClassLeaveStore = new LeaveStoreType();
+void TestingExtendActorBase::regDefaultClassLeave(const Functor& refFunc) {
+  if (_pClassLeaveStore == NULL)
+    _pClassLeaveStore = new LeaveStoreType();
 
-    _pClassLeaveStore->regDefaultFunctor(refFunc);
+  _pClassLeaveStore->regDefaultFunctor(refFunc);
 }
 
 /*! Register a functor that is used by the instance of this class, when
@@ -312,52 +268,42 @@ TestingExtendActorBase::regDefaultClassLeave(const Functor &refFunc)
  *  Instance functors take priority over class functors.
  */
 
-void
-TestingExtendActorBase::regDefaultLeave(const Functor &refFunc)
-{
-    _instanceLeaveStore.regDefaultFunctor(refFunc);
+void TestingExtendActorBase::regDefaultLeave(const Functor& refFunc) {
+  _instanceLeaveStore.regDefaultFunctor(refFunc);
 }
 
 /*! Remove a functor registered with regClassLeave.
  */
 
-void
-TestingExtendActorBase::unregClassLeave(const FieldContainerType &refType)
-{
-    if(_pClassLeaveStore == NULL)
-        _pClassLeaveStore = new LeaveStoreType();
+void TestingExtendActorBase::unregClassLeave(const FieldContainerType& refType) {
+  if (_pClassLeaveStore == NULL)
+    _pClassLeaveStore = new LeaveStoreType();
 
-    _pClassLeaveStore->unregFunctor(refType);
+  _pClassLeaveStore->unregFunctor(refType);
 }
 
 /*! Remove a functor registered with regLeave.
  */
 
-void
-TestingExtendActorBase::unregLeave(const FieldContainerType &refType)
-{
-    _instanceLeaveStore.unregFunctor(refType);
+void TestingExtendActorBase::unregLeave(const FieldContainerType& refType) {
+  _instanceLeaveStore.unregFunctor(refType);
 }
 
 /*! Remove the functor registered with regDefaultClassLeave.
  */
 
-void
-TestingExtendActorBase::unregDefaultClassLeave(void)
-{
-    if(_pClassLeaveStore == NULL)
-        _pClassLeaveStore = new LeaveStoreType();
+void TestingExtendActorBase::unregDefaultClassLeave(void) {
+  if (_pClassLeaveStore == NULL)
+    _pClassLeaveStore = new LeaveStoreType();
 
-    _pClassLeaveStore->unregDefaultFunctor();
+  _pClassLeaveStore->unregDefaultFunctor();
 }
 
 /*! Remove the functor registered with regDefaultLeave.
  */
 
-void
-TestingExtendActorBase::unregDefaultLeave(void)
-{
-    _instanceLeaveStore.unregDefaultFunctor();
+void TestingExtendActorBase::unregDefaultLeave(void) {
+  _instanceLeaveStore.unregDefaultFunctor();
 }
 
 //----------------------------------------------------------------------------
@@ -366,77 +312,60 @@ TestingExtendActorBase::unregDefaultLeave(void)
 
 #ifdef OSG_NEWACTION_STATESLOTINTERFACE
 
-UInt32
-TestingExtendActorBase::createStateClone(void)
-{
-    UInt32     stateSlot = getSlotMap   (               ).size();
-    StateType *pClone    = new StateType(*getCastState());
+UInt32 TestingExtendActorBase::createStateClone(void) {
+  UInt32     stateSlot = getSlotMap().size();
+  StateType* pClone    = new StateType(*getCastState());
 
-    getSlotMap().push_back(pClone);
+  getSlotMap().push_back(pClone);
 
-    setState(pClone);
+  setState(pClone);
 
-    return stateSlot;
+  return stateSlot;
 }
 
 #else /* OSG_NEWACTION_STATESLOTINTERFACE */
 
-TestingExtendActorBase::ActorBaseState *
-TestingExtendActorBase::createStateClone(void)
-{
-    StateType *pClone = new StateType(*getCastState());
+TestingExtendActorBase::ActorBaseState* TestingExtendActorBase::createStateClone(void) {
+  StateType* pClone = new StateType(*getCastState());
 
-    setState(pClone);
+  setState(pClone);
 
-    return pClone;
+  return pClone;
 }
 
 #endif /* OSG_NEWACTION_STATESLOTINTERFACE */
 
 #ifdef OSG_NEWACTION_STATESLOTINTERFACE
 
-void
-TestingExtendActorBase::destroyStateClone(UInt32 slotId)
-{
-    delete getSlotMap()[slotId];
+void TestingExtendActorBase::destroyStateClone(UInt32 slotId) {
+  delete getSlotMap()[slotId];
 }
 
 #else /* OSG_NEWACTION_STATESLOTINTERFACE */
 
-void
-TestingExtendActorBase::destroyStateClone(ActorBaseState *pState)
-{
-    delete pState;
+void TestingExtendActorBase::destroyStateClone(ActorBaseState* pState) {
+  delete pState;
 }
 
 #endif /* OSG_NEWACTION_STATESLOTINTERFACE */
 
-void
-TestingExtendActorBase::createInitialState(void)
-{
-    if(getState() != NULL)
-    {
-        SWARNING << "TestingExtendActorBase::createInitialState: State is not NULL."
-                 << endLog;
-    }
+void TestingExtendActorBase::createInitialState(void) {
+  if (getState() != NULL) {
+    SWARNING << "TestingExtendActorBase::createInitialState: State is not NULL." << endLog;
+  }
 
-    setState(new StateType());
+  setState(new StateType());
 }
 
-void
-TestingExtendActorBase::deleteInitialState(void)
-{
-    if(getState() == NULL)
-    {
-        SWARNING << "TestingExtendActorBase::deleteInitalState: State is NULL."
-                 << endLog;
-    }
+void TestingExtendActorBase::deleteInitialState(void) {
+  if (getState() == NULL) {
+    SWARNING << "TestingExtendActorBase::deleteInitalState: State is NULL." << endLog;
+  }
 
-    delete getState();
+  delete getState();
 
-    setState(NULL);
+  setState(NULL);
 }
-
 
 //----------------------------------------------------------------------------
 //    State Class
@@ -445,8 +374,7 @@ TestingExtendActorBase::deleteInitialState(void)
 /*! Destructor.
  */
 
-TestingExtendActorBase::TestingExtendActorBaseState::~TestingExtendActorBaseState(void)
-{
+TestingExtendActorBase::TestingExtendActorBaseState::~TestingExtendActorBaseState(void) {
 }
 
 //----------------------------------------------------------------------------
@@ -457,18 +385,17 @@ TestingExtendActorBase::TestingExtendActorBaseState::~TestingExtendActorBaseStat
  */
 
 TestingExtendActorBase::TestingExtendActorBase(void)
-    : Inherited(),
-      _instanceEnterStore(),
-      _instanceLeaveStore()
-{
-    if(_pClassEnterStore == NULL)
-        _pClassEnterStore = new EnterStoreType();
+    : Inherited()
+    , _instanceEnterStore()
+    , _instanceLeaveStore() {
+  if (_pClassEnterStore == NULL)
+    _pClassEnterStore = new EnterStoreType();
 
-    if(_pClassLeaveStore == NULL)
-        _pClassLeaveStore = new LeaveStoreType();
+  if (_pClassLeaveStore == NULL)
+    _pClassLeaveStore = new LeaveStoreType();
 
-    setEnterNodeFlag(true);
-    setLeaveNodeFlag(true);
+  setEnterNodeFlag(true);
+  setLeaveNodeFlag(true);
 }
 
 //----------------------------------------------------------------------------
@@ -479,19 +406,14 @@ TestingExtendActorBase::TestingExtendActorBase(void)
  *  be overridden in derived classes, but the inherited version must be called.
  */
 
-void
-TestingExtendActorBase::addEvent(NewActionBase *pAction, UInt32 uiActorId)
-{
-    Inherited::addEvent(pAction, uiActorId);
+void TestingExtendActorBase::addEvent(NewActionBase* pAction, UInt32 uiActorId) {
+  Inherited::addEvent(pAction, uiActorId);
 }
 
 /*! Called when the actor is detached from an action. This method can
  *  be overridden in derived classes, but the inherited version must be called.
  */
 
-void
-TestingExtendActorBase::subEvent(NewActionBase *pAction, UInt32 uiActorId)
-{
-    Inherited::subEvent(pAction, uiActorId);
+void TestingExtendActorBase::subEvent(NewActionBase* pAction, UInt32 uiActorId) {
+  Inherited::subEvent(pAction, uiActorId);
 }
-

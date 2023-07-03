@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILELINECHUNKINST
 
 #include <stdlib.h>
@@ -61,26 +60,24 @@
 #include "OSGLineChunkBase.h"
 #include "OSGLineChunk.h"
 
-#include <OSGGL.h>                        // Smooth default header
+#include <OSGGL.h> // Smooth default header
 
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  LineChunkBase::WidthFieldMask = 
+const OSG::BitVector LineChunkBase::WidthFieldMask =
     (TypeTraits<BitVector>::One << LineChunkBase::WidthFieldId);
 
-const OSG::BitVector  LineChunkBase::StippleRepeatFieldMask = 
+const OSG::BitVector LineChunkBase::StippleRepeatFieldMask =
     (TypeTraits<BitVector>::One << LineChunkBase::StippleRepeatFieldId);
 
-const OSG::BitVector  LineChunkBase::StipplePatternFieldMask = 
+const OSG::BitVector LineChunkBase::StipplePatternFieldMask =
     (TypeTraits<BitVector>::One << LineChunkBase::StipplePatternFieldId);
 
-const OSG::BitVector  LineChunkBase::SmoothFieldMask = 
+const OSG::BitVector LineChunkBase::SmoothFieldMask =
     (TypeTraits<BitVector>::One << LineChunkBase::SmoothFieldId);
 
-const OSG::BitVector LineChunkBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector LineChunkBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
@@ -91,7 +88,8 @@ const OSG::BitVector LineChunkBase::MTInfluenceMask =
     Repetition factor for sitppling.
 */
 /*! \var UInt16          LineChunkBase::_sfStipplePattern
-    Defines the stipple pattern. 1 bits are drawn, 0 bits are ignored,          starting with the most significant bit.
+    Defines the stipple pattern. 1 bits are drawn, 0 bits are ignored,          starting with the
+   most significant bit.
 */
 /*! \var bool            LineChunkBase::_sfSmooth
     Defines if line antialiasing is used.
@@ -99,271 +97,198 @@ const OSG::BitVector LineChunkBase::MTInfluenceMask =
 
 //! LineChunk description
 
-FieldDescription *LineChunkBase::_desc[] = 
-{
-    new FieldDescription(SFReal32::getClassType(), 
-                     "width", 
-                     WidthFieldId, WidthFieldMask,
-                     false,
-                     (FieldAccessMethod) &LineChunkBase::getSFWidth),
-    new FieldDescription(SFInt32::getClassType(), 
-                     "stippleRepeat", 
-                     StippleRepeatFieldId, StippleRepeatFieldMask,
-                     false,
-                     (FieldAccessMethod) &LineChunkBase::getSFStippleRepeat),
-    new FieldDescription(SFUInt16::getClassType(), 
-                     "stipplePattern", 
-                     StipplePatternFieldId, StipplePatternFieldMask,
-                     false,
-                     (FieldAccessMethod) &LineChunkBase::getSFStipplePattern),
-    new FieldDescription(SFBool::getClassType(), 
-                     "smooth", 
-                     SmoothFieldId, SmoothFieldMask,
-                     false,
-                     (FieldAccessMethod) &LineChunkBase::getSFSmooth)
-};
+FieldDescription* LineChunkBase::_desc[] = {
+    new FieldDescription(SFReal32::getClassType(), "width", WidthFieldId, WidthFieldMask, false,
+        (FieldAccessMethod)&LineChunkBase::getSFWidth),
+    new FieldDescription(SFInt32::getClassType(), "stippleRepeat", StippleRepeatFieldId,
+        StippleRepeatFieldMask, false, (FieldAccessMethod)&LineChunkBase::getSFStippleRepeat),
+    new FieldDescription(SFUInt16::getClassType(), "stipplePattern", StipplePatternFieldId,
+        StipplePatternFieldMask, false, (FieldAccessMethod)&LineChunkBase::getSFStipplePattern),
+    new FieldDescription(SFBool::getClassType(), "smooth", SmoothFieldId, SmoothFieldMask, false,
+        (FieldAccessMethod)&LineChunkBase::getSFSmooth)};
 
+FieldContainerType LineChunkBase::_type("LineChunk", "StateChunk", NULL,
+    (PrototypeCreateF)&LineChunkBase::createEmpty, LineChunk::initMethod, _desc, sizeof(_desc));
 
-FieldContainerType LineChunkBase::_type(
-    "LineChunk",
-    "StateChunk",
-    NULL,
-    (PrototypeCreateF) &LineChunkBase::createEmpty,
-    LineChunk::initMethod,
-    _desc,
-    sizeof(_desc));
-
-//OSG_FIELD_CONTAINER_DEF(LineChunkBase, LineChunkPtr)
+// OSG_FIELD_CONTAINER_DEF(LineChunkBase, LineChunkPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &LineChunkBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &LineChunkBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr LineChunkBase::shallowCopy(void) const 
-{ 
-    LineChunkPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const LineChunk *>(this)); 
-
-    return returnValue; 
+FieldContainerType& LineChunkBase::getType(void) {
+  return _type;
 }
 
-UInt32 LineChunkBase::getContainerSize(void) const 
-{ 
-    return sizeof(LineChunk); 
+const FieldContainerType& LineChunkBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr LineChunkBase::shallowCopy(void) const {
+  LineChunkPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const LineChunk*>(this));
+
+  return returnValue;
+}
+
+UInt32 LineChunkBase::getContainerSize(void) const {
+  return sizeof(LineChunk);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void LineChunkBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((LineChunkBase *) &other, whichField);
+void LineChunkBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((LineChunkBase*)&other, whichField);
 }
 #else
-void LineChunkBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((LineChunkBase *) &other, whichField, sInfo);
+void LineChunkBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((LineChunkBase*)&other, whichField, sInfo);
 }
-void LineChunkBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void LineChunkBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void LineChunkBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void LineChunkBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-LineChunkBase::LineChunkBase(void) :
-    _sfWidth                  (Real32(1)), 
-    _sfStippleRepeat          (Int32(1)), 
-    _sfStipplePattern         (UInt16(0xffff)), 
-    _sfSmooth                 (bool(GL_FALSE)), 
-    Inherited() 
-{
+LineChunkBase::LineChunkBase(void)
+    : _sfWidth(Real32(1))
+    , _sfStippleRepeat(Int32(1))
+    , _sfStipplePattern(UInt16(0xffff))
+    , _sfSmooth(bool(GL_FALSE))
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-LineChunkBase::LineChunkBase(const LineChunkBase &source) :
-    _sfWidth                  (source._sfWidth                  ), 
-    _sfStippleRepeat          (source._sfStippleRepeat          ), 
-    _sfStipplePattern         (source._sfStipplePattern         ), 
-    _sfSmooth                 (source._sfSmooth                 ), 
-    Inherited                 (source)
-{
+LineChunkBase::LineChunkBase(const LineChunkBase& source)
+    : _sfWidth(source._sfWidth)
+    , _sfStippleRepeat(source._sfStippleRepeat)
+    , _sfStipplePattern(source._sfStipplePattern)
+    , _sfSmooth(source._sfSmooth)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-LineChunkBase::~LineChunkBase(void)
-{
+LineChunkBase::~LineChunkBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 LineChunkBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 LineChunkBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (WidthFieldMask & whichField))
-    {
-        returnValue += _sfWidth.getBinSize();
-    }
+  if (FieldBits::NoField != (WidthFieldMask & whichField)) {
+    returnValue += _sfWidth.getBinSize();
+  }
 
-    if(FieldBits::NoField != (StippleRepeatFieldMask & whichField))
-    {
-        returnValue += _sfStippleRepeat.getBinSize();
-    }
+  if (FieldBits::NoField != (StippleRepeatFieldMask & whichField)) {
+    returnValue += _sfStippleRepeat.getBinSize();
+  }
 
-    if(FieldBits::NoField != (StipplePatternFieldMask & whichField))
-    {
-        returnValue += _sfStipplePattern.getBinSize();
-    }
+  if (FieldBits::NoField != (StipplePatternFieldMask & whichField)) {
+    returnValue += _sfStipplePattern.getBinSize();
+  }
 
-    if(FieldBits::NoField != (SmoothFieldMask & whichField))
-    {
-        returnValue += _sfSmooth.getBinSize();
-    }
+  if (FieldBits::NoField != (SmoothFieldMask & whichField)) {
+    returnValue += _sfSmooth.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void LineChunkBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void LineChunkBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (WidthFieldMask & whichField))
-    {
-        _sfWidth.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (WidthFieldMask & whichField)) {
+    _sfWidth.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (StippleRepeatFieldMask & whichField))
-    {
-        _sfStippleRepeat.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (StippleRepeatFieldMask & whichField)) {
+    _sfStippleRepeat.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (StipplePatternFieldMask & whichField))
-    {
-        _sfStipplePattern.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (StipplePatternFieldMask & whichField)) {
+    _sfStipplePattern.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (SmoothFieldMask & whichField))
-    {
-        _sfSmooth.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (SmoothFieldMask & whichField)) {
+    _sfSmooth.copyToBin(pMem);
+  }
 }
 
-void LineChunkBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void LineChunkBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (WidthFieldMask & whichField))
-    {
-        _sfWidth.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (WidthFieldMask & whichField)) {
+    _sfWidth.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (StippleRepeatFieldMask & whichField))
-    {
-        _sfStippleRepeat.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (StippleRepeatFieldMask & whichField)) {
+    _sfStippleRepeat.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (StipplePatternFieldMask & whichField))
-    {
-        _sfStipplePattern.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (StipplePatternFieldMask & whichField)) {
+    _sfStipplePattern.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (SmoothFieldMask & whichField))
-    {
-        _sfSmooth.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (SmoothFieldMask & whichField)) {
+    _sfSmooth.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void LineChunkBase::executeSyncImpl(      LineChunkBase *pOther,
-                                        const BitVector         &whichField)
-{
+void LineChunkBase::executeSyncImpl(LineChunkBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (WidthFieldMask & whichField))
-        _sfWidth.syncWith(pOther->_sfWidth);
+  if (FieldBits::NoField != (WidthFieldMask & whichField))
+    _sfWidth.syncWith(pOther->_sfWidth);
 
-    if(FieldBits::NoField != (StippleRepeatFieldMask & whichField))
-        _sfStippleRepeat.syncWith(pOther->_sfStippleRepeat);
+  if (FieldBits::NoField != (StippleRepeatFieldMask & whichField))
+    _sfStippleRepeat.syncWith(pOther->_sfStippleRepeat);
 
-    if(FieldBits::NoField != (StipplePatternFieldMask & whichField))
-        _sfStipplePattern.syncWith(pOther->_sfStipplePattern);
+  if (FieldBits::NoField != (StipplePatternFieldMask & whichField))
+    _sfStipplePattern.syncWith(pOther->_sfStipplePattern);
 
-    if(FieldBits::NoField != (SmoothFieldMask & whichField))
-        _sfSmooth.syncWith(pOther->_sfSmooth);
-
-
+  if (FieldBits::NoField != (SmoothFieldMask & whichField))
+    _sfSmooth.syncWith(pOther->_sfSmooth);
 }
 #else
-void LineChunkBase::executeSyncImpl(      LineChunkBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void LineChunkBase::executeSyncImpl(
+    LineChunkBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (WidthFieldMask & whichField))
-        _sfWidth.syncWith(pOther->_sfWidth);
+  if (FieldBits::NoField != (WidthFieldMask & whichField))
+    _sfWidth.syncWith(pOther->_sfWidth);
 
-    if(FieldBits::NoField != (StippleRepeatFieldMask & whichField))
-        _sfStippleRepeat.syncWith(pOther->_sfStippleRepeat);
+  if (FieldBits::NoField != (StippleRepeatFieldMask & whichField))
+    _sfStippleRepeat.syncWith(pOther->_sfStippleRepeat);
 
-    if(FieldBits::NoField != (StipplePatternFieldMask & whichField))
-        _sfStipplePattern.syncWith(pOther->_sfStipplePattern);
+  if (FieldBits::NoField != (StipplePatternFieldMask & whichField))
+    _sfStipplePattern.syncWith(pOther->_sfStipplePattern);
 
-    if(FieldBits::NoField != (SmoothFieldMask & whichField))
-        _sfSmooth.syncWith(pOther->_sfSmooth);
-
-
-
+  if (FieldBits::NoField != (SmoothFieldMask & whichField))
+    _sfSmooth.syncWith(pOther->_sfSmooth);
 }
 
-void LineChunkBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void LineChunkBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>

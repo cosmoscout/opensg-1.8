@@ -44,7 +44,6 @@
 #include <OSGSystemDef.h>
 #include <OSGConfig.h>
 
-
 #include <iostream>
 #include <fstream>
 #include <iomanip>
@@ -54,60 +53,58 @@
 OSG_BEGIN_NAMESPACE
 
 template <class T1>
-class  OSG_SYSTEMLIB_DLLMAPPING DirectedEdge {
-public:
-  bool direction; // true if directed 
-  int from; // starting node
-  int to;   // ending node
+class OSG_SYSTEMLIB_DLLMAPPING DirectedEdge {
+ public:
+  bool direction; // true if directed
+  int  from;      // starting node
+  int  to;        // ending node
   bool valid;
-  T1 edgeinfo;
-  
-typedef std::vector < DirectedEdge<T1> > edgevector;
-  
-};
+  T1   edgeinfo;
 
+  typedef std::vector<DirectedEdge<T1>> edgevector;
+};
 
 template <class T0>
 class OSG_SYSTEMLIB_DLLMAPPING DirectedNode {
-public:
-  DCTPivector edges;  // vector (pointers) of edges going to/from this node
-  T0 nodeinfo;
-  
-typedef std::vector < DirectedNode<T0> > nodevector;   
+ public:
+  DCTPivector edges; // vector (pointers) of edges going to/from this node
+  T0          nodeinfo;
+
+  typedef std::vector<DirectedNode<T0>> nodevector;
 };
 
 template <class T0, class T1>
 class OSG_SYSTEMLIB_DLLMAPPING DirectedGraph {
 
-public:
+ public:
   DirectedGraph();
   // copy constructor
-  DirectedGraph( const DirectedGraph& d ) {
+  DirectedGraph(const DirectedGraph& d) {
     nodes = d.nodes;
-    edges = d.edges;  
+    edges = d.edges;
   }
-  ~DirectedGraph() {}
+  ~DirectedGraph() {
+  }
 
-  int AddNode( T0 &n ); // add a new node 
-  int AddEdge( T1 &t, int from, int to, bool direction); // add a new (possibly directed) edge  
-  int DeleteEdge( int edgeidx ); // delete edge specified by the index
-  DCTPivector & getEdges( int n ); // get all edges (indexes) from a node
-  DirectedNode<T0>& getNode( int nodeindex, int &error ); // get one node
-  DirectedEdge<T1>& getEdge( int edgeindex, int &error ); // get one edge
-  bool getEdgeDirection( int edgeindex, int &error ); // get one edge's direction
-  int setEdgeDirection( int edgeindex, int to ); // set the direction of an edge
-  int changeEdgeDirection( int edgeindex ); // change (invert) the direction of an edge
-  int FindNode( T0 &nodeinfo );
-  int FindEdge( int from, int to );
+  int AddNode(T0& n);                                   // add a new node
+  int AddEdge(T1& t, int from, int to, bool direction); // add a new (possibly directed) edge
+  int DeleteEdge(int edgeidx);                          // delete edge specified by the index
+  DCTPivector&      getEdges(int n);                    // get all edges (indexes) from a node
+  DirectedNode<T0>& getNode(int nodeindex, int& error); // get one node
+  DirectedEdge<T1>& getEdge(int edgeindex, int& error); // get one edge
+  bool              getEdgeDirection(int edgeindex, int& error); // get one edge's direction
+  int               setEdgeDirection(int edgeindex, int to);     // set the direction of an edge
+  int               changeEdgeDirection(int edgeindex); // change (invert) the direction of an edge
+  int               FindNode(T0& nodeinfo);
+  int               FindEdge(int from, int to);
 
-  bool isInvalid( void );
+  bool isInvalid(void);
 
-
-//private:
+  // private:
 
   typename DirectedNode<T0>::nodevector nodes;
-  typename DirectedEdge<T1>::edgevector edges; 
-  bool invalid;
+  typename DirectedEdge<T1>::edgevector edges;
+  bool                                  invalid;
 };
 
 OSG_END_NAMESPACE
@@ -115,4 +112,3 @@ OSG_END_NAMESPACE
 #include "OSGDirectedGraph.inl"
 
 #endif // DirectedGraph.h
-

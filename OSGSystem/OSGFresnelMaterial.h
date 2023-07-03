@@ -57,92 +57,85 @@ OSG_BEGIN_NAMESPACE
            PageKernelFresnelMaterial for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING FresnelMaterial : public FresnelMaterialBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING FresnelMaterial : public FresnelMaterialBase {
+ private:
+  typedef FresnelMaterialBase Inherited;
 
-    typedef FresnelMaterialBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField,
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  virtual StatePtr makeState(void);
+  virtual void     rebuildState(void);
+  virtual bool     isTransparent(void) const;
 
-    virtual void dump(      UInt32     uiIndent = 0,
-                      const BitVector  bvFlags  = 0) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                Texture specific                              */
+  /*! \{                                                                 */
 
-    virtual StatePtr    makeState       (void);
-    virtual void        rebuildState    (void);
-    virtual bool        isTransparent   (void) const;
+  void setImage(ImagePtr& pImage);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                Texture specific                              */
-    /*! \{                                                                 */
-    
-    void setImage           (ImagePtr &pImage);
-      
-      
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in FresnelMaterialBase.
 
-    // Variables should all be in FresnelMaterialBase.
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  FresnelMaterial(void);
+  FresnelMaterial(const FresnelMaterial& source);
 
-    FresnelMaterial(void);
-    FresnelMaterial(const FresnelMaterial &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  virtual ~FresnelMaterial(void);
 
-    virtual ~FresnelMaterial(void);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  void prepareLocalChunks(void);
+  void updateFresnel(void);
 
-    /*==========================  PRIVATE  ================================*/
-  private:
+  friend class FieldContainer;
+  friend class FresnelMaterialBase;
 
-    void prepareLocalChunks(void);
-    void updateFresnel(void);
+  static void initMethod(void);
 
-    friend class FieldContainer;
-    friend class FresnelMaterialBase;
+  MaterialChunkPtr _materialChunk;
+  TextureChunkPtr  _textureChunk;
+  TexGenChunkPtr   _texGenChunk;
+  BlendChunkPtr    _blendChunk;
+  ImagePtr         _img;
 
-    static void initMethod(void);
-
-    MaterialChunkPtr       _materialChunk;
-    TextureChunkPtr        _textureChunk;
-    TexGenChunkPtr         _texGenChunk;
-    BlendChunkPtr          _blendChunk;
-    ImagePtr               _img;
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const FresnelMaterial &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const FresnelMaterial& source);
 };
 
-typedef FresnelMaterial *FresnelMaterialP;
+typedef FresnelMaterial* FresnelMaterialP;
 
 OSG_END_NAMESPACE
 
 #include <OSGFresnelMaterialBase.inl>
 #include <OSGFresnelMaterial.inl>
 
-#define OSGFRESNELMATERIAL_HEADER_CVSID "@(#)$Id: OSGFresnelMaterial.h,v 1.2 2004/02/05 21:49:58 a-m-z Exp $"
+#define OSGFRESNELMATERIAL_HEADER_CVSID                                                            \
+  "@(#)$Id: OSGFresnelMaterial.h,v 1.2 2004/02/05 21:49:58 a-m-z Exp $"
 
 #endif /* _OSGFRESNELMATERIAL_H_ */

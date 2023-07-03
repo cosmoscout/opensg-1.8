@@ -49,124 +49,116 @@
 
 OSG_BEGIN_NAMESPACE
 
-class OSG_SYSTEMLIB_DLLMAPPING RenderNode 
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+class OSG_SYSTEMLIB_DLLMAPPING RenderNode {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    RenderNode(           Real32  invisibleFaceCost = 1.0 /  15000000,
-                          Real32  visibleFaceCost   = 1.0 /  10000000,
-                          Real32  drawPixelCost     = 1.0 / 120000000,
-                          Real32  readPixelCost     = 1.0 /  20000000,
-                          Real32  writePixelCost    = 1.0 /  20000000,
-               const std::string &vendor            = "Unknown",
-               const std::string &renderer          = "Unknown");
-    RenderNode(const RenderNode &source);
+  RenderNode(Real32 invisibleFaceCost = 1.0 / 15000000, Real32 visibleFaceCost = 1.0 / 10000000,
+      Real32 drawPixelCost = 1.0 / 120000000, Real32 readPixelCost = 1.0 / 20000000,
+      Real32 writePixelCost = 1.0 / 20000000, const std::string& vendor = "Unknown",
+      const std::string& renderer = "Unknown");
+  RenderNode(const RenderNode& source);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    virtual ~RenderNode(void);
+  virtual ~RenderNode(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Get                                     */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Get                                     */
+  /*! \{                                                                 */
 
-    Real32      getVisibleFaceCost  (void) const;
-    Real32      getInvisibleFaceCost(void) const;
-    Real32      getDrawPixelCost    (void) const;
-    Real32      getReadPixelCost    (void) const;
-    Real32      getWritePixelCost   (void) const;
-    std::string getVendor           (void) const;
-    std::string getRenderer         (void) const;
+  Real32      getVisibleFaceCost(void) const;
+  Real32      getInvisibleFaceCost(void) const;
+  Real32      getDrawPixelCost(void) const;
+  Real32      getReadPixelCost(void) const;
+  Real32      getWritePixelCost(void) const;
+  std::string getVendor(void) const;
+  std::string getRenderer(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Set                                     */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Set                                     */
+  /*! \{                                                                 */
 
-    void setVisibleFaceCost  (           Real32      value);
-    void setInvisibleFaceCost(           Real32      value);
-    void setDrawPixelCost    (           Real32      value);
-    void setReadPixelCost    (           Real32      value);
-    void setWritePixelCost   (           Real32      value);
-    void setGroup            (const      RenderNode *begin,
-                              const      RenderNode *end);
-    void setVendor           (const std::string     &value);
-    void setRenderer         (const std::string     &value);
+  void setVisibleFaceCost(Real32 value);
+  void setInvisibleFaceCost(Real32 value);
+  void setDrawPixelCost(Real32 value);
+  void setReadPixelCost(Real32 value);
+  void setWritePixelCost(Real32 value);
+  void setGroup(const RenderNode* begin, const RenderNode* end);
+  void setVendor(const std::string& value);
+  void setRenderer(const std::string& value);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   performance analysis                       */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   performance analysis                       */
+  /*! \{                                                                 */
 
-    void   determinePerformance(WindowPtr &prt           );
-    Real32 estimatePerformance (Real32     invisibleFaces,
-                                Real32     visibleFaces,
-                                Real32     pixel         ) const;
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                load/store                                    */
-    /*! \{                                                                 */
+  void   determinePerformance(WindowPtr& prt);
+  Real32 estimatePerformance(Real32 invisibleFaces, Real32 visibleFaces, Real32 pixel) const;
 
-    void copyToBin  (BinaryDataHandler &handle);
-    void copyFromBin(BinaryDataHandler &handle);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                load/store                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Assignment                                */
-    /*! \{                                                                 */
+  void copyToBin(BinaryDataHandler& handle);
+  void copyFromBin(BinaryDataHandler& handle);
 
-    RenderNode & operator =(const RenderNode &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Assignment                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    dump                                      */
-    /*! \{                                                                 */
-    
-    void dump(void) const;
-    
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  RenderNode& operator=(const RenderNode& source);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    dump                                      */
+  /*! \{                                                                 */
 
-         Real32 _visibleFaceCost;
-         Real32 _invisibleFaceCost;
-         Real32 _drawPixelCost;
-         Real32 _readPixelCost;
-         Real32 _writePixelCost;
-    std::string _vendor;
-    std::string _renderer;
+  void dump(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   helper                                     */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    double runFaceBench  ( float w,int size );
-    double runRasterBench( void             );
+  Real32      _visibleFaceCost;
+  Real32      _invisibleFaceCost;
+  Real32      _drawPixelCost;
+  Real32      _readPixelCost;
+  Real32      _writePixelCost;
+  std::string _vendor;
+  std::string _renderer;
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
-    /*---------------------------------------------------------------------*/
-    /*! \name                   helper                                     */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   helper                                     */
+  /*! \{                                                                 */
 
-    static RenderNode *_prefefined[];
+  double runFaceBench(float w, int size);
+  double runRasterBench(void);
 
-    /*! \}                                                                 */
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   helper                                     */
+  /*! \{                                                                 */
+
+  static RenderNode* _prefefined[];
+
+  /*! \}                                                                 */
 };
 
 OSG_END_NAMESPACE
@@ -176,7 +168,3 @@ OSG_END_NAMESPACE
 #include "OSGRenderNode.inl"
 
 #endif /* _CLUSTERNODE_H_ */
-
-
-
-

@@ -54,166 +54,158 @@ class Connection;
 class ClusterServer;
 class RemoteAspect;
 
-class OSG_SYSTEMLIB_DLLMAPPING ClusterWindow : public ClusterWindowBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING ClusterWindow : public ClusterWindowBase {
+ private:
+  typedef ClusterWindowBase Inherited;
 
-    typedef ClusterWindowBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   window functions                           */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   window functions                           */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector whichField, 
-                         UInt32    origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name            GL implementation functions                       */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  virtual void (*getFunctionByName(const Char8* s))();
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name            GL implementation functions                       */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name      Window system implementation functions                  */
+  /*! \{                                                                 */
 
-    virtual void    (*getFunctionByName ( const Char8 *s ))();
+  virtual void activate(void);
+  virtual void deactivate(void);
+  virtual void swap(void);
+  virtual void init(void);
+  virtual void render(RenderActionBase* action = NULL);
+  virtual void renderAllViewports(RenderActionBase* action = NULL);
+  virtual void frameInit(void);
+  virtual void frameExit(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name      Window system implementation functions                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name            asynchronous initialization                       */
+  /*! \{                                                                 */
 
-    virtual void    activate          (void                           );
-    virtual void    deactivate        (void                           );
-    virtual void    swap              (void                           );
-    virtual void    init              (void                           );
-    virtual void    render            (RenderActionBase *action = NULL);
-    virtual void    renderAllViewports(RenderActionBase *action = NULL);
-    virtual void    frameInit         (void                           );
-    virtual void    frameExit         (void                           );
+  typedef bool (*connectioncbfp)(std::string server, Real32 progress);
+  bool initAsync(connectioncbfp fp);
+  void setConnectionCB(connectioncbfp fp);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name            asynchronous initialization                       */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name               connection pool                                */
+  /*! \{                                                                 */
 
-    typedef bool (*connectioncbfp)(std::string server, Real32 progress);
-    bool initAsync(connectioncbfp fp);
-    void setConnectionCB(connectioncbfp fp);
+  ClusterNetwork* getNetwork(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name               connection pool                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Statistics                                 */
+  /*! \{                                                                 */
 
-    ClusterNetwork *getNetwork(void);
+  StatCollector* getStatistics(void) const;
+  void           setStatistics(StatCollector* stat);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Statistics                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Calibration                                */
+  /*! \{                                                                 */
 
-    StatCollector *getStatistics(void                  ) const;
-    void           setStatistics(StatCollector * stat  );
+  bool loadCalibration(std::istream& in);
+  bool saveCalibration(std::ostream& out);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Calibration                                */
-    /*! \{                                                                 */
+  bool loadFilter(std::istream& in);
+  bool updateFilter(WindowPtr window, UInt32 id, RenderActionBase* action);
 
-    bool loadCalibration(std::istream &in);
-    bool saveCalibration(std::ostream &out);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Exceptions                                 */
+  /*! \{                                                                 */
+  class AsyncCancel : public Exception {
+   public:
+    AsyncCancel();
+  };
+  /*! \}                                                                 */
 
-    bool loadFilter(std::istream &in);
-    bool updateFilter(WindowPtr window, UInt32 id, RenderActionBase *action);
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name      client window funcitons                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Exceptions                                 */
-    /*! \{                                                                 */
-    class AsyncCancel : public Exception 
-    {
-    public:
-        AsyncCancel();
-    };
-    /*! \}                                                                 */
+  virtual void clientInit(void);
+  virtual void clientPreSync(void);
+  virtual void clientRender(RenderActionBase* action);
+  virtual void clientSwap(void);
 
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name      server window funcitons                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name      client window funcitons                                 */
-    /*! \{                                                                 */
+  virtual void serverInit(WindowPtr window, UInt32 id);
+  virtual void serverRender(WindowPtr window, UInt32 id, RenderActionBase* action);
+  virtual void serverSwap(WindowPtr window, UInt32 id);
 
-    virtual void clientInit              (void                    );
-    virtual void clientPreSync           (void                    );
-    virtual void clientRender            (RenderActionBase *action);
-    virtual void clientSwap              (void                    );
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name      server window funcitons                                 */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors / Destructor                   */
+  /*! \{                                                                 */
 
-    virtual void serverInit              ( WindowPtr window,UInt32 id  );
-    virtual void serverRender            ( WindowPtr window,UInt32 id,
-                                           RenderActionBase *action    );
-    virtual void serverSwap              ( WindowPtr window,UInt32 id  );
+  ClusterWindow(void);
+  ClusterWindow(const ClusterWindow& source);
+  virtual ~ClusterWindow(void);
 
-    /*! \}                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name               unsynced thread variables                      */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors / Destructor                   */
-    /*! \{                                                                 */
+  bool           _firstFrame;
+  StatCollector* _statistics;
 
-    ClusterWindow(void);
-    ClusterWindow(const ClusterWindow &source);
-    virtual ~ClusterWindow(void); 
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name               unsynced thread variables                      */
-    /*! \{                                                                 */
-    
-    bool               _firstFrame;
-    StatCollector     *_statistics;
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /*---------------------------------------------------------------------*/
+  /*! \name               private members                                */
+  /*! \{                                                                 */
 
-    /*==========================  PRIVATE  ================================*/
-  private:
-    /*---------------------------------------------------------------------*/
-    /*! \name               private members                                */
-    /*! \{                                                                 */
+  connectioncbfp  _connectionFP;
+  ClusterNetwork* _network;
 
-    connectioncbfp     _connectionFP;
-    ClusterNetwork    *_network;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name              init method                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name              init method                                     */
-    /*! \{                                                                 */
+  static void initMethod(void);
 
-    static void initMethod(void);
+  /*! \}                                                                 */
+  friend class FieldContainer;
+  friend class ClusterWindowBase;
+  friend class ClusterServer;
+  friend class ClusterClient;
 
-    /*! \}                                                                 */
-    friend class FieldContainer;
-    friend class ClusterWindowBase;
-    friend class ClusterServer;
-    friend class ClusterClient;
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const ClusterWindow &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const ClusterWindow& source);
 };
 
-typedef ClusterWindow *ClusterWindowP;
+typedef ClusterWindow* ClusterWindowP;
 
 OSG_END_NAMESPACE
 

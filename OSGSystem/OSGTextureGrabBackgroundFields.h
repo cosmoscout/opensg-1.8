@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGTEXTUREGRABBACKGROUNDFIELDS_H_
 #define _OSGTEXTUREGRABBACKGROUNDFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class TextureGrabBackground;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! TextureGrabBackgroundPtr
 
 typedef FCPtr<SolidBackgroundPtr, TextureGrabBackground> TextureGrabBackgroundPtr;
@@ -81,13 +80,12 @@ typedef FCPtr<SolidBackgroundPtr, TextureGrabBackground> TextureGrabBackgroundPt
 #endif
 
 template <>
-struct FieldDataTraits<TextureGrabBackgroundPtr> : 
-    public FieldTraitsRecurseMapper<TextureGrabBackgroundPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<TextureGrabBackgroundPtr>
+    : public FieldTraitsRecurseMapper<TextureGrabBackgroundPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -98,10 +96,9 @@ struct FieldDataTraits<TextureGrabBackgroundPtr> :
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
 
-
-
 OSG_END_NAMESPACE
 
-#define OSGTEXTUREGRABBACKGROUNDFIELDS_HEADER_CVSID "@(#)$Id: FCFieldsTemplate_h.h,v 1.25 2005/04/04 14:51:48 dirk Exp $"
+#define OSGTEXTUREGRABBACKGROUNDFIELDS_HEADER_CVSID                                                \
+  "@(#)$Id: FCFieldsTemplate_h.h,v 1.25 2005/04/04 14:51:48 dirk Exp $"
 
 #endif /* _OSGTEXTUREGRABBACKGROUNDFIELDS_H_ */

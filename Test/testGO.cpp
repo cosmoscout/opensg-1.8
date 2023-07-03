@@ -53,7 +53,6 @@
 // Methods to create simple geometry: boxes, spheres, tori etc.
 #include <OSGSimpleGeometry.h>
 
-
 #include <OSGSceneFileHandler.h>
 #include <OSGAction.h>
 #include <OSGGraphOpSeq.h>
@@ -85,143 +84,135 @@
 #include <OSGFieldContainerPtr.h>
 #include <OSGSimpleAttachments.h>
 
-
 // Activate the OpenSG namespace
 OSG_USING_NAMESPACE
 
-SimpleSceneManager *mgr;
+SimpleSceneManager* mgr;
 
 NodePtr scene;
 
 // Standard GLUT callback functions
-void display( void )
-{
-    mgr->idle();
-    mgr->redraw();
+void display(void) {
+  mgr->idle();
+  mgr->redraw();
 }
 
-void reshape( int w, int h )
-{
-    mgr->resize( w, h );
-    glutPostRedisplay();
+void reshape(int w, int h) {
+  mgr->resize(w, h);
+  glutPostRedisplay();
 }
 
-void
-motion(int x, int y)
-{
-    mgr->mouseMove( x, y );
-    glutPostRedisplay();
+void motion(int x, int y) {
+  mgr->mouseMove(x, y);
+  glutPostRedisplay();
 }
 
-void
-mouse(int button, int state, int x, int y)
-{
-    if ( state )
-        mgr->mouseButtonRelease( button, x, y );
-    else
-        mgr->mouseButtonPress( button, x, y );
-    glutPostRedisplay();
+void mouse(int button, int state, int x, int y) {
+  if (state)
+    mgr->mouseButtonRelease(button, x, y);
+  else
+    mgr->mouseButtonPress(button, x, y);
+  glutPostRedisplay();
 }
 
-void
-key(unsigned char key, int x, int y)
-{
-    switch(key)
-    {
-    case 27:    exit(1);
-    case 'a':   mgr->setHighlight( scene );
-                break;
-    case 's':   mgr->setHighlight( NullFC );
-                break;
-    case 'l':   mgr->useOpenSGLogo();
-                break;
-    case 'f':   mgr->setNavigationMode(Navigator::FLY);
-                break;
-    case 't':   mgr->setNavigationMode(Navigator::TRACKBALL);
-                break;
-    case 'x':   mgr->getNavigator()->set(
-                    Pnt3f(0,0,2),Pnt3f(0,0,0),Vec3f(0,1,0));
-                break;
-    case 'c':   mgr->getNavigator()->set(
-                    Pnt3f(0,0,2),Pnt3f(2,2,1),Vec3f(0,1,0));
-                break;
-    }
-    mgr->key(key,x,y);
-    glutPostRedisplay();
+void key(unsigned char key, int x, int y) {
+  switch (key) {
+  case 27:
+    exit(1);
+  case 'a':
+    mgr->setHighlight(scene);
+    break;
+  case 's':
+    mgr->setHighlight(NullFC);
+    break;
+  case 'l':
+    mgr->useOpenSGLogo();
+    break;
+  case 'f':
+    mgr->setNavigationMode(Navigator::FLY);
+    break;
+  case 't':
+    mgr->setNavigationMode(Navigator::TRACKBALL);
+    break;
+  case 'x':
+    mgr->getNavigator()->set(Pnt3f(0, 0, 2), Pnt3f(0, 0, 0), Vec3f(0, 1, 0));
+    break;
+  case 'c':
+    mgr->getNavigator()->set(Pnt3f(0, 0, 2), Pnt3f(2, 2, 1), Vec3f(0, 1, 0));
+    break;
+  }
+  mgr->key(key, x, y);
+  glutPostRedisplay();
 }
-
 
 // Initialize GLUT & OpenSG and set up the scene
-int main (int argc, char **argv)
-{
-    // OSG init
-    osgInit(argc,argv);
+int main(int argc, char** argv) {
+  // OSG init
+  osgInit(argc, argv);
 
-    // GLUT init
-    glutInit(&argc, argv);
-    glutInitDisplayMode( GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
-    int winid = glutCreateWindow("OpenSG");
-    glutReshapeFunc(reshape);
-    glutDisplayFunc(display);
-    glutMouseFunc(mouse);
-    glutMotionFunc(motion);
-    glutKeyboardFunc(key);
-    glutIdleFunc(display);
+  // GLUT init
+  glutInit(&argc, argv);
+  glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
+  int winid = glutCreateWindow("OpenSG");
+  glutReshapeFunc(reshape);
+  glutDisplayFunc(display);
+  glutMouseFunc(mouse);
+  glutMotionFunc(motion);
+  glutKeyboardFunc(key);
+  glutIdleFunc(display);
 
-    // the connection between GLUT and OpenSG
-    GLUTWindowPtr gwin= GLUTWindow::create();
-    gwin->setId(winid);
-    gwin->init();
+  // the connection between GLUT and OpenSG
+  GLUTWindowPtr gwin = GLUTWindow::create();
+  gwin->setId(winid);
+  gwin->init();
 
-    // create the scene
+  // create the scene
 
-    NodePtr sc;
-    
-    if(argc < 2)
-    {
-        sc = makeBox(2,2,1,3,2,1);
-    }
-    else
-    {
-        sc = SceneFileHandler::the().read(argv[1]);
-    }
-    NodePtr scene=Node::create();
-    GroupPtr grp=Group::create();
-    beginEditCP(scene);
-    scene->setCore(grp);
-    scene->addChild(sc);
-    endEditCP(scene);
-    
-    GraphOpSeq gos;
-    MergeGraphOp mgo;    
-    SplitGraphOp sgo;
-    VerifyGeoGraphOp vggo;
-    GraphOpFactory::the().registerOp(&mgo);
-    GraphOpFactory::the().registerOp(&sgo);
-    GraphOpFactory::the().registerOp(&vggo);
+  NodePtr sc;
 
-    gos.setGraphOps("Exclude(Me,You) Verify(true) AddExclude(Us,Them) Merge() Exclude(All) Split(1500)");
+  if (argc < 2) {
+    sc = makeBox(2, 2, 1, 3, 2, 1);
+  } else {
+    sc = SceneFileHandler::the().read(argv[1]);
+  }
+  NodePtr  scene = Node::create();
+  GroupPtr grp   = Group::create();
+  beginEditCP(scene);
+  scene->setCore(grp);
+  scene->addChild(sc);
+  endEditCP(scene);
 
-    //gos.addGraphOp(&vggo);
-    //gos.addGraphOp(&mgo);
-    //gos.addGraphOp(&sgo);
+  GraphOpSeq       gos;
+  MergeGraphOp     mgo;
+  SplitGraphOp     sgo;
+  VerifyGeoGraphOp vggo;
+  GraphOpFactory::the().registerOp(&mgo);
+  GraphOpFactory::the().registerOp(&sgo);
+  GraphOpFactory::the().registerOp(&vggo);
 
-    if (gos.run(scene))
-        printf("GraphOpSeq finished successfully\n");
-    else
-        printf("GraphOpSeq failed\n");
-    
-    printf("starting simple scene manager\n");
-    mgr = new SimpleSceneManager;
+  gos.setGraphOps(
+      "Exclude(Me,You) Verify(true) AddExclude(Us,Them) Merge() Exclude(All) Split(1500)");
 
-    mgr->setWindow( gwin );
-    mgr->setRoot( scene );
-    mgr->setStatistics(true);
+  // gos.addGraphOp(&vggo);
+  // gos.addGraphOp(&mgo);
+  // gos.addGraphOp(&sgo);
 
-    mgr->showAll();
+  if (gos.run(scene))
+    printf("GraphOpSeq finished successfully\n");
+  else
+    printf("GraphOpSeq failed\n");
 
-    // GLUT main loop
-    glutMainLoop();
+  printf("starting simple scene manager\n");
+  mgr = new SimpleSceneManager;
 
-    return 0;
+  mgr->setWindow(gwin);
+  mgr->setRoot(scene);
+  mgr->setStatistics(true);
+
+  mgr->showAll();
+
+  // GLUT main loop
+  glutMainLoop();
+
+  return 0;
 }

@@ -66,22 +66,16 @@ OSG_BEGIN_NAMESPACE
     \hideinhierarchy
  */
 
-struct DefaultFunctorSizeTraits
-{
-    typedef 
-        void (                          *FuncPointerT        )(void *);
-    typedef 
-        void (DefaultFunctorSizeTraits::*InstanceFuncPointerT)(void *);
+struct DefaultFunctorSizeTraits {
+  typedef void (*FuncPointerT)(void*);
+  typedef void (DefaultFunctorSizeTraits::*InstanceFuncPointerT)(void*);
 
-    enum SizesE
-    { 
-        _uiFuncPointerSize = osgStaticMax<sizeof(FuncPointerT),
-                                          sizeof(InstanceFuncPointerT)
-                                         >::iMax * 2,
-        // !!! The 2 is a nasty kludge to work around problems on Windows :(
+  enum SizesE {
+    _uiFuncPointerSize = osgStaticMax<sizeof(FuncPointerT), sizeof(InstanceFuncPointerT)>::iMax * 2,
+    // !!! The 2 is a nasty kludge to work around problems on Windows :(
 
-        _uiObjectSize      = 64
-    };
+    _uiObjectSize = 64
+  };
 };
 
 /*! \ingroup GrpBaseFunctorsHelper
@@ -89,10 +83,9 @@ struct DefaultFunctorSizeTraits
  */
 
 template <class Argument1T>
-struct ArgsCollector
-{
-    typedef Argument1T ArgType;
-    typedef Argument1T Arg1T;
+struct ArgsCollector {
+  typedef Argument1T ArgType;
+  typedef Argument1T Arg1T;
 };
 
 /*! \ingroup GrpBaseFunctorsHelper
@@ -100,10 +93,9 @@ struct ArgsCollector
  */
 
 template <class Argument1T, class Argument2T>
-struct ArgsCollector2
-{
-    typedef Argument1T Arg1T;
-    typedef Argument2T Arg2T;
+struct ArgsCollector2 {
+  typedef Argument1T Arg1T;
+  typedef Argument2T Arg2T;
 };
 
 /*! \ingroup GrpBaseFunctorsHelper
@@ -111,12 +103,11 @@ struct ArgsCollector2
  */
 
 template <class ArgT>
-struct ObjCallArg
-{
-    typedef ArgT  ObjType;
-    typedef ArgT  ArgType;
+struct ObjCallArg {
+  typedef ArgT ObjType;
+  typedef ArgT ArgType;
 
-    typedef ArgsCollector<ArgType> ArgsC;
+  typedef ArgsCollector<ArgType> ArgsC;
 };
 
 /*! \ingroup GrpBaseFunctorsHelper
@@ -124,15 +115,13 @@ struct ObjCallArg
  */
 
 template <class ArgT>
-struct RefCallArg
-{
-    typedef ArgT  ObjType;
-    typedef ArgT  &ArgType;
+struct RefCallArg {
+  typedef ArgT  ObjType;
+  typedef ArgT& ArgType;
 
-    static ObjType *getPtr(ObjType &obj)
-    {
-        return &obj;
-    }
+  static ObjType* getPtr(ObjType& obj) {
+    return &obj;
+  }
 };
 
 /*! \ingroup GrpBaseFunctorsHelper
@@ -140,17 +129,15 @@ struct RefCallArg
  */
 
 template <class ArgT>
-struct PtrCallArg
-{
-    typedef ArgT                    ObjType;
-    typedef ArgT                   *ArgType;
+struct PtrCallArg {
+  typedef ArgT  ObjType;
+  typedef ArgT* ArgType;
 
-    typedef ArgsCollector<ArgType>  ArgsC;
+  typedef ArgsCollector<ArgType> ArgsC;
 
-    static ObjType *getPtr(ObjType *pObj)
-    {
-        return pObj;
-    }
+  static ObjType* getPtr(ObjType* pObj) {
+    return pObj;
+  }
 };
 
 /*! \ingroup GrpBaseFunctorsHelper
@@ -158,17 +145,15 @@ struct PtrCallArg
  */
 
 template <class ArgT>
-struct CPtrCallArg
-{
-    typedef typename ArgT::StoredObjectType  ObjType;
-    typedef          ArgT                    ArgType;
+struct CPtrCallArg {
+  typedef typename ArgT::StoredObjectType ObjType;
+  typedef ArgT                            ArgType;
 
-    typedef          ArgsCollector<ArgType>  ArgsC;
+  typedef ArgsCollector<ArgType> ArgsC;
 
-    static ObjType *getPtr(ArgType obj)
-    {
-        return (&(*obj));
-    }
+  static ObjType* getPtr(ArgType obj) {
+    return (&(*obj));
+  }
 };
 
 /*! \ingroup GrpBaseFunctorsHelper
@@ -176,17 +161,15 @@ struct CPtrCallArg
  */
 
 template <class ArgT>
-struct CPtrRefCallArg
-{
-    typedef typename ArgT::StoredObjectType  ObjType;
-    typedef          ArgT                   &ArgType;
+struct CPtrRefCallArg {
+  typedef typename ArgT::StoredObjectType ObjType;
+  typedef ArgT&                           ArgType;
 
-    typedef          ArgsCollector<ArgType>  ArgsC;
+  typedef ArgsCollector<ArgType> ArgsC;
 
-    static ObjType *getPtr(ArgType obj)
-    {
-        return (&(*obj));
-    }
+  static ObjType* getPtr(ArgType obj) {
+    return (&(*obj));
+  }
 };
 
 /*! \ingroup GrpBaseFunctorsHelper
@@ -194,9 +177,8 @@ struct CPtrRefCallArg
  */
 
 template <class RetT, class ClassT>
-struct ClassMemFunc
-{
-    typedef RetT (ClassT::*MemFunc)(void);
+struct ClassMemFunc {
+  typedef RetT (ClassT::*MemFunc)(void);
 };
 
 /*! \ingroup GrpBaseFunctorsHelper
@@ -204,11 +186,10 @@ struct ClassMemFunc
  */
 
 template <class RetT, class ClassT, class ArgsT>
-struct ClassMemFunc1
-{
-    typedef typename ArgsT::Arg1T Arg1T;
+struct ClassMemFunc1 {
+  typedef typename ArgsT::Arg1T Arg1T;
 
-    typedef RetT (ClassT::*MemFunc)(Arg1T);
+  typedef RetT (ClassT::*MemFunc)(Arg1T);
 };
 
 /*! \ingroup GrpBaseFunctorsHelper
@@ -216,12 +197,11 @@ struct ClassMemFunc1
  */
 
 template <class RetT, class ClassT, class ArgsT>
-struct ClassMemFunc2
-{
-    typedef typename ArgsT::Arg1T Arg1T;
-    typedef typename ArgsT::Arg2T Arg2T;
+struct ClassMemFunc2 {
+  typedef typename ArgsT::Arg1T Arg1T;
+  typedef typename ArgsT::Arg2T Arg2T;
 
-    typedef RetT (ClassT::*MemFunc)(Arg1T, Arg2T);
+  typedef RetT (ClassT::*MemFunc)(Arg1T, Arg2T);
 };
 
 /*! \ingroup GrpBaseFunctorsHelper
@@ -229,14 +209,13 @@ struct ClassMemFunc2
  */
 
 template <class RetT, class CallArgT>
-struct FunctorBuildFuncType1
-{
-    typedef typename CallArgT::ArgType CallArgType;
-    typedef typename CallArgT::ObjType ObjType;
+struct FunctorBuildFuncType1 {
+  typedef typename CallArgT::ArgType CallArgType;
+  typedef typename CallArgT::ObjType ObjType;
 
-    typedef typename ClassMemFunc<RetT, ObjType>::MemFunc ObjFuncType;
+  typedef typename ClassMemFunc<RetT, ObjType>::MemFunc ObjFuncType;
 
-    typedef RetT (*FuncFunctionType)(CallArgType);
+  typedef RetT (*FuncFunctionType)(CallArgType);
 };
 
 /*! \ingroup GrpBaseFunctorsHelper
@@ -244,16 +223,13 @@ struct FunctorBuildFuncType1
  */
 
 template <class RetT, class CallArgT, class ArgsT>
-struct FunctorBuildObjFuncType1
-{
-    typedef typename CallArgT              ::ObjType ObjType;
-    typedef typename ArgsT                 ::Arg1T   ArgType;
+struct FunctorBuildObjFuncType1 {
+  typedef typename CallArgT ::ObjType ObjType;
+  typedef typename ArgsT ::Arg1T      ArgType;
 
-    typedef          ArgsCollector<ArgType>          ArgColl;
+  typedef ArgsCollector<ArgType> ArgColl;
 
-    typedef typename ClassMemFunc1<RetT, 
-                                   ObjType, 
-                                   ArgColl>::MemFunc ObjFuncType;
+  typedef typename ClassMemFunc1<RetT, ObjType, ArgColl>::MemFunc ObjFuncType;
 };
 
 /*! \ingroup GrpBaseFunctorsHelper
@@ -261,20 +237,17 @@ struct FunctorBuildObjFuncType1
  */
 
 template <class RetT, class CallArgT, class ArgsT>
-struct FunctorBuildFuncType2
-{
-    typedef typename CallArgT              ::ArgType CallArgType;
-    typedef typename CallArgT              ::ObjType ObjType;
+struct FunctorBuildFuncType2 {
+  typedef typename CallArgT ::ArgType CallArgType;
+  typedef typename CallArgT ::ObjType ObjType;
 
-    typedef typename ArgsT                 ::Arg1T   ArgType;
+  typedef typename ArgsT ::Arg1T ArgType;
 
-    typedef          ArgsCollector<ArgType>          ArgColl;
+  typedef ArgsCollector<ArgType> ArgColl;
 
-    typedef typename ClassMemFunc1<RetT, 
-                                   ObjType, 
-                                   ArgColl>::MemFunc ObjFuncType;
+  typedef typename ClassMemFunc1<RetT, ObjType, ArgColl>::MemFunc ObjFuncType;
 
-    typedef RetT (*FuncFunctionType)(CallArgType, ArgType);
+  typedef RetT (*FuncFunctionType)(CallArgType, ArgType);
 };
 
 /*! \ingroup GrpBaseFunctorsHelper
@@ -282,19 +255,15 @@ struct FunctorBuildFuncType2
  */
 
 template <class RetT, class ObjCallArgT, class CallArgT, class ArgsT>
-struct FunctorBuildObjFuncType2
-{
-    typedef typename ObjCallArgT::ObjType ObjType;
-    typedef typename CallArgT   ::ArgType Arg1T;
-    typedef typename ArgsT      ::Arg1T   Arg2T;
+struct FunctorBuildObjFuncType2 {
+  typedef typename ObjCallArgT::ObjType ObjType;
+  typedef typename CallArgT ::ArgType   Arg1T;
+  typedef typename ArgsT ::Arg1T        Arg2T;
 
-    typedef ArgsCollector2<Arg1T, Arg2T>  ArgColl;
+  typedef ArgsCollector2<Arg1T, Arg2T> ArgColl;
 
-    typedef typename ClassMemFunc2<RetT, 
-                                   ObjType, 
-                                   ArgColl>::MemFunc ObjFuncType;
+  typedef typename ClassMemFunc2<RetT, ObjType, ArgColl>::MemFunc ObjFuncType;
 };
-
 
 //---------------------------------------------------------------------------
 //  Class
@@ -305,56 +274,52 @@ struct FunctorBuildObjFuncType2
  */
 
 template <class SizeTraitsT = DefaultFunctorSizeTraits>
-class FunctorBase 
-{     
-    /*==========================  PUBLIC  =================================*/
+class FunctorBase {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  virtual ~FunctorBase(void);
 
-    virtual ~FunctorBase(void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Constants                                */
+  /*! \{                                                                 */
 
-  protected:
+  static const UInt8 ObjectValid  = 0x01;
+  static const UInt8 FuncPtrValid = 0x02;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Constants                                */
-    /*! \{                                                                 */
+  static const UInt8 FunctorActive = 0x80;
 
-    static const UInt8 ObjectValid   = 0x01;
-    static const UInt8 FuncPtrValid  = 0x02;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Members                                 */
+  /*! \{                                                                 */
 
-    static const UInt8 FunctorActive = 0x80;
+  UInt8 _data1[SizeTraitsT::_uiObjectSize];
+  UInt8 _data2[SizeTraitsT::_uiFuncPointerSize];
+  UInt8 _flags;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Members                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    UInt8 _data1[SizeTraitsT::_uiObjectSize];
-    UInt8 _data2[SizeTraitsT::_uiFuncPointerSize];
-    UInt8 _flags;
+  FunctorBase(void);
+  FunctorBase(const FunctorBase& source);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-    FunctorBase(void);
-    FunctorBase(const FunctorBase &source);
-
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-
-  private:
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const FunctorBase &source);
+ private:
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const FunctorBase& source);
 };
 
 OSG_END_NAMESPACE
@@ -362,5 +327,3 @@ OSG_END_NAMESPACE
 #include <OSGFunctorBase.inl>
 
 #endif /* _OSGFUNCTORBASE_H_ */
-
-

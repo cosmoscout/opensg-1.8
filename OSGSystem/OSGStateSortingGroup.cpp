@@ -49,80 +49,68 @@
 
 OSG_USING_NAMESPACE
 
-
 /*-------------------------------------------------------------------------*/
 /*                             Sync                                     */
 
-void StateSortingGroup::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void StateSortingGroup::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
-
 
 /*-------------------------------------------------------------------------*/
 /*                                Dump                                     */
 
-void StateSortingGroup::dump(      UInt32    uiIndent, 
-                     const BitVector bvFlags) const
-{
-   Inherited::dump(uiIndent, bvFlags);
+void StateSortingGroup::dump(UInt32 uiIndent, const BitVector bvFlags) const {
+  Inherited::dump(uiIndent, bvFlags);
 }
 
 /*-------------------------------------------------------------------------*/
 /*                            Constructors                                 */
 
-StateSortingGroup::StateSortingGroup(void) :
-     Inherited(),
-    _sorting_state(false)
-{
+StateSortingGroup::StateSortingGroup(void)
+    : Inherited()
+    , _sorting_state(false) {
 }
 
-StateSortingGroup::StateSortingGroup(const StateSortingGroup &source) :
-     Inherited(source),
-    _sorting_state(source._sorting_state)
-{
+StateSortingGroup::StateSortingGroup(const StateSortingGroup& source)
+    : Inherited(source)
+    , _sorting_state(source._sorting_state) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Destructor                                  */
 
-StateSortingGroup::~StateSortingGroup(void)
-{
+StateSortingGroup::~StateSortingGroup(void) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                               Drawing                                   */
-    
-Action::ResultE StateSortingGroup::drawEnter(Action *OSG_CHECK_ARG(action))
-{
-    return Action::Continue;
+
+Action::ResultE StateSortingGroup::drawEnter(Action* OSG_CHECK_ARG(action)) {
+  return Action::Continue;
 }
-    
-Action::ResultE StateSortingGroup::drawLeave(Action *OSG_CHECK_ARG(action))
-{
-    return Action::Continue;
+
+Action::ResultE StateSortingGroup::drawLeave(Action* OSG_CHECK_ARG(action)) {
+  return Action::Continue;
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Rendering                                   */
 
-Action::ResultE StateSortingGroup::renderEnter(Action *action)
-{
-    RenderAction *pAction = dynamic_cast<RenderAction *>(action);
+Action::ResultE StateSortingGroup::renderEnter(Action* action) {
+  RenderAction* pAction = dynamic_cast<RenderAction*>(action);
 
-    _sorting_state = pAction->getStateSorting();
-    pAction->setStateSorting(getSorting());
+  _sorting_state = pAction->getStateSorting();
+  pAction->setStateSorting(getSorting());
 
-    return Action::Continue;
+  return Action::Continue;
 }
 
-Action::ResultE StateSortingGroup::renderLeave(Action *action)
-{
-    RenderAction *pAction = dynamic_cast<RenderAction *>(action);
+Action::ResultE StateSortingGroup::renderLeave(Action* action) {
+  RenderAction* pAction = dynamic_cast<RenderAction*>(action);
 
-    pAction->setStateSorting(_sorting_state);
+  pAction->setStateSorting(_sorting_state);
 
-    return Action::Continue;
+  return Action::Continue;
 }
 
 /*-------------------------------------------------------------------------*/
@@ -130,40 +118,20 @@ Action::ResultE StateSortingGroup::renderLeave(Action *action)
 
 //! initialize the static features of the class, e.g. action callbacks
 
-void StateSortingGroup::initMethod(void)
-{
-    DrawAction::registerEnterDefault( 
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<
-            Action::ResultE,
-            StateSortingGroupPtr  , 
-            CNodePtr          ,  
-            Action           *>(&StateSortingGroup::drawEnter));
+void StateSortingGroup::initMethod(void) {
+  DrawAction::registerEnterDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, StateSortingGroupPtr, CNodePtr, Action*>(
+          &StateSortingGroup::drawEnter));
 
-    DrawAction::registerLeaveDefault( 
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<
-            Action::ResultE,
-            StateSortingGroupPtr  , 
-            CNodePtr          ,  
-            Action           *>(&StateSortingGroup::drawLeave));
+  DrawAction::registerLeaveDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, StateSortingGroupPtr, CNodePtr, Action*>(
+          &StateSortingGroup::drawLeave));
 
-    RenderAction::registerEnterDefault(
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<
-            Action::ResultE,
-            StateSortingGroupPtr  , 
-            CNodePtr          ,  
-            Action           *>(&StateSortingGroup::renderEnter));
+  RenderAction::registerEnterDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, StateSortingGroupPtr, CNodePtr, Action*>(
+          &StateSortingGroup::renderEnter));
 
-    RenderAction::registerLeaveDefault(
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<
-            Action::ResultE,
-            StateSortingGroupPtr  , 
-            CNodePtr          ,  
-            Action           *>(&StateSortingGroup::renderLeave));
+  RenderAction::registerLeaveDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, StateSortingGroupPtr, CNodePtr, Action*>(
+          &StateSortingGroup::renderLeave));
 }
-
-
-

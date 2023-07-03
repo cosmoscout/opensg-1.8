@@ -62,7 +62,6 @@
 #include <OSGChangeList.h>
 #include <OSGFieldContainerPtrImpl.inl>
 
-
 #include <OSGFieldContainerImpl.inl>
 #include <OSGFieldDescriptionImpl.inl>
 

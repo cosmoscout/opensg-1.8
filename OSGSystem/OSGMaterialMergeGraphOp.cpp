@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 /***************************************************************************\
 *                             Includes                                    *
 \***************************************************************************/
@@ -51,211 +50,181 @@ OSG_USING_NAMESPACE
 
 /*! \class osg::MaterialMergeGraphOp
     \ingroup GrpSystemNodeCoresDrawablesGeometry
-    
+
 Merges equivalent materials in a scene.
 */
 
 MaterialMergeGraphOp::MaterialMergeGraphOp(const char* name)
-    : GraphOp(name)
-{
+    : GraphOp(name) {
 }
 
-GraphOp* MaterialMergeGraphOp::create()
-{
-    return new MaterialMergeGraphOp();
+GraphOp* MaterialMergeGraphOp::create() {
+  return new MaterialMergeGraphOp();
 }
-
 
 // Similar to boost's next iterator function.  (I think it's from
 // boost, at least.)
-template<typename T>
+template <typename T>
 T next(T t) { // Iterator passed by value.
-    ++t;
-    return t;
+  ++t;
+  return t;
 }
 
+bool isEqual(const osg::FieldContainerPtr& a, const osg::FieldContainerPtr& b) {
+  using std::string;
 
-bool isEqual(const osg::FieldContainerPtr& a, const osg::FieldContainerPtr& b)
-{
-    using std::string;
-
-    // Compare the pointers.
-    if(a == b)
-        return true;
-
-    if(a == NullFC || b == NullFC)
-        return false;
-
-    if(a->getType() != b->getType())
-        return false;
-    
-    //printf("comparing: %s\n", a->getType().getName().str());
-    
-    const FieldContainerType &type = a->getType();
-    UInt32 fcount = type.getNumFieldDescs();
-    
-    for(UInt32 i=1;i <= fcount;++i)
-    {
-        const FieldDescription* fdesc = type.getFieldDescription(i);
-    
-        if(fdesc->isInternal())
-            continue;
-    
-        // ignore attachments
-        if(strcmp(fdesc->getCName(), "attachments") == 0)
-            continue;
-    
-        Field *a_field = a->getField(i);
-        Field *b_field = b->getField(i);
-    
-        const FieldType &a_ftype = a_field->getType();
-        const FieldType &b_ftype = b_field->getType();
-    
-        //printf("comparing field %s\n", a_ftype.getCName());
-    
-        if(a_ftype != b_ftype)
-            return false;
-    
-        if(strstr(a_ftype.getCName(), "Ptr") == NULL)
-        {
-            // This would be nice but there is no virtual compare method :-(
-            // if(*a_field != *b_field)
-            //     return false;
-    
-            // This is very slow with multi fields!!!!
-            string av, bv;
-            a_field->getValueByStr(av);
-            b_field->getValueByStr(bv);
-            if(av != bv)
-                return false;
-        }
-        else
-        {
-            if(a_field->getCardinality() == FieldType::SINGLE_FIELD)
-            {
-                if(!isEqual(((SFFieldContainerPtr *) a_field)->getValue(),
-                            ((SFFieldContainerPtr *) b_field)->getValue()))
-                    return false;
-            }
-            else if(a_field->getCardinality() == FieldType::MULTI_FIELD)
-            {
-                if(((MFFieldContainerPtr*)a_field)->size() !=
-                   ((MFFieldContainerPtr*)b_field)->size())
-                    return false;
-    
-                for(UInt32 j=0;j < ((MFFieldContainerPtr*)a_field)->size();++j)
-                {
-                    if(!isEqual((*(((MFFieldContainerPtr *)a_field)))[j],
-                                (*(((MFFieldContainerPtr *)b_field)))[j]))
-                        return false;
-                }
-            }
-        }
-    }
+  // Compare the pointers.
+  if (a == b)
     return true;
-}
 
+  if (a == NullFC || b == NullFC)
+    return false;
+
+  if (a->getType() != b->getType())
+    return false;
+
+  // printf("comparing: %s\n", a->getType().getName().str());
+
+  const FieldContainerType& type   = a->getType();
+  UInt32                    fcount = type.getNumFieldDescs();
+
+  for (UInt32 i = 1; i <= fcount; ++i) {
+    const FieldDescription* fdesc = type.getFieldDescription(i);
+
+    if (fdesc->isInternal())
+      continue;
+
+    // ignore attachments
+    if (strcmp(fdesc->getCName(), "attachments") == 0)
+      continue;
+
+    Field* a_field = a->getField(i);
+    Field* b_field = b->getField(i);
+
+    const FieldType& a_ftype = a_field->getType();
+    const FieldType& b_ftype = b_field->getType();
+
+    // printf("comparing field %s\n", a_ftype.getCName());
+
+    if (a_ftype != b_ftype)
+      return false;
+
+    if (strstr(a_ftype.getCName(), "Ptr") == NULL) {
+      // This would be nice but there is no virtual compare method :-(
+      // if(*a_field != *b_field)
+      //     return false;
+
+      // This is very slow with multi fields!!!!
+      string av, bv;
+      a_field->getValueByStr(av);
+      b_field->getValueByStr(bv);
+      if (av != bv)
+        return false;
+    } else {
+      if (a_field->getCardinality() == FieldType::SINGLE_FIELD) {
+        if (!isEqual(((SFFieldContainerPtr*)a_field)->getValue(),
+                ((SFFieldContainerPtr*)b_field)->getValue()))
+          return false;
+      } else if (a_field->getCardinality() == FieldType::MULTI_FIELD) {
+        if (((MFFieldContainerPtr*)a_field)->size() != ((MFFieldContainerPtr*)b_field)->size())
+          return false;
+
+        for (UInt32 j = 0; j < ((MFFieldContainerPtr*)a_field)->size(); ++j) {
+          if (!isEqual(
+                  (*(((MFFieldContainerPtr*)a_field)))[j], (*(((MFFieldContainerPtr*)b_field)))[j]))
+            return false;
+        }
+      }
+    }
+  }
+  return true;
+}
 
 bool equal(MaterialPtr a, MaterialPtr b) {
-    // It's too bad Material::operator== doesn't work.
-    //return *a == *b;
-    return isEqual(a, b);
+  // It's too bad Material::operator== doesn't work.
+  // return *a == *b;
+  return isEqual(a, b);
 }
 
+bool MaterialMergeGraphOp::traverse(NodePtr& node) {
+  // Find the materials.
+  if (!GraphOp::traverse(node)) {
+    return false;
+  }
 
-bool MaterialMergeGraphOp::traverse(NodePtr& node)
-{
-    // Find the materials.
-    if (!GraphOp::traverse(node)) {
-        return false;
-    }
+  SINFO << "Number of materials before merge: " << _materialObjects.size() << std::endl;
 
-    SINFO << "Number of materials before merge: " << _materialObjects.size() << std::endl;
+  // Now do the merge.
+  MaterialObjectMap::iterator itr = _materialObjects.begin();
+  for (; itr != _materialObjects.end(); ++itr) {
+    MaterialPtr         current     = itr->first;
+    MaterialObjectList& currentList = itr->second;
 
-    // Now do the merge.
-    MaterialObjectMap::iterator itr = _materialObjects.begin();
-    for (; itr != _materialObjects.end(); ++itr)
-    {
-        MaterialPtr current = itr->first;
-        MaterialObjectList& currentList = itr->second;
+    MaterialObjectMap::iterator walker = ::next(itr);
+    while (walker != _materialObjects.end()) {
+      // Store the next iterator in case we have to delete
+      // 'walker' from the map.
+      MaterialObjectMap::iterator nextStep = ::next(walker);
 
-        MaterialObjectMap::iterator walker = ::next(itr);
-        while (walker != _materialObjects.end()) {
-            // Store the next iterator in case we have to delete
-            // 'walker' from the map.
-            MaterialObjectMap::iterator nextStep = ::next(walker);
-
-            if (equal(current, walker->first)) {
-                // Set the new objects to have the current material,
-                // and move the objects to the current list.
-                MaterialObjectList::iterator i = walker->second.begin();
-                for (; i != walker->second.end(); ++i) {
-                    i->setMaterial(current);
-                    currentList.push_back(*i);
-                }
-                _materialObjects.erase(walker);
-            }
-
-            walker = nextStep;
+      if (equal(current, walker->first)) {
+        // Set the new objects to have the current material,
+        // and move the objects to the current list.
+        MaterialObjectList::iterator i = walker->second.begin();
+        for (; i != walker->second.end(); ++i) {
+          i->setMaterial(current);
+          currentList.push_back(*i);
         }
-    }
+        _materialObjects.erase(walker);
+      }
 
-    SINFO << "Number of materials after merge: " << _materialObjects.size() << std::endl;
-    return true;
+      walker = nextStep;
+    }
+  }
+
+  SINFO << "Number of materials after merge: " << _materialObjects.size() << std::endl;
+  return true;
 }
 
+void MaterialMergeGraphOp::setParams(const std::string params) {
+  ParamSet ps(params);
 
-void MaterialMergeGraphOp::setParams(const std::string params)
-{
-    ParamSet ps(params);   
-    
-    std::string out = ps.getUnusedParams();
-    if(out.length())
-    {
-        FWARNING(("MaterialMergeGraphOp doesn't have parameters '%s'.\n",
-                out.c_str()));
-    }
+  std::string out = ps.getUnusedParams();
+  if (out.length()) {
+    FWARNING(("MaterialMergeGraphOp doesn't have parameters '%s'.\n", out.c_str()));
+  }
 }
 
-std::string MaterialMergeGraphOp::usage(void)
-{
-    return 
-    "MaterialMerge: merge Materials in given subtree\n"
-    "  Tries to find and merge equiavlent Materials to reduce the number\n"
-    "  of Materials used.\n"
-    ;
+std::string MaterialMergeGraphOp::usage(void) {
+  return "MaterialMerge: merge Materials in given subtree\n"
+         "  Tries to find and merge equiavlent Materials to reduce the number\n"
+         "  of Materials used.\n";
 }
 
-Action::ResultE MaterialMergeGraphOp::traverseEnter(NodePtr& node)
-{
-    GeometryPtr geo = GeometryPtr::dcast(node->getCore());
-    if (geo != NullFC)
-    {
-        addObject(MaterialObject(geo));
-        return Action::Continue;
-    }
-    
-    MaterialGroupPtr mg = MaterialGroupPtr::dcast(node->getCore());
-    if (mg != NullFC)
-    {
-        addObject(MaterialObject(mg));
-        return Action::Continue;
-    }
-
-    // Otherwise, keep looking.
+Action::ResultE MaterialMergeGraphOp::traverseEnter(NodePtr& node) {
+  GeometryPtr geo = GeometryPtr::dcast(node->getCore());
+  if (geo != NullFC) {
+    addObject(MaterialObject(geo));
     return Action::Continue;
+  }
+
+  MaterialGroupPtr mg = MaterialGroupPtr::dcast(node->getCore());
+  if (mg != NullFC) {
+    addObject(MaterialObject(mg));
+    return Action::Continue;
+  }
+
+  // Otherwise, keep looking.
+  return Action::Continue;
 }
 
-Action::ResultE MaterialMergeGraphOp::traverseLeave(NodePtr& node, Action::ResultE res)
-{
-    return res;
+Action::ResultE MaterialMergeGraphOp::traverseLeave(NodePtr& node, Action::ResultE res) {
+  return res;
 }
 
-void MaterialMergeGraphOp::addObject(MaterialObject m)
-{
-    MaterialPtr mat = m.getMaterial();
-    if (mat == osg::NullFC)
-        return;
+void MaterialMergeGraphOp::addObject(MaterialObject m) {
+  MaterialPtr mat = m.getMaterial();
+  if (mat == osg::NullFC)
+    return;
 
-    _materialObjects[mat].push_back(m);
+  _materialObjects[mat].push_back(m);
 }

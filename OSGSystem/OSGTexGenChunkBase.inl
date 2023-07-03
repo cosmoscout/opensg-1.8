@@ -52,389 +52,279 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &TexGenChunkBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& TexGenChunkBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 TexGenChunkBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 TexGenChunkBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-TexGenChunkPtr TexGenChunkBase::create(void) 
-{
-    TexGenChunkPtr fc; 
+inline TexGenChunkPtr TexGenChunkBase::create(void) {
+  TexGenChunkPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = TexGenChunkPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = TexGenChunkPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-TexGenChunkPtr TexGenChunkBase::createEmpty(void) 
-{ 
-    TexGenChunkPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline TexGenChunkPtr TexGenChunkBase::createEmpty(void) {
+  TexGenChunkPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the TexGenChunk::_sfGenFuncS field.
-inline
-SFGLenum *TexGenChunkBase::getSFGenFuncS(void)
-{
-    return &_sfGenFuncS;
+inline SFGLenum* TexGenChunkBase::getSFGenFuncS(void) {
+  return &_sfGenFuncS;
 }
 
 //! Get the TexGenChunk::_sfGenFuncT field.
-inline
-SFGLenum *TexGenChunkBase::getSFGenFuncT(void)
-{
-    return &_sfGenFuncT;
+inline SFGLenum* TexGenChunkBase::getSFGenFuncT(void) {
+  return &_sfGenFuncT;
 }
 
 //! Get the TexGenChunk::_sfGenFuncR field.
-inline
-SFGLenum *TexGenChunkBase::getSFGenFuncR(void)
-{
-    return &_sfGenFuncR;
+inline SFGLenum* TexGenChunkBase::getSFGenFuncR(void) {
+  return &_sfGenFuncR;
 }
 
 //! Get the TexGenChunk::_sfGenFuncQ field.
-inline
-SFGLenum *TexGenChunkBase::getSFGenFuncQ(void)
-{
-    return &_sfGenFuncQ;
+inline SFGLenum* TexGenChunkBase::getSFGenFuncQ(void) {
+  return &_sfGenFuncQ;
 }
 
 //! Get the TexGenChunk::_sfGenFuncSPlane field.
-inline
-SFVec4f *TexGenChunkBase::getSFGenFuncSPlane(void)
-{
-    return &_sfGenFuncSPlane;
+inline SFVec4f* TexGenChunkBase::getSFGenFuncSPlane(void) {
+  return &_sfGenFuncSPlane;
 }
 
 //! Get the TexGenChunk::_sfGenFuncTPlane field.
-inline
-SFVec4f *TexGenChunkBase::getSFGenFuncTPlane(void)
-{
-    return &_sfGenFuncTPlane;
+inline SFVec4f* TexGenChunkBase::getSFGenFuncTPlane(void) {
+  return &_sfGenFuncTPlane;
 }
 
 //! Get the TexGenChunk::_sfGenFuncRPlane field.
-inline
-SFVec4f *TexGenChunkBase::getSFGenFuncRPlane(void)
-{
-    return &_sfGenFuncRPlane;
+inline SFVec4f* TexGenChunkBase::getSFGenFuncRPlane(void) {
+  return &_sfGenFuncRPlane;
 }
 
 //! Get the TexGenChunk::_sfGenFuncQPlane field.
-inline
-SFVec4f *TexGenChunkBase::getSFGenFuncQPlane(void)
-{
-    return &_sfGenFuncQPlane;
+inline SFVec4f* TexGenChunkBase::getSFGenFuncQPlane(void) {
+  return &_sfGenFuncQPlane;
 }
 
 //! Get the TexGenChunk::_sfSBeacon field.
-inline
-SFNodePtr *TexGenChunkBase::getSFSBeacon(void)
-{
-    return &_sfSBeacon;
+inline SFNodePtr* TexGenChunkBase::getSFSBeacon(void) {
+  return &_sfSBeacon;
 }
 
 //! Get the TexGenChunk::_sfTBeacon field.
-inline
-SFNodePtr *TexGenChunkBase::getSFTBeacon(void)
-{
-    return &_sfTBeacon;
+inline SFNodePtr* TexGenChunkBase::getSFTBeacon(void) {
+  return &_sfTBeacon;
 }
 
 //! Get the TexGenChunk::_sfRBeacon field.
-inline
-SFNodePtr *TexGenChunkBase::getSFRBeacon(void)
-{
-    return &_sfRBeacon;
+inline SFNodePtr* TexGenChunkBase::getSFRBeacon(void) {
+  return &_sfRBeacon;
 }
 
 //! Get the TexGenChunk::_sfQBeacon field.
-inline
-SFNodePtr *TexGenChunkBase::getSFQBeacon(void)
-{
-    return &_sfQBeacon;
-}
-
-
-//! Get the value of the TexGenChunk::_sfGenFuncS field.
-inline
-GLenum &TexGenChunkBase::getGenFuncS(void)
-{
-    return _sfGenFuncS.getValue();
+inline SFNodePtr* TexGenChunkBase::getSFQBeacon(void) {
+  return &_sfQBeacon;
 }
 
 //! Get the value of the TexGenChunk::_sfGenFuncS field.
-inline
-const GLenum &TexGenChunkBase::getGenFuncS(void) const
-{
-    return _sfGenFuncS.getValue();
+inline GLenum& TexGenChunkBase::getGenFuncS(void) {
+  return _sfGenFuncS.getValue();
+}
+
+//! Get the value of the TexGenChunk::_sfGenFuncS field.
+inline const GLenum& TexGenChunkBase::getGenFuncS(void) const {
+  return _sfGenFuncS.getValue();
 }
 
 //! Set the value of the TexGenChunk::_sfGenFuncS field.
-inline
-void TexGenChunkBase::setGenFuncS(const GLenum &value)
-{
-    _sfGenFuncS.setValue(value);
+inline void TexGenChunkBase::setGenFuncS(const GLenum& value) {
+  _sfGenFuncS.setValue(value);
 }
 
 //! Get the value of the TexGenChunk::_sfGenFuncT field.
-inline
-GLenum &TexGenChunkBase::getGenFuncT(void)
-{
-    return _sfGenFuncT.getValue();
+inline GLenum& TexGenChunkBase::getGenFuncT(void) {
+  return _sfGenFuncT.getValue();
 }
 
 //! Get the value of the TexGenChunk::_sfGenFuncT field.
-inline
-const GLenum &TexGenChunkBase::getGenFuncT(void) const
-{
-    return _sfGenFuncT.getValue();
+inline const GLenum& TexGenChunkBase::getGenFuncT(void) const {
+  return _sfGenFuncT.getValue();
 }
 
 //! Set the value of the TexGenChunk::_sfGenFuncT field.
-inline
-void TexGenChunkBase::setGenFuncT(const GLenum &value)
-{
-    _sfGenFuncT.setValue(value);
+inline void TexGenChunkBase::setGenFuncT(const GLenum& value) {
+  _sfGenFuncT.setValue(value);
 }
 
 //! Get the value of the TexGenChunk::_sfGenFuncR field.
-inline
-GLenum &TexGenChunkBase::getGenFuncR(void)
-{
-    return _sfGenFuncR.getValue();
+inline GLenum& TexGenChunkBase::getGenFuncR(void) {
+  return _sfGenFuncR.getValue();
 }
 
 //! Get the value of the TexGenChunk::_sfGenFuncR field.
-inline
-const GLenum &TexGenChunkBase::getGenFuncR(void) const
-{
-    return _sfGenFuncR.getValue();
+inline const GLenum& TexGenChunkBase::getGenFuncR(void) const {
+  return _sfGenFuncR.getValue();
 }
 
 //! Set the value of the TexGenChunk::_sfGenFuncR field.
-inline
-void TexGenChunkBase::setGenFuncR(const GLenum &value)
-{
-    _sfGenFuncR.setValue(value);
+inline void TexGenChunkBase::setGenFuncR(const GLenum& value) {
+  _sfGenFuncR.setValue(value);
 }
 
 //! Get the value of the TexGenChunk::_sfGenFuncQ field.
-inline
-GLenum &TexGenChunkBase::getGenFuncQ(void)
-{
-    return _sfGenFuncQ.getValue();
+inline GLenum& TexGenChunkBase::getGenFuncQ(void) {
+  return _sfGenFuncQ.getValue();
 }
 
 //! Get the value of the TexGenChunk::_sfGenFuncQ field.
-inline
-const GLenum &TexGenChunkBase::getGenFuncQ(void) const
-{
-    return _sfGenFuncQ.getValue();
+inline const GLenum& TexGenChunkBase::getGenFuncQ(void) const {
+  return _sfGenFuncQ.getValue();
 }
 
 //! Set the value of the TexGenChunk::_sfGenFuncQ field.
-inline
-void TexGenChunkBase::setGenFuncQ(const GLenum &value)
-{
-    _sfGenFuncQ.setValue(value);
+inline void TexGenChunkBase::setGenFuncQ(const GLenum& value) {
+  _sfGenFuncQ.setValue(value);
 }
 
 //! Get the value of the TexGenChunk::_sfGenFuncSPlane field.
-inline
-Vec4f &TexGenChunkBase::getGenFuncSPlane(void)
-{
-    return _sfGenFuncSPlane.getValue();
+inline Vec4f& TexGenChunkBase::getGenFuncSPlane(void) {
+  return _sfGenFuncSPlane.getValue();
 }
 
 //! Get the value of the TexGenChunk::_sfGenFuncSPlane field.
-inline
-const Vec4f &TexGenChunkBase::getGenFuncSPlane(void) const
-{
-    return _sfGenFuncSPlane.getValue();
+inline const Vec4f& TexGenChunkBase::getGenFuncSPlane(void) const {
+  return _sfGenFuncSPlane.getValue();
 }
 
 //! Set the value of the TexGenChunk::_sfGenFuncSPlane field.
-inline
-void TexGenChunkBase::setGenFuncSPlane(const Vec4f &value)
-{
-    _sfGenFuncSPlane.setValue(value);
+inline void TexGenChunkBase::setGenFuncSPlane(const Vec4f& value) {
+  _sfGenFuncSPlane.setValue(value);
 }
 
 //! Get the value of the TexGenChunk::_sfGenFuncTPlane field.
-inline
-Vec4f &TexGenChunkBase::getGenFuncTPlane(void)
-{
-    return _sfGenFuncTPlane.getValue();
+inline Vec4f& TexGenChunkBase::getGenFuncTPlane(void) {
+  return _sfGenFuncTPlane.getValue();
 }
 
 //! Get the value of the TexGenChunk::_sfGenFuncTPlane field.
-inline
-const Vec4f &TexGenChunkBase::getGenFuncTPlane(void) const
-{
-    return _sfGenFuncTPlane.getValue();
+inline const Vec4f& TexGenChunkBase::getGenFuncTPlane(void) const {
+  return _sfGenFuncTPlane.getValue();
 }
 
 //! Set the value of the TexGenChunk::_sfGenFuncTPlane field.
-inline
-void TexGenChunkBase::setGenFuncTPlane(const Vec4f &value)
-{
-    _sfGenFuncTPlane.setValue(value);
+inline void TexGenChunkBase::setGenFuncTPlane(const Vec4f& value) {
+  _sfGenFuncTPlane.setValue(value);
 }
 
 //! Get the value of the TexGenChunk::_sfGenFuncRPlane field.
-inline
-Vec4f &TexGenChunkBase::getGenFuncRPlane(void)
-{
-    return _sfGenFuncRPlane.getValue();
+inline Vec4f& TexGenChunkBase::getGenFuncRPlane(void) {
+  return _sfGenFuncRPlane.getValue();
 }
 
 //! Get the value of the TexGenChunk::_sfGenFuncRPlane field.
-inline
-const Vec4f &TexGenChunkBase::getGenFuncRPlane(void) const
-{
-    return _sfGenFuncRPlane.getValue();
+inline const Vec4f& TexGenChunkBase::getGenFuncRPlane(void) const {
+  return _sfGenFuncRPlane.getValue();
 }
 
 //! Set the value of the TexGenChunk::_sfGenFuncRPlane field.
-inline
-void TexGenChunkBase::setGenFuncRPlane(const Vec4f &value)
-{
-    _sfGenFuncRPlane.setValue(value);
+inline void TexGenChunkBase::setGenFuncRPlane(const Vec4f& value) {
+  _sfGenFuncRPlane.setValue(value);
 }
 
 //! Get the value of the TexGenChunk::_sfGenFuncQPlane field.
-inline
-Vec4f &TexGenChunkBase::getGenFuncQPlane(void)
-{
-    return _sfGenFuncQPlane.getValue();
+inline Vec4f& TexGenChunkBase::getGenFuncQPlane(void) {
+  return _sfGenFuncQPlane.getValue();
 }
 
 //! Get the value of the TexGenChunk::_sfGenFuncQPlane field.
-inline
-const Vec4f &TexGenChunkBase::getGenFuncQPlane(void) const
-{
-    return _sfGenFuncQPlane.getValue();
+inline const Vec4f& TexGenChunkBase::getGenFuncQPlane(void) const {
+  return _sfGenFuncQPlane.getValue();
 }
 
 //! Set the value of the TexGenChunk::_sfGenFuncQPlane field.
-inline
-void TexGenChunkBase::setGenFuncQPlane(const Vec4f &value)
-{
-    _sfGenFuncQPlane.setValue(value);
+inline void TexGenChunkBase::setGenFuncQPlane(const Vec4f& value) {
+  _sfGenFuncQPlane.setValue(value);
 }
 
 //! Get the value of the TexGenChunk::_sfSBeacon field.
-inline
-NodePtr &TexGenChunkBase::getSBeacon(void)
-{
-    return _sfSBeacon.getValue();
+inline NodePtr& TexGenChunkBase::getSBeacon(void) {
+  return _sfSBeacon.getValue();
 }
 
 //! Get the value of the TexGenChunk::_sfSBeacon field.
-inline
-const NodePtr &TexGenChunkBase::getSBeacon(void) const
-{
-    return _sfSBeacon.getValue();
+inline const NodePtr& TexGenChunkBase::getSBeacon(void) const {
+  return _sfSBeacon.getValue();
 }
 
 //! Set the value of the TexGenChunk::_sfSBeacon field.
-inline
-void TexGenChunkBase::setSBeacon(const NodePtr &value)
-{
-    _sfSBeacon.setValue(value);
+inline void TexGenChunkBase::setSBeacon(const NodePtr& value) {
+  _sfSBeacon.setValue(value);
 }
 
 //! Get the value of the TexGenChunk::_sfTBeacon field.
-inline
-NodePtr &TexGenChunkBase::getTBeacon(void)
-{
-    return _sfTBeacon.getValue();
+inline NodePtr& TexGenChunkBase::getTBeacon(void) {
+  return _sfTBeacon.getValue();
 }
 
 //! Get the value of the TexGenChunk::_sfTBeacon field.
-inline
-const NodePtr &TexGenChunkBase::getTBeacon(void) const
-{
-    return _sfTBeacon.getValue();
+inline const NodePtr& TexGenChunkBase::getTBeacon(void) const {
+  return _sfTBeacon.getValue();
 }
 
 //! Set the value of the TexGenChunk::_sfTBeacon field.
-inline
-void TexGenChunkBase::setTBeacon(const NodePtr &value)
-{
-    _sfTBeacon.setValue(value);
+inline void TexGenChunkBase::setTBeacon(const NodePtr& value) {
+  _sfTBeacon.setValue(value);
 }
 
 //! Get the value of the TexGenChunk::_sfRBeacon field.
-inline
-NodePtr &TexGenChunkBase::getRBeacon(void)
-{
-    return _sfRBeacon.getValue();
+inline NodePtr& TexGenChunkBase::getRBeacon(void) {
+  return _sfRBeacon.getValue();
 }
 
 //! Get the value of the TexGenChunk::_sfRBeacon field.
-inline
-const NodePtr &TexGenChunkBase::getRBeacon(void) const
-{
-    return _sfRBeacon.getValue();
+inline const NodePtr& TexGenChunkBase::getRBeacon(void) const {
+  return _sfRBeacon.getValue();
 }
 
 //! Set the value of the TexGenChunk::_sfRBeacon field.
-inline
-void TexGenChunkBase::setRBeacon(const NodePtr &value)
-{
-    _sfRBeacon.setValue(value);
+inline void TexGenChunkBase::setRBeacon(const NodePtr& value) {
+  _sfRBeacon.setValue(value);
 }
 
 //! Get the value of the TexGenChunk::_sfQBeacon field.
-inline
-NodePtr &TexGenChunkBase::getQBeacon(void)
-{
-    return _sfQBeacon.getValue();
+inline NodePtr& TexGenChunkBase::getQBeacon(void) {
+  return _sfQBeacon.getValue();
 }
 
 //! Get the value of the TexGenChunk::_sfQBeacon field.
-inline
-const NodePtr &TexGenChunkBase::getQBeacon(void) const
-{
-    return _sfQBeacon.getValue();
+inline const NodePtr& TexGenChunkBase::getQBeacon(void) const {
+  return _sfQBeacon.getValue();
 }
 
 //! Set the value of the TexGenChunk::_sfQBeacon field.
-inline
-void TexGenChunkBase::setQBeacon(const NodePtr &value)
-{
-    _sfQBeacon.setValue(value);
+inline void TexGenChunkBase::setQBeacon(const NodePtr& value) {
+  _sfQBeacon.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGTEXGENCHUNKBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGTEXGENCHUNKBASE_INLINE_CVSID                                                            \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

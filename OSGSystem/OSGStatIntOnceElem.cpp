@@ -50,7 +50,6 @@
 
 OSG_USING_NAMESPACE
 
-
 /***************************************************************************\
  *                            Description                                  *
 \***************************************************************************/
@@ -60,7 +59,7 @@ OSG_USING_NAMESPACE
 
     The StatIntOnceElem is similar to the osg::StatIntElem, but it keeps
     track of who has contributed already and only allows each ID to
-    contribute once. \ref PageSystemStatistics for details. 
+    contribute once. \ref PageSystemStatistics for details.
 */
 
 /***************************************************************************\
@@ -69,106 +68,86 @@ OSG_USING_NAMESPACE
 
 /*------------- constructors & destructors --------------------------------*/
 
-StatIntOnceElem::StatIntOnceElem(StatElemDescBase *desc)
-  : StatElem(desc), 
-    _value(0),
-    _ids()
-{
+StatIntOnceElem::StatIntOnceElem(StatElemDescBase* desc)
+    : StatElem(desc)
+    , _value(0)
+    , _ids() {
 }
 
-StatElem *StatIntOnceElem::create(StatElemDescBase *desc)
-{
-    return new StatIntOnceElem(desc);
+StatElem* StatIntOnceElem::create(StatElemDescBase* desc) {
+  return new StatIntOnceElem(desc);
 }
 
-
-StatIntOnceElem::~StatIntOnceElem(void)
-{
+StatIntOnceElem::~StatIntOnceElem(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-void StatIntOnceElem::putToString(std::string &str, const char *format) const
-{
-    if(!format)
-    {
-        FieldDataTraits<Int32>::putToString(_value, str);
-    }
-    else
-    {
-        char *temp = new char [strlen(format) + 40];
-        sprintf(temp, format, _value);
-        str = temp;
-        delete [] temp;
-    }
+void StatIntOnceElem::putToString(std::string& str, const char* format) const {
+  if (!format) {
+    FieldDataTraits<Int32>::putToString(_value, str);
+  } else {
+    char* temp = new char[strlen(format) + 40];
+    sprintf(temp, format, _value);
+    str = temp;
+    delete[] temp;
+  }
 }
 
-bool StatIntOnceElem::getFromString(const Char8 *&inVal)
-{
-    return FieldDataTraits<Int32>::getFromString(_value, inVal);
+bool StatIntOnceElem::getFromString(const Char8*& inVal) {
+  return FieldDataTraits<Int32>::getFromString(_value, inVal);
 }
 
-Real64 StatIntOnceElem::getValue(void) const
-{
-    return static_cast<Real64>(get());
+Real64 StatIntOnceElem::getValue(void) const {
+  return static_cast<Real64>(get());
 }
 
-void StatIntOnceElem::reset(void) 
-{ 
-    _value = 0; 
-    _ids.clear();
+void StatIntOnceElem::reset(void) {
+  _value = 0;
+  _ids.clear();
 }
 
 /*-------------------------- assignment -----------------------------------*/
 
-StatIntOnceElem& StatIntOnceElem::operator = (const StatIntOnceElem &source)
-{
-    if (this == &source)
-        return *this;
-
-    _value = source._value;
-    _ids = source._ids;
-    
+StatIntOnceElem& StatIntOnceElem::operator=(const StatIntOnceElem& source) {
+  if (this == &source)
     return *this;
+
+  _value = source._value;
+  _ids   = source._ids;
+
+  return *this;
 }
 
 /*-------------------------- comparison -----------------------------------*/
 
-bool StatIntOnceElem::operator < (const StatIntOnceElem &other) const
-{
-    return this->get() < other.get();
+bool StatIntOnceElem::operator<(const StatIntOnceElem& other) const {
+  return this->get() < other.get();
 }
 
 /*--------------------------- creation ------------------------------------*/
 
-StatElem *StatIntOnceElem::clone(void) const
-{
-    StatIntOnceElem *e = new StatIntOnceElem(getDesc());
-    
-    *e = *this;
-    
-    return e;
+StatElem* StatIntOnceElem::clone(void) const {
+  StatIntOnceElem* e = new StatIntOnceElem(getDesc());
+
+  *e = *this;
+
+  return e;
 }
 
 /*--------------------------- operators ------------------------------------*/
 
-StatElem &StatIntOnceElem::operator += (const StatElem &other)
-{
-    const StatIntOnceElem *o = dynamic_cast<const StatIntOnceElem *>(&other);
-    
-    _value += o->_value;
+StatElem& StatIntOnceElem::operator+=(const StatElem& other) {
+  const StatIntOnceElem* o = dynamic_cast<const StatIntOnceElem*>(&other);
 
-    IdHash::const_iterator it = o->_ids.begin();
+  _value += o->_value;
 
-    while (it != o->_ids.end())
-    {
-        _ids.insert(*it);
-        ++it;
-    }
+  IdHash::const_iterator it = o->_ids.begin();
 
-    return *this;
+  while (it != o->_ids.end()) {
+    _ids.insert(*it);
+    ++it;
+  }
+
+  return *this;
 }
-
-
-
-

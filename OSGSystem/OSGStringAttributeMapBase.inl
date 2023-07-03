@@ -52,109 +52,79 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &StringAttributeMapBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& StringAttributeMapBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 StringAttributeMapBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 StringAttributeMapBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-StringAttributeMapPtr StringAttributeMapBase::create(void) 
-{
-    StringAttributeMapPtr fc; 
+inline StringAttributeMapPtr StringAttributeMapBase::create(void) {
+  StringAttributeMapPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = StringAttributeMapPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = StringAttributeMapPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-StringAttributeMapPtr StringAttributeMapBase::createEmpty(void) 
-{ 
-    StringAttributeMapPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline StringAttributeMapPtr StringAttributeMapBase::createEmpty(void) {
+  StringAttributeMapPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the StringAttributeMap::_mfKeys field.
-inline
-MFString *StringAttributeMapBase::getMFKeys(void)
-{
-    return &_mfKeys;
+inline MFString* StringAttributeMapBase::getMFKeys(void) {
+  return &_mfKeys;
 }
 
 //! Get the StringAttributeMap::_mfValues field.
-inline
-MFString *StringAttributeMapBase::getMFValues(void)
-{
-    return &_mfValues;
+inline MFString* StringAttributeMapBase::getMFValues(void) {
+  return &_mfValues;
 }
-
-
 
 //! Get the value of the \a index element the StringAttributeMap::_mfKeys field.
-inline
-std::string &StringAttributeMapBase::getKeys(const UInt32 index)
-{
-    return _mfKeys[index];
+inline std::string& StringAttributeMapBase::getKeys(const UInt32 index) {
+  return _mfKeys[index];
 }
 
 //! Get the StringAttributeMap::_mfKeys field.
-inline
-MFString &StringAttributeMapBase::getKeys(void)
-{
-    return _mfKeys;
+inline MFString& StringAttributeMapBase::getKeys(void) {
+  return _mfKeys;
 }
 
 //! Get the StringAttributeMap::_mfKeys field.
-inline
-const MFString &StringAttributeMapBase::getKeys(void) const
-{
-    return _mfKeys;
+inline const MFString& StringAttributeMapBase::getKeys(void) const {
+  return _mfKeys;
 }
 
 //! Get the value of the \a index element the StringAttributeMap::_mfValues field.
-inline
-std::string &StringAttributeMapBase::getValues(const UInt32 index)
-{
-    return _mfValues[index];
+inline std::string& StringAttributeMapBase::getValues(const UInt32 index) {
+  return _mfValues[index];
 }
 
 //! Get the StringAttributeMap::_mfValues field.
-inline
-MFString &StringAttributeMapBase::getValues(void)
-{
-    return _mfValues;
+inline MFString& StringAttributeMapBase::getValues(void) {
+  return _mfValues;
 }
 
 //! Get the StringAttributeMap::_mfValues field.
-inline
-const MFString &StringAttributeMapBase::getValues(void) const
-{
-    return _mfValues;
+inline const MFString& StringAttributeMapBase::getValues(void) const {
+  return _mfValues;
 }
 
 OSG_END_NAMESPACE
 
-#define OSGSTRINGATTRIBUTEMAPBASE_INLINE_CVSID "@(#)$Id: OSGStringAttributeMapBase.inl,v 1.2 2006/02/20 16:54:57 dirk Exp $"
-
+#define OSGSTRINGATTRIBUTEMAPBASE_INLINE_CVSID                                                     \
+  "@(#)$Id: OSGStringAttributeMapBase.inl,v 1.2 2006/02/20 16:54:57 dirk Exp $"

@@ -52,151 +52,122 @@ OSG_USING_NAMESPACE
 
 FieldFactory FieldFactory::_the;
 
-std::map<UInt32, FieldType *> *FieldFactory::_fieldTypeM  = NULL;
+std::map<UInt32, FieldType*>* FieldFactory::_fieldTypeM = NULL;
 
 /*-------------------------------------------------------------------------*/
 /*                             Destructor                                  */
 
-FieldFactory::~FieldFactory(void)
-{
-    SINFO << "INFO: Destroy Singleton FieldFactory" << std::endl;
+FieldFactory::~FieldFactory(void) {
+  SINFO << "INFO: Destroy Singleton FieldFactory" << std::endl;
 }
 
 /*-------------------------------------------------------------------------*/
 /*                               Create                                    */
 
-Field *FieldFactory::createField(UInt32 typeId)
-{
-    FieldType *pType = getFieldType(typeId);
+Field* FieldFactory::createField(UInt32 typeId) {
+  FieldType* pType = getFieldType(typeId);
 
-
-    if((pType                != NULL) &&
-       (pType->_createMethod != NULL))
-    {
-        return pType->_createMethod();
-    }
-    else
-    {
-        return NULL;
-    }
+  if ((pType != NULL) && (pType->_createMethod != NULL)) {
+    return pType->_createMethod();
+  } else {
+    return NULL;
+  }
 }
 
-Field *FieldFactory::createField(const Char8 *szName)
-{
-    FieldType *pType          = getFieldType(szName);
+Field* FieldFactory::createField(const Char8* szName) {
+  FieldType* pType = getFieldType(szName);
 
-    if((pType                != NULL) &&
-       (pType->_createMethod != NULL))
-    {
-        return pType->_createMethod();
-    }
-    else
-    {
-        return NULL;
-    }
+  if ((pType != NULL) && (pType->_createMethod != NULL)) {
+    return pType->_createMethod();
+  } else {
+    return NULL;
+  }
 }
 
 /*-------------------------------------------------------------------------*/
 /*                                Get                                      */
 
-UInt32 FieldFactory::getNFieldTypes(void)
-{
-    if(_fieldTypeM != NULL) 
-        return _fieldTypeM->size();
+UInt32 FieldFactory::getNFieldTypes(void) {
+  if (_fieldTypeM != NULL)
+    return _fieldTypeM->size();
 
-    return 0;
-}
-    
-FieldType *FieldFactory::getFieldType(const Char8 *szName)
-{
-    std::map<UInt32, FieldType *>::iterator  mIt;
-    FieldType                               *returnValue = NULL;
-    
-    if(_fieldTypeM != NULL) 
-    {
-        mIt = _fieldTypeM->begin();
-
-        while(mIt != _fieldTypeM->end())
-        {
-            if(strcmp(szName, (*mIt).second->getCName()) == 0)
-            {
-                returnValue = (*mIt).second;
-                break;
-            }
-            
-            mIt++;
-        }
-    }
-
-    return returnValue;
+  return 0;
 }
 
-FieldType *FieldFactory::getFieldType(UInt32 typeId)
-{
-    std::map<UInt32, FieldType *>::iterator  mIt;
+FieldType* FieldFactory::getFieldType(const Char8* szName) {
+  std::map<UInt32, FieldType*>::iterator mIt;
+  FieldType*                             returnValue = NULL;
 
-    if(_fieldTypeM == NULL)
-        return NULL;
-   
-    mIt = _fieldTypeM->find(typeId);
+  if (_fieldTypeM != NULL) {
+    mIt = _fieldTypeM->begin();
 
-    if(mIt != _fieldTypeM->end())
-    {
-        return (*mIt).second;
+    while (mIt != _fieldTypeM->end()) {
+      if (strcmp(szName, (*mIt).second->getCName()) == 0) {
+        returnValue = (*mIt).second;
+        break;
+      }
+
+      mIt++;
     }
-    else
-    {
-        return NULL;
-    }
+  }
+
+  return returnValue;
 }
 
-const Char8 *FieldFactory::getFieldTypeName(UInt32 typeId)
-{
-    FieldType *pFieldType = getFieldType(typeId);
+FieldType* FieldFactory::getFieldType(UInt32 typeId) {
+  std::map<UInt32, FieldType*>::iterator mIt;
 
-    return pFieldType ? pFieldType->getCName() : NULL;
+  if (_fieldTypeM == NULL)
+    return NULL;
+
+  mIt = _fieldTypeM->find(typeId);
+
+  if (mIt != _fieldTypeM->end()) {
+    return (*mIt).second;
+  } else {
+    return NULL;
+  }
+}
+
+const Char8* FieldFactory::getFieldTypeName(UInt32 typeId) {
+  FieldType* pFieldType = getFieldType(typeId);
+
+  return pFieldType ? pFieldType->getCName() : NULL;
 }
 
 /*-------------------------------------------------------------------------*/
 /*                                 the                                     */
 
-FieldFactory &FieldFactory::the(void)
-{
-    return _the;
+FieldFactory& FieldFactory::the(void) {
+  return _the;
 }
 
 /*-------------------------------------------------------------------------*/
 /*                            Constructors                                 */
 
-FieldFactory::FieldFactory(void)
-{
+FieldFactory::FieldFactory(void) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                                 Add                                     */
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-void FieldFactory::addType(FieldType *pType)
-{
-    if(pType == NULL)
-        return;
+void FieldFactory::addType(FieldType* pType) {
+  if (pType == NULL)
+    return;
 
-    if(getFieldType(pType->getId()) != NULL)
-        return;
+  if (getFieldType(pType->getId()) != NULL)
+    return;
 
-    if(_fieldTypeM == NULL)
-        _fieldTypeM = new std::map<UInt32, FieldType *>();
+  if (_fieldTypeM == NULL)
+    _fieldTypeM = new std::map<UInt32, FieldType*>();
 
-    (*_fieldTypeM)[pType->getId()] = pType;
+  (*_fieldTypeM)[pType->getId()] = pType;
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
-
-
-
-

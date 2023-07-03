@@ -44,87 +44,71 @@ OSG_BEGIN_NAMESPACE
 /*---------------------------------------------------------------------*/
 /*                      get                                            */
 
-UInt32 Dgram::getCapacity(void) const
-{
-    return sizeof(_buffer) - sizeof(_buffer._id);
+UInt32 Dgram::getCapacity(void) const {
+  return sizeof(_buffer) - sizeof(_buffer._id);
 }
 
-UInt16 Dgram::getId(void) const
-{
-    return osgntohs(_buffer._id);
+UInt16 Dgram::getId(void) const {
+  return osgntohs(_buffer._id);
 }
 
-UInt32 Dgram::getSize(void) const
-{
-    return _size;
+UInt32 Dgram::getSize(void) const {
+  return _size;
 }
 
-UChar8 *Dgram::getData(void)
-{
-    return _buffer._data;
+UChar8* Dgram::getData(void) {
+  return _buffer._data;
 }
 
-const UChar8 *Dgram::getData(void) const
-{
-    return _buffer._data;
+const UChar8* Dgram::getData(void) const {
+  return _buffer._data;
 }
 
-UChar8 *Dgram::getBuffer(void)
-{
-    return (UChar8 *)&_buffer;
+UChar8* Dgram::getBuffer(void) {
+  return (UChar8*)&_buffer;
 }
 
-UInt32 Dgram::getBufferSize(void) const
-{
-    return _size + sizeof(_buffer._id);
+UInt32 Dgram::getBufferSize(void) const {
+  return _size + sizeof(_buffer._id);
 }
 
-UInt32 Dgram::getBufferCapacity(void) const
-{
-    return sizeof(_buffer);
+UInt32 Dgram::getBufferCapacity(void) const {
+  return sizeof(_buffer);
 }
 
-bool Dgram::getResponseAck(void) const
-{
-    return _buffer._data[0];
+bool Dgram::getResponseAck(void) const {
+  return _buffer._data[0];
 }
 
-bool Dgram::getEarlySend(void) const
-{
-    return _earlySend;
+bool Dgram::getEarlySend(void) const {
+  return _earlySend;
 }
 
 /*---------------------------------------------------------------------*/
 /*                      set                                            */
 
-inline void Dgram::setSize(UInt32 size)
-{
-    _size = size;
+inline void Dgram::setSize(UInt32 size) {
+  _size = size;
 }
 
-inline void Dgram::setResponseSize(void)
-{
-    _size = sizeof(UChar8);
+inline void Dgram::setResponseSize(void) {
+  _size = sizeof(UChar8);
 }
 
-inline void Dgram::setId(UInt16 id)
-{
-    _buffer._id = osghtons(id);
+inline void Dgram::setId(UInt16 id) {
+  _buffer._id = osghtons(id);
 }
 
-inline void Dgram::setBufferSize(UInt32 size)
-{
-    _size = size - sizeof(_buffer._id);
+inline void Dgram::setBufferSize(UInt32 size) {
+  _size = size - sizeof(_buffer._id);
 }
 
-inline void Dgram::setResponseAck(bool value)
-{
-    _buffer._data[0] = value;
+inline void Dgram::setResponseAck(bool value) {
+  _buffer._data[0] = value;
 }
 
-inline void Dgram::setEarlySend(bool value)
-{
-    _earlySend = value;
+inline void Dgram::setEarlySend(bool value) {
+  _earlySend = value;
 }
 
 /*---------------------------------------------------------------------*/
@@ -132,32 +116,23 @@ inline void Dgram::setEarlySend(bool value)
 
 /*! Compare IDs. Use Window.
  */
-inline bool Dgram::operator <(const Dgram &other) const
-{
-    return less(this->getId(),other.getId());
+inline bool Dgram::operator<(const Dgram& other) const {
+  return less(this->getId(), other.getId());
 }
 
 /*! Compare IDs. Use Window.
  */
-inline bool Dgram::less(UInt16 a,UInt16 b)
-{
-    a = a - b;
+inline bool Dgram::less(UInt16 a, UInt16 b) {
+  a = a - b;
 
-    if(a & 0x8000)
-        return true;
-    else
-        return false;
+  if (a & 0x8000)
+    return true;
+  else
+    return false;
 }
 
 OSG_END_NAMESPACE
- 
+
 #define OSG_DGRAMINLINE_CVSID "@(#)$Id:$"
 
 #endif
-
-
-
-
-
-
-

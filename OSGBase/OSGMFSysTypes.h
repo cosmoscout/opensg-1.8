@@ -59,67 +59,59 @@
 
 OSG_BEGIN_NAMESPACE
 
-
-#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS) 
+#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpBaseFieldMulti
     \warning the getValue and operator[] functions may not return what
-             you expect them to return. Descent STL implementation will 
+             you expect them to return. Descent STL implementation will
              certainly not return 'bool &' nor 'const bool &'.
  */
 
-typedef MField<bool, 2>   MFBool;
+typedef MField<bool, 2> MFBool;
 #endif
 
-#if ! defined(OSG_WIN32_CL)     || \
-      defined(OSG_WITH_STLPORT) || \
-      defined(OSG_NEED_BOOL_MFIELD_SPEZ)
+#if !defined(OSG_WIN32_CL) || defined(OSG_WITH_STLPORT) || defined(OSG_NEED_BOOL_MFIELD_SPEZ)
 
-template <> inline
-UInt32 MField<bool, 2>::getBinSize(void) const
-{
-    return sizeof(UInt32) + // num elements
-           sizeof(UInt8) * _values.size();
+template <>
+inline UInt32 MField<bool, 2>::getBinSize(void) const {
+  return sizeof(UInt32) + // num elements
+         sizeof(UInt8) * _values.size();
 }
 
-template <> inline
-void MField<bool, 2>::copyToBin(BinaryDataHandler &pMem) const
-{
-    UInt32 n = _values.size();
+template <>
+inline void MField<bool, 2>::copyToBin(BinaryDataHandler& pMem) const {
+  UInt32 n = _values.size();
 
-    pMem.putValue(n);
+  pMem.putValue(n);
 
-    for(UInt32 i = 0; i < n; ++i)
-    {
-        UInt8 bval = _values[i];
+  for (UInt32 i = 0; i < n; ++i) {
+    UInt8 bval = _values[i];
 
-        pMem.putValue(bval);
-    }
+    pMem.putValue(bval);
+  }
 }
 
-template <> inline
-void MField<bool, 2>::copyFromBin(BinaryDataHandler &pMem)
-{
-    UInt32 n;
-    
-     pMem  .getValue(n);
-    _values.clear ( );
+template <>
+inline void MField<bool, 2>::copyFromBin(BinaryDataHandler& pMem) {
+  UInt32 n;
+
+  pMem.getValue(n);
+  _values.clear();
 
 #ifdef __hpux
-    bool tmpVal;
+  bool tmpVal;
 
-    _values.resize(n, tmpVal);
+  _values.resize(n, tmpVal);
 #else
-    _values.resize(n);
+  _values.resize(n);
 #endif
 
-    UInt8 tmpBVal;
+  UInt8 tmpBVal;
 
-    for(UInt32 i = 0; i < n; ++i)
-    {
-        pMem.getValue(tmpBVal);
+  for (UInt32 i = 0; i < n; ++i) {
+    pMem.getValue(tmpBVal);
 
-        _values[i] = (tmpBVal != 0);
-    }
+    _values[i] = (tmpBVal != 0);
+  }
 }
 #endif
 
@@ -127,41 +119,37 @@ void MField<bool, 2>::copyFromBin(BinaryDataHandler &pMem)
 OSG_DLLEXPORT_DECL2(MField, bool, 2, OSG_BASE_DLLTMPLMAPPING)
 #endif
 
-
-#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS) 
+#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpBaseFieldMulti */
 
-typedef MField<Int8>   MFInt8;
+typedef MField<Int8> MFInt8;
 #endif
 
 #ifndef OSG_COMPILEFIELDINST
 OSG_DLLEXPORT_DECL1(MField, Int8, OSG_BASE_DLLTMPLMAPPING)
 #endif
 
-
-#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS) 
+#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpBaseFieldMulti */
 
-typedef MField<UInt8>  MFUInt8;
+typedef MField<UInt8> MFUInt8;
 #endif
 
 #ifndef OSG_COMPILEFIELDINST
 OSG_DLLEXPORT_DECL1(MField, UInt8, OSG_BASE_DLLTMPLMAPPING)
 #endif
 
-
-#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS) 
+#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpBaseFieldMulti */
 
-typedef MField<Int16>  MFInt16;
+typedef MField<Int16> MFInt16;
 #endif
 
 #ifndef OSG_COMPILEFIELDINST
 OSG_DLLEXPORT_DECL1(MField, Int16, OSG_BASE_DLLTMPLMAPPING)
 #endif
 
-
-#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS) 
+#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpBaseFieldMulti */
 
 typedef MField<UInt16> MFUInt16;
@@ -171,19 +159,17 @@ typedef MField<UInt16> MFUInt16;
 OSG_DLLEXPORT_DECL1(MField, UInt16, OSG_BASE_DLLTMPLMAPPING)
 #endif
 
-
-#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS) 
+#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpBaseFieldMulti */
 
-typedef MField<Int32>  MFInt32;
+typedef MField<Int32> MFInt32;
 #endif
 
 #ifndef OSG_COMPILEFIELDINST
 OSG_DLLEXPORT_DECL1(MField, Int32, OSG_BASE_DLLTMPLMAPPING)
 #endif
 
-
-#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS) 
+#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpBaseFieldMulti */
 
 typedef MField<UInt32> MFUInt32;
@@ -193,19 +179,17 @@ typedef MField<UInt32> MFUInt32;
 OSG_DLLEXPORT_DECL1(MField, UInt32, OSG_BASE_DLLTMPLMAPPING)
 #endif
 
-
-#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS) 
+#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpBaseFieldMulti */
 
-typedef MField<Int64>  MFInt64;
+typedef MField<Int64> MFInt64;
 #endif
 
 #ifndef OSG_COMPILEFIELDINST
 OSG_DLLEXPORT_DECL1(MField, Int64, OSG_BASE_DLLTMPLMAPPING)
 #endif
 
-
-#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS) 
+#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpBaseFieldMulti */
 
 typedef MField<UInt64> MFUInt64;
@@ -215,7 +199,7 @@ typedef MField<UInt64> MFUInt64;
 OSG_DLLEXPORT_DECL1(MField, UInt64, OSG_BASE_DLLTMPLMAPPING)
 #endif
 
-#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS) 
+#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpBaseFieldMulti */
 
 typedef MField<Real16> MFReal16;
@@ -225,7 +209,7 @@ typedef MField<Real16> MFReal16;
 OSG_DLLEXPORT_DECL1(MField, Real16, OSG_BASE_DLLTMPLMAPPING)
 #endif
 
-#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS) 
+#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpBaseFieldMulti */
 
 typedef MField<Real32> MFReal32;
@@ -235,8 +219,7 @@ typedef MField<Real32> MFReal32;
 OSG_DLLEXPORT_DECL1(MField, Real32, OSG_BASE_DLLTMPLMAPPING)
 #endif
 
-
-#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS) 
+#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpBaseFieldMulti */
 
 typedef MField<Real64> MFReal64;
@@ -246,34 +229,16 @@ typedef MField<Real64> MFReal64;
 OSG_DLLEXPORT_DECL1(MField, Real64, OSG_BASE_DLLTMPLMAPPING)
 #endif
 
-
-#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS) 
+#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpBaseFieldMulti */
 
-typedef MField<void *>   MFVoidP;
+typedef MField<void*> MFVoidP;
 #endif
 
 #ifndef OSG_COMPILEFIELDINST
-OSG_DLLEXPORT_DECL1(MField, void *, OSG_BASE_DLLTMPLMAPPING)
+OSG_DLLEXPORT_DECL1(MField, void*, OSG_BASE_DLLTMPLMAPPING)
 #endif
 
 OSG_END_NAMESPACE
 
 #endif /* _OSGSFSYSTYPES_H_ */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

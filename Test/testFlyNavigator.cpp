@@ -76,332 +76,320 @@
 #include "OSGTrackball.h"
 #include "OSGNavigator.h"
 
-
 /**---added stuff------------------------------------------------------------------*/
 
 /**---end of added stuff-----------------------------------------------------------*/
 
 using namespace OSG;
 
-DrawAction * ract;
+DrawAction* ract;
 
-NodePtr  root;
+NodePtr root;
 
-NodePtr  file;
+NodePtr file;
 
 PerspectiveCameraPtr cam;
-ViewportPtr vp;
-WindowPtr win;
+ViewportPtr          vp;
+WindowPtr            win;
 
 TransformPtr cam_trans;
 
 Navigator flyer;
 
 int mouseb = 0;
-int lastx=0, lasty=0;
+int lastx = 0, lasty = 0;
 
 bool buttonPressed;
 
-void
-display(void)
-{
-    Matrix m1, m2, m3;
+void display(void) {
+  Matrix m1, m2, m3;
 
-    if ( buttonPressed ) flyer.moveTo(lastx,lasty);
+  if (buttonPressed)
+    flyer.moveTo(lastx, lasty);
 
-    m1=flyer.getMatrix();
-//    m1.transpose();
+  m1 = flyer.getMatrix();
+  //    m1.transpose();
 
-//    m2.setTranslate(0,0,8);
-//    m1.mult(m2);
+  //    m2.setTranslate(0,0,8);
+  //    m1.mult(m2);
 
-    cam_trans->getSFMatrix()->setValue( m1 );
+  cam_trans->getSFMatrix()->setValue(m1);
 
-    win->draw( ract );
+  win->draw(ract);
 }
 
-void reshape( int w, int h )
-{
-    std::cerr << "Reshape: " << w << "," << h << std::endl;
-    win->resize( w, h );
+void reshape(int w, int h) {
+  std::cerr << "Reshape: " << w << "," << h << std::endl;
+  win->resize(w, h);
 }
 
-
-void
-animate(void)
-{
-    glutPostRedisplay();
+void animate(void) {
+  glutPostRedisplay();
 }
 
 // tballall stuff
 
-
-void
-motion(int x, int y)
-{
-/*  Real32 w = win->getWidth(), h = win->getHeight();
+void motion(int x, int y) {
+  /*  Real32 w = win->getWidth(), h = win->getHeight();
 
 
-    Real32  a = 2. * ( lastx / w - .5 ),
-                b = 2. * ( .5 - lasty / h ),
-                c = 2. * ( x / w - .5 ),
-                d = 2. * ( .5 - y / h );
+      Real32  a = 2. * ( lastx / w - .5 ),
+                  b = 2. * ( .5 - lasty / h ),
+                  c = 2. * ( x / w - .5 ),
+                  d = 2. * ( .5 - y / h );
 
-    if ( mouseb & ( 1 << GLUT_LEFT_BUTTON ) )
-    {
-        tball.updateRotation( a, b, c, d );
-    }
-    else if ( mouseb & ( 1 << GLUT_MIDDLE_BUTTON ) )
-    {
-        tball.updatePosition( a, b, c, d );
-    }
-    else if ( mouseb & ( 1 << GLUT_RIGHT_BUTTON ) )
-    {
-        tball.updatePositionNeg( a, b, c, d );
-    }*/
-    lastx = x;
-    lasty = y;
+      if ( mouseb & ( 1 << GLUT_LEFT_BUTTON ) )
+      {
+          tball.updateRotation( a, b, c, d );
+      }
+      else if ( mouseb & ( 1 << GLUT_MIDDLE_BUTTON ) )
+      {
+          tball.updatePosition( a, b, c, d );
+      }
+      else if ( mouseb & ( 1 << GLUT_RIGHT_BUTTON ) )
+      {
+          tball.updatePositionNeg( a, b, c, d );
+      }*/
+  lastx = x;
+  lasty = y;
 
-    if ( buttonPressed ) flyer.moveTo(x,y);
-
-
+  if (buttonPressed)
+    flyer.moveTo(x, y);
 }
 
-void
-mouse(int button, int state, int x, int y)
-{
-    if ( state == 0 )
-    {
-        switch ( button )
-        {
-        case GLUT_LEFT_BUTTON:  flyer.buttonPress(Navigator::LEFT_MOUSE,x,y);
-                                break;
-        case GLUT_MIDDLE_BUTTON:flyer.buttonPress(Navigator::MIDDLE_MOUSE,x,y);
-                                break;
-        case GLUT_RIGHT_BUTTON: flyer.buttonPress(Navigator::RIGHT_MOUSE,x,y);
-                                break;
-        }
-        mouseb |= 1 << button;
-        buttonPressed=true;
+void mouse(int button, int state, int x, int y) {
+  if (state == 0) {
+    switch (button) {
+    case GLUT_LEFT_BUTTON:
+      flyer.buttonPress(Navigator::LEFT_MOUSE, x, y);
+      break;
+    case GLUT_MIDDLE_BUTTON:
+      flyer.buttonPress(Navigator::MIDDLE_MOUSE, x, y);
+      break;
+    case GLUT_RIGHT_BUTTON:
+      flyer.buttonPress(Navigator::RIGHT_MOUSE, x, y);
+      break;
     }
-    else if ( state == 1 )
-    {
-        switch ( button )
-        {
-        case GLUT_LEFT_BUTTON:  flyer.buttonRelease(Navigator::LEFT_MOUSE,x,y);
-                                break;
-        case GLUT_MIDDLE_BUTTON:flyer.buttonRelease(Navigator::MIDDLE_MOUSE,x,y);
-                                break;
-        case GLUT_RIGHT_BUTTON: flyer.buttonRelease(Navigator::RIGHT_MOUSE,x,y);
-                                break;
-        }
-        mouseb &= ~(1 << button);
-        buttonPressed=false;
+    mouseb |= 1 << button;
+    buttonPressed = true;
+  } else if (state == 1) {
+    switch (button) {
+    case GLUT_LEFT_BUTTON:
+      flyer.buttonRelease(Navigator::LEFT_MOUSE, x, y);
+      break;
+    case GLUT_MIDDLE_BUTTON:
+      flyer.buttonRelease(Navigator::MIDDLE_MOUSE, x, y);
+      break;
+    case GLUT_RIGHT_BUTTON:
+      flyer.buttonRelease(Navigator::RIGHT_MOUSE, x, y);
+      break;
     }
-    lastx = x;
-    lasty = y;
+    mouseb &= ~(1 << button);
+    buttonPressed = false;
+  }
+  lastx = x;
+  lasty = y;
 }
 
-void
-vis(int visible)
-{
-    if (visible == GLUT_VISIBLE)
-    {
-        glutIdleFunc(animate);
-    }
-    else
-    {
-        glutIdleFunc(NULL);
-    }
+void vis(int visible) {
+  if (visible == GLUT_VISIBLE) {
+    glutIdleFunc(animate);
+  } else {
+    glutIdleFunc(NULL);
+  }
 }
 
-void key(unsigned char key, int x, int y)
-{
-    switch ( key )
-    {
-        case 27:    osgExit(); exit(0);
-        
-        case 'p': std::cout << "p pressed" << std::endl; break;            
-        
-        case 'a':   glDisable( GL_LIGHTING );
-            std::cerr << "Lighting disabled." << std::endl;
-            break;
-        case 's':   glEnable( GL_LIGHTING );
-            std::cerr << "Lighting enabled." << std::endl;
-            break;
-        case 'z':   glPolygonMode( GL_FRONT_AND_BACK, GL_POINT);
-            std::cerr << "PolygonMode: Point." << std::endl;
-            break;
-        case 'x':   glPolygonMode( GL_FRONT_AND_BACK, GL_LINE);
-            std::cerr << "PolygonMode: Line." << std::endl;
-            break;
-        case 'c':   glPolygonMode( GL_FRONT_AND_BACK, GL_FILL);
-            std::cerr << "PolygonMode: Fill." << std::endl;
-            break;
-        case 'r':   std::cerr << "Sending ray through " << x << "," << y << std::endl;
-            Line l;
-            cam->calcViewRay( l, x, y, *vp );
-            std::cerr << "From " << l.getPosition() << ", dir " << l.getDirection() << std::endl;
-            break;
-    }
+void key(unsigned char key, int x, int y) {
+  switch (key) {
+  case 27:
+    osgExit();
+    exit(0);
+
+  case 'p':
+    std::cout << "p pressed" << std::endl;
+    break;
+
+  case 'a':
+    glDisable(GL_LIGHTING);
+    std::cerr << "Lighting disabled." << std::endl;
+    break;
+  case 's':
+    glEnable(GL_LIGHTING);
+    std::cerr << "Lighting enabled." << std::endl;
+    break;
+  case 'z':
+    glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+    std::cerr << "PolygonMode: Point." << std::endl;
+    break;
+  case 'x':
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    std::cerr << "PolygonMode: Line." << std::endl;
+    break;
+  case 'c':
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    std::cerr << "PolygonMode: Fill." << std::endl;
+    break;
+  case 'r':
+    std::cerr << "Sending ray through " << x << "," << y << std::endl;
+    Line l;
+    cam->calcViewRay(l, x, y, *vp);
+    std::cerr << "From " << l.getPosition() << ", dir " << l.getDirection() << std::endl;
+    break;
+  }
 }
 
+int main(int argc, char** argv) {
+  osgInit(argc, argv);
 
-int main (int argc, char **argv)
-{
-    osgInit(argc,argv);
+  // GLUT init
 
-    // GLUT init
+  glutInit(&argc, argv);
+  glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
+  int winid = glutCreateWindow("OpenSG");
+  glutKeyboardFunc(key);
+  glutVisibilityFunc(vis);
+  glutReshapeFunc(reshape);
+  glutDisplayFunc(display);
+  glutIdleFunc(display);
+  glutMouseFunc(mouse);
+  glutMotionFunc(motion);
 
-    glutInit(&argc, argv);
-    glutInitDisplayMode( GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
-    int winid = glutCreateWindow("OpenSG");
-    glutKeyboardFunc(key);
-    glutVisibilityFunc(vis);
-    glutReshapeFunc(reshape);
-    glutDisplayFunc(display);
-    glutIdleFunc(display);
-    glutMouseFunc(mouse);
-    glutMotionFunc(motion);
+  glutIdleFunc(display);
 
-    glutIdleFunc(display);
+  // glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 
-    // glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+  glEnable(GL_DEPTH_TEST);
+  glEnable(GL_LIGHTING);
+  glEnable(GL_LIGHT0);
 
-    glEnable( GL_DEPTH_TEST );
-    glEnable( GL_LIGHTING );
-    glEnable( GL_LIGHT0 );
+  // OSG
 
-    // OSG
+  SceneFileHandler::the().print();
 
-    SceneFileHandler::the().print();
+  // create the graph
 
-    // create the graph
+  // beacon for camera and light
+  NodePtr  b1n = Node::create();
+  GroupPtr b1  = Group::create();
+  beginEditCP(b1n);
+  b1n->setCore(b1);
+  endEditCP(b1n);
 
-    // beacon for camera and light
-    NodePtr b1n = Node::create();
-    GroupPtr b1 = Group::create();
-    beginEditCP(b1n);
-    b1n->setCore( b1 );
-    endEditCP(b1n);
+  // transformation
+  NodePtr      t1n = Node::create();
+  TransformPtr t1  = Transform::create();
+  beginEditCP(t1n);
+  t1n->setCore(t1);
+  t1n->addChild(b1n);
+  endEditCP(t1n);
 
-    // transformation
-    NodePtr t1n = Node::create();
-    TransformPtr t1 = Transform::create();
-    beginEditCP(t1n);
-    t1n->setCore( t1 );
-    t1n->addChild( b1n );
-    endEditCP(t1n);
+  cam_trans = t1;
 
-    cam_trans = t1;
+  // light
 
-    // light
+  NodePtr             dlight = Node::create();
+  DirectionalLightPtr dl     = DirectionalLight::create();
 
-    NodePtr dlight = Node::create();
-    DirectionalLightPtr dl = DirectionalLight::create();
+  beginEditCP(dlight);
+  dlight->setCore(dl);
+  endEditCP(dlight);
 
-    beginEditCP(dlight);
-    dlight->setCore( dl );
-    endEditCP(dlight);
+  beginEditCP(dl);
+  dl->setAmbient(.3, .3, .3, 1);
+  dl->setDiffuse(1, 1, 1, 1);
+  dl->setDirection(0, 0, 1);
+  dl->setBeacon(b1n);
+  endEditCP(dl);
 
-    beginEditCP(dl);
-    dl->setAmbient( .3, .3, .3, 1 );
-    dl->setDiffuse( 1, 1, 1, 1 );
-    dl->setDirection(0,0,1);
-    dl->setBeacon( b1n);
-    endEditCP(dl);
+  // root
+  root         = Node::create();
+  GroupPtr gr1 = Group::create();
+  beginEditCP(root);
+  root->setCore(gr1);
+  root->addChild(t1n);
+  root->addChild(dlight);
+  endEditCP(root);
 
-    // root
-    root = Node::create();
-    GroupPtr gr1 = Group::create();
-    beginEditCP(root);
-    root->setCore( gr1 );
-    root->addChild( t1n );
-    root->addChild( dlight );
-    endEditCP(root);
+  // Load the file
 
-    // Load the file
+  NodePtr file = NullFC;
 
-    NodePtr file = NullFC;
+  if (argc > 1)
+    file = SceneFileHandler::the().read(argv[1]);
 
-    if ( argc > 1 )
-        file = SceneFileHandler::the().read(argv[1]);
+  if (file == NullFC) {
+    std::cerr << "Couldn't load file, ignoring" << std::endl;
+    // file = makeTorus( .5, 2, 16, 16 );
+    file = makeBox(2, 4, 6, 1, 1, 1);
+  }
 
-    if ( file == NullFC )
-    {
-        std::cerr << "Couldn't load file, ignoring" << std::endl;
-        //file = makeTorus( .5, 2, 16, 16 );
-        file = makeBox( 2,4,6, 1,1,1 );
-    }
+  file->updateVolume();
 
-    file->updateVolume();
+  Vec3f min, max;
+  file->getVolume().getBounds(min, max);
 
-    Vec3f min,max;
-    file->getVolume().getBounds( min, max );
+  std::cout << "Volume: from " << min << " to " << max << std::endl;
 
-    std::cout << "Volume: from " << min << " to " << max << std::endl;
+  NodePtr file2 = makeBox(2, 4, 6, 1, 1, 1);
 
-    NodePtr file2=makeBox(2,4,6,1,1,1);
+  beginEditCP(dlight);
+  dlight->addChild(file);
+  dlight->addChild(file2);
+  endEditCP(dlight);
 
-    beginEditCP(dlight);
-    dlight->addChild( file );
-    dlight->addChild( file2 );
-    endEditCP(dlight);
+  std::cerr << "Tree: " << std::endl;
+  //  root->dump();
 
-    std::cerr << "Tree: " << std::endl;
-//  root->dump();
+  // Camera
 
-    // Camera
+  cam = PerspectiveCamera::create();
+  cam->setBeacon(b1n);
+  cam->setFov(deg2rad(90));
+  cam->setNear(0.1);
+  cam->setFar(10000);
 
-    cam = PerspectiveCamera::create();
-    cam->setBeacon( b1n );
-    cam->setFov( deg2rad( 90 ) );
-    cam->setNear( 0.1 );
-    cam->setFar( 10000 );
+  // Background
+  SolidBackgroundPtr bkgnd = SolidBackground::create();
 
-    // Background
-    SolidBackgroundPtr bkgnd = SolidBackground::create();
+  // Viewport
 
-    // Viewport
+  vp = Viewport::create();
+  vp->setCamera(cam);
+  vp->setBackground(bkgnd);
+  vp->setRoot(root);
+  vp->setSize(0, 0, 1, 1);
 
-    vp = Viewport::create();
-    vp->setCamera( cam );
-    vp->setBackground( bkgnd );
-    vp->setRoot( root );
-    vp->setSize( 0,0, 1,1 );
+  // Window
+  std::cout << "GLUT winid: " << winid << std::endl;
 
-    // Window
-    std::cout << "GLUT winid: " << winid << std::endl;
+  GLUTWindowPtr gwin;
 
-    GLUTWindowPtr gwin;
+  GLint glvp[4];
+  glGetIntegerv(GL_VIEWPORT, glvp);
 
-    GLint glvp[4];
-    glGetIntegerv( GL_VIEWPORT, glvp );
+  gwin = GLUTWindow::create();
+  gwin->setId(winid);
+  gwin->setSize(glvp[2], glvp[3]);
 
-    gwin = GLUTWindow::create();
-    gwin->setId(winid);
-    gwin->setSize( glvp[2], glvp[3] );
+  win = gwin;
 
-    win = gwin;
+  win->addPort(vp);
 
-    win->addPort( vp );
+  win->init();
 
-    win->init();
+  // Action
 
-    // Action
+  ract = DrawAction::create();
 
-    ract = DrawAction::create();
+  // tball
 
-    // tball
+  flyer.setMode(Navigator::FLY);
 
-    flyer.setMode(Navigator::FLY);
+  flyer.setViewport(vp);
 
-    flyer.setViewport(vp);
+  // run...
 
-    // run...
+  glutMainLoop();
 
-    glutMainLoop();
-
-    return 0;
+  return 0;
 }
-

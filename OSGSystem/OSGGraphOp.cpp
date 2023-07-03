@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 /***************************************************************************\
 *                             Includes                                    *
 \***************************************************************************/
@@ -53,11 +52,11 @@ OSG_USING_NAMESPACE
 
 /*! \class osg::GraphOp
     \ingroup GrpSystemNodeCoresDrawablesGeometry
-    
+
 A base class used to traverse geometries.
 
 Parameters are generally passed using the setParams() method (or indirectly
-from constructing a GraphOpSeq via string) and follow the following 
+from constructing a GraphOpSeq via string) and follow the following
 conventions:
 
 - Parameters are a key=value pair (e.g. max_polygons=1000). Note that
@@ -79,268 +78,231 @@ parameters of a GraphOp.
  -  public                                                                 -
 \*-------------------------------------------------------------------------*/
 
-
 /*------------- constructors & destructors --------------------------------*/
 
-GraphOp::GraphOp(const char* name): 
-    _name(name), _excludeListNodes(), _excludeListNames()
-{
+GraphOp::GraphOp(const char* name)
+    : _name(name)
+    , _excludeListNodes()
+    , _excludeListNames() {
 }
 
-GraphOp::~GraphOp(void)
-{
+GraphOp::~GraphOp(void) {
 }
 
-bool GraphOp::traverse(NodePtr& node)
-{
-    Action::ResultE res;
-    res = ::traverse(node,
-          osgTypedMethodFunctor1ObjPtrCPtrRef<Action::ResultE,
-          GraphOp,
-          NodePtr>(this,&GraphOp::traverseEnter),
-          osgTypedMethodFunctor2ObjPtrCPtrRef<Action::ResultE,
-          GraphOp,
-          NodePtr,
-          Action::ResultE>(this,&GraphOp::traverseLeave));
+bool GraphOp::traverse(NodePtr& node) {
+  Action::ResultE res;
+  res = ::traverse(node,
+      osgTypedMethodFunctor1ObjPtrCPtrRef<Action::ResultE, GraphOp, NodePtr>(
+          this, &GraphOp::traverseEnter),
+      osgTypedMethodFunctor2ObjPtrCPtrRef<Action::ResultE, GraphOp, NodePtr, Action::ResultE>(
+          this, &GraphOp::traverseLeave));
 
-    if (res == Action::Continue) 
-        return true;
-    else 
-        return false;
+  if (res == Action::Continue)
+    return true;
+  else
+    return false;
 }
 
-const std::string & GraphOp::getName(void)
-{
-    return _name;
+const std::string& GraphOp::getName(void) {
+  return _name;
 };
 
-void GraphOp::setName(const char *name)
-{
-    _name = name;
+void GraphOp::setName(const char* name) {
+  _name = name;
 };
 
 /*--------------------------- Exclude List --------------------------------*/
 
-void GraphOp::addToExcludeList(NodePtr& node)
-{
-    if (!isInExcludeListNodes(node))
-        _excludeListNodes.push_back(node);
+void GraphOp::addToExcludeList(NodePtr& node) {
+  if (!isInExcludeListNodes(node))
+    _excludeListNodes.push_back(node);
 }
 
-void GraphOp::addToExcludeList(const std::string &name)
-{
-    if (!isInExcludeListNames(name))
-        _excludeListNames.push_back(name);
+void GraphOp::addToExcludeList(const std::string& name) {
+  if (!isInExcludeListNames(name))
+    _excludeListNames.push_back(name);
 }
 
-void GraphOp::removeFromExcludeList(NodePtr& node)
-{
-    _excludeListNodes.remove(node);
+void GraphOp::removeFromExcludeList(NodePtr& node) {
+  _excludeListNodes.remove(node);
 }
 
-void GraphOp::removeFromExcludeList(const std::string &name)
-{
-    _excludeListNames.remove(name);
+void GraphOp::removeFromExcludeList(const std::string& name) {
+  _excludeListNames.remove(name);
 }
 
-void GraphOp::clearExcludeList(void)
-{
-    _excludeListNames.clear();
-    _excludeListNodes.clear();
+void GraphOp::clearExcludeList(void) {
+  _excludeListNames.clear();
+  _excludeListNodes.clear();
 }
 
-bool GraphOp::isInExcludeListNodes(NodePtr& node)
-{
-    std::list<NodePtr>::iterator list_iter;
-    list_iter = std::find(_excludeListNodes.begin(),_excludeListNodes.end(),node);
+bool GraphOp::isInExcludeListNodes(NodePtr& node) {
+  std::list<NodePtr>::iterator list_iter;
+  list_iter = std::find(_excludeListNodes.begin(), _excludeListNodes.end(), node);
 
-    if (list_iter==_excludeListNodes.end()) 
-        return false;
-    else 
-        return true;
+  if (list_iter == _excludeListNodes.end())
+    return false;
+  else
+    return true;
 }
 
-bool GraphOp::isInExcludeListNames(const std::string &name)
-{
-    std::list<std::string>::iterator namelist_iter;
-    namelist_iter = std::find(_excludeListNames.begin(),_excludeListNames.end(),name);
+bool GraphOp::isInExcludeListNames(const std::string& name) {
+  std::list<std::string>::iterator namelist_iter;
+  namelist_iter = std::find(_excludeListNames.begin(), _excludeListNames.end(), name);
 
-    if (namelist_iter==_excludeListNames.end()) 
-        return false;
-    else 
-        return true;
+  if (namelist_iter == _excludeListNames.end())
+    return false;
+  else
+    return true;
 }
 
-bool GraphOp::isInExcludeList(NodePtr& node)
-{
-    if (isInExcludeListNodes(node) || (OSG::getName(node)!=NULL && isInExcludeListNames(OSG::getName(node))))
-        return true;
-    else
-        return false;
+bool GraphOp::isInExcludeList(NodePtr& node) {
+  if (isInExcludeListNodes(node) ||
+      (OSG::getName(node) != NULL && isInExcludeListNames(OSG::getName(node))))
+    return true;
+  else
+    return false;
 }
 
 // Parameter Helpers
 
-GraphOp::ParamSet::ParamSet(const std::string &params) :
-    _values(),
-    _used()
-{
-    std::string::const_iterator it = params.begin(), end = params.end();
-    
-    std::string key, value;
-    
-    while(it != end)
-    {
-        char c = 0;
-        
-        key = "";
-        value = "";
-        
-        // Read key
-        while(it != end)
-        {
-            c = *it++;
-            
-            if(c == ' ' || c == '=')
-                break;
-            
-            key += tolower(c);
-        }
-        
-        // Do we have a value? Read it
-        if (it != end && c == '=')
-        {
-            while(it != end)
-            {
-                c = *it++;
+GraphOp::ParamSet::ParamSet(const std::string& params)
+    : _values()
+    , _used() {
+  std::string::const_iterator it = params.begin(), end = params.end();
 
-                if(c == ' ')
-                    break;
+  std::string key, value;
 
-                value += c;
-            }           
-        }
+  while (it != end) {
+    char c = 0;
 
-        // Add key, value pair
-        
-        FDEBUG(("GraphOp::ParamSet: key='%s', value='%s'\n", key.c_str(),
-                                                             value.c_str()));
+    key   = "";
+    value = "";
 
-        _values.insert(valuesT::value_type(key, value));
+    // Read key
+    while (it != end) {
+      c = *it++;
 
-        // Skip to next param
+      if (c == ' ' || c == '=')
+        break;
 
-        while(it != end && (*it == ' '));
-   }
-}
-
-bool GraphOp::ParamSet::operator()(const char *name, std::string &val)
-{
-    valuesT::iterator it = _values.find(name);
-    
-    if(it != _values.end())
-    {
-        val = (*it).second;
-        
-        _used[name] = true;
-        
-        return true;
+      key += tolower(c);
     }
-    return false;
-}
- 
-bool GraphOp::ParamSet::operator()(const char *name, Real32 &val)
-{
-    valuesT::iterator it = _values.find(name);
-    
-    if(it != _values.end())
-    {
-        const Char8* c = (*it).second.c_str();       
-        FieldDataTraits<Real32>::getFromString(val, c);
-        
-        _used[name] = true;
-        return true;
+
+    // Do we have a value? Read it
+    if (it != end && c == '=') {
+      while (it != end) {
+        c = *it++;
+
+        if (c == ' ')
+          break;
+
+        value += c;
+      }
     }
-    return false;
+
+    // Add key, value pair
+
+    FDEBUG(("GraphOp::ParamSet: key='%s', value='%s'\n", key.c_str(), value.c_str()));
+
+    _values.insert(valuesT::value_type(key, value));
+
+    // Skip to next param
+
+    while (it != end && (*it == ' '))
+      ;
+  }
 }
 
-bool GraphOp::ParamSet::operator()(const char *name, UInt16 &val)
-{
-    valuesT::iterator it = _values.find(name);
-    
-    if(it != _values.end())
-    {
-        const Char8* c = (*it).second.c_str();       
-        FieldDataTraits<UInt16>::getFromString(val, c);
-        
-        _used[name] = true;
-        return true;
-    }
-    return false;
-}
+bool GraphOp::ParamSet::operator()(const char* name, std::string& val) {
+  valuesT::iterator it = _values.find(name);
 
-bool GraphOp::ParamSet::operator()(const char *name, UInt32 &val)
-{
-    valuesT::iterator it = _values.find(name);
-    
-    if(it != _values.end())
-    {
-        const Char8* c = (*it).second.c_str();       
-        FieldDataTraits<UInt32>::getFromString(val, c);
-        
-        _used[name] = true;
-        return true;
-    }
-    return false;
-}
+  if (it != _values.end()) {
+    val = (*it).second;
 
-bool GraphOp::ParamSet::operator()(const char *name, bool &val)
-{
-    valuesT::iterator it = _values.find(name);
-    
-    if(it != _values.end())
-    {
-        if((*it).second.length() == 0)
-        {
-            val = true;
-        }
-        else
-        {
-            const Char8* c = (*it).second.c_str();       
-            FieldDataTraits2<bool>::getFromString(val, c);
-        }
-        
-        _used[name] = true;
-        return true;
-    }
-    return false;
-}
-
-void GraphOp::ParamSet::markUsed(const char *name)
-{
     _used[name] = true;
+
+    return true;
+  }
+  return false;
 }
 
-std::string GraphOp::ParamSet::getUnusedParams(void)
-{
-    std::string out;
-    
-    for (valuesT::iterator it = _values.begin(); it != _values.end(); ++it)
-    {
-        usedT::iterator uit = _used.find((*it).first);
-        
-        if(uit == _used.end())
-        {
-            if(out.length())
-                out += " ";
-                
-            out += (*it).first;
-        }
+bool GraphOp::ParamSet::operator()(const char* name, Real32& val) {
+  valuesT::iterator it = _values.find(name);
+
+  if (it != _values.end()) {
+    const Char8* c = (*it).second.c_str();
+    FieldDataTraits<Real32>::getFromString(val, c);
+
+    _used[name] = true;
+    return true;
+  }
+  return false;
+}
+
+bool GraphOp::ParamSet::operator()(const char* name, UInt16& val) {
+  valuesT::iterator it = _values.find(name);
+
+  if (it != _values.end()) {
+    const Char8* c = (*it).second.c_str();
+    FieldDataTraits<UInt16>::getFromString(val, c);
+
+    _used[name] = true;
+    return true;
+  }
+  return false;
+}
+
+bool GraphOp::ParamSet::operator()(const char* name, UInt32& val) {
+  valuesT::iterator it = _values.find(name);
+
+  if (it != _values.end()) {
+    const Char8* c = (*it).second.c_str();
+    FieldDataTraits<UInt32>::getFromString(val, c);
+
+    _used[name] = true;
+    return true;
+  }
+  return false;
+}
+
+bool GraphOp::ParamSet::operator()(const char* name, bool& val) {
+  valuesT::iterator it = _values.find(name);
+
+  if (it != _values.end()) {
+    if ((*it).second.length() == 0) {
+      val = true;
+    } else {
+      const Char8* c = (*it).second.c_str();
+      FieldDataTraits2<bool>::getFromString(val, c);
     }
- 
-    return out;   
+
+    _used[name] = true;
+    return true;
+  }
+  return false;
 }
 
+void GraphOp::ParamSet::markUsed(const char* name) {
+  _used[name] = true;
+}
+
+std::string GraphOp::ParamSet::getUnusedParams(void) {
+  std::string out;
+
+  for (valuesT::iterator it = _values.begin(); it != _values.end(); ++it) {
+    usedT::iterator uit = _used.find((*it).first);
+
+    if (uit == _used.end()) {
+      if (out.length())
+        out += " ";
+
+      out += (*it).first;
+    }
+  }
+
+  return out;
+}
 
 /*-------------------------------------------------------------------------*\
  -  protected                                                              -

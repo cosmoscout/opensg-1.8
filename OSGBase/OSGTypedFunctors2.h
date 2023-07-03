@@ -66,107 +66,70 @@ OSG_BEGIN_NAMESPACE
     \hideinhierarchy
  */
 
-template <class RetT, 
-          class CallArgT,
-          class ArgsT   > 
-struct TypedTraits2
-{
-    typedef typename CallArgT::ObjType ObjType;
-    typedef typename CallArgT::ArgType ArgType;
+template <class RetT, class CallArgT, class ArgsT>
+struct TypedTraits2 {
+  typedef typename CallArgT::ObjType ObjType;
+  typedef typename CallArgT::ArgType ArgType;
 
-    typedef typename ArgsT::Arg1T      Arg1T;
+  typedef typename ArgsT::Arg1T Arg1T;
 
-    typedef typename
-        FunctorBuildFuncType2<RetT, 
-                              CallArgT, 
-                              ArgsT   >::FuncFunctionType         FunctionF;
+  typedef typename FunctorBuildFuncType2<RetT, CallArgT, ArgsT>::FuncFunctionType FunctionF;
 
-    typedef typename
-        FunctorBuildFuncType2<RetT, CallArgT, ArgsT>::ObjFuncType ObjMethodF;
+  typedef typename FunctorBuildFuncType2<RetT, CallArgT, ArgsT>::ObjFuncType ObjMethodF;
 
-    static void callObjectMethodVoid(UInt8   *pData2, 
-                                     ArgType  arg1, 
-                                     Arg1T    arg2)
-    {
-        ObjMethodF  pFunc = *((ObjMethodF *) pData2);
-        ObjType    *pObj  = CallArgT::getPtr(arg1); 
+  static void callObjectMethodVoid(UInt8* pData2, ArgType arg1, Arg1T arg2) {
+    ObjMethodF pFunc = *((ObjMethodF*)pData2);
+    ObjType*   pObj  = CallArgT::getPtr(arg1);
 
-        (pObj->*pFunc)(arg2);
-    }
+    (pObj->*pFunc)(arg2);
+  }
 
-    static RetT callObjectMethod(UInt8   *pData2, 
-                                 ArgType  arg1, 
-                                 Arg1T    arg2)
-    {
-        ObjMethodF  pFunc = *((ObjMethodF *) pData2);
-        ObjType    *pObj  = CallArgT::getPtr(arg1); 
+  static RetT callObjectMethod(UInt8* pData2, ArgType arg1, Arg1T arg2) {
+    ObjMethodF pFunc = *((ObjMethodF*)pData2);
+    ObjType*   pObj  = CallArgT::getPtr(arg1);
 
-        return (pObj->*pFunc)(arg2);
-    }
+    return (pObj->*pFunc)(arg2);
+  }
 };
-
-
-
 
 /*! \ingroup GrpBaseFunctors1Helper
     \hideinhierarchy
  */
 
-template <class RetT, 
-          class StoredObjCallArgT,
-          class CallArgT,
-          class ArgsT> 
-struct TypedSOTraits2
-{
-    typedef typename StoredObjCallArgT::ObjType  ObjType;
+template <class RetT, class StoredObjCallArgT, class CallArgT, class ArgsT>
+struct TypedSOTraits2 {
+  typedef typename StoredObjCallArgT::ObjType ObjType;
 
-    typedef typename CallArgT::ArgType           ArgType;
+  typedef typename CallArgT::ArgType ArgType;
 
-    typedef typename StoredObjCallArgT::ArgType  SetObjectT;
-    typedef          ObjType                    *StoredObjectT;
+  typedef typename StoredObjCallArgT::ArgType SetObjectT;
+  typedef ObjType*                            StoredObjectT;
 
-    typedef typename ArgsT::Arg1T                Arg2T;
+  typedef typename ArgsT::Arg1T Arg2T;
 
-    typedef typename
-        FunctorBuildObjFuncType2<RetT, 
-                                 StoredObjCallArgT,
-                                 CallArgT,
-                                 ArgsT            >::ObjFuncType ObjMethodF;
+  typedef typename FunctorBuildObjFuncType2<RetT, StoredObjCallArgT, CallArgT, ArgsT>::ObjFuncType
+      ObjMethodF;
 
+  static void setCalledObject(Char8* pData, SetObjectT obj) {
+    *((ObjType**)pData) = &(*obj);
+  }
 
-    static void setCalledObject(Char8 *pData, SetObjectT obj)
-    {
-        *((ObjType **) pData) = &(*obj);
-    }
+  static void callObjectMethodVoid(UInt8* pData1, UInt8* pData2, ArgType arg1, Arg2T arg2) {
+    StoredObjectT pObj = *((StoredObjectT*)pData1);
 
+    ObjMethodF pFunc = *((ObjMethodF*)pData2);
 
-    static void callObjectMethodVoid(UInt8   *pData1, 
-                                     UInt8   *pData2, 
-                                     ArgType  arg1  ,
-                                     Arg2T    arg2  )
-    {
-        StoredObjectT pObj  = *((StoredObjectT *) pData1);
+    (pObj->*pFunc)(arg1, arg2);
+  }
 
-        ObjMethodF    pFunc = *((ObjMethodF     *) pData2);
-        
-        (pObj->*pFunc)(arg1, arg2);
-    }
+  static RetT callObjectMethod(UInt8* pData1, UInt8* pData2, ArgType arg1, Arg2T arg2) {
+    StoredObjectT pObj = *((StoredObjectT*)pData1);
 
-    static RetT callObjectMethod(UInt8   *pData1, 
-                                 UInt8   *pData2, 
-                                 ArgType  arg1  ,
-                                 Arg2T    arg2  )
-    {
-        StoredObjectT pObj  = *((StoredObjectT *) pData1);
+    ObjMethodF pFunc = *((ObjMethodF*)pData2);
 
-        ObjMethodF    pFunc = *((ObjMethodF     *) pData2);
-        
-        return (pObj->*pFunc)(arg1, arg2);
-    }
+    return (pObj->*pFunc)(arg1, arg2);
+  }
 };
-
-
-
 
 //---------------------------------------------------------------------------
 //  Class
@@ -176,75 +139,64 @@ struct TypedSOTraits2
     \hideinhierarchy
  */
 
-template <class RetT,
-          class CallArgT,
-          class ArgsT,
-          class SizeTraitsT = DefaultFunctorSizeTraits>
-class TypedFunctor2Base : public TypedFunctorBase<SizeTraitsT>
-{
-    /*==========================  PUBLIC  =================================*/
+template <class RetT, class CallArgT, class ArgsT, class SizeTraitsT = DefaultFunctorSizeTraits>
+class TypedFunctor2Base : public TypedFunctorBase<SizeTraitsT> {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Types                                   */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Types                                   */
-    /*! \{                                                                 */
+  typedef typename CallArgT::ArgType CallArgType;
+  typedef typename ArgsT ::Arg1T     Arg1Type;
 
-    typedef typename CallArgT::ArgType CallArgType;
-    typedef typename ArgsT   ::Arg1T   Arg1Type;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  TypedFunctor2Base(void);
+  TypedFunctor2Base(const TypedFunctor2Base& source);
 
-    TypedFunctor2Base(void);
-    TypedFunctor2Base(const TypedFunctor2Base &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  virtual ~TypedFunctor2Base(void);
 
-    virtual ~TypedFunctor2Base(void); 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Call                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Call                                    */
-    /*! \{                                                                 */
+  virtual RetT call(CallArgType obj, Arg1Type arg1);
 
-    virtual RetT call(CallArgType obj,
-                      Arg1Type    arg1);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Operators                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Operators                                 */
-    /*! \{                                                                 */
+  void operator=(const TypedFunctor2Base& source);
 
-    void operator =(const TypedFunctor2Base &source);
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*==========================  PRIVATE  ================================*/
 
-  protected:
+ private:
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Types                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PRIVATE  ================================*/
+  typedef TypedFunctorBase<SizeTraitsT> Inherited;
 
-  private:
+  typedef TypedFunctor2Base<RetT, CallArgT, ArgsT, SizeTraitsT> Self;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Types                                    */
-    /*! \{                                                                 */
-
-    typedef TypedFunctorBase <                       SizeTraitsT> Inherited;
-
-    typedef TypedFunctor2Base<RetT, CallArgT, ArgsT, SizeTraitsT> Self;
-
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 };
-
-
-
 
 //---------------------------------------------------------------------------
 //  Class
@@ -254,74 +206,64 @@ class TypedFunctor2Base : public TypedFunctorBase<SizeTraitsT>
     \hideinhierarchy
  */
 
-template <class CallArgT, 
-          class ArgsT, 
-          class SizeTraitsT = DefaultFunctorSizeTraits>
-class TypedVoidFunctor2Base : public TypedFunctorBase<SizeTraitsT>
-{
-    /*==========================  PUBLIC  =================================*/
+template <class CallArgT, class ArgsT, class SizeTraitsT = DefaultFunctorSizeTraits>
+class TypedVoidFunctor2Base : public TypedFunctorBase<SizeTraitsT> {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Types                                   */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Types                                   */
-    /*! \{                                                                 */
+  typedef typename CallArgT::ArgType CallArgType;
+  typedef typename ArgsT ::Arg1T     Arg1Type;
 
-    typedef typename CallArgT::ArgType CallArgType;
-    typedef typename ArgsT   ::Arg1T   Arg1Type;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  TypedVoidFunctor2Base(void);
+  TypedVoidFunctor2Base(const TypedVoidFunctor2Base& source);
 
-    TypedVoidFunctor2Base(void);
-    TypedVoidFunctor2Base(const TypedVoidFunctor2Base &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  virtual ~TypedVoidFunctor2Base(void);
 
-    virtual ~TypedVoidFunctor2Base(void); 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Call                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Call                                    */
-    /*! \{                                                                 */
+  virtual void call(CallArgType obj, Arg1Type arg1);
 
-    virtual void call(CallArgType obj,
-                      Arg1Type    arg1);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Operators                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Operators                                 */
-    /*! \{                                                                 */
+  void operator=(const TypedVoidFunctor2Base& source);
 
-    void operator =(const TypedVoidFunctor2Base &source);
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*==========================  PRIVATE  ================================*/
 
-  protected:
+ private:
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Types                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PRIVATE  ================================*/
+  typedef TypedFunctorBase<SizeTraitsT> Inherited;
 
-  private:
+  typedef TypedVoidFunctor2Base<CallArgT, ArgsT, SizeTraitsT> Self;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Types                                    */
-    /*! \{                                                                 */
-
-    typedef TypedFunctorBase     <                 SizeTraitsT> Inherited;
-    
-    typedef TypedVoidFunctor2Base<CallArgT, ArgsT, SizeTraitsT> Self;
-    
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 };
-
-
-
 
 //---------------------------------------------------------------------------
 //  Class
@@ -331,99 +273,77 @@ class TypedVoidFunctor2Base : public TypedFunctorBase<SizeTraitsT>
     \hideinhierarchy
  */
 
-template <class RetT, 
-          class CallArgT, 
-          class ArgsT,
-          class SizeTraitsT = DefaultFunctorSizeTraits>
-class TypedFunctionFunctor2 : 
-    public TypedFunctionFunctorBase<TypedFunctor2Base<RetT, 
+template <class RetT, class CallArgT, class ArgsT, class SizeTraitsT = DefaultFunctorSizeTraits>
+class TypedFunctionFunctor2
+    : public TypedFunctionFunctorBase<TypedFunctor2Base<RetT, CallArgT, ArgsT, SizeTraitsT>,
+          TypedTraits2<RetT, CallArgT, ArgsT>> {
+  /*==========================  PUBLIC  =================================*/
+
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Types                                   */
+  /*! \{                                                                 */
+
+  typedef typename CallArgT::ArgType CallArgType;
+  typedef typename ArgsT ::Arg1T     Arg1;
+
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
+
+  TypedFunctionFunctor2(void);
+  TypedFunctionFunctor2(const TypedFunctionFunctor2& source);
+
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
+
+  virtual ~TypedFunctionFunctor2(void);
+
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Call                                    */
+  /*! \{                                                                 */
+
+  virtual RetT call(CallArgType obj, Arg1 oArg1);
+
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+
+ protected:
+  /*==========================  PRIVATE  ================================*/
+
+ private:
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Types                                    */
+  /*! \{                                                                 */
+
+  typedef TypedTraits2<RetT, CallArgT, ArgsT> TypeTraits;
+
+  typedef TypedFunctionFunctorBase<TypedFunctor2Base<RetT, CallArgT, ArgsT, SizeTraitsT>,
+      TypedTraits2<RetT, CallArgT, ArgsT>>
+      Inherited;
+
+  typedef TypedFunctionFunctor2<RetT, CallArgT, ArgsT, SizeTraitsT> Self;
+
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Operators                                 */
+  /*! \{                                                                 */
+
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const TypedFunctionFunctor2& source);
+
+  /*! \}                                                                 */
+};
+
+/*! \class TypedFunctionFunctorBase<TypedFunctor2Base<RetT,
                                                       CallArgT,
                                                       ArgsT,
                                                       SizeTraitsT>,
-                                    TypedTraits2     <RetT, 
-                                                      CallArgT,
-                                                      ArgsT> >
-{
-    /*==========================  PUBLIC  =================================*/
-
-  public:
-
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Types                                   */
-    /*! \{                                                                 */
-
-    typedef typename CallArgT::ArgType CallArgType;
-    typedef typename ArgsT   ::Arg1T   Arg1;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    TypedFunctionFunctor2(void);
-    TypedFunctionFunctor2(const TypedFunctionFunctor2 &source);
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
-
-    virtual ~TypedFunctionFunctor2(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Call                                    */
-    /*! \{                                                                 */
-
-    virtual RetT call(CallArgType obj, 
-                      Arg1        oArg1);
-
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-
-  protected:
-
-    /*==========================  PRIVATE  ================================*/
-
-  private:
-
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Types                                    */
-    /*! \{                                                                 */
-
-    typedef TypedTraits2<RetT, CallArgT, ArgsT> TypeTraits;
-
-    typedef 
-        TypedFunctionFunctorBase<TypedFunctor2Base<RetT, 
-                                                   CallArgT,
-                                                   ArgsT,
-                                                   SizeTraitsT>,
-                                 TypedTraits2     <RetT, 
-                                                   CallArgT,
-                                                   ArgsT>     > Inherited;
-
-    typedef 
-        TypedFunctionFunctor2   <RetT,
-                                 CallArgT,
-                                 ArgsT,
-                                 SizeTraitsT                  > Self;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Operators                                 */
-    /*! \{                                                                 */
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const TypedFunctionFunctor2 &source);
-
-    /*! \}                                                                 */
-};
-
-/*! \class TypedFunctionFunctorBase<TypedFunctor2Base<RetT, 
-                                                      CallArgT,
-                                                      ArgsT,
-                                                      SizeTraitsT>,
-                                    TypedTraits2     <RetT, 
+                                    TypedTraits2     <RetT,
                                                       CallArgT,
                                                       ArgsT> >
     \hideinhierarchy
@@ -437,94 +357,76 @@ class TypedFunctionFunctor2 :
     \hideinhierarchy
  */
 
-template <class CallArgT, 
-          class ArgsT,
-          class SizeTraitsT = DefaultFunctorSizeTraits>
-class TypedFunctionVoidFunctor2 : 
-    public TypedFunctionFunctorBase<TypedVoidFunctor2Base<CallArgT,
-                                                          ArgsT,
-                                                          SizeTraitsT>,
-                                    TypedTraits2         <void, 
-                                                          CallArgT,
-                                                          ArgsT> >
-{
-    /*==========================  PUBLIC  =================================*/
+template <class CallArgT, class ArgsT, class SizeTraitsT = DefaultFunctorSizeTraits>
+class TypedFunctionVoidFunctor2
+    : public TypedFunctionFunctorBase<TypedVoidFunctor2Base<CallArgT, ArgsT, SizeTraitsT>,
+          TypedTraits2<void, CallArgT, ArgsT>> {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Types                                   */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Types                                   */
-    /*! \{                                                                 */
+  typedef typename CallArgT::ArgType CallArgType;
+  typedef typename ArgsT ::Arg1T     Arg1;
 
-    typedef typename CallArgT::ArgType CallArgType;
-    typedef typename ArgsT   ::Arg1T   Arg1;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  TypedFunctionVoidFunctor2(void);
+  TypedFunctionVoidFunctor2(const TypedFunctionVoidFunctor2& source);
 
-    TypedFunctionVoidFunctor2(void);
-    TypedFunctionVoidFunctor2(const TypedFunctionVoidFunctor2 &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
-    
-    virtual ~TypedFunctionVoidFunctor2(void); 
+  virtual ~TypedFunctionVoidFunctor2(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Call                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Call                                    */
+  /*! \{                                                                 */
 
-    virtual void call(CallArgType obj,
-                      Arg1        oArg1);
+  virtual void call(CallArgType obj, Arg1 oArg1);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-  protected:
+ protected:
+  /*==========================  PRIVATE  ================================*/
 
-    /*==========================  PRIVATE  ================================*/
+ private:
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Types                                    */
+  /*! \{                                                                 */
 
-  private:
+  typedef TypedTraits2<void, CallArgT, ArgsT> TypeTraits;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Types                                    */
-    /*! \{                                                                 */
+  typedef TypedFunctionFunctorBase<TypedVoidFunctor2Base<CallArgT, ArgsT, SizeTraitsT>,
+      TypedTraits2<void, CallArgT, ArgsT>>
+      Inherited;
 
-    typedef TypedTraits2<void, CallArgT, ArgsT> TypeTraits;
+  typedef TypedFunctionVoidFunctor2<CallArgT, ArgsT, SizeTraitsT> Self;
 
-    typedef 
-        TypedFunctionFunctorBase <TypedVoidFunctor2Base<CallArgT,
-                                                        ArgsT,
-                                                        SizeTraitsT>,
-                                  TypedTraits2         <void, 
-                                                        CallArgT,
-                                                        ArgsT>     > Inherited;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Operators                                 */
+  /*! \{                                                                 */
 
-    typedef
-        TypedFunctionVoidFunctor2<CallArgT,
-                                  ArgsT,
-                                  SizeTraitsT                      > Self;
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const TypedFunctionVoidFunctor2& source);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Operators                                 */
-    /*! \{                                                                 */
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const TypedFunctionVoidFunctor2 &source);
-
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 };
 
 /*! \class TypedFunctionFunctorBase<TypedVoidFunctor2Base<CallArgT,
                                                           ArgsT,
                                                           SizeTraitsT>,
-                                    TypedTraits2         <void, 
+                                    TypedTraits2         <void,
                                                           CallArgT,
                                                           ArgsT> >
     \hideinhierarchy
@@ -538,105 +440,81 @@ class TypedFunctionVoidFunctor2 :
     \hideinhierarchy
  */
 
-template <class RetT, 
-          class CallArgT,
-          class ArgsT,
-          class SizeTraitsT = DefaultFunctorSizeTraits>
-class TypedObjectFunctor2 : 
-    public TypedObjectFunctorBase<TypedFunctor2Base<RetT, 
-                                                    CallArgT,
-                                                    ArgsT,
-                                                    SizeTraitsT>,
-                                  TypedTraits2     <RetT, 
-                                                    CallArgT,
-                                                    ArgsT> >
-{
-    /*==========================  PUBLIC  =================================*/
+template <class RetT, class CallArgT, class ArgsT, class SizeTraitsT = DefaultFunctorSizeTraits>
+class TypedObjectFunctor2
+    : public TypedObjectFunctorBase<TypedFunctor2Base<RetT, CallArgT, ArgsT, SizeTraitsT>,
+          TypedTraits2<RetT, CallArgT, ArgsT>> {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Types                                   */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Types                                   */
-    /*! \{                                                                 */
+  typedef typename CallArgT::ArgType CallArgType;
+  typedef typename ArgsT ::Arg1T     Arg1;
 
-    typedef typename CallArgT::ArgType CallArgType;
-    typedef typename ArgsT   ::Arg1T   Arg1;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  TypedObjectFunctor2(void);
+  TypedObjectFunctor2(const TypedObjectFunctor2& source);
 
-    TypedObjectFunctor2(void);
-    TypedObjectFunctor2(const TypedObjectFunctor2 &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
-    
-    virtual ~TypedObjectFunctor2(void); 
+  virtual ~TypedObjectFunctor2(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Call                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Call                                    */
+  /*! \{                                                                 */
 
-    virtual RetT call(CallArgType obj,
-                      Arg1        oArg1);
+  virtual RetT call(CallArgType obj, Arg1 oArg1);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-  protected:
+ protected:
+  /*==========================  PRIVATE  ================================*/
 
-    /*==========================  PRIVATE  ================================*/
+ private:
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Types                                    */
+  /*! \{                                                                 */
 
-  private:
+  typedef TypedTraits2<RetT, CallArgT, ArgsT> TypeTraits;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Types                                    */
-    /*! \{                                                                 */
+  typedef TypedObjectFunctorBase<TypedFunctor2Base<RetT, CallArgT, ArgsT, SizeTraitsT>,
+      TypedTraits2<RetT, CallArgT, ArgsT>>
+      Inherited;
 
-    typedef TypedTraits2<RetT, CallArgT, ArgsT> TypeTraits;
+  typedef TypedObjectFunctor2<RetT, CallArgT, ArgsT, SizeTraitsT> Self;
 
-    typedef 
-        TypedObjectFunctorBase<
-            TypedFunctor2Base<RetT, 
-                              CallArgT,
-                              ArgsT,
-                              SizeTraitsT>,
-            TypedTraits2     <RetT, 
-                              CallArgT,
-                              ArgsT>   > Inherited;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Operators                                 */
+  /*! \{                                                                 */
 
-    typedef
-        TypedObjectFunctor2<RetT,
-                            CallArgT,
-                            ArgsT,
-                            SizeTraitsT> Self;
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const TypedObjectFunctor2& source);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Operators                                 */
-    /*! \{                                                                 */
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const TypedObjectFunctor2 &source);
-
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 };
 
-/*! \class TypedObjectFunctorBase<TypedFunctor2Base<RetT, 
+/*! \class TypedObjectFunctorBase<TypedFunctor2Base<RetT,
                                                     CallArgT,
                                                     ArgsT,
                                                     SizeTraitsT>,
-                                  TypedTraits2     <RetT, 
+                                  TypedTraits2     <RetT,
                                                     CallArgT,
                                                     ArgsT> >
     \hideinhierarchy
  */
-
 
 //---------------------------------------------------------------------------
 //  Class
@@ -646,100 +524,80 @@ class TypedObjectFunctor2 :
     \hideinhierarchy
  */
 
-template <class CallArgT, 
-          class ArgsT,
-          class SizeTraitsT = DefaultFunctorSizeTraits>
-class TypedObjectVoidFunctor2 : 
-    public TypedObjectFunctorBase<TypedVoidFunctor2Base<CallArgT, 
-                                                        ArgsT,
-                                                        SizeTraitsT>,
-                                  TypedTraits2         <void, 
-                                                        CallArgT,
-                                                        ArgsT> >
-{
-    /*==========================  PUBLIC  =================================*/
+template <class CallArgT, class ArgsT, class SizeTraitsT = DefaultFunctorSizeTraits>
+class TypedObjectVoidFunctor2
+    : public TypedObjectFunctorBase<TypedVoidFunctor2Base<CallArgT, ArgsT, SizeTraitsT>,
+          TypedTraits2<void, CallArgT, ArgsT>> {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Types                                   */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Types                                   */
-    /*! \{                                                                 */
+  typedef typename CallArgT::ArgType CallArgType;
+  typedef typename ArgsT ::Arg1T     Arg1;
 
-    typedef typename CallArgT::ArgType CallArgType;
-    typedef typename ArgsT   ::Arg1T   Arg1;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  TypedObjectVoidFunctor2(void);
+  TypedObjectVoidFunctor2(const TypedObjectVoidFunctor2& source);
 
-    TypedObjectVoidFunctor2(void);
-    TypedObjectVoidFunctor2(const TypedObjectVoidFunctor2 &source);
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    virtual ~TypedObjectVoidFunctor2(void); 
+  virtual ~TypedObjectVoidFunctor2(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Call                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Call                                    */
+  /*! \{                                                                 */
 
-    virtual void call(CallArgType obj,
-                      Arg1        oArg1);
+  virtual void call(CallArgType obj, Arg1 oArg1);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-  protected:
+ protected:
+  /*==========================  PRIVATE  ================================*/
 
-    /*==========================  PRIVATE  ================================*/
+ private:
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Types                                    */
+  /*! \{                                                                 */
 
-  private:
+  typedef TypedTraits2<void, CallArgT, ArgsT> TypeTraits;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Types                                    */
-    /*! \{                                                                 */
+  typedef TypedObjectFunctorBase<TypedVoidFunctor2Base<CallArgT, ArgsT, SizeTraitsT>,
+      TypedTraits2<void, CallArgT, ArgsT>>
+      Inherited;
 
-    typedef TypedTraits2<void, CallArgT, ArgsT> TypeTraits;
+  typedef TypedObjectVoidFunctor2<CallArgT, ArgsT, SizeTraitsT> Self;
 
-    typedef 
-        TypedObjectFunctorBase<
-            TypedVoidFunctor2Base<CallArgT,
-                                  ArgsT,
-                                  SizeTraitsT>,
-            TypedTraits2         <void, 
-                                  CallArgT,
-                                  ArgsT>     > Inherited;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Operators                                 */
+  /*! \{                                                                 */
 
-    typedef
-        TypedObjectVoidFunctor2  <CallArgT,
-                                  ArgsT,
-                                  SizeTraitsT> Self;
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const TypedObjectVoidFunctor2& source);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Operators                                 */
-    /*! \{                                                                 */
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const TypedObjectVoidFunctor2 &source);
-
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 };
 
-/*! \class TypedObjectFunctorBase<TypedVoidFunctor2Base<CallArgT, 
+/*! \class TypedObjectFunctorBase<TypedVoidFunctor2Base<CallArgT,
                                                         ArgsT,
                                                         SizeTraitsT>,
-                                  TypedTraits2         <void, 
+                                  TypedTraits2         <void,
                                                         CallArgT,
                                                         ArgsT> >
     \hideinhierarchy
  */
-
 
 //---------------------------------------------------------------------------
 //  Class
@@ -749,114 +607,84 @@ class TypedObjectVoidFunctor2 :
     \hideinhierarchy
  */
 
-template <class RetT, 
-          class StoredObjectT,
-          class ArgObjectT,
-          class ArgsT,
-          class SizeTraitsT = DefaultFunctorSizeTraits>
-class TypedStoredObjectFunctor2 : 
-    public TypedStoredObjectFunctorBase<TypedFunctor2Base<RetT, 
-                                                          ArgObjectT,
-                                                          ArgsT,
-                                                          SizeTraitsT>,
-                                        TypedSOTraits2   <RetT, 
-                                                          StoredObjectT,
-                                                 typename ArgObjectT::ArgsC,
-                                                          ArgsT> >
-{
-    /*==========================  PUBLIC  =================================*/
+template <class RetT, class StoredObjectT, class ArgObjectT, class ArgsT,
+    class SizeTraitsT = DefaultFunctorSizeTraits>
+class TypedStoredObjectFunctor2
+    : public TypedStoredObjectFunctorBase<TypedFunctor2Base<RetT, ArgObjectT, ArgsT, SizeTraitsT>,
+          TypedSOTraits2<RetT, StoredObjectT, typename ArgObjectT::ArgsC, ArgsT>> {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Types                                   */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Types                                   */
-    /*! \{                                                                 */
+  typedef typename ArgObjectT::ArgType CallArgType;
+  typedef typename ArgsT ::Arg1T       Arg1;
 
-    typedef typename ArgObjectT::ArgType CallArgType;
-    typedef typename ArgsT     ::Arg1T   Arg1;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  TypedStoredObjectFunctor2(void);
+  TypedStoredObjectFunctor2(const TypedStoredObjectFunctor2& source);
 
-    TypedStoredObjectFunctor2(void);
-    TypedStoredObjectFunctor2(const TypedStoredObjectFunctor2 &source);
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    virtual ~TypedStoredObjectFunctor2(void); 
+  virtual ~TypedStoredObjectFunctor2(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Call                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Call                                    */
+  /*! \{                                                                 */
 
-    virtual RetT call(CallArgType obj,
-                      Arg1        oArg1);
+  virtual RetT call(CallArgType obj, Arg1 oArg1);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-  protected:
+ protected:
+  /*==========================  PRIVATE  ================================*/
 
-    /*==========================  PRIVATE  ================================*/
+ private:
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Types                                    */
+  /*! \{                                                                 */
 
-  private:
+  typedef TypedSOTraits2<RetT, StoredObjectT, typename ArgObjectT::ArgsC, ArgsT> TypeSOTraits;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Types                                    */
-    /*! \{                                                                 */
+  typedef TypedStoredObjectFunctorBase<TypedFunctor2Base<RetT, ArgObjectT, ArgsT, SizeTraitsT>,
+      TypedSOTraits2<RetT, StoredObjectT, typename ArgObjectT::ArgsC, ArgsT>>
+      Inherited;
 
-    typedef TypedSOTraits2<RetT, 
-                           StoredObjectT,
-                           typename ArgObjectT::ArgsC,
-                           ArgsT            > TypeSOTraits; 
+  typedef TypedStoredObjectFunctor2<RetT, StoredObjectT, ArgObjectT, ArgsT, SizeTraitsT> Self;
 
-    typedef 
-        TypedStoredObjectFunctorBase<
-            TypedFunctor2Base<RetT, 
-                              ArgObjectT, 
-                              ArgsT, 
-                              SizeTraitsT>,
-            TypedSOTraits2   <RetT, 
-                              StoredObjectT,
-                              typename ArgObjectT::ArgsC,
-                              ArgsT            >        > Inherited;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Operators                                 */
+  /*! \{                                                                 */
 
-    typedef
-        TypedStoredObjectFunctor2<RetT, 
-                                  StoredObjectT,
-                                  ArgObjectT,
-                                  ArgsT,
-                                  SizeTraitsT           > Self;
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const TypedStoredObjectFunctor2& source);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Operators                                 */
-    /*! \{                                                                 */
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const TypedStoredObjectFunctor2 &source);
-
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 };
 
-/*! \class TypedStoredObjectFunctorBase<TypedFunctor2Base<RetT, 
+/*! \class TypedStoredObjectFunctorBase<TypedFunctor2Base<RetT,
                                                           ArgObjectT,
                                                           ArgsT,
                                                           SizeTraitsT>,
-                                        TypedSOTraits2   <RetT, 
+                                        TypedSOTraits2   <RetT,
                                                           StoredObjectT,
                                                           ArgObjectT::ArgsC,
                                                           ArgsT> >
     \hideinhierarchy
  */
 
-
 //---------------------------------------------------------------------------
 //  Class
 //---------------------------------------------------------------------------
@@ -865,101 +693,76 @@ class TypedStoredObjectFunctor2 :
     \hideinhierarchy
  */
 
-template <class StoredObjectT, 
-          class ArgObjectT,
-          class ArgsT,
-          class SizeTraitsT = DefaultFunctorSizeTraits>
-class TypedStoredObjectVoidFunctor2 : 
-    public TypedStoredObjectFunctorBase<TypedVoidFunctor2Base<ArgObjectT,
-                                                              ArgsT,
-                                                              SizeTraitsT>,
-                                        TypedSOTraits2      <void, 
-                                                             StoredObjectT,
-                                                    typename ArgObjectT::ArgsC,
-                                                             ArgsT> >
-{
-    /*==========================  PUBLIC  =================================*/
+template <class StoredObjectT, class ArgObjectT, class ArgsT,
+    class SizeTraitsT = DefaultFunctorSizeTraits>
+class TypedStoredObjectVoidFunctor2
+    : public TypedStoredObjectFunctorBase<TypedVoidFunctor2Base<ArgObjectT, ArgsT, SizeTraitsT>,
+          TypedSOTraits2<void, StoredObjectT, typename ArgObjectT::ArgsC, ArgsT>> {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Types                                   */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Types                                   */
-    /*! \{                                                                 */
+  typedef typename ArgsT ::Arg1T       Arg1;
+  typedef typename ArgObjectT::ArgType CallArgType;
 
-    typedef typename ArgsT     ::Arg1T   Arg1;
-    typedef typename ArgObjectT::ArgType CallArgType;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  TypedStoredObjectVoidFunctor2(void);
+  TypedStoredObjectVoidFunctor2(const TypedStoredObjectVoidFunctor2& source);
 
-    TypedStoredObjectVoidFunctor2(void);
-    TypedStoredObjectVoidFunctor2(const TypedStoredObjectVoidFunctor2 &source);
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    virtual ~TypedStoredObjectVoidFunctor2(void); 
+  virtual ~TypedStoredObjectVoidFunctor2(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Call                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Call                                    */
+  /*! \{                                                                 */
 
-    virtual void call(CallArgType obj,
-                      Arg1        oArg1);
+  virtual void call(CallArgType obj, Arg1 oArg1);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-  protected:
+ protected:
+  /*==========================  PRIVATE  ================================*/
 
-    /*==========================  PRIVATE  ================================*/
+ private:
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Types                                    */
+  /*! \{                                                                 */
 
-  private:
+  typedef TypedSOTraits2<void, StoredObjectT, typename ArgObjectT::ArgsC, ArgsT> TypeSOTraits;
+  typedef TypedStoredObjectFunctorBase<TypedVoidFunctor2Base<ArgObjectT, ArgsT, SizeTraitsT>,
+      TypedSOTraits2<void, StoredObjectT, typename ArgObjectT::ArgsC, ArgsT>>
+      Inherited;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Types                                    */
-    /*! \{                                                                 */
+  typedef TypedStoredObjectVoidFunctor2<StoredObjectT, ArgObjectT, ArgsT, SizeTraitsT> Self;
 
-    typedef TypedSOTraits2<void, 
-                           StoredObjectT,
-                           typename ArgObjectT::ArgsC,
-                           ArgsT                     > TypeSOTraits;
-    typedef 
-        TypedStoredObjectFunctorBase<
-            TypedVoidFunctor2Base<ArgObjectT,
-                                  ArgsT,
-                                  SizeTraitsT>,
-            TypedSOTraits2       <void, 
-                                  StoredObjectT,
-                                  typename ArgObjectT::ArgsC,
-                                  ArgsT                     > > Inherited;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Operators                                 */
+  /*! \{                                                                 */
 
-    typedef 
-        TypedStoredObjectVoidFunctor2<StoredObjectT, 
-                                      ArgObjectT,
-                                      ArgsT,
-                                      SizeTraitsT             > Self;
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const TypedStoredObjectVoidFunctor2& source);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Operators                                 */
-    /*! \{                                                                 */
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const TypedStoredObjectVoidFunctor2 &source);
-
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 };
 
 /*! \class TypedStoredObjectFunctorBase<TypedVoidFunctor2Base<ArgObjectT,
                                                               ArgsT,
                                                               SizeTraitsT>,
-                                        TypedSOTraits2      <void, 
+                                        TypedSOTraits2      <void,
                                                              StoredObjectT,
                                                              ArgObjectT::ArgsC,
                                                              ArgsT> >
@@ -971,8 +774,3 @@ OSG_END_NAMESPACE
 #include <OSGTypedFunctors2.inl>
 
 #endif /* _OSGTYPEDFUNCTORS2_HPP_ */
-
-
-
-
-

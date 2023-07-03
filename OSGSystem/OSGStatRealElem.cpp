@@ -50,7 +50,6 @@
 
 OSG_USING_NAMESPACE
 
-
 /***************************************************************************\
  *                            Description                                  *
 \***************************************************************************/
@@ -59,7 +58,7 @@ OSG_USING_NAMESPACE
     \ingroup GrpSystemStatistics
 
     The StatIntElem keeps an Real32 value, see \ref PageSystemStatistics for
-    details. 
+    details.
 */
 
 /***************************************************************************\
@@ -68,92 +67,76 @@ OSG_USING_NAMESPACE
 
 /*------------- constructors & destructors --------------------------------*/
 
-StatRealElem::StatRealElem(StatElemDescBase *desc)
-  : StatElem(desc), _value(0)
-{
+StatRealElem::StatRealElem(StatElemDescBase* desc)
+    : StatElem(desc)
+    , _value(0) {
 }
 
-StatElem *StatRealElem::create ( StatElemDescBase *desc)
-{
-    return new StatRealElem(desc);
+StatElem* StatRealElem::create(StatElemDescBase* desc) {
+  return new StatRealElem(desc);
 }
 
-StatRealElem::~StatRealElem(void)
-{
+StatRealElem::~StatRealElem(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-void StatRealElem::putToString(std::string &str, const char *format) const
-{
-    if(!format)
-    {
-        FieldDataTraits<Real32>::putToString(_value, str);
-    }
-    else
-    {
-        char *temp = new char [strlen(format) + 40];
-        sprintf(temp, format, _value);
-        str = temp;
-        delete [] temp;
-    }
+void StatRealElem::putToString(std::string& str, const char* format) const {
+  if (!format) {
+    FieldDataTraits<Real32>::putToString(_value, str);
+  } else {
+    char* temp = new char[strlen(format) + 40];
+    sprintf(temp, format, _value);
+    str = temp;
+    delete[] temp;
+  }
 }
 
-bool StatRealElem::getFromString(const Char8 *&inVal)
-{
-    return FieldDataTraits<Real32>::getFromString(_value, inVal);
+bool StatRealElem::getFromString(const Char8*& inVal) {
+  return FieldDataTraits<Real32>::getFromString(_value, inVal);
 }
 
-Real64 StatRealElem::getValue(void) const
-{
-    return static_cast<Real64>(get());
+Real64 StatRealElem::getValue(void) const {
+  return static_cast<Real64>(get());
 }
 
-
-void StatRealElem::reset(void) 
-{ 
-    _value = 0; 
+void StatRealElem::reset(void) {
+  _value = 0;
 }
 
 /*-------------------------- assignment -----------------------------------*/
 
-StatRealElem& StatRealElem::operator = (const StatRealElem &source)
-{
-    if (this == &source)
-        return *this;
-
-    set(source.get());
-    
+StatRealElem& StatRealElem::operator=(const StatRealElem& source) {
+  if (this == &source)
     return *this;
+
+  set(source.get());
+
+  return *this;
 }
 
 /*-------------------------- comparison -----------------------------------*/
 
-bool StatRealElem::operator < (const StatRealElem &other) const
-{
-    return this->get() < other.get();
+bool StatRealElem::operator<(const StatRealElem& other) const {
+  return this->get() < other.get();
 }
 
 /*--------------------------- creation ------------------------------------*/
 
-StatElem *StatRealElem::clone(void) const
-{
-    StatRealElem *e = new StatRealElem(getDesc());
-    
-    *e = *this;
-    
-    return e;
+StatElem* StatRealElem::clone(void) const {
+  StatRealElem* e = new StatRealElem(getDesc());
+
+  *e = *this;
+
+  return e;
 }
 
 /*--------------------------- operators ------------------------------------*/
 
-StatElem &StatRealElem::operator += (const StatElem &other)
-{
-    const StatRealElem *o = dynamic_cast<const StatRealElem *>(&other);
-    
-    _value += o->_value;
-    
-    return *this;
+StatElem& StatRealElem::operator+=(const StatElem& other) {
+  const StatRealElem* o = dynamic_cast<const StatRealElem*>(&other);
+
+  _value += o->_value;
+
+  return *this;
 }
-
-

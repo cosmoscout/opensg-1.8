@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGSTATE_H_
 #define _OSGSTATE_H_
 #ifdef __sgi
@@ -53,123 +52,118 @@ OSG_BEGIN_NAMESPACE
     for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING State : public StateBase
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING State : public StateBase {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  static const char* getClassname(void) {
+    return "State";
+  };
 
-    static const char *getClassname(void) { return "State"; };
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    virtual void changed(BitVector  whichField,
-                         UInt32     origin    );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Output                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Output                                  */
-    /*! \{                                                                 */
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    virtual void dump(      UInt32    uiIndent = 0,
-                      const BitVector bvFlags  = 0) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name               OpenGL State Management                        */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name               OpenGL State Management                        */
-    /*! \{                                                                 */
+  void activate(DrawActionBase* action);
 
-    void activate   (DrawActionBase *action);
+  void changeFrom(DrawActionBase* action, State* old);
 
-    void changeFrom (DrawActionBase *action, State *old);
+  void deactivate(DrawActionBase* action);
 
-    void deactivate (DrawActionBase *action);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Enums                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Enums                                     */
-    /*! \{                                                                 */
+  enum { AutoSlot = -1, AutoSlotReplace = -2 };
 
-    enum          { AutoSlot = -1, AutoSlotReplace = -2 };
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Access                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Access                                    */
-    /*! \{                                                                 */
+  StateChunkPtr getChunk(UInt32 chunkId);
 
-    StateChunkPtr getChunk     (UInt32 chunkId);
+  bool chunkPresent(UInt32 chunkId);
+  bool chunkPresent(StateChunkPtr chunk);
 
-    bool          chunkPresent (UInt32 chunkId);
-    bool          chunkPresent (StateChunkPtr chunk);
-   
-    bool          addChunk     (StateChunkPtr chunk, 
-                                Int32         index = AutoSlotReplace);
+  bool addChunk(StateChunkPtr chunk, Int32 index = AutoSlotReplace);
 
-    bool          subChunk     (StateChunkPtr chunk);
+  bool subChunk(StateChunkPtr chunk);
 
-    bool          subChunk     (UInt32 classid, Int32 index);
+  bool subChunk(UInt32 classid, Int32 index);
 
-    void          clearChunks  (void);
+  void clearChunks(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Comparison                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Comparison                                */
+  /*! \{                                                                 */
 
-    virtual Real32 switchCost  (State * state);
+  virtual Real32 switchCost(State* state);
 
-    virtual bool   operator <  (const State &other) const;
+  virtual bool operator<(const State& other) const;
 
-    virtual bool   operator == (const State &other) const;
-    virtual bool   operator != (const State &other) const;
+  virtual bool operator==(const State& other) const;
+  virtual bool operator!=(const State& other) const;
 
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  State(void);
+  State(const State& source);
 
-    State(void);
-    State(const State &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  virtual ~State(void);
 
-    virtual ~State(void);
-
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 
 #if defined(OSG_FIXED_MFIELDSYNC)
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*==========================  PRIVATE  ================================*/
+ private:
+  typedef StateBase Inherited;
 
-    typedef StateBase Inherited;
+  friend class FieldContainer;
+  friend class StateBase;
 
-    friend class FieldContainer;
-    friend class StateBase;
+  static char cvsid[];
 
-    static char cvsid[];
+  static void initMethod(void);
 
-    static void initMethod(void);
-
-    void operator =(const State &source);
+  void operator=(const State& source);
 };
 
-typedef State *StateP;
+typedef State* StateP;
 
 OSG_END_NAMESPACE
 

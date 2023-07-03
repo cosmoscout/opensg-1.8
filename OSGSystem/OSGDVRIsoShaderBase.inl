@@ -52,109 +52,79 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &DVRIsoShaderBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& DVRIsoShaderBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 DVRIsoShaderBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 DVRIsoShaderBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-DVRIsoShaderPtr DVRIsoShaderBase::create(void) 
-{
-    DVRIsoShaderPtr fc; 
+inline DVRIsoShaderPtr DVRIsoShaderBase::create(void) {
+  DVRIsoShaderPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = DVRIsoShaderPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = DVRIsoShaderPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-DVRIsoShaderPtr DVRIsoShaderBase::createEmpty(void) 
-{ 
-    DVRIsoShaderPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline DVRIsoShaderPtr DVRIsoShaderBase::createEmpty(void) {
+  DVRIsoShaderPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the DVRIsoShader::_sfShadeMode field.
-inline
-SFInt8 *DVRIsoShaderBase::getSFShadeMode(void)
-{
-    return &_sfShadeMode;
+inline SFInt8* DVRIsoShaderBase::getSFShadeMode(void) {
+  return &_sfShadeMode;
 }
 
 //! Get the DVRIsoShader::_sfActiveShadeMode field.
-inline
-SFInt8 *DVRIsoShaderBase::getSFActiveShadeMode(void)
-{
-    return &_sfActiveShadeMode;
-}
-
-
-//! Get the value of the DVRIsoShader::_sfShadeMode field.
-inline
-Int8 &DVRIsoShaderBase::getShadeMode(void)
-{
-    return _sfShadeMode.getValue();
+inline SFInt8* DVRIsoShaderBase::getSFActiveShadeMode(void) {
+  return &_sfActiveShadeMode;
 }
 
 //! Get the value of the DVRIsoShader::_sfShadeMode field.
-inline
-const Int8 &DVRIsoShaderBase::getShadeMode(void) const
-{
-    return _sfShadeMode.getValue();
+inline Int8& DVRIsoShaderBase::getShadeMode(void) {
+  return _sfShadeMode.getValue();
+}
+
+//! Get the value of the DVRIsoShader::_sfShadeMode field.
+inline const Int8& DVRIsoShaderBase::getShadeMode(void) const {
+  return _sfShadeMode.getValue();
 }
 
 //! Set the value of the DVRIsoShader::_sfShadeMode field.
-inline
-void DVRIsoShaderBase::setShadeMode(const Int8 &value)
-{
-    _sfShadeMode.setValue(value);
+inline void DVRIsoShaderBase::setShadeMode(const Int8& value) {
+  _sfShadeMode.setValue(value);
 }
 
 //! Get the value of the DVRIsoShader::_sfActiveShadeMode field.
-inline
-Int8 &DVRIsoShaderBase::getActiveShadeMode(void)
-{
-    return _sfActiveShadeMode.getValue();
+inline Int8& DVRIsoShaderBase::getActiveShadeMode(void) {
+  return _sfActiveShadeMode.getValue();
 }
 
 //! Get the value of the DVRIsoShader::_sfActiveShadeMode field.
-inline
-const Int8 &DVRIsoShaderBase::getActiveShadeMode(void) const
-{
-    return _sfActiveShadeMode.getValue();
+inline const Int8& DVRIsoShaderBase::getActiveShadeMode(void) const {
+  return _sfActiveShadeMode.getValue();
 }
 
 //! Set the value of the DVRIsoShader::_sfActiveShadeMode field.
-inline
-void DVRIsoShaderBase::setActiveShadeMode(const Int8 &value)
-{
-    _sfActiveShadeMode.setValue(value);
+inline void DVRIsoShaderBase::setActiveShadeMode(const Int8& value) {
+  _sfActiveShadeMode.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGDVRISOSHADERBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGDVRISOSHADERBASE_INLINE_CVSID                                                           \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

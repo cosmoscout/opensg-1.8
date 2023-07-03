@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILESTRINGATTRIBUTEMAPINST
 
 #include <stdlib.h>
@@ -61,248 +60,187 @@
 #include "OSGStringAttributeMapBase.h"
 #include "OSGStringAttributeMap.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  StringAttributeMapBase::KeysFieldMask = 
+const OSG::BitVector StringAttributeMapBase::KeysFieldMask =
     (TypeTraits<BitVector>::One << StringAttributeMapBase::KeysFieldId);
 
-const OSG::BitVector  StringAttributeMapBase::ValuesFieldMask = 
+const OSG::BitVector StringAttributeMapBase::ValuesFieldMask =
     (TypeTraits<BitVector>::One << StringAttributeMapBase::ValuesFieldId);
 
-const OSG::BitVector StringAttributeMapBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector StringAttributeMapBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
 /*! \var std::string     StringAttributeMapBase::_mfKeys
-    
+
 */
 /*! \var std::string     StringAttributeMapBase::_mfValues
-    
+
 */
 
 //! StringAttributeMap description
 
-FieldDescription *StringAttributeMapBase::_desc[] = 
-{
-    new FieldDescription(MFString::getClassType(), 
-                     "keys", 
-                     KeysFieldId, KeysFieldMask,
-                     false,
-                     (FieldAccessMethod) &StringAttributeMapBase::getMFKeys),
-    new FieldDescription(MFString::getClassType(), 
-                     "values", 
-                     ValuesFieldId, ValuesFieldMask,
-                     false,
-                     (FieldAccessMethod) &StringAttributeMapBase::getMFValues)
-};
+FieldDescription* StringAttributeMapBase::_desc[] = {
+    new FieldDescription(MFString::getClassType(), "keys", KeysFieldId, KeysFieldMask, false,
+        (FieldAccessMethod)&StringAttributeMapBase::getMFKeys),
+    new FieldDescription(MFString::getClassType(), "values", ValuesFieldId, ValuesFieldMask, false,
+        (FieldAccessMethod)&StringAttributeMapBase::getMFValues)};
 
-
-FieldContainerType StringAttributeMapBase::_type(
-    "StringAttributeMap",
-    "Attachment",
-    NULL,
-    (PrototypeCreateF) &StringAttributeMapBase::createEmpty,
-    StringAttributeMap::initMethod,
-    _desc,
+FieldContainerType StringAttributeMapBase::_type("StringAttributeMap", "Attachment", NULL,
+    (PrototypeCreateF)&StringAttributeMapBase::createEmpty, StringAttributeMap::initMethod, _desc,
     sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(StringAttributeMapBase, StringAttributeMapPtr)
+// OSG_FIELD_CONTAINER_DEF(StringAttributeMapBase, StringAttributeMapPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &StringAttributeMapBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &StringAttributeMapBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr StringAttributeMapBase::shallowCopy(void) const 
-{ 
-    StringAttributeMapPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const StringAttributeMap *>(this)); 
-
-    return returnValue; 
+FieldContainerType& StringAttributeMapBase::getType(void) {
+  return _type;
 }
 
-UInt32 StringAttributeMapBase::getContainerSize(void) const 
-{ 
-    return sizeof(StringAttributeMap); 
+const FieldContainerType& StringAttributeMapBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr StringAttributeMapBase::shallowCopy(void) const {
+  StringAttributeMapPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const StringAttributeMap*>(this));
+
+  return returnValue;
+}
+
+UInt32 StringAttributeMapBase::getContainerSize(void) const {
+  return sizeof(StringAttributeMap);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void StringAttributeMapBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((StringAttributeMapBase *) &other, whichField);
+void StringAttributeMapBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((StringAttributeMapBase*)&other, whichField);
 }
 #else
-void StringAttributeMapBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((StringAttributeMapBase *) &other, whichField, sInfo);
+void StringAttributeMapBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((StringAttributeMapBase*)&other, whichField, sInfo);
 }
-void StringAttributeMapBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void StringAttributeMapBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void StringAttributeMapBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
+void StringAttributeMapBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 
-    _mfKeys.terminateShare(uiAspect, this->getContainerSize());
-    _mfValues.terminateShare(uiAspect, this->getContainerSize());
+  _mfKeys.terminateShare(uiAspect, this->getContainerSize());
+  _mfValues.terminateShare(uiAspect, this->getContainerSize());
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-StringAttributeMapBase::StringAttributeMapBase(void) :
-    _mfKeys                   (), 
-    _mfValues                 (), 
-    Inherited() 
-{
+StringAttributeMapBase::StringAttributeMapBase(void)
+    : _mfKeys()
+    , _mfValues()
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-StringAttributeMapBase::StringAttributeMapBase(const StringAttributeMapBase &source) :
-    _mfKeys                   (source._mfKeys                   ), 
-    _mfValues                 (source._mfValues                 ), 
-    Inherited                 (source)
-{
+StringAttributeMapBase::StringAttributeMapBase(const StringAttributeMapBase& source)
+    : _mfKeys(source._mfKeys)
+    , _mfValues(source._mfValues)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-StringAttributeMapBase::~StringAttributeMapBase(void)
-{
+StringAttributeMapBase::~StringAttributeMapBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 StringAttributeMapBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 StringAttributeMapBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (KeysFieldMask & whichField))
-    {
-        returnValue += _mfKeys.getBinSize();
-    }
+  if (FieldBits::NoField != (KeysFieldMask & whichField)) {
+    returnValue += _mfKeys.getBinSize();
+  }
 
-    if(FieldBits::NoField != (ValuesFieldMask & whichField))
-    {
-        returnValue += _mfValues.getBinSize();
-    }
+  if (FieldBits::NoField != (ValuesFieldMask & whichField)) {
+    returnValue += _mfValues.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void StringAttributeMapBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void StringAttributeMapBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (KeysFieldMask & whichField))
-    {
-        _mfKeys.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (KeysFieldMask & whichField)) {
+    _mfKeys.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ValuesFieldMask & whichField))
-    {
-        _mfValues.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (ValuesFieldMask & whichField)) {
+    _mfValues.copyToBin(pMem);
+  }
 }
 
-void StringAttributeMapBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void StringAttributeMapBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (KeysFieldMask & whichField))
-    {
-        _mfKeys.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (KeysFieldMask & whichField)) {
+    _mfKeys.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ValuesFieldMask & whichField))
-    {
-        _mfValues.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (ValuesFieldMask & whichField)) {
+    _mfValues.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void StringAttributeMapBase::executeSyncImpl(      StringAttributeMapBase *pOther,
-                                        const BitVector         &whichField)
-{
+void StringAttributeMapBase::executeSyncImpl(
+    StringAttributeMapBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (KeysFieldMask & whichField))
-        _mfKeys.syncWith(pOther->_mfKeys);
+  if (FieldBits::NoField != (KeysFieldMask & whichField))
+    _mfKeys.syncWith(pOther->_mfKeys);
 
-    if(FieldBits::NoField != (ValuesFieldMask & whichField))
-        _mfValues.syncWith(pOther->_mfValues);
-
-
+  if (FieldBits::NoField != (ValuesFieldMask & whichField))
+    _mfValues.syncWith(pOther->_mfValues);
 }
 #else
-void StringAttributeMapBase::executeSyncImpl(      StringAttributeMapBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void StringAttributeMapBase::executeSyncImpl(
+    StringAttributeMapBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
+  if (FieldBits::NoField != (KeysFieldMask & whichField))
+    _mfKeys.syncWith(pOther->_mfKeys, sInfo);
 
-    if(FieldBits::NoField != (KeysFieldMask & whichField))
-        _mfKeys.syncWith(pOther->_mfKeys, sInfo);
-
-    if(FieldBits::NoField != (ValuesFieldMask & whichField))
-        _mfValues.syncWith(pOther->_mfValues, sInfo);
-
-
+  if (FieldBits::NoField != (ValuesFieldMask & whichField))
+    _mfValues.syncWith(pOther->_mfValues, sInfo);
 }
 
-void StringAttributeMapBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void StringAttributeMapBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (KeysFieldMask & whichField))
-        _mfKeys.beginEdit(uiAspect, uiContainerSize);
+  if (FieldBits::NoField != (KeysFieldMask & whichField))
+    _mfKeys.beginEdit(uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (ValuesFieldMask & whichField))
-        _mfValues.beginEdit(uiAspect, uiContainerSize);
-
+  if (FieldBits::NoField != (ValuesFieldMask & whichField))
+    _mfValues.beginEdit(uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 

@@ -66,35 +66,25 @@ The basic parameters are given by the _sfEyeSeparation and _sfLeftEye fields.
 
 /*----------------------- constructors & destructors ----------------------*/
 
-StereoCameraDecorator::StereoCameraDecorator(void) :
-    Inherited()
-{
+StereoCameraDecorator::StereoCameraDecorator(void)
+    : Inherited() {
 }
 
-StereoCameraDecorator::StereoCameraDecorator(const StereoCameraDecorator &source) :
-    Inherited(source)
-{
+StereoCameraDecorator::StereoCameraDecorator(const StereoCameraDecorator& source)
+    : Inherited(source) {
 }
 
-StereoCameraDecorator::~StereoCameraDecorator(void)
-{
+StereoCameraDecorator::~StereoCameraDecorator(void) {
 }
 
 /*----------------------------- class specific ----------------------------*/
 
-void StereoCameraDecorator::initMethod (void)
-{
+void StereoCameraDecorator::initMethod(void) {
 }
 
-void StereoCameraDecorator::changed(BitVector, UInt32)
-{
+void StereoCameraDecorator::changed(BitVector, UInt32) {
 }
 
-void StereoCameraDecorator::dump(      UInt32    , 
-                         const BitVector ) const
-{
-    SLOG << "Dump StereoCameraDecorator NI" << std::endl;
+void StereoCameraDecorator::dump(UInt32, const BitVector) const {
+  SLOG << "Dump StereoCameraDecorator NI" << std::endl;
 }
-
-
-

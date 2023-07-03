@@ -36,16 +36,15 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 OSG_BEGIN_NAMESPACE
 
-
 inline TextVectorFace::TextVectorFace()
-: TextFace(), _scale(), _glyphMap()
-{}
-
+    : TextFace()
+    , _scale()
+    , _glyphMap() {
+}
 
 OSG_END_NAMESPACE
 
-
-#define OSGTEXTVECTORFACE_INLINE_CVSID "@(#)$Id: OSGTextVectorFace.inl,v 1.1 2005/03/03 13:43:07 a-m-z Exp $"
+#define OSGTEXTVECTORFACE_INLINE_CVSID                                                             \
+  "@(#)$Id: OSGTextVectorFace.inl,v 1.1 2005/03/03 13:43:07 a-m-z Exp $"

@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGPERSPECTIVECAMERA_H_
 #define _OSGPERSPECTIVECAMERA_H_
 #ifdef __sgi
@@ -51,89 +50,86 @@ OSG_BEGIN_NAMESPACE
 
 class DrawAction;
 
-/*! \brief Perspective Camera class. See \ref PageSystemWindowCameraPerspective 
+/*! \brief Perspective Camera class. See \ref PageSystemWindowCameraPerspective
     for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING PerspectiveCamera : public PerspectiveCameraBase
-{
-   /*==========================  PUBLIC  =================================*/
+class OSG_SYSTEMLIB_DLLMAPPING PerspectiveCamera : public PerspectiveCameraBase {
+  /*==========================  PUBLIC  =================================*/
  public:
-    
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
-    static const char *getClassname(void) { return "PerspectiveCamera"; };
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    transformation                            */
-    /*! \{                                                                 */
+  static const char* getClassname(void) {
+    return "PerspectiveCamera";
+  };
 
-    virtual void changed(BitVector whichField, 
-                         UInt32    origin    );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    transformation                            */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   your_category                              */
-    /*! \{                                                                 */
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    virtual void draw( DrawAction * action, const Viewport& port );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   your_category                              */
+  /*! \{                                                                 */
 
-    virtual void getProjection( Matrix& result, UInt32 width, UInt32 height );
+  virtual void draw(DrawAction* action, const Viewport& port);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    dump                                      */
-    /*! \{                                                                 */
+  virtual void getProjection(Matrix& result, UInt32 width, UInt32 height);
 
-    virtual void dump(      UInt32    uiIndent = 0, 
-                      const BitVector bvFlags  = 0) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    dump                                      */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
- 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Constructors                              */
-    /*! \{                                                                 */
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    PerspectiveCamera(void);
-    PerspectiveCamera(const PerspectiveCamera &source);
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Destructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Constructors                              */
+  /*! \{                                                                 */
 
-    virtual ~PerspectiveCamera(void); 
-    
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/  
+  PerspectiveCamera(void);
+  PerspectiveCamera(const PerspectiveCamera& source);
+
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Destructors                               */
+  /*! \{                                                                 */
+
+  virtual ~PerspectiveCamera(void);
+
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
  private:
+  typedef PerspectiveCameraBase Inherited;
 
-    typedef PerspectiveCameraBase Inherited;
+  friend class FieldContainer;
+  friend class PerspectiveCameraBase;
 
-    friend class FieldContainer;
-    friend class PerspectiveCameraBase;
+  static void initMethod(void);
 
-    static void initMethod( void );
-
-    void operator =(const PerspectiveCamera &source);
+  void operator=(const PerspectiveCamera& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
-typedef PerspectiveCamera *PerspectiveCameraP;
+typedef PerspectiveCamera* PerspectiveCameraP;
 
 OSG_END_NAMESPACE
 
 #include <OSGPerspectiveCameraBase.inl>
 #include <OSGPerspectiveCamera.inl>
 
-#define OSGPERSPECTIVECAMERA_HEADER_CVSID "@(#)$Id: FCTemplate_h.h,v 1.15 2002/06/01 10:37:25 vossg Exp $"
+#define OSGPERSPECTIVECAMERA_HEADER_CVSID                                                          \
+  "@(#)$Id: FCTemplate_h.h,v 1.15 2002/06/01 10:37:25 vossg Exp $"
 
 #endif /* _OSGPERSPECTIVECAMERA_H_ */

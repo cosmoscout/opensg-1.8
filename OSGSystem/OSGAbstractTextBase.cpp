@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEABSTRACTTEXTINST
 
 #include <stdlib.h>
@@ -61,28 +60,25 @@
 #include "OSGAbstractTextBase.h"
 #include "OSGAbstractText.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  AbstractTextBase::PositionFieldMask = 
+const OSG::BitVector AbstractTextBase::PositionFieldMask =
     (TypeTraits<BitVector>::One << AbstractTextBase::PositionFieldId);
 
-const OSG::BitVector  AbstractTextBase::FontFieldMask = 
+const OSG::BitVector AbstractTextBase::FontFieldMask =
     (TypeTraits<BitVector>::One << AbstractTextBase::FontFieldId);
 
-const OSG::BitVector  AbstractTextBase::TextFieldMask = 
+const OSG::BitVector AbstractTextBase::TextFieldMask =
     (TypeTraits<BitVector>::One << AbstractTextBase::TextFieldId);
 
-const OSG::BitVector  AbstractTextBase::VerticalLineDistanceFieldMask = 
+const OSG::BitVector AbstractTextBase::VerticalLineDistanceFieldMask =
     (TypeTraits<BitVector>::One << AbstractTextBase::VerticalLineDistanceFieldId);
 
-const OSG::BitVector  AbstractTextBase::AlignmentFieldMask = 
+const OSG::BitVector AbstractTextBase::AlignmentFieldMask =
     (TypeTraits<BitVector>::One << AbstractTextBase::AlignmentFieldId);
 
-const OSG::BitVector AbstractTextBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector AbstractTextBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
@@ -104,294 +100,218 @@ const OSG::BitVector AbstractTextBase::MTInfluenceMask =
 
 //! AbstractText description
 
-FieldDescription *AbstractTextBase::_desc[] = 
-{
-    new FieldDescription(SFVec3f::getClassType(), 
-                     "Position", 
-                     PositionFieldId, PositionFieldMask,
-                     false,
-                     (FieldAccessMethod) &AbstractTextBase::getSFPosition),
-    new FieldDescription(SFSharedFontStyleWrapperPtr::getClassType(), 
-                     "Font", 
-                     FontFieldId, FontFieldMask,
-                     false,
-                     (FieldAccessMethod) &AbstractTextBase::getSFFont),
-    new FieldDescription(MFString::getClassType(), 
-                     "Text", 
-                     TextFieldId, TextFieldMask,
-                     false,
-                     (FieldAccessMethod) &AbstractTextBase::getMFText),
-    new FieldDescription(SFReal32::getClassType(), 
-                     "VerticalLineDistance", 
-                     VerticalLineDistanceFieldId, VerticalLineDistanceFieldMask,
-                     false,
-                     (FieldAccessMethod) &AbstractTextBase::getSFVerticalLineDistance),
-    new FieldDescription(SFUInt8::getClassType(), 
-                     "Alignment", 
-                     AlignmentFieldId, AlignmentFieldMask,
-                     false,
-                     (FieldAccessMethod) &AbstractTextBase::getSFAlignment)
-};
-
+FieldDescription* AbstractTextBase::_desc[] = {
+    new FieldDescription(SFVec3f::getClassType(), "Position", PositionFieldId, PositionFieldMask,
+        false, (FieldAccessMethod)&AbstractTextBase::getSFPosition),
+    new FieldDescription(SFSharedFontStyleWrapperPtr::getClassType(), "Font", FontFieldId,
+        FontFieldMask, false, (FieldAccessMethod)&AbstractTextBase::getSFFont),
+    new FieldDescription(MFString::getClassType(), "Text", TextFieldId, TextFieldMask, false,
+        (FieldAccessMethod)&AbstractTextBase::getMFText),
+    new FieldDescription(SFReal32::getClassType(), "VerticalLineDistance",
+        VerticalLineDistanceFieldId, VerticalLineDistanceFieldMask, false,
+        (FieldAccessMethod)&AbstractTextBase::getSFVerticalLineDistance),
+    new FieldDescription(SFUInt8::getClassType(), "Alignment", AlignmentFieldId, AlignmentFieldMask,
+        false, (FieldAccessMethod)&AbstractTextBase::getSFAlignment)};
 
 FieldContainerType AbstractTextBase::_type(
-    "AbstractText",
-    "MaterialDrawable",
-    NULL,
-    NULL, 
-    AbstractText::initMethod,
-    _desc,
-    sizeof(_desc));
+    "AbstractText", "MaterialDrawable", NULL, NULL, AbstractText::initMethod, _desc, sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(AbstractTextBase, AbstractTextPtr)
+// OSG_FIELD_CONTAINER_DEF(AbstractTextBase, AbstractTextPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &AbstractTextBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &AbstractTextBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-UInt32 AbstractTextBase::getContainerSize(void) const 
-{ 
-    return sizeof(AbstractText); 
+FieldContainerType& AbstractTextBase::getType(void) {
+  return _type;
 }
 
+const FieldContainerType& AbstractTextBase::getType(void) const {
+  return _type;
+}
+
+UInt32 AbstractTextBase::getContainerSize(void) const {
+  return sizeof(AbstractText);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void AbstractTextBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((AbstractTextBase *) &other, whichField);
+void AbstractTextBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((AbstractTextBase*)&other, whichField);
 }
 #else
-void AbstractTextBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((AbstractTextBase *) &other, whichField, sInfo);
+void AbstractTextBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((AbstractTextBase*)&other, whichField, sInfo);
 }
-void AbstractTextBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void AbstractTextBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void AbstractTextBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
+void AbstractTextBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 
-    _mfText.terminateShare(uiAspect, this->getContainerSize());
+  _mfText.terminateShare(uiAspect, this->getContainerSize());
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-AbstractTextBase::AbstractTextBase(void) :
-    _sfPosition               (), 
-    _sfFont                   (), 
-    _mfText                   (), 
-    _sfVerticalLineDistance   (), 
-    _sfAlignment              (UInt8(0)), 
-    Inherited() 
-{
+AbstractTextBase::AbstractTextBase(void)
+    : _sfPosition()
+    , _sfFont()
+    , _mfText()
+    , _sfVerticalLineDistance()
+    , _sfAlignment(UInt8(0))
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-AbstractTextBase::AbstractTextBase(const AbstractTextBase &source) :
-    _sfPosition               (source._sfPosition               ), 
-    _sfFont                   (source._sfFont                   ), 
-    _mfText                   (source._mfText                   ), 
-    _sfVerticalLineDistance   (source._sfVerticalLineDistance   ), 
-    _sfAlignment              (source._sfAlignment              ), 
-    Inherited                 (source)
-{
+AbstractTextBase::AbstractTextBase(const AbstractTextBase& source)
+    : _sfPosition(source._sfPosition)
+    , _sfFont(source._sfFont)
+    , _mfText(source._mfText)
+    , _sfVerticalLineDistance(source._sfVerticalLineDistance)
+    , _sfAlignment(source._sfAlignment)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-AbstractTextBase::~AbstractTextBase(void)
-{
+AbstractTextBase::~AbstractTextBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 AbstractTextBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 AbstractTextBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (PositionFieldMask & whichField))
-    {
-        returnValue += _sfPosition.getBinSize();
-    }
+  if (FieldBits::NoField != (PositionFieldMask & whichField)) {
+    returnValue += _sfPosition.getBinSize();
+  }
 
-    if(FieldBits::NoField != (FontFieldMask & whichField))
-    {
-        returnValue += _sfFont.getBinSize();
-    }
+  if (FieldBits::NoField != (FontFieldMask & whichField)) {
+    returnValue += _sfFont.getBinSize();
+  }
 
-    if(FieldBits::NoField != (TextFieldMask & whichField))
-    {
-        returnValue += _mfText.getBinSize();
-    }
+  if (FieldBits::NoField != (TextFieldMask & whichField)) {
+    returnValue += _mfText.getBinSize();
+  }
 
-    if(FieldBits::NoField != (VerticalLineDistanceFieldMask & whichField))
-    {
-        returnValue += _sfVerticalLineDistance.getBinSize();
-    }
+  if (FieldBits::NoField != (VerticalLineDistanceFieldMask & whichField)) {
+    returnValue += _sfVerticalLineDistance.getBinSize();
+  }
 
-    if(FieldBits::NoField != (AlignmentFieldMask & whichField))
-    {
-        returnValue += _sfAlignment.getBinSize();
-    }
+  if (FieldBits::NoField != (AlignmentFieldMask & whichField)) {
+    returnValue += _sfAlignment.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void AbstractTextBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void AbstractTextBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (PositionFieldMask & whichField))
-    {
-        _sfPosition.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (PositionFieldMask & whichField)) {
+    _sfPosition.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (FontFieldMask & whichField))
-    {
-        _sfFont.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (FontFieldMask & whichField)) {
+    _sfFont.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (TextFieldMask & whichField))
-    {
-        _mfText.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (TextFieldMask & whichField)) {
+    _mfText.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (VerticalLineDistanceFieldMask & whichField))
-    {
-        _sfVerticalLineDistance.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (VerticalLineDistanceFieldMask & whichField)) {
+    _sfVerticalLineDistance.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (AlignmentFieldMask & whichField))
-    {
-        _sfAlignment.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (AlignmentFieldMask & whichField)) {
+    _sfAlignment.copyToBin(pMem);
+  }
 }
 
-void AbstractTextBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void AbstractTextBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (PositionFieldMask & whichField))
-    {
-        _sfPosition.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (PositionFieldMask & whichField)) {
+    _sfPosition.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (FontFieldMask & whichField))
-    {
-        _sfFont.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (FontFieldMask & whichField)) {
+    _sfFont.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (TextFieldMask & whichField))
-    {
-        _mfText.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (TextFieldMask & whichField)) {
+    _mfText.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (VerticalLineDistanceFieldMask & whichField))
-    {
-        _sfVerticalLineDistance.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (VerticalLineDistanceFieldMask & whichField)) {
+    _sfVerticalLineDistance.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (AlignmentFieldMask & whichField))
-    {
-        _sfAlignment.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (AlignmentFieldMask & whichField)) {
+    _sfAlignment.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void AbstractTextBase::executeSyncImpl(      AbstractTextBase *pOther,
-                                        const BitVector         &whichField)
-{
+void AbstractTextBase::executeSyncImpl(AbstractTextBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (PositionFieldMask & whichField))
-        _sfPosition.syncWith(pOther->_sfPosition);
+  if (FieldBits::NoField != (PositionFieldMask & whichField))
+    _sfPosition.syncWith(pOther->_sfPosition);
 
-    if(FieldBits::NoField != (FontFieldMask & whichField))
-        _sfFont.syncWith(pOther->_sfFont);
+  if (FieldBits::NoField != (FontFieldMask & whichField))
+    _sfFont.syncWith(pOther->_sfFont);
 
-    if(FieldBits::NoField != (TextFieldMask & whichField))
-        _mfText.syncWith(pOther->_mfText);
+  if (FieldBits::NoField != (TextFieldMask & whichField))
+    _mfText.syncWith(pOther->_mfText);
 
-    if(FieldBits::NoField != (VerticalLineDistanceFieldMask & whichField))
-        _sfVerticalLineDistance.syncWith(pOther->_sfVerticalLineDistance);
+  if (FieldBits::NoField != (VerticalLineDistanceFieldMask & whichField))
+    _sfVerticalLineDistance.syncWith(pOther->_sfVerticalLineDistance);
 
-    if(FieldBits::NoField != (AlignmentFieldMask & whichField))
-        _sfAlignment.syncWith(pOther->_sfAlignment);
-
-
+  if (FieldBits::NoField != (AlignmentFieldMask & whichField))
+    _sfAlignment.syncWith(pOther->_sfAlignment);
 }
 #else
-void AbstractTextBase::executeSyncImpl(      AbstractTextBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void AbstractTextBase::executeSyncImpl(
+    AbstractTextBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (PositionFieldMask & whichField))
-        _sfPosition.syncWith(pOther->_sfPosition);
+  if (FieldBits::NoField != (PositionFieldMask & whichField))
+    _sfPosition.syncWith(pOther->_sfPosition);
 
-    if(FieldBits::NoField != (FontFieldMask & whichField))
-        _sfFont.syncWith(pOther->_sfFont);
+  if (FieldBits::NoField != (FontFieldMask & whichField))
+    _sfFont.syncWith(pOther->_sfFont);
 
-    if(FieldBits::NoField != (VerticalLineDistanceFieldMask & whichField))
-        _sfVerticalLineDistance.syncWith(pOther->_sfVerticalLineDistance);
+  if (FieldBits::NoField != (VerticalLineDistanceFieldMask & whichField))
+    _sfVerticalLineDistance.syncWith(pOther->_sfVerticalLineDistance);
 
-    if(FieldBits::NoField != (AlignmentFieldMask & whichField))
-        _sfAlignment.syncWith(pOther->_sfAlignment);
+  if (FieldBits::NoField != (AlignmentFieldMask & whichField))
+    _sfAlignment.syncWith(pOther->_sfAlignment);
 
-
-    if(FieldBits::NoField != (TextFieldMask & whichField))
-        _mfText.syncWith(pOther->_mfText, sInfo);
-
-
+  if (FieldBits::NoField != (TextFieldMask & whichField))
+    _mfText.syncWith(pOther->_mfText, sInfo);
 }
 
-void AbstractTextBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void AbstractTextBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (TextFieldMask & whichField))
-        _mfText.beginEdit(uiAspect, uiContainerSize);
-
+  if (FieldBits::NoField != (TextFieldMask & whichField))
+    _mfText.beginEdit(uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>
@@ -406,4 +326,3 @@ OSG_DLLEXPORT_SFIELD_DEF1(AbstractTextPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 OSG_DLLEXPORT_MFIELD_DEF1(AbstractTextPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
-

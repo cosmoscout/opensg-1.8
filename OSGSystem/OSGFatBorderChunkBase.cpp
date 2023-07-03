@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEFATBORDERCHUNKINST
 
 #include <stdlib.h>
@@ -61,163 +60,113 @@
 #include "OSGFatBorderChunkBase.h"
 #include "OSGFatBorderChunk.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector FatBorderChunkBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
+const OSG::BitVector FatBorderChunkBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
+FieldContainerType FatBorderChunkBase::_type("FatBorderChunk", "VertexProgramChunk", NULL,
+    (PrototypeCreateF)&FatBorderChunkBase::createEmpty, FatBorderChunk::initMethod, NULL, 0);
 
-
-FieldContainerType FatBorderChunkBase::_type(
-    "FatBorderChunk",
-    "VertexProgramChunk",
-    NULL,
-    (PrototypeCreateF) &FatBorderChunkBase::createEmpty,
-    FatBorderChunk::initMethod,
-    NULL,
-    0);
-
-//OSG_FIELD_CONTAINER_DEF(FatBorderChunkBase, FatBorderChunkPtr)
+// OSG_FIELD_CONTAINER_DEF(FatBorderChunkBase, FatBorderChunkPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &FatBorderChunkBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &FatBorderChunkBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr FatBorderChunkBase::shallowCopy(void) const 
-{ 
-    FatBorderChunkPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const FatBorderChunk *>(this)); 
-
-    return returnValue; 
+FieldContainerType& FatBorderChunkBase::getType(void) {
+  return _type;
 }
 
-UInt32 FatBorderChunkBase::getContainerSize(void) const 
-{ 
-    return sizeof(FatBorderChunk); 
+const FieldContainerType& FatBorderChunkBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr FatBorderChunkBase::shallowCopy(void) const {
+  FatBorderChunkPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const FatBorderChunk*>(this));
+
+  return returnValue;
+}
+
+UInt32 FatBorderChunkBase::getContainerSize(void) const {
+  return sizeof(FatBorderChunk);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void FatBorderChunkBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((FatBorderChunkBase *) &other, whichField);
+void FatBorderChunkBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((FatBorderChunkBase*)&other, whichField);
 }
 #else
-void FatBorderChunkBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((FatBorderChunkBase *) &other, whichField, sInfo);
+void FatBorderChunkBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((FatBorderChunkBase*)&other, whichField, sInfo);
 }
-void FatBorderChunkBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void FatBorderChunkBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void FatBorderChunkBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void FatBorderChunkBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-FatBorderChunkBase::FatBorderChunkBase(void) :
-    Inherited() 
-{
+FatBorderChunkBase::FatBorderChunkBase(void)
+    : Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-FatBorderChunkBase::FatBorderChunkBase(const FatBorderChunkBase &source) :
-    Inherited                 (source)
-{
+FatBorderChunkBase::FatBorderChunkBase(const FatBorderChunkBase& source)
+    : Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-FatBorderChunkBase::~FatBorderChunkBase(void)
-{
+FatBorderChunkBase::~FatBorderChunkBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 FatBorderChunkBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 FatBorderChunkBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void FatBorderChunkBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
-
-
+void FatBorderChunkBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 }
 
-void FatBorderChunkBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
-
-
+void FatBorderChunkBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void FatBorderChunkBase::executeSyncImpl(      FatBorderChunkBase *pOther,
-                                        const BitVector         &whichField)
-{
+void FatBorderChunkBase::executeSyncImpl(FatBorderChunkBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
-
-
+  Inherited::executeSyncImpl(pOther, whichField);
 }
 #else
-void FatBorderChunkBase::executeSyncImpl(      FatBorderChunkBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void FatBorderChunkBase::executeSyncImpl(
+    FatBorderChunkBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
-
-
-
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 }
 
-void FatBorderChunkBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void FatBorderChunkBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>
@@ -232,4 +181,3 @@ OSG_DLLEXPORT_SFIELD_DEF1(FatBorderChunkPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 OSG_DLLEXPORT_MFIELD_DEF1(FatBorderChunkPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
-

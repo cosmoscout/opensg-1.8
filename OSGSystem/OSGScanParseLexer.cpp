@@ -95,19 +95,16 @@ OSG_USING_NAMESPACE
 
 /*------------- constructors & destructors --------------------------------*/
 
-OSGScanParseLexer::OSGScanParseLexer(std::istream           *arg_yyin,
-                                     std::ostream           *arg_yyout) :
-     Inherited       (arg_yyin,
-                      arg_yyout),
+OSGScanParseLexer::OSGScanParseLexer(std::istream* arg_yyin, std::ostream* arg_yyout)
+    : Inherited(arg_yyin, arg_yyout)
+    ,
 
-    lvalp            (        0),
-    expectToken      (        0),
-    imageIntsExpected(        0)
-{
+    lvalp(0)
+    , expectToken(0)
+    , imageIntsExpected(0) {
 }
 
-OSGScanParseLexer::~OSGScanParseLexer(void)
-{
+OSGScanParseLexer::~OSGScanParseLexer(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
@@ -119,6 +116,3 @@ OSGScanParseLexer::~OSGScanParseLexer(void)
 /*-------------------------- assignment -----------------------------------*/
 
 /*-------------------------- comparison -----------------------------------*/
-
-
-

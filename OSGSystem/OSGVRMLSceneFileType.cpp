@@ -52,100 +52,79 @@ OSG_USING_NAMESPACE
     \ingroup GrpSystemFileIO
 */
 
-const Char8 *VRMLSceneFileType::_suffixA[] =  { "wrl" };
+const Char8* VRMLSceneFileType::_suffixA[] = {"wrl"};
 
-VRMLSceneFileType VRMLSceneFileType::_the(_suffixA,
-                                          sizeof(_suffixA),
-                                          false,
-                                          10,
-                                          OSG_READ_SUPPORTED | 
-                                          OSG_WRITE_SUPPORTED);
+VRMLSceneFileType VRMLSceneFileType::_the(
+    _suffixA, sizeof(_suffixA), false, 10, OSG_READ_SUPPORTED | OSG_WRITE_SUPPORTED);
 
 /*-------------------------------------------------------------------------*/
 /*                                The                                      */
 
-VRMLSceneFileType &VRMLSceneFileType::the(void)
-{
-    return _the;
+VRMLSceneFileType& VRMLSceneFileType::the(void) {
+  return _the;
 }
-
 
 /*-------------------------------------------------------------------------*/
 /*                             Destructor                                  */
 
-VRMLSceneFileType::~VRMLSceneFileType(void)
-{
+VRMLSceneFileType::~VRMLSceneFileType(void) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                                Get                                      */
 
-const Char8 *VRMLSceneFileType::getName(void) const
-{
-    return "VRML Geometry";
+const Char8* VRMLSceneFileType::getName(void) const {
+  return "VRML Geometry";
 }
 
 /*-------------------------------------------------------------------------*/
 /*                               Read                                      */
 
-NodePtr VRMLSceneFileType::read(std::istream &is, const Char8 *) const
-{
-    NodePtr root = NullFC;
+NodePtr VRMLSceneFileType::read(std::istream& is, const Char8*) const {
+  NodePtr root = NullFC;
 
-    VRMLFile *loader = new VRMLFile();
-    loader->createStandardPrototypes();
-    loader->scanStream(is);
-    root = loader->getRoot();
-    delete loader;
+  VRMLFile* loader = new VRMLFile();
+  loader->createStandardPrototypes();
+  loader->scanStream(is);
+  root = loader->getRoot();
+  delete loader;
 
-    return root;
+  return root;
 }
 
 /*-------------------------------------------------------------------------*/
 /*                               Write                                     */
 
-bool VRMLSceneFileType::write(const NodePtr &node, std::ostream &os,
-                              const Char8 *fileNameOrExtension) const
-{
-    // This is a hack but should be safer.
-    std::ofstream *osf = dynamic_cast<std::ofstream *>(&os);
-    if(osf != NULL)
-        osf->close();
-    
-    VRMLWriteAction *pWriter = VRMLWriteAction::create();
+bool VRMLSceneFileType::write(
+    const NodePtr& node, std::ostream& os, const Char8* fileNameOrExtension) const {
+  // This is a hack but should be safer.
+  std::ofstream* osf = dynamic_cast<std::ofstream*>(&os);
+  if (osf != NULL)
+    osf->close();
 
-    // parse options
-    if(_options.find("inlineTextures=true") != std::string::npos)
-        pWriter->addOptions(VRMLWriteAction::OSGPixelTextures);
-    else if(_options.find("inlineTextures=false") != std::string::npos)
-        pWriter->subOptions(VRMLWriteAction::OSGPixelTextures);
+  VRMLWriteAction* pWriter = VRMLWriteAction::create();
 
-    pWriter->open(fileNameOrExtension);
+  // parse options
+  if (_options.find("inlineTextures=true") != std::string::npos)
+    pWriter->addOptions(VRMLWriteAction::OSGPixelTextures);
+  else if (_options.find("inlineTextures=false") != std::string::npos)
+    pWriter->subOptions(VRMLWriteAction::OSGPixelTextures);
 
-    pWriter->write(node);
+  pWriter->open(fileNameOrExtension);
 
-    pWriter->close();
+  pWriter->write(node);
 
-    delete pWriter;
+  pWriter->close();
 
-    return true;
+  delete pWriter;
+
+  return true;
 }
 
 /*-------------------------------------------------------------------------*/
 /*                            Constructors                                 */
 
-VRMLSceneFileType::VRMLSceneFileType(const Char8  *suffixArray[],
-                                           UInt16  suffixByteCount,
-                                           bool    override,
-                                           UInt32  overridePriority,
-                                           UInt32  flags) :
-    Inherited(suffixArray,
-              suffixByteCount,
-              override,
-              overridePriority,
-              flags)
-{
+VRMLSceneFileType::VRMLSceneFileType(const Char8* suffixArray[], UInt16 suffixByteCount,
+    bool override, UInt32 overridePriority, UInt32 flags)
+    : Inherited(suffixArray, suffixByteCount, override, overridePriority, flags) {
 }
-
-
-

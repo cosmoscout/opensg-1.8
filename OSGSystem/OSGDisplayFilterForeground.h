@@ -57,124 +57,118 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief DisplayFilterForeground class. See \ref 
+/*! \brief DisplayFilterForeground class. See \ref
            PageSystemDisplayFilterForeground for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING DisplayFilterForeground : public DisplayFilterForegroundBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING DisplayFilterForeground : public DisplayFilterForegroundBase {
+ private:
+  typedef DisplayFilterForegroundBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  class OSG_SYSTEMLIB_DLLMAPPING DisplayFilterGroup {
+   public:
+    DisplayFilterGroup(bool readback, std::vector<ViewportPtr>& ports);
+    virtual ~DisplayFilterGroup();
+    TextureChunkPtr          getTexture(void);
+    GeometryPtr              getGeometry(void);
+    ChunkMaterialPtr         getMaterial(void);
+    ComponentTransformPtr    getTransform(void);
+    TextureTransformChunkPtr getTextureTransform(void);
+    void                     createGrid(UInt32 width, UInt32 height);
 
-    typedef DisplayFilterForegroundBase Inherited;
-    /*==========================  PUBLIC  =================================*/
-  public:
+   protected:
+    ViewportPtr              _vp;
+    NodePtr                  _root;
+    TextureChunkPtr          _texture;
+    GeometryPtr              _geometry;
+    ChunkMaterialPtr         _material;
+    ComponentTransformPtr    _transform;
+    BackgroundPtr            _background;
+    TextureTransformChunkPtr _textureTransform;
+  };
 
-    class OSG_SYSTEMLIB_DLLMAPPING DisplayFilterGroup {
-    public:
-        DisplayFilterGroup(bool readback,std::vector<ViewportPtr> &ports);
-        virtual ~DisplayFilterGroup();
-        TextureChunkPtr       getTexture   (void);
-        GeometryPtr           getGeometry  (void);
-        ChunkMaterialPtr      getMaterial  (void);
-        ComponentTransformPtr getTransform (void);
-        TextureTransformChunkPtr getTextureTransform (void);
-        void                  createGrid   (UInt32 width,UInt32 height);
-    protected:
-        ViewportPtr              _vp;
-        NodePtr                  _root;
-        TextureChunkPtr          _texture;
-        GeometryPtr              _geometry;
-        ChunkMaterialPtr         _material;
-        ComponentTransformPtr    _transform;
-        BackgroundPtr            _background;
-        TextureTransformChunkPtr _textureTransform;
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    };
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   draw                                       */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  virtual void draw(DrawActionBase* action, Viewport* port);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   draw                                       */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   correction group handling                  */
+  /*! \{                                                                 */
 
-    virtual void draw( DrawActionBase * action, Viewport * port );
+  DisplayFilterGroup* findReadbackGroup(const std::string& name);
+  DisplayFilterGroup* findOverlayGroup(const std::string& name);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   correction group handling                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in DisplayFilterForegroundBase.
 
-    DisplayFilterGroup *findReadbackGroup(const std::string &name);
-    DisplayFilterGroup *findOverlayGroup (const std::string &name);
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  DisplayFilterForeground(void);
+  DisplayFilterForeground(const DisplayFilterForeground& source);
 
-    // Variables should all be in DisplayFilterForegroundBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~DisplayFilterForeground(void);
 
-    DisplayFilterForeground(void);
-    DisplayFilterForeground(const DisplayFilterForeground &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   correction group handling                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  void clearGroups();
 
-    virtual ~DisplayFilterForeground(void); 
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   correction group handling                  */
-    /*! \{                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  std::vector<ViewportPtr>                   _port;
+  std::map<std::string, DisplayFilterGroup*> _group;
+  std::vector<UInt32>                        _changedState;
+  bool                                       _hasNonPowTwoTex;
 
-    void clearGroups();
+  friend class FieldContainer;
+  friend class DisplayFilterForegroundBase;
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  static void initMethod(void);
 
-    std::vector<ViewportPtr>                  _port;
-    std::map<std::string,DisplayFilterGroup*> _group;
-    std::vector<UInt32>                       _changedState;
-    bool                                      _hasNonPowTwoTex;
+  // prohibit default functions (move to 'public' if you need one)
 
-    friend class FieldContainer;
-    friend class DisplayFilterForegroundBase;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const DisplayFilterForeground &source);
+  void operator=(const DisplayFilterForeground& source);
 };
 
-typedef DisplayFilterForeground *DisplayFilterForegroundP;
+typedef DisplayFilterForeground* DisplayFilterForegroundP;
 
 OSG_END_NAMESPACE
 
 #include "OSGDisplayFilterForegroundBase.inl"
 #include "OSGDisplayFilterForeground.inl"
 
-#define OSGDISPLAYFILTERFOREGROUND_HEADER_CVSID "@(#)$Id: FCTemplate_h.h,v 1.22 2004/08/03 05:53:03 dirk Exp $"
+#define OSGDISPLAYFILTERFOREGROUND_HEADER_CVSID                                                    \
+  "@(#)$Id: FCTemplate_h.h,v 1.22 2004/08/03 05:53:03 dirk Exp $"
 
 #endif /* _OSGDISPLAYFILTERFOREGROUND_H_ */

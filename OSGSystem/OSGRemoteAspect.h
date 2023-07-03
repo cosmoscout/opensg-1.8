@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _REMOTEASPECT_H_
 #define _REMOTEASPECT_H_
 #ifdef __sgi
@@ -57,180 +56,165 @@
 
 OSG_BEGIN_NAMESPACE
 
-class OSG_SYSTEMLIB_DLLMAPPING RemoteAspect
-{ 
-    /*==========================  PUBLIC  =================================*/
-  public:
-    /** Message types */
-    enum DataTypes 
-    {
-        SYNCENDED =1,
-        CREATED   =2,
-        DESTROYED =3,
-        NEWTYPE   =4,
-        CHANGED   =5,
-        ADDREFED  =6,
-        SUBREFED  =7,
-        IDMAPPING =8
-    };
+class OSG_SYSTEMLIB_DLLMAPPING RemoteAspect {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /** Message types */
+  enum DataTypes {
+    SYNCENDED = 1,
+    CREATED   = 2,
+    DESTROYED = 3,
+    NEWTYPE   = 4,
+    CHANGED   = 5,
+    ADDREFED  = 6,
+    SUBREFED  = 7,
+    IDMAPPING = 8
+  };
 
-    /** functor called for changed containers **/
-    typedef ArgsCollector<RemoteAspect *> FunctorArgs;
-    typedef TypedFunctor2Base<bool, 
-                              CPtrRefCallArg<FieldContainerPtr>, 
-                              FunctorArgs                      > Functor;
+  /** functor called for changed containers **/
+  typedef ArgsCollector<RemoteAspect*>                                            FunctorArgs;
+  typedef TypedFunctor2Base<bool, CPtrRefCallArg<FieldContainerPtr>, FunctorArgs> Functor;
 
-    /** Map remote to local id **/
-    typedef std::map<UInt64,UInt32>    LocalFCMapT;
-    /** Map local to remote id **/
-    typedef std::map<UInt32,UInt64>    RemoteFCMapT;
-    /** Map remote to local type **/
-    typedef std::map<UInt32,UInt32>    LocalTypeMapT;
+  /** Map remote to local id **/
+  typedef std::map<UInt64, UInt32> LocalFCMapT;
+  /** Map local to remote id **/
+  typedef std::map<UInt32, UInt64> RemoteFCMapT;
+  /** Map remote to local type **/
+  typedef std::map<UInt32, UInt32> LocalTypeMapT;
 
-    /** id set **/
-    typedef std::set<UInt32>           IdSetT;
+  /** id set **/
+  typedef std::set<UInt32> IdSetT;
 
-    /** Field filter map **/
-    typedef std::map<UInt32,BitVector> FieldFilterT;
-    typedef std::map<UInt32,BitVector> FieldMaskMapT;
+  /** Field filter map **/
+  typedef std::map<UInt32, BitVector> FieldFilterT;
+  typedef std::map<UInt32, BitVector> FieldMaskMapT;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    RemoteAspect(UInt32 aspectId=0);
-    virtual ~RemoteAspect(void); 
+  RemoteAspect(UInt32 aspectId = 0);
+  virtual ~RemoteAspect(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Remote aspect functionaliy                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Remote aspect functionaliy                 */
+  /*! \{                                                                 */
 
-    void receiveSync      ( Connection &connection,
-                            bool applyToChangelist=false   );
-    void sendSync         ( Connection &connection,
-                            ChangeList *changeList=NULL    );
-    void registerCreated  ( const FieldContainerType &type, 
-                            const Functor &func            );
-    void registerDestroyed( const FieldContainerType &type, 
-                            const Functor &func            );
-    void registerChanged  ( const FieldContainerType &type, 
-                            const Functor &func            );
-    static void addFieldFilter   ( UInt32 typeId,BitVector mask   );
-    static void subFieldFilter   ( UInt32 typeId,BitVector mask   );
-    
-    static void restoreChangeList   (ChangeList *tocl);
-    static void storeChangeList     (ChangeList *cl  );
-    static UInt32 getStoreSize      (void            );
+  void        receiveSync(Connection& connection, bool applyToChangelist = false);
+  void        sendSync(Connection& connection, ChangeList* changeList = NULL);
+  void        registerCreated(const FieldContainerType& type, const Functor& func);
+  void        registerDestroyed(const FieldContainerType& type, const Functor& func);
+  void        registerChanged(const FieldContainerType& type, const Functor& func);
+  static void addFieldFilter(UInt32 typeId, BitVector mask);
+  static void subFieldFilter(UInt32 typeId, BitVector mask);
 
-    typedef std::map<UInt32, UInt32> clStoreMap;
-    typedef clStoreMap::iterator clStoreIt;
-    static clStoreMap &getStore     (void            );
+  static void   restoreChangeList(ChangeList* tocl);
+  static void   storeChangeList(ChangeList* cl);
+  static UInt32 getStoreSize(void);
 
-    static void createCurrentStateChangeList(const FieldContainerPtr &start,
-                                             ChangeList *cl);
+  typedef std::map<UInt32, UInt32> clStoreMap;
+  typedef clStoreMap::iterator     clStoreIt;
+  static clStoreMap&               getStore(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Statistics                                 */
-    /*! \{                                                                 */
+  static void createCurrentStateChangeList(const FieldContainerPtr& start, ChangeList* cl);
 
-    void setStatistics( StatCollector * stat );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Statistics                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  void setStatistics(StatCollector* stat);
 
-    /*=========================  PROTECTED  ===============================*/
-  protected:
-    /*---------------------------------------------------------------------*/
-    /*! \name                   member                                     */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    /** Aspect id **/
-    UInt32                            _aspectId;
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   member                                     */
+  /*! \{                                                                 */
 
-    /** remote id to fieldcontainer mapping **/
-    LocalFCMapT                       _localFC;
-    /** local to remote fieldcontainer mapping **/
-    RemoteFCMapT                      _remoteFC;
-    /** remote typeid mapping **/
-    LocalTypeMapT                     _localType;
+  /** Aspect id **/
+  UInt32 _aspectId;
 
-    /** indicates fc was sent **/
-    IdSetT                            _sentFC;
-    /** indicates fc was received **/
-    IdSetT                            _receivedFC;
+  /** remote id to fieldcontainer mapping **/
+  LocalFCMapT _localFC;
+  /** local to remote fieldcontainer mapping **/
+  RemoteFCMapT _remoteFC;
+  /** remote typeid mapping **/
+  LocalTypeMapT _localType;
 
-    /** indicates remote knows this fc **/
-    IdSetT                            _mappedFC;
-    /** indicates mapped type **/
-    IdSetT                            _mappedType;
+  /** indicates fc was sent **/
+  IdSetT _sentFC;
+  /** indicates fc was received **/
+  IdSetT _receivedFC;
 
-    UInt32                            _remoteAspectId;
+  /** indicates remote knows this fc **/
+  IdSetT _mappedFC;
+  /** indicates mapped type **/
+  IdSetT _mappedType;
+
+  UInt32 _remoteAspectId;
 
 #if 0
     /** mapped fieldcontainer with mask **/
     std::map<UInt32,BitVector>        _sentFC;
 #endif
 
-    /** fild filter **/
-    static FieldFilterT               _fieldFilter;
-    std::vector<Functor>              _createdFunctors;
-    std::vector<Functor>              _destroyedFunctors;
-    std::vector<Functor>              _changedFunctors;
-    StatCollector                    *_statistics;
+  /** fild filter **/
+  static FieldFilterT  _fieldFilter;
+  std::vector<Functor> _createdFunctors;
+  std::vector<Functor> _destroyedFunctors;
+  std::vector<Functor> _changedFunctors;
+  StatCollector*       _statistics;
 
-    static std::map<UInt32, UInt32>   _clStore;
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                 protected helper functions                   */
-    /*! \{                                                                 */
+  static std::map<UInt32, UInt32> _clStore;
 
-    bool   callCreated   ( FieldContainerPtr &node   );
-    bool   callDestroyed ( FieldContainerPtr &node   );
-    bool   callChanged   ( FieldContainerPtr &node   );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                 protected helper functions                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  bool callCreated(FieldContainerPtr& node);
+  bool callDestroyed(FieldContainerPtr& node);
+  bool callChanged(FieldContainerPtr& node);
 
-    /*==========================  PRIVATE  ================================*/
-  private:
-    /*---------------------------------------------------------------------*/
-    /*! \name                 Helper functions                             */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    void handleFCMapping   (Connection &connection               );
-    void clearFCMapping    (UInt32 localId,UInt32 remoteId       );
-    bool getLocalId        (UInt32  remoteId,
-                            UInt32 &localId                      );
-    UInt64 getFullRemoteId (UInt32  remoteId                     );
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /*---------------------------------------------------------------------*/
+  /*! \name                 Helper functions                             */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                 static elements                              */
-    /*! \{                                                                 */
-    static bool _defaultCreatedFunction  (FieldContainerPtr& fcp,
-                                          RemoteAspect * aspect);
-    static bool _defaultDestroyedFunction(FieldContainerPtr& fcp,
-                                          RemoteAspect * aspect);
-    static bool _defaultChangedFunction  (FieldContainerPtr& fcp,
-                                          RemoteAspect * aspect);
+  void   handleFCMapping(Connection& connection);
+  void   clearFCMapping(UInt32 localId, UInt32 remoteId);
+  bool   getLocalId(UInt32 remoteId, UInt32& localId);
+  UInt64 getFullRemoteId(UInt32 remoteId);
 
-    static StatElemDesc<StatTimeElem> statSyncTime;
-    /*! \}                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                 static elements                              */
+  /*! \{                                                                 */
+  static bool _defaultCreatedFunction(FieldContainerPtr& fcp, RemoteAspect* aspect);
+  static bool _defaultDestroyedFunction(FieldContainerPtr& fcp, RemoteAspect* aspect);
+  static bool _defaultChangedFunction(FieldContainerPtr& fcp, RemoteAspect* aspect);
 
-    friend class RemoteAspectFieldContainerMapper;
-	// prohibit default functions (move to 'public' if you need one)
-    RemoteAspect(const RemoteAspect &source);
-    RemoteAspect &operator =(const RemoteAspect &source);
+  static StatElemDesc<StatTimeElem> statSyncTime;
+  /*! \}                                                                 */
+
+  friend class RemoteAspectFieldContainerMapper;
+  // prohibit default functions (move to 'public' if you need one)
+  RemoteAspect(const RemoteAspect& source);
+  RemoteAspect& operator=(const RemoteAspect& source);
 };
 
 // class pointer
-typedef RemoteAspect *RemoteAspectP;
+typedef RemoteAspect* RemoteAspectP;
 
-struct RemoteAspectFieldContainerMapper:public FieldContainerMapper
-{                                              
-    virtual UInt32 map(UInt32 uiId);
-    RemoteAspect *_remoteAspect;
+struct RemoteAspectFieldContainerMapper : public FieldContainerMapper {
+  virtual UInt32 map(UInt32 uiId);
+  RemoteAspect*  _remoteAspect;
 };
 
 OSG_END_NAMESPACE

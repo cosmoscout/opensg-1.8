@@ -79,78 +79,58 @@ The draw action class.
 
 char DrawAction::cvsid[] = "@(#)$Id: $";
 
-DrawAction * DrawAction::_prototype = NULL;
+DrawAction* DrawAction::_prototype = NULL;
 
-std::vector<Action::Functor> *DrawAction::_defaultEnterFunctors = NULL;
-std::vector<Action::Functor> *DrawAction::_defaultLeaveFunctors = NULL;
+std::vector<Action::Functor>* DrawAction::_defaultEnterFunctors = NULL;
+std::vector<Action::Functor>* DrawAction::_defaultLeaveFunctors = NULL;
 
 /***************************************************************************\
  *                           Class methods                                 *
 \***************************************************************************/
 
-
-
 /*-------------------------------------------------------------------------*\
  -  public                                                                 -
 \*-------------------------------------------------------------------------*/
 
-void DrawAction::registerEnterDefault(  const FieldContainerType &type, 
-                                        const Action::Functor &func )
-{
-    if ( ! _defaultEnterFunctors )
-        _defaultEnterFunctors = new std::vector<Action::Functor>;
+void DrawAction::registerEnterDefault(const FieldContainerType& type, const Action::Functor& func) {
+  if (!_defaultEnterFunctors)
+    _defaultEnterFunctors = new std::vector<Action::Functor>;
 
-    while(type.getId() >= _defaultEnterFunctors->size())
-    {
-        _defaultEnterFunctors->push_back( 
-            osgTypedFunctionFunctor2CPtrRef<
-                ResultE, 
-                CNodePtr,
-                Action *                   >(&Action::_defaultEnterFunction));
-    }
-    
-    (*_defaultEnterFunctors)[ type.getId() ] = func;
+  while (type.getId() >= _defaultEnterFunctors->size()) {
+    _defaultEnterFunctors->push_back(osgTypedFunctionFunctor2CPtrRef<ResultE, CNodePtr, Action*>(
+        &Action::_defaultEnterFunction));
+  }
+
+  (*_defaultEnterFunctors)[type.getId()] = func;
 }
 
-void DrawAction::registerLeaveDefault(  const FieldContainerType &type, 
-                                        const Action::Functor &func )
-{
-    if ( ! _defaultLeaveFunctors )
-        _defaultLeaveFunctors = new std::vector<Action::Functor>;
+void DrawAction::registerLeaveDefault(const FieldContainerType& type, const Action::Functor& func) {
+  if (!_defaultLeaveFunctors)
+    _defaultLeaveFunctors = new std::vector<Action::Functor>;
 
-    while(type.getId() >= _defaultLeaveFunctors->size())
-    {
-        _defaultLeaveFunctors->push_back( 
-            osgTypedFunctionFunctor2CPtrRef<
-                ResultE, 
-                CNodePtr,
-                Action *                   >(&Action::_defaultLeaveFunction));
-    }
-    
-    (*_defaultLeaveFunctors)[ type.getId() ] = func;
+  while (type.getId() >= _defaultLeaveFunctors->size()) {
+    _defaultLeaveFunctors->push_back(osgTypedFunctionFunctor2CPtrRef<ResultE, CNodePtr, Action*>(
+        &Action::_defaultLeaveFunction));
+  }
+
+  (*_defaultLeaveFunctors)[type.getId()] = func;
 }
 
-
-void DrawAction::setPrototype( DrawAction * proto )
-{
-    _prototype = proto;
+void DrawAction::setPrototype(DrawAction* proto) {
+  _prototype = proto;
 }
 
-DrawAction *DrawAction::getPrototype( void )
-{
-    return _prototype;
+DrawAction* DrawAction::getPrototype(void) {
+  return _prototype;
 }
 
 /*-------------------------------------------------------------------------*\
  -  protected                                                              -
 \*-------------------------------------------------------------------------*/
 
-
 /*-------------------------------------------------------------------------*\
  -  private                                                                -
 \*-------------------------------------------------------------------------*/
-
-
 
 /***************************************************************************\
  *                           Instance methods                              *
@@ -165,85 +145,75 @@ DrawAction *DrawAction::getPrototype( void )
 /** \brief Constructor
  */
 
-DrawAction::DrawAction(void) :
-     Inherited (),
-    _lightCount(0)
-{
-    if ( _defaultEnterFunctors )
-        _enterFunctors = *_defaultEnterFunctors;
+DrawAction::DrawAction(void)
+    : Inherited()
+    , _lightCount(0) {
+  if (_defaultEnterFunctors)
+    _enterFunctors = *_defaultEnterFunctors;
 
-    if ( _defaultLeaveFunctors )
-        _leaveFunctors = *_defaultLeaveFunctors;
+  if (_defaultLeaveFunctors)
+    _leaveFunctors = *_defaultLeaveFunctors;
 }
-
 
 /** \brief Copy-Constructor
  */
 
-DrawAction::DrawAction( const DrawAction & source ) :
-     Inherited (source),
-    _lightCount(source._lightCount)
-{
+DrawAction::DrawAction(const DrawAction& source)
+    : Inherited(source)
+    , _lightCount(source._lightCount) {
 }
 
 /** \brief create a new action
  */
 
-DrawAction * DrawAction::create( void )
-{
-    DrawAction * act;
-    
-    if ( _prototype )
-        act = new DrawAction( *_prototype );
-    else
-        act = new DrawAction();
-    
-    return act;
-}
+DrawAction* DrawAction::create(void) {
+  DrawAction* act;
 
+  if (_prototype)
+    act = new DrawAction(*_prototype);
+  else
+    act = new DrawAction();
+
+  return act;
+}
 
 /** \brief Destructor
  */
 
-DrawAction::~DrawAction(void)
-{
+DrawAction::~DrawAction(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
 /*-------------------------- your_category---------------------------------*/
 
+Action::ResultE DrawAction::start(void) {
+  Inherited::start();
 
-Action::ResultE DrawAction::start( void )
-{
-    Inherited::start();
-    
-    _lightCount = 0;
-    
-    return Continue;
+  _lightCount = 0;
+
+  return Continue;
 }
 
-bool DrawAction::isVisible( Node* node )
-{
-    if ( getFrustumCulling() == false )
-        return true;
-        
-    getStatistics()->getElem(statCullTestedNodes)->inc();
-    
-    DynamicVolume vol;
-    node->getWorldVolume( vol );
+bool DrawAction::isVisible(Node* node) {
+  if (getFrustumCulling() == false)
+    return true;
 
-    if ( _frustum.intersect( vol ) )
-    {
-// fprintf(stderr,"%p: node 0x%p vis\n", Thread::getCurrent(), node);
-        return true;
-    }
-    
-    getStatistics()->getElem(statCulledNodes)->inc();
+  getStatistics()->getElem(statCullTestedNodes)->inc();
 
-// fprintf(stderr,"%p: node 0x%p invis\n", Thread::getCurrent(), node);
-// _frustum.dump();            
-    return false;
+  DynamicVolume vol;
+  node->getWorldVolume(vol);
+
+  if (_frustum.intersect(vol)) {
+    // fprintf(stderr,"%p: node 0x%p vis\n", Thread::getCurrent(), node);
+    return true;
+  }
+
+  getStatistics()->getElem(statCulledNodes)->inc();
+
+  // fprintf(stderr,"%p: node 0x%p invis\n", Thread::getCurrent(), node);
+  // _frustum.dump();
+  return false;
 }
 
 /*-------------------------- assignment -----------------------------------*/
@@ -265,7 +235,7 @@ DrawAction& DrawAction::operator = (const DrawAction &source)
 
     // alloc new mem for members
 
-    // copy 
+    // copy
 }
 
 */
@@ -275,74 +245,64 @@ DrawAction& DrawAction::operator = (const DrawAction &source)
 /** \brief assignment
  */
 
-bool DrawAction::operator < (const DrawAction &other) const
-{
-    return this < &other;
+bool DrawAction::operator<(const DrawAction& other) const {
+  return this < &other;
 }
 
 /** \brief equal
  */
 
-bool DrawAction::operator == (const DrawAction &OSG_CHECK_ARG(other)) const
-{
-    return false;
+bool DrawAction::operator==(const DrawAction& OSG_CHECK_ARG(other)) const {
+  return false;
 }
 
 /** \brief unequal
  */
 
-bool DrawAction::operator != (const DrawAction &other) const
-{
-    return ! (*this == other);
+bool DrawAction::operator!=(const DrawAction& other) const {
+  return !(*this == other);
 }
-
 
 /*-------------------------------------------------------------------------*\
  -  protected                                                              -
 \*-------------------------------------------------------------------------*/
 
-
-std::vector<DrawAction::Functor>* DrawAction::getDefaultEnterFunctors( void )
-{
-    return _defaultEnterFunctors;
+std::vector<DrawAction::Functor>* DrawAction::getDefaultEnterFunctors(void) {
+  return _defaultEnterFunctors;
 }
 
-std::vector<DrawAction::Functor>* DrawAction::getDefaultLeaveFunctors( void )
-{
-    return _defaultLeaveFunctors;
+std::vector<DrawAction::Functor>* DrawAction::getDefaultLeaveFunctors(void) {
+  return _defaultLeaveFunctors;
 }
 
 /*-------------------------------------------------------------------------*\
  -  private                                                                -
 \*-------------------------------------------------------------------------*/
 
-
-
 ///---------------------------------------------------------------------------
-///  FUNCTION: 
+///  FUNCTION:
 ///---------------------------------------------------------------------------
 //:  Example for the head comment of a function
 ///---------------------------------------------------------------------------
 ///
-//p: Paramaters: 
-//p: 
+// p: Paramaters:
+// p:
 ///
-//g: GlobalVars:
-//g: 
+// g: GlobalVars:
+// g:
 ///
-//r: Return:
-//r: 
+// r: Return:
+// r:
 ///
-//c: Caution:
-//c: 
+// c: Caution:
+// c:
 ///
-//a: Assumptions:
-//a: 
+// a: Assumptions:
+// a:
 ///
-//d: Description:
-//d: 
+// d: Description:
+// d:
 ///
-//s: SeeAlso:
-//s: 
+// s: SeeAlso:
+// s:
 ///---------------------------------------------------------------------------
-

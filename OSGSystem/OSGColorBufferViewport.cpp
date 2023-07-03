@@ -57,66 +57,54 @@ Viewport to only render to specific color channels, see \ref
 PageSystemWindowViewports for a description.
 
 The color channels used are defined by the _sfRed, _sfGreen, _sfBlue and
-_sfAlpha Fields. 
+_sfAlpha Fields.
 
 */
 
 /*----------------------- constructors & destructors ----------------------*/
 
-ColorBufferViewport::ColorBufferViewport(void) :
-    Inherited()
-{
+ColorBufferViewport::ColorBufferViewport(void)
+    : Inherited() {
 }
 
-ColorBufferViewport::ColorBufferViewport(const ColorBufferViewport &source) :
-    Inherited(source)
-{
+ColorBufferViewport::ColorBufferViewport(const ColorBufferViewport& source)
+    : Inherited(source) {
 }
 
-ColorBufferViewport::~ColorBufferViewport(void)
-{
+ColorBufferViewport::~ColorBufferViewport(void) {
 }
 
 /*----------------------------- class specific ----------------------------*/
 
-void ColorBufferViewport::initMethod (void)
-{
+void ColorBufferViewport::initMethod(void) {
 }
 
-void ColorBufferViewport::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void ColorBufferViewport::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
-void ColorBufferViewport::dump(      UInt32    , 
-                         const BitVector ) const
-{
-    SLOG << "Dump ColorBufferViewport NI" << std::endl;
+void ColorBufferViewport::dump(UInt32, const BitVector) const {
+  SLOG << "Dump ColorBufferViewport NI" << std::endl;
 }
 
-void ColorBufferViewport::activateSize(void)
-{
-    Inherited::activateSize();
+void ColorBufferViewport::activateSize(void) {
+  Inherited::activateSize();
 }
 
-void ColorBufferViewport::activate(void)
-{
-    glColorMask(getRed(), getGreen(), getBlue(), getAlpha());
-    Inherited::activate();
+void ColorBufferViewport::activate(void) {
+  glColorMask(getRed(), getGreen(), getBlue(), getAlpha());
+  Inherited::activate();
 }
 
-void ColorBufferViewport::deactivate(void)
-{
-    Inherited::deactivate();
-    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+void ColorBufferViewport::deactivate(void) {
+  Inherited::deactivate();
+  glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 }
 
-void ColorBufferViewport::draw( DrawAction * action )
-{
-    Inherited::draw(action);
+void ColorBufferViewport::draw(DrawAction* action) {
+  Inherited::draw(action);
 }
 
-void ColorBufferViewport::render(RenderActionBase *action)
-{
-    Inherited::render(action);
+void ColorBufferViewport::render(RenderActionBase* action) {
+  Inherited::render(action);
 }

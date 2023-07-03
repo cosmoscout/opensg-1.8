@@ -48,77 +48,70 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief Foreground class for grabbing the image to a file. See \ref 
+/*! \brief Foreground class for grabbing the image to a file. See \ref
     PageSystemWindowForegroundGrabFile for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING FileGrabForeground : public FileGrabForegroundBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING FileGrabForeground : public FileGrabForegroundBase {
+ private:
+  typedef FileGrabForegroundBase Inherited;
 
-    typedef FileGrabForegroundBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector whichField, 
-                         UInt32    origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in FileGrabForegroundBase.
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  FileGrabForeground(void);
+  FileGrabForeground(const FileGrabForeground& source);
 
-    // Variables should all be in FileGrabForegroundBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~FileGrabForeground(void);
 
-    FileGrabForeground(void);
-    FileGrabForeground(const FileGrabForeground &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   draw                                       */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  virtual void draw(DrawActionBase* action, Viewport* port);
 
-    virtual ~FileGrabForeground(void); 
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   draw                                       */
-    /*! \{                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class FileGrabForegroundBase;
 
-    virtual void draw( DrawActionBase * action, Viewport * port );
+  static void initMethod(void);
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  // prohibit default functions (move to 'public' if you need one)
 
-    friend class FieldContainer;
-    friend class FileGrabForegroundBase;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const FileGrabForeground &source);
+  void operator=(const FileGrabForeground& source);
 };
 
-typedef FileGrabForeground *FileGrabForegroundP;
+typedef FileGrabForeground* FileGrabForegroundP;
 
 OSG_END_NAMESPACE
 

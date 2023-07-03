@@ -40,7 +40,6 @@
 //  Includes
 //---------------------------------------------------------------------------
 
-
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -50,7 +49,6 @@
 #include "OSGTileCameraDecorator.h"
 
 OSG_USING_NAMESPACE
-
 
 /***************************************************************************\
  *                            Description                                  *
@@ -72,8 +70,7 @@ _sfFullHeight Fields.
  *                           Class methods                                 *
 \***************************************************************************/
 
-void TileCameraDecorator::initMethod (void)
-{
+void TileCameraDecorator::initMethod(void) {
 }
 
 /***************************************************************************\
@@ -82,153 +79,124 @@ void TileCameraDecorator::initMethod (void)
 
 /*------------- constructors & destructors --------------------------------*/
 
-TileCameraDecorator::TileCameraDecorator(void) :
-    Inherited()
-{
+TileCameraDecorator::TileCameraDecorator(void)
+    : Inherited() {
 }
 
-TileCameraDecorator::TileCameraDecorator(const TileCameraDecorator &source) :
-    Inherited(source)
-{
+TileCameraDecorator::TileCameraDecorator(const TileCameraDecorator& source)
+    : Inherited(source) {
 }
 
-TileCameraDecorator::~TileCameraDecorator(void)
-{
+TileCameraDecorator::~TileCameraDecorator(void) {
 }
 
-void TileCameraDecorator::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void TileCameraDecorator::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
-/*! Set all the size-related Fields at once. 
+/*! Set all the size-related Fields at once.
 
     Does not call begin/endEdit internally!
-*/ 
-void TileCameraDecorator::setSize( Real32 left, Real32 bottom, Real32 right, 
-                        Real32 top )
-{
-    _sfLeft.setValue( left );
-    _sfRight.setValue( right );
-    _sfBottom.setValue( bottom );
-    _sfTop.setValue( top );
+*/
+void TileCameraDecorator::setSize(Real32 left, Real32 bottom, Real32 right, Real32 top) {
+  _sfLeft.setValue(left);
+  _sfRight.setValue(right);
+  _sfBottom.setValue(bottom);
+  _sfTop.setValue(top);
 }
 
-void TileCameraDecorator::getProjection( Matrix &result, 
-                                         UInt32 width, UInt32 height)
-{
-    if(width == 0 || height == 0)
-    {
-        result.setIdentity();
-        return;
-    }
+void TileCameraDecorator::getProjection(Matrix& result, UInt32 width, UInt32 height) {
+  if (width == 0 || height == 0) {
+    result.setIdentity();
+    return;
+  }
 
-    CameraPtr camera = getDecoratee();
-    if(camera == NullFC)
-    {
-        FWARNING(("TileCameraDecorator::getProjection: no decoratee!\n"));
-        result.setIdentity();
-        return;
-    }
+  CameraPtr camera = getDecoratee();
+  if (camera == NullFC) {
+    FWARNING(("TileCameraDecorator::getProjection: no decoratee!\n"));
+    result.setIdentity();
+    return;
+  }
 
-    if(getFullWidth() != 0)
-        width = getFullWidth();
-    
-    if(getFullHeight() != 0)
-        height = getFullHeight();
-        
-    camera->getProjection(result, width, height);
+  if (getFullWidth() != 0)
+    width = getFullWidth();
 
-    Real32 left   = getLeft(),
-           right  = getRight(),
-           top    = getTop(),
-           bottom = getBottom();
-           
-    if(left < 0)
-        left = -left / width;
-        
-    if(right < 0)
-        right = -right / width;
-        
-    if(top < 0)
-        top = -top / height;
-        
-    if(bottom < 0)
-        bottom = -bottom / height;
+  if (getFullHeight() != 0)
+    height = getFullHeight();
 
-    // scale the wanted part from the projection matrix
-    Real32  xs = 1.f / (right - left),
-            ys = 1.f / (top - bottom);
-    Matrix sm(  xs, 0, 0, -(left*2-1)*xs-1,  
-                0, ys, 0, -(bottom*2-1)*ys-1,  
-                0, 0, 1, 0, 
-                0, 0, 0, 1);
-    
-    result.multLeft(sm);
-}                                       
+  camera->getProjection(result, width, height);
+
+  Real32 left = getLeft(), right = getRight(), top = getTop(), bottom = getBottom();
+
+  if (left < 0)
+    left = -left / width;
+
+  if (right < 0)
+    right = -right / width;
+
+  if (top < 0)
+    top = -top / height;
+
+  if (bottom < 0)
+    bottom = -bottom / height;
+
+  // scale the wanted part from the projection matrix
+  Real32 xs = 1.f / (right - left), ys = 1.f / (top - bottom);
+  Matrix sm(xs, 0, 0, -(left * 2 - 1) * xs - 1, 0, ys, 0, -(bottom * 2 - 1) * ys - 1, 0, 0, 1, 0, 0,
+      0, 0, 1);
+
+  result.multLeft(sm);
+}
 
 /*! Get/calculate the decoration matrix for this camera. The default is identity.
-*/
-void TileCameraDecorator::getDecoration(Matrix &result, 
-										UInt32 width, UInt32 height)
-{
-    if(width == 0 || height == 0)
-    {
-        result.setIdentity();
-        return;
-    }
+ */
+void TileCameraDecorator::getDecoration(Matrix& result, UInt32 width, UInt32 height) {
+  if (width == 0 || height == 0) {
+    result.setIdentity();
+    return;
+  }
 
-    CameraPtr camera = getDecoratee();
-    if(camera == NullFC)
-    {
-        FWARNING(("TileCameraDecorator::getProjection: no decoratee!\n"));
-        result.setIdentity();
-        return;
-    }
+  CameraPtr camera = getDecoratee();
+  if (camera == NullFC) {
+    FWARNING(("TileCameraDecorator::getProjection: no decoratee!\n"));
+    result.setIdentity();
+    return;
+  }
 
-    if(getFullWidth() != 0)
-        width = getFullWidth();
-    
-    if(getFullHeight() != 0)
-        height = getFullHeight();
-	
-	// this is the only difference to getProjection()
-    camera->getDecoration(result, width, height);
+  if (getFullWidth() != 0)
+    width = getFullWidth();
 
-    Real32 left   = getLeft(),
-           right  = getRight(),
-           top    = getTop(),
-           bottom = getBottom();
-           
-    if(left < 0)
-        left = -left / width;
-        
-    if(right < 0)
-        right = -right / width;
-        
-    if(top < 0)
-        top = -top / height;
-        
-    if(bottom < 0)
-        bottom = -bottom / height;
+  if (getFullHeight() != 0)
+    height = getFullHeight();
 
-    // scale the wanted part from the decoration matrix
-    Real32  xs = 1.f / (right - left),
-            ys = 1.f / (top - bottom);
-    Matrix sm(  xs, 0, 0, -(left*2-1)*xs-1,  
-                0, ys, 0, -(bottom*2-1)*ys-1,  
-                0, 0, 1, 0, 
-                0, 0, 0, 1);
-    
-    result.multLeft(sm);
+  // this is the only difference to getProjection()
+  camera->getDecoration(result, width, height);
+
+  Real32 left = getLeft(), right = getRight(), top = getTop(), bottom = getBottom();
+
+  if (left < 0)
+    left = -left / width;
+
+  if (right < 0)
+    right = -right / width;
+
+  if (top < 0)
+    top = -top / height;
+
+  if (bottom < 0)
+    bottom = -bottom / height;
+
+  // scale the wanted part from the decoration matrix
+  Real32 xs = 1.f / (right - left), ys = 1.f / (top - bottom);
+  Matrix sm(xs, 0, 0, -(left * 2 - 1) * xs - 1, 0, ys, 0, -(bottom * 2 - 1) * ys - 1, 0, 0, 1, 0, 0,
+      0, 0, 1);
+
+  result.multLeft(sm);
 }
 
 /*------------------------------- dump ----------------------------------*/
 
-void TileCameraDecorator::dump(      UInt32    OSG_CHECK_ARG(uiIndent), 
-                               const BitVector OSG_CHECK_ARG(bvFlags )) const
-{
-    SLOG << "Dump TileCameraDecorator NI" << std::endl;
+void TileCameraDecorator::dump(
+    UInt32 OSG_CHECK_ARG(uiIndent), const BitVector OSG_CHECK_ARG(bvFlags)) const {
+  SLOG << "Dump TileCameraDecorator NI" << std::endl;
 }
-
-

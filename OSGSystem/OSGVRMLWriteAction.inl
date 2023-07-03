@@ -40,7 +40,6 @@
 //  Includes
 //---------------------------------------------------------------------------
 
-
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -53,16 +52,13 @@ OSG_BEGIN_NAMESPACE
  *                               Types                                     *
 \***************************************************************************/
 
-
 /***************************************************************************\
  *                           Class variables                               *
 \***************************************************************************/
 
-
 /***************************************************************************\
  *                           Class methods                                 *
 \***************************************************************************/
-
 
 /*-------------------------------------------------------------------------*\
  -  public                                                                 -
@@ -72,11 +68,9 @@ OSG_BEGIN_NAMESPACE
  -  protected                                                              -
 \*-------------------------------------------------------------------------*/
 
-
 /*-------------------------------------------------------------------------*\
  -  private                                                                -
 \*-------------------------------------------------------------------------*/
-
 
 /***************************************************************************\
  *                           Instance methods                              *
@@ -91,57 +85,41 @@ OSG_BEGIN_NAMESPACE
 /** \brief Constructor
  */
 
-
-
 /** \brief Destructor
  */
-
 
 /*------------------------------ access -----------------------------------*/
 
 /*---------------------------- properties ---------------------------------*/
 
-inline 
-MaterialPtr VRMLWriteAction::getMaterial(void) const
-{
+inline MaterialPtr VRMLWriteAction::getMaterial(void) const {
   return _material;
 }
 
-inline
-FILE *VRMLWriteAction::getFilePtr(void) const
-{
-    return _pFile;
+inline FILE* VRMLWriteAction::getFilePtr(void) const {
+  return _pFile;
 }
 
-inline
-VRMLWriteAction::TraversalMode VRMLWriteAction::getMode(void) const
-{
-    return _eTraversalMode;
+inline VRMLWriteAction::TraversalMode VRMLWriteAction::getMode(void) const {
+  return _eTraversalMode;
 }
 
-inline
-bool VRMLWriteAction::isWritten(FieldContainerPtr &fc)
-{
-    return std::find(_writtenFCs.begin(), _writtenFCs.end(), fc) != 
-            _writtenFCs.end();
+inline bool VRMLWriteAction::isWritten(FieldContainerPtr& fc) {
+  return std::find(_writtenFCs.begin(), _writtenFCs.end(), fc) != _writtenFCs.end();
 }
 
-inline
-UInt32 VRMLWriteAction::getIndex(FieldContainerPtr &fc)
-{
-    std::vector<FieldContainerPtr>::iterator it;
-    
-    it =  std::find(_writtenFCs.begin(), _writtenFCs.end(), fc);
-    
-    return it - _writtenFCs.begin();
+inline UInt32 VRMLWriteAction::getIndex(FieldContainerPtr& fc) {
+  std::vector<FieldContainerPtr>::iterator it;
+
+  it = std::find(_writtenFCs.begin(), _writtenFCs.end(), fc);
+
+  return it - _writtenFCs.begin();
 }
 
-inline
-UInt32 VRMLWriteAction::setWritten(FieldContainerPtr &fc)
-{
-    _writtenFCs.push_back(fc);
-    
-    return _writtenFCs.size() - 1;
+inline UInt32 VRMLWriteAction::setWritten(FieldContainerPtr& fc) {
+  _writtenFCs.push_back(fc);
+
+  return _writtenFCs.size() - 1;
 }
 
 OSG_END_NAMESPACE

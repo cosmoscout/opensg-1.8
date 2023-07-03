@@ -48,106 +48,98 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief MultiPassMaterial class. See \ref 
+/*! \brief MultiPassMaterial class. See \ref
            PageSystemMultiPassMaterial for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING MultiPassMaterial : public MultiPassMaterialBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING MultiPassMaterial : public MultiPassMaterialBase {
+ private:
+  typedef MultiPassMaterialBase Inherited;
 
-    typedef MultiPassMaterialBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Rendering                                  */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  virtual void draw(DrawFunctor& func, DrawActionBase* action);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Rendering                                  */
-    /*! \{                                                                 */
+  virtual void draw(Geometry* geo, DrawActionBase* action);
 
-    virtual void       draw              (DrawFunctor& func,
-                                          DrawActionBase * action );
+  virtual StatePtr makeState(void);
 
-    virtual void       draw              (Geometry* geo,
-                                          DrawActionBase * action);
+  virtual void     rebuildState(void);
+  virtual StatePtr getState(UInt32 index = 0);
+  virtual bool     isMultiPass(void) const;
+  virtual UInt32   getNPasses(void) const;
 
-    virtual StatePtr   makeState         (void);
+  virtual bool isTransparent(void) const;
 
-    virtual void       rebuildState      (void);
-    virtual StatePtr   getState          (UInt32 index = 0);
-    virtual bool       isMultiPass       (void) const;
-    virtual UInt32     getNPasses        (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Access                                    */
+  /*! \{                                                                 */
 
-    virtual bool       isTransparent     (void) const;
+  void addMaterial(MaterialPtr mat);
+  void subMaterial(MaterialPtr mat);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Access                                    */
-    /*! \{                                                                 */
+  bool hasMaterial(MaterialPtr mat);
 
-    void addMaterial(MaterialPtr mat);
-    void subMaterial(MaterialPtr mat);
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in MultiPassMaterialBase.
 
-    bool hasMaterial(MaterialPtr mat);
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  MultiPassMaterial(void);
+  MultiPassMaterial(const MultiPassMaterial& source);
 
-    // Variables should all be in MultiPassMaterialBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~MultiPassMaterial(void);
 
-    MultiPassMaterial(void);
-    MultiPassMaterial(const MultiPassMaterial &source);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class MultiPassMaterialBase;
 
-    virtual ~MultiPassMaterial(void); 
+  static void initMethod(void);
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  // prohibit default functions (move to 'public' if you need one)
 
-    friend class FieldContainer;
-    friend class MultiPassMaterialBase;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const MultiPassMaterial &source);
+  void operator=(const MultiPassMaterial& source);
 };
 
-typedef MultiPassMaterial *MultiPassMaterialP;
+typedef MultiPassMaterial* MultiPassMaterialP;
 
 OSG_END_NAMESPACE
 
 #include <OSGMultiPassMaterialBase.inl>
 #include <OSGMultiPassMaterial.inl>
 
-#define OSGMULTIPASSMATERIAL_HEADER_CVSID "@(#)$Id: OSGMultiPassMaterial.h,v 1.4 2006/02/02 15:15:36 a-m-z Exp $"
+#define OSGMULTIPASSMATERIAL_HEADER_CVSID                                                          \
+  "@(#)$Id: OSGMultiPassMaterial.h,v 1.4 2006/02/02 15:15:36 a-m-z Exp $"
 
 #endif /* _OSGMULTIPASSMATERIAL_H_ */

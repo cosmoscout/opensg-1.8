@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGGEOMETRY_H_
 #define _OSGGEOMETRY_H_
 #ifdef __sgi
@@ -53,7 +52,6 @@
 
 #include <OSGActorBase.h>
 
-
 OSG_BEGIN_NAMESPACE
 
 class DrawActionBase;
@@ -66,200 +64,195 @@ class EdgeIterator;
 class GeoVBO;
 
 /*! The Geometry class, see \ref PageSystemGeometry for a description.
-*/
-class OSG_SYSTEMLIB_DLLMAPPING Geometry : public GeometryBase
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+ */
+class OSG_SYSTEMLIB_DLLMAPPING Geometry : public GeometryBase {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                IndexMapping Constants                        */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                IndexMapping Constants                        */
-    /*! \{                                                                 */
+  static const UInt16 MapPosition;
+  static const UInt16 MapNormal;
+  static const UInt16 MapColor;
+  static const UInt16 MapSecondaryColor;
+  static const UInt16 MapTexCoords;
+  static const UInt16 MapTexCoords1;
+  static const UInt16 MapTexCoords2;
+  static const UInt16 MapTexCoords3;
+  static const UInt16 MapTexCoords4;
+  static const UInt16 MapTexCoords5;
+  static const UInt16 MapTexCoords6;
+  static const UInt16 MapTexCoords7;
+  static const UInt16 MapEmpty;
 
-    static const UInt16 MapPosition;
-    static const UInt16 MapNormal;
-    static const UInt16 MapColor;
-    static const UInt16 MapSecondaryColor;
-    static const UInt16 MapTexCoords;
-    static const UInt16 MapTexCoords1;
-    static const UInt16 MapTexCoords2;
-    static const UInt16 MapTexCoords3;
-    static const UInt16 MapTexCoords4;
-    static const UInt16 MapTexCoords5;
-    static const UInt16 MapTexCoords6;
-    static const UInt16 MapTexCoords7;
-    static const UInt16 MapEmpty;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  static const char* getClassname(void) {
+    return "Geometry";
+  };
 
-    static const char *getClassname(void) { return "Geometry"; };
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Class Specific                         */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Class Specific                         */
-    /*! \{                                                                 */
+  static const char* mapType(UInt8 type);
 
-    static const char *mapType          (UInt8 type);
+  Int16 calcMappingIndex(UInt16 attrib) const;
 
-    Int16              calcMappingIndex (UInt16 attrib) const;
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    virtual void       changed          (BitVector whichField,
-                                         UInt32    origin    );
+  GeometryPtr getPtr(void) const;
 
-    GeometryPtr        getPtr           (void) const;
+  GeometryPtr clone(void);
 
-    GeometryPtr        clone            (void);
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    virtual void       dump             (      UInt32    uiIndent = 0,
-                                         const BitVector bvFlags = 0) const;
+  bool isMergeable(const GeometryPtr other);
 
-    bool               isMergeable      (const GeometryPtr other);
+  bool merge(const GeometryPtr other);
 
-    bool               merge            (const GeometryPtr other);
+  UInt32 getCachedGfxMemoryUsage(void);
 
-    UInt32             getCachedGfxMemoryUsage(void);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Abstract                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Abstract                                  */
+  /*! \{                                                                 */
 
 #ifndef OSG_SUPPORT_NO_GEO_INTERFACE
-    virtual GeoPropertyArrayInterface *getProperty(Int32 mapID);
+  virtual GeoPropertyArrayInterface* getProperty(Int32 mapID);
 #endif
 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  void setTypes(const GeoPTypesPtr& value);
+  void setLengths(const GeoPLengthsPtr& value);
+  void setPositions(const GeoPositionsPtr& value);
+  void setNormals(const GeoNormalsPtr& value);
+  void setColors(const GeoColorsPtr& value);
+  void setSecondaryColors(const GeoColorsPtr& value);
+  void setTexCoords(const GeoTexCoordsPtr& value);
+  void setTexCoords1(const GeoTexCoordsPtr& value);
+  void setTexCoords2(const GeoTexCoordsPtr& value);
+  void setTexCoords3(const GeoTexCoordsPtr& value);
+  void setTexCoords4(const GeoTexCoordsPtr& value);
+  void setTexCoords5(const GeoTexCoordsPtr& value);
+  void setTexCoords6(const GeoTexCoordsPtr& value);
+  void setTexCoords7(const GeoTexCoordsPtr& value);
+  void setIndices(const GeoIndicesPtr& value);
+  void setMaterial(const MaterialPtr& value);
 
-    void setTypes          (const GeoPTypesPtr    &value);
-    void setLengths        (const GeoPLengthsPtr  &value);
-    void setPositions      (const GeoPositionsPtr &value);
-    void setNormals        (const GeoNormalsPtr   &value);
-    void setColors         (const GeoColorsPtr    &value);
-    void setSecondaryColors(const GeoColorsPtr    &value);
-    void setTexCoords      (const GeoTexCoordsPtr &value);
-    void setTexCoords1     (const GeoTexCoordsPtr &value);
-    void setTexCoords2     (const GeoTexCoordsPtr &value);
-    void setTexCoords3     (const GeoTexCoordsPtr &value);
-    void setTexCoords4     (const GeoTexCoordsPtr &value);
-    void setTexCoords5     (const GeoTexCoordsPtr &value);
-    void setTexCoords6     (const GeoTexCoordsPtr &value);
-    void setTexCoords7     (const GeoTexCoordsPtr &value);
-    void setIndices        (const GeoIndicesPtr   &value);
-    void setMaterial       (const MaterialPtr     &value);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Iterator Access                        */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Iterator Access                        */
-    /*! \{                                                                 */
+  TriangleIterator beginTriangles(void) const;
+  TriangleIterator endTriangles(void) const;
 
-    TriangleIterator   beginTriangles   (void) const;
-    TriangleIterator   endTriangles     (void) const;
+  PrimitiveIterator beginPrimitives(void) const;
+  PrimitiveIterator endPrimitives(void) const;
 
-    PrimitiveIterator  beginPrimitives  (void) const;
-    PrimitiveIterator  endPrimitives    (void) const;
+  FaceIterator beginFaces(void) const;
+  FaceIterator endFaces(void) const;
 
-    FaceIterator       beginFaces       (void) const;
-    FaceIterator       endFaces         (void) const;
+  LineIterator beginLines(void) const;
+  LineIterator endLines(void) const;
 
-    LineIterator       beginLines       (void) const;
-    LineIterator       endLines         (void) const;
+  EdgeIterator beginEdges(void) const;
+  EdgeIterator endEdges(void) const;
 
-    EdgeIterator       beginEdges       (void) const;
-    EdgeIterator       endEdges         (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Draw                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Draw                                   */
-    /*! \{                                                                 */
+  // should these be public?
+  virtual Action::ResultE drawPrimitives(DrawActionBase* action);
+  Action::ResultE         intersect(Action* action);
 
-    // should these be public?
-    virtual Action::ResultE drawPrimitives (DrawActionBase * action );
-            Action::ResultE intersect      (Action * action );
+  NewActionTypes::ResultE intersectActor(ActorBase::FunctorArgumentType& funcArg);
 
-    NewActionTypes::ResultE intersectActor(ActorBase::FunctorArgumentType &funcArg);
+  void invalidateDlistCache(void);
 
-    void            invalidateDlistCache (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      NodeCore Specific                       */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      NodeCore Specific                       */
-    /*! \{                                                                 */
+  // this only calculates a bbox - therefore it is useful and does no harm
+  void adjustVolume(Volume& volume);
 
-    // this only calculates a bbox - therefore it is useful and does no harm
-    void            adjustVolume     (Volume & volume);
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  Geometry(void);
+  Geometry(const Geometry& source);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    Geometry(void);
-    Geometry(const Geometry &source);
+  virtual ~Geometry(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Class Specific                             */
+  /*! \{                                                                 */
 
-    virtual ~Geometry(void);
+  void handleGL(Window* win, UInt32 id);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Class Specific                             */
-    /*! \{                                                                 */
+  void onCreate(const Geometry* source = NULL);
+  void onDestroy(void);
 
-    void handleGL(Window* win, UInt32 id);
+  bool  CompareMaterials(MaterialPtr m1, MaterialPtr m2);
+  Int16 MergeIndex(const GeometryPtr other);
 
-    void onCreate(const Geometry *source = NULL);
-    void onDestroy(void);
+  void merge0(const GeometryPtr other);
+  void merge1(const GeometryPtr other);
+  void merge2(const GeometryPtr other);
+  void merge3(const GeometryPtr other);
+  void merge4(const GeometryPtr other);
+  void merge5(const GeometryPtr other);
+  void merge6(const GeometryPtr other);
 
-    bool CompareMaterials(MaterialPtr m1, MaterialPtr m2);
-    Int16 MergeIndex( const GeometryPtr other );
+  bool updateLowHighIndices(void);
 
-    void merge0( const GeometryPtr other );
-    void merge1( const GeometryPtr other );
-    void merge2( const GeometryPtr other );
-    void merge3( const GeometryPtr other );
-    void merge4( const GeometryPtr other );
-    void merge5( const GeometryPtr other );
-    void merge6( const GeometryPtr other );
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  typedef GeometryBase Inherited;
 
-    bool updateLowHighIndices( void );
+  friend class FieldContainer;
+  friend class GeometryBase;
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  static void initMethod(void);
 
-    typedef GeometryBase Inherited;
+  void operator=(const Geometry& source);
 
-    friend class FieldContainer;
-    friend class GeometryBase;
+  void createVBO(Window* win, UInt32 id);
+  void destroyVBO(Window* win, UInt32 id);
+  void updateVBO(Window* win, UInt32 id);
+  bool drawVBO(Window* win, UInt32 id);
 
-    static void initMethod( void );
+  static std::vector<GeoVBO*> _vbos;
 
-    void operator =(const Geometry &source);
-
-    void createVBO(Window *win, UInt32 id);
-    void destroyVBO(Window *win, UInt32 id);
-    void updateVBO(Window *win, UInt32 id);
-    bool drawVBO(Window *win, UInt32 id);
-
-    static std::vector<GeoVBO *> _vbos;
-
-    UInt32 _numBytesOnGfxCard;
+  UInt32 _numBytesOnGfxCard;
 };
 
-typedef Geometry *GeometryP;
+typedef Geometry* GeometryP;
 
 OSG_END_NAMESPACE
 

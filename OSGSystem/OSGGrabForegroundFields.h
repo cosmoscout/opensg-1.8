@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGGRABFOREGROUNDFIELDS_H_
 #define _OSGGRABFOREGROUNDFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class GrabForeground;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! GrabForegroundPtr
 
 typedef FCPtr<ForegroundPtr, GrabForeground> GrabForegroundPtr;
@@ -81,18 +80,23 @@ typedef FCPtr<ForegroundPtr, GrabForeground> GrabForegroundPtr;
 #endif
 
 template <>
-struct FieldDataTraits<GrabForegroundPtr> : 
-    public FieldTraitsRecurseMapper<GrabForegroundPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<GrabForegroundPtr>
+    : public FieldTraitsRecurseMapper<GrabForegroundPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getSName(void) { return "SFGrabForegroundPtr"; }
-    static const char *getMName(void) { return "MFGrabForegroundPtr"; }
+  static const char* getSName(void) {
+    return "SFGrabForegroundPtr";
+  }
+  static const char* getMName(void) {
+    return "MFGrabForegroundPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -102,7 +106,6 @@ struct FieldDataTraits<GrabForegroundPtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
@@ -126,6 +129,7 @@ OSG_DLLEXPORT_DECL1(MField, GrabForegroundPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 
 OSG_END_NAMESPACE
 
-#define OSGGRABFOREGROUNDFIELDS_HEADER_CVSID "@(#)$Id: FCFieldsTemplate_h.h,v 1.25 2005/04/04 14:51:48 dirk Exp $"
+#define OSGGRABFOREGROUNDFIELDS_HEADER_CVSID                                                       \
+  "@(#)$Id: FCFieldsTemplate_h.h,v 1.25 2005/04/04 14:51:48 dirk Exp $"
 
 #endif /* _OSGGRABFOREGROUNDFIELDS_H_ */

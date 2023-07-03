@@ -52,137 +52,99 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &ClipPlaneBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& ClipPlaneBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 ClipPlaneBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 ClipPlaneBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-ClipPlanePtr ClipPlaneBase::create(void) 
-{
-    ClipPlanePtr fc; 
+inline ClipPlanePtr ClipPlaneBase::create(void) {
+  ClipPlanePtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = ClipPlanePtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = ClipPlanePtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-ClipPlanePtr ClipPlaneBase::createEmpty(void) 
-{ 
-    ClipPlanePtr returnValue; 
-    
-    newPtr(returnValue); 
+inline ClipPlanePtr ClipPlaneBase::createEmpty(void) {
+  ClipPlanePtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the ClipPlane::_sfEquation field.
-inline
-SFVec4f *ClipPlaneBase::getSFEquation(void)
-{
-    return &_sfEquation;
+inline SFVec4f* ClipPlaneBase::getSFEquation(void) {
+  return &_sfEquation;
 }
 
 //! Get the ClipPlane::_sfOn field.
-inline
-SFBool *ClipPlaneBase::getSFOn(void)
-{
-    return &_sfOn;
+inline SFBool* ClipPlaneBase::getSFOn(void) {
+  return &_sfOn;
 }
 
 //! Get the ClipPlane::_sfBeacon field.
-inline
-SFNodePtr *ClipPlaneBase::getSFBeacon(void)
-{
-    return &_sfBeacon;
-}
-
-
-//! Get the value of the ClipPlane::_sfEquation field.
-inline
-Vec4f &ClipPlaneBase::getEquation(void)
-{
-    return _sfEquation.getValue();
+inline SFNodePtr* ClipPlaneBase::getSFBeacon(void) {
+  return &_sfBeacon;
 }
 
 //! Get the value of the ClipPlane::_sfEquation field.
-inline
-const Vec4f &ClipPlaneBase::getEquation(void) const
-{
-    return _sfEquation.getValue();
+inline Vec4f& ClipPlaneBase::getEquation(void) {
+  return _sfEquation.getValue();
+}
+
+//! Get the value of the ClipPlane::_sfEquation field.
+inline const Vec4f& ClipPlaneBase::getEquation(void) const {
+  return _sfEquation.getValue();
 }
 
 //! Set the value of the ClipPlane::_sfEquation field.
-inline
-void ClipPlaneBase::setEquation(const Vec4f &value)
-{
-    _sfEquation.setValue(value);
+inline void ClipPlaneBase::setEquation(const Vec4f& value) {
+  _sfEquation.setValue(value);
 }
 
 //! Get the value of the ClipPlane::_sfOn field.
-inline
-bool &ClipPlaneBase::getOn(void)
-{
-    return _sfOn.getValue();
+inline bool& ClipPlaneBase::getOn(void) {
+  return _sfOn.getValue();
 }
 
 //! Get the value of the ClipPlane::_sfOn field.
-inline
-const bool &ClipPlaneBase::getOn(void) const
-{
-    return _sfOn.getValue();
+inline const bool& ClipPlaneBase::getOn(void) const {
+  return _sfOn.getValue();
 }
 
 //! Set the value of the ClipPlane::_sfOn field.
-inline
-void ClipPlaneBase::setOn(const bool &value)
-{
-    _sfOn.setValue(value);
+inline void ClipPlaneBase::setOn(const bool& value) {
+  _sfOn.setValue(value);
 }
 
 //! Get the value of the ClipPlane::_sfBeacon field.
-inline
-NodePtr &ClipPlaneBase::getBeacon(void)
-{
-    return _sfBeacon.getValue();
+inline NodePtr& ClipPlaneBase::getBeacon(void) {
+  return _sfBeacon.getValue();
 }
 
 //! Get the value of the ClipPlane::_sfBeacon field.
-inline
-const NodePtr &ClipPlaneBase::getBeacon(void) const
-{
-    return _sfBeacon.getValue();
+inline const NodePtr& ClipPlaneBase::getBeacon(void) const {
+  return _sfBeacon.getValue();
 }
 
 //! Set the value of the ClipPlane::_sfBeacon field.
-inline
-void ClipPlaneBase::setBeacon(const NodePtr &value)
-{
-    _sfBeacon.setValue(value);
+inline void ClipPlaneBase::setBeacon(const NodePtr& value) {
+  _sfBeacon.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGCLIPPLANEBASE_INLINE_CVSID "@(#)$Id: OSGClipPlaneBase.inl,v 1.1 2007/04/26 15:22:01 a-m-z Exp $"
-
+#define OSGCLIPPLANEBASE_INLINE_CVSID                                                              \
+  "@(#)$Id: OSGClipPlaneBase.inl,v 1.1 2007/04/26 15:22:01 a-m-z Exp $"

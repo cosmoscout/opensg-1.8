@@ -60,7 +60,7 @@ OSG_USING_NAMESPACE
 
 /*! \class osg::ImageBackground
     \ingroup GrpSystemWindowBackgrounds
-    
+
 A background showing an image, see \ref PageSystemWindowBackgroundImage for a
 description.
 
@@ -71,91 +71,74 @@ scaling by _sfScale.
 
 /*----------------------- constructors & destructors ----------------------*/
 
-ImageBackground::ImageBackground(void) :
-    Inherited()
-{
+ImageBackground::ImageBackground(void)
+    : Inherited() {
 }
 
-ImageBackground::ImageBackground(const ImageBackground &source) :
-    Inherited(source)
-{
+ImageBackground::ImageBackground(const ImageBackground& source)
+    : Inherited(source) {
 }
 
-ImageBackground::~ImageBackground(void)
-{
+ImageBackground::~ImageBackground(void) {
 }
 
 /*----------------------------- class specific ----------------------------*/
 
-void ImageBackground::initMethod (void)
-{
+void ImageBackground::initMethod(void) {
 }
 
-void ImageBackground::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void ImageBackground::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
-void ImageBackground::clear(DrawActionBase *, Viewport *vp)
-{
-    glClearColor(_sfColor.getValue()[0],
-                 _sfColor.getValue()[1],
-                 _sfColor.getValue()[2],
-                 1);                 
-    
-    ImagePtr img = getImage();
+void ImageBackground::clear(DrawActionBase*, Viewport* vp) {
+  glClearColor(_sfColor.getValue()[0], _sfColor.getValue()[1], _sfColor.getValue()[2], 1);
 
-    if(img == NullFC || img->getWidth() <= 0 || img->getHeight() <= 0)
-    {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        return; 
-    }
+  ImagePtr img = getImage();
 
-    glClear(GL_COLOR_BUFFER_BIT);
-    
-    GLboolean depth = glIsEnabled(GL_DEPTH_TEST);
-    glDisable(GL_DEPTH_TEST);
+  if (img == NullFC || img->getWidth() <= 0 || img->getHeight() <= 0) {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    return;
+  }
 
-    glDisable(GL_TEXTURE_2D);
+  glClear(GL_COLOR_BUFFER_BIT);
 
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glLoadIdentity();
+  GLboolean depth = glIsEnabled(GL_DEPTH_TEST);
+  glDisable(GL_DEPTH_TEST);
 
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-    glOrtho(0, 1, 0, 1, 0, 1);
-  
-    if(getScale())
-    {   
-        glPixelZoom(vp->getPixelWidth () / (Real32)img->getWidth (),
-                    vp->getPixelHeight() / (Real32)img->getHeight());
-    }
+  glDisable(GL_TEXTURE_2D);
 
-    glRasterPos2f(0, 0);
-    glDrawPixels(img->getWidth(), img->getHeight(),
-                 img->getPixelFormat(), GL_UNSIGNED_BYTE,
-                 img->getData() );
+  glMatrixMode(GL_MODELVIEW);
+  glPushMatrix();
+  glLoadIdentity();
 
-    glPopMatrix();
-    glMatrixMode(GL_MODELVIEW);
-    glPopMatrix();
+  glMatrixMode(GL_PROJECTION);
+  glPushMatrix();
+  glLoadIdentity();
+  glOrtho(0, 1, 0, 1, 0, 1);
 
-    if(getScale())
-        glPixelZoom(1, 1);
+  if (getScale()) {
+    glPixelZoom(vp->getPixelWidth() / (Real32)img->getWidth(),
+        vp->getPixelHeight() / (Real32)img->getHeight());
+  }
 
-    if(depth == GL_TRUE)    
-        glEnable(GL_DEPTH_TEST);
-    
-    glClear(GL_DEPTH_BUFFER_BIT);
+  glRasterPos2f(0, 0);
+  glDrawPixels(
+      img->getWidth(), img->getHeight(), img->getPixelFormat(), GL_UNSIGNED_BYTE, img->getData());
+
+  glPopMatrix();
+  glMatrixMode(GL_MODELVIEW);
+  glPopMatrix();
+
+  if (getScale())
+    glPixelZoom(1, 1);
+
+  if (depth == GL_TRUE)
+    glEnable(GL_DEPTH_TEST);
+
+  glClear(GL_DEPTH_BUFFER_BIT);
 }
 
-void ImageBackground::dump(      UInt32     , 
-                           const BitVector  ) const
-{
-    SLOG << "Dump ImageBackground NI" << std::endl;
+void ImageBackground::dump(UInt32, const BitVector) const {
+  SLOG << "Dump ImageBackground NI" << std::endl;
 }
-
-
-

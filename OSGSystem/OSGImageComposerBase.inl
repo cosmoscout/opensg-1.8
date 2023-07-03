@@ -52,83 +52,59 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &ImageComposerBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& ImageComposerBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 ImageComposerBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
-
+inline OSG::UInt32 ImageComposerBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the ImageComposer::_sfEnabled field.
-inline
-SFBool *ImageComposerBase::getSFEnabled(void)
-{
-    return &_sfEnabled;
+inline SFBool* ImageComposerBase::getSFEnabled(void) {
+  return &_sfEnabled;
 }
 
 //! Get the ImageComposer::_sfStatistics field.
-inline
-SFBool *ImageComposerBase::getSFStatistics(void)
-{
-    return &_sfStatistics;
-}
-
-
-//! Get the value of the ImageComposer::_sfEnabled field.
-inline
-bool &ImageComposerBase::getEnabled(void)
-{
-    return _sfEnabled.getValue();
+inline SFBool* ImageComposerBase::getSFStatistics(void) {
+  return &_sfStatistics;
 }
 
 //! Get the value of the ImageComposer::_sfEnabled field.
-inline
-const bool &ImageComposerBase::getEnabled(void) const
-{
-    return _sfEnabled.getValue();
+inline bool& ImageComposerBase::getEnabled(void) {
+  return _sfEnabled.getValue();
+}
+
+//! Get the value of the ImageComposer::_sfEnabled field.
+inline const bool& ImageComposerBase::getEnabled(void) const {
+  return _sfEnabled.getValue();
 }
 
 //! Set the value of the ImageComposer::_sfEnabled field.
-inline
-void ImageComposerBase::setEnabled(const bool &value)
-{
-    _sfEnabled.setValue(value);
+inline void ImageComposerBase::setEnabled(const bool& value) {
+  _sfEnabled.setValue(value);
 }
 
 //! Get the value of the ImageComposer::_sfStatistics field.
-inline
-bool &ImageComposerBase::getStatistics(void)
-{
-    return _sfStatistics.getValue();
+inline bool& ImageComposerBase::getStatistics(void) {
+  return _sfStatistics.getValue();
 }
 
 //! Get the value of the ImageComposer::_sfStatistics field.
-inline
-const bool &ImageComposerBase::getStatistics(void) const
-{
-    return _sfStatistics.getValue();
+inline const bool& ImageComposerBase::getStatistics(void) const {
+  return _sfStatistics.getValue();
 }
 
 //! Set the value of the ImageComposer::_sfStatistics field.
-inline
-void ImageComposerBase::setStatistics(const bool &value)
-{
-    _sfStatistics.setValue(value);
+inline void ImageComposerBase::setStatistics(const bool& value) {
+  _sfStatistics.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGIMAGECOMPOSERBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGIMAGECOMPOSERBASE_INLINE_CVSID                                                          \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

@@ -47,24 +47,19 @@ OSG_USING_NAMESPACE
 
 /*-------------------------- constructor ----------------------------------*/
 
-IDStringLink::IDStringLink(const Char8 *str) : 
-    Inherited(str, IDString::LINK)
-{
+IDStringLink::IDStringLink(const Char8* str)
+    : Inherited(str, IDString::LINK) {
 }
 
-IDStringLink::IDStringLink(const IDStringLink &obj) : 
-    Inherited(obj.str(), IDString::LINK)
-{
+IDStringLink::IDStringLink(const IDStringLink& obj)
+    : Inherited(obj.str(), IDString::LINK) {
 }
 
-IDStringLink::IDStringLink(const IDString &obj) : 
-    Inherited(obj.str(), IDString::LINK)
-{
+IDStringLink::IDStringLink(const IDString& obj)
+    : Inherited(obj.str(), IDString::LINK) {
 }
 
 /*-------------------------- destructor -----------------------------------*/
 
-IDStringLink::~IDStringLink()
-{
+IDStringLink::~IDStringLink() {
 }
-

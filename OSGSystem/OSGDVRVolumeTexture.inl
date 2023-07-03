@@ -52,13 +52,10 @@ OSG_BEGIN_NAMESPACE
 
 /*------------------------------ access -----------------------------------*/
 
-inline
-void DVRVolumeTexture::setImage(const ImagePtr &value)
-{
-    setRefdCP(_sfImage.getValue(), value);
-}	
+inline void DVRVolumeTexture::setImage(const ImagePtr& value) {
+  setRefdCP(_sfImage.getValue(), value);
+}
 
 OSG_END_NAMESPACE
 
 #define OSGDVRVOLUMETEXTURE_INLINE_CVSID "@(#)$Id: $"
-

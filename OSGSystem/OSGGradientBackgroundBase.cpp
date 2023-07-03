@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEGRADIENTBACKGROUNDINST
 
 #include <stdlib.h>
@@ -61,22 +60,19 @@
 #include "OSGGradientBackgroundBase.h"
 #include "OSGGradientBackground.h"
 
-
 OSG_BEGIN_NAMESPACE
 
-const OSG::BitVector  GradientBackgroundBase::ColorFieldMask = 
+const OSG::BitVector GradientBackgroundBase::ColorFieldMask =
     (TypeTraits<BitVector>::One << GradientBackgroundBase::ColorFieldId);
 
-const OSG::BitVector  GradientBackgroundBase::PositionFieldMask = 
+const OSG::BitVector GradientBackgroundBase::PositionFieldMask =
     (TypeTraits<BitVector>::One << GradientBackgroundBase::PositionFieldId);
 
-const OSG::BitVector  GradientBackgroundBase::ClearStencilBitFieldMask = 
+const OSG::BitVector GradientBackgroundBase::ClearStencilBitFieldMask =
     (TypeTraits<BitVector>::One << GradientBackgroundBase::ClearStencilBitFieldId);
 
-const OSG::BitVector GradientBackgroundBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector GradientBackgroundBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
@@ -92,251 +88,188 @@ const OSG::BitVector GradientBackgroundBase::MTInfluenceMask =
 
 //! GradientBackground description
 
-FieldDescription *GradientBackgroundBase::_desc[] = 
-{
-    new FieldDescription(MFColor3f::getClassType(), 
-                     "color", 
-                     ColorFieldId, ColorFieldMask,
-                     false,
-                     (FieldAccessMethod) &GradientBackgroundBase::getMFColor),
-    new FieldDescription(MFReal32::getClassType(), 
-                     "position", 
-                     PositionFieldId, PositionFieldMask,
-                     false,
-                     (FieldAccessMethod) &GradientBackgroundBase::getMFPosition),
-    new FieldDescription(SFInt32::getClassType(), 
-                     "clearStencilBit", 
-                     ClearStencilBitFieldId, ClearStencilBitFieldMask,
-                     false,
-                     (FieldAccessMethod) &GradientBackgroundBase::getSFClearStencilBit)
-};
+FieldDescription* GradientBackgroundBase::_desc[] = {
+    new FieldDescription(MFColor3f::getClassType(), "color", ColorFieldId, ColorFieldMask, false,
+        (FieldAccessMethod)&GradientBackgroundBase::getMFColor),
+    new FieldDescription(MFReal32::getClassType(), "position", PositionFieldId, PositionFieldMask,
+        false, (FieldAccessMethod)&GradientBackgroundBase::getMFPosition),
+    new FieldDescription(SFInt32::getClassType(), "clearStencilBit", ClearStencilBitFieldId,
+        ClearStencilBitFieldMask, false,
+        (FieldAccessMethod)&GradientBackgroundBase::getSFClearStencilBit)};
 
-
-FieldContainerType GradientBackgroundBase::_type(
-    "GradientBackground",
-    "Background",
-    NULL,
-    (PrototypeCreateF) &GradientBackgroundBase::createEmpty,
-    GradientBackground::initMethod,
-    _desc,
+FieldContainerType GradientBackgroundBase::_type("GradientBackground", "Background", NULL,
+    (PrototypeCreateF)&GradientBackgroundBase::createEmpty, GradientBackground::initMethod, _desc,
     sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(GradientBackgroundBase, GradientBackgroundPtr)
+// OSG_FIELD_CONTAINER_DEF(GradientBackgroundBase, GradientBackgroundPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &GradientBackgroundBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &GradientBackgroundBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr GradientBackgroundBase::shallowCopy(void) const 
-{ 
-    GradientBackgroundPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const GradientBackground *>(this)); 
-
-    return returnValue; 
+FieldContainerType& GradientBackgroundBase::getType(void) {
+  return _type;
 }
 
-UInt32 GradientBackgroundBase::getContainerSize(void) const 
-{ 
-    return sizeof(GradientBackground); 
+const FieldContainerType& GradientBackgroundBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr GradientBackgroundBase::shallowCopy(void) const {
+  GradientBackgroundPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const GradientBackground*>(this));
+
+  return returnValue;
+}
+
+UInt32 GradientBackgroundBase::getContainerSize(void) const {
+  return sizeof(GradientBackground);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void GradientBackgroundBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((GradientBackgroundBase *) &other, whichField);
+void GradientBackgroundBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((GradientBackgroundBase*)&other, whichField);
 }
 #else
-void GradientBackgroundBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((GradientBackgroundBase *) &other, whichField, sInfo);
+void GradientBackgroundBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((GradientBackgroundBase*)&other, whichField, sInfo);
 }
-void GradientBackgroundBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void GradientBackgroundBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void GradientBackgroundBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
+void GradientBackgroundBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 
-    _mfColor.terminateShare(uiAspect, this->getContainerSize());
-    _mfPosition.terminateShare(uiAspect, this->getContainerSize());
+  _mfColor.terminateShare(uiAspect, this->getContainerSize());
+  _mfPosition.terminateShare(uiAspect, this->getContainerSize());
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-GradientBackgroundBase::GradientBackgroundBase(void) :
-    _mfColor                  (), 
-    _mfPosition               (), 
-    _sfClearStencilBit        (Int32(-1)), 
-    Inherited() 
-{
+GradientBackgroundBase::GradientBackgroundBase(void)
+    : _mfColor()
+    , _mfPosition()
+    , _sfClearStencilBit(Int32(-1))
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-GradientBackgroundBase::GradientBackgroundBase(const GradientBackgroundBase &source) :
-    _mfColor                  (source._mfColor                  ), 
-    _mfPosition               (source._mfPosition               ), 
-    _sfClearStencilBit        (source._sfClearStencilBit        ), 
-    Inherited                 (source)
-{
+GradientBackgroundBase::GradientBackgroundBase(const GradientBackgroundBase& source)
+    : _mfColor(source._mfColor)
+    , _mfPosition(source._mfPosition)
+    , _sfClearStencilBit(source._sfClearStencilBit)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-GradientBackgroundBase::~GradientBackgroundBase(void)
-{
+GradientBackgroundBase::~GradientBackgroundBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 GradientBackgroundBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 GradientBackgroundBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (ColorFieldMask & whichField))
-    {
-        returnValue += _mfColor.getBinSize();
-    }
+  if (FieldBits::NoField != (ColorFieldMask & whichField)) {
+    returnValue += _mfColor.getBinSize();
+  }
 
-    if(FieldBits::NoField != (PositionFieldMask & whichField))
-    {
-        returnValue += _mfPosition.getBinSize();
-    }
+  if (FieldBits::NoField != (PositionFieldMask & whichField)) {
+    returnValue += _mfPosition.getBinSize();
+  }
 
-    if(FieldBits::NoField != (ClearStencilBitFieldMask & whichField))
-    {
-        returnValue += _sfClearStencilBit.getBinSize();
-    }
+  if (FieldBits::NoField != (ClearStencilBitFieldMask & whichField)) {
+    returnValue += _sfClearStencilBit.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void GradientBackgroundBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void GradientBackgroundBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ColorFieldMask & whichField))
-    {
-        _mfColor.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (ColorFieldMask & whichField)) {
+    _mfColor.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (PositionFieldMask & whichField))
-    {
-        _mfPosition.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (PositionFieldMask & whichField)) {
+    _mfPosition.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ClearStencilBitFieldMask & whichField))
-    {
-        _sfClearStencilBit.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (ClearStencilBitFieldMask & whichField)) {
+    _sfClearStencilBit.copyToBin(pMem);
+  }
 }
 
-void GradientBackgroundBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void GradientBackgroundBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ColorFieldMask & whichField))
-    {
-        _mfColor.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (ColorFieldMask & whichField)) {
+    _mfColor.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (PositionFieldMask & whichField))
-    {
-        _mfPosition.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (PositionFieldMask & whichField)) {
+    _mfPosition.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ClearStencilBitFieldMask & whichField))
-    {
-        _sfClearStencilBit.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (ClearStencilBitFieldMask & whichField)) {
+    _sfClearStencilBit.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void GradientBackgroundBase::executeSyncImpl(      GradientBackgroundBase *pOther,
-                                        const BitVector         &whichField)
-{
+void GradientBackgroundBase::executeSyncImpl(
+    GradientBackgroundBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (ColorFieldMask & whichField))
-        _mfColor.syncWith(pOther->_mfColor);
+  if (FieldBits::NoField != (ColorFieldMask & whichField))
+    _mfColor.syncWith(pOther->_mfColor);
 
-    if(FieldBits::NoField != (PositionFieldMask & whichField))
-        _mfPosition.syncWith(pOther->_mfPosition);
+  if (FieldBits::NoField != (PositionFieldMask & whichField))
+    _mfPosition.syncWith(pOther->_mfPosition);
 
-    if(FieldBits::NoField != (ClearStencilBitFieldMask & whichField))
-        _sfClearStencilBit.syncWith(pOther->_sfClearStencilBit);
-
-
+  if (FieldBits::NoField != (ClearStencilBitFieldMask & whichField))
+    _sfClearStencilBit.syncWith(pOther->_sfClearStencilBit);
 }
 #else
-void GradientBackgroundBase::executeSyncImpl(      GradientBackgroundBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void GradientBackgroundBase::executeSyncImpl(
+    GradientBackgroundBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (ClearStencilBitFieldMask & whichField))
-        _sfClearStencilBit.syncWith(pOther->_sfClearStencilBit);
+  if (FieldBits::NoField != (ClearStencilBitFieldMask & whichField))
+    _sfClearStencilBit.syncWith(pOther->_sfClearStencilBit);
 
+  if (FieldBits::NoField != (ColorFieldMask & whichField))
+    _mfColor.syncWith(pOther->_mfColor, sInfo);
 
-    if(FieldBits::NoField != (ColorFieldMask & whichField))
-        _mfColor.syncWith(pOther->_mfColor, sInfo);
-
-    if(FieldBits::NoField != (PositionFieldMask & whichField))
-        _mfPosition.syncWith(pOther->_mfPosition, sInfo);
-
-
+  if (FieldBits::NoField != (PositionFieldMask & whichField))
+    _mfPosition.syncWith(pOther->_mfPosition, sInfo);
 }
 
-void GradientBackgroundBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void GradientBackgroundBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (ColorFieldMask & whichField))
-        _mfColor.beginEdit(uiAspect, uiContainerSize);
+  if (FieldBits::NoField != (ColorFieldMask & whichField))
+    _mfColor.beginEdit(uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (PositionFieldMask & whichField))
-        _mfPosition.beginEdit(uiAspect, uiContainerSize);
-
+  if (FieldBits::NoField != (PositionFieldMask & whichField))
+    _mfPosition.beginEdit(uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 OSG_END_NAMESPACE
 
@@ -351,4 +284,3 @@ DataType FieldDataTraits<GradientBackgroundPtr>::_type("GradientBackgroundPtr", 
 OSG_DLLEXPORT_MFIELD_DEF1(GradientBackgroundPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
-

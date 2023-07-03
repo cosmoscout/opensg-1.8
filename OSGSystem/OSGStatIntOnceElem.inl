@@ -38,49 +38,39 @@
 
 OSG_BEGIN_NAMESPACE
 
-
-inline void StatIntOnceElem::add(UInt32 contributorId, Int32 v)
-{
-    if(_ids.find(contributorId) == _ids.end())
-    {
-        _value += v;
-        _ids.insert(contributorId);
-    }
+inline void StatIntOnceElem::add(UInt32 contributorId, Int32 v) {
+  if (_ids.find(contributorId) == _ids.end()) {
+    _value += v;
+    _ids.insert(contributorId);
+  }
 }
 
-inline void StatIntOnceElem::sub(UInt32 contributorId, Int32 v)
-{
-    if(_ids.find(contributorId) == _ids.end())
-    {
-        _value -= v;
-        _ids.insert(contributorId);
-    }
+inline void StatIntOnceElem::sub(UInt32 contributorId, Int32 v) {
+  if (_ids.find(contributorId) == _ids.end()) {
+    _value -= v;
+    _ids.insert(contributorId);
+  }
 }
 
-inline void StatIntOnceElem::inc(UInt32 contributorId)
-{
-    if(_ids.find(contributorId) == _ids.end())
-    {
-        _value ++;
-        _ids.insert(contributorId);
-    }
+inline void StatIntOnceElem::inc(UInt32 contributorId) {
+  if (_ids.find(contributorId) == _ids.end()) {
+    _value++;
+    _ids.insert(contributorId);
+  }
 }
 
-inline void StatIntOnceElem::dec(UInt32 contributorId)
-{
-    if(_ids.find(contributorId) == _ids.end())
-    {
-        _value --;
-        _ids.insert(contributorId);
-    }
+inline void StatIntOnceElem::dec(UInt32 contributorId) {
+  if (_ids.find(contributorId) == _ids.end()) {
+    _value--;
+    _ids.insert(contributorId);
+  }
 }
 
-inline Int32 StatIntOnceElem::get() const
-{
-    return _value;
+inline Int32 StatIntOnceElem::get() const {
+  return _value;
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGSTATINTONCEELEM_INLINE_CVSID "@(#)$Id: OSGStatIntOnceElem.inl,v 1.2 2006/11/14 13:45:57 pdaehne Exp $"
+#define OSGSTATINTONCEELEM_INLINE_CVSID                                                            \
+  "@(#)$Id: OSGStatIntOnceElem.inl,v 1.2 2006/11/14 13:45:57 pdaehne Exp $"

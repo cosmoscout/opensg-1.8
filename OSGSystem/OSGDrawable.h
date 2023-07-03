@@ -49,82 +49,75 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief *put brief class description here* 
+/*! \brief *put brief class description here*
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING Drawable : public DrawableBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING Drawable : public DrawableBase {
+ private:
+  typedef DrawableBase Inherited;
 
-    typedef DrawableBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                  static stat elem                            */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  static StatElemDesc<StatIntElem>     statNTriangles;
+  static StatElemDesc<StatIntElem>     statNLines;
+  static StatElemDesc<StatIntElem>     statNPoints;
+  static StatElemDesc<StatIntElem>     statNVertices;
+  static StatElemDesc<StatIntElem>     statNPrimitives;
+  static StatElemDesc<StatIntOnceElem> statNGeoBytes;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  static stat elem                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    static StatElemDesc<StatIntElem>     statNTriangles;
-    static StatElemDesc<StatIntElem>     statNLines;
-    static StatElemDesc<StatIntElem>     statNPoints;
-    static StatElemDesc<StatIntElem>     statNVertices;
-    static StatElemDesc<StatIntElem>     statNPrimitives;
-    static StatElemDesc<StatIntOnceElem> statNGeoBytes;
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in DrawableBase.
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  Drawable(void);
+  Drawable(const Drawable& source);
 
-    // Variables should all be in DrawableBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~Drawable(void);
 
-    Drawable(void);
-    Drawable(const Drawable &source);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class DrawableBase;
 
-    virtual ~Drawable(void); 
+  static void initMethod(void);
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  // prohibit default functions (move to 'public' if you need one)
 
-    friend class FieldContainer;
-    friend class DrawableBase;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const Drawable &source);
+  void operator=(const Drawable& source);
 };
 
-typedef Drawable *DrawableP;
+typedef Drawable* DrawableP;
 
 OSG_END_NAMESPACE
 

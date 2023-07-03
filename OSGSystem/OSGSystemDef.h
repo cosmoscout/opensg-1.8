@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGSYSTEMDEF_H_
 #define _OSGSYSTEMDEF_H_
 #ifdef __sgi
@@ -48,13 +47,13 @@
 //---------------------------------------------------------------------------
 
 #if defined(WIN32) && defined(OSG_BUILD_DLL)
-#   ifdef OSG_COMPILESYSTEMLIB
-#       define OSG_SYSTEMLIB_DLLMAPPING     __declspec(dllexport)
-#       define OSG_SYSTEMLIB_DLLTMPLMAPPING __declspec(dllexport)
-#   else
-#       define OSG_SYSTEMLIB_DLLMAPPING     __declspec(dllimport)
-#       define OSG_SYSTEMLIB_DLLTMPLMAPPING __declspec(dllimport)
-#   endif
+#ifdef OSG_COMPILESYSTEMLIB
+#define OSG_SYSTEMLIB_DLLMAPPING __declspec(dllexport)
+#define OSG_SYSTEMLIB_DLLTMPLMAPPING __declspec(dllexport)
+#else
+#define OSG_SYSTEMLIB_DLLMAPPING __declspec(dllimport)
+#define OSG_SYSTEMLIB_DLLTMPLMAPPING __declspec(dllimport)
+#endif
 #else
 #define OSG_SYSTEMLIB_DLLMAPPING
 #define OSG_SYSTEMLIB_DLLTMPLMAPPING

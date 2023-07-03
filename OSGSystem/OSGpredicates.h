@@ -31,32 +31,20 @@
 OSG_BEGIN_NAMESPACE
 
 //#ifdef __cplusplus
-//extern "C" {
+// extern "C" {
 //#endif
 
-OSG_SYSTEMLIB_DLLMAPPING 
-double orient2d            (double * pa,
-			    double * pb,
-			    double * pc);
 OSG_SYSTEMLIB_DLLMAPPING
-double orient3d            (double * pa,
-			    double * pb,
-			    double * pc,
-			    double * pd);
-OSG_SYSTEMLIB_DLLMAPPING 
-double incircle            (double * pa,
-			    double * pb,
-			    double * pc,
-			    double * pd);
-OSG_SYSTEMLIB_DLLMAPPING 
-double insphere            (double * pa,
-			    double * pb,
-			    double * pc,
-			    double * pd,
-			    double * pe);
+double orient2d(double* pa, double* pb, double* pc);
+OSG_SYSTEMLIB_DLLMAPPING
+double orient3d(double* pa, double* pb, double* pc, double* pd);
+OSG_SYSTEMLIB_DLLMAPPING
+double incircle(double* pa, double* pb, double* pc, double* pd);
+OSG_SYSTEMLIB_DLLMAPPING
+double insphere(double* pa, double* pb, double* pc, double* pd, double* pe);
 
-OSG_SYSTEMLIB_DLLMAPPING 
-void exactinit             ();
+OSG_SYSTEMLIB_DLLMAPPING
+void exactinit();
 
 //#ifdef __cplusplus
 //}

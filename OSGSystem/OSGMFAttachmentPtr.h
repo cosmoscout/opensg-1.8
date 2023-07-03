@@ -55,10 +55,10 @@
 
 OSG_BEGIN_NAMESPACE
 
-#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS) 
+#if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldMulti */
 
-typedef MField<AttachmentPtr>     MFAttachmentPtr;
+typedef MField<AttachmentPtr> MFAttachmentPtr;
 #endif
 
 #ifndef OSG_COMPILECONTAINERFIELDINST
@@ -70,7 +70,3 @@ OSG_END_NAMESPACE
 #define OSGMFATTACHMENTPTR_HEADER_CVSID "@(#)$Id: $"
 
 #endif /* _OSGMFATTACHMENTPTR_H_ */
-
-
-
-

@@ -36,7 +36,6 @@
 *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGVERIFYGEOGRAPHOP_H_
 #define _OSGVERIFYGEOGRAPHOP_H_
 #ifdef __sgi
@@ -56,55 +55,53 @@ OSG_BEGIN_NAMESPACE
 
 typedef SingleTypeGraphOp<Geometry> SingleTypeGraphOpGeo;
 
-class OSG_SYSTEMLIB_DLLMAPPING VerifyGeoGraphOp : public SingleTypeGraphOpGeo
-{
-    /*==========================  PUBLIC  =================================*/
-public:
+class OSG_SYSTEMLIB_DLLMAPPING VerifyGeoGraphOp : public SingleTypeGraphOpGeo {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  static const char* getClassname(void) {
+    return "VerifyGeoGraphOp";
+  };
 
-    static const char *getClassname(void) { return "VerifyGeoGraphOp"; };
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-    
-    VerifyGeoGraphOp(const char* name = "VerifyGeo", bool repair = true);
+  VerifyGeoGraphOp(const char* name = "VerifyGeo", bool repair = true);
 
-    GraphOp *create();
+  GraphOp* create();
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    virtual ~VerifyGeoGraphOp(void);
+  virtual ~VerifyGeoGraphOp(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Main methods                               */
-    /*! \{                                                                 */
-    
-    void setParams(const std::string params);
-    void setRepair(bool repair);    
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Main methods                               */
+  /*! \{                                                                 */
 
-    std::string usage(void);
+  void setParams(const std::string params);
+  void setRepair(bool repair);
 
-    /*! \}                                                                 */
+  std::string usage(void);
 
-    /*=========================  PROTECTED  ===============================*/
-protected:    
+  /*! \}                                                                 */
 
-    bool travNodeEnter(NodePtr node);
-    bool travNodeLeave(NodePtr node);       
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  bool travNodeEnter(NodePtr node);
+  bool travNodeLeave(NodePtr node);
 
-    /*==========================  PRIVATE  ================================*/
-private:
-
-    bool _repair;    
+  /*==========================  PRIVATE  ================================*/
+ private:
+  bool _repair;
 };
 
 OSG_END_NAMESPACE

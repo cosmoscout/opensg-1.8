@@ -52,83 +52,59 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &StatisticsForegroundBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& StatisticsForegroundBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 StatisticsForegroundBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
-
+inline OSG::UInt32 StatisticsForegroundBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the StatisticsForeground::_mfElementIDs field.
-inline
-MFInt32 *StatisticsForegroundBase::getMFElementIDs(void)
-{
-    return &_mfElementIDs;
+inline MFInt32* StatisticsForegroundBase::getMFElementIDs(void) {
+  return &_mfElementIDs;
 }
 
 //! Get the StatisticsForeground::_sfCollector field.
-inline
-SFStatCollector *StatisticsForegroundBase::getSFCollector(void)
-{
-    return &_sfCollector;
-}
-
-
-//! Get the value of the StatisticsForeground::_sfCollector field.
-inline
-StatCollector &StatisticsForegroundBase::getCollector(void)
-{
-    return _sfCollector.getValue();
+inline SFStatCollector* StatisticsForegroundBase::getSFCollector(void) {
+  return &_sfCollector;
 }
 
 //! Get the value of the StatisticsForeground::_sfCollector field.
-inline
-const StatCollector &StatisticsForegroundBase::getCollector(void) const
-{
-    return _sfCollector.getValue();
+inline StatCollector& StatisticsForegroundBase::getCollector(void) {
+  return _sfCollector.getValue();
+}
+
+//! Get the value of the StatisticsForeground::_sfCollector field.
+inline const StatCollector& StatisticsForegroundBase::getCollector(void) const {
+  return _sfCollector.getValue();
 }
 
 //! Set the value of the StatisticsForeground::_sfCollector field.
-inline
-void StatisticsForegroundBase::setCollector(const StatCollector &value)
-{
-    _sfCollector.setValue(value);
+inline void StatisticsForegroundBase::setCollector(const StatCollector& value) {
+  _sfCollector.setValue(value);
 }
-
 
 //! Get the value of the \a index element the StatisticsForeground::_mfElementIDs field.
-inline
-Int32 &StatisticsForegroundBase::getElementIDs(const UInt32 index)
-{
-    return _mfElementIDs[index];
+inline Int32& StatisticsForegroundBase::getElementIDs(const UInt32 index) {
+  return _mfElementIDs[index];
 }
 
 //! Get the StatisticsForeground::_mfElementIDs field.
-inline
-MFInt32 &StatisticsForegroundBase::getElementIDs(void)
-{
-    return _mfElementIDs;
+inline MFInt32& StatisticsForegroundBase::getElementIDs(void) {
+  return _mfElementIDs;
 }
 
 //! Get the StatisticsForeground::_mfElementIDs field.
-inline
-const MFInt32 &StatisticsForegroundBase::getElementIDs(void) const
-{
-    return _mfElementIDs;
+inline const MFInt32& StatisticsForegroundBase::getElementIDs(void) const {
+  return _mfElementIDs;
 }
 
 OSG_END_NAMESPACE
 
-#define OSGSTATISTICSFOREGROUNDBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGSTATISTICSFOREGROUNDBASE_INLINE_CVSID                                                   \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

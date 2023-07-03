@@ -44,5 +44,5 @@ OSG_BEGIN_NAMESPACE
 
 OSG_END_NAMESPACE
 
-#define OSGORTHOGRAPHICCAMERA_INLINE_CVSID "@(#)$Id: OSGOrthographicCamera.inl,v 1.1 2005/09/26 00:08:18 dirk Exp $"
-
+#define OSGORTHOGRAPHICCAMERA_INLINE_CVSID                                                         \
+  "@(#)$Id: OSGOrthographicCamera.inl,v 1.1 2005/09/26 00:08:18 dirk Exp $"

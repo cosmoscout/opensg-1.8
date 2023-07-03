@@ -49,121 +49,113 @@
 OSG_BEGIN_NAMESPACE
 
 /*! \brief PointChunk class. See \ref PageSystemPointChunk for a description.
-*/
+ */
 
-class OSG_SYSTEMLIB_DLLMAPPING PointChunk : public PointChunkBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING PointChunk : public PointChunkBase {
+ private:
+  typedef PointChunkBase Inherited;
 
-    typedef PointChunkBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                 Chunk Class Access                           */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual const StateChunkClass* getClass(void) const;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                 Chunk Class Access                           */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name              Static Chunk Class Access                       */
+  /*! \{                                                                 */
 
-           virtual const StateChunkClass * getClass         (void) const;
+  inline static UInt32                 getStaticClassId(void);
+  inline static const StateChunkClass* getStaticClass(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name              Static Chunk Class Access                       */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    inline static        UInt32            getStaticClassId (void);
-    inline static  const StateChunkClass * getStaticClass   (void);
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    State Commands                            */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  virtual void activate(DrawActionBase* action, UInt32 index = 0);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    State Commands                            */
-    /*! \{                                                                 */
+  virtual void changeFrom(DrawActionBase* action, StateChunk* old, UInt32 index = 0);
 
-    virtual void activate      ( DrawActionBase * action, UInt32 index = 0 );
+  virtual void deactivate(DrawActionBase* action, UInt32 index = 0);
 
-    virtual void changeFrom    ( DrawActionBase * action, StateChunk * old,
-                                 UInt32 index = 0 );
+  virtual bool isTransparent(void) const;
 
-    virtual void deactivate    ( DrawActionBase * action, UInt32 index = 0 );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Comparison                                 */
+  /*! \{                                                                 */
 
-    virtual bool isTransparent (void) const;
+  virtual Real32 switchCost(StateChunk* chunk);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Comparison                                 */
-    /*! \{                                                                 */
+  virtual bool operator<(const StateChunk& other) const;
 
-    virtual Real32 switchCost  ( StateChunk * chunk );
+  virtual bool operator==(const StateChunk& other) const;
+  virtual bool operator!=(const StateChunk& other) const;
 
-    virtual bool   operator <  (const StateChunk &other) const;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in PointChunkBase.
 
-    virtual bool   operator == (const StateChunk &other) const;
-    virtual bool   operator != (const StateChunk &other) const;
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  PointChunk(void);
+  PointChunk(const PointChunk& source);
 
-    // Variables should all be in PointChunkBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~PointChunk(void);
 
-    PointChunk(void);
-    PointChunk(const PointChunk &source);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class PointChunkBase;
 
-    virtual ~PointChunk(void); 
+  static StateChunkClass _class;
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*---------------------------------------------------------------------*/
+  /*! \name            OpenGL Extension Handling                         */
+  /*! \{                                                                 */
 
-    friend class FieldContainer;
-    friend class PointChunkBase;
+  static UInt32 _arbPointParameters;
+  static UInt32 _nvPointSprite;
+  static UInt32 _funcPointParameterf;
+  static UInt32 _funcPointParameterfv;
 
-    static StateChunkClass _class;
+  /*! \}                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name            OpenGL Extension Handling                         */
-    /*! \{                                                                 */
+  static void initMethod(void);
 
-    static UInt32 _arbPointParameters;
-    static UInt32 _nvPointSprite;
-    static UInt32 _funcPointParameterf;
-    static UInt32 _funcPointParameterfv;
+  // prohibit default functions (move to 'public' if you need one)
 
-    /*! \}                                                                 */
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const PointChunk &source);
+  void operator=(const PointChunk& source);
 };
 
-typedef PointChunk *PointChunkP;
+typedef PointChunk* PointChunkP;
 
 OSG_END_NAMESPACE
 

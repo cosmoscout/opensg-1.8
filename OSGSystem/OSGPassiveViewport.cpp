@@ -70,70 +70,54 @@ programs. See \ref PageSystemWindowViewports for a description.
 
 /*----------------------- constructors & destructors ----------------------*/
 
-PassiveViewport::PassiveViewport(void) :
-    Inherited()
-{
+PassiveViewport::PassiveViewport(void)
+    : Inherited() {
 }
 
-PassiveViewport::PassiveViewport(const PassiveViewport &source) :
-    Inherited(source)
-{
+PassiveViewport::PassiveViewport(const PassiveViewport& source)
+    : Inherited(source) {
 }
 
-PassiveViewport::~PassiveViewport(void)
-{
+PassiveViewport::~PassiveViewport(void) {
 }
 
 /*----------------------------- class specific ----------------------------*/
 
-void PassiveViewport::initMethod (void)
-{
+void PassiveViewport::initMethod(void) {
 }
 
-void PassiveViewport::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void PassiveViewport::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
-void PassiveViewport::dump(      UInt32    , 
-                         const BitVector ) const
-{
-    SLOG << "Dump PassiveViewport NI" << std::endl;
+void PassiveViewport::dump(UInt32, const BitVector) const {
+  SLOG << "Dump PassiveViewport NI" << std::endl;
 }
 
-void PassiveViewport::activateSize(void)
-{
-    GLint vp[4];
-    glGetIntegerv(GL_VIEWPORT, vp);
+void PassiveViewport::activateSize(void) {
+  GLint vp[4];
+  glGetIntegerv(GL_VIEWPORT, vp);
 
-    setLeft  (Real32(vp[0]));
-    setBottom(Real32(vp[1]));
-    setRight (Real32(vp[0] + vp[2]));
-    setTop   (Real32(vp[1] + vp[3]));
+  setLeft(Real32(vp[0]));
+  setBottom(Real32(vp[1]));
+  setRight(Real32(vp[0] + vp[2]));
+  setTop(Real32(vp[1] + vp[3]));
 
-    Inherited::activateSize();
+  Inherited::activateSize();
 }
 
-void PassiveViewport::activate(void)
-{
-    Inherited::activate();
+void PassiveViewport::activate(void) {
+  Inherited::activate();
 }
 
-void PassiveViewport::deactivate(void)
-{
-    Inherited::deactivate();
+void PassiveViewport::deactivate(void) {
+  Inherited::deactivate();
 }
 
-void PassiveViewport::draw( DrawAction * action )
-{
-    Inherited::draw(action);
+void PassiveViewport::draw(DrawAction* action) {
+  Inherited::draw(action);
 }
 
-
-void PassiveViewport::render(RenderActionBase *action)
-{
-    Inherited::render(action);
+void PassiveViewport::render(RenderActionBase* action) {
+  Inherited::render(action);
 }
-
-
-

@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILECAMERAINST
 
 #include <stdlib.h>
@@ -61,27 +60,25 @@
 #include "OSGCameraBase.h"
 #include "OSGCamera.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  CameraBase::BeaconFieldMask = 
+const OSG::BitVector CameraBase::BeaconFieldMask =
     (TypeTraits<BitVector>::One << CameraBase::BeaconFieldId);
 
-const OSG::BitVector  CameraBase::NearFieldMask = 
+const OSG::BitVector CameraBase::NearFieldMask =
     (TypeTraits<BitVector>::One << CameraBase::NearFieldId);
 
-const OSG::BitVector  CameraBase::FarFieldMask = 
+const OSG::BitVector CameraBase::FarFieldMask =
     (TypeTraits<BitVector>::One << CameraBase::FarFieldId);
 
-const OSG::BitVector CameraBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector CameraBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
 /*! \var NodePtr         CameraBase::_sfBeacon
-    The object that define's the camera's coordinate system. The camera is positioned 	at the origin of the system and looks doen the negative z-axis (OpenGL-style).
+    The object that define's the camera's coordinate system. The camera is positioned 	at the
+   origin of the system and looks doen the negative z-axis (OpenGL-style).
 */
 /*! \var Real32          CameraBase::_sfNear
     The near distance of the camera.
@@ -92,310 +89,230 @@ const OSG::BitVector CameraBase::MTInfluenceMask =
 
 //! Camera description
 
-FieldDescription *CameraBase::_desc[] = 
-{
-    new FieldDescription(SFNodePtr::getClassType(), 
-                     "beacon", 
-                     BeaconFieldId, BeaconFieldMask,
-                     false,
-                     (FieldAccessMethod) &CameraBase::getSFBeacon),
-    new FieldDescription(SFReal32::getClassType(), 
-                     "near", 
-                     NearFieldId, NearFieldMask,
-                     false,
-                     (FieldAccessMethod) &CameraBase::getSFNear),
-    new FieldDescription(SFReal32::getClassType(), 
-                     "far", 
-                     FarFieldId, FarFieldMask,
-                     false,
-                     (FieldAccessMethod) &CameraBase::getSFFar)
-};
-
+FieldDescription* CameraBase::_desc[] = {
+    new FieldDescription(SFNodePtr::getClassType(), "beacon", BeaconFieldId, BeaconFieldMask, false,
+        (FieldAccessMethod)&CameraBase::getSFBeacon),
+    new FieldDescription(SFReal32::getClassType(), "near", NearFieldId, NearFieldMask, false,
+        (FieldAccessMethod)&CameraBase::getSFNear),
+    new FieldDescription(SFReal32::getClassType(), "far", FarFieldId, FarFieldMask, false,
+        (FieldAccessMethod)&CameraBase::getSFFar)};
 
 FieldContainerType CameraBase::_type(
-    "Camera",
-    "AttachmentContainer",
-    NULL,
-    NULL, 
-    Camera::initMethod,
-    _desc,
-    sizeof(_desc));
+    "Camera", "AttachmentContainer", NULL, NULL, Camera::initMethod, _desc, sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(CameraBase, CameraPtr)
+// OSG_FIELD_CONTAINER_DEF(CameraBase, CameraPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &CameraBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &CameraBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-UInt32 CameraBase::getContainerSize(void) const 
-{ 
-    return sizeof(Camera); 
+FieldContainerType& CameraBase::getType(void) {
+  return _type;
 }
 
+const FieldContainerType& CameraBase::getType(void) const {
+  return _type;
+}
+
+UInt32 CameraBase::getContainerSize(void) const {
+  return sizeof(Camera);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void CameraBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((CameraBase *) &other, whichField);
+void CameraBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((CameraBase*)&other, whichField);
 }
 #else
-void CameraBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((CameraBase *) &other, whichField, sInfo);
+void CameraBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((CameraBase*)&other, whichField, sInfo);
 }
-void CameraBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void CameraBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void CameraBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void CameraBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-CameraBase::CameraBase(void) :
-    _sfBeacon                 (), 
-    _sfNear                   (), 
-    _sfFar                    (), 
-    Inherited() 
-{
+CameraBase::CameraBase(void)
+    : _sfBeacon()
+    , _sfNear()
+    , _sfFar()
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-CameraBase::CameraBase(const CameraBase &source) :
-    _sfBeacon                 (source._sfBeacon                 ), 
-    _sfNear                   (source._sfNear                   ), 
-    _sfFar                    (source._sfFar                    ), 
-    Inherited                 (source)
-{
+CameraBase::CameraBase(const CameraBase& source)
+    : _sfBeacon(source._sfBeacon)
+    , _sfNear(source._sfNear)
+    , _sfFar(source._sfFar)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-CameraBase::~CameraBase(void)
-{
+CameraBase::~CameraBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 CameraBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 CameraBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (BeaconFieldMask & whichField))
-    {
-        returnValue += _sfBeacon.getBinSize();
-    }
+  if (FieldBits::NoField != (BeaconFieldMask & whichField)) {
+    returnValue += _sfBeacon.getBinSize();
+  }
 
-    if(FieldBits::NoField != (NearFieldMask & whichField))
-    {
-        returnValue += _sfNear.getBinSize();
-    }
+  if (FieldBits::NoField != (NearFieldMask & whichField)) {
+    returnValue += _sfNear.getBinSize();
+  }
 
-    if(FieldBits::NoField != (FarFieldMask & whichField))
-    {
-        returnValue += _sfFar.getBinSize();
-    }
+  if (FieldBits::NoField != (FarFieldMask & whichField)) {
+    returnValue += _sfFar.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void CameraBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void CameraBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (BeaconFieldMask & whichField))
-    {
-        _sfBeacon.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (BeaconFieldMask & whichField)) {
+    _sfBeacon.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (NearFieldMask & whichField))
-    {
-        _sfNear.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (NearFieldMask & whichField)) {
+    _sfNear.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (FarFieldMask & whichField))
-    {
-        _sfFar.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (FarFieldMask & whichField)) {
+    _sfFar.copyToBin(pMem);
+  }
 }
 
-void CameraBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void CameraBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (BeaconFieldMask & whichField))
-    {
-        _sfBeacon.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (BeaconFieldMask & whichField)) {
+    _sfBeacon.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (NearFieldMask & whichField))
-    {
-        _sfNear.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (NearFieldMask & whichField)) {
+    _sfNear.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (FarFieldMask & whichField))
-    {
-        _sfFar.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (FarFieldMask & whichField)) {
+    _sfFar.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void CameraBase::executeSyncImpl(      CameraBase *pOther,
-                                        const BitVector         &whichField)
-{
+void CameraBase::executeSyncImpl(CameraBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (BeaconFieldMask & whichField))
-        _sfBeacon.syncWith(pOther->_sfBeacon);
+  if (FieldBits::NoField != (BeaconFieldMask & whichField))
+    _sfBeacon.syncWith(pOther->_sfBeacon);
 
-    if(FieldBits::NoField != (NearFieldMask & whichField))
-        _sfNear.syncWith(pOther->_sfNear);
+  if (FieldBits::NoField != (NearFieldMask & whichField))
+    _sfNear.syncWith(pOther->_sfNear);
 
-    if(FieldBits::NoField != (FarFieldMask & whichField))
-        _sfFar.syncWith(pOther->_sfFar);
-
-
+  if (FieldBits::NoField != (FarFieldMask & whichField))
+    _sfFar.syncWith(pOther->_sfFar);
 }
 #else
-void CameraBase::executeSyncImpl(      CameraBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void CameraBase::executeSyncImpl(
+    CameraBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (BeaconFieldMask & whichField))
-        _sfBeacon.syncWith(pOther->_sfBeacon);
+  if (FieldBits::NoField != (BeaconFieldMask & whichField))
+    _sfBeacon.syncWith(pOther->_sfBeacon);
 
-    if(FieldBits::NoField != (NearFieldMask & whichField))
-        _sfNear.syncWith(pOther->_sfNear);
+  if (FieldBits::NoField != (NearFieldMask & whichField))
+    _sfNear.syncWith(pOther->_sfNear);
 
-    if(FieldBits::NoField != (FarFieldMask & whichField))
-        _sfFar.syncWith(pOther->_sfFar);
-
-
-
+  if (FieldBits::NoField != (FarFieldMask & whichField))
+    _sfFar.syncWith(pOther->_sfFar);
 }
 
-void CameraBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void CameraBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
 
 /*------------------------------ get -----------------------------------*/
 
 OSG_SYSTEMLIB_DLLMAPPING
-SFNodePtr *CameraBase::getSFBeacon(void)
-{
-    return &_sfBeacon;
+SFNodePtr* CameraBase::getSFBeacon(void) {
+  return &_sfBeacon;
 }
 
 OSG_SYSTEMLIB_DLLMAPPING
-SFReal32 *CameraBase::getSFNear(void)
-{
-    return &_sfNear;
+SFReal32* CameraBase::getSFNear(void) {
+  return &_sfNear;
 }
 
 OSG_SYSTEMLIB_DLLMAPPING
-SFReal32 *CameraBase::getSFFar(void)
-{
-    return &_sfFar;
-}
-
-
-OSG_SYSTEMLIB_DLLMAPPING
-NodePtr &CameraBase::getBeacon(void)
-{
-    return _sfBeacon.getValue();
+SFReal32* CameraBase::getSFFar(void) {
+  return &_sfFar;
 }
 
 OSG_SYSTEMLIB_DLLMAPPING
-const NodePtr &CameraBase::getBeacon(void) const
-{
-    return _sfBeacon.getValue();
+NodePtr& CameraBase::getBeacon(void) {
+  return _sfBeacon.getValue();
 }
 
 OSG_SYSTEMLIB_DLLMAPPING
-void CameraBase::setBeacon(const NodePtr &value)
-{
-    _sfBeacon.setValue(value);
+const NodePtr& CameraBase::getBeacon(void) const {
+  return _sfBeacon.getValue();
 }
 
 OSG_SYSTEMLIB_DLLMAPPING
-Real32 &CameraBase::getNear(void)
-{
-    return _sfNear.getValue();
+void CameraBase::setBeacon(const NodePtr& value) {
+  _sfBeacon.setValue(value);
 }
 
 OSG_SYSTEMLIB_DLLMAPPING
-const Real32 &CameraBase::getNear(void) const
-{
-    return _sfNear.getValue();
+Real32& CameraBase::getNear(void) {
+  return _sfNear.getValue();
 }
 
 OSG_SYSTEMLIB_DLLMAPPING
-void CameraBase::setNear(const Real32 &value)
-{
-    _sfNear.setValue(value);
+const Real32& CameraBase::getNear(void) const {
+  return _sfNear.getValue();
 }
 
 OSG_SYSTEMLIB_DLLMAPPING
-Real32 &CameraBase::getFar(void)
-{
-    return _sfFar.getValue();
+void CameraBase::setNear(const Real32& value) {
+  _sfNear.setValue(value);
 }
 
 OSG_SYSTEMLIB_DLLMAPPING
-const Real32 &CameraBase::getFar(void) const
-{
-    return _sfFar.getValue();
+Real32& CameraBase::getFar(void) {
+  return _sfFar.getValue();
 }
 
 OSG_SYSTEMLIB_DLLMAPPING
-void CameraBase::setFar(const Real32 &value)
-{
-    _sfFar.setValue(value);
+const Real32& CameraBase::getFar(void) const {
+  return _sfFar.getValue();
 }
 
-
-
+OSG_SYSTEMLIB_DLLMAPPING
+void CameraBase::setFar(const Real32& value) {
+  _sfFar.setValue(value);
+}
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>
@@ -410,5 +327,3 @@ OSG_DLLEXPORT_SFIELD_DEF1(CameraPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 OSG_DLLEXPORT_MFIELD_DEF1(CameraPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
-
-

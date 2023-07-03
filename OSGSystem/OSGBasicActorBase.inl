@@ -40,4 +40,5 @@ OSG_BEGIN_NAMESPACE
 
 OSG_END_NAMESPACE
 
-#define OSGBASICACTORBASE_INLINE_CVSID "@(#)$Id: OSGBasicActorBase.inl,v 1.2 2004/09/13 15:15:02 neumannc Exp $"
+#define OSGBASICACTORBASE_INLINE_CVSID                                                             \
+  "@(#)$Id: OSGBasicActorBase.inl,v 1.2 2004/09/13 15:15:02 neumannc Exp $"

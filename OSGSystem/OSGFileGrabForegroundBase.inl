@@ -52,137 +52,99 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &FileGrabForegroundBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& FileGrabForegroundBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 FileGrabForegroundBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 FileGrabForegroundBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-FileGrabForegroundPtr FileGrabForegroundBase::create(void) 
-{
-    FileGrabForegroundPtr fc; 
+inline FileGrabForegroundPtr FileGrabForegroundBase::create(void) {
+  FileGrabForegroundPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = FileGrabForegroundPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = FileGrabForegroundPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-FileGrabForegroundPtr FileGrabForegroundBase::createEmpty(void) 
-{ 
-    FileGrabForegroundPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline FileGrabForegroundPtr FileGrabForegroundBase::createEmpty(void) {
+  FileGrabForegroundPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the FileGrabForeground::_sfName field.
-inline
-SFString *FileGrabForegroundBase::getSFName(void)
-{
-    return &_sfName;
+inline SFString* FileGrabForegroundBase::getSFName(void) {
+  return &_sfName;
 }
 
 //! Get the FileGrabForeground::_sfFrame field.
-inline
-SFUInt32 *FileGrabForegroundBase::getSFFrame(void)
-{
-    return &_sfFrame;
+inline SFUInt32* FileGrabForegroundBase::getSFFrame(void) {
+  return &_sfFrame;
 }
 
 //! Get the FileGrabForeground::_sfIncrement field.
-inline
-SFBool *FileGrabForegroundBase::getSFIncrement(void)
-{
-    return &_sfIncrement;
-}
-
-
-//! Get the value of the FileGrabForeground::_sfName field.
-inline
-std::string &FileGrabForegroundBase::getName(void)
-{
-    return _sfName.getValue();
+inline SFBool* FileGrabForegroundBase::getSFIncrement(void) {
+  return &_sfIncrement;
 }
 
 //! Get the value of the FileGrabForeground::_sfName field.
-inline
-const std::string &FileGrabForegroundBase::getName(void) const
-{
-    return _sfName.getValue();
+inline std::string& FileGrabForegroundBase::getName(void) {
+  return _sfName.getValue();
+}
+
+//! Get the value of the FileGrabForeground::_sfName field.
+inline const std::string& FileGrabForegroundBase::getName(void) const {
+  return _sfName.getValue();
 }
 
 //! Set the value of the FileGrabForeground::_sfName field.
-inline
-void FileGrabForegroundBase::setName(const std::string &value)
-{
-    _sfName.setValue(value);
+inline void FileGrabForegroundBase::setName(const std::string& value) {
+  _sfName.setValue(value);
 }
 
 //! Get the value of the FileGrabForeground::_sfFrame field.
-inline
-UInt32 &FileGrabForegroundBase::getFrame(void)
-{
-    return _sfFrame.getValue();
+inline UInt32& FileGrabForegroundBase::getFrame(void) {
+  return _sfFrame.getValue();
 }
 
 //! Get the value of the FileGrabForeground::_sfFrame field.
-inline
-const UInt32 &FileGrabForegroundBase::getFrame(void) const
-{
-    return _sfFrame.getValue();
+inline const UInt32& FileGrabForegroundBase::getFrame(void) const {
+  return _sfFrame.getValue();
 }
 
 //! Set the value of the FileGrabForeground::_sfFrame field.
-inline
-void FileGrabForegroundBase::setFrame(const UInt32 &value)
-{
-    _sfFrame.setValue(value);
+inline void FileGrabForegroundBase::setFrame(const UInt32& value) {
+  _sfFrame.setValue(value);
 }
 
 //! Get the value of the FileGrabForeground::_sfIncrement field.
-inline
-bool &FileGrabForegroundBase::getIncrement(void)
-{
-    return _sfIncrement.getValue();
+inline bool& FileGrabForegroundBase::getIncrement(void) {
+  return _sfIncrement.getValue();
 }
 
 //! Get the value of the FileGrabForeground::_sfIncrement field.
-inline
-const bool &FileGrabForegroundBase::getIncrement(void) const
-{
-    return _sfIncrement.getValue();
+inline const bool& FileGrabForegroundBase::getIncrement(void) const {
+  return _sfIncrement.getValue();
 }
 
 //! Set the value of the FileGrabForeground::_sfIncrement field.
-inline
-void FileGrabForegroundBase::setIncrement(const bool &value)
-{
-    _sfIncrement.setValue(value);
+inline void FileGrabForegroundBase::setIncrement(const bool& value) {
+  _sfIncrement.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGFILEGRABFOREGROUNDBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGFILEGRABFOREGROUNDBASE_INLINE_CVSID                                                     \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

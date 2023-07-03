@@ -61,7 +61,6 @@
 
 OSG_USING_NAMESPACE
 
-
 /***************************************************************************\
  *                            Description                                  *
 \***************************************************************************/
@@ -69,7 +68,7 @@ OSG_USING_NAMESPACE
 /*! \class osg::PerspectiveCamera
     \ingroup GrpSystemWindowCameras
 
-The Perspective Camera class, see \ref PageSystemWindowCameraPerspective for 
+The Perspective Camera class, see \ref PageSystemWindowCameraPerspective for
 a description.
 
 The only new parameter is the _sfFov.
@@ -83,8 +82,7 @@ The only new parameter is the _sfFov.
  -  private                                                                -
 \*-------------------------------------------------------------------------*/
 
-void PerspectiveCamera::initMethod(void)
-{
+void PerspectiveCamera::initMethod(void) {
 }
 
 /***************************************************************************\
@@ -95,61 +93,48 @@ void PerspectiveCamera::initMethod(void)
  -  public                                                                 -
 \*-------------------------------------------------------------------------*/
 
-
 /*------------- constructors & destructors --------------------------------*/
 
-PerspectiveCamera::PerspectiveCamera(void) :
-    Inherited()
-{
+PerspectiveCamera::PerspectiveCamera(void)
+    : Inherited() {
 }
 
-PerspectiveCamera::PerspectiveCamera(const PerspectiveCamera &source) :
-    Inherited(source)
-{
+PerspectiveCamera::PerspectiveCamera(const PerspectiveCamera& source)
+    : Inherited(source) {
 }
 
-PerspectiveCamera::~PerspectiveCamera(void)
-{
+PerspectiveCamera::~PerspectiveCamera(void) {
 }
 
-void PerspectiveCamera::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void PerspectiveCamera::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
 /*-------------------------- your_category---------------------------------*/
 
-void PerspectiveCamera::draw(      DrawAction *OSG_CHECK_ARG(action), 
-                             const Viewport&   OSG_CHECK_ARG(port ))
-{
+void PerspectiveCamera::draw(
+    DrawAction* OSG_CHECK_ARG(action), const Viewport& OSG_CHECK_ARG(port)) {
 }
 
-void PerspectiveCamera::getProjection(Matrix& result, 
-    UInt32 width, UInt32 height)
-{
-    Real32 fov = getFov();
+void PerspectiveCamera::getProjection(Matrix& result, UInt32 width, UInt32 height) {
+  Real32 fov = getFov();
 
-    // catch some illegal cases
-    if(fov < 0 || width == 0 || height == 0)
-    {
-        result.setIdentity();
-        return;
-    }
-    
-    // try to be nice to people giving degrees...
-    if(fov > Pi)
-        fov = osgdegree2rad(fov);
+  // catch some illegal cases
+  if (fov < 0 || width == 0 || height == 0) {
+    result.setIdentity();
+    return;
+  }
 
-    MatrixPerspective(result, fov / 2, 
-            width /(Real32) height * getAspect(), 
-            getNear(), getFar());
+  // try to be nice to people giving degrees...
+  if (fov > Pi)
+    fov = osgdegree2rad(fov);
+
+  MatrixPerspective(result, fov / 2, width / (Real32)height * getAspect(), getNear(), getFar());
 }
-    
 
 /*------------------------------- dump ----------------------------------*/
 
-void PerspectiveCamera::dump(      UInt32    OSG_CHECK_ARG(uiIndent), 
-                             const BitVector OSG_CHECK_ARG(bvFlags)) const
-{
-    SLOG << "Dump PerspectiveCamera NI" << std::endl;
+void PerspectiveCamera::dump(
+    UInt32 OSG_CHECK_ARG(uiIndent), const BitVector OSG_CHECK_ARG(bvFlags)) const {
+  SLOG << "Dump PerspectiveCamera NI" << std::endl;
 }

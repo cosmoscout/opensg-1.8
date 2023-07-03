@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGSTATELEMTYPES_H_
 #define _OSGSTATELEMTYPES_H_
 #ifdef __sgi

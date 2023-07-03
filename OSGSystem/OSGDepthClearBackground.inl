@@ -34,7 +34,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -42,9 +41,7 @@
 
 OSG_BEGIN_NAMESPACE
 
-
-
 OSG_END_NAMESPACE
 
-#define OSGDEPTHCLEARBACKGROUND_INLINE_CVSID "@(#)$Id: OSGDepthClearBackground.inl,v 1.1 2005/01/18 00:31:17 dirk Exp $"
-
+#define OSGDEPTHCLEARBACKGROUND_INLINE_CVSID                                                       \
+  "@(#)$Id: OSGDepthClearBackground.inl,v 1.1 2005/01/18 00:31:17 dirk Exp $"

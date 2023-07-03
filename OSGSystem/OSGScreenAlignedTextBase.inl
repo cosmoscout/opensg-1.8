@@ -52,109 +52,79 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &ScreenAlignedTextBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& ScreenAlignedTextBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 ScreenAlignedTextBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 ScreenAlignedTextBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-ScreenAlignedTextPtr ScreenAlignedTextBase::create(void) 
-{
-    ScreenAlignedTextPtr fc; 
+inline ScreenAlignedTextPtr ScreenAlignedTextBase::create(void) {
+  ScreenAlignedTextPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = ScreenAlignedTextPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = ScreenAlignedTextPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-ScreenAlignedTextPtr ScreenAlignedTextBase::createEmpty(void) 
-{ 
-    ScreenAlignedTextPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline ScreenAlignedTextPtr ScreenAlignedTextBase::createEmpty(void) {
+  ScreenAlignedTextPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the ScreenAlignedText::_sfColor field.
-inline
-SFColor4f *ScreenAlignedTextBase::getSFColor(void)
-{
-    return &_sfColor;
+inline SFColor4f* ScreenAlignedTextBase::getSFColor(void) {
+  return &_sfColor;
 }
 
 //! Get the ScreenAlignedText::_sfRenderImage field.
-inline
-SFImagePtr *ScreenAlignedTextBase::getSFRenderImage(void)
-{
-    return &_sfRenderImage;
-}
-
-
-//! Get the value of the ScreenAlignedText::_sfColor field.
-inline
-Color4f &ScreenAlignedTextBase::getColor(void)
-{
-    return _sfColor.getValue();
+inline SFImagePtr* ScreenAlignedTextBase::getSFRenderImage(void) {
+  return &_sfRenderImage;
 }
 
 //! Get the value of the ScreenAlignedText::_sfColor field.
-inline
-const Color4f &ScreenAlignedTextBase::getColor(void) const
-{
-    return _sfColor.getValue();
+inline Color4f& ScreenAlignedTextBase::getColor(void) {
+  return _sfColor.getValue();
+}
+
+//! Get the value of the ScreenAlignedText::_sfColor field.
+inline const Color4f& ScreenAlignedTextBase::getColor(void) const {
+  return _sfColor.getValue();
 }
 
 //! Set the value of the ScreenAlignedText::_sfColor field.
-inline
-void ScreenAlignedTextBase::setColor(const Color4f &value)
-{
-    _sfColor.setValue(value);
+inline void ScreenAlignedTextBase::setColor(const Color4f& value) {
+  _sfColor.setValue(value);
 }
 
 //! Get the value of the ScreenAlignedText::_sfRenderImage field.
-inline
-ImagePtr &ScreenAlignedTextBase::getRenderImage(void)
-{
-    return _sfRenderImage.getValue();
+inline ImagePtr& ScreenAlignedTextBase::getRenderImage(void) {
+  return _sfRenderImage.getValue();
 }
 
 //! Get the value of the ScreenAlignedText::_sfRenderImage field.
-inline
-const ImagePtr &ScreenAlignedTextBase::getRenderImage(void) const
-{
-    return _sfRenderImage.getValue();
+inline const ImagePtr& ScreenAlignedTextBase::getRenderImage(void) const {
+  return _sfRenderImage.getValue();
 }
 
 //! Set the value of the ScreenAlignedText::_sfRenderImage field.
-inline
-void ScreenAlignedTextBase::setRenderImage(const ImagePtr &value)
-{
-    _sfRenderImage.setValue(value);
+inline void ScreenAlignedTextBase::setRenderImage(const ImagePtr& value) {
+  _sfRenderImage.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGSCREENALIGNEDTEXTBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGSCREENALIGNEDTEXTBASE_INLINE_CVSID                                                      \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

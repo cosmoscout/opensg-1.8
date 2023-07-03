@@ -34,7 +34,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -45,4 +44,3 @@ OSG_BEGIN_NAMESPACE
 OSG_END_NAMESPACE
 
 #define OSGSIMPLEMATERIAL_INLINE_CVSID "@(#)$Id:$"
-

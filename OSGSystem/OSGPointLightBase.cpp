@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEPOINTLIGHTINST
 
 #include <stdlib.h>
@@ -61,212 +60,153 @@
 #include "OSGPointLightBase.h"
 #include "OSGPointLight.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  PointLightBase::PositionFieldMask = 
+const OSG::BitVector PointLightBase::PositionFieldMask =
     (TypeTraits<BitVector>::One << PointLightBase::PositionFieldId);
 
-const OSG::BitVector PointLightBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector PointLightBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
 /*! \var Pnt3f           PointLightBase::_sfPosition
-    
+
 */
 
 //! PointLight description
 
-FieldDescription *PointLightBase::_desc[] = 
-{
-    new FieldDescription(SFPnt3f::getClassType(), 
-                     "position", 
-                     PositionFieldId, PositionFieldMask,
-                     false,
-                     (FieldAccessMethod) &PointLightBase::getSFPosition)
-};
+FieldDescription* PointLightBase::_desc[] = {
+    new FieldDescription(SFPnt3f::getClassType(), "position", PositionFieldId, PositionFieldMask,
+        false, (FieldAccessMethod)&PointLightBase::getSFPosition)};
 
+FieldContainerType PointLightBase::_type("PointLight", "Light", NULL,
+    (PrototypeCreateF)&PointLightBase::createEmpty, PointLight::initMethod, _desc, sizeof(_desc));
 
-FieldContainerType PointLightBase::_type(
-    "PointLight",
-    "Light",
-    NULL,
-    (PrototypeCreateF) &PointLightBase::createEmpty,
-    PointLight::initMethod,
-    _desc,
-    sizeof(_desc));
-
-//OSG_FIELD_CONTAINER_DEF(PointLightBase, PointLightPtr)
+// OSG_FIELD_CONTAINER_DEF(PointLightBase, PointLightPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &PointLightBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &PointLightBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr PointLightBase::shallowCopy(void) const 
-{ 
-    PointLightPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const PointLight *>(this)); 
-
-    return returnValue; 
+FieldContainerType& PointLightBase::getType(void) {
+  return _type;
 }
 
-UInt32 PointLightBase::getContainerSize(void) const 
-{ 
-    return sizeof(PointLight); 
+const FieldContainerType& PointLightBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr PointLightBase::shallowCopy(void) const {
+  PointLightPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const PointLight*>(this));
+
+  return returnValue;
+}
+
+UInt32 PointLightBase::getContainerSize(void) const {
+  return sizeof(PointLight);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void PointLightBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((PointLightBase *) &other, whichField);
+void PointLightBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((PointLightBase*)&other, whichField);
 }
 #else
-void PointLightBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((PointLightBase *) &other, whichField, sInfo);
+void PointLightBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((PointLightBase*)&other, whichField, sInfo);
 }
-void PointLightBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void PointLightBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void PointLightBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void PointLightBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-PointLightBase::PointLightBase(void) :
-    _sfPosition               (Pnt3f(0,0,0)), 
-    Inherited() 
-{
+PointLightBase::PointLightBase(void)
+    : _sfPosition(Pnt3f(0, 0, 0))
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-PointLightBase::PointLightBase(const PointLightBase &source) :
-    _sfPosition               (source._sfPosition               ), 
-    Inherited                 (source)
-{
+PointLightBase::PointLightBase(const PointLightBase& source)
+    : _sfPosition(source._sfPosition)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-PointLightBase::~PointLightBase(void)
-{
+PointLightBase::~PointLightBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 PointLightBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 PointLightBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (PositionFieldMask & whichField))
-    {
-        returnValue += _sfPosition.getBinSize();
-    }
+  if (FieldBits::NoField != (PositionFieldMask & whichField)) {
+    returnValue += _sfPosition.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void PointLightBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void PointLightBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (PositionFieldMask & whichField))
-    {
-        _sfPosition.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (PositionFieldMask & whichField)) {
+    _sfPosition.copyToBin(pMem);
+  }
 }
 
-void PointLightBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void PointLightBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (PositionFieldMask & whichField))
-    {
-        _sfPosition.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (PositionFieldMask & whichField)) {
+    _sfPosition.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void PointLightBase::executeSyncImpl(      PointLightBase *pOther,
-                                        const BitVector         &whichField)
-{
+void PointLightBase::executeSyncImpl(PointLightBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (PositionFieldMask & whichField))
-        _sfPosition.syncWith(pOther->_sfPosition);
-
-
+  if (FieldBits::NoField != (PositionFieldMask & whichField))
+    _sfPosition.syncWith(pOther->_sfPosition);
 }
 #else
-void PointLightBase::executeSyncImpl(      PointLightBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void PointLightBase::executeSyncImpl(
+    PointLightBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (PositionFieldMask & whichField))
-        _sfPosition.syncWith(pOther->_sfPosition);
-
-
-
+  if (FieldBits::NoField != (PositionFieldMask & whichField))
+    _sfPosition.syncWith(pOther->_sfPosition);
 }
 
-void PointLightBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void PointLightBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 OSG_BEGIN_NAMESPACE
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_DEV)
 DataType FieldDataTraits<PointLightPtr>::_type("PointLightPtr", "LightPtr");
 #endif
-
 
 OSG_END_NAMESPACE

@@ -48,84 +48,77 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief *put brief class description here* 
+/*! \brief *put brief class description here*
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING DVRLookupTable : public DVRLookupTableBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING DVRLookupTable : public DVRLookupTableBase {
+ private:
+  typedef DVRLookupTableBase Inherited;
 
-    typedef DVRLookupTableBase Inherited;
+  /*==========================  PUBLIC  =================================*/
 
-    /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-  public:
+  virtual void changed(BitVector whichField, UInt32 from);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     from);
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  //!! TODO: This is a workaround for correctly loading data
+  //!!       remove A.S.A.P !!!
+  /*! \name                     Field set                                */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  void setTouched(const bool& value);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    //!! TODO: This is a workaround for correctly loading data
-    //!!       remove A.S.A.P !!!
-    /*! \name                     Field set                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    void setTouched(const bool &value);
+ protected:
+  // Variables should all be in DVRLookupTableBase.
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-  protected:
+  DVRLookupTable(void);
+  DVRLookupTable(const DVRLookupTable& source);
 
-    // Variables should all be in DVRLookupTableBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~DVRLookupTable(void);
 
-    DVRLookupTable(void);
-    DVRLookupTable(const DVRLookupTable &source);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class DVRLookupTableBase;
 
-    virtual ~DVRLookupTable(void); 
+  static void initMethod(void);
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const DVRLookupTable& source);
 
-    friend class FieldContainer;
-    friend class DVRLookupTableBase;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const DVRLookupTable &source);
-
-    /*! \brief used to initialize class to initialize member variables -
-     *         method is called by every constructor
-     */
-    void commonConstructor(void);
+  /*! \brief used to initialize class to initialize member variables -
+   *         method is called by every constructor
+   */
+  void commonConstructor(void);
 };
 
-typedef DVRLookupTable *DVRLookupTableP;
+typedef DVRLookupTable* DVRLookupTableP;
 
 OSG_END_NAMESPACE
 

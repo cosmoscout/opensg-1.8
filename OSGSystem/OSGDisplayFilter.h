@@ -51,94 +51,87 @@ OSG_BEGIN_NAMESPACE
 
 class DisplayFilterForeground;
 
-/*! \brief DisplayFilter class. See \ref 
+/*! \brief DisplayFilter class. See \ref
            PageSystemDisplayFilter for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING DisplayFilter : public DisplayFilterBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING DisplayFilter : public DisplayFilterBase {
+ private:
+  typedef DisplayFilterBase Inherited;
 
-    typedef DisplayFilterBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   filter handling                            */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  virtual void createFilter(DisplayFilterForeground* fg, Viewport* port) = 0;
+  virtual void updateFilter(Viewport* port);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   filter handling                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   changed handling                           */
+  /*! \{                                                                 */
 
-    virtual void createFilter(DisplayFilterForeground *fg,
-                              Viewport *port) = 0;
-    virtual void updateFilter(Viewport *port);
+  UInt32 getChanged(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   changed handling                           */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in DisplayFilterBase.
 
-    UInt32 getChanged( void );
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  DisplayFilter(void);
+  DisplayFilter(const DisplayFilter& source);
 
-    // Variables should all be in DisplayFilterBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~DisplayFilter(void);
 
-    DisplayFilter(void);
-    DisplayFilter(const DisplayFilter &source);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  UInt32 _changed;
 
-    virtual ~DisplayFilter(void); 
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class DisplayFilterBase;
 
-    /*! \}                                                                 */
+  static void initMethod(void);
 
-    UInt32 _changed;
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  // prohibit default functions (move to 'public' if you need one)
 
-    friend class FieldContainer;
-    friend class DisplayFilterBase;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const DisplayFilter &source);
+  void operator=(const DisplayFilter& source);
 };
 
-typedef DisplayFilter *DisplayFilterP;
+typedef DisplayFilter* DisplayFilterP;
 
 OSG_END_NAMESPACE
 
 #include "OSGDisplayFilterBase.inl"
 #include "OSGDisplayFilter.inl"
 
-#define OSGDISPLAYFILTER_HEADER_CVSID "@(#)$Id: FCTemplate_h.h,v 1.22 2004/08/03 05:53:03 dirk Exp $"
+#define OSGDISPLAYFILTER_HEADER_CVSID                                                              \
+  "@(#)$Id: FCTemplate_h.h,v 1.22 2004/08/03 05:53:03 dirk Exp $"
 
 #endif /* _OSGDISPLAYFILTER_H_ */

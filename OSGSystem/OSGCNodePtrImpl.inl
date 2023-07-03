@@ -54,137 +54,97 @@ OSG_BEGIN_NAMESPACE
 /*-------------------------------------------------------------------------*/
 /*                            Constructors                                 */
 
-inline
-CNodePtr::CNodePtr(void) :
-    Inherited()
-{
+inline CNodePtr::CNodePtr(void)
+    : Inherited() {
 }
 
-inline
-CNodePtr::CNodePtr(const CNodePtr &source) :
-    Inherited(source)
-{
+inline CNodePtr::CNodePtr(const CNodePtr& source)
+    : Inherited(source) {
 }
 
-inline
-CNodePtr::CNodePtr(const NullFieldContainerPtr &source) :
-    Inherited(source)
-{
+inline CNodePtr::CNodePtr(const NullFieldContainerPtr& source)
+    : Inherited(source) {
 }
 
-inline
-CNodePtr::CNodePtr(const NodePtr &source) :
-    Inherited(source)
-{
+inline CNodePtr::CNodePtr(const NodePtr& source)
+    : Inherited(source) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Destructor                                  */
 
-inline
-CNodePtr::~CNodePtr(void)
-{
+inline CNodePtr::~CNodePtr(void) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                                Node                                     */
 
-inline
-Node *CNodePtr::getNode(void)
-{
-    return (Node *) getElemP(Thread::getAspect());
+inline Node* CNodePtr::getNode(void) {
+  return (Node*)getElemP(Thread::getAspect());
 }
 
-inline
-Node *CNodePtr::getNode(void) const
-{
-    return (Node *) getElemP(Thread::getAspect());
+inline Node* CNodePtr::getNode(void) const {
+  return (Node*)getElemP(Thread::getAspect());
 }
 
 /*-------------------------------------------------------------------------*/
 /*                            Container Access                             */
 
-inline
-NodeCore *CNodePtr::operator->(void)
-{
-    return ((Node *) getElemP(Thread::getAspect()))->getCore().getCPtr();
+inline NodeCore* CNodePtr::operator->(void) {
+  return ((Node*)getElemP(Thread::getAspect()))->getCore().getCPtr();
 }
 
-inline
-NodeCore *CNodePtr::operator->(void) const
-{
-    return ((Node *) getElemP(Thread::getAspect()))->getCore().getCPtr();
+inline NodeCore* CNodePtr::operator->(void) const {
+  return ((Node*)getElemP(Thread::getAspect()))->getCore().getCPtr();
 }
 
-inline
-NodeCore &CNodePtr::operator *(void)
-{
-    return *(((Node *) getElemP(Thread::getAspect()))->getCore().getCPtr());
+inline NodeCore& CNodePtr::operator*(void) {
+  return *(((Node*)getElemP(Thread::getAspect()))->getCore().getCPtr());
 }
 
-inline
-NodeCore &CNodePtr::operator *(void) const
-{
-    return *(((Node *) getElemP(Thread::getAspect()))->getCore().getCPtr());
+inline NodeCore& CNodePtr::operator*(void) const {
+  return *(((Node*)getElemP(Thread::getAspect()))->getCore().getCPtr());
 }
 
-inline
-NodeCore *CNodePtr::getCPtr(void)
-{
-    return ((Node *) getElemP(Thread::getAspect()))->getCore().getCPtr();
+inline NodeCore* CNodePtr::getCPtr(void) {
+  return ((Node*)getElemP(Thread::getAspect()))->getCore().getCPtr();
 }
 
-inline
-NodeCore *CNodePtr::getCPtr(void) const
-{
-    return ((Node *) getElemP(Thread::getAspect()))->getCore().getCPtr();
+inline NodeCore* CNodePtr::getCPtr(void) const {
+  return ((Node*)getElemP(Thread::getAspect()))->getCore().getCPtr();
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Assignment                                  */
 
-inline
-void CNodePtr::operator = (const NodePtr &source)
-{
-    // copy parts inherited from parent
-    *(static_cast<Inherited *>(this)) = source;
+inline void CNodePtr::operator=(const NodePtr& source) {
+  // copy parts inherited from parent
+  *(static_cast<Inherited*>(this)) = source;
 }
 
-inline
-void CNodePtr::operator = (const CNodePtr &source)
-{
-    // copy parts inherited from parent
-    *(static_cast<Inherited *>(this)) = source;
+inline void CNodePtr::operator=(const CNodePtr& source) {
+  // copy parts inherited from parent
+  *(static_cast<Inherited*>(this)) = source;
 }
 
-inline
-void CNodePtr::operator = (const NullFieldContainerPtr &source)
-{
-    // copy parts inherited from parent
-    *(static_cast<Inherited *>(this)) = source;
+inline void CNodePtr::operator=(const NullFieldContainerPtr& source) {
+  // copy parts inherited from parent
+  *(static_cast<Inherited*>(this)) = source;
 }
 
 /*-------------------------------------------------------------------------*/
 /*                            Constructors                                 */
 
-inline
-CNodePtr::CNodePtr(const Node &source) :
-    Inherited(source)
-{
+inline CNodePtr::CNodePtr(const Node& source)
+    : Inherited(source) {
 }
 
-inline
-CNodePtr::CNodePtr(const Node *source) :
-    Inherited(source)
-{
+inline CNodePtr::CNodePtr(const Node* source)
+    : Inherited(source) {
 }
 
-inline
-CNodePtr::CNodePtr(const Node   *source,
-                   const UInt16  uiSize,
-                   const UInt16  uiParentPos) :
-    Inherited(source, uiSize, uiParentPos)
-{
+inline CNodePtr::CNodePtr(const Node* source, const UInt16 uiSize, const UInt16 uiParentPos)
+    : Inherited(source, uiSize, uiParentPos) {
 }
 
 OSG_END_NAMESPACE

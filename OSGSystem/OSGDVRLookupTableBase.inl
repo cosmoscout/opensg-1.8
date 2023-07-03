@@ -52,305 +52,219 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &DVRLookupTableBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& DVRLookupTableBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 DVRLookupTableBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 DVRLookupTableBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-DVRLookupTablePtr DVRLookupTableBase::create(void) 
-{
-    DVRLookupTablePtr fc; 
+inline DVRLookupTablePtr DVRLookupTableBase::create(void) {
+  DVRLookupTablePtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = DVRLookupTablePtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = DVRLookupTablePtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-DVRLookupTablePtr DVRLookupTableBase::createEmpty(void) 
-{ 
-    DVRLookupTablePtr returnValue; 
-    
-    newPtr(returnValue); 
+inline DVRLookupTablePtr DVRLookupTableBase::createEmpty(void) {
+  DVRLookupTablePtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the DVRLookupTable::_sfDimension field.
-inline
-SFUInt8 *DVRLookupTableBase::getSFDimension(void)
-{
-    return &_sfDimension;
+inline SFUInt8* DVRLookupTableBase::getSFDimension(void) {
+  return &_sfDimension;
 }
 
 //! Get the DVRLookupTable::_mfSize field.
-inline
-MFUInt32 *DVRLookupTableBase::getMFSize(void)
-{
-    return &_mfSize;
+inline MFUInt32* DVRLookupTableBase::getMFSize(void) {
+  return &_mfSize;
 }
 
 //! Get the DVRLookupTable::_sfChannel field.
-inline
-SFUInt8 *DVRLookupTableBase::getSFChannel(void)
-{
-    return &_sfChannel;
+inline SFUInt8* DVRLookupTableBase::getSFChannel(void) {
+  return &_sfChannel;
 }
 
 //! Get the DVRLookupTable::_mfData field.
-inline
-MFUInt8 *DVRLookupTableBase::getMFData(void)
-{
-    return &_mfData;
+inline MFUInt8* DVRLookupTableBase::getMFData(void) {
+  return &_mfData;
 }
 
 //! Get the DVRLookupTable::_mfDataR field.
-inline
-MFReal32 *DVRLookupTableBase::getMFDataR(void)
-{
-    return &_mfDataR;
+inline MFReal32* DVRLookupTableBase::getMFDataR(void) {
+  return &_mfDataR;
 }
 
 //! Get the DVRLookupTable::_mfDataG field.
-inline
-MFReal32 *DVRLookupTableBase::getMFDataG(void)
-{
-    return &_mfDataG;
+inline MFReal32* DVRLookupTableBase::getMFDataG(void) {
+  return &_mfDataG;
 }
 
 //! Get the DVRLookupTable::_mfDataB field.
-inline
-MFReal32 *DVRLookupTableBase::getMFDataB(void)
-{
-    return &_mfDataB;
+inline MFReal32* DVRLookupTableBase::getMFDataB(void) {
+  return &_mfDataB;
 }
 
 //! Get the DVRLookupTable::_mfDataA field.
-inline
-MFReal32 *DVRLookupTableBase::getMFDataA(void)
-{
-    return &_mfDataA;
+inline MFReal32* DVRLookupTableBase::getMFDataA(void) {
+  return &_mfDataA;
 }
 
 //! Get the DVRLookupTable::_sfTouched field.
-inline
-SFBool *DVRLookupTableBase::getSFTouched(void)
-{
-    return &_sfTouched;
-}
-
-
-//! Get the value of the DVRLookupTable::_sfDimension field.
-inline
-UInt8 &DVRLookupTableBase::getDimension(void)
-{
-    return _sfDimension.getValue();
+inline SFBool* DVRLookupTableBase::getSFTouched(void) {
+  return &_sfTouched;
 }
 
 //! Get the value of the DVRLookupTable::_sfDimension field.
-inline
-const UInt8 &DVRLookupTableBase::getDimension(void) const
-{
-    return _sfDimension.getValue();
+inline UInt8& DVRLookupTableBase::getDimension(void) {
+  return _sfDimension.getValue();
+}
+
+//! Get the value of the DVRLookupTable::_sfDimension field.
+inline const UInt8& DVRLookupTableBase::getDimension(void) const {
+  return _sfDimension.getValue();
 }
 
 //! Set the value of the DVRLookupTable::_sfDimension field.
-inline
-void DVRLookupTableBase::setDimension(const UInt8 &value)
-{
-    _sfDimension.setValue(value);
+inline void DVRLookupTableBase::setDimension(const UInt8& value) {
+  _sfDimension.setValue(value);
 }
 
 //! Get the value of the DVRLookupTable::_sfChannel field.
-inline
-UInt8 &DVRLookupTableBase::getChannel(void)
-{
-    return _sfChannel.getValue();
+inline UInt8& DVRLookupTableBase::getChannel(void) {
+  return _sfChannel.getValue();
 }
 
 //! Get the value of the DVRLookupTable::_sfChannel field.
-inline
-const UInt8 &DVRLookupTableBase::getChannel(void) const
-{
-    return _sfChannel.getValue();
+inline const UInt8& DVRLookupTableBase::getChannel(void) const {
+  return _sfChannel.getValue();
 }
 
 //! Set the value of the DVRLookupTable::_sfChannel field.
-inline
-void DVRLookupTableBase::setChannel(const UInt8 &value)
-{
-    _sfChannel.setValue(value);
+inline void DVRLookupTableBase::setChannel(const UInt8& value) {
+  _sfChannel.setValue(value);
 }
 
 //! Get the value of the DVRLookupTable::_sfTouched field.
-inline
-bool &DVRLookupTableBase::getTouched(void)
-{
-    return _sfTouched.getValue();
+inline bool& DVRLookupTableBase::getTouched(void) {
+  return _sfTouched.getValue();
 }
 
 //! Get the value of the DVRLookupTable::_sfTouched field.
-inline
-const bool &DVRLookupTableBase::getTouched(void) const
-{
-    return _sfTouched.getValue();
+inline const bool& DVRLookupTableBase::getTouched(void) const {
+  return _sfTouched.getValue();
 }
 
 //! Set the value of the DVRLookupTable::_sfTouched field.
-inline
-void DVRLookupTableBase::setTouched(const bool &value)
-{
-    _sfTouched.setValue(value);
+inline void DVRLookupTableBase::setTouched(const bool& value) {
+  _sfTouched.setValue(value);
 }
-
 
 //! Get the value of the \a index element the DVRLookupTable::_mfSize field.
-inline
-UInt32 &DVRLookupTableBase::getSize(const UInt32 index)
-{
-    return _mfSize[index];
+inline UInt32& DVRLookupTableBase::getSize(const UInt32 index) {
+  return _mfSize[index];
 }
 
 //! Get the DVRLookupTable::_mfSize field.
-inline
-MFUInt32 &DVRLookupTableBase::getSize(void)
-{
-    return _mfSize;
+inline MFUInt32& DVRLookupTableBase::getSize(void) {
+  return _mfSize;
 }
 
 //! Get the DVRLookupTable::_mfSize field.
-inline
-const MFUInt32 &DVRLookupTableBase::getSize(void) const
-{
-    return _mfSize;
+inline const MFUInt32& DVRLookupTableBase::getSize(void) const {
+  return _mfSize;
 }
 
 //! Get the value of the \a index element the DVRLookupTable::_mfData field.
-inline
-UInt8 &DVRLookupTableBase::getData(const UInt32 index)
-{
-    return _mfData[index];
+inline UInt8& DVRLookupTableBase::getData(const UInt32 index) {
+  return _mfData[index];
 }
 
 //! Get the DVRLookupTable::_mfData field.
-inline
-MFUInt8 &DVRLookupTableBase::getData(void)
-{
-    return _mfData;
+inline MFUInt8& DVRLookupTableBase::getData(void) {
+  return _mfData;
 }
 
 //! Get the DVRLookupTable::_mfData field.
-inline
-const MFUInt8 &DVRLookupTableBase::getData(void) const
-{
-    return _mfData;
+inline const MFUInt8& DVRLookupTableBase::getData(void) const {
+  return _mfData;
 }
 
 //! Get the value of the \a index element the DVRLookupTable::_mfDataR field.
-inline
-Real32 &DVRLookupTableBase::getDataR(const UInt32 index)
-{
-    return _mfDataR[index];
+inline Real32& DVRLookupTableBase::getDataR(const UInt32 index) {
+  return _mfDataR[index];
 }
 
 //! Get the DVRLookupTable::_mfDataR field.
-inline
-MFReal32 &DVRLookupTableBase::getDataR(void)
-{
-    return _mfDataR;
+inline MFReal32& DVRLookupTableBase::getDataR(void) {
+  return _mfDataR;
 }
 
 //! Get the DVRLookupTable::_mfDataR field.
-inline
-const MFReal32 &DVRLookupTableBase::getDataR(void) const
-{
-    return _mfDataR;
+inline const MFReal32& DVRLookupTableBase::getDataR(void) const {
+  return _mfDataR;
 }
 
 //! Get the value of the \a index element the DVRLookupTable::_mfDataG field.
-inline
-Real32 &DVRLookupTableBase::getDataG(const UInt32 index)
-{
-    return _mfDataG[index];
+inline Real32& DVRLookupTableBase::getDataG(const UInt32 index) {
+  return _mfDataG[index];
 }
 
 //! Get the DVRLookupTable::_mfDataG field.
-inline
-MFReal32 &DVRLookupTableBase::getDataG(void)
-{
-    return _mfDataG;
+inline MFReal32& DVRLookupTableBase::getDataG(void) {
+  return _mfDataG;
 }
 
 //! Get the DVRLookupTable::_mfDataG field.
-inline
-const MFReal32 &DVRLookupTableBase::getDataG(void) const
-{
-    return _mfDataG;
+inline const MFReal32& DVRLookupTableBase::getDataG(void) const {
+  return _mfDataG;
 }
 
 //! Get the value of the \a index element the DVRLookupTable::_mfDataB field.
-inline
-Real32 &DVRLookupTableBase::getDataB(const UInt32 index)
-{
-    return _mfDataB[index];
+inline Real32& DVRLookupTableBase::getDataB(const UInt32 index) {
+  return _mfDataB[index];
 }
 
 //! Get the DVRLookupTable::_mfDataB field.
-inline
-MFReal32 &DVRLookupTableBase::getDataB(void)
-{
-    return _mfDataB;
+inline MFReal32& DVRLookupTableBase::getDataB(void) {
+  return _mfDataB;
 }
 
 //! Get the DVRLookupTable::_mfDataB field.
-inline
-const MFReal32 &DVRLookupTableBase::getDataB(void) const
-{
-    return _mfDataB;
+inline const MFReal32& DVRLookupTableBase::getDataB(void) const {
+  return _mfDataB;
 }
 
 //! Get the value of the \a index element the DVRLookupTable::_mfDataA field.
-inline
-Real32 &DVRLookupTableBase::getDataA(const UInt32 index)
-{
-    return _mfDataA[index];
+inline Real32& DVRLookupTableBase::getDataA(const UInt32 index) {
+  return _mfDataA[index];
 }
 
 //! Get the DVRLookupTable::_mfDataA field.
-inline
-MFReal32 &DVRLookupTableBase::getDataA(void)
-{
-    return _mfDataA;
+inline MFReal32& DVRLookupTableBase::getDataA(void) {
+  return _mfDataA;
 }
 
 //! Get the DVRLookupTable::_mfDataA field.
-inline
-const MFReal32 &DVRLookupTableBase::getDataA(void) const
-{
-    return _mfDataA;
+inline const MFReal32& DVRLookupTableBase::getDataA(void) const {
+  return _mfDataA;
 }
 
 OSG_END_NAMESPACE
 
-#define OSGDVRLOOKUPTABLEBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGDVRLOOKUPTABLEBASE_INLINE_CVSID                                                         \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

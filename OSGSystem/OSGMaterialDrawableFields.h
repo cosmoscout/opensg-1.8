@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGMATERIALDRAWABLEFIELDS_H_
 #define _OSGMATERIALDRAWABLEFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class MaterialDrawable;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! MaterialDrawablePtr
 
 typedef FCPtr<DrawablePtr, MaterialDrawable> MaterialDrawablePtr;
@@ -81,18 +80,23 @@ typedef FCPtr<DrawablePtr, MaterialDrawable> MaterialDrawablePtr;
 #endif
 
 template <>
-struct FieldDataTraits<MaterialDrawablePtr> : 
-    public FieldTraitsRecurseMapper<MaterialDrawablePtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<MaterialDrawablePtr>
+    : public FieldTraitsRecurseMapper<MaterialDrawablePtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getSName(void) { return "SFMaterialDrawablePtr"; }
-    static const char *getMName(void) { return "MFMaterialDrawablePtr"; }
+  static const char* getSName(void) {
+    return "SFMaterialDrawablePtr";
+  }
+  static const char* getMName(void) {
+    return "MFMaterialDrawablePtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -102,7 +106,6 @@ struct FieldDataTraits<MaterialDrawablePtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
@@ -126,6 +129,7 @@ OSG_DLLEXPORT_DECL1(MField, MaterialDrawablePtr, OSG_SYSTEMLIB_DLLTMPLMAPPING)
 
 OSG_END_NAMESPACE
 
-#define OSGMATERIALDRAWABLEFIELDS_HEADER_CVSID "@(#)$Id: OSGMaterialDrawableFields.h,v 1.10 2006/02/20 16:54:27 dirk Exp $"
+#define OSGMATERIALDRAWABLEFIELDS_HEADER_CVSID                                                     \
+  "@(#)$Id: OSGMaterialDrawableFields.h,v 1.10 2006/02/20 16:54:27 dirk Exp $"
 
 #endif /* _OSGMATERIALDRAWABLEFIELDS_H_ */

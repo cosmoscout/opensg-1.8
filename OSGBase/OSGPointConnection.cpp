@@ -58,16 +58,12 @@ OSG_USING_NAMESPACE
 /*! Constructor
  */
 
-PointConnection::PointConnection(int zeroCopyThreshold):
-    Connection(zeroCopyThreshold)
-{
+PointConnection::PointConnection(int zeroCopyThreshold)
+    : Connection(zeroCopyThreshold) {
 }
 
 /*! Destructor
  */
 
-PointConnection::~PointConnection(void)
-{
+PointConnection::~PointConnection(void) {
 }
-
-

@@ -37,7 +37,7 @@
 \*---------------------------------------------------------------------------*/
 
 #define OSG_IMAGEGENERICATT
-        
+
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -65,16 +65,14 @@
 OSG_USING_NAMESPACE
 
 #ifdef WIN32
-OSG_FC_ST_TYPE_FUNCTIONS_INL_TMPL_DEF(ImageGenericAttDesc,
-                                      DynFieldAttachment)
-#endif                           
+OSG_FC_ST_TYPE_FUNCTIONS_INL_TMPL_DEF(ImageGenericAttDesc, DynFieldAttachment)
+#endif
 
-OSG_DYNFIELD_FC_DLLEXPORT_DEF(DynFieldAttachment, 
-                              ImageGenericAttDesc, 
-                              OSG_SYSTEMLIB_DLLTMPLMAPPING);
+OSG_DYNFIELD_FC_DLLEXPORT_DEF(
+    DynFieldAttachment, ImageGenericAttDesc, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 #if defined(OSG_WIN32_ICL) && !defined(OSG_CHECK_FIELDSETARG)
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
 #include <OSGMFieldTypeDef.inl>
@@ -82,15 +80,14 @@ OSG_DYNFIELD_FC_DLLEXPORT_DEF(DynFieldAttachment,
 
 OSG_BEGIN_NAMESPACE
 
-DataType FieldDataTraits<ImageGenericAttPtr>::_type("ImageGenericAttPtr",
-                                                    "AttachmentPtr");
+DataType FieldDataTraits<ImageGenericAttPtr>::_type("ImageGenericAttPtr", "AttachmentPtr");
 
 #if defined(OSG_SGI_EXPLICIT_INSTANTIATION)
 
-#pragma instantiate DynFieldAttachment<ImageGenericAttDesc>::_type
+#pragma instantiate DynFieldAttachment < ImageGenericAttDesc> ::_type
 
-#pragma instantiate SField<ImageGenericAttPtr>::_fieldType
-#pragma instantiate MField<ImageGenericAttPtr>::_fieldType
+#pragma instantiate SField < ImageGenericAttPtr> ::_fieldType
+#pragma instantiate MField < ImageGenericAttPtr> ::_fieldType
 
 #else
 
@@ -99,5 +96,3 @@ OSG_DLLEXPORT_MFIELD_DEF1(ImageGenericAttPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 #endif
 OSG_END_NAMESPACE
-
-

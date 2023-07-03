@@ -55,54 +55,41 @@ FieldContainerType FieldContainer::_type("FieldContainer");
 /*-------------------------------------------------------------------------*/
 /*                                Get                                      */
 
-FieldContainerType &FieldContainer::getType(void)
-{
-    return _type;
+FieldContainerType& FieldContainer::getType(void) {
+  return _type;
 }
 
-const FieldContainerType &FieldContainer::getType(void) const
-{
-    return _type;
+const FieldContainerType& FieldContainer::getType(void) const {
+  return _type;
 }
 
 /*-------------------------------------------------------------------------*/
 /*                            Binary Access                                */
 
-UInt32 FieldContainer::getBinSize(const BitVector &)
-{
-    return 0;
+UInt32 FieldContainer::getBinSize(const BitVector&) {
+  return 0;
 }
 
-void FieldContainer::copyToBin(      BinaryDataHandler &,
-                               const BitVector         &)
-{
+void FieldContainer::copyToBin(BinaryDataHandler&, const BitVector&) {
 }
 
-void FieldContainer::copyFromBin(      BinaryDataHandler &,
-                                 const BitVector         &)
-{
+void FieldContainer::copyFromBin(BinaryDataHandler&, const BitVector&) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                               Changed                                   */
 
-void FieldContainer::changed(BitVector OSG_CHECK_ARG(whichField),
-                             UInt32    OSG_CHECK_ARG(origin    ))
-{
-    // fprintf(stderr, "FC Changed %d %d\n", whichField, fromSync);
+void FieldContainer::changed(BitVector OSG_CHECK_ARG(whichField), UInt32 OSG_CHECK_ARG(origin)) {
+  // fprintf(stderr, "FC Changed %d %d\n", whichField, fromSync);
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             MT Destruction                              */
 
-void FieldContainer::onDestroy(void)
-{
+void FieldContainer::onDestroy(void) {
 }
 
 #if defined(OSG_FIXED_MFIELDSYNC)
-void FieldContainer::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
+void FieldContainer::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
 }
 #endif
-
-

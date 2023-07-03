@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILESHADERPARAMETERREALINST
 
 #include <stdlib.h>
@@ -61,16 +60,13 @@
 #include "OSGShaderParameterRealBase.h"
 #include "OSGShaderParameterReal.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  ShaderParameterRealBase::ValueFieldMask = 
+const OSG::BitVector ShaderParameterRealBase::ValueFieldMask =
     (TypeTraits<BitVector>::One << ShaderParameterRealBase::ValueFieldId);
 
-const OSG::BitVector ShaderParameterRealBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector ShaderParameterRealBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
@@ -80,187 +76,134 @@ const OSG::BitVector ShaderParameterRealBase::MTInfluenceMask =
 
 //! ShaderParameterReal description
 
-FieldDescription *ShaderParameterRealBase::_desc[] = 
-{
-    new FieldDescription(SFReal32::getClassType(), 
-                     "value", 
-                     ValueFieldId, ValueFieldMask,
-                     false,
-                     (FieldAccessMethod) &ShaderParameterRealBase::getSFValue)
-};
+FieldDescription* ShaderParameterRealBase::_desc[] = {
+    new FieldDescription(SFReal32::getClassType(), "value", ValueFieldId, ValueFieldMask, false,
+        (FieldAccessMethod)&ShaderParameterRealBase::getSFValue)};
 
-
-FieldContainerType ShaderParameterRealBase::_type(
-    "ShaderParameterReal",
-    "ShaderParameter",
-    NULL,
-    (PrototypeCreateF) &ShaderParameterRealBase::createEmpty,
-    ShaderParameterReal::initMethod,
-    _desc,
+FieldContainerType ShaderParameterRealBase::_type("ShaderParameterReal", "ShaderParameter", NULL,
+    (PrototypeCreateF)&ShaderParameterRealBase::createEmpty, ShaderParameterReal::initMethod, _desc,
     sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(ShaderParameterRealBase, ShaderParameterRealPtr)
+// OSG_FIELD_CONTAINER_DEF(ShaderParameterRealBase, ShaderParameterRealPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &ShaderParameterRealBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &ShaderParameterRealBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr ShaderParameterRealBase::shallowCopy(void) const 
-{ 
-    ShaderParameterRealPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const ShaderParameterReal *>(this)); 
-
-    return returnValue; 
+FieldContainerType& ShaderParameterRealBase::getType(void) {
+  return _type;
 }
 
-UInt32 ShaderParameterRealBase::getContainerSize(void) const 
-{ 
-    return sizeof(ShaderParameterReal); 
+const FieldContainerType& ShaderParameterRealBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr ShaderParameterRealBase::shallowCopy(void) const {
+  ShaderParameterRealPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const ShaderParameterReal*>(this));
+
+  return returnValue;
+}
+
+UInt32 ShaderParameterRealBase::getContainerSize(void) const {
+  return sizeof(ShaderParameterReal);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ShaderParameterRealBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((ShaderParameterRealBase *) &other, whichField);
+void ShaderParameterRealBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((ShaderParameterRealBase*)&other, whichField);
 }
 #else
-void ShaderParameterRealBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((ShaderParameterRealBase *) &other, whichField, sInfo);
+void ShaderParameterRealBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((ShaderParameterRealBase*)&other, whichField, sInfo);
 }
-void ShaderParameterRealBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void ShaderParameterRealBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void ShaderParameterRealBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void ShaderParameterRealBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-ShaderParameterRealBase::ShaderParameterRealBase(void) :
-    _sfValue                  (), 
-    Inherited() 
-{
+ShaderParameterRealBase::ShaderParameterRealBase(void)
+    : _sfValue()
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-ShaderParameterRealBase::ShaderParameterRealBase(const ShaderParameterRealBase &source) :
-    _sfValue                  (source._sfValue                  ), 
-    Inherited                 (source)
-{
+ShaderParameterRealBase::ShaderParameterRealBase(const ShaderParameterRealBase& source)
+    : _sfValue(source._sfValue)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-ShaderParameterRealBase::~ShaderParameterRealBase(void)
-{
+ShaderParameterRealBase::~ShaderParameterRealBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 ShaderParameterRealBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 ShaderParameterRealBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (ValueFieldMask & whichField))
-    {
-        returnValue += _sfValue.getBinSize();
-    }
+  if (FieldBits::NoField != (ValueFieldMask & whichField)) {
+    returnValue += _sfValue.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void ShaderParameterRealBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void ShaderParameterRealBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ValueFieldMask & whichField))
-    {
-        _sfValue.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (ValueFieldMask & whichField)) {
+    _sfValue.copyToBin(pMem);
+  }
 }
 
-void ShaderParameterRealBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void ShaderParameterRealBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ValueFieldMask & whichField))
-    {
-        _sfValue.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (ValueFieldMask & whichField)) {
+    _sfValue.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ShaderParameterRealBase::executeSyncImpl(      ShaderParameterRealBase *pOther,
-                                        const BitVector         &whichField)
-{
+void ShaderParameterRealBase::executeSyncImpl(
+    ShaderParameterRealBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (ValueFieldMask & whichField))
-        _sfValue.syncWith(pOther->_sfValue);
-
-
+  if (FieldBits::NoField != (ValueFieldMask & whichField))
+    _sfValue.syncWith(pOther->_sfValue);
 }
 #else
-void ShaderParameterRealBase::executeSyncImpl(      ShaderParameterRealBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void ShaderParameterRealBase::executeSyncImpl(
+    ShaderParameterRealBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (ValueFieldMask & whichField))
-        _sfValue.syncWith(pOther->_sfValue);
-
-
-
+  if (FieldBits::NoField != (ValueFieldMask & whichField))
+    _sfValue.syncWith(pOther->_sfValue);
 }
 
-void ShaderParameterRealBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void ShaderParameterRealBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>
@@ -268,7 +211,8 @@ void ShaderParameterRealBase::execBeginEditImpl (const BitVector &whichField,
 OSG_BEGIN_NAMESPACE
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_DEV)
-DataType FieldDataTraits<ShaderParameterRealPtr>::_type("ShaderParameterRealPtr", "ShaderParameterPtr");
+DataType FieldDataTraits<ShaderParameterRealPtr>::_type(
+    "ShaderParameterRealPtr", "ShaderParameterPtr");
 #endif
 
 OSG_DLLEXPORT_SFIELD_DEF1(ShaderParameterRealPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);

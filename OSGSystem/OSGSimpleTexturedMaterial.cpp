@@ -69,9 +69,9 @@ PageSystemMaterialTexturedSimpleMaterial for a description.
 A osg::SimpleMaterial with an added texture. It doesn't expose all features of the
 texture, just the ones needed most often.
 
-osg::SimpleTexturedMaterial::_sfImage defines the texture, 
+osg::SimpleTexturedMaterial::_sfImage defines the texture,
 osg::SimpleTexturedMaterial::_sfMinFilter and
-osg::SimpleTexturedMaterial::_sfMagFilter the used filters and 
+osg::SimpleTexturedMaterial::_sfMagFilter the used filters and
 osg::SimpleTexturedMaterial::_sfEnvMode the environment mode. As a special case
 osg::SimpleTexturedMaterial::_sfEnvMap can be used to use the txture as a
 spherical environment map.
@@ -80,215 +80,168 @@ spherical environment map.
 
 /*----------------------- constructors & destructors ----------------------*/
 
-SimpleTexturedMaterial::SimpleTexturedMaterial(void) :
-    Inherited()
-{
+SimpleTexturedMaterial::SimpleTexturedMaterial(void)
+    : Inherited() {
 }
 
-SimpleTexturedMaterial::SimpleTexturedMaterial(
-    const SimpleTexturedMaterial &source) :
+SimpleTexturedMaterial::SimpleTexturedMaterial(const SimpleTexturedMaterial& source)
+    :
 
-    Inherited(source)
-{
+    Inherited(source) {
 }
 
-SimpleTexturedMaterial::~SimpleTexturedMaterial(void)
-{
-    subRefCP(_textureChunk);
-    subRefCP(_texGenChunk);
+SimpleTexturedMaterial::~SimpleTexturedMaterial(void) {
+  subRefCP(_textureChunk);
+  subRefCP(_texGenChunk);
 }
 
 /*----------------------------- class specific ----------------------------*/
 
-void SimpleTexturedMaterial::initMethod(void)
-{
+void SimpleTexturedMaterial::initMethod(void) {
 }
 
 #if defined(OSG_WIN32_ICL) && !defined(OSG_CHECK_FIELDSETARG)
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-void SimpleTexturedMaterial::changed(BitVector whichField, UInt32 origin)
-{
-    prepareLocalChunks();
+void SimpleTexturedMaterial::changed(BitVector whichField, UInt32 origin) {
+  prepareLocalChunks();
 
-    // these two are very expensive, as they need to regenerate the
-    // texture object, do only if really needed
+  // these two are very expensive, as they need to regenerate the
+  // texture object, do only if really needed
 
-    if(whichField & ImageFieldMask)
-    {
-        beginEditCP(_textureChunk, TextureChunk::ImageFieldMask);
+  if (whichField & ImageFieldMask) {
+    beginEditCP(_textureChunk, TextureChunk::ImageFieldMask);
 
-        _textureChunk->setImage(getImage());
+    _textureChunk->setImage(getImage());
 
-        endEditCP(_textureChunk, TextureChunk::ImageFieldMask);
-    }
-    if(whichField & MinFilterFieldMask || whichField & MagFilterFieldMask)
-    {
-        beginEditCP(_textureChunk, TextureChunk::MinFilterFieldMask |
-                                   TextureChunk::MagFilterFieldMask);
+    endEditCP(_textureChunk, TextureChunk::ImageFieldMask);
+  }
+  if (whichField & MinFilterFieldMask || whichField & MagFilterFieldMask) {
+    beginEditCP(_textureChunk, TextureChunk::MinFilterFieldMask | TextureChunk::MagFilterFieldMask);
 
-        _textureChunk->setMinFilter(getMinFilter());
-        _textureChunk->setMagFilter(getMagFilter());
+    _textureChunk->setMinFilter(getMinFilter());
+    _textureChunk->setMagFilter(getMagFilter());
 
-        endEditCP(_textureChunk, TextureChunk::MinFilterFieldMask |
-                                 TextureChunk::MagFilterFieldMask);
-    }
-    // this is not as expensive, but why do it more often then needed?
-    if(whichField & EnvModeFieldMask)
-    {
-        beginEditCP(_textureChunk, TextureChunk::EnvModeFieldMask);
+    endEditCP(_textureChunk, TextureChunk::MinFilterFieldMask | TextureChunk::MagFilterFieldMask);
+  }
+  // this is not as expensive, but why do it more often then needed?
+  if (whichField & EnvModeFieldMask) {
+    beginEditCP(_textureChunk, TextureChunk::EnvModeFieldMask);
 
-        _textureChunk->setEnvMode(getEnvMode());
+    _textureChunk->setEnvMode(getEnvMode());
 
-        endEditCP(_textureChunk, TextureChunk::EnvModeFieldMask);
-    }
-    if(whichField & EnvMapFieldMask)
-    {
-        beginEditCP(_texGenChunk, TexGenChunk::GenFuncSFieldMask |
-                                  TexGenChunk::GenFuncTFieldMask);
-        
-        if (getEnvMap())
-        {
-            _texGenChunk->setGenFuncS(GL_SPHERE_MAP);
-            _texGenChunk->setGenFuncT(GL_SPHERE_MAP);
-        }
-        else
-        {
-            _texGenChunk->setGenFuncS(GL_NONE);
-            _texGenChunk->setGenFuncT(GL_NONE);
-        }
+    endEditCP(_textureChunk, TextureChunk::EnvModeFieldMask);
+  }
+  if (whichField & EnvMapFieldMask) {
+    beginEditCP(_texGenChunk, TexGenChunk::GenFuncSFieldMask | TexGenChunk::GenFuncTFieldMask);
 
-        endEditCP(_texGenChunk, TexGenChunk::GenFuncSFieldMask |
-                                TexGenChunk::GenFuncTFieldMask);
+    if (getEnvMap()) {
+      _texGenChunk->setGenFuncS(GL_SPHERE_MAP);
+      _texGenChunk->setGenFuncT(GL_SPHERE_MAP);
+    } else {
+      _texGenChunk->setGenFuncS(GL_NONE);
+      _texGenChunk->setGenFuncT(GL_NONE);
     }
 
-    Inherited::changed(whichField, origin);
+    endEditCP(_texGenChunk, TexGenChunk::GenFuncSFieldMask | TexGenChunk::GenFuncTFieldMask);
+  }
+
+  Inherited::changed(whichField, origin);
 }
 
 #if defined(OSG_WIN32_ICL) && !defined(OSG_CHECK_FIELDSETARG)
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-StatePtr SimpleTexturedMaterial::makeState(void)
-{
-    StatePtr state = Inherited::makeState();
+StatePtr SimpleTexturedMaterial::makeState(void) {
+  StatePtr state = Inherited::makeState();
 
-    prepareLocalChunks();
+  prepareLocalChunks();
 
-    state->addChunk(_textureChunk);
-    state->addChunk(_texGenChunk);
+  state->addChunk(_textureChunk);
+  state->addChunk(_texGenChunk);
 
-    if(getImage() != NullFC &&
-       getImage()->hasAlphaChannel() && 
-       getEnvMode() != GL_DECAL)
-    {
-        if(getImage()->isAlphaBinary())
-        {
-            if(_blendChunk->getSrcFactor() == GL_SRC_ALPHA)
-            {
-                beginEditCP(_blendChunk);
-                _blendChunk->setSrcFactor(GL_ONE);
-                _blendChunk->setDestFactor(GL_ZERO);
-                _blendChunk->setAlphaFunc(GL_NOTEQUAL);
-                _blendChunk->setAlphaValue(0);          
-                endEditCP(_blendChunk);            
-            }
-        }
-        else
-        {
-            if(_blendChunk->getSrcFactor() != GL_SRC_ALPHA)
-            {
-                beginEditCP(_blendChunk);
-                _blendChunk->setSrcFactor(GL_SRC_ALPHA);
-                _blendChunk->setDestFactor(GL_ONE_MINUS_SRC_ALPHA);
-                _blendChunk->setAlphaFunc(GL_NONE);
-                _blendChunk->setAlphaValue(0);          
-                endEditCP(_blendChunk);                        
-            }
-        }
+  if (getImage() != NullFC && getImage()->hasAlphaChannel() && getEnvMode() != GL_DECAL) {
+    if (getImage()->isAlphaBinary()) {
+      if (_blendChunk->getSrcFactor() == GL_SRC_ALPHA) {
+        beginEditCP(_blendChunk);
+        _blendChunk->setSrcFactor(GL_ONE);
+        _blendChunk->setDestFactor(GL_ZERO);
+        _blendChunk->setAlphaFunc(GL_NOTEQUAL);
+        _blendChunk->setAlphaValue(0);
+        endEditCP(_blendChunk);
+      }
+    } else {
+      if (_blendChunk->getSrcFactor() != GL_SRC_ALPHA) {
+        beginEditCP(_blendChunk);
+        _blendChunk->setSrcFactor(GL_SRC_ALPHA);
+        _blendChunk->setDestFactor(GL_ONE_MINUS_SRC_ALPHA);
+        _blendChunk->setAlphaFunc(GL_NONE);
+        _blendChunk->setAlphaValue(0);
+        endEditCP(_blendChunk);
+      }
     }
+  }
 
-    return state;
+  return state;
 }
 
-void SimpleTexturedMaterial::rebuildState(void)
-{
-    Inherited::rebuildState();
+void SimpleTexturedMaterial::rebuildState(void) {
+  Inherited::rebuildState();
 
-    prepareLocalChunks();
+  prepareLocalChunks();
 
-    _pState->addChunk(_textureChunk);
-    _pState->addChunk(_texGenChunk);
+  _pState->addChunk(_textureChunk);
+  _pState->addChunk(_texGenChunk);
 
-    if(getImage() != NullFC &&
-       getImage()->hasAlphaChannel() && 
-       getEnvMode() != GL_DECAL)
-    {
-        if(getImage()->isAlphaBinary())
-        {
-            if(_blendChunk->getSrcFactor() == GL_SRC_ALPHA)
-            {
-                beginEditCP(_blendChunk);
-                _blendChunk->setSrcFactor(GL_ONE);
-                _blendChunk->setDestFactor(GL_ZERO);
-                _blendChunk->setAlphaFunc(GL_NOTEQUAL);
-                _blendChunk->setAlphaValue(0);          
-                endEditCP(_blendChunk);            
-            }
-        }
-        else
-        {
-            if(_blendChunk->getSrcFactor() != GL_SRC_ALPHA)
-            {
-                beginEditCP(_blendChunk);
-                _blendChunk->setSrcFactor(GL_SRC_ALPHA);
-                _blendChunk->setDestFactor(GL_ONE_MINUS_SRC_ALPHA);
-                _blendChunk->setAlphaFunc(GL_NONE);
-                _blendChunk->setAlphaValue(0);          
-                endEditCP(_blendChunk);                        
-            }
-        }
+  if (getImage() != NullFC && getImage()->hasAlphaChannel() && getEnvMode() != GL_DECAL) {
+    if (getImage()->isAlphaBinary()) {
+      if (_blendChunk->getSrcFactor() == GL_SRC_ALPHA) {
+        beginEditCP(_blendChunk);
+        _blendChunk->setSrcFactor(GL_ONE);
+        _blendChunk->setDestFactor(GL_ZERO);
+        _blendChunk->setAlphaFunc(GL_NOTEQUAL);
+        _blendChunk->setAlphaValue(0);
+        endEditCP(_blendChunk);
+      }
+    } else {
+      if (_blendChunk->getSrcFactor() != GL_SRC_ALPHA) {
+        beginEditCP(_blendChunk);
+        _blendChunk->setSrcFactor(GL_SRC_ALPHA);
+        _blendChunk->setDestFactor(GL_ONE_MINUS_SRC_ALPHA);
+        _blendChunk->setAlphaFunc(GL_NONE);
+        _blendChunk->setAlphaValue(0);
+        endEditCP(_blendChunk);
+      }
     }
+  }
 }
 
-bool SimpleTexturedMaterial::isTransparent(void) const
-{
-    return Inherited::isTransparent() ||
-           (getImage()!=NullFC &&
-             (  getImage()->hasAlphaChannel() &&
-                getEnvMode() != GL_DECAL
-             )
-            );
+bool SimpleTexturedMaterial::isTransparent(void) const {
+  return Inherited::isTransparent() ||
+         (getImage() != NullFC && (getImage()->hasAlphaChannel() && getEnvMode() != GL_DECAL));
 }
 
-void SimpleTexturedMaterial::dump(     UInt32    OSG_CHECK_ARG(uiIndent),
-                                  const BitVector OSG_CHECK_ARG(bvFlags)) const
-{
-    SLOG << "Dump SimpleTexturedMaterial NI" << std::endl;
+void SimpleTexturedMaterial::dump(
+    UInt32 OSG_CHECK_ARG(uiIndent), const BitVector OSG_CHECK_ARG(bvFlags)) const {
+  SLOG << "Dump SimpleTexturedMaterial NI" << std::endl;
 }
-
 
 /* Create the chunks needed by this Material, one for the material properties,
    one for the optional transparency blending.
 */
 
-void SimpleTexturedMaterial::prepareLocalChunks(void)
-{
-    if(_textureChunk == NullFC)
-    {
-        _textureChunk = TextureChunk::create();
+void SimpleTexturedMaterial::prepareLocalChunks(void) {
+  if (_textureChunk == NullFC) {
+    _textureChunk = TextureChunk::create();
 
-         addRefCP(_textureChunk);
-    }
+    addRefCP(_textureChunk);
+  }
 
-    if(_texGenChunk == NullFC)
-    {
-        _texGenChunk  = TexGenChunk::create();
+  if (_texGenChunk == NullFC) {
+    _texGenChunk = TexGenChunk::create();
 
-        addRefCP(_texGenChunk);
-    }
+    addRefCP(_texGenChunk);
+  }
 }
-
-
-

@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGFOREGROUND_H_
 #define _OSGFOREGROUND_H_
 #ifdef __sgi
@@ -52,86 +51,79 @@ OSG_BEGIN_NAMESPACE
 class DrawActionBase;
 class Viewport;
 
-/*! \brief Foreground base class. See \ref 
+/*! \brief Foreground base class. See \ref
     PageSystemWindowForegrounds for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING Foreground : public ForegroundBase
-{
+class OSG_SYSTEMLIB_DLLMAPPING Foreground : public ForegroundBase {
 
-   /*==========================  PRIVATE =================================*/
+  /*==========================  PRIVATE =================================*/
  private:
+  typedef ForegroundBase Inherited;
 
-    typedef ForegroundBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
+  static const char* getClassname(void) {
+    return "Foreground";
+  };
 
-   /*==========================  PUBLIC  =================================*/
-  public:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     transformation                           */
+  /*! \{                                                                 */
 
-   
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
-    static const char *getClassname(void) { return "Foreground"; };
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     transformation                           */
-    /*! \{                                                                 */
-    
-    virtual void changed(BitVector whichField, 
-                         UInt32    origin    );
- 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   dump                                       */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   dump                                       */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32    uiIndent = 0, 
-                      const BitVector bvFlags  = 0) const;
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   draw                                       */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   draw                                       */
+  /*! \{                                                                 */
 
-    virtual void draw( DrawActionBase * action, Viewport * port ) = 0;
+  virtual void draw(DrawActionBase* action, Viewport* port) = 0;
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
  protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
+  Foreground(void);
+  Foreground(const Foreground& source);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-     
-    Foreground(void);
-    Foreground(const Foreground &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                               */
-    /*! \{                                                                 */
+  virtual ~Foreground(void);
 
-    virtual ~Foreground(void); 
-  
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/  
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
  private:
+  friend class FieldContainer;
+  friend class ForegroundBase;
 
-    friend class FieldContainer;
-    friend class ForegroundBase;
+  static void initMethod(void);
 
-    static void initMethod( void );
-
-    void operator =(const Foreground &source);
+  void operator=(const Foreground& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
-typedef Foreground *ForegroundP;
+typedef Foreground* ForegroundP;
 
 OSG_END_NAMESPACE
 
@@ -141,4 +133,3 @@ OSG_END_NAMESPACE
 #define OSGFOREGROUND_HEADER_CVSID "@(#)$Id: FCTemplate_h.h,v 1.15 2002/06/01 10:37:25 vossg Exp $"
 
 #endif /* _OSGFOREGROUND_H_ */
-

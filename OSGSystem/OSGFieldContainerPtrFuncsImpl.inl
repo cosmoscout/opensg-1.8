@@ -53,173 +53,133 @@ OSG_BEGIN_NAMESPACE
 
 #ifndef OSG_INVALID_PTR_CHECK
 
-inline
-void addRefCP(const FieldContainerPtrBase &objectP)
-{
-    if(objectP != NullFC)
+inline void addRefCP(const FieldContainerPtrBase& objectP) {
+  if (objectP != NullFC)
+    objectP.addRef();
+}
+
+#else
+
+inline bool safeAddRefCP(const FieldContainerPtrBase& objectP) {
+  if (objectP != NullFC) {
+    UInt32 id = objectP.getFieldContainerId();
+    if (FieldContainerFactory::the()->getContainer(id) != NullFC)
+      objectP.addRef();
+    else
+      return false;
+  }
+  return true;
+}
+
+#endif
+
+#ifndef OSG_INVALID_PTR_CHECK
+
+inline void subRefCP(const FieldContainerPtrBase& objectP) {
+  if (objectP != NullFC)
+    objectP.subRef();
+}
+
+#else
+
+inline bool safeSubRefCP(const FieldContainerPtrBase& objectP) {
+  if (objectP != NullFC) {
+    UInt32 id = objectP.getFieldContainerId();
+    if (FieldContainerFactory::the()->getContainer(id) != NullFC)
+      objectP.subRef();
+    else
+      return false;
+  }
+  return true;
+}
+
+#endif
+
+#ifndef OSG_INVALID_PTR_CHECK
+
+inline void clearRefCP(FieldContainerPtrBase& objectP) {
+  if (objectP != NullFC)
+    objectP.subRef();
+
+  objectP = NullFC;
+}
+
+#else
+
+inline bool safeClearRefCP(FieldContainerPtrBase& objectP) {
+  if (objectP != NullFC) {
+    UInt32 id = objectP.getFieldContainerId();
+    if (FieldContainerFactory::the()->getContainer(id) != NullFC)
+      objectP.subRef();
+    else
+      return false;
+  }
+  objectP = NullFC;
+  return true;
+}
+
+#endif
+
+#ifndef OSG_INVALID_PTR_CHECK
+
+inline void setRefdCP(FieldContainerPtrBase& objectP, const FieldContainerPtrBase& newObjectP) {
+  if (objectP != newObjectP) {
+    if (objectP != NullFC)
+      objectP.subRef();
+
+    objectP = newObjectP;
+
+    if (objectP != NullFC)
+      objectP.addRef();
+  }
+}
+
+#else
+
+inline bool safeSetRefdCP(FieldContainerPtrBase& objectP, const FieldContainerPtrBase& newObjectP) {
+  if (objectP != newObjectP) {
+    if (objectP != NullFC) {
+      UInt32 id = objectP.getFieldContainerId();
+      if (FieldContainerFactory::the()->getContainer(id) != NullFC)
+        objectP.subRef();
+      else
+        return false;
+    }
+
+    objectP = newObjectP;
+
+    if (objectP != NullFC) {
+      UInt32 id = objectP.getFieldContainerId();
+      if (FieldContainerFactory::the()->getContainer(id) != NullFC)
         objectP.addRef();
-}
-
-#else
-
-inline
-bool safeAddRefCP(const FieldContainerPtrBase &objectP)
-{
-    if(objectP != NullFC)
-    {
-        UInt32 id = objectP.getFieldContainerId();
-        if(FieldContainerFactory::the()->getContainer(id) != NullFC)
-            objectP.addRef();
-        else
-            return false;
+      else
+        return false;
     }
-    return true;
+  }
+  return true;
 }
 
 #endif
 
-#ifndef OSG_INVALID_PTR_CHECK
-
-inline
-void subRefCP(const FieldContainerPtrBase &objectP)
-{
-    if(objectP != NullFC)
-        objectP.subRef();
+inline void beginEditCP(const FieldContainerPtr& objectP, BitVector whichField, UInt32 origin) {
+  if (objectP != NullFC)
+    objectP.beginEdit(whichField, origin);
 }
 
-#else
-
-inline
-bool safeSubRefCP(const FieldContainerPtrBase &objectP)
-{
-    if(objectP != NullFC)
-    {
-        UInt32 id = objectP.getFieldContainerId();
-        if(FieldContainerFactory::the()->getContainer(id) != NullFC)
-            objectP.subRef();
-        else
-            return false;
-    }
-    return true;
+inline void endEditCP(const FieldContainerPtr& objectP, BitVector whichField, UInt32 origin) {
+  if (objectP != NullFC)
+    objectP.endEdit(whichField, origin);
 }
 
-#endif
-
-#ifndef OSG_INVALID_PTR_CHECK
-
-inline
-void clearRefCP(FieldContainerPtrBase &objectP)
-{
-    if(objectP != NullFC)
-        objectP.subRef();
-
-    objectP = NullFC;
+inline void changedCP(const FieldContainerPtr& objectP, BitVector whichField, UInt32 origin) {
+  if (objectP != NullFC)
+    objectP.changed(whichField, origin);
 }
 
-#else
-
-inline
-bool safeClearRefCP(FieldContainerPtrBase &objectP)
-{
-    if(objectP != NullFC)
-    {
-        UInt32 id = objectP.getFieldContainerId();
-        if(FieldContainerFactory::the()->getContainer(id) != NullFC)
-            objectP.subRef();
-        else
-            return false;
-    }
-    objectP = NullFC;
-    return true;
-}
-
-#endif
-
-#ifndef OSG_INVALID_PTR_CHECK
-
-inline
-void setRefdCP(      FieldContainerPtrBase &objectP,
-               const FieldContainerPtrBase &newObjectP)
-{
-    if(objectP != newObjectP)
-    {
-        if(objectP != NullFC)
-            objectP.subRef();
-
-        objectP = newObjectP;
-
-        if(objectP != NullFC)
-            objectP.addRef();
-    }
-}
-
-#else
-
-inline
-bool safeSetRefdCP(      FieldContainerPtrBase &objectP,
-                   const FieldContainerPtrBase &newObjectP)
-{
-    if(objectP != newObjectP)
-    {
-        if(objectP != NullFC)
-        {
-            UInt32 id = objectP.getFieldContainerId();
-            if(FieldContainerFactory::the()->getContainer(id) != NullFC)
-                objectP.subRef();
-            else
-                return false;
-        }
-
-        objectP = newObjectP;
-
-        if(objectP != NullFC)
-        {
-            UInt32 id = objectP.getFieldContainerId();
-            if(FieldContainerFactory::the()->getContainer(id) != NullFC)
-                objectP.addRef();
-            else
-                return false;
-        }
-    }
-    return true;
-}
-
-#endif
-
-inline
-void beginEditCP(const FieldContainerPtr &objectP,
-                       BitVector         whichField,
-                       UInt32            origin    )
-{
-    if(objectP != NullFC)
-        objectP.beginEdit(whichField, origin);
-}
-
-inline
-void endEditCP(const FieldContainerPtr &objectP,
-                     BitVector          whichField,
-                     UInt32             origin    )
-{
-    if(objectP != NullFC)
-        objectP.endEdit(whichField, origin);
-}
-
-inline
-void changedCP(const FieldContainerPtr &objectP,
-                     BitVector          whichField,
-                     UInt32             origin    )
-{
-    if(objectP != NullFC)
-        objectP.changed(whichField, origin);
-}
-
-inline
-void endEditNotChangedCP(const FieldContainerPtr &objectP,
-                               BitVector          whichField,
-                               UInt32             origin    )
-{
-    if(objectP != NullFC)
-        objectP.endEditNotChanged(whichField, origin);
+inline void endEditNotChangedCP(
+    const FieldContainerPtr& objectP, BitVector whichField, UInt32 origin) {
+  if (objectP != NullFC)
+    objectP.endEditNotChanged(whichField, origin);
 }
 
 OSG_END_NAMESPACE

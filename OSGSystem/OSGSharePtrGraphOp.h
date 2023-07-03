@@ -35,12 +35,12 @@
 *                                                                           *
 *                                                                           *
 \*---------------------------------------------------------------------------*/
- 
+
 #ifndef _OSGSHAREPTRGRAPHOP_H_
 #define _OSGSHAREPTRGRAPHOP_H_
 
 #ifdef __sgi
-#   pragma once
+#pragma once
 #endif
 
 #include <map>
@@ -57,82 +57,78 @@ OSG_BEGIN_NAMESPACE
 //! \ingroup GrpSystemRenderingBackend
 //! GraphOp class
 
-class OSG_SYSTEMLIB_DLLMAPPING SharePtrGraphOp : public GraphOp
-{
-    /*==========================  PUBLIC  =================================*/
-public:
+class OSG_SYSTEMLIB_DLLMAPPING SharePtrGraphOp : public GraphOp {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  static const char* getClassname(void) {
+    return "SharePtrGraphOp";
+  };
 
-    static const char *getClassname(void) { return "SharePtrGraphOp"; };
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-    
-    SharePtrGraphOp(const char* name = "SharePtr");
+  SharePtrGraphOp(const char* name = "SharePtr");
 
-    GraphOp *create();
+  GraphOp* create();
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    virtual ~SharePtrGraphOp(void);
+  virtual ~SharePtrGraphOp(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Main methods                               */
-    /*! \{                                                                 */
-    
-    bool traverse(NodePtr& root);
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Parameters                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Main methods                               */
+  /*! \{                                                                 */
 
-    void setParams(const std::string params);
-    
-    void setIncludes(const std::string &includes);
-    void setExcludes(const std::string &excludes);
+  bool traverse(NodePtr& root);
 
-    std::string usage(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Parameters                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    
-    /*=========================  PROTECTED  ===============================*/
-protected:    
+  void setParams(const std::string params);
 
-    /*==========================  PRIVATE  ================================*/
-private:
+  void setIncludes(const std::string& includes);
+  void setExcludes(const std::string& excludes);
 
-    Action::ResultE traverseEnter(NodePtr& node);
-    Action::ResultE traverseLeave(NodePtr& node, Action::ResultE res);
+  std::string usage(void);
 
-    bool isInList(const std::vector<std::string> &tlist,
-                  const FieldContainerPtr &fc);
-    FieldContainerPtr compareFCs(const FieldContainerPtr &fc);
-    static bool isEqual(const osg::FieldContainerPtr &a,
-                        const osg::FieldContainerPtr &b);
+  /*! \}                                                                 */
 
-    static Action::ResultE clearAttachmentParent(NodePtr &node);
-    static Action::ResultE addAttachmentParent(NodePtr &node);
-    static void fillAttachmentParents(const NodePtr &node);
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*==========================  PRIVATE  ================================*/
+ private:
+  Action::ResultE traverseEnter(NodePtr& node);
+  Action::ResultE traverseLeave(NodePtr& node, Action::ResultE res);
 
-    typedef std::set<FieldContainerPtr> fcsSet;
-    typedef std::map<std::string, fcsSet> fcsMap;
-    fcsMap      _fctypes;
+  bool              isInList(const std::vector<std::string>& tlist, const FieldContainerPtr& fc);
+  FieldContainerPtr compareFCs(const FieldContainerPtr& fc);
+  static bool       isEqual(const osg::FieldContainerPtr& a, const osg::FieldContainerPtr& b);
 
-    std::vector<std::string>            _includes;
-    std::vector<std::string>            _excludes;
-    UInt32                              _share_counter;
+  static Action::ResultE clearAttachmentParent(NodePtr& node);
+  static Action::ResultE addAttachmentParent(NodePtr& node);
+  static void            fillAttachmentParents(const NodePtr& node);
 
-    static std::set<FieldContainerPtr>  _added_cores;
+  typedef std::set<FieldContainerPtr>   fcsSet;
+  typedef std::map<std::string, fcsSet> fcsMap;
+  fcsMap                                _fctypes;
+
+  std::vector<std::string> _includes;
+  std::vector<std::string> _excludes;
+  UInt32                   _share_counter;
+
+  static std::set<FieldContainerPtr> _added_cores;
 };
 
 OSG_END_NAMESPACE

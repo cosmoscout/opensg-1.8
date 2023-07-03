@@ -44,5 +44,5 @@ OSG_BEGIN_NAMESPACE
 
 OSG_END_NAMESPACE
 
-#define OSGSHADERPARAMETERVEC4F_INLINE_CVSID "@(#)$Id: OSGShaderParameterVec4f.inl,v 1.1 2004/06/05 18:16:44 a-m-z Exp $"
-
+#define OSGSHADERPARAMETERVEC4F_INLINE_CVSID                                                       \
+  "@(#)$Id: OSGShaderParameterVec4f.inl,v 1.1 2004/06/05 18:16:44 a-m-z Exp $"

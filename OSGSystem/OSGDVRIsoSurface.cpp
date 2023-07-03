@@ -56,38 +56,31 @@ OSG_USING_NAMESPACE
 /*----------------------- constructors & destructors ----------------------*/
 
 //! Constructor
-DVRIsoSurface::DVRIsoSurface(void) :
-    Inherited()
-{
+DVRIsoSurface::DVRIsoSurface(void)
+    : Inherited() {
 }
 
 //! Copy Constructor
-DVRIsoSurface::DVRIsoSurface(const DVRIsoSurface &source) :
-    Inherited(source)
-{
+DVRIsoSurface::DVRIsoSurface(const DVRIsoSurface& source)
+    : Inherited(source) {
 }
 
 //! Destructor
-DVRIsoSurface::~DVRIsoSurface(void)
-{
+DVRIsoSurface::~DVRIsoSurface(void) {
 }
 
 /*----------------------------- class specific ----------------------------*/
 
 //! initialize the static features of the class, e.g. action callbacks
-void DVRIsoSurface::initMethod (void)
-{
+void DVRIsoSurface::initMethod(void) {
 }
 
 //! react to field changes
-void DVRIsoSurface::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void DVRIsoSurface::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
 //! output the instance for debug purposes
-void DVRIsoSurface::dump(      UInt32    , 
-                         const BitVector ) const
-{
-    SLOG << "Dump DVRIsoSurface NI" << std::endl;
+void DVRIsoSurface::dump(UInt32, const BitVector) const {
+  SLOG << "Dump DVRIsoSurface NI" << std::endl;
 }

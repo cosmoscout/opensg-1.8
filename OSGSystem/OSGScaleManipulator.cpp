@@ -59,7 +59,8 @@ OSG_USING_NAMESPACE
 \***************************************************************************/
 
 /*! \class osg::ScaleManipulator
-The ScaleHandle is used for scaleing objects. It consist of three axis which can be picked and scaled and one center box to scale freely in 3D. 
+The ScaleHandle is used for scaleing objects. It consist of three axis which can be picked and
+scaled and one center box to scale freely in 3D.
 */
 
 /***************************************************************************\
@@ -70,51 +71,31 @@ The ScaleHandle is used for scaleing objects. It consist of three axis which can
  *                           Class methods                                 *
 \***************************************************************************/
 
-void ScaleManipulator::initMethod (void)
-{
-	
-	DrawAction::registerEnterDefault( 
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE,
-                                          ScaleManipulatorPtr  , 
-                                          CNodePtr  ,  
-                                          Action   *>(&ScaleManipulator::drawEnter));
-    DrawAction::registerLeaveDefault( 
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE,
-                                          ScaleManipulatorPtr  , 
-                                          CNodePtr  ,  
-                                          Action   *>(&ScaleManipulator::drawLeave));
+void ScaleManipulator::initMethod(void) {
 
-    RenderAction::registerEnterDefault( 
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE,
-                                          ScaleManipulatorPtr  , 
-                                          CNodePtr  ,  
-                                          Action   *>(&ScaleManipulator::renderEnter));
+  DrawAction::registerEnterDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, ScaleManipulatorPtr, CNodePtr, Action*>(
+          &ScaleManipulator::drawEnter));
+  DrawAction::registerLeaveDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, ScaleManipulatorPtr, CNodePtr, Action*>(
+          &ScaleManipulator::drawLeave));
 
-    RenderAction::registerLeaveDefault( 
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE,
-                                          ScaleManipulatorPtr  , 
-                                          CNodePtr  ,  
-                                          Action   *>(&ScaleManipulator::renderLeave));
+  RenderAction::registerEnterDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, ScaleManipulatorPtr, CNodePtr, Action*>(
+          &ScaleManipulator::renderEnter));
 
-    IntersectAction::registerEnterDefault( 
-        getClassType(),
-        osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE,
-                                          ScaleManipulatorPtr  ,
-                                          CNodePtr  ,
-                                          Action   *>(&ScaleManipulator::intersectEnter));
-										  
-    IntersectAction::registerLeaveDefault( 
-        getClassType(),
-        osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE,
-                                          ScaleManipulatorPtr  ,
-                                          CNodePtr  ,
-                                          Action   *>(&ScaleManipulator::intersectLeave));
+  RenderAction::registerLeaveDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, ScaleManipulatorPtr, CNodePtr, Action*>(
+          &ScaleManipulator::renderLeave));
+
+  IntersectAction::registerEnterDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, ScaleManipulatorPtr, CNodePtr, Action*>(
+          &ScaleManipulator::intersectEnter));
+
+  IntersectAction::registerLeaveDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, ScaleManipulatorPtr, CNodePtr, Action*>(
+          &ScaleManipulator::intersectLeave));
 }
-
 
 /***************************************************************************\
  *                           Instance methods                              *
@@ -126,63 +107,51 @@ void ScaleManipulator::initMethod (void)
 
 /*----------------------- constructors & destructors ----------------------*/
 
-ScaleManipulator::ScaleManipulator(void) :
-    Inherited()
-{
+ScaleManipulator::ScaleManipulator(void)
+    : Inherited() {
 }
 
-ScaleManipulator::ScaleManipulator(const ScaleManipulator &source) :
-    Inherited(source)
-{
+ScaleManipulator::ScaleManipulator(const ScaleManipulator& source)
+    : Inherited(source) {
 }
 
-ScaleManipulator::~ScaleManipulator(void)
-{
+ScaleManipulator::~ScaleManipulator(void) {
 }
 
 /*----------------------------- class specific ----------------------------*/
 
-void ScaleManipulator::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void ScaleManipulator::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
-void ScaleManipulator::dump(      UInt32    , 
-                         const BitVector ) const
-{
-    SLOG << "Dump ScaleManipulator NI" << std::endl;
+void ScaleManipulator::dump(UInt32, const BitVector) const {
+  SLOG << "Dump ScaleManipulator NI" << std::endl;
 }
 
-NodePtr ScaleManipulator::makeHandleGeo()
-{
-	return makeCylinder(0.75, 0.1, 12, true, true, true);
+NodePtr ScaleManipulator::makeHandleGeo() {
+  return makeCylinder(0.75, 0.1, 12, true, true, true);
 }
 
-void  ScaleManipulator::doMovement(TransformPtr t,
-								   Int32 coord,
-								   Real32 value,
-								   const Vec3f		&translation,
-								   const Quaternion	&rotation,
-								   const Vec3f		&scaleFactor,
-								   const Quaternion	&scaleOrientation )
-{
-	Vec3f scale(1.0f, 1.0f, 1.0f);
-	scale[coord] += value;
-	
-	Matrix ma, mb, mc, md, me;
-	
-	ma.setTranslate( -translation        );
-	mb.setRotate   (  rotation.inverse() );
-	mc.setScale    (  scale              );
-	md.setRotate   (  rotation           );
-	me.setTranslate(  translation        );
-	beginEditCP(t, Transform::MatrixFieldMask);
-	{
-		t->getMatrix().multLeft(ma);
-		t->getMatrix().multLeft(mb);
-		t->getMatrix().multLeft(mc);
-		t->getMatrix().multLeft(md);
-		t->getMatrix().multLeft(me);
-	}	
-	endEditCP(t, Transform::MatrixFieldMask);
+void ScaleManipulator::doMovement(TransformPtr t, Int32 coord, Real32 value,
+    const Vec3f& translation, const Quaternion& rotation, const Vec3f& scaleFactor,
+    const Quaternion& scaleOrientation) {
+  Vec3f scale(1.0f, 1.0f, 1.0f);
+  scale[coord] += value;
+
+  Matrix ma, mb, mc, md, me;
+
+  ma.setTranslate(-translation);
+  mb.setRotate(rotation.inverse());
+  mc.setScale(scale);
+  md.setRotate(rotation);
+  me.setTranslate(translation);
+  beginEditCP(t, Transform::MatrixFieldMask);
+  {
+    t->getMatrix().multLeft(ma);
+    t->getMatrix().multLeft(mb);
+    t->getMatrix().multLeft(mc);
+    t->getMatrix().multLeft(md);
+    t->getMatrix().multLeft(me);
+  }
+  endEditCP(t, Transform::MatrixFieldMask);
 }

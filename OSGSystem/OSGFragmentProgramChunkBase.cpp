@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEFRAGMENTPROGRAMCHUNKINST
 
 #include <stdlib.h>
@@ -61,163 +60,115 @@
 #include "OSGFragmentProgramChunkBase.h"
 #include "OSGFragmentProgramChunk.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector FragmentProgramChunkBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
+const OSG::BitVector FragmentProgramChunkBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
+FieldContainerType FragmentProgramChunkBase::_type("FragmentProgramChunk", "ProgramChunk", NULL,
+    (PrototypeCreateF)&FragmentProgramChunkBase::createEmpty, FragmentProgramChunk::initMethod,
+    NULL, 0);
 
-
-FieldContainerType FragmentProgramChunkBase::_type(
-    "FragmentProgramChunk",
-    "ProgramChunk",
-    NULL,
-    (PrototypeCreateF) &FragmentProgramChunkBase::createEmpty,
-    FragmentProgramChunk::initMethod,
-    NULL,
-    0);
-
-//OSG_FIELD_CONTAINER_DEF(FragmentProgramChunkBase, FragmentProgramChunkPtr)
+// OSG_FIELD_CONTAINER_DEF(FragmentProgramChunkBase, FragmentProgramChunkPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &FragmentProgramChunkBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &FragmentProgramChunkBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr FragmentProgramChunkBase::shallowCopy(void) const 
-{ 
-    FragmentProgramChunkPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const FragmentProgramChunk *>(this)); 
-
-    return returnValue; 
+FieldContainerType& FragmentProgramChunkBase::getType(void) {
+  return _type;
 }
 
-UInt32 FragmentProgramChunkBase::getContainerSize(void) const 
-{ 
-    return sizeof(FragmentProgramChunk); 
+const FieldContainerType& FragmentProgramChunkBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr FragmentProgramChunkBase::shallowCopy(void) const {
+  FragmentProgramChunkPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const FragmentProgramChunk*>(this));
+
+  return returnValue;
+}
+
+UInt32 FragmentProgramChunkBase::getContainerSize(void) const {
+  return sizeof(FragmentProgramChunk);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void FragmentProgramChunkBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((FragmentProgramChunkBase *) &other, whichField);
+void FragmentProgramChunkBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((FragmentProgramChunkBase*)&other, whichField);
 }
 #else
-void FragmentProgramChunkBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((FragmentProgramChunkBase *) &other, whichField, sInfo);
+void FragmentProgramChunkBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((FragmentProgramChunkBase*)&other, whichField, sInfo);
 }
-void FragmentProgramChunkBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void FragmentProgramChunkBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void FragmentProgramChunkBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void FragmentProgramChunkBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-FragmentProgramChunkBase::FragmentProgramChunkBase(void) :
-    Inherited() 
-{
+FragmentProgramChunkBase::FragmentProgramChunkBase(void)
+    : Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-FragmentProgramChunkBase::FragmentProgramChunkBase(const FragmentProgramChunkBase &source) :
-    Inherited                 (source)
-{
+FragmentProgramChunkBase::FragmentProgramChunkBase(const FragmentProgramChunkBase& source)
+    : Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-FragmentProgramChunkBase::~FragmentProgramChunkBase(void)
-{
+FragmentProgramChunkBase::~FragmentProgramChunkBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 FragmentProgramChunkBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 FragmentProgramChunkBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void FragmentProgramChunkBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
-
-
+void FragmentProgramChunkBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 }
 
-void FragmentProgramChunkBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
-
-
+void FragmentProgramChunkBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void FragmentProgramChunkBase::executeSyncImpl(      FragmentProgramChunkBase *pOther,
-                                        const BitVector         &whichField)
-{
+void FragmentProgramChunkBase::executeSyncImpl(
+    FragmentProgramChunkBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
-
-
+  Inherited::executeSyncImpl(pOther, whichField);
 }
 #else
-void FragmentProgramChunkBase::executeSyncImpl(      FragmentProgramChunkBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void FragmentProgramChunkBase::executeSyncImpl(
+    FragmentProgramChunkBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
-
-
-
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 }
 
-void FragmentProgramChunkBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void FragmentProgramChunkBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>
@@ -225,13 +176,11 @@ void FragmentProgramChunkBase::execBeginEditImpl (const BitVector &whichField,
 OSG_BEGIN_NAMESPACE
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_DEV)
-DataType FieldDataTraits<FragmentProgramChunkPtr>::_type("FragmentProgramChunkPtr", "ProgramChunkPtr");
+DataType FieldDataTraits<FragmentProgramChunkPtr>::_type(
+    "FragmentProgramChunkPtr", "ProgramChunkPtr");
 #endif
 
 OSG_DLLEXPORT_SFIELD_DEF1(FragmentProgramChunkPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 OSG_DLLEXPORT_MFIELD_DEF1(FragmentProgramChunkPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
-
-
-

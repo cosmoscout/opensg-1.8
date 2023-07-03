@@ -47,121 +47,108 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \ingroup GrpBaseBaseVolume  
+/*! \ingroup GrpBaseBaseVolume
  */
 
-class OSG_BASE_DLLMAPPING DynamicVolume : public Volume
-{
-    /*==========================  PUBLIC  =================================*/
+class OSG_BASE_DLLMAPPING DynamicVolume : public Volume {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  enum Type { BOX_VOLUME, SPHERE_VOLUME };
 
-    enum Type 
-    { 
-        BOX_VOLUME, 
-        SPHERE_VOLUME 
-    };
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  DynamicVolume(Type type = BOX_VOLUME);
+  DynamicVolume(const DynamicVolume& obj);
 
-    DynamicVolume(      Type           type = BOX_VOLUME);
-    DynamicVolume(const DynamicVolume &obj              );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  virtual ~DynamicVolume(void);
 
-    virtual ~DynamicVolume(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Specific                            */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Specific                            */
-    /*! \{                                                                 */
+  const Volume& getInstance(void) const;
+  Volume&       getInstance(void);
+  void          instanceChanged(void);
 
-    const Volume &getInstance    (void     ) const;
-          Volume &getInstance    (void     );
-          void    instanceChanged(void     );
+  Type getType(void) const;
+  void setVolumeType(Type type);
+  void morphToType(Type type);
 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Get                                    */
+  /*! \{                                                                 */
 
-          Type    getType        (void     ) const;
-          void    setVolumeType  (Type type);
-          void    morphToType    (Type type);
+  virtual void   getCenter(Pnt3f& center) const;
+  virtual Real32 getScalarVolume(void) const;
+  virtual void   getBounds(Pnt3f& min, Pnt3f& max) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Get                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Extend                                 */
+  /*! \{                                                                 */
 
-    virtual void   getCenter      (Pnt3f &center           ) const;
-    virtual Real32 getScalarVolume(void                    ) const;
-    virtual void   getBounds      (Pnt3f &min,   Pnt3f &max) const;
+  virtual void extendBy(const Pnt3f& pt);
+  virtual void extendBy(const Volume& volume);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Extend                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Intersection                              */
+  /*! \{                                                                 */
 
-    virtual void extendBy(const Pnt3f  &pt    );
-    virtual void extendBy(const Volume &volume);
+  virtual bool intersect(const Pnt3f& point) const;
+  virtual bool intersect(const Line& line) const;
+  virtual bool intersect(const Line& line, Real32& enter, Real32& exit) const;
+  virtual bool intersect(const Volume& volume) const;
+  virtual bool isOnSurface(const Pnt3f& point) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Intersection                              */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Transform                              */
+  /*! \{                                                                 */
 
-    virtual bool intersect  (const Pnt3f  &point ) const;
-    virtual bool intersect  (const Line   &line  ) const;
-    virtual bool intersect  (const Line   &line,
-                                   Real32 &enter, 
-                                   Real32 &exit  ) const;
-    virtual bool intersect  (const Volume &volume) const;
-    virtual bool isOnSurface(const Pnt3f  &point ) const;
+  virtual void transform(const Matrix& matrix);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Transform                              */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Output                                 */
+  /*! \{                                                                 */
 
-    virtual void transform (const Matrix &matrix);
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Output                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Operators                              */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32    uiIndent = 0,
-                      const BitVector bvFlags  = 0) const;
+  bool operator==(const DynamicVolume& other) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Operators                              */
-    /*! \{                                                                 */
+  DynamicVolume& operator=(const DynamicVolume& source);
 
-    bool           operator ==(const DynamicVolume &other ) const;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    DynamicVolume &operator = (const DynamicVolume &source);
+ protected:
+  /*==========================  PRIVATE  ================================*/
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-
-  protected:
-
-    /*==========================  PRIVATE  ================================*/
-
-  private:
-
-    Type _type;
-    Real64 _volumeMem[5]; // use Real64 to create the 32 bytes for alignment 
-                          // safety. This assumes that Real64 has the most 
-                          // stringent alignment requirements!!!
+ private:
+  Type   _type;
+  Real64 _volumeMem[5]; // use Real64 to create the 32 bytes for alignment
+                        // safety. This assumes that Real64 has the most
+                        // stringent alignment requirements!!!
 };
 
 OSG_BASE_DLLMAPPING
-std::ostream &operator <<(      std::ostream  &outStream,
-                          const DynamicVolume &vol);
+std::ostream& operator<<(std::ostream& outStream, const DynamicVolume& vol);
 
 typedef DynamicVolume* DynamicVolumeP;
 

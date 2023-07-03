@@ -34,24 +34,18 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #include <OSGConfig.h>
 
 OSG_BEGIN_NAMESPACE
 
 /*! set the click center mode of the navigator
  */
- 
-inline
-bool SimpleSceneManager::setClickCenter( bool mode )
-{
-    return _navigator.setClickCenter(mode);
+
+inline bool SimpleSceneManager::setClickCenter(bool mode) {
+  return _navigator.setClickCenter(mode);
 }
-
-
 
 OSG_END_NAMESPACE
 
-#define OSGSIMPLESCENEMANAGER_INLINE_CVSID "@(#)$Id: OSGSimpleSceneManager.inl,v 1.9 2001/11/19 18:40:50 dirk Exp $"
-
-
+#define OSGSIMPLESCENEMANAGER_INLINE_CVSID                                                         \
+  "@(#)$Id: OSGSimpleSceneManager.inl,v 1.9 2001/11/19 18:40:50 dirk Exp $"

@@ -59,7 +59,8 @@ OSG_USING_NAMESPACE
 \***************************************************************************/
 
 /*! \class osg::MoveManipulator
-The MoveHandle is used for moving objects. It consist of three axis which can be picked and translated and one center box to translate freely in 3D.
+The MoveHandle is used for moving objects. It consist of three axis which can be picked and
+translated and one center box to translate freely in 3D.
 */
 
 /***************************************************************************\
@@ -70,51 +71,31 @@ The MoveHandle is used for moving objects. It consist of three axis which can be
  *                           Class methods                                 *
 \***************************************************************************/
 
-void MoveManipulator::initMethod (void)
-{
-	
-	DrawAction::registerEnterDefault( 
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE,
-                                          MoveManipulatorPtr  , 
-                                          CNodePtr  ,  
-                                          Action   *>(&MoveManipulator::drawEnter));
-    DrawAction::registerLeaveDefault( 
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE,
-                                          MoveManipulatorPtr  , 
-                                          CNodePtr  ,  
-                                          Action   *>(&MoveManipulator::drawLeave));
+void MoveManipulator::initMethod(void) {
 
-    RenderAction::registerEnterDefault( 
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE,
-                                          MoveManipulatorPtr  , 
-                                          CNodePtr  ,  
-                                          Action   *>(&MoveManipulator::renderEnter));
+  DrawAction::registerEnterDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, MoveManipulatorPtr, CNodePtr, Action*>(
+          &MoveManipulator::drawEnter));
+  DrawAction::registerLeaveDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, MoveManipulatorPtr, CNodePtr, Action*>(
+          &MoveManipulator::drawLeave));
 
-    RenderAction::registerLeaveDefault( 
-        getClassType(), 
-        osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE,
-                                          MoveManipulatorPtr  , 
-                                          CNodePtr  ,  
-                                          Action   *>(&MoveManipulator::renderLeave));
-   
-    IntersectAction::registerEnterDefault( 
-        getClassType(),
-        osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE,
-                                          MoveManipulatorPtr  ,
-                                          CNodePtr  ,
-                                          Action   *>(&MoveManipulator::intersectEnter));
-										  
-    IntersectAction::registerLeaveDefault( 
-        getClassType(),
-        osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE,
-                                          MoveManipulatorPtr  ,
-                                          CNodePtr  ,
-                                          Action   *>(&MoveManipulator::intersectLeave));
+  RenderAction::registerEnterDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, MoveManipulatorPtr, CNodePtr, Action*>(
+          &MoveManipulator::renderEnter));
+
+  RenderAction::registerLeaveDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, MoveManipulatorPtr, CNodePtr, Action*>(
+          &MoveManipulator::renderLeave));
+
+  IntersectAction::registerEnterDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, MoveManipulatorPtr, CNodePtr, Action*>(
+          &MoveManipulator::intersectEnter));
+
+  IntersectAction::registerLeaveDefault(getClassType(),
+      osgTypedMethodFunctor2BaseCPtrRef<Action::ResultE, MoveManipulatorPtr, CNodePtr, Action*>(
+          &MoveManipulator::intersectLeave));
 }
-
 
 /***************************************************************************\
  *                           Instance methods                              *
@@ -126,63 +107,51 @@ void MoveManipulator::initMethod (void)
 
 /*----------------------- constructors & destructors ----------------------*/
 
-MoveManipulator::MoveManipulator(void) :
-    Inherited()
-{
+MoveManipulator::MoveManipulator(void)
+    : Inherited() {
 }
 
-MoveManipulator::MoveManipulator(const MoveManipulator &source) :
-    Inherited(source)
-{
+MoveManipulator::MoveManipulator(const MoveManipulator& source)
+    : Inherited(source) {
 }
 
-MoveManipulator::~MoveManipulator(void)
-{
+MoveManipulator::~MoveManipulator(void) {
 }
 
 /*----------------------------- class specific ----------------------------*/
 
-void MoveManipulator::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void MoveManipulator::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
-void MoveManipulator::dump(      UInt32    , 
-                         const BitVector ) const
-{
-    SLOG << "Dump MoveManipulator NI" << std::endl;
+void MoveManipulator::dump(UInt32, const BitVector) const {
+  SLOG << "Dump MoveManipulator NI" << std::endl;
 }
 
-NodePtr MoveManipulator::makeHandleGeo()
-{
-	return makeCone(0.75, 0.1, 12, true, true);
+NodePtr MoveManipulator::makeHandleGeo() {
+  return makeCone(0.75, 0.1, 12, true, true);
 }
 
-void  MoveManipulator::doMovement(TransformPtr t,
-								  Int32 coord,
-								  Real32 value,
-								  const Vec3f		&translation,
-								  const Quaternion	&rotation,
-								  const Vec3f		&scaleFactor,
-								  const Quaternion	&scaleOrientation )
-{
-	Vec3f trans(0.0f, 0.0f, 0.0f);
-	trans[coord] = value;
+void MoveManipulator::doMovement(TransformPtr t, Int32 coord, Real32 value,
+    const Vec3f& translation, const Quaternion& rotation, const Vec3f& scaleFactor,
+    const Quaternion& scaleOrientation) {
+  Vec3f trans(0.0f, 0.0f, 0.0f);
+  trans[coord] = value;
 
-	Matrix ma, mb, mc, md, me;
-	
-	ma.setTranslate( -translation        );
-	mb.setRotate   (  rotation.inverse() );
-	mc.setTransform(  trans              );
-	md.setRotate   (  rotation           );
-	me.setTranslate(  translation        );
-	beginEditCP(t, Transform::MatrixFieldMask);
-	{
-		t->getMatrix().multLeft(ma);
-		t->getMatrix().multLeft(mb);
-		t->getMatrix().multLeft(mc);
-		t->getMatrix().multLeft(md);
-		t->getMatrix().multLeft(me);
-	}	
-	endEditCP(t, Transform::MatrixFieldMask);
+  Matrix ma, mb, mc, md, me;
+
+  ma.setTranslate(-translation);
+  mb.setRotate(rotation.inverse());
+  mc.setTransform(trans);
+  md.setRotate(rotation);
+  me.setTranslate(translation);
+  beginEditCP(t, Transform::MatrixFieldMask);
+  {
+    t->getMatrix().multLeft(ma);
+    t->getMatrix().multLeft(mb);
+    t->getMatrix().multLeft(mc);
+    t->getMatrix().multLeft(md);
+    t->getMatrix().multLeft(me);
+  }
+  endEditCP(t, Transform::MatrixFieldMask);
 }

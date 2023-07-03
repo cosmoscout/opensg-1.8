@@ -65,10 +65,8 @@ An attachment that stores a string-to-field container pointer (FCPtr) mapping of
  *                           Class methods                                 *
 \***************************************************************************/
 
-void FCPtrAttributeMap::initMethod (void)
-{
+void FCPtrAttributeMap::initMethod(void) {
 }
-
 
 /***************************************************************************\
  *                           Instance methods                              *
@@ -80,31 +78,25 @@ void FCPtrAttributeMap::initMethod (void)
 
 /*----------------------- constructors & destructors ----------------------*/
 
-FCPtrAttributeMap::FCPtrAttributeMap(void) :
-    Inherited()
-{
+FCPtrAttributeMap::FCPtrAttributeMap(void)
+    : Inherited() {
 }
 
-FCPtrAttributeMap::FCPtrAttributeMap(const FCPtrAttributeMap &source) :
-    Inherited(source)
-{
+FCPtrAttributeMap::FCPtrAttributeMap(const FCPtrAttributeMap& source)
+    : Inherited(source) {
 }
 
-FCPtrAttributeMap::~FCPtrAttributeMap(void)
-{
+FCPtrAttributeMap::~FCPtrAttributeMap(void) {
 }
 
 /*----------------------------- class specific ----------------------------*/
 
-void FCPtrAttributeMap::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void FCPtrAttributeMap::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
-void FCPtrAttributeMap::dump(      UInt32    , 
-                         const BitVector ) const
-{
-    SLOG << "Dump FCPtrAttributeMap NI" << std::endl;
+void FCPtrAttributeMap::dump(UInt32, const BitVector) const {
+  SLOG << "Dump FCPtrAttributeMap NI" << std::endl;
 }
 
 /*! Sets the value associated with the named key in this attribute map.
@@ -117,30 +109,26 @@ void FCPtrAttributeMap::dump(      UInt32    ,
     Values) are edited by this method.
  */
 
-void FCPtrAttributeMap::setAttribute(const std::string& key,
-                                     FieldContainerPtr value)
-{
-    MFString& keys = this->FCPtrAttributeMapBase::getKeys();
-    MFFieldContainerPtr& values = this->FCPtrAttributeMapBase::getValues();
+void FCPtrAttributeMap::setAttribute(const std::string& key, FieldContainerPtr value) {
+  MFString&            keys   = this->FCPtrAttributeMapBase::getKeys();
+  MFFieldContainerPtr& values = this->FCPtrAttributeMapBase::getValues();
 
-    MFString::iterator i;
-    unsigned int index(0);
+  MFString::iterator i;
+  unsigned int       index(0);
 
-    // Find the index of key in _mfKeys. This index will be the index of the
-    // value associated with key in _mfValues.
-    for ( i = keys.begin(); i != keys.end(); ++i, ++index )
-    {
-        if ( *i == key )
-        {
-           values[index] = value;
-           return;
-        }
+  // Find the index of key in _mfKeys. This index will be the index of the
+  // value associated with key in _mfValues.
+  for (i = keys.begin(); i != keys.end(); ++i, ++index) {
+    if (*i == key) {
+      values[index] = value;
+      return;
     }
+  }
 
-    // key was not found in _mfKeys, so we add key to _mfKeys and value to
-    // _mfValues.
-    keys.push_back(key);
-    values.push_back(value);
+  // key was not found in _mfKeys, so we add key to _mfKeys and value to
+  // _mfValues.
+  keys.push_back(key);
+  values.push_back(value);
 }
 
 /*! Attempts to look up the value associated with the named key in this
@@ -148,34 +136,27 @@ void FCPtrAttributeMap::setAttribute(const std::string& key,
     false is returned. Otherwise, \p value is set to the value associated
     with the named key, and true is returned.
  */
- 
-bool FCPtrAttributeMap::getAttribute(const std::string& key,
-                                     FieldContainerPtr& value)
-    const
-{
-    if ( hasAttribute(key) )
-    {
-        const MFString& keys = this->FCPtrAttributeMapBase::getKeys();
-        const MFFieldContainerPtr& values =
-            this->FCPtrAttributeMapBase::getValues();
 
-        // Find the index of key in _mfKeys. This index will be the index of
-        // the value associated with key in _mfValues.
-        unsigned int index(0);
-        MFString::const_iterator i;
-        for ( i = keys.begin(); i != keys.end(); ++i, ++index )
-        {
-            if ( *i == key )
-            {
-                // Assign the value associated with key.
-                value = values[index];
-                return true;
-            }
-        }
+bool FCPtrAttributeMap::getAttribute(const std::string& key, FieldContainerPtr& value) const {
+  if (hasAttribute(key)) {
+    const MFString&            keys   = this->FCPtrAttributeMapBase::getKeys();
+    const MFFieldContainerPtr& values = this->FCPtrAttributeMapBase::getValues();
+
+    // Find the index of key in _mfKeys. This index will be the index of
+    // the value associated with key in _mfValues.
+    unsigned int             index(0);
+    MFString::const_iterator i;
+    for (i = keys.begin(); i != keys.end(); ++i, ++index) {
+      if (*i == key) {
+        // Assign the value associated with key.
+        value = values[index];
+        return true;
+      }
     }
+  }
 
-    // _mfKeys does not contain key.
-    return false;
+  // _mfKeys does not contain key.
+  return false;
 }
 
 /*-------------------------------------------------------------------------*/
@@ -192,37 +173,32 @@ OSG_BEGIN_NAMESPACE
     attached OSG::FCPtrAttributeMapPtr is returned.
  */
 
-FCPtrAttributeMapPtr fcptrAttributeMap(AttachmentContainerPtr container)
-{
-    if ( NullFC == container )
-    {
-        FFATAL(("stringAttributeMap: no container?!?\n"));
-        return NullFC;
+FCPtrAttributeMapPtr fcptrAttributeMap(AttachmentContainerPtr container) {
+  if (NullFC == container) {
+    FFATAL(("stringAttributeMap: no container?!?\n"));
+    return NullFC;
+  }
+
+  FCPtrAttributeMapPtr attr_map = NullFC;
+  AttachmentPtr        attach_ptr =
+      container->findAttachment(FCPtrAttributeMap::getClassType().getGroupId());
+
+  if (NullFC == attach_ptr) {
+    attr_map = FCPtrAttributeMap::create();
+    beginEditCP(container, AttachmentContainer::AttachmentsFieldMask);
+    container->addAttachment(attr_map);
+    endEditCP(container, AttachmentContainer::AttachmentsFieldMask);
+  } else {
+    attr_map = FCPtrAttributeMapPtr::dcast(attach_ptr);
+
+    if (NullFC == attr_map) {
+      FFATAL(("fcptrAttributeMap: FCPtrAttributeMap Attachment is not castable to "
+              "FCPtrAttributeMap?!?\n"));
+      return NullFC;
     }
+  }
 
-    FCPtrAttributeMapPtr attr_map = NullFC;
-    AttachmentPtr attach_ptr =
-        container->findAttachment(FCPtrAttributeMap::getClassType().getGroupId());
-
-    if ( NullFC == attach_ptr )
-    {
-        attr_map = FCPtrAttributeMap::create();
-        beginEditCP(container, AttachmentContainer::AttachmentsFieldMask);
-            container->addAttachment(attr_map);
-        endEditCP(container, AttachmentContainer::AttachmentsFieldMask);
-    }
-    else
-    {
-        attr_map = FCPtrAttributeMapPtr::dcast(attach_ptr);
-
-        if ( NullFC == attr_map )
-        {
-            FFATAL(("fcptrAttributeMap: FCPtrAttributeMap Attachment is not castable to FCPtrAttributeMap?!?\n"));
-            return NullFC;
-        }
-    }
-
-    return attr_map;
+  return attr_map;
 }
 
 OSG_END_NAMESPACE

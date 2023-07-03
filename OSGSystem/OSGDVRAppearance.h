@@ -48,71 +48,64 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief *put brief class description here* 
+/*! \brief *put brief class description here*
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING DVRAppearance : public DVRAppearanceBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING DVRAppearance : public DVRAppearanceBase {
+ private:
+  typedef DVRAppearanceBase Inherited;
 
-    typedef DVRAppearanceBase Inherited;
+  /*==========================  PUBLIC  =================================*/
 
-    /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-  public:
+  virtual void changed(BitVector whichField, UInt32 from);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     from);
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+ protected:
+  // Variables should all be in DVRAppearanceBase.
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-  protected:
+  DVRAppearance(void);
+  DVRAppearance(const DVRAppearance& source);
 
-    // Variables should all be in DVRAppearanceBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~DVRAppearance(void);
 
-    DVRAppearance(void);
-    DVRAppearance(const DVRAppearance &source);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-    virtual ~DVRAppearance(void); 
+ private:
+  friend class FieldContainer;
+  friend class DVRAppearanceBase;
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
+  static void initMethod(void);
 
-  private:
-
-    friend class FieldContainer;
-    friend class DVRAppearanceBase;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const DVRAppearance &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const DVRAppearance& source);
 };
 
-typedef DVRAppearance *DVRAppearanceP;
+typedef DVRAppearance* DVRAppearanceP;
 
 OSG_END_NAMESPACE
 

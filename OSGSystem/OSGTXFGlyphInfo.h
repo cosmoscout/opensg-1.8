@@ -5,52 +5,44 @@
 #include <OSGBaseTypes.h>
 #include <OSGSystemDef.h>
 
-OSG_BEGIN_NAMESPACE 
+OSG_BEGIN_NAMESPACE
 
-class OSG_SYSTEMLIB_DLLMAPPING TXFGlyphInfo
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING TXFGlyphInfo {
+ private:
+  TXFGlyphInfo(const TXFGlyphInfo& source);
+  void operator=(const TXFGlyphInfo& source);
 
-    TXFGlyphInfo(const TXFGlyphInfo &source);
-    void operator =(const TXFGlyphInfo &source);
+ protected:
+  Real32 _tCoords[4][2];
+  Real32 _vCoords[4][2];
+  Real32 _advance;
 
-  protected:
-    
-    Real32   _tCoords[4][2];
-    Real32   _vCoords[4][2];
-    Real32   _advance;
+  Int8*  _dimensions;
+  Int16* _offset;
+  UInt8  _remapped;
 
-    Int8    *_dimensions;
-    Int16   *_offset;
-    UInt8    _remapped;
+ public:
+  TXFGlyphInfo(void);
 
-  public:
+  virtual ~TXFGlyphInfo(void);
 
-    TXFGlyphInfo(void);
+  void  remap(UInt8 dest);
+  UInt8 remapped(void);
 
-    virtual ~TXFGlyphInfo(void);
+  virtual bool    setTextureCoords(Int8 corner, Real32 x, Real32 y);
+  virtual Real32* getTextureCoords(Int8 corner);
 
-            void    remap           (UInt8   dest   );
-            UInt8   remapped        (void           );
+  virtual bool    setVertexCoords(Int8 corner, Real32 x, Real32 y);
+  virtual Real32* getVertexCoords(Int8 corner);
 
-    virtual bool    setTextureCoords(Int8    corner, 
-                                     Real32  x, 
-                                     Real32  y      );
-    virtual Real32 *getTextureCoords(Int8    corner );
+  virtual void   setAdvance(Real32 advance);
+  virtual Real32 getAdvance(void);
 
-    virtual bool    setVertexCoords (Int8    corner, 
-                                     Real32  x, 
-                                     Real32  y      );
-    virtual Real32 *getVertexCoords (Int8    corner );
+  virtual void  setDimensions(Int8* dims);
+  virtual Int8* getDimensions(void);
 
-    virtual void    setAdvance      (Real32  advance);
-    virtual Real32  getAdvance      (void           );
-
-    virtual void    setDimensions   (Int8   *dims   );
-    virtual Int8   *getDimensions   (void           );
-
-    virtual void    setOffset       (Int16  *off    );
-    virtual Int16  *getOffset       (void           );
+  virtual void   setOffset(Int16* off);
+  virtual Int16* getOffset(void);
 };
 
 OSG_END_NAMESPACE

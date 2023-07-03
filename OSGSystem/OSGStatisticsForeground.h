@@ -48,77 +48,70 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief Statistics Foregrounds base class. See \ref 
+/*! \brief Statistics Foregrounds base class. See \ref
     PageSystemWindowForegroundStatistics for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING StatisticsForeground : public StatisticsForegroundBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING StatisticsForeground : public StatisticsForegroundBase {
+ private:
+  typedef StatisticsForegroundBase Inherited;
 
-    typedef StatisticsForegroundBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector whichField, 
-                         UInt32    origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   draw                                       */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  virtual void draw(DrawActionBase* action, Viewport* port) = 0;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   draw                                       */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in StatisticsForegroundBase.
 
-    virtual void draw( DrawActionBase * action, Viewport * port ) = 0;
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  StatisticsForeground(void);
+  StatisticsForeground(const StatisticsForeground& source);
 
-    // Variables should all be in StatisticsForegroundBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~StatisticsForeground(void);
 
-    StatisticsForeground(void);
-    StatisticsForeground(const StatisticsForeground &source);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class StatisticsForegroundBase;
 
-    virtual ~StatisticsForeground(void); 
+  static void initMethod(void);
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  // prohibit default functions (move to 'public' if you need one)
 
-    friend class FieldContainer;
-    friend class StatisticsForegroundBase;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const StatisticsForeground &source);
+  void operator=(const StatisticsForeground& source);
 };
 
-typedef StatisticsForeground *StatisticsForegroundP;
+typedef StatisticsForeground* StatisticsForegroundP;
 
 OSG_END_NAMESPACE
 

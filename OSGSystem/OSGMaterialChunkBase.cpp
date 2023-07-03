@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEMATERIALCHUNKINST
 
 #include <stdlib.h>
@@ -61,98 +60,98 @@
 #include "OSGMaterialChunkBase.h"
 #include "OSGMaterialChunk.h"
 
-#include <OSGGL.h>                        // ColorMaterial default header
-#include <OSGGL.h>                        // BackColorMaterial default header
+#include <OSGGL.h> // ColorMaterial default header
+#include <OSGGL.h> // BackColorMaterial default header
 
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  MaterialChunkBase::DiffuseFieldMask = 
+const OSG::BitVector MaterialChunkBase::DiffuseFieldMask =
     (TypeTraits<BitVector>::One << MaterialChunkBase::DiffuseFieldId);
 
-const OSG::BitVector  MaterialChunkBase::AmbientFieldMask = 
+const OSG::BitVector MaterialChunkBase::AmbientFieldMask =
     (TypeTraits<BitVector>::One << MaterialChunkBase::AmbientFieldId);
 
-const OSG::BitVector  MaterialChunkBase::SpecularFieldMask = 
+const OSG::BitVector MaterialChunkBase::SpecularFieldMask =
     (TypeTraits<BitVector>::One << MaterialChunkBase::SpecularFieldId);
 
-const OSG::BitVector  MaterialChunkBase::EmissionFieldMask = 
+const OSG::BitVector MaterialChunkBase::EmissionFieldMask =
     (TypeTraits<BitVector>::One << MaterialChunkBase::EmissionFieldId);
 
-const OSG::BitVector  MaterialChunkBase::ShininessFieldMask = 
+const OSG::BitVector MaterialChunkBase::ShininessFieldMask =
     (TypeTraits<BitVector>::One << MaterialChunkBase::ShininessFieldId);
 
-const OSG::BitVector  MaterialChunkBase::LitFieldMask = 
+const OSG::BitVector MaterialChunkBase::LitFieldMask =
     (TypeTraits<BitVector>::One << MaterialChunkBase::LitFieldId);
 
-const OSG::BitVector  MaterialChunkBase::ColorMaterialFieldMask = 
+const OSG::BitVector MaterialChunkBase::ColorMaterialFieldMask =
     (TypeTraits<BitVector>::One << MaterialChunkBase::ColorMaterialFieldId);
 
-const OSG::BitVector  MaterialChunkBase::BackMaterialFieldMask = 
+const OSG::BitVector MaterialChunkBase::BackMaterialFieldMask =
     (TypeTraits<BitVector>::One << MaterialChunkBase::BackMaterialFieldId);
 
-const OSG::BitVector  MaterialChunkBase::BackDiffuseFieldMask = 
+const OSG::BitVector MaterialChunkBase::BackDiffuseFieldMask =
     (TypeTraits<BitVector>::One << MaterialChunkBase::BackDiffuseFieldId);
 
-const OSG::BitVector  MaterialChunkBase::BackAmbientFieldMask = 
+const OSG::BitVector MaterialChunkBase::BackAmbientFieldMask =
     (TypeTraits<BitVector>::One << MaterialChunkBase::BackAmbientFieldId);
 
-const OSG::BitVector  MaterialChunkBase::BackSpecularFieldMask = 
+const OSG::BitVector MaterialChunkBase::BackSpecularFieldMask =
     (TypeTraits<BitVector>::One << MaterialChunkBase::BackSpecularFieldId);
 
-const OSG::BitVector  MaterialChunkBase::BackEmissionFieldMask = 
+const OSG::BitVector MaterialChunkBase::BackEmissionFieldMask =
     (TypeTraits<BitVector>::One << MaterialChunkBase::BackEmissionFieldId);
 
-const OSG::BitVector  MaterialChunkBase::BackShininessFieldMask = 
+const OSG::BitVector MaterialChunkBase::BackShininessFieldMask =
     (TypeTraits<BitVector>::One << MaterialChunkBase::BackShininessFieldId);
 
-const OSG::BitVector  MaterialChunkBase::BackColorMaterialFieldMask = 
+const OSG::BitVector MaterialChunkBase::BackColorMaterialFieldMask =
     (TypeTraits<BitVector>::One << MaterialChunkBase::BackColorMaterialFieldId);
 
-const OSG::BitVector MaterialChunkBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector MaterialChunkBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
 /*! \var Color4f         MaterialChunkBase::_sfDiffuse
-    
+
 */
 /*! \var Color4f         MaterialChunkBase::_sfAmbient
-    
+
 */
 /*! \var Color4f         MaterialChunkBase::_sfSpecular
-    
+
 */
 /*! \var Color4f         MaterialChunkBase::_sfEmission
-    
+
 */
 /*! \var Real32          MaterialChunkBase::_sfShininess
-    
+
 */
 /*! \var bool            MaterialChunkBase::_sfLit
-    Switch for using this material in lighting calculation.          If not set the diffuse color is used as is.
+    Switch for using this material in lighting calculation.          If not set the diffuse color is
+   used as is.
 */
 /*! \var GLenum          MaterialChunkBase::_sfColorMaterial
     The mode for using Geometry colors in lighting. Defaults to GL_DIFFUSE.
 */
 /*! \var bool            MaterialChunkBase::_sfBackMaterial
-    Switch for using separate material properties for front- and back-facing         polygons. If set to false the standard parameters will be used for front- and          backfaces.
+    Switch for using separate material properties for front- and back-facing         polygons. If
+   set to false the standard parameters will be used for front- and          backfaces.
 */
 /*! \var Color4f         MaterialChunkBase::_sfBackDiffuse
-    
+
 */
 /*! \var Color4f         MaterialChunkBase::_sfBackAmbient
-    
+
 */
 /*! \var Color4f         MaterialChunkBase::_sfBackSpecular
-    
+
 */
 /*! \var Color4f         MaterialChunkBase::_sfBackEmission
-    
+
 */
 /*! \var Real32          MaterialChunkBase::_sfBackShininess
-    
+
 */
 /*! \var GLenum          MaterialChunkBase::_sfBackColorMaterial
     The mode for using Geometry colors in lighting. Defaults to GL_DIFFUSE.
@@ -160,551 +159,420 @@ const OSG::BitVector MaterialChunkBase::MTInfluenceMask =
 
 //! MaterialChunk description
 
-FieldDescription *MaterialChunkBase::_desc[] = 
-{
-    new FieldDescription(SFColor4f::getClassType(), 
-                     "diffuse", 
-                     DiffuseFieldId, DiffuseFieldMask,
-                     false,
-                     (FieldAccessMethod) &MaterialChunkBase::getSFDiffuse),
-    new FieldDescription(SFColor4f::getClassType(), 
-                     "ambient", 
-                     AmbientFieldId, AmbientFieldMask,
-                     false,
-                     (FieldAccessMethod) &MaterialChunkBase::getSFAmbient),
-    new FieldDescription(SFColor4f::getClassType(), 
-                     "specular", 
-                     SpecularFieldId, SpecularFieldMask,
-                     false,
-                     (FieldAccessMethod) &MaterialChunkBase::getSFSpecular),
-    new FieldDescription(SFColor4f::getClassType(), 
-                     "emission", 
-                     EmissionFieldId, EmissionFieldMask,
-                     false,
-                     (FieldAccessMethod) &MaterialChunkBase::getSFEmission),
-    new FieldDescription(SFReal32::getClassType(), 
-                     "shininess", 
-                     ShininessFieldId, ShininessFieldMask,
-                     false,
-                     (FieldAccessMethod) &MaterialChunkBase::getSFShininess),
-    new FieldDescription(SFBool::getClassType(), 
-                     "lit", 
-                     LitFieldId, LitFieldMask,
-                     false,
-                     (FieldAccessMethod) &MaterialChunkBase::getSFLit),
-    new FieldDescription(SFGLenum::getClassType(), 
-                     "colorMaterial", 
-                     ColorMaterialFieldId, ColorMaterialFieldMask,
-                     false,
-                     (FieldAccessMethod) &MaterialChunkBase::getSFColorMaterial),
-    new FieldDescription(SFBool::getClassType(), 
-                     "backMaterial", 
-                     BackMaterialFieldId, BackMaterialFieldMask,
-                     false,
-                     (FieldAccessMethod) &MaterialChunkBase::getSFBackMaterial),
-    new FieldDescription(SFColor4f::getClassType(), 
-                     "backDiffuse", 
-                     BackDiffuseFieldId, BackDiffuseFieldMask,
-                     false,
-                     (FieldAccessMethod) &MaterialChunkBase::getSFBackDiffuse),
-    new FieldDescription(SFColor4f::getClassType(), 
-                     "backAmbient", 
-                     BackAmbientFieldId, BackAmbientFieldMask,
-                     false,
-                     (FieldAccessMethod) &MaterialChunkBase::getSFBackAmbient),
-    new FieldDescription(SFColor4f::getClassType(), 
-                     "backSpecular", 
-                     BackSpecularFieldId, BackSpecularFieldMask,
-                     false,
-                     (FieldAccessMethod) &MaterialChunkBase::getSFBackSpecular),
-    new FieldDescription(SFColor4f::getClassType(), 
-                     "backEmission", 
-                     BackEmissionFieldId, BackEmissionFieldMask,
-                     false,
-                     (FieldAccessMethod) &MaterialChunkBase::getSFBackEmission),
-    new FieldDescription(SFReal32::getClassType(), 
-                     "backShininess", 
-                     BackShininessFieldId, BackShininessFieldMask,
-                     false,
-                     (FieldAccessMethod) &MaterialChunkBase::getSFBackShininess),
-    new FieldDescription(SFGLenum::getClassType(), 
-                     "backColorMaterial", 
-                     BackColorMaterialFieldId, BackColorMaterialFieldMask,
-                     false,
-                     (FieldAccessMethod) &MaterialChunkBase::getSFBackColorMaterial)
-};
+FieldDescription* MaterialChunkBase::_desc[] = {
+    new FieldDescription(SFColor4f::getClassType(), "diffuse", DiffuseFieldId, DiffuseFieldMask,
+        false, (FieldAccessMethod)&MaterialChunkBase::getSFDiffuse),
+    new FieldDescription(SFColor4f::getClassType(), "ambient", AmbientFieldId, AmbientFieldMask,
+        false, (FieldAccessMethod)&MaterialChunkBase::getSFAmbient),
+    new FieldDescription(SFColor4f::getClassType(), "specular", SpecularFieldId, SpecularFieldMask,
+        false, (FieldAccessMethod)&MaterialChunkBase::getSFSpecular),
+    new FieldDescription(SFColor4f::getClassType(), "emission", EmissionFieldId, EmissionFieldMask,
+        false, (FieldAccessMethod)&MaterialChunkBase::getSFEmission),
+    new FieldDescription(SFReal32::getClassType(), "shininess", ShininessFieldId,
+        ShininessFieldMask, false, (FieldAccessMethod)&MaterialChunkBase::getSFShininess),
+    new FieldDescription(SFBool::getClassType(), "lit", LitFieldId, LitFieldMask, false,
+        (FieldAccessMethod)&MaterialChunkBase::getSFLit),
+    new FieldDescription(SFGLenum::getClassType(), "colorMaterial", ColorMaterialFieldId,
+        ColorMaterialFieldMask, false, (FieldAccessMethod)&MaterialChunkBase::getSFColorMaterial),
+    new FieldDescription(SFBool::getClassType(), "backMaterial", BackMaterialFieldId,
+        BackMaterialFieldMask, false, (FieldAccessMethod)&MaterialChunkBase::getSFBackMaterial),
+    new FieldDescription(SFColor4f::getClassType(), "backDiffuse", BackDiffuseFieldId,
+        BackDiffuseFieldMask, false, (FieldAccessMethod)&MaterialChunkBase::getSFBackDiffuse),
+    new FieldDescription(SFColor4f::getClassType(), "backAmbient", BackAmbientFieldId,
+        BackAmbientFieldMask, false, (FieldAccessMethod)&MaterialChunkBase::getSFBackAmbient),
+    new FieldDescription(SFColor4f::getClassType(), "backSpecular", BackSpecularFieldId,
+        BackSpecularFieldMask, false, (FieldAccessMethod)&MaterialChunkBase::getSFBackSpecular),
+    new FieldDescription(SFColor4f::getClassType(), "backEmission", BackEmissionFieldId,
+        BackEmissionFieldMask, false, (FieldAccessMethod)&MaterialChunkBase::getSFBackEmission),
+    new FieldDescription(SFReal32::getClassType(), "backShininess", BackShininessFieldId,
+        BackShininessFieldMask, false, (FieldAccessMethod)&MaterialChunkBase::getSFBackShininess),
+    new FieldDescription(SFGLenum::getClassType(), "backColorMaterial", BackColorMaterialFieldId,
+        BackColorMaterialFieldMask, false,
+        (FieldAccessMethod)&MaterialChunkBase::getSFBackColorMaterial)};
 
-
-FieldContainerType MaterialChunkBase::_type(
-    "MaterialChunk",
-    "StateChunk",
-    NULL,
-    (PrototypeCreateF) &MaterialChunkBase::createEmpty,
-    MaterialChunk::initMethod,
-    _desc,
+FieldContainerType MaterialChunkBase::_type("MaterialChunk", "StateChunk", NULL,
+    (PrototypeCreateF)&MaterialChunkBase::createEmpty, MaterialChunk::initMethod, _desc,
     sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(MaterialChunkBase, MaterialChunkPtr)
+// OSG_FIELD_CONTAINER_DEF(MaterialChunkBase, MaterialChunkPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &MaterialChunkBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &MaterialChunkBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr MaterialChunkBase::shallowCopy(void) const 
-{ 
-    MaterialChunkPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const MaterialChunk *>(this)); 
-
-    return returnValue; 
+FieldContainerType& MaterialChunkBase::getType(void) {
+  return _type;
 }
 
-UInt32 MaterialChunkBase::getContainerSize(void) const 
-{ 
-    return sizeof(MaterialChunk); 
+const FieldContainerType& MaterialChunkBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr MaterialChunkBase::shallowCopy(void) const {
+  MaterialChunkPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const MaterialChunk*>(this));
+
+  return returnValue;
+}
+
+UInt32 MaterialChunkBase::getContainerSize(void) const {
+  return sizeof(MaterialChunk);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void MaterialChunkBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((MaterialChunkBase *) &other, whichField);
+void MaterialChunkBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((MaterialChunkBase*)&other, whichField);
 }
 #else
-void MaterialChunkBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((MaterialChunkBase *) &other, whichField, sInfo);
+void MaterialChunkBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((MaterialChunkBase*)&other, whichField, sInfo);
 }
-void MaterialChunkBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void MaterialChunkBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void MaterialChunkBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void MaterialChunkBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-MaterialChunkBase::MaterialChunkBase(void) :
-    _sfDiffuse                (Color4f(1,1,1,1)), 
-    _sfAmbient                (Color4f(.2,.2,.2,1)), 
-    _sfSpecular               (Color4f(.5,.5,.5,1)), 
-    _sfEmission               (Color4f(0,0,0,1)), 
-    _sfShininess              (Real32(10)), 
-    _sfLit                    (bool(true)), 
-    _sfColorMaterial          (GLenum(GL_DIFFUSE)), 
-    _sfBackMaterial           (bool(false)), 
-    _sfBackDiffuse            (Color4f(1,1,1,0)), 
-    _sfBackAmbient            (Color4f(.2,.2,.2,0)), 
-    _sfBackSpecular           (Color4f(.5,.5,.5,0)), 
-    _sfBackEmission           (Color4f(0,0,0,0)), 
-    _sfBackShininess          (Real32(10)), 
-    _sfBackColorMaterial      (GLenum(GL_DIFFUSE)), 
-    Inherited() 
-{
+MaterialChunkBase::MaterialChunkBase(void)
+    : _sfDiffuse(Color4f(1, 1, 1, 1))
+    , _sfAmbient(Color4f(.2, .2, .2, 1))
+    , _sfSpecular(Color4f(.5, .5, .5, 1))
+    , _sfEmission(Color4f(0, 0, 0, 1))
+    , _sfShininess(Real32(10))
+    , _sfLit(bool(true))
+    , _sfColorMaterial(GLenum(GL_DIFFUSE))
+    , _sfBackMaterial(bool(false))
+    , _sfBackDiffuse(Color4f(1, 1, 1, 0))
+    , _sfBackAmbient(Color4f(.2, .2, .2, 0))
+    , _sfBackSpecular(Color4f(.5, .5, .5, 0))
+    , _sfBackEmission(Color4f(0, 0, 0, 0))
+    , _sfBackShininess(Real32(10))
+    , _sfBackColorMaterial(GLenum(GL_DIFFUSE))
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-MaterialChunkBase::MaterialChunkBase(const MaterialChunkBase &source) :
-    _sfDiffuse                (source._sfDiffuse                ), 
-    _sfAmbient                (source._sfAmbient                ), 
-    _sfSpecular               (source._sfSpecular               ), 
-    _sfEmission               (source._sfEmission               ), 
-    _sfShininess              (source._sfShininess              ), 
-    _sfLit                    (source._sfLit                    ), 
-    _sfColorMaterial          (source._sfColorMaterial          ), 
-    _sfBackMaterial           (source._sfBackMaterial           ), 
-    _sfBackDiffuse            (source._sfBackDiffuse            ), 
-    _sfBackAmbient            (source._sfBackAmbient            ), 
-    _sfBackSpecular           (source._sfBackSpecular           ), 
-    _sfBackEmission           (source._sfBackEmission           ), 
-    _sfBackShininess          (source._sfBackShininess          ), 
-    _sfBackColorMaterial      (source._sfBackColorMaterial      ), 
-    Inherited                 (source)
-{
+MaterialChunkBase::MaterialChunkBase(const MaterialChunkBase& source)
+    : _sfDiffuse(source._sfDiffuse)
+    , _sfAmbient(source._sfAmbient)
+    , _sfSpecular(source._sfSpecular)
+    , _sfEmission(source._sfEmission)
+    , _sfShininess(source._sfShininess)
+    , _sfLit(source._sfLit)
+    , _sfColorMaterial(source._sfColorMaterial)
+    , _sfBackMaterial(source._sfBackMaterial)
+    , _sfBackDiffuse(source._sfBackDiffuse)
+    , _sfBackAmbient(source._sfBackAmbient)
+    , _sfBackSpecular(source._sfBackSpecular)
+    , _sfBackEmission(source._sfBackEmission)
+    , _sfBackShininess(source._sfBackShininess)
+    , _sfBackColorMaterial(source._sfBackColorMaterial)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-MaterialChunkBase::~MaterialChunkBase(void)
-{
+MaterialChunkBase::~MaterialChunkBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 MaterialChunkBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 MaterialChunkBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (DiffuseFieldMask & whichField))
-    {
-        returnValue += _sfDiffuse.getBinSize();
-    }
+  if (FieldBits::NoField != (DiffuseFieldMask & whichField)) {
+    returnValue += _sfDiffuse.getBinSize();
+  }
 
-    if(FieldBits::NoField != (AmbientFieldMask & whichField))
-    {
-        returnValue += _sfAmbient.getBinSize();
-    }
+  if (FieldBits::NoField != (AmbientFieldMask & whichField)) {
+    returnValue += _sfAmbient.getBinSize();
+  }
 
-    if(FieldBits::NoField != (SpecularFieldMask & whichField))
-    {
-        returnValue += _sfSpecular.getBinSize();
-    }
+  if (FieldBits::NoField != (SpecularFieldMask & whichField)) {
+    returnValue += _sfSpecular.getBinSize();
+  }
 
-    if(FieldBits::NoField != (EmissionFieldMask & whichField))
-    {
-        returnValue += _sfEmission.getBinSize();
-    }
+  if (FieldBits::NoField != (EmissionFieldMask & whichField)) {
+    returnValue += _sfEmission.getBinSize();
+  }
 
-    if(FieldBits::NoField != (ShininessFieldMask & whichField))
-    {
-        returnValue += _sfShininess.getBinSize();
-    }
+  if (FieldBits::NoField != (ShininessFieldMask & whichField)) {
+    returnValue += _sfShininess.getBinSize();
+  }
 
-    if(FieldBits::NoField != (LitFieldMask & whichField))
-    {
-        returnValue += _sfLit.getBinSize();
-    }
+  if (FieldBits::NoField != (LitFieldMask & whichField)) {
+    returnValue += _sfLit.getBinSize();
+  }
 
-    if(FieldBits::NoField != (ColorMaterialFieldMask & whichField))
-    {
-        returnValue += _sfColorMaterial.getBinSize();
-    }
+  if (FieldBits::NoField != (ColorMaterialFieldMask & whichField)) {
+    returnValue += _sfColorMaterial.getBinSize();
+  }
 
-    if(FieldBits::NoField != (BackMaterialFieldMask & whichField))
-    {
-        returnValue += _sfBackMaterial.getBinSize();
-    }
+  if (FieldBits::NoField != (BackMaterialFieldMask & whichField)) {
+    returnValue += _sfBackMaterial.getBinSize();
+  }
 
-    if(FieldBits::NoField != (BackDiffuseFieldMask & whichField))
-    {
-        returnValue += _sfBackDiffuse.getBinSize();
-    }
+  if (FieldBits::NoField != (BackDiffuseFieldMask & whichField)) {
+    returnValue += _sfBackDiffuse.getBinSize();
+  }
 
-    if(FieldBits::NoField != (BackAmbientFieldMask & whichField))
-    {
-        returnValue += _sfBackAmbient.getBinSize();
-    }
+  if (FieldBits::NoField != (BackAmbientFieldMask & whichField)) {
+    returnValue += _sfBackAmbient.getBinSize();
+  }
 
-    if(FieldBits::NoField != (BackSpecularFieldMask & whichField))
-    {
-        returnValue += _sfBackSpecular.getBinSize();
-    }
+  if (FieldBits::NoField != (BackSpecularFieldMask & whichField)) {
+    returnValue += _sfBackSpecular.getBinSize();
+  }
 
-    if(FieldBits::NoField != (BackEmissionFieldMask & whichField))
-    {
-        returnValue += _sfBackEmission.getBinSize();
-    }
+  if (FieldBits::NoField != (BackEmissionFieldMask & whichField)) {
+    returnValue += _sfBackEmission.getBinSize();
+  }
 
-    if(FieldBits::NoField != (BackShininessFieldMask & whichField))
-    {
-        returnValue += _sfBackShininess.getBinSize();
-    }
+  if (FieldBits::NoField != (BackShininessFieldMask & whichField)) {
+    returnValue += _sfBackShininess.getBinSize();
+  }
 
-    if(FieldBits::NoField != (BackColorMaterialFieldMask & whichField))
-    {
-        returnValue += _sfBackColorMaterial.getBinSize();
-    }
+  if (FieldBits::NoField != (BackColorMaterialFieldMask & whichField)) {
+    returnValue += _sfBackColorMaterial.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void MaterialChunkBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void MaterialChunkBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (DiffuseFieldMask & whichField))
-    {
-        _sfDiffuse.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (DiffuseFieldMask & whichField)) {
+    _sfDiffuse.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (AmbientFieldMask & whichField))
-    {
-        _sfAmbient.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (AmbientFieldMask & whichField)) {
+    _sfAmbient.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (SpecularFieldMask & whichField))
-    {
-        _sfSpecular.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (SpecularFieldMask & whichField)) {
+    _sfSpecular.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (EmissionFieldMask & whichField))
-    {
-        _sfEmission.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (EmissionFieldMask & whichField)) {
+    _sfEmission.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ShininessFieldMask & whichField))
-    {
-        _sfShininess.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (ShininessFieldMask & whichField)) {
+    _sfShininess.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (LitFieldMask & whichField))
-    {
-        _sfLit.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (LitFieldMask & whichField)) {
+    _sfLit.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ColorMaterialFieldMask & whichField))
-    {
-        _sfColorMaterial.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (ColorMaterialFieldMask & whichField)) {
+    _sfColorMaterial.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BackMaterialFieldMask & whichField))
-    {
-        _sfBackMaterial.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (BackMaterialFieldMask & whichField)) {
+    _sfBackMaterial.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BackDiffuseFieldMask & whichField))
-    {
-        _sfBackDiffuse.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (BackDiffuseFieldMask & whichField)) {
+    _sfBackDiffuse.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BackAmbientFieldMask & whichField))
-    {
-        _sfBackAmbient.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (BackAmbientFieldMask & whichField)) {
+    _sfBackAmbient.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BackSpecularFieldMask & whichField))
-    {
-        _sfBackSpecular.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (BackSpecularFieldMask & whichField)) {
+    _sfBackSpecular.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BackEmissionFieldMask & whichField))
-    {
-        _sfBackEmission.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (BackEmissionFieldMask & whichField)) {
+    _sfBackEmission.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BackShininessFieldMask & whichField))
-    {
-        _sfBackShininess.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (BackShininessFieldMask & whichField)) {
+    _sfBackShininess.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BackColorMaterialFieldMask & whichField))
-    {
-        _sfBackColorMaterial.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (BackColorMaterialFieldMask & whichField)) {
+    _sfBackColorMaterial.copyToBin(pMem);
+  }
 }
 
-void MaterialChunkBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void MaterialChunkBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (DiffuseFieldMask & whichField))
-    {
-        _sfDiffuse.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (DiffuseFieldMask & whichField)) {
+    _sfDiffuse.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (AmbientFieldMask & whichField))
-    {
-        _sfAmbient.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (AmbientFieldMask & whichField)) {
+    _sfAmbient.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (SpecularFieldMask & whichField))
-    {
-        _sfSpecular.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (SpecularFieldMask & whichField)) {
+    _sfSpecular.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (EmissionFieldMask & whichField))
-    {
-        _sfEmission.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (EmissionFieldMask & whichField)) {
+    _sfEmission.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ShininessFieldMask & whichField))
-    {
-        _sfShininess.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (ShininessFieldMask & whichField)) {
+    _sfShininess.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (LitFieldMask & whichField))
-    {
-        _sfLit.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (LitFieldMask & whichField)) {
+    _sfLit.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ColorMaterialFieldMask & whichField))
-    {
-        _sfColorMaterial.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (ColorMaterialFieldMask & whichField)) {
+    _sfColorMaterial.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BackMaterialFieldMask & whichField))
-    {
-        _sfBackMaterial.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (BackMaterialFieldMask & whichField)) {
+    _sfBackMaterial.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BackDiffuseFieldMask & whichField))
-    {
-        _sfBackDiffuse.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (BackDiffuseFieldMask & whichField)) {
+    _sfBackDiffuse.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BackAmbientFieldMask & whichField))
-    {
-        _sfBackAmbient.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (BackAmbientFieldMask & whichField)) {
+    _sfBackAmbient.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BackSpecularFieldMask & whichField))
-    {
-        _sfBackSpecular.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (BackSpecularFieldMask & whichField)) {
+    _sfBackSpecular.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BackEmissionFieldMask & whichField))
-    {
-        _sfBackEmission.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (BackEmissionFieldMask & whichField)) {
+    _sfBackEmission.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BackShininessFieldMask & whichField))
-    {
-        _sfBackShininess.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (BackShininessFieldMask & whichField)) {
+    _sfBackShininess.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (BackColorMaterialFieldMask & whichField))
-    {
-        _sfBackColorMaterial.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (BackColorMaterialFieldMask & whichField)) {
+    _sfBackColorMaterial.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void MaterialChunkBase::executeSyncImpl(      MaterialChunkBase *pOther,
-                                        const BitVector         &whichField)
-{
+void MaterialChunkBase::executeSyncImpl(MaterialChunkBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (DiffuseFieldMask & whichField))
-        _sfDiffuse.syncWith(pOther->_sfDiffuse);
+  if (FieldBits::NoField != (DiffuseFieldMask & whichField))
+    _sfDiffuse.syncWith(pOther->_sfDiffuse);
 
-    if(FieldBits::NoField != (AmbientFieldMask & whichField))
-        _sfAmbient.syncWith(pOther->_sfAmbient);
+  if (FieldBits::NoField != (AmbientFieldMask & whichField))
+    _sfAmbient.syncWith(pOther->_sfAmbient);
 
-    if(FieldBits::NoField != (SpecularFieldMask & whichField))
-        _sfSpecular.syncWith(pOther->_sfSpecular);
+  if (FieldBits::NoField != (SpecularFieldMask & whichField))
+    _sfSpecular.syncWith(pOther->_sfSpecular);
 
-    if(FieldBits::NoField != (EmissionFieldMask & whichField))
-        _sfEmission.syncWith(pOther->_sfEmission);
+  if (FieldBits::NoField != (EmissionFieldMask & whichField))
+    _sfEmission.syncWith(pOther->_sfEmission);
 
-    if(FieldBits::NoField != (ShininessFieldMask & whichField))
-        _sfShininess.syncWith(pOther->_sfShininess);
+  if (FieldBits::NoField != (ShininessFieldMask & whichField))
+    _sfShininess.syncWith(pOther->_sfShininess);
 
-    if(FieldBits::NoField != (LitFieldMask & whichField))
-        _sfLit.syncWith(pOther->_sfLit);
+  if (FieldBits::NoField != (LitFieldMask & whichField))
+    _sfLit.syncWith(pOther->_sfLit);
 
-    if(FieldBits::NoField != (ColorMaterialFieldMask & whichField))
-        _sfColorMaterial.syncWith(pOther->_sfColorMaterial);
+  if (FieldBits::NoField != (ColorMaterialFieldMask & whichField))
+    _sfColorMaterial.syncWith(pOther->_sfColorMaterial);
 
-    if(FieldBits::NoField != (BackMaterialFieldMask & whichField))
-        _sfBackMaterial.syncWith(pOther->_sfBackMaterial);
+  if (FieldBits::NoField != (BackMaterialFieldMask & whichField))
+    _sfBackMaterial.syncWith(pOther->_sfBackMaterial);
 
-    if(FieldBits::NoField != (BackDiffuseFieldMask & whichField))
-        _sfBackDiffuse.syncWith(pOther->_sfBackDiffuse);
+  if (FieldBits::NoField != (BackDiffuseFieldMask & whichField))
+    _sfBackDiffuse.syncWith(pOther->_sfBackDiffuse);
 
-    if(FieldBits::NoField != (BackAmbientFieldMask & whichField))
-        _sfBackAmbient.syncWith(pOther->_sfBackAmbient);
+  if (FieldBits::NoField != (BackAmbientFieldMask & whichField))
+    _sfBackAmbient.syncWith(pOther->_sfBackAmbient);
 
-    if(FieldBits::NoField != (BackSpecularFieldMask & whichField))
-        _sfBackSpecular.syncWith(pOther->_sfBackSpecular);
+  if (FieldBits::NoField != (BackSpecularFieldMask & whichField))
+    _sfBackSpecular.syncWith(pOther->_sfBackSpecular);
 
-    if(FieldBits::NoField != (BackEmissionFieldMask & whichField))
-        _sfBackEmission.syncWith(pOther->_sfBackEmission);
+  if (FieldBits::NoField != (BackEmissionFieldMask & whichField))
+    _sfBackEmission.syncWith(pOther->_sfBackEmission);
 
-    if(FieldBits::NoField != (BackShininessFieldMask & whichField))
-        _sfBackShininess.syncWith(pOther->_sfBackShininess);
+  if (FieldBits::NoField != (BackShininessFieldMask & whichField))
+    _sfBackShininess.syncWith(pOther->_sfBackShininess);
 
-    if(FieldBits::NoField != (BackColorMaterialFieldMask & whichField))
-        _sfBackColorMaterial.syncWith(pOther->_sfBackColorMaterial);
-
-
+  if (FieldBits::NoField != (BackColorMaterialFieldMask & whichField))
+    _sfBackColorMaterial.syncWith(pOther->_sfBackColorMaterial);
 }
 #else
-void MaterialChunkBase::executeSyncImpl(      MaterialChunkBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void MaterialChunkBase::executeSyncImpl(
+    MaterialChunkBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (DiffuseFieldMask & whichField))
-        _sfDiffuse.syncWith(pOther->_sfDiffuse);
+  if (FieldBits::NoField != (DiffuseFieldMask & whichField))
+    _sfDiffuse.syncWith(pOther->_sfDiffuse);
 
-    if(FieldBits::NoField != (AmbientFieldMask & whichField))
-        _sfAmbient.syncWith(pOther->_sfAmbient);
+  if (FieldBits::NoField != (AmbientFieldMask & whichField))
+    _sfAmbient.syncWith(pOther->_sfAmbient);
 
-    if(FieldBits::NoField != (SpecularFieldMask & whichField))
-        _sfSpecular.syncWith(pOther->_sfSpecular);
+  if (FieldBits::NoField != (SpecularFieldMask & whichField))
+    _sfSpecular.syncWith(pOther->_sfSpecular);
 
-    if(FieldBits::NoField != (EmissionFieldMask & whichField))
-        _sfEmission.syncWith(pOther->_sfEmission);
+  if (FieldBits::NoField != (EmissionFieldMask & whichField))
+    _sfEmission.syncWith(pOther->_sfEmission);
 
-    if(FieldBits::NoField != (ShininessFieldMask & whichField))
-        _sfShininess.syncWith(pOther->_sfShininess);
+  if (FieldBits::NoField != (ShininessFieldMask & whichField))
+    _sfShininess.syncWith(pOther->_sfShininess);
 
-    if(FieldBits::NoField != (LitFieldMask & whichField))
-        _sfLit.syncWith(pOther->_sfLit);
+  if (FieldBits::NoField != (LitFieldMask & whichField))
+    _sfLit.syncWith(pOther->_sfLit);
 
-    if(FieldBits::NoField != (ColorMaterialFieldMask & whichField))
-        _sfColorMaterial.syncWith(pOther->_sfColorMaterial);
+  if (FieldBits::NoField != (ColorMaterialFieldMask & whichField))
+    _sfColorMaterial.syncWith(pOther->_sfColorMaterial);
 
-    if(FieldBits::NoField != (BackMaterialFieldMask & whichField))
-        _sfBackMaterial.syncWith(pOther->_sfBackMaterial);
+  if (FieldBits::NoField != (BackMaterialFieldMask & whichField))
+    _sfBackMaterial.syncWith(pOther->_sfBackMaterial);
 
-    if(FieldBits::NoField != (BackDiffuseFieldMask & whichField))
-        _sfBackDiffuse.syncWith(pOther->_sfBackDiffuse);
+  if (FieldBits::NoField != (BackDiffuseFieldMask & whichField))
+    _sfBackDiffuse.syncWith(pOther->_sfBackDiffuse);
 
-    if(FieldBits::NoField != (BackAmbientFieldMask & whichField))
-        _sfBackAmbient.syncWith(pOther->_sfBackAmbient);
+  if (FieldBits::NoField != (BackAmbientFieldMask & whichField))
+    _sfBackAmbient.syncWith(pOther->_sfBackAmbient);
 
-    if(FieldBits::NoField != (BackSpecularFieldMask & whichField))
-        _sfBackSpecular.syncWith(pOther->_sfBackSpecular);
+  if (FieldBits::NoField != (BackSpecularFieldMask & whichField))
+    _sfBackSpecular.syncWith(pOther->_sfBackSpecular);
 
-    if(FieldBits::NoField != (BackEmissionFieldMask & whichField))
-        _sfBackEmission.syncWith(pOther->_sfBackEmission);
+  if (FieldBits::NoField != (BackEmissionFieldMask & whichField))
+    _sfBackEmission.syncWith(pOther->_sfBackEmission);
 
-    if(FieldBits::NoField != (BackShininessFieldMask & whichField))
-        _sfBackShininess.syncWith(pOther->_sfBackShininess);
+  if (FieldBits::NoField != (BackShininessFieldMask & whichField))
+    _sfBackShininess.syncWith(pOther->_sfBackShininess);
 
-    if(FieldBits::NoField != (BackColorMaterialFieldMask & whichField))
-        _sfBackColorMaterial.syncWith(pOther->_sfBackColorMaterial);
-
-
-
+  if (FieldBits::NoField != (BackColorMaterialFieldMask & whichField))
+    _sfBackColorMaterial.syncWith(pOther->_sfBackColorMaterial);
 }
 
-void MaterialChunkBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void MaterialChunkBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>

@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGCAMERADECORATORBASE_H_
 #define _OSGCAMERADECORATORBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -78,176 +76,154 @@ class BinaryDataHandler;
 
 //! \brief CameraDecorator Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING CameraDecoratorBase : public Camera
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING CameraDecoratorBase : public Camera {
+ private:
+  typedef Camera Inherited;
 
-    typedef Camera    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef CameraDecoratorPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum { DecorateeFieldId = Inherited::NextFieldId, NextFieldId = DecorateeFieldId + 1 };
 
-    typedef CameraDecoratorPtr  Ptr;
+  static const OSG::BitVector DecorateeFieldMask;
 
-    enum
-    {
-        DecorateeFieldId        = Inherited::NextFieldId,
-        NextFieldId             = DecorateeFieldId          + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector DecorateeFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
-    static const OSG::BitVector MTInfluenceMask;
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  virtual UInt32 getContainerSize(void) const;
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       UInt32              getContainerSize(void) const;
+  SFCameraPtr* getSFDecoratee(void);
+  SFNodePtr*   getSFBeacon(void);
+  SFReal32*    getSFNear(void);
+  SFReal32*    getSFFar(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  CameraPtr&       getDecoratee(void);
+  const CameraPtr& getDecoratee(void) const;
+  NodePtr&         getBeacon(void);
+  const NodePtr&   getBeacon(void) const;
+  Real32&          getNear(void);
+  const Real32&    getNear(void) const;
+  Real32&          getFar(void);
+  const Real32&    getFar(void) const;
 
-           SFCameraPtr *getSFDecoratee(void);
-           SFNodePtr           *getSFBeacon         (void);
-           SFReal32            *getSFNear           (void);
-           SFReal32            *getSFFar            (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           CameraPtr &getDecoratee(void);
-     const CameraPtr &getDecoratee(void) const;
-           NodePtr             &getBeacon         (void);
-     const NodePtr             &getBeacon         (void) const;
-           Real32              &getNear           (void);
-     const Real32              &getNear           (void) const;
-           Real32              &getFar            (void);
-     const Real32              &getFar            (void) const;
+  void setDecoratee(const CameraPtr& value);
+  void setBeacon(const NodePtr& value);
+  void setNear(const Real32& value);
+  void setFar(const Real32& value);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-     void setDecoratee      ( const CameraPtr &value );
-     void setBeacon         ( const NodePtr &value );
-     void setNear           ( const Real32 &value );
-     void setFar            ( const Real32 &value );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  SFCameraPtr _sfDecoratee;
 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  CameraDecoratorBase(void);
+  CameraDecoratorBase(const CameraDecoratorBase& source);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    SFCameraPtr   _sfDecoratee;
+  virtual ~CameraDecoratorBase(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    CameraDecoratorBase(void);
-    CameraDecoratorBase(const CameraDecoratorBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~CameraDecoratorBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      CameraDecoratorBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(CameraDecoratorBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      CameraDecoratorBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      CameraDecoratorBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const CameraDecoratorBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const CameraDecoratorBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef CameraDecoratorBase* CameraDecoratorBaseP;
 
-typedef CameraDecoratorBase *CameraDecoratorBaseP;
-
-typedef osgIF<CameraDecoratorBase::isNodeCore,
-              CoredNodePtr<CameraDecorator>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet CameraDecoratorNodePtr;
+typedef osgIF<CameraDecoratorBase::isNodeCore, CoredNodePtr<CameraDecorator>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet
+    CameraDecoratorNodePtr;
 
 typedef RefPtr<CameraDecoratorPtr> CameraDecoratorRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGCAMERADECORATORBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGCAMERADECORATORBASE_HEADER_CVSID                                                        \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGCAMERADECORATORBASE_H_ */

@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGLINECHUNKBASE_H_
 #define _OSGLINECHUNKBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -68,9 +66,9 @@
 #include <OSGStateChunk.h> // Parent
 
 #include <OSGReal32Fields.h> // Width type
-#include <OSGInt32Fields.h> // StippleRepeat type
+#include <OSGInt32Fields.h>  // StippleRepeat type
 #include <OSGUInt16Fields.h> // StipplePattern type
-#include <OSGBoolFields.h> // Smooth type
+#include <OSGBoolFields.h>   // Smooth type
 
 #include <OSGLineChunkFields.h>
 
@@ -81,202 +79,180 @@ class BinaryDataHandler;
 
 //! \brief LineChunk Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING LineChunkBase : public StateChunk
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING LineChunkBase : public StateChunk {
+ private:
+  typedef StateChunk Inherited;
 
-    typedef StateChunk    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef LineChunkPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    WidthFieldId          = Inherited::NextFieldId,
+    StippleRepeatFieldId  = WidthFieldId + 1,
+    StipplePatternFieldId = StippleRepeatFieldId + 1,
+    SmoothFieldId         = StipplePatternFieldId + 1,
+    NextFieldId           = SmoothFieldId + 1
+  };
 
-    typedef LineChunkPtr  Ptr;
+  static const OSG::BitVector WidthFieldMask;
+  static const OSG::BitVector StippleRepeatFieldMask;
+  static const OSG::BitVector StipplePatternFieldMask;
+  static const OSG::BitVector SmoothFieldMask;
 
-    enum
-    {
-        WidthFieldId          = Inherited::NextFieldId,
-        StippleRepeatFieldId  = WidthFieldId          + 1,
-        StipplePatternFieldId = StippleRepeatFieldId  + 1,
-        SmoothFieldId         = StipplePatternFieldId + 1,
-        NextFieldId           = SmoothFieldId         + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector WidthFieldMask;
-    static const OSG::BitVector StippleRepeatFieldMask;
-    static const OSG::BitVector StipplePatternFieldMask;
-    static const OSG::BitVector SmoothFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFReal32* getSFWidth(void);
+  SFInt32*  getSFStippleRepeat(void);
+  SFUInt16* getSFStipplePattern(void);
+  SFBool*   getSFSmooth(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  Real32&       getWidth(void);
+  const Real32& getWidth(void) const;
+  Int32&        getStippleRepeat(void);
+  const Int32&  getStippleRepeat(void) const;
+  UInt16&       getStipplePattern(void);
+  const UInt16& getStipplePattern(void) const;
+  bool&         getSmooth(void);
+  const bool&   getSmooth(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFReal32            *getSFWidth          (void);
-           SFInt32             *getSFStippleRepeat  (void);
-           SFUInt16            *getSFStipplePattern (void);
-           SFBool              *getSFSmooth         (void);
+  void setWidth(const Real32& value);
+  void setStippleRepeat(const Int32& value);
+  void setStipplePattern(const UInt16& value);
+  void setSmooth(const bool& value);
 
-           Real32              &getWidth          (void);
-     const Real32              &getWidth          (void) const;
-           Int32               &getStippleRepeat  (void);
-     const Int32               &getStippleRepeat  (void) const;
-           UInt16              &getStipplePattern (void);
-     const UInt16              &getStipplePattern (void) const;
-           bool                &getSmooth         (void);
-     const bool                &getSmooth         (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setWidth          ( const Real32 &value );
-     void setStippleRepeat  ( const Int32 &value );
-     void setStipplePattern ( const UInt16 &value );
-     void setSmooth         ( const bool &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static LineChunkPtr create(void);
+  static LineChunkPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  LineChunkPtr      create          (void); 
-    static  LineChunkPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFReal32 _sfWidth;
+  SFInt32  _sfStippleRepeat;
+  SFUInt16 _sfStipplePattern;
+  SFBool   _sfSmooth;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  LineChunkBase(void);
+  LineChunkBase(const LineChunkBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~LineChunkBase(void);
 
-    SFReal32            _sfWidth;
-    SFInt32             _sfStippleRepeat;
-    SFUInt16            _sfStipplePattern;
-    SFBool              _sfSmooth;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    LineChunkBase(void);
-    LineChunkBase(const LineChunkBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~LineChunkBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      LineChunkBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(LineChunkBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      LineChunkBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(LineChunkBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const LineChunkBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const LineChunkBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef LineChunkBase* LineChunkBaseP;
 
-typedef LineChunkBase *LineChunkBaseP;
-
-typedef osgIF<LineChunkBase::isNodeCore,
-              CoredNodePtr<LineChunk>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet LineChunkNodePtr;
+typedef osgIF<LineChunkBase::isNodeCore, CoredNodePtr<LineChunk>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet LineChunkNodePtr;
 
 typedef RefPtr<LineChunkPtr> LineChunkRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGLINECHUNKBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGLINECHUNKBASE_HEADER_CVSID                                                              \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGLINECHUNKBASE_H_ */

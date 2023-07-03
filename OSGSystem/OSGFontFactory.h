@@ -7,33 +7,30 @@
 
 #include <list>
 
-OSG_BEGIN_NAMESPACE 
+OSG_BEGIN_NAMESPACE
 
 class Font;
 
-class OSG_SYSTEMLIB_DLLMAPPING FontFactory
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING FontFactory {
+ private:
+  FontFactory(const FontFactory& obj);
+  void operator=(const FontFactory& obj);
 
-    FontFactory(const FontFactory &obj);
-    void operator =(const FontFactory &obj);
+ protected:
+  static FontFactory _the;
 
-  protected:
+  std::list<Font*> _knownFonts;
 
-    static FontFactory       _the;
+ public:
+  static FontFactory& the(void);
 
-           std::list<Font *> _knownFonts;
-  public:
-    
-    static FontFactory &the(void);
+  FontFactory(void);
 
-    FontFactory(void);
+  virtual ~FontFactory(void);
 
-    virtual ~FontFactory(void);
+  virtual Font* queryFont(PathHandler& paths, const Char8* fontName);
 
-    virtual Font *queryFont  (PathHandler &paths, const Char8 *fontName);
-
-            Int32 getNumFonts(void                                     );
+  Int32 getNumFonts(void);
 };
 
 OSG_END_NAMESPACE

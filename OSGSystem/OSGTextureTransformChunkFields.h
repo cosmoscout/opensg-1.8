@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGTEXTURETRANSFORMCHUNKFIELDS_H_
 #define _OSGTEXTURETRANSFORMCHUNKFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class TextureTransformChunk;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! TextureTransformChunkPtr
 
 typedef FCPtr<TransformChunkPtr, TextureTransformChunk> TextureTransformChunkPtr;
@@ -81,18 +80,23 @@ typedef FCPtr<TransformChunkPtr, TextureTransformChunk> TextureTransformChunkPtr
 #endif
 
 template <>
-struct FieldDataTraits<TextureTransformChunkPtr> : 
-    public FieldTraitsRecurseMapper<TextureTransformChunkPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<TextureTransformChunkPtr>
+    : public FieldTraitsRecurseMapper<TextureTransformChunkPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 
-    static DataType   &getType (void) { return _type;        }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static const char *getSName(void) { return "SFTextureTransformChunkPtr"; }
-    static const char *getMName(void) { return "MFTextureTransformChunkPtr"; }
+  static const char* getSName(void) {
+    return "SFTextureTransformChunkPtr";
+  }
+  static const char* getMName(void) {
+    return "MFTextureTransformChunkPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -102,7 +106,6 @@ struct FieldDataTraits<TextureTransformChunkPtr> :
 #endif
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
-
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_FIELD_TYPEDEFS)
 /*! \ingroup GrpSystemFieldSingle */
@@ -126,6 +129,7 @@ OSG_DLLEXPORT_DECL1(MField, TextureTransformChunkPtr, OSG_SYSTEMLIB_DLLTMPLMAPPI
 
 OSG_END_NAMESPACE
 
-#define OSGTEXTURETRANSFORMCHUNKFIELDS_HEADER_CVSID "@(#)$Id: FCFieldsTemplate_h.h,v 1.25 2005/04/04 14:51:48 dirk Exp $"
+#define OSGTEXTURETRANSFORMCHUNKFIELDS_HEADER_CVSID                                                \
+  "@(#)$Id: FCFieldsTemplate_h.h,v 1.25 2005/04/04 14:51:48 dirk Exp $"
 
 #endif /* _OSGTEXTURETRANSFORMCHUNKFIELDS_H_ */

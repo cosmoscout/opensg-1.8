@@ -9,125 +9,110 @@
 
 #include "OSGFontGlyph.h"
 
-enum VGlyphType
-{
-    VGLYPH_NONE     = 0x0000,
-    VGLYPH_FACE     = 0x0001,
-    VGLYPH_OUTLINE  = 0x0002
-};
+enum VGlyphType { VGLYPH_NONE = 0x0000, VGLYPH_FACE = 0x0001, VGLYPH_OUTLINE = 0x0002 };
 
-
-OSG_BEGIN_NAMESPACE 
+OSG_BEGIN_NAMESPACE
 
 class OSG_SYSTEMLIB_DLLMAPPING FontGlyphContour;
 
-class VectorFontGlyph : public virtual FontGlyph
-{
-    typedef FontGlyph Inherited;
+class VectorFontGlyph : public virtual FontGlyph {
+  typedef FontGlyph Inherited;
 
-  private:
+ private:
+  VectorFontGlyph(const VectorFontGlyph& obj);
+  void operator=(const VectorFontGlyph& obj);
 
-    VectorFontGlyph(const VectorFontGlyph &obj);
-    void operator =(const VectorFontGlyph &obj);
+ protected:
+  friend void OSG_APIENTRY tessVertex(void*);
 
-  protected:
+  class FloatBuffer {
+   protected:
+    Real32** _fBuffer;
+    Int32    _fBuffSize;
+    Int32    _fBuffNext;
+    Int32    _fWhichBuffer;
 
-    friend void OSG_APIENTRY tessVertex(void *);
+    void fBuffAlloc(Int32 size);
 
-    class FloatBuffer
-    {
-      protected:
+   public:
+    FloatBuffer(void);
+    ~FloatBuffer(void);
 
-        Real32  **_fBuffer;
-        Int32     _fBuffSize;
-        Int32     _fBuffNext;
-        Int32     _fWhichBuffer;
-        
-        void fBuffAlloc(Int32 size);
+    Real32* allocFloat(Int32 num);
+    Int32   getBufferForPointer(Real32* pointer);
+    Real32* getBuffer(Int32 which);
+  };
 
-      public:
+  VGlyphType _type;
+  Real32     _depth;
+  Real32     _precision;
 
-        FloatBuffer(void);
-        ~FloatBuffer(void);
+  std::vector<Real32*> _points;
+  std::vector<Real32*> _normals;
 
-        Real32 *allocFloat         (Int32   num    );
-        Int32   getBufferForPointer(Real32 *pointer);
-        Real32 *getBuffer          (Int32   which  );
-    };
+  Int32 _numPoints;
+  Int32 _numNormals;
+  Int32 _pointBufferSize;
 
+  std::vector<Int32> _indices;
+  std::vector<Int32> _normalIndices;
 
-    VGlyphType                      _type;
-    Real32                          _depth;
-    Real32                          _precision;
+  Int32 _numIndices;
+  Int32 _numBad;
+  bool  _bad;
+  Int32 _numFrontFaces;
+  Int32 _indexBufferSize;
+  Int32 _contourStart;
 
-    std::vector<Real32 *>           _points;
-    std::vector<Real32 *>           _normals;
+  std::vector<FontGlyphContour*> _contours;
 
-    Int32                           _numPoints;
-    Int32                           _numNormals;
-    Int32                           _pointBufferSize;
+  FloatBuffer _vertexBuffer;
+  FloatBuffer _normalBuffer;
 
-    std::vector<Int32>              _indices;
-    std::vector<Int32>              _normalIndices;
+  Real32 _boundingBox[6];
 
-    Int32                           _numIndices;
-    Int32                           _numBad;
-    bool                            _bad;
-    Int32                           _numFrontFaces;
-    Int32                           _indexBufferSize;
-    Int32                           _contourStart;
+  Real32 _advance;
 
-    std::vector<FontGlyphContour *> _contours;
+  void  addPoint(Real32* point, bool lower = false);
+  Int32 findPoint(Real32* point, Int32 lower, Int32 upper);
 
-    FloatBuffer                     _vertexBuffer;
-    FloatBuffer                     _normalBuffer;
+  void extrude(void);
+  bool createTriangles(void);
+  void pushIt(Real32**& stack, Int32& num, Real32*& elem);
+  void calcNormal(Real32**& stack, Int32 num, Real32* result);
+  bool checkAngle(Real32** joint);
 
-    Real32                          _boundingBox[6];
+ public:
+  VectorFontGlyph(void);
+  VectorFontGlyph(VGlyphType type);
 
-    Real32                          _advance;
+  virtual ~VectorFontGlyph(void);
 
+  virtual std::vector<Real32*>& getPoints(void);
+  virtual std::vector<Real32*>& getNormals(void);
+  virtual std::vector<Int32>&   getIndices(void);
+  virtual std::vector<Int32>&   getNormalIndices(void);
 
-    void  addPoint       (Real32 *  point, bool   lower = false         );
-    Int32 findPoint      (Real32 *  point, Int32  lower, Int32    upper );
+  virtual Int32 getNumPoints(void);
+  virtual Int32 getNumNormals(void);
+  virtual Int32 getNumIndices(void);
+  virtual Int32 getNumFrontFaces(void);
 
-    void  extrude        (void                                          );
-    bool  createTriangles(void                                          );
-    void  pushIt         (Real32 **&stack, Int32 &num,   Real32 *&elem  );
-    void  calcNormal     (Real32 **&stack, Int32  num,   Real32 * result);
-    bool  checkAngle     (Real32 ** joint                               );
+  virtual bool clear(void);
 
-  public:
+  const Real32* getBoundingBox(void);
 
-    VectorFontGlyph(void);
-    VectorFontGlyph(VGlyphType type);
+  Real32 getAdvance(void);
 
-    virtual ~VectorFontGlyph(void);
+  virtual void   setDepth(Real32 size);
+  virtual Real32 getDepth(void);
 
-    virtual std::vector<Real32 *> &getPoints       (void);
-    virtual std::vector<Real32 *> &getNormals      (void);
-    virtual std::vector<Int32   > &getIndices      (void);
-    virtual std::vector<Int32   > &getNormalIndices(void);
+  virtual void setPrecision(Real32 precision);
 
-    virtual Int32 getNumPoints    (void);
-    virtual Int32 getNumNormals   (void);
-    virtual Int32 getNumIndices   (void);
-    virtual Int32 getNumFrontFaces(void);
-
-    virtual bool        clear         (void                );
-
-    const   Real32     *getBoundingBox(void                );
-
-    Real32              getAdvance    (void                );
-
-    virtual void        setDepth      (Real32 size         );
-    virtual Real32      getDepth      (void                );
-
-    virtual void        setPrecision  (Real32     precision);
-
-    virtual VGlyphType  getType       (void                );
-    virtual void        setType       (VGlyphType type     );
+  virtual VGlyphType getType(void);
+  virtual void       setType(VGlyphType type);
 };
 
-OSG_END_NAMESPACE 
+OSG_END_NAMESPACE
 
 #endif // VECTORGLYPH_H_

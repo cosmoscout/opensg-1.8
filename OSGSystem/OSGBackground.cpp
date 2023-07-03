@@ -58,7 +58,6 @@
 
 OSG_USING_NAMESPACE
 
-
 /***************************************************************************\
  *                            Description                                  *
 \***************************************************************************/
@@ -71,7 +70,7 @@ PageSystemWindowBackground for a description.
 
 \ext
 
-To create a new Background the method that has be overridden is  
+To create a new Background the method that has be overridden is
 clear(DrawActionBase * action, Viewport * port);. It can directly call OpenGL
 commands, but should restore the state after it's done.
 
@@ -83,8 +82,7 @@ commands, but should restore the state after it's done.
  *                           Class methods                                 *
 \***************************************************************************/
 
-void Background::initMethod (void)
-{
+void Background::initMethod(void) {
 }
 
 /***************************************************************************\
@@ -93,33 +91,24 @@ void Background::initMethod (void)
 
 /*------------- constructors & destructors --------------------------------*/
 
-Background::Background(void) :
-    Inherited()
-{
+Background::Background(void)
+    : Inherited() {
 }
 
-Background::Background(const Background &source) :
-    Inherited(source)
-{
+Background::Background(const Background& source)
+    : Inherited(source) {
 }
 
-Background::~Background(void)
-{
+Background::~Background(void) {
 }
 
-void Background::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void Background::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
 /*------------------------------- dump ----------------------------------*/
 
-void Background::dump(      UInt32    OSG_CHECK_ARG(uiIndent), 
-                      const BitVector OSG_CHECK_ARG(bvFlags )) const
-{
-    SLOG << "Dump Background NI" << std::endl;
+void Background::dump(
+    UInt32 OSG_CHECK_ARG(uiIndent), const BitVector OSG_CHECK_ARG(bvFlags)) const {
+  SLOG << "Dump Background NI" << std::endl;
 }
-
-
-
-

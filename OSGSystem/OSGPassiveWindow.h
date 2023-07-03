@@ -48,83 +48,78 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief Passive Window class. See \ref 
+/*! \brief Passive Window class. See \ref
     PageSystemWindowWindowPassive for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING PassiveWindow : public PassiveWindowBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING PassiveWindow : public PassiveWindowBase {
+ private:
+  typedef PassiveWindowBase Inherited;
 
-    typedef PassiveWindowBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    virtual void changed(BitVector whichField, 
-                         UInt32    origin    );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Redefined                               */
-    /*! \{                                                                 */
-    
-    virtual void init( void );
-    
-    virtual void activate( void );
-    
-    virtual void deactivate ( void ) {}
-    
-    virtual void swap( void );    
-    
-    /*! \}                                                                 */    
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Redefined                               */
+  /*! \{                                                                 */
 
-    // Variables should all be in PassiveWindowBase.
+  virtual void init(void);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual void activate(void);
 
-    PassiveWindow(void);
-    PassiveWindow(const PassiveWindow &source);
+  virtual void deactivate(void) {
+  }
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  virtual void swap(void);
 
-    virtual ~PassiveWindow(void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in PassiveWindowBase.
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    friend class FieldContainer;
-    friend class PassiveWindowBase;
+  PassiveWindow(void);
+  PassiveWindow(const PassiveWindow& source);
 
-    static void initMethod(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    // prohibit default functions (move to 'public' if you need one)
+  virtual ~PassiveWindow(void);
 
-    void operator =(const PassiveWindow &source);
+  /*! \}                                                                 */
+
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class PassiveWindowBase;
+
+  static void initMethod(void);
+
+  // prohibit default functions (move to 'public' if you need one)
+
+  void operator=(const PassiveWindow& source);
 };
 
-typedef PassiveWindow *PassiveWindowP;
+typedef PassiveWindow* PassiveWindowP;
 
 typedef FCPtr<WindowPtr, PassiveWindow> PassiveWindowPtr;
 
@@ -133,6 +128,7 @@ OSG_END_NAMESPACE
 #include <OSGPassiveWindowBase.inl>
 #include <OSGPassiveWindow.inl>
 
-#define OSGPASSIVEWINDOW_HEADER_CVSID "@(#)$Id: FCTemplate_h.h,v 1.13 2001/10/30 22:26:17 dirk Exp $"
+#define OSGPASSIVEWINDOW_HEADER_CVSID                                                              \
+  "@(#)$Id: FCTemplate_h.h,v 1.13 2001/10/30 22:26:17 dirk Exp $"
 
 #endif /* _OSGPASSIVEWINDOW_H_ */

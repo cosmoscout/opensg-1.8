@@ -36,13 +36,11 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _STATINTONCEELEM_H_
 #define _STATINTONCEELEM_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include "OSGConfig.h"
 #include "OSGBaseTypes.h"
@@ -51,7 +49,6 @@
 #include "OSGStatElem.h"
 
 #include "OSGTime.h"
-
 
 #ifdef OSG_STL_HAS_HASH_MAP
 #ifdef OSG_HASH_MAP_AS_EXT
@@ -68,103 +65,100 @@ OSG_BEGIN_NAMESPACE
 class StatElemDescBase;
 
 /*! \brief Time Statistics element, see \ref PageSystemStatistics for details.
-*/
-class OSG_SYSTEMLIB_DLLMAPPING StatIntOnceElem : public StatElem 
-{
+ */
+class OSG_SYSTEMLIB_DLLMAPPING StatIntOnceElem : public StatElem {
 
-    /*==========================  PUBLIC  =================================*/
+  /*==========================  PUBLIC  =================================*/
  public:
-
 #ifdef OSG_STL_HAS_HASH_MAP
-    typedef OSG_STDEXTENSION_NAMESPACE::hash_set< UInt32 > IdHash;
+  typedef OSG_STDEXTENSION_NAMESPACE::hash_set<UInt32> IdHash;
 #else
-    typedef std::set< UInt32 > IdHash;
+  typedef std::set<UInt32> IdHash;
 #endif
-    
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
-    
-    static const char *getClassname(void) { return "StatIntOnceElem"; }
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    your_category                             */
-    /*! \{                                                                 */
- 
-    static StatElem *create ( StatElemDescBase *desc );
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    instance                                  */
-    /*! \{                                                                 */
+  static const char* getClassname(void) {
+    return "StatIntOnceElem";
+  }
 
-    virtual void        reset        (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    your_category                             */
+  /*! \{                                                                 */
 
-    inline  void        add          (UInt32 contributorId, Int32 v);
+  static StatElem* create(StatElemDescBase* desc);
 
-    inline  void        sub          (UInt32 contributorId, Int32 v);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    instance                                  */
+  /*! \{                                                                 */
 
-    inline  void        inc          (UInt32 contributorId);
+  virtual void reset(void);
 
-    inline  void        dec          (UInt32 contributorId);
+  inline void add(UInt32 contributorId, Int32 v);
 
-    inline  Int32       get          (void) const;
-        
-    virtual void        putToString  (std::string &str, 
-                                      const char *format = NULL) const;
- 
-    virtual bool        getFromString(const Char8 *&inVal);
+  inline void sub(UInt32 contributorId, Int32 v);
 
-    virtual Real64      getValue     (void) const;
+  inline void inc(UInt32 contributorId);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    comparison                                */
-    /*! \{                                                                 */
+  inline void dec(UInt32 contributorId);
 
-    bool operator < (const StatIntOnceElem &other) const;
+  inline Int32 get(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Creation                                   */
-    /*! \{                                                                 */
+  virtual void putToString(std::string& str, const char* format = NULL) const;
 
-    virtual StatElem *clone(void) const;
+  virtual bool getFromString(const Char8*& inVal);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Operators                                */
-    /*! \{                                                                 */
+  virtual Real64 getValue(void) const;
 
-    virtual StatElem &operator += (const StatElem &other);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    comparison                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  bool operator<(const StatIntOnceElem& other) const;
 
-    /*=========================  PROTECTED  ===============================*/
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Creation                                   */
+  /*! \{                                                                 */
+
+  virtual StatElem* clone(void) const;
+
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Operators                                */
+  /*! \{                                                                 */
+
+  virtual StatElem& operator+=(const StatElem& other);
+
+  /*! \}                                                                 */
+
+  /*=========================  PROTECTED  ===============================*/
  protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-  
-    StatIntOnceElem(StatElemDescBase *desc);
+  StatIntOnceElem(StatElemDescBase* desc);
 
-    virtual ~StatIntOnceElem(void); 
+  virtual ~StatIntOnceElem(void);
 
-    /*! \}                                                                 */
-    /*=========================  PRIVATE    ===============================*/
+  /*! \}                                                                 */
+  /*=========================  PRIVATE    ===============================*/
  private:
+  typedef StatElem Inherited;
 
-    typedef StatElem Inherited;
+  Int32 _value;
 
-    Int32   _value;
-    
-    IdHash  _ids;
+  IdHash _ids;
 
-    StatIntOnceElem            (const StatIntOnceElem &source);
-  
-    StatIntOnceElem& operator =(const StatIntOnceElem &source);
+  StatIntOnceElem(const StatIntOnceElem& source);
+
+  StatIntOnceElem& operator=(const StatIntOnceElem& source);
 };
 
 //---------------------------------------------------------------------------
@@ -173,12 +167,13 @@ class OSG_SYSTEMLIB_DLLMAPPING StatIntOnceElem : public StatElem
 
 // class pointer
 
-typedef StatIntOnceElem *StatIntOnceElemP;
+typedef StatIntOnceElem* StatIntOnceElemP;
 
 OSG_END_NAMESPACE
 
 #include "OSGStatIntOnceElem.inl"
 
-#define OSGSTATINTONCEELEM_HEADER_CVSID "@(#)$Id: OSGStatIntOnceElem.h,v 1.3 2006/11/14 13:45:57 pdaehne Exp $"
+#define OSGSTATINTONCEELEM_HEADER_CVSID                                                            \
+  "@(#)$Id: OSGStatIntOnceElem.h,v 1.3 2006/11/14 13:45:57 pdaehne Exp $"
 
 #endif /* _STATINTONCEELEM_H_ */

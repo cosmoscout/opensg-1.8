@@ -63,7 +63,7 @@ class BinaryDataHandler;
 class NodeCore;
 
 // created as a dummy class, remove to prevent doubles
-#if !defined(OSG_DO_DOC)   
+#if !defined(OSG_DO_DOC)
 typedef FCPtr<AttachmentContainerPtr, NodeCore> NodeCorePtr;
 #endif
 
@@ -72,188 +72,170 @@ typedef RefPtr<NodeCorePtr> NodeCoreRefPtr;
 /*! \ingroup GrpSystemFieldContainer
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING NodeCore : public AttachmentContainer
-{
-    /*=========================  PROTECTED  ===============================*/
+class OSG_SYSTEMLIB_DLLMAPPING NodeCore : public AttachmentContainer {
+  /*=========================  PROTECTED  ===============================*/
 
-  protected:
+ protected:
+  typedef AttachmentContainer Inherited;
 
-    typedef AttachmentContainer  Inherited;
+ public:
+  typedef MFNodePtr           ParentField;
+  typedef MFNodePtr*          ParentFieldPtr;
+  typedef MFNodePtr::iterator ParentFieldIt;
 
-  public:
+  /*==========================  PUBLIC  =================================*/
 
-    typedef MFNodePtr            ParentField;
-    typedef MFNodePtr           *ParentFieldPtr;
-    typedef MFNodePtr::iterator  ParentFieldIt;
+ public:
+  enum { ParentsFieldId = Inherited::NextFieldId, NextFieldId = ParentsFieldId + 1 };
 
-    /*==========================  PUBLIC  =================================*/
+  static const BitVector ParentsFieldMask;
 
-  public:
+  /*---------------------------------------------------------------------*/
+  /*! \name        General Fieldcontainer Declaration                    */
+  /*! \{                                                                 */
 
-    enum 
-    { 
-        ParentsFieldId     = Inherited::NextFieldId, 
-        NextFieldId        = ParentsFieldId + 1
-    };
+  OSG_ABSTR_FIELD_CONTAINER_DECL(NodeCorePtr)
 
-    static const BitVector ParentsFieldMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Parents                                  */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name        General Fieldcontainer Declaration                    */
-    /*! \{                                                                 */
+  MFNodePtr&       getParents(void);
+  const MFNodePtr& getParents(void) const;
 
-    OSG_ABSTR_FIELD_CONTAINER_DECL(NodeCorePtr)
+  MFNodePtr* getMFParents(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Parents                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-          MFNodePtr &getParents  (void);
-    const MFNodePtr &getParents  (void) const;
- 
-          MFNodePtr *getMFParents(void);
+  virtual UInt32 getBinSize(const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  virtual void copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    virtual UInt32  getBinSize (const BitVector         &whichField);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                        Dump                                  */
+  /*! \{                                                                 */
 
-    virtual void    copyToBin  (      BinaryDataHandler &pMem, 
-                                const BitVector         &whichField);
-    virtual void    copyFromBin(      BinaryDataHandler &pMem, 
-                                const BitVector         &whichField);
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                        Dump                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Volume                                 */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32    uiIndent = 0, 
-                      const BitVector bvFlags  = 0) const;
+  virtual void invalidateVolume(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Volume                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                CoredNodePtr helper                           */
+  /*! \{                                                                 */
 
-    virtual void invalidateVolume(void);
+  static const bool isNodeCore = true;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                CoredNodePtr helper                           */
-    /*! \{                                                                 */
-    
-    static const bool isNodeCore = true;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    /*! \}                                                                 */    
-    /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Type information                            */
+  /*! \{                                                                 */
 
-  protected:
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Type information                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
+  MFNodePtr _parents;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    MFNodePtr _parents;
+  NodeCore(void);
+  NodeCore(const NodeCore& obj);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    NodeCore(void);
-    NodeCore(const NodeCore &obj);
+  virtual ~NodeCore(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                MT Destruction                                */
+  /*! \{                                                                 */
 
-    virtual ~NodeCore(void);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                MT Destruction                                */
-    /*! \{                                                                 */
-
-    virtual void onDestroy(void);
+  virtual void onDestroy(void);
 
 #if defined(OSG_FIXED_MFIELDSYNC)
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                Set / Get Parents                             */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                Set / Get Parents                             */
+  /*! \{                                                                 */
 
-    void addParent(const NodePtr &parent);
-    void subParent(const NodePtr &parent);
+  void addParent(const NodePtr& parent);
+  void subParent(const NodePtr& parent);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Pointer                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Pointer                                  */
+  /*! \{                                                                 */
 
-    NodeCorePtr getPtr(void) const;
+  NodeCorePtr getPtr(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Sync                                     */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Sync                                     */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    virtual void executeSync    (      FieldContainer &other,
-                                 const BitVector      &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 
-            void executeSyncImpl(      NodeCore  *pOther,
-                                 const BitVector &whichField);
+  void executeSyncImpl(NodeCore* pOther, const BitVector& whichField);
 #else
-    virtual void executeSync    (      FieldContainer &other,
-                                 const BitVector      &whichField,
-                                 const SyncInfo       &sInfo     );
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-            void executeSyncImpl(      NodeCore  *pOther,
-                                 const BitVector &whichField,
-                                 const SyncInfo  &sInfo     );
+  void executeSyncImpl(NodeCore* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 #endif
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Transformation                             */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Transformation                             */
+  /*! \{                                                                 */
 
-    virtual void accumulateMatrix(Matrix &result);
- 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Volume                                  */
-    /*! \{                                                                 */
+  virtual void accumulateMatrix(Matrix& result);
 
-    virtual void adjustVolume    (Volume &volume);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Volume                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
+  virtual void adjustVolume(Volume& volume);
 
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-    friend class Node;
-    friend class Attachment;
-    friend class FieldContainer;
+ private:
+  friend class Node;
+  friend class Attachment;
+  friend class FieldContainer;
 
-    /* prohibit default function (move to 'public' if needed) */
-    void operator =(const NodeCore &source);
+  /* prohibit default function (move to 'public' if needed) */
+  void operator=(const NodeCore& source);
 };
 
 OSG_END_NAMESPACE

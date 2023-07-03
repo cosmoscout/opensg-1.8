@@ -62,80 +62,75 @@ class FieldType;
 /*! \ingroup GrpBaseField
  */
 
-class OSG_BASE_DLLMAPPING FieldFactory 
-{
-    /*==========================  PUBLIC  =================================*/
+class OSG_BASE_DLLMAPPING FieldFactory {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  virtual ~FieldFactory(void);
 
-    virtual ~FieldFactory (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Create                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Create                                   */
-    /*! \{                                                                 */
+  Field* createField(UInt32 typeId);
+  Field* createField(const Char8* szName);
 
-    Field *createField(      UInt32  typeId);
-    Field *createField(const Char8  *szName);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Get                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Get                                     */
-    /*! \{                                                                 */
+  static UInt32 getNFieldTypes(void);
 
-    static UInt32     getNFieldTypes  (void                );
-    
-    static FieldType *getFieldType    (      UInt32  typeId);
-    static FieldType *getFieldType    (const Char8  *szName);
+  static FieldType* getFieldType(UInt32 typeId);
+  static FieldType* getFieldType(const Char8* szName);
 
-    const  Char8     *getFieldTypeName(UInt32 typeId       );
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      The                                     */
-    /*! \{                                                                 */
+  const Char8* getFieldTypeName(UInt32 typeId);
 
-    static FieldFactory &the(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      The                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  static FieldFactory& the(void);
 
-  protected:
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    FieldFactory (void);
+  FieldFactory(void);
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-  private:
+ private:
+  friend class FieldType;
+  friend class Field;
 
-    friend class FieldType;
-    friend class Field;
+  /*---------------------------------------------------------------------*/
+  /*                             Member                                  */
 
-    /*---------------------------------------------------------------------*/
-    /*                             Member                                  */
+  static FieldFactory _the;
 
-    static      FieldFactory              _the;
-    
-    static std::map<UInt32, FieldType *> *_fieldTypeM;
+  static std::map<UInt32, FieldType*>* _fieldTypeM;
 
+  static void addType(FieldType* pType);
 
-    static void addType(FieldType *pType);
+  /*---------------------------------------------------------------------*/
 
-    /*---------------------------------------------------------------------*/
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    FieldFactory(const FieldFactory &source);
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const FieldFactory &source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  FieldFactory(const FieldFactory& source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const FieldFactory& source);
 };
 
 OSG_END_NAMESPACE
@@ -143,5 +138,3 @@ OSG_END_NAMESPACE
 #define OSGFIELDFACTORY_HEADER_CVSID "@(#)$Id: $"
 
 #endif /* _OSGFIELDFACTORY_H_ */
-
-

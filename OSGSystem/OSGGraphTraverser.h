@@ -52,43 +52,51 @@
 
 OSG_BEGIN_NAMESPACE
 
-  static const int ERR_NO_TRIMMING = -1;
-  static const int ERR_GETNEXTEDGE = -2;
-  static const int ERR_ZERO_SIZE = -3;
-  static const int ERR_ALL_ZERO = -4;
-  static const int ERR_TRIANGULATE = -5;
+static const int ERR_NO_TRIMMING = -1;
+static const int ERR_GETNEXTEDGE = -2;
+static const int ERR_ZERO_SIZE   = -3;
+static const int ERR_ALL_ZERO    = -4;
+static const int ERR_TRIANGULATE = -5;
 
 class OSG_SYSTEMLIB_DLLMAPPING GraphTraverserError {
-public:
+ public:
   int errtype;
-  
-  GraphTraverserError() {}
-  ~GraphTraverserError() {}
-  GraphTraverserError(int t ) { errtype = t; }
+
+  GraphTraverserError() {
+  }
+  ~GraphTraverserError() {
+  }
+  GraphTraverserError(int t) {
+    errtype = t;
+  }
 };
 
 class OSG_SYSTEMLIB_DLLMAPPING GraphTraverser {
-        DirectedGraph< Vec2d, unsigned char >* g;
-        simplepolygonvector polys;
-        DCTPVec2dvector globalverts;
-        bool usedelaunay;
-         
-public:
-        GraphTraverser() {}
-        ~GraphTraverser() {}
-        void Initialize( DirectedGraph<Vec2d, unsigned char >& gg, bool
-        usedelaunaytri );
-        int getNextEdge( const int nodeid, const int previd /*const double& in_angle*/  );
-        int Traverse( void );
-        int triangulatePolygon( DCTPivector& nodes, bool bConvex );
-        int getADirectedEdge( void );
-        void handleEdge( int eid, int to_nid, int &from_nid /* double& ang*/ );
-        int getOtherEnd( int eid, int nid );
-        int getOutGoingEdge( int nid );
+  DirectedGraph<Vec2d, unsigned char>* g;
+  simplepolygonvector                  polys;
+  DCTPVec2dvector                      globalverts;
+  bool                                 usedelaunay;
 
+ public:
+  GraphTraverser() {
+  }
+  ~GraphTraverser() {
+  }
+  void Initialize(DirectedGraph<Vec2d, unsigned char>& gg, bool usedelaunaytri);
+  int  getNextEdge(const int nodeid, const int previd /*const double& in_angle*/);
+  int  Traverse(void);
+  int  triangulatePolygon(DCTPivector& nodes, bool bConvex);
+  int  getADirectedEdge(void);
+  void handleEdge(int eid, int to_nid, int& from_nid /* double& ang*/);
+  int  getOtherEnd(int eid, int nid);
+  int  getOutGoingEdge(int nid);
 
-        simplepolygonvector* getPolys() { return &polys; }
-        DCTPVec2dvector* getVertices() { return &globalverts; }
+  simplepolygonvector* getPolys() {
+    return &polys;
+  }
+  DCTPVec2dvector* getVertices() {
+    return &globalverts;
+  }
 };
 
 OSG_END_NAMESPACE

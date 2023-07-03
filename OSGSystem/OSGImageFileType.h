@@ -54,169 +54,151 @@ all concrete ImageFileTypes. See \ref PageSystemImage for detailed description.
 
 class OSG_SYSTEMLIB_DLLMAPPING ImageFileType {
 
-
   /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Flags                                    */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Flags                                    */
-    /*! \{                                                                 */
-  
-    enum
-    {
-        OSG_READ_SUPPORTED = 1,
-        OSG_WRITE_SUPPORTED = 2
-    };
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  enum { OSG_READ_SUPPORTED = 1, OSG_WRITE_SUPPORTED = 2 };
 
-    virtual ~ImageFileType (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Set                                        */
-    /*! \{                                                                 */
-    
-    void setOptions(const Char8 *options);
+  virtual ~ImageFileType(void);
 
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Get  Methods                              */
-    /*! \{                                                                 */
-    
-    const Char8  *getMimeType (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Set                                        */
+  /*! \{                                                                 */
 
-    const std::list<IDString> &getSuffixList(void) const;
-    
-    virtual UInt32 getFlags(void) const;
+  void setOptions(const Char8* options);
 
-    const Char8         *getOptions         (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Get  Methods                              */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Read/Write                                 */
-    /*! \{                                                                 */
+  const Char8* getMimeType(void) const;
 
-    virtual bool read  (ImagePtr &image, const Char8 *fileName );
+  const std::list<IDString>& getSuffixList(void) const;
 
-    virtual bool write (const ImagePtr &image, const Char8 *fileName );
+  virtual UInt32 getFlags(void) const;
 
-    virtual bool validateHeader( const Char8 *fileName, bool &implemented );
+  const Char8* getOptions(void);
 
-    virtual bool read  (ImagePtr &image, std::istream &is, const std::string &mimetype);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Read/Write                                 */
+  /*! \{                                                                 */
 
-    virtual bool write (const ImagePtr &image, std::ostream &os, const std::string &mimetype);
+  virtual bool read(ImagePtr& image, const Char8* fileName);
 
-    virtual std::string determineMimetypeFromStream(std::istream &is);
+  virtual bool write(const ImagePtr& image, const Char8* fileName);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                 Safe Store/Restore                           */
-    /*! \{                                                                 */
+  virtual bool validateHeader(const Char8* fileName, bool& implemented);
 
-    static  UInt64 restore       ( ImagePtr &image, const UChar8 *buffer,
-                                   Int32 memSize = -1 );
+  virtual bool read(ImagePtr& image, std::istream& is, const std::string& mimetype);
 
-    static  UInt64 store         ( const ImagePtr &image,
-                                   const char *mimeType,
-                                   UChar8 *buffer, Int32 memSize = -1 );
+  virtual bool write(const ImagePtr& image, std::ostream& os, const std::string& mimetype);
 
-    UInt64 store                 ( const ImagePtr &image, UChar8 *buffer,
-                                   Int32 memSize = -1 );
-    
-    virtual UInt64 maxBufferSize ( const ImagePtr &image );
+  virtual std::string determineMimetypeFromStream(std::istream& is);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                Raw Store/Restore                             */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                 Safe Store/Restore                           */
+  /*! \{                                                                 */
 
-    virtual UInt64 restoreData ( ImagePtr &image, const UChar8 *buffer,
-                                 Int32 memSize = -1 );
+  static UInt64 restore(ImagePtr& image, const UChar8* buffer, Int32 memSize = -1);
 
-    virtual UInt64 storeData   ( const ImagePtr &image, UChar8 *buffer,
-                                 Int32 memSize = -1 );
+  static UInt64 store(
+      const ImagePtr& image, const char* mimeType, UChar8* buffer, Int32 memSize = -1);
 
+  UInt64 store(const ImagePtr& image, UChar8* buffer, Int32 memSize = -1);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       dump                                   */
-    /*! \{                                                                 */
+  virtual UInt64 maxBufferSize(const ImagePtr& image);
 
-    void dump(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                Raw Store/Restore                             */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  virtual UInt64 restoreData(ImagePtr& image, const UChar8* buffer, Int32 memSize = -1);
 
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  virtual UInt64 storeData(const ImagePtr& image, UChar8* buffer, Int32 memSize = -1);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   MTD Header                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       dump                                   */
+  /*! \{                                                                 */
 
-    struct Head {
-      Char8          suffix[8];
-      unsigned short pixelFormat;
-      unsigned short width;
-      unsigned short height;
-      unsigned short depth;
-      unsigned short mipmapCount;
-      unsigned short frameCount;
-      unsigned short frameDelay;
-      unsigned short sideCount;
-      unsigned short dataType;
-      unsigned short _reserved3;
-      unsigned short _reserved4;
-      unsigned short attachmentSize;
+  void dump(void);
 
-      bool netToHost (void);
-      bool hostToNet (void);
+  /*! \}                                                                 */
 
-    };
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   MTD Header                                 */
+  /*! \{                                                                 */
 
-    std::string         _options;
+  struct Head {
+    Char8          suffix[8];
+    unsigned short pixelFormat;
+    unsigned short width;
+    unsigned short height;
+    unsigned short depth;
+    unsigned short mipmapCount;
+    unsigned short frameCount;
+    unsigned short frameDelay;
+    unsigned short sideCount;
+    unsigned short dataType;
+    unsigned short _reserved3;
+    unsigned short _reserved4;
+    unsigned short attachmentSize;
 
-    /*! \}                                                                 */
+    bool netToHost(void);
+    bool hostToNet(void);
+  };
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                Default Constructor                           */
-    /*! \{                                                                 */
+  std::string _options;
 
-    ImageFileType ( const Char8  *mimeType,
-                    const Char8  *suffixArray[], 
-                          UInt16  suffixByteCount,
-                          UInt32  flags = OSG_READ_SUPPORTED );
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                Default Constructor                           */
+  /*! \{                                                                 */
 
-    /*==========================  PRIVATE  ================================*/
-  private:
+  ImageFileType(const Char8* mimeType, const Char8* suffixArray[], UInt16 suffixByteCount,
+      UInt32 flags = OSG_READ_SUPPORTED);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                Copy Constructor                              */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    ImageFileType (const ImageFileType &obj);
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /*---------------------------------------------------------------------*/
+  /*! \name                Copy Constructor                              */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                Copy Operator                                 */
-    /*! \{                                                                 */
+  ImageFileType(const ImageFileType& obj);
 
-    const ImageFileType & operator= (const ImageFileType &obj);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                Copy Operator                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  const ImageFileType& operator=(const ImageFileType& obj);
 
-    std::list<IDString> _suffixList;
+  /*! \}                                                                 */
 
-    IDString _mimeType;
+  std::list<IDString> _suffixList;
 
-    UInt32              _flags;
+  IDString _mimeType;
+
+  UInt32 _flags;
 };
 
 typedef ImageFileType* ImageFileTypeP;

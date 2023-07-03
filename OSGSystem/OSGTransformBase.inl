@@ -52,81 +52,59 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &TransformBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& TransformBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 TransformBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 TransformBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-TransformPtr TransformBase::create(void) 
-{
-    TransformPtr fc; 
+inline TransformPtr TransformBase::create(void) {
+  TransformPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = TransformPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = TransformPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-TransformPtr TransformBase::createEmpty(void) 
-{ 
-    TransformPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline TransformPtr TransformBase::createEmpty(void) {
+  TransformPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the Transform::_sfMatrix field.
-inline
-SFMatrix *TransformBase::getSFMatrix(void)
-{
-    return &_sfMatrix;
-}
-
-
-//! Get the value of the Transform::_sfMatrix field.
-inline
-Matrix &TransformBase::getMatrix(void)
-{
-    return _sfMatrix.getValue();
+inline SFMatrix* TransformBase::getSFMatrix(void) {
+  return &_sfMatrix;
 }
 
 //! Get the value of the Transform::_sfMatrix field.
-inline
-const Matrix &TransformBase::getMatrix(void) const
-{
-    return _sfMatrix.getValue();
+inline Matrix& TransformBase::getMatrix(void) {
+  return _sfMatrix.getValue();
+}
+
+//! Get the value of the Transform::_sfMatrix field.
+inline const Matrix& TransformBase::getMatrix(void) const {
+  return _sfMatrix.getValue();
 }
 
 //! Set the value of the Transform::_sfMatrix field.
-inline
-void TransformBase::setMatrix(const Matrix &value)
-{
-    _sfMatrix.setValue(value);
+inline void TransformBase::setMatrix(const Matrix& value) {
+  _sfMatrix.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGTRANSFORMBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGTRANSFORMBASE_INLINE_CVSID                                                              \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

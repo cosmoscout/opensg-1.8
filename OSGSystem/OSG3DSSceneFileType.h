@@ -38,8 +38,8 @@
 
 #ifndef _OSG3DSSCENEFILETYPE_H_
 #define _OSG3DSSCENEFILETYPE_H_
-#ifdef  __sgi
-#pragma  once
+#ifdef __sgi
+#pragma once
 #endif
 
 #include <OSGAction.h>
@@ -58,44 +58,38 @@ OSG_BEGIN_NAMESPACE
  * \brief InventorSceneFileType
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING A3DSSceneFileType : public SceneFileType
-{
-public:
+class OSG_SYSTEMLIB_DLLMAPPING A3DSSceneFileType : public SceneFileType {
+ public:
+  static A3DSSceneFileType& the(void);
 
-    static A3DSSceneFileType &the(void);
+  virtual ~A3DSSceneFileType(void);
 
-    virtual ~A3DSSceneFileType(void);
+  virtual const Char8* getName(void) const;
 
-    virtual const Char8 *getName(void) const;
+  virtual NodePtr read(std::istream& is, const Char8* fileNameOrExtension) const;
 
-    virtual NodePtr read(std::istream &is, const Char8 *fileNameOrExtension) const;
+ protected:
+  static const Char8*      _suffixA[];
+  static A3DSSceneFileType _the;
 
-protected:
+  A3DSSceneFileType(const Char8* suffixArray[], UInt16 suffixByteCount, bool override,
+      UInt32 overridePriority, UInt32 flags);
 
-    static const Char8            *_suffixA[];
-    static       A3DSSceneFileType  _the;
+  A3DSSceneFileType(const A3DSSceneFileType& obj);
 
-    A3DSSceneFileType(const Char8  *suffixArray[],
-                           UInt16  suffixByteCount,
-                           bool    override,
-                           UInt32  overridePriority,
-                           UInt32  flags);
+ private:
+  NodePtr     createMesh(L3DS& scene, LMesh& mesh) const;
+  MaterialPtr createMaterial(L3DS& scene, UInt32 id) const;
 
-    A3DSSceneFileType(const A3DSSceneFileType &obj);
-
-private:
-
-    NodePtr createMesh(L3DS &scene, LMesh &mesh) const;
-    MaterialPtr createMaterial(L3DS &scene, UInt32 id) const;
-
-    mutable std::map<UInt32, MaterialPtr> _materials;
-    typedef std::map<UInt32, MaterialPtr>::iterator materialIt;
+  mutable std::map<UInt32, MaterialPtr>           _materials;
+  typedef std::map<UInt32, MaterialPtr>::iterator materialIt;
 };
 
 typedef A3DSSceneFileType* A3DSSceneFileTypeP;
 
 OSG_END_NAMESPACE
 
-#define OSG3DSSCENEFILETYPE_HEADER_CVSID "@(#)$Id: OSG3DSSceneFileType.h,v 1.5 2003/09/19 13:47:10 a-m-z Exp $"
+#define OSG3DSSCENEFILETYPE_HEADER_CVSID                                                           \
+  "@(#)$Id: OSG3DSSceneFileType.h,v 1.5 2003/09/19 13:47:10 a-m-z Exp $"
 
 #endif // _OSG3DSSCENEFILETYPE_H_

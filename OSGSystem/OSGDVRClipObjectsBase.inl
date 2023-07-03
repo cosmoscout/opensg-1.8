@@ -52,137 +52,99 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &DVRClipObjectsBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& DVRClipObjectsBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 DVRClipObjectsBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 DVRClipObjectsBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-DVRClipObjectsPtr DVRClipObjectsBase::create(void) 
-{
-    DVRClipObjectsPtr fc; 
+inline DVRClipObjectsPtr DVRClipObjectsBase::create(void) {
+  DVRClipObjectsPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = DVRClipObjectsPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = DVRClipObjectsPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-DVRClipObjectsPtr DVRClipObjectsBase::createEmpty(void) 
-{ 
-    DVRClipObjectsPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline DVRClipObjectsPtr DVRClipObjectsBase::createEmpty(void) {
+  DVRClipObjectsPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the DVRClipObjects::_mfClipObjects field.
-inline
-MFDVRClipGeometryPtr *DVRClipObjectsBase::getMFClipObjects(void)
-{
-    return &_mfClipObjects;
+inline MFDVRClipGeometryPtr* DVRClipObjectsBase::getMFClipObjects(void) {
+  return &_mfClipObjects;
 }
 
 //! Get the DVRClipObjects::_sfClipMode field.
-inline
-SFInt32 *DVRClipObjectsBase::getSFClipMode(void)
-{
-    return &_sfClipMode;
+inline SFInt32* DVRClipObjectsBase::getSFClipMode(void) {
+  return &_sfClipMode;
 }
 
 //! Get the DVRClipObjects::_sfDoContours field.
-inline
-SFBool *DVRClipObjectsBase::getSFDoContours(void)
-{
-    return &_sfDoContours;
-}
-
-
-//! Get the value of the DVRClipObjects::_sfClipMode field.
-inline
-Int32 &DVRClipObjectsBase::getClipMode(void)
-{
-    return _sfClipMode.getValue();
+inline SFBool* DVRClipObjectsBase::getSFDoContours(void) {
+  return &_sfDoContours;
 }
 
 //! Get the value of the DVRClipObjects::_sfClipMode field.
-inline
-const Int32 &DVRClipObjectsBase::getClipMode(void) const
-{
-    return _sfClipMode.getValue();
+inline Int32& DVRClipObjectsBase::getClipMode(void) {
+  return _sfClipMode.getValue();
+}
+
+//! Get the value of the DVRClipObjects::_sfClipMode field.
+inline const Int32& DVRClipObjectsBase::getClipMode(void) const {
+  return _sfClipMode.getValue();
 }
 
 //! Set the value of the DVRClipObjects::_sfClipMode field.
-inline
-void DVRClipObjectsBase::setClipMode(const Int32 &value)
-{
-    _sfClipMode.setValue(value);
+inline void DVRClipObjectsBase::setClipMode(const Int32& value) {
+  _sfClipMode.setValue(value);
 }
 
 //! Get the value of the DVRClipObjects::_sfDoContours field.
-inline
-bool &DVRClipObjectsBase::getDoContours(void)
-{
-    return _sfDoContours.getValue();
+inline bool& DVRClipObjectsBase::getDoContours(void) {
+  return _sfDoContours.getValue();
 }
 
 //! Get the value of the DVRClipObjects::_sfDoContours field.
-inline
-const bool &DVRClipObjectsBase::getDoContours(void) const
-{
-    return _sfDoContours.getValue();
+inline const bool& DVRClipObjectsBase::getDoContours(void) const {
+  return _sfDoContours.getValue();
 }
 
 //! Set the value of the DVRClipObjects::_sfDoContours field.
-inline
-void DVRClipObjectsBase::setDoContours(const bool &value)
-{
-    _sfDoContours.setValue(value);
+inline void DVRClipObjectsBase::setDoContours(const bool& value) {
+  _sfDoContours.setValue(value);
 }
-
 
 //! Get the value of the \a index element the DVRClipObjects::_mfClipObjects field.
-inline
-DVRClipGeometryPtr &DVRClipObjectsBase::getClipObjects(const UInt32 index)
-{
-    return _mfClipObjects[index];
+inline DVRClipGeometryPtr& DVRClipObjectsBase::getClipObjects(const UInt32 index) {
+  return _mfClipObjects[index];
 }
 
 //! Get the DVRClipObjects::_mfClipObjects field.
-inline
-MFDVRClipGeometryPtr &DVRClipObjectsBase::getClipObjects(void)
-{
-    return _mfClipObjects;
+inline MFDVRClipGeometryPtr& DVRClipObjectsBase::getClipObjects(void) {
+  return _mfClipObjects;
 }
 
 //! Get the DVRClipObjects::_mfClipObjects field.
-inline
-const MFDVRClipGeometryPtr &DVRClipObjectsBase::getClipObjects(void) const
-{
-    return _mfClipObjects;
+inline const MFDVRClipGeometryPtr& DVRClipObjectsBase::getClipObjects(void) const {
+  return _mfClipObjects;
 }
 
 OSG_END_NAMESPACE
 
-#define OSGDVRCLIPOBJECTSBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGDVRCLIPOBJECTSBASE_INLINE_CVSID                                                         \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

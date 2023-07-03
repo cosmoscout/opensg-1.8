@@ -48,7 +48,6 @@
 #include <OSGVector.h>
 #include <OSGGeometry.h>
 
-
 #include <OSGDVRVertex.h>
 #include <OSGDVRTriangle.h>
 #include <OSGDVRClipGeometry.h>
@@ -62,744 +61,609 @@ OSG_USING_NAMESPACE
 /*----------------------- constructors & destructors ----------------------*/
 
 // Constructor
-DVRClipGeometry::DVRClipGeometry(void) :
-    Inherited()
-{
-    initialized             = false;
-    maxActiveTrianglesCount = 4;
-    activeTrianglesCount    = 0;
-    maxSeedVerticesCount    = 4;
-    seedVerticesCount       = 0;
+DVRClipGeometry::DVRClipGeometry(void)
+    : Inherited() {
+  initialized             = false;
+  maxActiveTrianglesCount = 4;
+  activeTrianglesCount    = 0;
+  maxSeedVerticesCount    = 4;
+  seedVerticesCount       = 0;
 
-    activeTriangles         =  
-        (DVRTriangle **) malloc(maxActiveTrianglesCount * 
-                                sizeof(DVRTriangle *)   );
+  activeTriangles = (DVRTriangle**)malloc(maxActiveTrianglesCount * sizeof(DVRTriangle*));
 
-    seedVertices = 
-        (DVRVertex   **) malloc(maxSeedVerticesCount    *
-                                sizeof(DVRVertex *)     );
+  seedVertices = (DVRVertex**)malloc(maxSeedVerticesCount * sizeof(DVRVertex*));
 }
 
 // Copy Constructor
-DVRClipGeometry::DVRClipGeometry(const DVRClipGeometry &source) :
-    Inherited(source)
-{
-    initialized             = false;
-    maxActiveTrianglesCount = 4;
-    activeTrianglesCount    = 0;
-    maxSeedVerticesCount    = 4;
-    seedVerticesCount       = 0;
+DVRClipGeometry::DVRClipGeometry(const DVRClipGeometry& source)
+    : Inherited(source) {
+  initialized             = false;
+  maxActiveTrianglesCount = 4;
+  activeTrianglesCount    = 0;
+  maxSeedVerticesCount    = 4;
+  seedVerticesCount       = 0;
 
-    activeTriangles =  
-        (DVRTriangle **) malloc(maxActiveTrianglesCount * 
-                                sizeof(DVRTriangle *)   );
+  activeTriangles = (DVRTriangle**)malloc(maxActiveTrianglesCount * sizeof(DVRTriangle*));
 
-    seedVertices = 
-        (DVRVertex   **) malloc(maxSeedVerticesCount    * 
-                                sizeof(DVRVertex   *)   );
+  seedVertices = (DVRVertex**)malloc(maxSeedVerticesCount * sizeof(DVRVertex*));
 }
 
 // Destructor
-DVRClipGeometry::~DVRClipGeometry(void)
-{
-    if(activeTriangles)
-        free(activeTriangles); // allocation with malloc/realloc!!
+DVRClipGeometry::~DVRClipGeometry(void) {
+  if (activeTriangles)
+    free(activeTriangles); // allocation with malloc/realloc!!
 
-    if(seedVertices)
-        free(seedVertices); // allocation with malloc/realloc!!
+  if (seedVertices)
+    free(seedVertices); // allocation with malloc/realloc!!
 }
 
 /*----------------------------- class specific ----------------------------*/
 
 // initialize the static features of the class, e.g. action callbacks
-void DVRClipGeometry::initMethod(void)
-{
+void DVRClipGeometry::initMethod(void) {
 }
 
 // react to field changes
-void DVRClipGeometry::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void DVRClipGeometry::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 
-    if ((whichField & GeometryNodeFieldMask))
-    {
-        initialized = false;
-    }
+  if ((whichField & GeometryNodeFieldMask)) {
+    initialized = false;
+  }
 }
 
 // output the instance for debug purposes
-void DVRClipGeometry::dump(      UInt32    , 
-                          const BitVector ) const
-{
-    //    _sfGeometry.dump();
-    //    _sfBeacon.dump();
-    SLOG << "Dump DVRClipGeometry NI" << std::endl;
+void DVRClipGeometry::dump(UInt32, const BitVector) const {
+  //    _sfGeometry.dump();
+  //    _sfBeacon.dump();
+  SLOG << "Dump DVRClipGeometry NI" << std::endl;
 }
 
 // create the triangled geometry data structure
-Int32 DVRClipGeometry::insertVertex(Int32 idx)
-{
-    for(UInt32 i = 0; i < _mfVertices.size(); i++)
-    {
-        if(_mfVertices[i].pos == geometry->getPositions()->getValue(idx))
-            return i;
-    }
+Int32 DVRClipGeometry::insertVertex(Int32 idx) {
+  for (UInt32 i = 0; i < _mfVertices.size(); i++) {
+    if (_mfVertices[i].pos == geometry->getPositions()->getValue(idx))
+      return i;
+  }
 
-    DVRVertex newVertex;
+  DVRVertex newVertex;
 
-    newVertex.pos = geometry->getPositions()->getValue(idx);
+  newVertex.pos = geometry->getPositions()->getValue(idx);
 
-    _mfVertices.push_back(newVertex);
+  _mfVertices.push_back(newVertex);
 
-    return _mfVertices.size() - 1;
+  return _mfVertices.size() - 1;
 }
 
+bool DVRClipGeometry::buildTriangledGeometry(void) {
+  // create triangles
+  for (TriangleIterator triangleIt = geometry->beginTriangles();
+       triangleIt != geometry->endTriangles(); ++triangleIt) {
+    DVRTriangle newTriangle;
 
-bool DVRClipGeometry::buildTriangledGeometry(void)
-{
-    // create triangles 
-    for(TriangleIterator triangleIt  = geometry->beginTriangles(); 
-                         triangleIt != geometry->endTriangles  ();
-                       ++triangleIt)
-    {
-        DVRTriangle newTriangle;
-        
-        for(UInt32 i = 0; i < 3; i++)
-        {
-            Int32 vertexIndex = triangleIt.getPositionIndex(i);
-            
-            vertexIndex = insertVertex(vertexIndex);
+    for (UInt32 i = 0; i < 3; i++) {
+      Int32 vertexIndex = triangleIt.getPositionIndex(i);
 
-            newTriangle.vertices[i] = vertexIndex;
-            
-            _mfVertices[vertexIndex].adjacentTriangles.push_back(
-                _mfTriangles.size());
+      vertexIndex = insertVertex(vertexIndex);
 
-            newTriangle.cutPnt  [i] = 0.0;
-            newTriangle.cutPoint[i] = 0.0;
-        }
-        
-        // compute normal and check orientation
-        newTriangle.normal = 
-            (_mfVertices[newTriangle.vertices[0]].pos -
-             _mfVertices[newTriangle.vertices[1]].pos).cross(
-                 _mfVertices[newTriangle.vertices[0]].pos -
-                 _mfVertices[newTriangle.vertices[2]].pos);
+      newTriangle.vertices[i] = vertexIndex;
 
-        newTriangle.normal.normalize();
-    
-        if(newTriangle.normal.dot(triangleIt.getNormal(0)) < 0.0)
-            newTriangle.normal.negate();      
-    
-        _mfTriangles.push_back(newTriangle);
+      _mfVertices[vertexIndex].adjacentTriangles.push_back(_mfTriangles.size());
+
+      newTriangle.cutPnt[i]   = 0.0;
+      newTriangle.cutPoint[i] = 0.0;
     }
 
-    // find neighbouring triangles
-    for(UInt32 i = 0; i < _mfTriangles.size(); i++)
-    {
-        Int32 *vertices = _mfTriangles[i].vertices;   
+    // compute normal and check orientation
+    newTriangle.normal =
+        (_mfVertices[newTriangle.vertices[0]].pos - _mfVertices[newTriangle.vertices[1]].pos)
+            .cross(_mfVertices[newTriangle.vertices[0]].pos -
+                   _mfVertices[newTriangle.vertices[2]].pos);
 
-        for(UInt32 l = 0; l < 3; l++)
-        {
-            const DVRVertex &v0 = _mfVertices[vertices[l]];
-            const DVRVertex &v1 = _mfVertices[vertices[(l + 1) % 3]];
-            
-            for(UInt32 j = 0; j < v0.adjacentTriangles.size(); j++)
-            {
-                for(UInt32 k = 0; k < v1.adjacentTriangles.size(); k++)
-                {
-                    if(v0.adjacentTriangles[j] == v1.adjacentTriangles[k] &&
-                       v0.adjacentTriangles[j] != i                       && 
-                       v1.adjacentTriangles[k] != i                         )
-                    {	  
-                        if(_mfTriangles[i].neighbours[l] != -1)
-                        {
-                            SLOG << "Error: Could not build clip geometry"
-                                 << std::endl
-                                 << "        one triangle edge shared by more "
-                                 << "than two triangles" 
-                                 << std::endl;
+    newTriangle.normal.normalize();
 
-                            return false;
-                        }
-                        
-                        _mfTriangles[i].neighbours[l] = 
-                            v1.adjacentTriangles[k];
-                    }
-                }
-            }
-        }
-    }
-    
-    // check for non-closed geometry
-    UInt32 checkCount = 0; 
+    if (newTriangle.normal.dot(triangleIt.getNormal(0)) < 0.0)
+      newTriangle.normal.negate();
 
-    for(UInt32 i = 0; i < _mfTriangles.size(); i++)
-    {
-        for(UInt32 j = 0; j < 3; j++)
-        {
-            if(_mfTriangles[i].neighbours[j] == -1)
-            {
-                checkCount++;
-            }
-        }
-    }
+    _mfTriangles.push_back(newTriangle);
+  }
 
-    if(checkCount > 0)
-    {
-        SLOG << "Error: Could not build clip geometry" 
-             << std::endl
-             << checkCount
-             << "open edges found!"
-             << std::endl;
+  // find neighbouring triangles
+  for (UInt32 i = 0; i < _mfTriangles.size(); i++) {
+    Int32* vertices = _mfTriangles[i].vertices;
 
-        return false;
-    }
-    
-    return true;
-}
+    for (UInt32 l = 0; l < 3; l++) {
+      const DVRVertex& v0 = _mfVertices[vertices[l]];
+      const DVRVertex& v1 = _mfVertices[vertices[(l + 1) % 3]];
 
-bool DVRClipGeometry::isCut(DVRTriangle *tri, 
-                            Real32       dist2RefPlane, 
-                            DVRVertex   *switchedVertices[3])
-{
-    bool v[3] = {false, false, false};
+      for (UInt32 j = 0; j < v0.adjacentTriangles.size(); j++) {
+        for (UInt32 k = 0; k < v1.adjacentTriangles.size(); k++) {
+          if (v0.adjacentTriangles[j] == v1.adjacentTriangles[k] && v0.adjacentTriangles[j] != i &&
+              v1.adjacentTriangles[k] != i) {
+            if (_mfTriangles[i].neighbours[l] != -1) {
+              SLOG << "Error: Could not build clip geometry" << std::endl
+                   << "        one triangle edge shared by more "
+                   << "than two triangles" << std::endl;
 
-    bool vertexSwitched;
-    int  countSwitchedVertices = 0;
-
-    switchedVertices[0] = NULL;
-    switchedVertices[1] = NULL;
-    switchedVertices[2] = NULL;
-
-    // for every vertex, check if it is in front of or behind the current 
-    // reference plane and if it has moved behind the plane
-
-    for(UInt32 i = 0; i < 3; i++)
-    {
-        v[i] = _mfVertices[tri->vertices[i]].isBehindPlane(dist2RefPlane, 
-                                                           vertexSwitched);
-        if(vertexSwitched)
-        {
-            vertexSwitched = false;
-
-            switchedVertices[countSwitchedVertices] = 
-                &_mfVertices[tri->vertices[i]];
-
-            countSwitchedVertices++;
-        }
-    }
-
-    bool cut = false;
-
-    // remember the cut edges for faster (and correct ;-) contour tracing...
-    for(UInt32 i = 0; i < 3; i++)
-    {
-        if(v[i] ^ v[(i + 1) % 3])
-        {
-            tri->edgeCut[i] = true;
-            cut             = true;
-        }
-        else
-        {
-            tri->edgeCut[i] = false;
-        }
-    }
-  
-    return cut;
-}
-
-
-// Prepare the object for clipping a volume's slices 
-void DVRClipGeometry::initialize(const Matrix &volumeToWorld)
-{
-    if(!initialized)
-    {
-        _mfVertices.clear ();
-        _mfTriangles.clear();
-
-        if(getGeometryNode() != NullFC)
-        {
-            if(getGeometryNode()->getCore() != NullFC)
-            {                
-                geometry = GeometryPtr::dcast(getGeometryNode()->getCore());
-
-                if(geometry != NullFC)
-                    initialized = buildTriangledGeometry();
-            }
-        }
-    }
-
-    if(!initialized) 
-        return;
-
-    Matrix old    = toVolumeSpace;
-
-    toVolumeSpace = volumeToWorld;
-    toVolumeSpace.invert();
-
-    NodePtr beacon =  getBeacon();
-
-    if(beacon != NullFC)
-    {
-        toVolumeSpace.mult(beacon->getToWorld());
-    }
-    else if(getGeometryNode() != NullFC)
-    {    
-        toVolumeSpace.mult(getGeometryNode()->getToWorld());
-    }
-
-    Matrix toVolumeSpaceInvT;
-
-    toVolumeSpace    .inverse(toVolumeSpaceInvT);
-    toVolumeSpaceInvT.transpose();
-
-    UInt32 numVertices = _mfVertices.size();
-
-    // transform vertices to volume's space
-    for(UInt32 i = 0; i < numVertices; i++)
-    {
-        toVolumeSpace.multMatrixPnt(_mfVertices[i].pos, 
-                                    _mfVertices[i].transformedPos);
-    }
-
-    UInt32 numTriangles = _mfTriangles.size();
-
-    // transform triangle normals to volume's space
-    for(UInt32 i = 0; i < numTriangles; i++)
-    {
-        toVolumeSpaceInvT.multMatrixVec(_mfTriangles[i].normal, 
-                                        _mfTriangles[i].transformedNormal);
-
-        _mfTriangles[i].transformedNormal.normalize();
-    }
-}
-
-// Prepare the object for clipping a volume's slices 
-void DVRClipGeometry::resetLocalData(void)
-{
-    UInt32 numVertices = _mfVertices.size();
-
-    for(UInt32 i = 0; i < numVertices; i++)
-    {
-        DVRVertex &vertex  = _mfVertices[i];
-
-        vertex.behindPlane = false;
-    }
-
-    UInt32 numTriangles = _mfTriangles.size();
-
-    // initialize the triangles local data
-    for(UInt32 i = 0; i < numTriangles; i++)
-    {
-        _mfTriangles[i].visited   = false;
-        _mfTriangles[i].inContour = false;
-
-        for (UInt32 j = 0; j < 3; j++)
-            _mfTriangles[i].edgeCut[j] = false;
-    }
-}
-
-void DVRClipGeometry::setReferencePlane(const Plane &referencePlane)
-{
-    UInt32 numVertices = _mfVertices.size();
-    
-    for(UInt32 i = 0; i < numVertices; i++)
-        _mfVertices[i].calculatePlaneDistanceTransformed(referencePlane);
-}
-
-void DVRClipGeometry::computeSeedVertices(void)
-{
-    if(!initialized) 
-        return;
-
-    // clear seed vertex list and active triangle list
-    seedVerticesCount    = 0;
-    activeTrianglesCount = 0;
-
-    UInt32 numVertices = _mfVertices.size();
-  
-    // compute initial seed vertex set
-    for(UInt32 i = 0; i < numVertices; i++)
-    {
-        if(isLocalMinimum(_mfVertices[i]))
-        {
-            if(maxSeedVerticesCount <= seedVerticesCount)
-            {
-                maxSeedVerticesCount *= 2;
-
-                seedVertices = 
-                    (DVRVertex **)realloc(seedVertices,
-                                          maxSeedVerticesCount *
-                                          sizeof(DVRVertex *)  );
+              return false;
             }
 
-            seedVertices[seedVerticesCount++] = &_mfVertices[i];
+            _mfTriangles[i].neighbours[l] = v1.adjacentTriangles[k];
+          }
         }
-    } 
+      }
+    }
+  }
+
+  // check for non-closed geometry
+  UInt32 checkCount = 0;
+
+  for (UInt32 i = 0; i < _mfTriangles.size(); i++) {
+    for (UInt32 j = 0; j < 3; j++) {
+      if (_mfTriangles[i].neighbours[j] == -1) {
+        checkCount++;
+      }
+    }
+  }
+
+  if (checkCount > 0) {
+    SLOG << "Error: Could not build clip geometry" << std::endl
+         << checkCount << "open edges found!" << std::endl;
+
+    return false;
+  }
+
+  return true;
 }
 
-void DVRClipGeometry::linkContour(      DVRTriangle *startTriangle,
-                                        Real32       dist2RefPlane,
-                                  const Vec3f       &viewDir, 
-                                        bool         positiveWinding)
-{
-    FDEBUG(("DVRClipGeometry - linkcontour dist = %f\n", dist2RefPlane));
-  
-    bool closed = false;
+bool DVRClipGeometry::isCut(
+    DVRTriangle* tri, Real32 dist2RefPlane, DVRVertex* switchedVertices[3]) {
+  bool v[3] = {false, false, false};
 
-    // first, we have to check for the correct winding direction.
+  bool vertexSwitched;
+  int  countSwitchedVertices = 0;
 
-    Pnt3f vertex[2];
-    bool firstEdge;
-    int  first = 0, second = 0;
+  switchedVertices[0] = NULL;
+  switchedVertices[1] = NULL;
+  switchedVertices[2] = NULL;
 
-    if(startTriangle->edgeCut[0] && startTriangle->edgeCut[1])
-    {
-        vertex[0] = interpolate(startTriangle, 1, 0, dist2RefPlane); 
-        vertex[1] = interpolate(startTriangle, 1, 2, dist2RefPlane);
+  // for every vertex, check if it is in front of or behind the current
+  // reference plane and if it has moved behind the plane
 
-        first = 0; second = 1;
+  for (UInt32 i = 0; i < 3; i++) {
+    v[i] = _mfVertices[tri->vertices[i]].isBehindPlane(dist2RefPlane, vertexSwitched);
+    if (vertexSwitched) {
+      vertexSwitched = false;
+
+      switchedVertices[countSwitchedVertices] = &_mfVertices[tri->vertices[i]];
+
+      countSwitchedVertices++;
     }
-    else if (startTriangle->edgeCut[1] && startTriangle->edgeCut[2])
-    {
-        vertex[0] = interpolate(startTriangle, 2, 1, dist2RefPlane);
-        vertex[1] = interpolate(startTriangle, 2, 0, dist2RefPlane);
+  }
 
-        first = 1; second = 2;
+  bool cut = false;
+
+  // remember the cut edges for faster (and correct ;-) contour tracing...
+  for (UInt32 i = 0; i < 3; i++) {
+    if (v[i] ^ v[(i + 1) % 3]) {
+      tri->edgeCut[i] = true;
+      cut             = true;
+    } else {
+      tri->edgeCut[i] = false;
     }
-    else if (startTriangle->edgeCut[0] && startTriangle->edgeCut[2])
-    {
-        vertex[0] = interpolate(startTriangle, 0, 1, dist2RefPlane);
-        vertex[1] = interpolate(startTriangle, 0, 2, dist2RefPlane);
+  }
 
-        first = 0; second = 2;
+  return cut;
+}
+
+// Prepare the object for clipping a volume's slices
+void DVRClipGeometry::initialize(const Matrix& volumeToWorld) {
+  if (!initialized) {
+    _mfVertices.clear();
+    _mfTriangles.clear();
+
+    if (getGeometryNode() != NullFC) {
+      if (getGeometryNode()->getCore() != NullFC) {
+        geometry = GeometryPtr::dcast(getGeometryNode()->getCore());
+
+        if (geometry != NullFC)
+          initialized = buildTriangledGeometry();
+      }
     }
+  }
 
-    // Now we should have both cut points on our edges.
+  if (!initialized)
+    return;
 
-    // If the cross product of the normal of this triangle with the 
-    // vector between the two cut points (cutPoint[1] - cutPoint[0]) 
-    // has a positive dot product with the viewing direction, then 
-    // the edge with cutPoint[0] on it is the right direction, otherwise
-    // we would have to choose the other direction.
+  Matrix old = toVolumeSpace;
 
-    Vec3f tmp = vertex[1] - vertex[0];
+  toVolumeSpace = volumeToWorld;
+  toVolumeSpace.invert();
 
-    tmp = tmp.cross(startTriangle->transformedNormal);
+  NodePtr beacon = getBeacon();
 
-    if(tmp.dot(viewDir) <= 0.0)
-    {
-        firstEdge = false;
-    }else
-    {
-        firstEdge = true;
+  if (beacon != NullFC) {
+    toVolumeSpace.mult(beacon->getToWorld());
+  } else if (getGeometryNode() != NullFC) {
+    toVolumeSpace.mult(getGeometryNode()->getToWorld());
+  }
+
+  Matrix toVolumeSpaceInvT;
+
+  toVolumeSpace.inverse(toVolumeSpaceInvT);
+  toVolumeSpaceInvT.transpose();
+
+  UInt32 numVertices = _mfVertices.size();
+
+  // transform vertices to volume's space
+  for (UInt32 i = 0; i < numVertices; i++) {
+    toVolumeSpace.multMatrixPnt(_mfVertices[i].pos, _mfVertices[i].transformedPos);
+  }
+
+  UInt32 numTriangles = _mfTriangles.size();
+
+  // transform triangle normals to volume's space
+  for (UInt32 i = 0; i < numTriangles; i++) {
+    toVolumeSpaceInvT.multMatrixVec(_mfTriangles[i].normal, _mfTriangles[i].transformedNormal);
+
+    _mfTriangles[i].transformedNormal.normalize();
+  }
+}
+
+// Prepare the object for clipping a volume's slices
+void DVRClipGeometry::resetLocalData(void) {
+  UInt32 numVertices = _mfVertices.size();
+
+  for (UInt32 i = 0; i < numVertices; i++) {
+    DVRVertex& vertex = _mfVertices[i];
+
+    vertex.behindPlane = false;
+  }
+
+  UInt32 numTriangles = _mfTriangles.size();
+
+  // initialize the triangles local data
+  for (UInt32 i = 0; i < numTriangles; i++) {
+    _mfTriangles[i].visited   = false;
+    _mfTriangles[i].inContour = false;
+
+    for (UInt32 j = 0; j < 3; j++)
+      _mfTriangles[i].edgeCut[j] = false;
+  }
+}
+
+void DVRClipGeometry::setReferencePlane(const Plane& referencePlane) {
+  UInt32 numVertices = _mfVertices.size();
+
+  for (UInt32 i = 0; i < numVertices; i++)
+    _mfVertices[i].calculatePlaneDistanceTransformed(referencePlane);
+}
+
+void DVRClipGeometry::computeSeedVertices(void) {
+  if (!initialized)
+    return;
+
+  // clear seed vertex list and active triangle list
+  seedVerticesCount    = 0;
+  activeTrianglesCount = 0;
+
+  UInt32 numVertices = _mfVertices.size();
+
+  // compute initial seed vertex set
+  for (UInt32 i = 0; i < numVertices; i++) {
+    if (isLocalMinimum(_mfVertices[i])) {
+      if (maxSeedVerticesCount <= seedVerticesCount) {
+        maxSeedVerticesCount *= 2;
+
+        seedVertices =
+            (DVRVertex**)realloc(seedVertices, maxSeedVerticesCount * sizeof(DVRVertex*));
+      }
+
+      seedVertices[seedVerticesCount++] = &_mfVertices[i];
     }
+  }
+}
 
-    if(!positiveWinding)
-        firstEdge = !firstEdge;
+void DVRClipGeometry::linkContour(
+    DVRTriangle* startTriangle, Real32 dist2RefPlane, const Vec3f& viewDir, bool positiveWinding) {
+  FDEBUG(("DVRClipGeometry - linkcontour dist = %f\n", dist2RefPlane));
 
-    DVRTriangle *current = startTriangle;
+  bool closed = false;
 
+  // first, we have to check for the correct winding direction.
+
+  Pnt3f vertex[2];
+  bool  firstEdge;
+  int   first = 0, second = 0;
+
+  if (startTriangle->edgeCut[0] && startTriangle->edgeCut[1]) {
+    vertex[0] = interpolate(startTriangle, 1, 0, dist2RefPlane);
+    vertex[1] = interpolate(startTriangle, 1, 2, dist2RefPlane);
+
+    first  = 0;
+    second = 1;
+  } else if (startTriangle->edgeCut[1] && startTriangle->edgeCut[2]) {
+    vertex[0] = interpolate(startTriangle, 2, 1, dist2RefPlane);
+    vertex[1] = interpolate(startTriangle, 2, 0, dist2RefPlane);
+
+    first  = 1;
+    second = 2;
+  } else if (startTriangle->edgeCut[0] && startTriangle->edgeCut[2]) {
+    vertex[0] = interpolate(startTriangle, 0, 1, dist2RefPlane);
+    vertex[1] = interpolate(startTriangle, 0, 2, dist2RefPlane);
+
+    first  = 0;
+    second = 2;
+  }
+
+  // Now we should have both cut points on our edges.
+
+  // If the cross product of the normal of this triangle with the
+  // vector between the two cut points (cutPoint[1] - cutPoint[0])
+  // has a positive dot product with the viewing direction, then
+  // the edge with cutPoint[0] on it is the right direction, otherwise
+  // we would have to choose the other direction.
+
+  Vec3f tmp = vertex[1] - vertex[0];
+
+  tmp = tmp.cross(startTriangle->transformedNormal);
+
+  if (tmp.dot(viewDir) <= 0.0) {
+    firstEdge = false;
+  } else {
+    firstEdge = true;
+  }
+
+  if (!positiveWinding)
+    firstEdge = !firstEdge;
+
+  DVRTriangle* current = startTriangle;
+
+  current->inContour = true;
+
+  if (firstEdge) {
+    current->cutPnt      = vertex[0];
+    current->cutPoint[0] = vertex[0][0];
+    current->cutPoint[1] = vertex[0][1];
+    current->cutPoint[2] = vertex[0][2];
+
+    current->contourNeighbour = &_mfTriangles[current->neighbours[first]];
+
+    //      // debugging -> remove
+    //      if(!current->contourNeighbour){
+    //        std::cerr<<"contour neighbour is NULL\n";
+    //        exit(0);
+    //      }
+
+    current = current->contourNeighbour;
+  } else {
+    current->cutPnt      = vertex[1];
+    current->cutPoint[0] = vertex[1][0];
+    current->cutPoint[1] = vertex[1][1];
+    current->cutPoint[2] = vertex[1][2];
+
+    current->contourNeighbour = &_mfTriangles[current->neighbours[second]];
+    //      // debugging -> remove
+    //      if(!current->contourNeighbour){
+    //        std::cerr<<"contour neighbour is NULL\n";
+    //        exit(0);
+    //      }
+
+    current = current->contourNeighbour;
+  }
+
+  // check neighbours
+  while (!closed) {
+    closed             = true;
     current->inContour = true;
 
-    if(firstEdge)
-    {
-        current->cutPnt      = vertex[0];
-        current->cutPoint[0] = vertex[0][0];
-        current->cutPoint[1] = vertex[0][1];
-        current->cutPoint[2] = vertex[0][2];
+    for (UInt32 i = 0; i < 3; i++) {
+      // if a neighbour triangle is in the active triangle list and
+      // not yet in a contour it is our new contour neighbour.
+      if (current->edgeCut[i] && !_mfTriangles[current->neighbours[i]].inContour) {
+        // calculate cut point
+        current->cutPnt = interpolate(current, i, (i + 1) % 3, dist2RefPlane);
 
-        current->contourNeighbour = &_mfTriangles[current->neighbours[first]];
+        current->cutPoint[0] = current->cutPnt[0];
+        current->cutPoint[1] = current->cutPnt[1];
+        current->cutPoint[2] = current->cutPnt[2];
 
-        //      // debugging -> remove
-        //      if(!current->contourNeighbour){
-        //        std::cerr<<"contour neighbour is NULL\n";
-        //        exit(0);
-        //      }
+        current->contourNeighbour = &_mfTriangles[current->neighbours[i]];
+
+        //  	// debugging -> remove
+        //  	if(!current->contourNeighbour){
+        //  	  std::cerr<<"contour neighbour is NULL\n";
+        //  	  exit(0);
+        //  	}
 
         current = current->contourNeighbour;
+        closed  = false;
+
+        break;
+      } // !inContour
+    }   // end for neighbours
+  }     // end while !closed
+
+  for (UInt32 i = 0; i < 3; i++) {
+    if (&_mfTriangles[current->neighbours[i]] == startTriangle) {
+      current->cutPnt = interpolate(current, i, (i + 1) % 3, dist2RefPlane);
+
+      current->cutPoint[0] = current->cutPnt[0];
+      current->cutPoint[1] = current->cutPnt[1];
+      current->cutPoint[2] = current->cutPnt[2];
+
+      // now the ring is closed.
+
+      current->contourNeighbour = startTriangle;
+      //        // debugging -> remove
+      //        if(!current->contourNeighbour){
+      //  	std::cerr<<"contour neighbour is NULL\n";
+      //  	exit(0);
+      //        }
+      break;
     }
-    else
-    {
-        current->cutPnt      = vertex[1];
-        current->cutPoint[0] = vertex[1][0];
-        current->cutPoint[1] = vertex[1][1];
-        current->cutPoint[2] = vertex[1][2];    
+  } // end for neighbours
 
-        current->contourNeighbour = &_mfTriangles[current->neighbours[second]];
-        //      // debugging -> remove
-        //      if(!current->contourNeighbour){
-        //        std::cerr<<"contour neighbour is NULL\n";
-        //        exit(0);
-        //      }
-
-        current = current->contourNeighbour;    
-    }
-
-    //check neighbours
-    while(!closed)
-    {
-        closed             = true;
-        current->inContour = true;
-
-        for(UInt32 i = 0; i < 3; i++)
-        {
-            // if a neighbour triangle is in the active triangle list and 
-            // not yet in a contour it is our new contour neighbour.
-            if( current->edgeCut[i] && 
-               !_mfTriangles[current->neighbours[i]].inContour)
-            {
-                // calculate cut point 	
-                current->cutPnt = interpolate(current, 
-                                              i, 
-                                              (i + 1) % 3, 
-                                              dist2RefPlane);
-
-                current->cutPoint[0] = current->cutPnt[0];
-                current->cutPoint[1] = current->cutPnt[1];
-                current->cutPoint[2] = current->cutPnt[2];
-
-                current->contourNeighbour = 
-                    &_mfTriangles[current->neighbours[i]];
-
-                //  	// debugging -> remove
-                //  	if(!current->contourNeighbour){
-                //  	  std::cerr<<"contour neighbour is NULL\n";
-                //  	  exit(0);
-                //  	}
-
-                current = current->contourNeighbour;
-                closed  = false;
-
-                break;
-            }// !inContour
-        } // end for neighbours
-    } // end while !closed
-
-    for(UInt32 i = 0; i < 3; i++)
-    {
-        if(&_mfTriangles[current->neighbours[i]] == startTriangle)
-        {
-            current->cutPnt = interpolate(current, 
-                                          i, 
-                                          (i + 1) % 3, 
-                                          dist2RefPlane);
-
-            current->cutPoint[0] = current->cutPnt[0];
-            current->cutPoint[1] = current->cutPnt[1];
-            current->cutPoint[2] = current->cutPnt[2];
-
-            // now the ring is closed.
-
-            current->contourNeighbour = startTriangle;
-            //        // debugging -> remove
-            //        if(!current->contourNeighbour){
-            //  	std::cerr<<"contour neighbour is NULL\n";
-            //  	exit(0);
-            //        }
-            break;
-        }
-    } // end for neighbours
-
-    //    // debugging -> remove
-    //    if(!current->contourNeighbour){
-    //      std::cerr <<"contour could not closed\n";
-    //      std::cerr <<current->edgeCut[0]<<current->edgeCut[1]
-    //                <<current->edgeCut[2]<<std::endl;
-    //      exit(0);
-    //    }
+  //    // debugging -> remove
+  //    if(!current->contourNeighbour){
+  //      std::cerr <<"contour could not closed\n";
+  //      std::cerr <<current->edgeCut[0]<<current->edgeCut[1]
+  //                <<current->edgeCut[2]<<std::endl;
+  //      exit(0);
+  //    }
 }
 
-void DVRClipGeometry::buildContours(      Real32  dist2RefPlane, 
-                                          bool    positiveWinding, 
-                                    const Vec3f  &sliceNormal    )
-{
-    contours.clear();
+void DVRClipGeometry::buildContours(
+    Real32 dist2RefPlane, bool positiveWinding, const Vec3f& sliceNormal) {
+  contours.clear();
 
-    for(UInt32 i = 0; i < activeTrianglesCount; i++)
-    { 
-        DVRTriangle* currentTriangle = activeTriangles[i];
+  for (UInt32 i = 0; i < activeTrianglesCount; i++) {
+    DVRTriangle* currentTriangle = activeTriangles[i];
 
-        // if the triangle is already in a contour we can skip it    
-        if(!currentTriangle->inContour)
-        {
-            contours.push_back(currentTriangle);
-            
-            linkContour(currentTriangle, 
-                        dist2RefPlane, 
-                        sliceNormal, 
-                        positiveWinding);
-        }
+    // if the triangle is already in a contour we can skip it
+    if (!currentTriangle->inContour) {
+      contours.push_back(currentTriangle);
+
+      linkContour(currentTriangle, dist2RefPlane, sliceNormal, positiveWinding);
     }
+  }
 }
 
-const DVRTriangleList &DVRClipGeometry::getContours(
-          Real32  dist2RefPlane, 
-          bool    positiveWinding, 
-    const Vec3f  &sliceNormal    )
-{  
-    if(!initialized) 
-        return contours;
-
-    // compute new active triangle set and for this slice 
-    // and update seed vertex set
-    updateActiveTriangles(dist2RefPlane, sliceNormal);
-
-    // build contours from active triangle set
-    buildContours(dist2RefPlane, positiveWinding, sliceNormal);
-
+const DVRTriangleList& DVRClipGeometry::getContours(
+    Real32 dist2RefPlane, bool positiveWinding, const Vec3f& sliceNormal) {
+  if (!initialized)
     return contours;
+
+  // compute new active triangle set and for this slice
+  // and update seed vertex set
+  updateActiveTriangles(dist2RefPlane, sliceNormal);
+
+  // build contours from active triangle set
+  buildContours(dist2RefPlane, positiveWinding, sliceNormal);
+
+  return contours;
 }
 
-void DVRClipGeometry::addNewActiveTriangles(DVRVertex *vertex, 
-                                            Real32     dist2RefPlane)
-{
-    // iterate over triangles
-    DVRVertex *switchedVertices[3];
-  
-    std::vector<Int32> &adjacentTriangles = vertex->adjacentTriangles; 
+void DVRClipGeometry::addNewActiveTriangles(DVRVertex* vertex, Real32 dist2RefPlane) {
+  // iterate over triangles
+  DVRVertex* switchedVertices[3];
 
-    UInt32 numAdjacenTriangles =  adjacentTriangles.size();
+  std::vector<Int32>& adjacentTriangles = vertex->adjacentTriangles;
 
-    for(UInt32 j = 0; j < numAdjacenTriangles; j++)
-    {
-        DVRTriangle *triangle = &_mfTriangles[adjacentTriangles[j]];
+  UInt32 numAdjacenTriangles = adjacentTriangles.size();
 
-        if(!triangle->visited)
-        {
-            // insert triangle if it is cut and it was not visited so far...
-            if(isCut(triangle,dist2RefPlane, switchedVertices)) 
-            {
-                triangle->visited   = true;
-                triangle->inContour = false;
+  for (UInt32 j = 0; j < numAdjacenTriangles; j++) {
+    DVRTriangle* triangle = &_mfTriangles[adjacentTriangles[j]];
 
-                addActiveTriangle(triangle);
-            }
-            else
-            { 
-                // neighbour triangle is not visited and not cut -> 
-                // check neighbours
+    if (!triangle->visited) {
+      // insert triangle if it is cut and it was not visited so far...
+      if (isCut(triangle, dist2RefPlane, switchedVertices)) {
+        triangle->visited   = true;
+        triangle->inContour = false;
 
-                triangle->visited   = true;
-                triangle->inContour = false;
-            } 
-      
-            // check neighbours
-            for(UInt32 i = 0; i < 3; i++)
-            {
-                if(switchedVertices[i])
-                {
-                    addNewActiveTriangles(switchedVertices[i],
-                                          dist2RefPlane      );
-                }
-            }       
+        addActiveTriangle(triangle);
+      } else {
+        // neighbour triangle is not visited and not cut ->
+        // check neighbours
+
+        triangle->visited   = true;
+        triangle->inContour = false;
+      }
+
+      // check neighbours
+      for (UInt32 i = 0; i < 3; i++) {
+        if (switchedVertices[i]) {
+          addNewActiveTriangles(switchedVertices[i], dist2RefPlane);
         }
+      }
     }
+  }
 }
 
-void DVRClipGeometry::updateActiveTriangles(      Real32  dist2RefPlane,  
-                                            const Vec3f  &             )
-{
-    // first, we check the active triangles.
+void DVRClipGeometry::updateActiveTriangles(Real32 dist2RefPlane, const Vec3f&) {
+  // first, we check the active triangles.
 
-    DVRVertex *switchedVertices[3];
-  
-    for(Int32 triIt = activeTrianglesCount-1; triIt >= 0; triIt--)
-    {
-        DVRTriangle *tri = activeTriangles[triIt];
+  DVRVertex* switchedVertices[3];
 
-        tri->inContour        = false;
-        tri->contourNeighbour = NULL;
+  for (Int32 triIt = activeTrianglesCount - 1; triIt >= 0; triIt--) {
+    DVRTriangle* tri = activeTriangles[triIt];
 
-        // if an active triangle is cut by the plane it simply stays in 
-        // the list.otherwise we have to remove it and check the neighbour
-        // triangles.
+    tri->inContour        = false;
+    tri->contourNeighbour = NULL;
 
-        if(!(isCut(tri,dist2RefPlane, switchedVertices)))
-        {
-            //remove triangle
-            activeTrianglesCount--;
-            activeTriangles[triIt] = activeTriangles[activeTrianglesCount];
-        }
-        
-        // check triangles adjacent to the vertices that moved behind 
-        // the active slice
+    // if an active triangle is cut by the plane it simply stays in
+    // the list.otherwise we have to remove it and check the neighbour
+    // triangles.
 
-        for(UInt32 i = 0; i < 3; i++)
-        {
-            if(switchedVertices[i])
-                addNewActiveTriangles(switchedVertices[i], dist2RefPlane);
-        }
+    if (!(isCut(tri, dist2RefPlane, switchedVertices))) {
+      // remove triangle
+      activeTrianglesCount--;
+      activeTriangles[triIt] = activeTriangles[activeTrianglesCount];
     }
 
-    // now we have to check our seed set, if new triangles have to be added.
-  
-    // run over our seed set
-    for(Int32 vertIt = seedVerticesCount-1; vertIt >= 0; vertIt--)
-    {
-        DVRVertex *sv = seedVertices[vertIt];
+    // check triangles adjacent to the vertices that moved behind
+    // the active slice
 
-        // check if seed vertex has been hit by the plane
-        if (sv->isBehindPlane(dist2RefPlane))
-        {
-            // add triangles to active triangle list      
-            addNewActiveTriangles(sv,dist2RefPlane);
-            
-            // we will never need this seed vertex again, we can erase it 
-            // from the list.
-            seedVertices[vertIt] = seedVertices[--seedVerticesCount];
-        }    
+    for (UInt32 i = 0; i < 3; i++) {
+      if (switchedVertices[i])
+        addNewActiveTriangles(switchedVertices[i], dist2RefPlane);
     }
+  }
+
+  // now we have to check our seed set, if new triangles have to be added.
+
+  // run over our seed set
+  for (Int32 vertIt = seedVerticesCount - 1; vertIt >= 0; vertIt--) {
+    DVRVertex* sv = seedVertices[vertIt];
+
+    // check if seed vertex has been hit by the plane
+    if (sv->isBehindPlane(dist2RefPlane)) {
+      // add triangles to active triangle list
+      addNewActiveTriangles(sv, dist2RefPlane);
+
+      // we will never need this seed vertex again, we can erase it
+      // from the list.
+      seedVertices[vertIt] = seedVertices[--seedVerticesCount];
+    }
+  }
 }
 
 //
-void DVRClipGeometry::addActiveTriangle(DVRTriangle *tri)
-{
-    if(maxActiveTrianglesCount <= activeTrianglesCount)
-    {
-        FDEBUG(("realloc active tri list\n"));
-        // allocate additional mem (TODO: better prediction for needed mem)
+void DVRClipGeometry::addActiveTriangle(DVRTriangle* tri) {
+  if (maxActiveTrianglesCount <= activeTrianglesCount) {
+    FDEBUG(("realloc active tri list\n"));
+    // allocate additional mem (TODO: better prediction for needed mem)
 
-        maxActiveTrianglesCount *= 2;
-        activeTriangles          = 
-            (DVRTriangle **) realloc(activeTriangles, 
-                                     sizeof(DVRTriangle *) * 
-                                     maxActiveTrianglesCount);
-    }
-    
-    activeTriangles[activeTrianglesCount] = tri;    
+    maxActiveTrianglesCount *= 2;
+    activeTriangles =
+        (DVRTriangle**)realloc(activeTriangles, sizeof(DVRTriangle*) * maxActiveTrianglesCount);
+  }
 
-    activeTrianglesCount++;
+  activeTriangles[activeTrianglesCount] = tri;
+
+  activeTrianglesCount++;
 }
 
-bool DVRClipGeometry::setNumAddPerVertexAttr(
-    UInt32 additionalPerVertexAttributes)
-{
-    UInt32 numTriangles = _mfTriangles.size();
+bool DVRClipGeometry::setNumAddPerVertexAttr(UInt32 additionalPerVertexAttributes) {
+  UInt32 numTriangles = _mfTriangles.size();
 
-    // update triangles
-    for(UInt32 i = 0; i < numTriangles; i++)
-    {
-        if(!_mfTriangles[i].setNumAddPerVertexAttr(
-               additionalPerVertexAttributes))
-        {
-            return false;
-        }
+  // update triangles
+  for (UInt32 i = 0; i < numTriangles; i++) {
+    if (!_mfTriangles[i].setNumAddPerVertexAttr(additionalPerVertexAttributes)) {
+      return false;
     }
+  }
 
-    return true;
+  return true;
 }
 
 //  // debugging -> remove
 //  void DVRClipGeometry::correct()
 //  {
-//    for(UInt32 i = 0; i < _mfTriangles.size(); i++){  
-//      _mfTriangles[i].correct();    
+//    for(UInt32 i = 0; i < _mfTriangles.size(); i++){
+//      _mfTriangles[i].correct();
 //    }
 //    for(UInt32 i = 0; i < _mfVertices.size(); i++){
 //      _mfVertices[i].correct();
 //    }
 //  }
-
-

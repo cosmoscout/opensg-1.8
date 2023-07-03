@@ -52,109 +52,79 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &SlicesBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& SlicesBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 SlicesBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 SlicesBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-SlicesPtr SlicesBase::create(void) 
-{
-    SlicesPtr fc; 
+inline SlicesPtr SlicesBase::create(void) {
+  SlicesPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = SlicesPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = SlicesPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-SlicesPtr SlicesBase::createEmpty(void) 
-{ 
-    SlicesPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline SlicesPtr SlicesBase::createEmpty(void) {
+  SlicesPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the Slices::_sfSize field.
-inline
-SFVec3f *SlicesBase::getSFSize(void)
-{
-    return &_sfSize;
+inline SFVec3f* SlicesBase::getSFSize(void) {
+  return &_sfSize;
 }
 
 //! Get the Slices::_sfSliceDistance field.
-inline
-SFReal32 *SlicesBase::getSFSliceDistance(void)
-{
-    return &_sfSliceDistance;
-}
-
-
-//! Get the value of the Slices::_sfSize field.
-inline
-Vec3f &SlicesBase::getSize(void)
-{
-    return _sfSize.getValue();
+inline SFReal32* SlicesBase::getSFSliceDistance(void) {
+  return &_sfSliceDistance;
 }
 
 //! Get the value of the Slices::_sfSize field.
-inline
-const Vec3f &SlicesBase::getSize(void) const
-{
-    return _sfSize.getValue();
+inline Vec3f& SlicesBase::getSize(void) {
+  return _sfSize.getValue();
+}
+
+//! Get the value of the Slices::_sfSize field.
+inline const Vec3f& SlicesBase::getSize(void) const {
+  return _sfSize.getValue();
 }
 
 //! Set the value of the Slices::_sfSize field.
-inline
-void SlicesBase::setSize(const Vec3f &value)
-{
-    _sfSize.setValue(value);
+inline void SlicesBase::setSize(const Vec3f& value) {
+  _sfSize.setValue(value);
 }
 
 //! Get the value of the Slices::_sfSliceDistance field.
-inline
-Real32 &SlicesBase::getSliceDistance(void)
-{
-    return _sfSliceDistance.getValue();
+inline Real32& SlicesBase::getSliceDistance(void) {
+  return _sfSliceDistance.getValue();
 }
 
 //! Get the value of the Slices::_sfSliceDistance field.
-inline
-const Real32 &SlicesBase::getSliceDistance(void) const
-{
-    return _sfSliceDistance.getValue();
+inline const Real32& SlicesBase::getSliceDistance(void) const {
+  return _sfSliceDistance.getValue();
 }
 
 //! Set the value of the Slices::_sfSliceDistance field.
-inline
-void SlicesBase::setSliceDistance(const Real32 &value)
-{
-    _sfSliceDistance.setValue(value);
+inline void SlicesBase::setSliceDistance(const Real32& value) {
+  _sfSliceDistance.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGSLICESBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGSLICESBASE_INLINE_CVSID                                                                 \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

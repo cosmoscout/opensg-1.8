@@ -51,94 +51,81 @@ OSG_BEGIN_NAMESPACE
 class DrawActionBase;
 class Viewport;
 
-/*! \brief Background clearing class using a sky sphere and box. See \ref 
+/*! \brief Background clearing class using a sky sphere and box. See \ref
     PageSystemWindowBackgroundSky for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING SkyBackground : public SkyBackgroundBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING SkyBackground : public SkyBackgroundBase {
+ private:
+  typedef SkyBackgroundBase Inherited;
 
-    typedef SkyBackgroundBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Background                               */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector whichField, 
-                         UInt32    origin    );
+  virtual void clear(DrawActionBase* action, Viewport* port);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Background                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void clear(DrawActionBase *action, Viewport *port);
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in SkyBackgroundBase.
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  SkyBackground(void);
+  SkyBackground(const SkyBackground& source);
 
-    // Variables should all be in SkyBackgroundBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~SkyBackground(void);
 
-    SkyBackground(void);
-    SkyBackground(const SkyBackground &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Draw Helper                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  void drawFace(DrawActionBase* action, TextureChunkPtr tex, StateChunk*& oldtex, const Pnt3f& p1,
+      const Pnt3f& p2, const Pnt3f& p3, const Pnt3f& p4, const Vec3f* texCoord);
 
-    virtual ~SkyBackground(void); 
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Draw Helper                                */
-    /*! \{                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class SkyBackgroundBase;
 
-    void drawFace(      DrawActionBase  * action, 
-                        TextureChunkPtr   tex, 
-                        StateChunk      *&oldtex, 
-                  const Pnt3f            &p1, 
-                  const Pnt3f            &p2, 
-                  const Pnt3f            &p3, 
-                  const Pnt3f            &p4,  
-                  const Vec3f          * texCoord);
+  static void initMethod(void);
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  std::vector<Real32> _cosval;
+  std::vector<Real32> _sinval;
 
-    friend class FieldContainer;
-    friend class SkyBackgroundBase;
+  // prohibit default functions (move to 'public' if you need one)
 
-    static void initMethod(void);
-
-    std::vector<Real32> _cosval;
-    std::vector<Real32> _sinval;
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const SkyBackground &source);
+  void operator=(const SkyBackground& source);
 };
 
-typedef SkyBackground *SkyBackgroundP;
+typedef SkyBackground* SkyBackgroundP;
 
 OSG_END_NAMESPACE
 

@@ -54,96 +54,92 @@
 OSG_BEGIN_NAMESPACE
 
 /* Package len */
-#define OSG_DGRAM_LEN                   1440*10
+#define OSG_DGRAM_LEN 1440 * 10
 
 /* num of Packages in read or write queue */
-#define OSG_DGRAM_QUEUE_LEN             500
+#define OSG_DGRAM_QUEUE_LEN 500
 
 //#define TEST_LOST_DGRAM_RATE 0.1
 
-class OSG_BASE_DLLMAPPING Dgram
-{
-    /*==========================  PUBLIC  =================================*/
-public:
+class OSG_BASE_DLLMAPPING Dgram {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name               constructor                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name               constructor                            */
-    /*! \{                                                                 */
+  Dgram();
+  ~Dgram();
 
-    Dgram();
-    ~Dgram();
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name               create, release                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name               create, release                                */
-    /*! \{                                                                 */
+  inline static Dgram* create(void);
+  inline static void   release(Dgram* dgram);
 
-    inline static Dgram *create (void        );
-    inline static void   release(Dgram *dgram);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name               get                                            */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name               get                                            */
-    /*! \{                                                                 */
+  inline UInt32        getCapacity(void) const;
+  inline UInt16        getId(void) const;
+  inline bool          getResponseAck(void) const;
+  inline UInt32        getSize(void) const;
+  inline UChar8*       getData(void);
+  inline const UChar8* getData(void) const;
 
-    inline       UInt32         getCapacity      (void) const;
-    inline       UInt16         getId            (void) const;
-    inline       bool           getResponseAck   (void) const;
-    inline       UInt32         getSize          (void) const;
-    inline       UChar8        *getData          (void);
-    inline const UChar8        *getData          (void) const;
+  inline UChar8* getBuffer(void);
+  inline UInt32  getBufferSize(void) const;
+  inline UInt32  getBufferCapacity(void) const;
 
-    inline       UChar8        *getBuffer        (void);
-    inline       UInt32         getBufferSize    (void) const;
-    inline       UInt32         getBufferCapacity(void) const;
+  inline bool getEarlySend(void) const;
 
-    inline       bool           getEarlySend     (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name               set                                            */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name               set                                            */
-    /*! \{                                                                 */
+  inline void setSize(UInt32 size);
+  inline void setResponseSize(void);
+  inline void setId(UInt16 id);
+  inline void setResponseAck(bool value);
 
-    inline void setSize         (UInt32 size    );
-    inline void setResponseSize (void           );
-    inline void setId           (UInt16 id      );
-    inline void setResponseAck  (bool value     );
+  inline void setBufferSize(UInt32 size);
 
-    inline void setBufferSize   (UInt32 size    );
+  inline void setEarlySend(bool value);
 
-    inline void setEarlySend    (bool value     );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name               compare                                        */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name               compare                                        */
-    /*! \{                                                                 */
+  inline bool        operator<(const Dgram& other) const;
+  inline static bool less(UInt16, UInt16);
 
-    inline        bool operator < (const Dgram  &other) const;
-    inline static bool less(UInt16,UInt16);
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name               member                                         */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-protected:
+  bool   _earlySend;
+  UInt32 _size;
+  struct {
+    UInt16 _id;
+    UChar8 _data[OSG_DGRAM_LEN - 2];
+  } _buffer;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name               member                                         */
-    /*! \{                                                                 */
-
-    bool   _earlySend;
-    UInt32 _size;
-    struct {
-        UInt16 _id;
-        UChar8 _data[OSG_DGRAM_LEN-2];
-    } _buffer;
-
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-private:
-
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
 };
 
 // class pointer
-typedef Dgram *DgramP;
+typedef Dgram* DgramP;
 
 OSG_END_NAMESPACE
 

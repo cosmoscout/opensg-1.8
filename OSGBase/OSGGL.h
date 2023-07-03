@@ -57,28 +57,21 @@
 
 #define OSG_GL_UNUSED 0xffff
 
-
-
 #include <OSGGLU.h>
 
 #ifdef OSG_DEBUG
-#define glErr(text)                                 \
-{                                                   \
-    GLenum glerr;                                   \
-                                                    \
-    while((glerr = glGetError()) != GL_NO_ERROR)    \
-    {                                               \
-        FWARNING(("(%s,%d): %s failed: %s (%#x)\n", \
-                __FILE__, __LINE__,                 \
-                (text),                             \
-                gluErrorString(glerr),              \
-                glerr));                            \
-    }                                               \
-}
+#define glErr(text)                                                                                \
+  {                                                                                                \
+    GLenum glerr;                                                                                  \
+                                                                                                   \
+    while ((glerr = glGetError()) != GL_NO_ERROR) {                                                \
+      FWARNING(("(%s,%d): %s failed: %s (%#x)\n", __FILE__, __LINE__, (text),                      \
+          gluErrorString(glerr), glerr));                                                          \
+    }                                                                                              \
+  }
 #else
 #define glErr(text)
 #endif
-
 
 #define OSGGL_HEADER_CVSID "@(#)$Id: $"
 

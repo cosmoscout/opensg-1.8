@@ -36,13 +36,11 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _STATTIMEELEM_H_
 #define _STATTIMEELEM_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGBaseTypes.h>
 #include <OSGSystemDef.h>
@@ -56,91 +54,88 @@ OSG_BEGIN_NAMESPACE
 class StatElemDescBase;
 
 /*! \brief Time Statistics element, see \ref PageSystemStatistics for details.
-*/
-class OSG_SYSTEMLIB_DLLMAPPING StatTimeElem : public StatElem 
-{
+ */
+class OSG_SYSTEMLIB_DLLMAPPING StatTimeElem : public StatElem {
 
-    /*==========================  PUBLIC  =================================*/
+  /*==========================  PUBLIC  =================================*/
  public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
-    
-    static const char *getClassname(void) { return "StatTimeElem"; }
+  static const char* getClassname(void) {
+    return "StatTimeElem";
+  }
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    your_category                             */
-    /*! \{                                                                 */
- 
-    static StatElem *create ( StatElemDescBase *desc );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    your_category                             */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    instance                                  */
-    /*! \{                                                                 */
+  static StatElem* create(StatElemDescBase* desc);
 
-    virtual void        reset        (void);
-    
-    inline  const Time &start        (void);
-      
-    inline  const Time &stop         (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    instance                                  */
+  /*! \{                                                                 */
 
-    inline  const Time &getTime      (void) const;
-        
-    virtual void        putToString  (std::string &str, 
-                                      const char *format = NULL) const;
- 
-    virtual bool        getFromString(const Char8 *&inVal);
+  virtual void reset(void);
 
-    virtual Real64      getValue     (void) const;
+  inline const Time& start(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    comparison                                */
-    /*! \{                                                                 */
+  inline const Time& stop(void);
 
-    bool operator < (const StatTimeElem &other) const;
+  inline const Time& getTime(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Creation                                   */
-    /*! \{                                                                 */
+  virtual void putToString(std::string& str, const char* format = NULL) const;
 
-    virtual StatElem *clone(void) const;
+  virtual bool getFromString(const Char8*& inVal);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Operators                                */
-    /*! \{                                                                 */
+  virtual Real64 getValue(void) const;
 
-    virtual StatElem &operator += (const StatElem &other);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    comparison                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  bool operator<(const StatTimeElem& other) const;
 
-    /*=========================  PROTECTED  ===============================*/
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Creation                                   */
+  /*! \{                                                                 */
+
+  virtual StatElem* clone(void) const;
+
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Operators                                */
+  /*! \{                                                                 */
+
+  virtual StatElem& operator+=(const StatElem& other);
+
+  /*! \}                                                                 */
+
+  /*=========================  PROTECTED  ===============================*/
  protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-  
-    StatTimeElem(StatElemDescBase *desc);
+  StatTimeElem(StatElemDescBase* desc);
 
-    virtual ~StatTimeElem(void); 
+  virtual ~StatTimeElem(void);
 
-    /*! \}                                                                 */
-    /*=========================  PRIVATE    ===============================*/
+  /*! \}                                                                 */
+  /*=========================  PRIVATE    ===============================*/
  private:
+  typedef StatElem Inherited;
 
-    typedef StatElem Inherited;
+  Time _time;
 
-    Time _time;
+  StatTimeElem(const StatTimeElem& source);
 
-    StatTimeElem            (const StatTimeElem &source);
-  
-    StatTimeElem& operator =(const StatTimeElem &source);
+  StatTimeElem& operator=(const StatTimeElem& source);
 };
 
 //---------------------------------------------------------------------------
@@ -149,7 +144,7 @@ class OSG_SYSTEMLIB_DLLMAPPING StatTimeElem : public StatElem
 
 // class pointer
 
-typedef StatTimeElem *StatTimeElemP;
+typedef StatTimeElem* StatTimeElemP;
 
 OSG_END_NAMESPACE
 

@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGCAMERA_H_
 #define _OSGCAMERA_H_
 #ifdef __sgi
@@ -59,117 +58,105 @@ class FrustumVolume;
 class Line;
 
 /*! \brief Camera base class. See \ref PageSystemWindowCamera for a description.
-*/
+ */
 
-class OSG_SYSTEMLIB_DLLMAPPING Camera : public CameraBase
-{
-     /*==========================  PUBLIC  =================================*/
+class OSG_SYSTEMLIB_DLLMAPPING Camera : public CameraBase {
+  /*==========================  PUBLIC  =================================*/
  public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  static const char* getClassname(void) {
+    return "Camera";
+  };
 
-    static const char *getClassname(void) { return "Camera"; };
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   transformation                             */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   transformation                             */
-    /*! \{                                                                 */
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Setup Rendering                            */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Setup Rendering                            */
-    /*! \{                                                                 */
+  virtual void setup(DrawActionBase* action, const Viewport& port);
 
-    virtual void setup          (DrawActionBase *action, const Viewport& port);
+  virtual void setupProjection(DrawActionBase* action, const Viewport& port);
 
-    virtual void setupProjection(DrawActionBase *action, const Viewport& port);
+  virtual void draw(DrawAction* action, const Viewport& port);
 
-    virtual void draw           (DrawAction     *action, const Viewport& port);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Access Parameters                           */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Access Parameters                           */
-    /*! \{                                                                 */
+  virtual void getProjection(Matrix& result, UInt32 width, UInt32 height);
 
-    virtual void getProjection           (Matrix        &result, 
-                                          UInt32 width, UInt32 height);
+  virtual void getProjectionTranslation(Matrix& result, UInt32 width, UInt32 height);
 
-    virtual void getProjectionTranslation(Matrix        &result, 
-                                          UInt32 width, UInt32 height);
+  virtual void getViewing(Matrix& result, UInt32 width, UInt32 height);
 
-    virtual void getViewing              (Matrix        &result, 
-                                          UInt32 width, UInt32 height);
+  virtual void getFrustum(FrustumVolume& result, const Viewport& port);
 
-    virtual void getFrustum              (FrustumVolume &result,
-                                          const Viewport& port);
-	
-	virtual void getFrustum              (FrustumVolume &result,
-                                          UInt32 width, UInt32 height);
-	
-    virtual void getWorldToScreen        (Matrix        &result, 
-                                          const Viewport& port);
-										  
-	virtual void getDecoration           (Matrix        &result, 
-                                          UInt32 width, UInt32 height);
+  virtual void getFrustum(FrustumVolume& result, UInt32 width, UInt32 height);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                 Intersection Helper                          */
-    /*! \{                                                                 */
-    
-    bool calcViewRay(Line & line, Int32 x, Int32 y, const Viewport& port);
+  virtual void getWorldToScreen(Matrix& result, const Viewport& port);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    dump                                      */
-    /*! \{                                                                 */
-    
-    virtual void dump(      UInt32    uiIndent = 0, 
-                      const BitVector bvFlags  = 0) const;
+  virtual void getDecoration(Matrix& result, UInt32 width, UInt32 height);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                 Intersection Helper                          */
+  /*! \{                                                                 */
+
+  bool calcViewRay(Line& line, Int32 x, Int32 y, const Viewport& port);
+
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    dump                                      */
+  /*! \{                                                                 */
+
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
+
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
  protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  Camera(void);
+  Camera(const Camera& source);
 
-    Camera(void);
-    Camera(const Camera &source);
-   
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    virtual ~Camera(void); 
-    
- 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
+  virtual ~Camera(void);
+
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
  private:
- 
-    typedef CameraBase Inherited;
+  typedef CameraBase Inherited;
 
-    friend class FieldContainer;
-    friend class CameraBase;
+  friend class FieldContainer;
+  friend class CameraBase;
 
-    static void initMethod( void );
+  static void initMethod(void);
 
-    void operator =(const Camera &source);
+  void operator=(const Camera& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
-typedef Camera *CameraP;
+typedef Camera* CameraP;
 
 OSG_END_NAMESPACE
 

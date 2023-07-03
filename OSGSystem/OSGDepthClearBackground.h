@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGDEPTHCLEARBACKGROUND_H_
 #define _OSGDEPTHCLEARBACKGROUND_H_
 #ifdef __sgi
@@ -52,85 +51,77 @@ OSG_BEGIN_NAMESPACE
 class DrawActionBase;
 class Viewport;
 
-/*! \brief Depth Clear Background  class. See \ref 
+/*! \brief Depth Clear Background  class. See \ref
     PageSystemWindowBackgroundDepthClear for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING DepthClearBackground : 
-    public DepthClearBackgroundBase
-{
-    /*==========================  PUBLIC  =================================*/
+class OSG_SYSTEMLIB_DLLMAPPING DepthClearBackground : public DepthClearBackgroundBase {
+  /*==========================  PUBLIC  =================================*/
  public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                     your_category                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                     your_category                            */
-    /*! \{                                                                 */
+  void clear(DrawActionBase*, Viewport*);
 
-    void clear(DrawActionBase *, Viewport *);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     transformation                           */
+  /*! \{                                                                 */
 
+  virtual void changed(BitVector whichField, UInt32 origin);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   dump                                       */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     transformation                           */
-    /*! \{                                                                 */
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    virtual void changed(BitVector whichField, 
-                         UInt32    origin    );
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   dump                                       */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32    uiIndent = 0, 
-                      const BitVector bvFlags  = 0) const;
+  DepthClearBackground(void);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
-    
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  DepthClearBackground(const DepthClearBackground& source);
 
-    DepthClearBackground(void);
-    
-    DepthClearBackground(const DepthClearBackground &source);
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    virtual ~DepthClearBackground(void); 
-    
-    /*! \}                                                                 */
-    /*=========================  PRIVATE  =================================*/
-  private:
+  virtual ~DepthClearBackground(void);
 
-    typedef DepthClearBackgroundBase Inherited;
+  /*! \}                                                                 */
+  /*=========================  PRIVATE  =================================*/
+ private:
+  typedef DepthClearBackgroundBase Inherited;
 
-    friend class FieldContainer;
-    friend class DepthClearBackgroundBase;
+  friend class FieldContainer;
+  friend class DepthClearBackgroundBase;
 
-    static void initMethod( void );
+  static void initMethod(void);
 
-    void operator =(const DepthClearBackground &source);
+  void operator=(const DepthClearBackground& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
-
 /** \brief class pointer
  */
-typedef DepthClearBackground *DepthClearBackgroundP;
+typedef DepthClearBackground* DepthClearBackgroundP;
 
 OSG_END_NAMESPACE
 
 #include <OSGDepthClearBackgroundBase.inl>
 #include <OSGDepthClearBackground.inl>
 
-#define OSGDEPTHCLEARBACKGROUND_HEADER_CVSID "@(#)$Id: OSGDepthClearBackground.h,v 1.1 2005/01/18 00:31:17 dirk Exp $"
+#define OSGDEPTHCLEARBACKGROUND_HEADER_CVSID                                                       \
+  "@(#)$Id: OSGDepthClearBackground.h,v 1.1 2005/01/18 00:31:17 dirk Exp $"
 
 #endif /* _OSGDEPTHCLEARBACKGROUND_H_ */

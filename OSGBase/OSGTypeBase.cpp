@@ -54,99 +54,75 @@ OSG_USING_NAMESPACE
 /*-------------------------------------------------------------------------*/
 /*                            Constructors                                 */
 
-TypeBase::TypeBase(const Char8 *szName,
-                   const Char8 *szParentName,
-                   const UInt32             ) :
+TypeBase::TypeBase(const Char8* szName, const Char8* szParentName, const UInt32)
+    :
 
-    _uiTypeId    (0           ),
-    _uiTypeRootId(0           ),
-    _pParent     (NULL        ),
-    _szName      (szName      ),
-    _szParentName(szParentName)
-{
-    _uiTypeId = TypeFactory::the()->registerType(this);
+    _uiTypeId(0)
+    , _uiTypeRootId(0)
+    , _pParent(NULL)
+    , _szName(szName)
+    , _szParentName(szParentName) {
+  _uiTypeId = TypeFactory::the()->registerType(this);
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Destructor                                  */
 
-TypeBase::~TypeBase(void)
-{
+TypeBase::~TypeBase(void) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                                Get                                      */
 
-UInt32 TypeBase::getId(void) const 
-{
-    return _uiTypeId; 
+UInt32 TypeBase::getId(void) const {
+  return _uiTypeId;
 }
 
-
-const IDString &TypeBase::getName(void) const
-{
-    return _szName;
+const IDString& TypeBase::getName(void) const {
+  return _szName;
 }
 
-
-const Char8 *TypeBase::getCName(void) const 
-{
-    return _szName.str(); 
+const Char8* TypeBase::getCName(void) const {
+  return _szName.str();
 }
 
-
-const IDString &TypeBase::getParentName(void) const
-{
-    return _szParentName;
+const IDString& TypeBase::getParentName(void) const {
+  return _szParentName;
 }
 
-
-const Char8  *TypeBase::getCParentName(void) const
-{
-    return _szParentName.str();
+const Char8* TypeBase::getCParentName(void) const {
+  return _szParentName.str();
 }
 
-
-UInt32 TypeBase::getNameSpace(void) const
-{
-    return 0;
+UInt32 TypeBase::getNameSpace(void) const {
+  return 0;
 }
-
 
 /*-------------------------------------------------------------------------*/
 /*                                Is                                       */
 
-bool TypeBase::isDerivedFrom(const TypeBase &OSG_CHECK_ARG(other)) const
-{
-    return false;
+bool TypeBase::isDerivedFrom(const TypeBase& OSG_CHECK_ARG(other)) const {
+  return false;
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Comparison                                  */
 
-bool TypeBase::operator ==(const TypeBase &other) const
-{
-    return _uiTypeId == other._uiTypeId;
+bool TypeBase::operator==(const TypeBase& other) const {
+  return _uiTypeId == other._uiTypeId;
 }
 
-
-bool TypeBase::operator !=(const TypeBase &other) const
-{
-    return ! (*this == other);
+bool TypeBase::operator!=(const TypeBase& other) const {
+  return !(*this == other);
 }
-
 
 /*-------------------------------------------------------------------------*/
 /*                            Constructors                                 */
 
-TypeBase::TypeBase(const TypeBase &source) :
-    _uiTypeId    (source._uiTypeId),
-    _uiTypeRootId(source._uiTypeRootId),
-    _pParent     (source._pParent),
-    _szName      (source._szName),
-    _szParentName(source._szParentName)
-{
+TypeBase::TypeBase(const TypeBase& source)
+    : _uiTypeId(source._uiTypeId)
+    , _uiTypeRootId(source._uiTypeRootId)
+    , _pParent(source._pParent)
+    , _szName(source._szName)
+    , _szParentName(source._szParentName) {
 }
-
-
-

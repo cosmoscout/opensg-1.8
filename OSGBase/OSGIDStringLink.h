@@ -50,44 +50,40 @@ OSG_BEGIN_NAMESPACE
 /*! \ingroup GrpBaseBase
  */
 
-class OSG_BASE_DLLMAPPING IDStringLink : public IDString
-{
-    /*==========================  PUBLIC  =================================*/
+class OSG_BASE_DLLMAPPING IDStringLink : public IDString {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  explicit IDStringLink(const Char8* str = 0);
+  IDStringLink(const IDStringLink& obj);
+  explicit IDStringLink(const IDString& obj);
 
-    explicit IDStringLink(const Char8        *str = 0);
-             IDStringLink(const IDStringLink &obj    );
-    explicit IDStringLink(const IDString     &obj    );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  virtual ~IDStringLink();
 
-    virtual ~IDStringLink();
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Operators                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Operators                                  */
-    /*! \{                                                                 */
+  const IDStringLink& operator=(const IDStringLink& obj);
 
-    const IDStringLink & operator =(const IDStringLink &obj);
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*==========================  PRIVATE  ================================*/
 
-  protected:
-
-    /*==========================  PRIVATE  ================================*/
-
-  private:
-
-    typedef IDString Inherited;
+ private:
+  typedef IDString Inherited;
 };
 
 OSG_END_NAMESPACE

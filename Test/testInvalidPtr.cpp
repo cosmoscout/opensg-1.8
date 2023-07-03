@@ -24,25 +24,23 @@
 
 OSG_USING_NAMESPACE
 
-int main (int argc, char *argv[])
-{
-    osgInit(argc, argv);
+int main(int argc, char* argv[]) {
+  osgInit(argc, argv);
 
-    for(UInt32 i=0;i<20;++i)
-    {
-        NodePtr planeNode = makePlane(2,2, 1,1);
-        addRefCP(planeNode);
-        subRefCP(planeNode);
-
-#ifdef OSG_INVALID_PTR_CHECK
-        // now call subRefCP on a invalid pointer!
-        subRefCP(planeNode);
-#endif
-    }
-
-    NodePtr planeNode = makePlane(2,2, 1,1);
+  for (UInt32 i = 0; i < 20; ++i) {
+    NodePtr planeNode = makePlane(2, 2, 1, 1);
     addRefCP(planeNode);
     subRefCP(planeNode);
 
-    return 0;
+#ifdef OSG_INVALID_PTR_CHECK
+    // now call subRefCP on a invalid pointer!
+    subRefCP(planeNode);
+#endif
+  }
+
+  NodePtr planeNode = makePlane(2, 2, 1, 1);
+  addRefCP(planeNode);
+  subRefCP(planeNode);
+
+  return 0;
 }

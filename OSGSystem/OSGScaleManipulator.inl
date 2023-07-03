@@ -44,5 +44,5 @@ OSG_BEGIN_NAMESPACE
 
 OSG_END_NAMESPACE
 
-#define OSGSCALEMANIPULATOR_INLINE_CVSID "@(#)$Id: OSGScaleManipulator.inl,v 1.1 2005/06/26 12:44:41 a-m-z Exp $"
-
+#define OSGSCALEMANIPULATOR_INLINE_CVSID                                                           \
+  "@(#)$Id: OSGScaleManipulator.inl,v 1.1 2005/06/26 12:44:41 a-m-z Exp $"

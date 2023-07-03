@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGSHLCHUNKBASE_H_
 #define _OSGSHLCHUNKBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -67,12 +65,12 @@
 
 #include <OSGShaderChunk.h> // Parent
 
-#include <OSGBoolFields.h> // CgFrontEnd type
-#include <OSGBoolFields.h> // PointSize type
+#include <OSGBoolFields.h>   // CgFrontEnd type
+#include <OSGBoolFields.h>   // PointSize type
 #include <OSGGLenumFields.h> // ProgramParameterNames type
 #include <OSGUInt32Fields.h> // ProgramParameterValues type
 #include <OSGUInt32Fields.h> // GLId type
-#include <OSGInt32Fields.h> // IgnoreGLForAspect type
+#include <OSGInt32Fields.h>  // IgnoreGLForAspect type
 
 #include <OSGSHLChunkFields.h>
 
@@ -83,216 +81,194 @@ class BinaryDataHandler;
 
 //! \brief SHLChunk Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING SHLChunkBase : public ShaderChunk
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING SHLChunkBase : public ShaderChunk {
+ private:
+  typedef ShaderChunk Inherited;
 
-    typedef ShaderChunk    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef SHLChunkPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    CgFrontEndFieldId             = Inherited::NextFieldId,
+    PointSizeFieldId              = CgFrontEndFieldId + 1,
+    ProgramParameterNamesFieldId  = PointSizeFieldId + 1,
+    ProgramParameterValuesFieldId = ProgramParameterNamesFieldId + 1,
+    GLIdFieldId                   = ProgramParameterValuesFieldId + 1,
+    IgnoreGLForAspectFieldId      = GLIdFieldId + 1,
+    NextFieldId                   = IgnoreGLForAspectFieldId + 1
+  };
 
-    typedef SHLChunkPtr  Ptr;
+  static const OSG::BitVector CgFrontEndFieldMask;
+  static const OSG::BitVector PointSizeFieldMask;
+  static const OSG::BitVector ProgramParameterNamesFieldMask;
+  static const OSG::BitVector ProgramParameterValuesFieldMask;
+  static const OSG::BitVector GLIdFieldMask;
+  static const OSG::BitVector IgnoreGLForAspectFieldMask;
 
-    enum
-    {
-        CgFrontEndFieldId             = Inherited::NextFieldId,
-        PointSizeFieldId              = CgFrontEndFieldId             + 1,
-        ProgramParameterNamesFieldId  = PointSizeFieldId              + 1,
-        ProgramParameterValuesFieldId = ProgramParameterNamesFieldId  + 1,
-        GLIdFieldId                   = ProgramParameterValuesFieldId + 1,
-        IgnoreGLForAspectFieldId      = GLIdFieldId                   + 1,
-        NextFieldId                   = IgnoreGLForAspectFieldId      + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector CgFrontEndFieldMask;
-    static const OSG::BitVector PointSizeFieldMask;
-    static const OSG::BitVector ProgramParameterNamesFieldMask;
-    static const OSG::BitVector ProgramParameterValuesFieldMask;
-    static const OSG::BitVector GLIdFieldMask;
-    static const OSG::BitVector IgnoreGLForAspectFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFBool*   getSFCgFrontEnd(void);
+  SFBool*   getSFPointSize(void);
+  MFGLenum* getMFProgramParameterNames(void);
+  MFUInt32* getMFProgramParameterValues(void);
+  SFUInt32* getSFGLId(void);
+  SFInt32*  getSFIgnoreGLForAspect(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  bool&           getCgFrontEnd(void);
+  const bool&     getCgFrontEnd(void) const;
+  bool&           getPointSize(void);
+  const bool&     getPointSize(void) const;
+  UInt32&         getGLId(void);
+  const UInt32&   getGLId(void) const;
+  Int32&          getIgnoreGLForAspect(void);
+  const Int32&    getIgnoreGLForAspect(void) const;
+  GLenum&         getProgramParameterNames(const UInt32 index);
+  MFGLenum&       getProgramParameterNames(void);
+  const MFGLenum& getProgramParameterNames(void) const;
+  UInt32&         getProgramParameterValues(const UInt32 index);
+  MFUInt32&       getProgramParameterValues(void);
+  const MFUInt32& getProgramParameterValues(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFBool              *getSFCgFrontEnd     (void);
-           SFBool              *getSFPointSize      (void);
-           MFGLenum            *getMFProgramParameterNames(void);
-           MFUInt32            *getMFProgramParameterValues(void);
-           SFUInt32            *getSFGLId           (void);
-           SFInt32             *getSFIgnoreGLForAspect(void);
+  void setCgFrontEnd(const bool& value);
+  void setPointSize(const bool& value);
+  void setGLId(const UInt32& value);
+  void setIgnoreGLForAspect(const Int32& value);
 
-           bool                &getCgFrontEnd     (void);
-     const bool                &getCgFrontEnd     (void) const;
-           bool                &getPointSize      (void);
-     const bool                &getPointSize      (void) const;
-           UInt32              &getGLId           (void);
-     const UInt32              &getGLId           (void) const;
-           Int32               &getIgnoreGLForAspect(void);
-     const Int32               &getIgnoreGLForAspect(void) const;
-           GLenum              &getProgramParameterNames(const UInt32 index);
-           MFGLenum            &getProgramParameterNames(void);
-     const MFGLenum            &getProgramParameterNames(void) const;
-           UInt32              &getProgramParameterValues(const UInt32 index);
-           MFUInt32            &getProgramParameterValues(void);
-     const MFUInt32            &getProgramParameterValues(void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setCgFrontEnd     ( const bool &value );
-     void setPointSize      ( const bool &value );
-     void setGLId           ( const UInt32 &value );
-     void setIgnoreGLForAspect( const Int32 &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static SHLChunkPtr create(void);
+  static SHLChunkPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  SHLChunkPtr      create          (void); 
-    static  SHLChunkPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFBool   _sfCgFrontEnd;
+  SFBool   _sfPointSize;
+  MFGLenum _mfProgramParameterNames;
+  MFUInt32 _mfProgramParameterValues;
+  SFUInt32 _sfGLId;
+  SFInt32  _sfIgnoreGLForAspect;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  SHLChunkBase(void);
+  SHLChunkBase(const SHLChunkBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~SHLChunkBase(void);
 
-    SFBool              _sfCgFrontEnd;
-    SFBool              _sfPointSize;
-    MFGLenum            _mfProgramParameterNames;
-    MFUInt32            _mfProgramParameterValues;
-    SFUInt32            _sfGLId;
-    SFInt32             _sfIgnoreGLForAspect;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    SHLChunkBase(void);
-    SHLChunkBase(const SHLChunkBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~SHLChunkBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      SHLChunkBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(SHLChunkBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      SHLChunkBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(SHLChunkBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const SHLChunkBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const SHLChunkBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef SHLChunkBase* SHLChunkBaseP;
 
-typedef SHLChunkBase *SHLChunkBaseP;
-
-typedef osgIF<SHLChunkBase::isNodeCore,
-              CoredNodePtr<SHLChunk>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet SHLChunkNodePtr;
+typedef osgIF<SHLChunkBase::isNodeCore, CoredNodePtr<SHLChunk>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet SHLChunkNodePtr;
 
 typedef RefPtr<SHLChunkPtr> SHLChunkRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGSHLCHUNKBASE_HEADER_CVSID "@(#)$Id: OSGSHLChunkBase.h,v 1.14 2006/11/17 17:16:04 a-m-z Exp $"
+#define OSGSHLCHUNKBASE_HEADER_CVSID                                                               \
+  "@(#)$Id: OSGSHLChunkBase.h,v 1.14 2006/11/17 17:16:04 a-m-z Exp $"
 
 #endif /* _OSGSHLCHUNKBASE_H_ */

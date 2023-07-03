@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEDIRECTIONALLIGHTINST
 
 #include <stdlib.h>
@@ -61,212 +60,155 @@
 #include "OSGDirectionalLightBase.h"
 #include "OSGDirectionalLight.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  DirectionalLightBase::DirectionFieldMask = 
+const OSG::BitVector DirectionalLightBase::DirectionFieldMask =
     (TypeTraits<BitVector>::One << DirectionalLightBase::DirectionFieldId);
 
-const OSG::BitVector DirectionalLightBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector DirectionalLightBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
 /*! \var Vec3f           DirectionalLightBase::_sfDirection
-    
+
 */
 
 //! DirectionalLight description
 
-FieldDescription *DirectionalLightBase::_desc[] = 
-{
-    new FieldDescription(SFVec3f::getClassType(), 
-                     "direction", 
-                     DirectionFieldId, DirectionFieldMask,
-                     false,
-                     (FieldAccessMethod) &DirectionalLightBase::getSFDirection)
-};
+FieldDescription* DirectionalLightBase::_desc[] = {
+    new FieldDescription(SFVec3f::getClassType(), "direction", DirectionFieldId, DirectionFieldMask,
+        false, (FieldAccessMethod)&DirectionalLightBase::getSFDirection)};
 
-
-FieldContainerType DirectionalLightBase::_type(
-    "DirectionalLight",
-    "Light",
-    NULL,
-    (PrototypeCreateF) &DirectionalLightBase::createEmpty,
-    DirectionalLight::initMethod,
-    _desc,
+FieldContainerType DirectionalLightBase::_type("DirectionalLight", "Light", NULL,
+    (PrototypeCreateF)&DirectionalLightBase::createEmpty, DirectionalLight::initMethod, _desc,
     sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(DirectionalLightBase, DirectionalLightPtr)
+// OSG_FIELD_CONTAINER_DEF(DirectionalLightBase, DirectionalLightPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &DirectionalLightBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &DirectionalLightBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr DirectionalLightBase::shallowCopy(void) const 
-{ 
-    DirectionalLightPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const DirectionalLight *>(this)); 
-
-    return returnValue; 
+FieldContainerType& DirectionalLightBase::getType(void) {
+  return _type;
 }
 
-UInt32 DirectionalLightBase::getContainerSize(void) const 
-{ 
-    return sizeof(DirectionalLight); 
+const FieldContainerType& DirectionalLightBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr DirectionalLightBase::shallowCopy(void) const {
+  DirectionalLightPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const DirectionalLight*>(this));
+
+  return returnValue;
+}
+
+UInt32 DirectionalLightBase::getContainerSize(void) const {
+  return sizeof(DirectionalLight);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void DirectionalLightBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((DirectionalLightBase *) &other, whichField);
+void DirectionalLightBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((DirectionalLightBase*)&other, whichField);
 }
 #else
-void DirectionalLightBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((DirectionalLightBase *) &other, whichField, sInfo);
+void DirectionalLightBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((DirectionalLightBase*)&other, whichField, sInfo);
 }
-void DirectionalLightBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void DirectionalLightBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void DirectionalLightBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void DirectionalLightBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-DirectionalLightBase::DirectionalLightBase(void) :
-    _sfDirection              (Vec3f(0,0,1)), 
-    Inherited() 
-{
+DirectionalLightBase::DirectionalLightBase(void)
+    : _sfDirection(Vec3f(0, 0, 1))
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-DirectionalLightBase::DirectionalLightBase(const DirectionalLightBase &source) :
-    _sfDirection              (source._sfDirection              ), 
-    Inherited                 (source)
-{
+DirectionalLightBase::DirectionalLightBase(const DirectionalLightBase& source)
+    : _sfDirection(source._sfDirection)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-DirectionalLightBase::~DirectionalLightBase(void)
-{
+DirectionalLightBase::~DirectionalLightBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 DirectionalLightBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 DirectionalLightBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (DirectionFieldMask & whichField))
-    {
-        returnValue += _sfDirection.getBinSize();
-    }
+  if (FieldBits::NoField != (DirectionFieldMask & whichField)) {
+    returnValue += _sfDirection.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void DirectionalLightBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void DirectionalLightBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (DirectionFieldMask & whichField))
-    {
-        _sfDirection.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (DirectionFieldMask & whichField)) {
+    _sfDirection.copyToBin(pMem);
+  }
 }
 
-void DirectionalLightBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void DirectionalLightBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (DirectionFieldMask & whichField))
-    {
-        _sfDirection.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (DirectionFieldMask & whichField)) {
+    _sfDirection.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void DirectionalLightBase::executeSyncImpl(      DirectionalLightBase *pOther,
-                                        const BitVector         &whichField)
-{
+void DirectionalLightBase::executeSyncImpl(
+    DirectionalLightBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (DirectionFieldMask & whichField))
-        _sfDirection.syncWith(pOther->_sfDirection);
-
-
+  if (FieldBits::NoField != (DirectionFieldMask & whichField))
+    _sfDirection.syncWith(pOther->_sfDirection);
 }
 #else
-void DirectionalLightBase::executeSyncImpl(      DirectionalLightBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void DirectionalLightBase::executeSyncImpl(
+    DirectionalLightBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (DirectionFieldMask & whichField))
-        _sfDirection.syncWith(pOther->_sfDirection);
-
-
-
+  if (FieldBits::NoField != (DirectionFieldMask & whichField))
+    _sfDirection.syncWith(pOther->_sfDirection);
 }
 
-void DirectionalLightBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void DirectionalLightBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 OSG_BEGIN_NAMESPACE
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_DEV)
 DataType FieldDataTraits<DirectionalLightPtr>::_type("DirectionalLightPtr", "LightPtr");
 #endif
-
 
 OSG_END_NAMESPACE

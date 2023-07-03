@@ -48,120 +48,112 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief FragmentProgramChunk class. See \ref 
+/*! \brief FragmentProgramChunk class. See \ref
            PageSystemFragmentProgramChunk for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING FragmentProgramChunk : public FragmentProgramChunkBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING FragmentProgramChunk : public FragmentProgramChunkBase {
+ private:
+  typedef FragmentProgramChunkBase Inherited;
 
-    typedef FragmentProgramChunkBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                 Chunk Class Access                           */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual const StateChunkClass* getClass(void) const;
 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name              Static Chunk Class Access                       */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                 Chunk Class Access                           */
-    /*! \{                                                                 */
+  inline static UInt32                 getStaticClassId(void);
+  inline static const StateChunkClass* getStaticClass(void);
 
-           virtual const StateChunkClass * getClass         (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name              Static Chunk Class Access                       */
-    /*! \{                                                                 */
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    inline static        UInt32            getStaticClassId (void);
-    inline static  const StateChunkClass * getStaticClass   (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in FragmentProgramChunkBase.
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Init                                   */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  void onCreate(const FragmentProgramChunk* source = NULL);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    // Variables should all be in FragmentProgramChunkBase.
+  FragmentProgramChunk(void);
+  FragmentProgramChunk(const FragmentProgramChunk& source);
 
-     /*---------------------------------------------------------------------*/
-    /*! \name                       Init                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    void onCreate(const FragmentProgramChunk *source = NULL);
+  virtual ~FragmentProgramChunk(void);
 
-    /*! \}                                                                 */
-   /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name             Program-Specific Methods                         */
+  /*! \{                                                                 */
 
-    FragmentProgramChunk(void);
-    FragmentProgramChunk(const FragmentProgramChunk &source);
+  virtual UInt32      getExtension(void) const;
+  virtual GLenum      getTarget(void) const;
+  virtual const char* getTargetName(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
 
-    virtual ~FragmentProgramChunk(void); 
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class FragmentProgramChunkBase;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name             Program-Specific Methods                         */
-    /*! \{                                                                 */
+  static StateChunkClass _class;
 
-    virtual       UInt32  getExtension(void)  const; 
-    virtual       GLenum  getTarget(void)     const; 
-    virtual const char   *getTargetName(void) const; 
+  /*---------------------------------------------------------------------*/
+  /*! \name            OpenGL Extension Handling                         */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  static UInt32 _arbFragmentProgram;
 
-    friend class FieldContainer;
-    friend class FragmentProgramChunkBase;
+  /*! \}                                                                 */
 
-    static StateChunkClass _class;
+  static void initMethod(void);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name            OpenGL Extension Handling                         */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                         GL                                   */
+  /*! \{                                                                 */
 
-    static UInt32 _arbFragmentProgram;
+  void handleGL(Window* win, UInt32 id);
 
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 
-    static void initMethod(void);
+  // prohibit default functions (move to 'public' if you need one)
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                         GL                                   */
-    /*! \{                                                                 */
-
-    void handleGL(Window *win, UInt32 id);
-    
-    /*! \}                                                                 */
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const FragmentProgramChunk &source);
+  void operator=(const FragmentProgramChunk& source);
 };
 
-typedef FragmentProgramChunk *FragmentProgramChunkP;
+typedef FragmentProgramChunk* FragmentProgramChunkP;
 
 OSG_END_NAMESPACE
 

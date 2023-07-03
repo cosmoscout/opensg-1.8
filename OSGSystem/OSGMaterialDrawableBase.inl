@@ -52,55 +52,39 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &MaterialDrawableBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& MaterialDrawableBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 MaterialDrawableBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
-
+inline OSG::UInt32 MaterialDrawableBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the MaterialDrawable::_sfMaterial field.
-inline
-SFMaterialPtr *MaterialDrawableBase::getSFMaterial(void)
-{
-    return &_sfMaterial;
-}
-
-
-//! Get the value of the MaterialDrawable::_sfMaterial field.
-inline
-MaterialPtr &MaterialDrawableBase::getMaterial(void)
-{
-    return _sfMaterial.getValue();
+inline SFMaterialPtr* MaterialDrawableBase::getSFMaterial(void) {
+  return &_sfMaterial;
 }
 
 //! Get the value of the MaterialDrawable::_sfMaterial field.
-inline
-const MaterialPtr &MaterialDrawableBase::getMaterial(void) const
-{
-    return _sfMaterial.getValue();
+inline MaterialPtr& MaterialDrawableBase::getMaterial(void) {
+  return _sfMaterial.getValue();
+}
+
+//! Get the value of the MaterialDrawable::_sfMaterial field.
+inline const MaterialPtr& MaterialDrawableBase::getMaterial(void) const {
+  return _sfMaterial.getValue();
 }
 
 //! Set the value of the MaterialDrawable::_sfMaterial field.
-inline
-void MaterialDrawableBase::setMaterial(const MaterialPtr &value)
-{
-    _sfMaterial.setValue(value);
+inline void MaterialDrawableBase::setMaterial(const MaterialPtr& value) {
+  _sfMaterial.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGMATERIALDRAWABLEBASE_INLINE_CVSID "@(#)$Id: OSGMaterialDrawableBase.inl,v 1.9 2006/02/20 16:54:27 dirk Exp $"
-
+#define OSGMATERIALDRAWABLEBASE_INLINE_CVSID                                                       \
+  "@(#)$Id: OSGMaterialDrawableBase.inl,v 1.9 2006/02/20 16:54:27 dirk Exp $"

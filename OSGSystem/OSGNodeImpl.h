@@ -72,319 +72,287 @@ class FieldDescription;
 /*! \ingroup GrpSystemFieldContainer
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING Node : public AttachmentContainer 
-{
-    /*=========================  PROTECTED  ===============================*/
+class OSG_SYSTEMLIB_DLLMAPPING Node : public AttachmentContainer {
+  /*=========================  PROTECTED  ===============================*/
 
-  protected:
+ protected:
+  typedef AttachmentContainer Inherited;
 
-    typedef AttachmentContainer Inherited;
+  /*==========================  PUBLIC  =================================*/
 
-    /*==========================  PUBLIC  =================================*/
+ public:
+  enum {
+    VolumeFieldId   = Inherited::NextFieldId,
+    TravMaskFieldId = VolumeFieldId + 1,
+    ParentFieldId   = TravMaskFieldId + 1,
+    ChildrenFieldId = ParentFieldId + 1,
+    CoreFieldId     = ChildrenFieldId + 1,
+    NextFieldId     = CoreFieldId + 1
+  };
 
-  public:
+  static const BitVector VolumeFieldMask;
+  static const BitVector TravMaskFieldMask;
+  static const BitVector ParentFieldMask;
+  static const BitVector ChildrenFieldMask;
+  static const BitVector CoreFieldMask;
 
-    enum 
-    { 
-        VolumeFieldId      = Inherited::NextFieldId, 
-        TravMaskFieldId    = VolumeFieldId         + 1,
-        ParentFieldId      = TravMaskFieldId       + 1,
-        ChildrenFieldId    = ParentFieldId         + 1,
-        CoreFieldId        = ChildrenFieldId       + 1,
-        NextFieldId        = CoreFieldId           + 1
-    };
+  typedef NodePtr Ptr;
 
-    static const BitVector VolumeFieldMask;
-    static const BitVector TravMaskFieldMask;
-    static const BitVector ParentFieldMask;
-    static const BitVector ChildrenFieldMask;
-    static const BitVector CoreFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name        General Fieldcontainer Declaration                    */
+  /*! \{                                                                 */
 
-    typedef NodePtr Ptr;
+  OSG_FIELD_CONTAINER_DECL(NodePtr)
 
-    /*---------------------------------------------------------------------*/
-    /*! \name        General Fieldcontainer Declaration                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                        Core                                  */
+  /*! \{                                                                 */
 
-    OSG_FIELD_CONTAINER_DECL(NodePtr)
+  NodeCorePtr getCore(void);
+  NodeCorePtr getCore(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                        Core                                  */
-    /*! \{                                                                 */
+  void setCore(const NodeCorePtr& core);
 
-    NodeCorePtr getCore(      void             );
-    NodeCorePtr getCore(      void             ) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Parent                                 */
+  /*! \{                                                                 */
 
-    void        setCore(const NodeCorePtr &core);
+  NodePtr getParent(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Parent                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Children                               */
+  /*! \{                                                                 */
 
-    NodePtr getParent(void);
+  UInt32 getNChildren(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Children                               */
-    /*! \{                                                                 */
+  void addChild(const NodePtr& childP);
 
-    UInt32  getNChildren  (void                     ) const;
-    
-    void    addChild      (const NodePtr &childP    );
+  void insertChild(UInt32 childIndex, const NodePtr& childP);
 
-    void    insertChild   (      UInt32   childIndex, 
-                           const NodePtr &childP    );
+  void replaceChild(UInt32 childIndex, const NodePtr& childP);
 
-    void    replaceChild  (      UInt32   childIndex,    
-                           const NodePtr &childP    );
+  bool replaceChildBy(const NodePtr& childP, const NodePtr& newChildP);
 
-    bool    replaceChildBy(const NodePtr &childP, 
-                           const NodePtr &newChildP );
+  Int32 findChild(const NodePtr& childP) const;
 
-    Int32   findChild     (const NodePtr &childP    ) const;
+  void subChild(const NodePtr& childP);
+  void subChild(UInt32 childIndex);
 
-    void    subChild      (const NodePtr &childP    );
-    void    subChild      (      UInt32   childIndex);
+  NodePtr getChild(UInt32 childIndex);
 
-    NodePtr getChild      (      UInt32   childIndex);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Active / TravMask                           */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Active / TravMask                           */
-    /*! \{                                                                 */
+  bool getActive(void) const;
 
-    bool   getActive  (void      ) const;
+  void setActive(bool val);
 
-    void   setActive  (bool   val);
+  void   setTravMask(UInt32 val);
+  UInt32 getTravMask(void) const;
 
-    void   setTravMask(UInt32 val);
-    UInt32 getTravMask(void      ) const;
+  void  setOcclusionMask(UInt8 val);
+  UInt8 getOcclusionMask(void) const;
 
-    void   setOcclusionMask(UInt8 val);
-    UInt8  getOcclusionMask(void      ) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Children                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Children                               */
-    /*! \{                                                                 */
+  NodePtr clone(void);
 
-    NodePtr clone(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Access Fields                            */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Access Fields                            */
-    /*! \{                                                                 */
+  SFDynamicVolume* getSFVolume(void);
+  SFUInt32*        getSFTravMask(void);
+  SFNodePtr*       getSFParent(void);
+  SFNodeCorePtr*   getSFCore(void);
+  MFNodePtr*       getMFChildren(void);
 
-    SFDynamicVolume *getSFVolume  (void);
-    SFUInt32        *getSFTravMask(void);
-    SFNodePtr       *getSFParent  (void);
-    SFNodeCorePtr   *getSFCore    (void);
-    MFNodePtr       *getMFChildren(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Transformation                            */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Transformation                            */
-    /*! \{                                                                 */
+  Matrix getToWorld(void);
 
-    Matrix getToWorld(void          );
-    
-    void   getToWorld(Matrix &result);
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Volume                                 */
-    /*! \{                                                                 */
-    
-           DynamicVolume &getVolume       (bool update          );
-    
-    const  DynamicVolume &getVolume       (void                 ) const;
-    
-           void           getWorldVolume  (DynamicVolume &result);
-    
-           void           updateVolume    (void                 );
+  void getToWorld(Matrix& result);
 
-           void           invalidateVolume(void                 );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Volume                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                        Changed                               */
-    /*! \{                                                                 */
+  DynamicVolume& getVolume(bool update);
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  const DynamicVolume& getVolume(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  void getWorldVolume(DynamicVolume& result);
 
-    virtual UInt32  getBinSize (const BitVector         &whichField);
+  void updateVolume(void);
 
-    virtual void    copyToBin  (      BinaryDataHandler &pMem, 
-                                const BitVector         &whichField);
-    virtual void    copyFromBin(      BinaryDataHandler &pMem, 
-                                const BitVector         &whichField);
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                        Dump                                  */
-    /*! \{                                                                 */
+  void invalidateVolume(void);
 
-    virtual void dump(      UInt32    uiIndent = 0, 
-                      const BitVector bvFlags  = 0) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                        Changed                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-    friend class FieldContainer;
-    friend class FieldContainerType;
+  virtual UInt32 getBinSize(const BitVector& whichField);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Type information                            */
-    /*! \{                                                                 */
+  virtual void copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    static       FieldDescription   *_desc[];
-    static       FieldContainerType  _type;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                        Dump                                  */
+  /*! \{                                                                 */
 
-    static const NodePtr              NullNode;
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    SFDynamicVolume _sfVolume;
-    
-    SFUInt32        _sfTravMask;
-    
-    SFNodePtr       _sfParent;
-    MFNodePtr       _mfChildren;
+ protected:
+  friend class FieldContainer;
+  friend class FieldContainerType;
 
-    SFNodeCorePtr   _sfCore;
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Type information                            */
+  /*! \{                                                                 */
 
-    UInt8           _occlusionMask;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  static const NodePtr NullNode;
 
-    Node(void);
-    Node(const Node &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  SFDynamicVolume _sfVolume;
 
-    virtual ~Node (void);
+  SFUInt32 _sfTravMask;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                MT Construction                               */
-    /*! \{                                                                 */
+  SFNodePtr _sfParent;
+  MFNodePtr _mfChildren;
 
-    void setParent(const NodePtr &parent);
+  SFNodeCorePtr _sfCore;
 
-    void onCreate (const Node    *source = NULL);
+  UInt8 _occlusionMask;
+
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
+
+  Node(void);
+  Node(const Node& source);
+
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
+
+  virtual ~Node(void);
+
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                MT Construction                               */
+  /*! \{                                                                 */
+
+  void setParent(const NodePtr& parent);
+
+  void onCreate(const Node* source = NULL);
 
 #if defined(OSG_FIXED_MFIELDSYNC)
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Sync                                     */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Sync                                     */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    virtual void executeSync    (      FieldContainer &other,
-                                 const BitVector      &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 
-            void executeSyncImpl(      Node           *pOther,
-                                 const BitVector      &whichField);
+  void executeSyncImpl(Node* pOther, const BitVector& whichField);
 #else
-    virtual void executeSync       (      FieldContainer &other,
-                                    const BitVector      &whichField,
-                                    const SyncInfo       &sInfo     );
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-            void executeSyncImpl   (      Node           *pOther,
-                                    const BitVector      &whichField,
-                                    const SyncInfo       &sInfo     );
+  void executeSyncImpl(Node* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField, 
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField, 
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 #endif
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Pointer                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Pointer                                  */
+  /*! \{                                                                 */
 
-    NodePtr getPtr(void) const;
+  NodePtr getPtr(void) const;
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-  private:
-
-    /* prohibit default function (move to 'public' if needed) */
-    void operator =(const Node &source);
+ private:
+  /* prohibit default function (move to 'public' if needed) */
+  void operator=(const Node& source);
 };
-
 
 /*! \ingroup GrpSystemFieldContainerFuncs
  */
 
 OSG_SYSTEMLIB_DLLMAPPING
-NodePtr cloneTree(const NodePtr &pRootNode);
+NodePtr cloneTree(const NodePtr& pRootNode);
 
 OSG_SYSTEMLIB_DLLMAPPING
-FieldContainerPtr deepClone(const FieldContainerPtr &src,
-                            const std::vector<std::string> &share);
+FieldContainerPtr deepClone(const FieldContainerPtr& src, const std::vector<std::string>& share);
 
 OSG_SYSTEMLIB_DLLMAPPING
-FieldContainerPtr deepClone(const FieldContainerPtr &src,
-                            const std::vector<UInt16> &shareGroupIds);
+FieldContainerPtr deepClone(const FieldContainerPtr& src, const std::vector<UInt16>& shareGroupIds);
 
 OSG_SYSTEMLIB_DLLMAPPING
-FieldContainerPtr deepClone(const FieldContainerPtr &src,
-                            const std::string &shareString = "");
+FieldContainerPtr deepClone(const FieldContainerPtr& src, const std::string& shareString = "");
 
 OSG_SYSTEMLIB_DLLMAPPING
-void deepCloneAttachments(const AttachmentContainerPtr &src,
-                          AttachmentContainerPtr dst,
-                          const std::vector<std::string> &share);
+void deepCloneAttachments(const AttachmentContainerPtr& src, AttachmentContainerPtr dst,
+    const std::vector<std::string>& share);
 
 OSG_SYSTEMLIB_DLLMAPPING
-void deepCloneAttachments(const AttachmentContainerPtr &src,
-                          AttachmentContainerPtr dst,
-                          const std::vector<UInt16> &shareGroupIds);
+void deepCloneAttachments(const AttachmentContainerPtr& src, AttachmentContainerPtr dst,
+    const std::vector<UInt16>& shareGroupIds);
 
 OSG_SYSTEMLIB_DLLMAPPING
-void deepCloneAttachments(const NodePtr &src, NodePtr &dst,
-                          const std::string &shareString = "");
-                      
-OSG_SYSTEMLIB_DLLMAPPING
-NodePtr deepCloneTree(const NodePtr &src,
-                      const std::vector<std::string> &share);
+void deepCloneAttachments(const NodePtr& src, NodePtr& dst, const std::string& shareString = "");
 
 OSG_SYSTEMLIB_DLLMAPPING
-NodePtr deepCloneTree(const NodePtr &src,
-                      const std::vector<UInt16> &shareGroupIds);
+NodePtr deepCloneTree(const NodePtr& src, const std::vector<std::string>& share);
 
 OSG_SYSTEMLIB_DLLMAPPING
-NodePtr deepCloneTree(const NodePtr &src,
-                      const std::string &shareString = "");
+NodePtr deepCloneTree(const NodePtr& src, const std::vector<UInt16>& shareGroupIds);
+
+OSG_SYSTEMLIB_DLLMAPPING
+NodePtr deepCloneTree(const NodePtr& src, const std::string& shareString = "");
 
 OSG_END_NAMESPACE
 

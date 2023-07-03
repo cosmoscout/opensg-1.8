@@ -49,20 +49,19 @@
 
 OSG_USING_NAMESPACE
 
-
 /***************************************************************************\
  *                            Description                                  *
 \***************************************************************************/
 
 /*! \class osg::Foreground
     \ingroup GrpSystemWindowForegrounds
-    
+
 Foreground is the base class for all foreground rendering.  See \ref
 PageSystemWindowForegrounds for a description.
 
 \ext
 
-To create a new Background the method that has be overridden is  
+To create a new Background the method that has be overridden is
 draw(DrawActionBase * action, Viewport * port);. It can directly call OpenGL
 commands, but should restore the state after it's done.
 
@@ -78,8 +77,7 @@ commands, but should restore the state after it's done.
  -  private                                                                -
 \*-------------------------------------------------------------------------*/
 
-void Foreground::initMethod (void)
-{
+void Foreground::initMethod(void) {
 }
 
 /***************************************************************************\
@@ -88,30 +86,24 @@ void Foreground::initMethod (void)
 
 /*------------- constructors & destructors --------------------------------*/
 
-Foreground::Foreground(void) :
-    Inherited()
-{
+Foreground::Foreground(void)
+    : Inherited() {
 }
 
-Foreground::Foreground(const Foreground &source) :
-    Inherited(source)
-{
+Foreground::Foreground(const Foreground& source)
+    : Inherited(source) {
 }
 
-Foreground::~Foreground(void)
-{
+Foreground::~Foreground(void) {
 }
 
-void Foreground::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void Foreground::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
 /*------------------------------- dump ----------------------------------*/
 
-void Foreground::dump(      UInt32    OSG_CHECK_ARG(uiIndent), 
-                      const BitVector OSG_CHECK_ARG(bvFlags )) const
-{
-    SLOG << "Dump Foreground NI" << std::endl;
+void Foreground::dump(
+    UInt32 OSG_CHECK_ARG(uiIndent), const BitVector OSG_CHECK_ARG(bvFlags)) const {
+  SLOG << "Dump Foreground NI" << std::endl;
 }
-

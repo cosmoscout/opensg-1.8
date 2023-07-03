@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGDVRSIMPLELUTSHADERBASE_H_
 #define _OSGDVRSIMPLELUTSHADERBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -79,188 +77,168 @@ class BinaryDataHandler;
 
 //! \brief DVRSimpleLUTShader Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING DVRSimpleLUTShaderBase : public DVRSimpleShader
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING DVRSimpleLUTShaderBase : public DVRSimpleShader {
+ private:
+  typedef DVRSimpleShader Inherited;
 
-    typedef DVRSimpleShader    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef DVRSimpleLUTShaderPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    LutModeFieldId       = Inherited::NextFieldId,
+    ActiveLutModeFieldId = LutModeFieldId + 1,
+    NextFieldId          = ActiveLutModeFieldId + 1
+  };
 
-    typedef DVRSimpleLUTShaderPtr  Ptr;
+  static const OSG::BitVector LutModeFieldMask;
+  static const OSG::BitVector ActiveLutModeFieldMask;
 
-    enum
-    {
-        LutModeFieldId       = Inherited::NextFieldId,
-        ActiveLutModeFieldId = LutModeFieldId       + 1,
-        NextFieldId          = ActiveLutModeFieldId + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector LutModeFieldMask;
-    static const OSG::BitVector ActiveLutModeFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-    virtual       UInt32              getContainerSize(void) const;
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static DVRSimpleLUTShaderPtr create(void);
+  static DVRSimpleLUTShaderPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  DVRSimpleLUTShaderPtr      create          (void); 
-    static  DVRSimpleLUTShaderPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFInt8 _sfLutMode;
+  SFInt8 _sfActiveLutMode;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  DVRSimpleLUTShaderBase(void);
+  DVRSimpleLUTShaderBase(const DVRSimpleLUTShaderBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~DVRSimpleLUTShaderBase(void);
 
-    SFInt8              _sfLutMode;
-    SFInt8              _sfActiveLutMode;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  SFInt8* getSFLutMode(void);
+  SFInt8* getSFActiveLutMode(void);
 
-    DVRSimpleLUTShaderBase(void);
-    DVRSimpleLUTShaderBase(const DVRSimpleLUTShaderBase &source);
+  Int8&       getLutMode(void);
+  const Int8& getLutMode(void) const;
+  Int8&       getActiveLutMode(void);
+  const Int8& getActiveLutMode(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-    virtual ~DVRSimpleLUTShaderBase(void); 
+  void setLutMode(const Int8& value);
+  void setActiveLutMode(const Int8& value);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
-
-           SFInt8              *getSFLutMode        (void);
-           SFInt8              *getSFActiveLutMode  (void);
-
-           Int8                &getLutMode        (void);
-     const Int8                &getLutMode        (void) const;
-           Int8                &getActiveLutMode  (void);
-     const Int8                &getActiveLutMode  (void) const;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
-
-     void setLutMode        (const Int8 &value);
-     void setActiveLutMode  (const Int8 &value);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      DVRSimpleLUTShaderBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(DVRSimpleLUTShaderBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      DVRSimpleLUTShaderBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      DVRSimpleLUTShaderBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const DVRSimpleLUTShaderBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const DVRSimpleLUTShaderBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef DVRSimpleLUTShaderBase* DVRSimpleLUTShaderBaseP;
 
-typedef DVRSimpleLUTShaderBase *DVRSimpleLUTShaderBaseP;
-
-typedef osgIF<DVRSimpleLUTShaderBase::isNodeCore,
-              CoredNodePtr<DVRSimpleLUTShader>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet DVRSimpleLUTShaderNodePtr;
+typedef osgIF<DVRSimpleLUTShaderBase::isNodeCore, CoredNodePtr<DVRSimpleLUTShader>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet
+    DVRSimpleLUTShaderNodePtr;
 
 typedef RefPtr<DVRSimpleLUTShaderPtr> DVRSimpleLUTShaderRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGDVRSIMPLELUTSHADERBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGDVRSIMPLELUTSHADERBASE_HEADER_CVSID                                                     \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGDVRSIMPLELUTSHADERBASE_H_ */

@@ -38,19 +38,14 @@
 
 OSG_BEGIN_NAMESPACE
 
-inline
-FontFactory &FontFactory::the(void)
-{
-    return _the;
+inline FontFactory& FontFactory::the(void) {
+  return _the;
 }
 
-inline
-Int32 FontFactory::getNumFonts(void)
-{
-    return _knownFonts.size();
+inline Int32 FontFactory::getNumFonts(void) {
+  return _knownFonts.size();
 }
 
 OSG_END_NAMESPACE
 
 #define OSG_INLINE_CVSID "@(#)$Id: $"
-

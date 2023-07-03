@@ -47,7 +47,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGSCALEMANIPULATORFIELDS_H_
 #define _OSGSCALEMANIPULATORFIELDS_H_
 #ifdef __sgi
@@ -66,7 +65,7 @@ OSG_BEGIN_NAMESPACE
 
 class ScaleManipulator;
 
-#if !defined(OSG_DO_DOC)   // created as a dummy class, remove to prevent doubles
+#if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! ScaleManipulatorPtr
 
 typedef FCPtr<ManipulatorPtr, ScaleManipulator> ScaleManipulatorPtr;
@@ -81,13 +80,12 @@ typedef FCPtr<ManipulatorPtr, ScaleManipulator> ScaleManipulatorPtr;
 #endif
 
 template <>
-struct FieldDataTraits<ScaleManipulatorPtr> : 
-    public FieldTraitsRecurseMapper<ScaleManipulatorPtr, true>
-{
-    static DataType             _type;                       
+struct FieldDataTraits<ScaleManipulatorPtr>
+    : public FieldTraitsRecurseMapper<ScaleManipulatorPtr, true> {
+  static DataType _type;
 
-    enum                        { StringConvertable = 0x00 };
-    enum                        { bHasParent        = 0x01 };
+  enum { StringConvertable = 0x00 };
+  enum { bHasParent = 0x01 };
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -98,10 +96,9 @@ struct FieldDataTraits<ScaleManipulatorPtr> :
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
 
-
-
 OSG_END_NAMESPACE
 
-#define OSGSCALEMANIPULATORFIELDS_HEADER_CVSID "@(#)$Id: OSGScaleManipulatorFields.h,v 1.4 2006/02/20 17:04:35 dirk Exp $"
+#define OSGSCALEMANIPULATORFIELDS_HEADER_CVSID                                                     \
+  "@(#)$Id: OSGScaleManipulatorFields.h,v 1.4 2006/02/20 17:04:35 dirk Exp $"
 
 #endif /* _OSGSCALEMANIPULATORFIELDS_H_ */

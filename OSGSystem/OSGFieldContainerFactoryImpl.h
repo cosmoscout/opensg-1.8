@@ -66,11 +66,10 @@ class FieldContainerType;
 /*! \ingroup GrpSystemFieldContainer
  */
 
-struct OSG_SYSTEMLIB_DLLMAPPING FieldContainerMapper
-{
-    virtual ~FieldContainerMapper();
-    
-    virtual UInt32 map(UInt32 uiId) = 0;
+struct OSG_SYSTEMLIB_DLLMAPPING FieldContainerMapper {
+  virtual ~FieldContainerMapper();
+
+  virtual UInt32 map(UInt32 uiId) = 0;
 };
 
 //---------------------------------------------------------------------------
@@ -80,196 +79,186 @@ struct OSG_SYSTEMLIB_DLLMAPPING FieldContainerMapper
 /*! \ingroup GrpSystemFieldContainer
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING FieldContainerFactory
-{
-    /*=========================  PROTECTED  ===============================*/
+class OSG_SYSTEMLIB_DLLMAPPING FieldContainerFactory {
+  /*=========================  PROTECTED  ===============================*/
 
-  protected:
+ protected:
+  typedef std::map<UInt32, FieldContainerType*>       TypeIdMap;
+  typedef std::map<IDStringLink, FieldContainerType*> TypeNameMap;
+  typedef std::map<IDStringLink, UInt16>              GroupMap;
 
-    typedef std::map   <UInt32,       
-                        FieldContainerType        *> TypeIdMap;
-    typedef std::map   <IDStringLink, 
-                        FieldContainerType        *> TypeNameMap;
-    typedef std::map   <IDStringLink, 
-                        UInt16                     > GroupMap;
+  typedef std::vector<FieldContainerType*> UninitializedTypeStore;
+  typedef std::vector<FieldContainerPtr>   FieldContainerStore;
 
-    typedef std::vector<FieldContainerType        *> UninitializedTypeStore;
-    typedef std::vector<FieldContainerPtr          > FieldContainerStore;
+  typedef TypeIdMap ::iterator             TypeIdMapIt;
+  typedef TypeNameMap ::iterator           TypeNameMapIt;
+  typedef GroupMap ::iterator              GroupMapIt;
+  typedef UninitializedTypeStore::iterator UninitTypeStoreIt;
+  typedef FieldContainerStore ::iterator   FieldContainerStoreIt;
 
-    typedef TypeIdMap             ::iterator         TypeIdMapIt;
-    typedef TypeNameMap           ::iterator         TypeNameMapIt;
-    typedef GroupMap              ::iterator         GroupMapIt;
-    typedef UninitializedTypeStore::iterator         UninitTypeStoreIt;
-    typedef FieldContainerStore   ::iterator         FieldContainerStoreIt;
+  typedef TypeIdMap ::const_iterator   TypeIdMapConstIt;
+  typedef TypeNameMap ::const_iterator TypeNameMapCnstIt;
+  typedef GroupMap ::const_iterator    GroupMapConstIt;
 
-    typedef TypeIdMap             ::const_iterator   TypeIdMapConstIt;
-    typedef TypeNameMap           ::const_iterator   TypeNameMapCnstIt;
-    typedef GroupMap              ::const_iterator   GroupMapConstIt;
+  /*==========================  PUBLIC  =================================*/
 
+ public:
+  typedef TypeIdMapIt TypeMapIterator;
 
-    /*==========================  PUBLIC  =================================*/
+  static FieldContainerFactory* the(void);
 
-  public :
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Types                                    */
+  /*! \{                                                                 */
 
-    typedef TypeIdMapIt TypeMapIterator;
+  FieldContainerType* findType(UInt32 uiTypeId) const;
+  FieldContainerType* findType(const Char8* szName) const;
+  UInt32              getNumTypes(void) const;
 
-    static FieldContainerFactory *the(void);
+  FieldContainerType* findUninitializedType(const Char8* szName) const;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Types                                    */
-    /*! \{                                                                 */
-        
-    FieldContainerType *findType    (      UInt32  uiTypeId) const;
-    FieldContainerType *findType    (const Char8  *szName  ) const;
-    UInt32              getNumTypes (void                  ) const;
+  bool initializePendingTypes(void);
 
+  TypeMapIterator beginTypes(void);
+  TypeMapIterator endTypes(void);
 
-    FieldContainerType *findUninitializedType (const Char8  *szName) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Groups                                   */
+  /*! \{                                                                 */
 
-    bool                initializePendingTypes(      void          );
+  UInt16       findGroupId(const Char8* szName) const;
+  const Char8* findGroupName(UInt16 uiGroupId) const;
 
-    TypeMapIterator     beginTypes            (      void          );
-    TypeMapIterator     endTypes              (      void          );
+  UInt16 getNumGroups(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Groups                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Mapper                                  */
+  /*! \{                                                                 */
 
-          UInt16  findGroupId  (const Char8  *szName   ) const;
-    const Char8  *findGroupName(      UInt16  uiGroupId) const;
-        
-          UInt16  getNumGroups (      void             ) const;
+  void setMapper(FieldContainerMapper* pMapper);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Mapper                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Get FieldContainer                          */
+  /*! \{                                                                 */
 
-    void setMapper(FieldContainerMapper *pMapper);
+  FieldContainerPtr getContainer(UInt32 uiFieldContainerId) const;
+  FieldContainerPtr getMappedContainer(UInt32 uiFieldContainerId) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Get FieldContainer                          */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name              Create Base FieldContainer                      */
+  /*! \{                                                                 */
 
-    FieldContainerPtr getContainer      (UInt32 uiFieldContainerId) const;
-    FieldContainerPtr getMappedContainer(UInt32 uiFieldContainerId) const;
+  FieldContainerPtr createFieldContainer(const Char8* name) const;
+  NodePtr           createNode(const Char8* name) const;
+  NodeCorePtr       createNodeCore(const Char8* name) const;
+  AttachmentPtr     createAttachment(const Char8* name) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name              Create Base FieldContainer                      */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name               Write FCD From Name                            */
+  /*! \{                                                                 */
 
-    FieldContainerPtr createFieldContainer(const Char8 *name) const;
-    NodePtr           createNode          (const Char8 *name) const;
-    NodeCorePtr       createNodeCore      (const Char8 *name) const;
-    AttachmentPtr     createAttachment    (const Char8 *name) const;
+  void writeFCD(Char8* name = NULL, std::ostream* out = NULL);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name               Write FCD From Name                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name               Get Containerstore                             */
+  /*! \{                                                                 */
 
-    void writeFCD(Char8 *name = NULL, std::ostream *out = NULL);
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name               Get Containerstore                             */
-    /*! \{                                                                 */
+  const FieldContainerStore* getFieldContainerStore(void) const;
 
-    const FieldContainerStore *getFieldContainerStore(void) const;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+ protected:
+  static FieldContainerFactory* _the;
 
-  protected:
+  static TypeMapIterator _defaultTypeMapIt;
 
-    static FieldContainerFactory *_the;
+  /*---------------------------------------------------------------------*/
+  /*! \name             Intialization / Termination                      */
+  /*! \{                                                                 */
 
-    static TypeMapIterator        _defaultTypeMapIt;
+  static bool initializeFactory(void);
+  static bool terminateFactory(void);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name             Intialization / Termination                      */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Member                                  */
+  /*! \{                                                                 */
 
-    static bool initializeFactory(void);
-    static bool terminateFactory (void);
+  bool _bInitialized;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Member                                  */
-    /*! \{                                                                 */
+  TypeIdMap*              _pTypeIdMap;
+  TypeNameMap*            _pTypeNameMap;
+  GroupMap*               _pGroupMap;
+  UninitializedTypeStore* _pUnitTypesStore;
+  FieldContainerStore*    _pFieldContainerStore;
 
-    bool                    _bInitialized;
+  Lock* _pStoreLock;
+  Lock* _pMapLock;
 
-    TypeIdMap              *_pTypeIdMap;
-    TypeNameMap            *_pTypeNameMap;
-    GroupMap               *_pGroupMap;
-    UninitializedTypeStore *_pUnitTypesStore;
-    FieldContainerStore    *_pFieldContainerStore;
+  FieldContainerMapper* _pMapper;
 
-    Lock                   *_pStoreLock;
-    Lock                   *_pMapLock;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    FieldContainerMapper   *_pMapper;
+  FieldContainerFactory(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    FieldContainerFactory(void);
+  virtual ~FieldContainerFactory(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name         Instance Initialization / Termination                */
+  /*! \{                                                                 */
 
-    virtual ~FieldContainerFactory(void); 
+  bool initialize(void);
+  bool terminate(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name         Instance Initialization / Termination                */
-    /*! \{                                                                 */
+  void initTypeMap(void);
 
-    bool   initialize (void);
-    bool   terminate  (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Register                                  */
+  /*! \{                                                                 */
 
-    void   initTypeMap(void);
+  bool   unregisterFieldContainer(const FieldContainerPtr& pFieldContainer);
+  UInt32 registerFieldContainer(const FieldContainerPtr& pFieldContainer);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Register                                  */
-    /*! \{                                                                 */
+  UInt32 registerType(FieldContainerType* pType);
+  UInt16 registerGroup(const Char8* szName);
+  void   unregisterType(FieldContainerType* pType);
 
-    bool   unregisterFieldContainer(const FieldContainerPtr  &pFieldContainer);
-    UInt32   registerFieldContainer(const FieldContainerPtr  &pFieldContainer);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                 Write FCD From Type                          */
+  /*! \{                                                                 */
 
-    UInt32 registerType            (      FieldContainerType *pType          );
-    UInt16 registerGroup           (const Char8              *szName         );
-    void   unregisterType          (      FieldContainerType *pType          );
+  void writeSingleTypeFCD(std::ostream& out, const FieldContainerType* type);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                 Write FCD From Type                          */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-    void writeSingleTypeFCD(std::ostream &out, const FieldContainerType *type);
+ private:
+  friend class FieldContainerType;
+  friend class FieldContainer;
+  friend class FieldContainerPtrBase;
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-
-  private:
-
-    friend class FieldContainerType;
-    friend class FieldContainer;
-    friend class FieldContainerPtrBase;
-
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    FieldContainerFactory(const FieldContainerFactory &source);
-    /*!\brief prohibit default function (move to 'public' if needed) */
-    void operator =(const FieldContainerFactory &source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  FieldContainerFactory(const FieldContainerFactory& source);
+  /*!\brief prohibit default function (move to 'public' if needed) */
+  void operator=(const FieldContainerFactory& source);
 };
 
 OSG_END_NAMESPACE

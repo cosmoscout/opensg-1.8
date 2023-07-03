@@ -69,246 +69,222 @@ class BinaryDataHandler;
  */
 
 template <class FieldTypeT, Int32 fieldNameSpace = 0>
-class MField : public Field
-{
-    /*==========================  PUBLIC  =================================*/
+class MField : public Field {
+  /*==========================  PUBLIC  =================================*/
 
-  public:
+ public:
+  typedef MFieldVector<FieldTypeT>        StorageType;
+  typedef typename StorageType::Inherited StorageTypeParent;
 
-    typedef          MFieldVector<FieldTypeT>           StorageType;
-    typedef typename StorageType::Inherited             StorageTypeParent;
+  typedef typename StorageType::iterator       iterator;
+  typedef typename StorageType::const_iterator const_iterator;
 
-    typedef typename StorageType::iterator              iterator;
-    typedef typename StorageType::const_iterator        const_iterator;
+  typedef typename StorageType::reverse_iterator       reverse_iterator;
+  typedef typename StorageType::const_reverse_iterator const_reverse_iterator;
 
-    typedef typename 
-                    StorageType::reverse_iterator       reverse_iterator;
-    typedef typename 
-                    StorageType::const_reverse_iterator const_reverse_iterator;
+  typedef typename StorageType::reference       reference;
+  typedef typename StorageType::const_reference const_reference;
 
+  typedef typename osgIF<fieldNameSpace == 0, FieldDataTraits<FieldTypeT>, InvalidTrait>::_IRet
+      MF0Trait;
 
-    typedef typename StorageType::reference             reference;
-    typedef typename StorageType::const_reference       const_reference;
-    
+  typedef
+      typename osgIF<fieldNameSpace == 1, FieldDataTraits1<FieldTypeT>, MF0Trait>::_IRet MF1Trait;
 
-    typedef typename osgIF<fieldNameSpace == 0,
-                           FieldDataTraits <FieldTypeT>,
-                           InvalidTrait                >::_IRet MF0Trait;
+  typedef typename osgIF<fieldNameSpace == 2, FieldDataTraits2<FieldTypeT>, MF1Trait>::_IRet
+      MFieldTraits;
 
-    typedef typename osgIF<fieldNameSpace == 1,
-                           FieldDataTraits1<FieldTypeT>,
-                           MF0Trait                    >::_IRet MF1Trait;
+  typedef MField<FieldTypeT, fieldNameSpace> Self;
 
-    typedef typename osgIF<fieldNameSpace == 2, 
-                           FieldDataTraits2<FieldTypeT>, 
-                           MF1Trait                    >::_IRet MFieldTraits;
+  typedef FieldTypeT StoredType;
 
-    typedef          MField<FieldTypeT, fieldNameSpace>          Self;
+  typedef typename MFieldTraits::ArgumentType ArgumentType;
 
-    typedef          FieldTypeT                                  StoredType;
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Class Get                                  */
+  /*! \{                                                                 */
 
-    typedef typename MFieldTraits::ArgumentType                  ArgumentType;
+  static const FieldType& getClassType(void);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Class Get                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    static const FieldType &getClassType(void);
+  MField(void);
+  MField(const MField& obj);
+  explicit MField(const UInt32 size);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-             MField(void);
-             MField(const MField  &obj);
-    explicit MField(const UInt32   size);
+  virtual ~MField(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
-
-    virtual ~MField(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Get                                     */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Get                                     */
+  /*! \{                                                                 */
 
 #ifndef OSG_DISABLE_DEPRECATED
-          reference            getValue (const UInt32 index);
-    const_reference            getValue (const UInt32 index) const;
+  reference       getValue(const UInt32 index);
+  const_reference getValue(const UInt32 index) const;
 #endif
 
-    virtual UInt32             getSize  (      void        ) const;
+  virtual UInt32 getSize(void) const;
 
-                  StorageType &getValues(      void            );
-            const StorageType &getValues(      void            ) const;
- 
-    virtual const FieldType   &getType  (      void            ) const;
+  StorageType&       getValues(void);
+  const StorageType& getValues(void) const;
 
-    virtual       bool         isEmpty  (      void            ) const;
+  virtual const FieldType& getType(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Set                                     */
-    /*! \{                                                                 */
+  virtual bool isEmpty(void) const;
 
-            void setValues    (const StorageType       &value);
-            void setValues    (const StorageTypeParent &value);
-            void setValues    (const Self              &obj  );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Set                                     */
+  /*! \{                                                                 */
 
-    virtual void setAbstrValue(const Field             &obj  );
+  void setValues(const StorageType& value);
+  void setValues(const StorageTypeParent& value);
+  void setValues(const Self& obj);
 
-    
+  virtual void setAbstrValue(const Field& obj);
+
 #ifndef OSG_DISABLE_DEPRECATED
-            void setValue     (      ArgumentType       value,
-                               const UInt32             index);
+  void setValue(ArgumentType value, const UInt32 index);
 
-            void addValue     (      ArgumentType       value);
+  void addValue(ArgumentType value);
 #endif
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   STL Interface                              */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   STL Interface                              */
+  /*! \{                                                                 */
 
-    iterator               begin    (void                              );
-    iterator               end      (void                              );
+  iterator begin(void);
+  iterator end(void);
 
-    reverse_iterator       rbegin   (void                              );
-    reverse_iterator       rend     (void                              );
+  reverse_iterator rbegin(void);
+  reverse_iterator rend(void);
 
-    
-    const_iterator         begin    (void                              ) const;
-    const_iterator         end      (void                              ) const;
-    
-    const_reverse_iterator rbegin   (void                              ) const;
-    const_reverse_iterator rend     (void                              ) const;
+  const_iterator begin(void) const;
+  const_iterator end(void) const;
 
+  const_reverse_iterator rbegin(void) const;
+  const_reverse_iterator rend(void) const;
 
-    reference              front    (void                              );
-    const_reference        front    (void                              ) const;
-    
-    reference              back     (void                              );
-    const_reference        back     (void                              ) const;
-    
-    void                   clear    (void                              );
-    
-    iterator               insert   (iterator     pos, 
-                                     ArgumentType value                );
-    iterator               erase    (iterator     pos                  );
-    
-    iterator               find     (ArgumentType value                );
-    const_iterator         find     (ArgumentType value                ) const;
-    
-    void                   push_back(ArgumentType value                );
-    
-    void                   resize   (size_t       newsize, 
-                                     FieldTypeT   t      = FieldTypeT());
-    void                   reserve  (size_t       newsize              );
-    
-    UInt32                 size     (void                              ) const;
-    UInt32                 capacity (void                              ) const;
-    bool                   empty    (void                              ) const;
-    void                   swap     (MField                      &right);
+  reference       front(void);
+  const_reference front(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Index Operator                              */
-    /*! \{                                                                 */
+  reference       back(void);
+  const_reference back(void) const;
 
-          reference operator [](UInt32 index);
-    const_reference operator [](UInt32 index) const;
+  void clear(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Assignment                                  */
-    /*! \{                                                                 */
+  iterator insert(iterator pos, ArgumentType value);
+  iterator erase(iterator pos);
 
-    void operator =(const MField &source);
+  iterator       find(ArgumentType value);
+  const_iterator find(ArgumentType value) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   String IO                                  */
-    /*! \{                                                                 */
+  void push_back(ArgumentType value);
 
-    virtual void         pushValueByStr(const Char8              *str  );
-    virtual std::string &getValueByStr (      std::string        &str  ) const;
-    virtual std::string &getValueByStr (      std::string        &str,
-                                       StringConversionStateBase &state) const;
-    virtual std::string &getValueByStr (      std::string        &str,
-                                              UInt32              index) const;
+  void resize(size_t newsize, FieldTypeT t = FieldTypeT());
+  void reserve(size_t newsize);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      MT Sync                                 */
-    /*! \{                                                                 */
+  UInt32 size(void) const;
+  UInt32 capacity(void) const;
+  bool   empty(void) const;
+  void   swap(MField& right);
+
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Index Operator                              */
+  /*! \{                                                                 */
+
+  reference       operator[](UInt32 index);
+  const_reference operator[](UInt32 index) const;
+
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Assignment                                  */
+  /*! \{                                                                 */
+
+  void operator=(const MField& source);
+
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   String IO                                  */
+  /*! \{                                                                 */
+
+  virtual void         pushValueByStr(const Char8* str);
+  virtual std::string& getValueByStr(std::string& str) const;
+  virtual std::string& getValueByStr(std::string& str, StringConversionStateBase& state) const;
+  virtual std::string& getValueByStr(std::string& str, UInt32 index) const;
+
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      MT Sync                                 */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void syncWith       (Self      &source      );
+  void syncWith(Self& source);
 #else
-    void syncWith       (      Self      &source, 
-                         const SyncInfo  &sInfo );
+  void syncWith(Self& source, const SyncInfo& sInfo);
 
-/*
-                         BitVector  syncMode,
-                         UInt32     uiSyncInfo,
-                         UInt32     uiCopyOffset);
- */
+  /*
+                           BitVector  syncMode,
+                           UInt32     uiSyncInfo,
+                           UInt32     uiCopyOffset);
+   */
 
-    void beginEdit      (UInt32     uiAspect,
-                         UInt32     uiCopyOffset);
+  void beginEdit(UInt32 uiAspect, UInt32 uiCopyOffset);
 
-    Self *resolveShare  (UInt32     uiAspect, 
-                         UInt32     uiCopyOffset);
+  Self* resolveShare(UInt32 uiAspect, UInt32 uiCopyOffset);
 
-    void  terminateShare(UInt32     uiAspect, 
-                         UInt32     uiCopyOffset);
+  void terminateShare(UInt32 uiAspect, UInt32 uiCopyOffset);
 #endif
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Interface                           */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Interface                           */
+  /*! \{                                                                 */
 
-    UInt32 getBinSize (void                   ) const;
-    
-    void   copyToBin  (BinaryDataHandler &pMem) const;
-    void   copyFromBin(BinaryDataHandler &pMem);
+  UInt32 getBinSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                        Dump                                  */
-    /*! \{                                                                 */
+  void copyToBin(BinaryDataHandler& pMem) const;
+  void copyFromBin(BinaryDataHandler& pMem);
 
-    virtual void dump (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                        Dump                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+  virtual void dump(void) const;
 
-  protected:
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    typedef Field Inherited;
+ protected:
+  typedef Field Inherited;
 
-    /*---------------------------------------------------------------------*/
-    /*                             Member                                  */
+  /*---------------------------------------------------------------------*/
+  /*                             Member                                  */
 
-    static const FieldType    _fieldType;
+  static const FieldType _fieldType;
 
-                 StorageType  _values;
+  StorageType _values;
 
-                 UInt32       _uiSharedWith;
+  UInt32 _uiSharedWith;
 
+  static Field* create(void);
 
-    static       Field       *create(void);
+  /*==========================  PRIVATE  ================================*/
 
-    /*==========================  PRIVATE  ================================*/
-
-  private:
-
-    friend class FieldContainer;
+ private:
+  friend class FieldContainer;
 };
 
 OSG_END_NAMESPACE
@@ -318,4 +294,3 @@ OSG_END_NAMESPACE
 #define OSGMFIELD_HEADER_CVSID "@(#)$Id: $"
 
 #endif /* _OSGMFIELD_H_ */
-

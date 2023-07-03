@@ -36,7 +36,7 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-/*! testTransformRender is the basic test program to check the Transform 
+/*! testTransformRender is the basic test program to check the Transform
  *  node's functionality.
  */
 
@@ -61,123 +61,113 @@
 #include <OSGMatrix.h>
 #include <OSGQuaternion.h>
 
-
 OSG_USING_NAMESPACE
 
+DrawAction* dact;
 
-DrawAction * dact;
-
-NodePtr  root;
+NodePtr root;
 
 TransformPtr tr;
 
-void 
-display(void)
-{
-    float a = glutGet( GLUT_ELAPSED_TIME );
+void display(void) {
+  float a = glutGet(GLUT_ELAPSED_TIME);
 
-    if ( (int) ( a / 2000 ) & 1 )   
-        glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-    else
-        glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+  if ((int)(a / 2000) & 1)
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  else
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    Matrix m;
+  Matrix m;
 
-    m.setTranslate( 0,0,sin(a/1500) * 2 );
+  m.setTranslate(0, 0, sin(a / 1500) * 2);
 
-    beginEditCP(tr);
-    tr->getSFMatrix()->setValue( m );
-    endEditCP(tr);
-    
+  beginEditCP(tr);
+  tr->getSFMatrix()->setValue(m);
+  endEditCP(tr);
 
-    dact->apply( root );
+  dact->apply(root);
 
-    glutSwapBuffers();
+  glutSwapBuffers();
 }
 
-int main (int argc, char **argv)
-{
-    // GLUT init
+int main(int argc, char** argv) {
+  // GLUT init
 
-    osgInit(argc, argv);
+  osgInit(argc, argv);
 
-    FieldContainerPtr pProto = Geometry::getClassType().getPrototype();
+  FieldContainerPtr pProto = Geometry::getClassType().getPrototype();
 
-    GeometryPtr pGeoProto = GeometryPtr::dcast(pProto);
+  GeometryPtr pGeoProto = GeometryPtr::dcast(pProto);
 
-    if(pGeoProto != NullFC)
-    {
-        pGeoProto->setDlistCache(false);
-    }
+  if (pGeoProto != NullFC) {
+    pGeoProto->setDlistCache(false);
+  }
 
-    glutInit(&argc, argv);
-    glutInitDisplayMode( GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
-    glutCreateWindow("OpenSG");
-    // glutKeyboardFunc(key);
-    // glutReshapeFunc(resize);
-    glutDisplayFunc(display);       
-    // glutMouseFunc(mouse);   
-    // glutMotionFunc(motion); 
-    
-    glutIdleFunc(display);
+  glutInit(&argc, argv);
+  glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
+  glutCreateWindow("OpenSG");
+  // glutKeyboardFunc(key);
+  // glutReshapeFunc(resize);
+  glutDisplayFunc(display);
+  // glutMouseFunc(mouse);
+  // glutMotionFunc(motion);
 
-    glMatrixMode( GL_PROJECTION );
-    glLoadIdentity();
-    gluPerspective( 60, 1, 0.1, 10 );
-    glMatrixMode( GL_MODELVIEW );
-    glLoadIdentity();
-    gluLookAt( 3, 3, 3,  0, 0, 0,   0, 0, 1 );
-    
-    glEnable( GL_DEPTH_TEST );
-    // glEnable( GL_LIGHTING );
+  glutIdleFunc(display);
 
-    // OSG
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  gluPerspective(60, 1, 0.1, 10);
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+  gluLookAt(3, 3, 3, 0, 0, 0, 0, 0, 1);
 
-    NodePtr g1;
-    g1 = makePlane( 2, 2, 2, 2 );
+  glEnable(GL_DEPTH_TEST);
+  // glEnable( GL_LIGHTING );
 
-    
-    NodePtr g2 = Node::create();
-    beginEditCP(g2);
-    g2->setCore( g1->getCore() );
-    endEditCP(g2);
+  // OSG
 
-    // Transform
+  NodePtr g1;
+  g1 = makePlane(2, 2, 2, 2);
 
-    NodePtr tnode = Node::create();
-    tr = Transform::create();
-    beginEditCP(tnode);
-    tnode->setCore( tr );
-    tnode->addChild( g2 );
-    endEditCP(tnode);
+  NodePtr g2 = Node::create();
+  beginEditCP(g2);
+  g2->setCore(g1->getCore());
+  endEditCP(g2);
 
-/*
-    NodeCorePtr tcr = 
-        FieldContainerFactory::the().createNodeCore("Group");
+  // Transform
 
-    NodePtr pcr = 
-        FieldContainerFactory::the().createNode("Node");
-*/
+  NodePtr tnode = Node::create();
+  tr            = Transform::create();
+  beginEditCP(tnode);
+  tnode->setCore(tr);
+  tnode->addChild(g2);
+  endEditCP(tnode);
 
-    //
+  /*
+      NodeCorePtr tcr =
+          FieldContainerFactory::the().createNodeCore("Group");
 
-    root = Node::create();
-    GroupPtr gr = Group::create();
-    beginEditCP(root);
-    root->setCore( gr );
-    root->addChild( g1 );
-    root->addChild( tnode );
-    endEditCP(root);
+      NodePtr pcr =
+          FieldContainerFactory::the().createNode("Node");
+  */
 
-    dact = DrawAction::create();
+  //
 
-    dact->setFrustumCulling(false);
+  root        = Node::create();
+  GroupPtr gr = Group::create();
+  beginEditCP(root);
+  root->setCore(gr);
+  root->addChild(g1);
+  root->addChild(tnode);
+  endEditCP(root);
 
-    
-    glutMainLoop();
-    
-    return 0;
+  dact = DrawAction::create();
+
+  dact->setFrustumCulling(false);
+
+  glutMainLoop();
+
+  return 0;
 }
-

@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEIMAGEFOREGROUNDINST
 
 #include <stdlib.h>
@@ -61,19 +60,16 @@
 #include "OSGImageForegroundBase.h"
 #include "OSGImageForeground.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  ImageForegroundBase::ImagesFieldMask = 
+const OSG::BitVector ImageForegroundBase::ImagesFieldMask =
     (TypeTraits<BitVector>::One << ImageForegroundBase::ImagesFieldId);
 
-const OSG::BitVector  ImageForegroundBase::PositionsFieldMask = 
+const OSG::BitVector ImageForegroundBase::PositionsFieldMask =
     (TypeTraits<BitVector>::One << ImageForegroundBase::PositionsFieldId);
 
-const OSG::BitVector ImageForegroundBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector ImageForegroundBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
@@ -86,223 +82,165 @@ const OSG::BitVector ImageForegroundBase::MTInfluenceMask =
 
 //! ImageForeground description
 
-FieldDescription *ImageForegroundBase::_desc[] = 
-{
-    new FieldDescription(MFImagePtr::getClassType(), 
-                     "images", 
-                     ImagesFieldId, ImagesFieldMask,
-                     false,
-                     (FieldAccessMethod) &ImageForegroundBase::getMFImages),
-    new FieldDescription(MFPnt2f::getClassType(), 
-                     "positions", 
-                     PositionsFieldId, PositionsFieldMask,
-                     false,
-                     (FieldAccessMethod) &ImageForegroundBase::getMFPositions)
-};
+FieldDescription* ImageForegroundBase::_desc[] = {
+    new FieldDescription(MFImagePtr::getClassType(), "images", ImagesFieldId, ImagesFieldMask,
+        false, (FieldAccessMethod)&ImageForegroundBase::getMFImages),
+    new FieldDescription(MFPnt2f::getClassType(), "positions", PositionsFieldId, PositionsFieldMask,
+        false, (FieldAccessMethod)&ImageForegroundBase::getMFPositions)};
 
-
-FieldContainerType ImageForegroundBase::_type(
-    "ImageForeground",
-    "Foreground",
-    NULL,
-    (PrototypeCreateF) &ImageForegroundBase::createEmpty,
-    ImageForeground::initMethod,
-    _desc,
+FieldContainerType ImageForegroundBase::_type("ImageForeground", "Foreground", NULL,
+    (PrototypeCreateF)&ImageForegroundBase::createEmpty, ImageForeground::initMethod, _desc,
     sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(ImageForegroundBase, ImageForegroundPtr)
+// OSG_FIELD_CONTAINER_DEF(ImageForegroundBase, ImageForegroundPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &ImageForegroundBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &ImageForegroundBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr ImageForegroundBase::shallowCopy(void) const 
-{ 
-    ImageForegroundPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const ImageForeground *>(this)); 
-
-    return returnValue; 
+FieldContainerType& ImageForegroundBase::getType(void) {
+  return _type;
 }
 
-UInt32 ImageForegroundBase::getContainerSize(void) const 
-{ 
-    return sizeof(ImageForeground); 
+const FieldContainerType& ImageForegroundBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr ImageForegroundBase::shallowCopy(void) const {
+  ImageForegroundPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const ImageForeground*>(this));
+
+  return returnValue;
+}
+
+UInt32 ImageForegroundBase::getContainerSize(void) const {
+  return sizeof(ImageForeground);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ImageForegroundBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((ImageForegroundBase *) &other, whichField);
+void ImageForegroundBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((ImageForegroundBase*)&other, whichField);
 }
 #else
-void ImageForegroundBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((ImageForegroundBase *) &other, whichField, sInfo);
+void ImageForegroundBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((ImageForegroundBase*)&other, whichField, sInfo);
 }
-void ImageForegroundBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void ImageForegroundBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void ImageForegroundBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
+void ImageForegroundBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 
-    _mfImages.terminateShare(uiAspect, this->getContainerSize());
-    _mfPositions.terminateShare(uiAspect, this->getContainerSize());
+  _mfImages.terminateShare(uiAspect, this->getContainerSize());
+  _mfPositions.terminateShare(uiAspect, this->getContainerSize());
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-ImageForegroundBase::ImageForegroundBase(void) :
-    _mfImages                 (), 
-    _mfPositions              (), 
-    Inherited() 
-{
+ImageForegroundBase::ImageForegroundBase(void)
+    : _mfImages()
+    , _mfPositions()
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-ImageForegroundBase::ImageForegroundBase(const ImageForegroundBase &source) :
-    _mfImages                 (source._mfImages                 ), 
-    _mfPositions              (source._mfPositions              ), 
-    Inherited                 (source)
-{
+ImageForegroundBase::ImageForegroundBase(const ImageForegroundBase& source)
+    : _mfImages(source._mfImages)
+    , _mfPositions(source._mfPositions)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-ImageForegroundBase::~ImageForegroundBase(void)
-{
+ImageForegroundBase::~ImageForegroundBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 ImageForegroundBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 ImageForegroundBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (ImagesFieldMask & whichField))
-    {
-        returnValue += _mfImages.getBinSize();
-    }
+  if (FieldBits::NoField != (ImagesFieldMask & whichField)) {
+    returnValue += _mfImages.getBinSize();
+  }
 
-    if(FieldBits::NoField != (PositionsFieldMask & whichField))
-    {
-        returnValue += _mfPositions.getBinSize();
-    }
+  if (FieldBits::NoField != (PositionsFieldMask & whichField)) {
+    returnValue += _mfPositions.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void ImageForegroundBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void ImageForegroundBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ImagesFieldMask & whichField))
-    {
-        _mfImages.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (ImagesFieldMask & whichField)) {
+    _mfImages.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (PositionsFieldMask & whichField))
-    {
-        _mfPositions.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (PositionsFieldMask & whichField)) {
+    _mfPositions.copyToBin(pMem);
+  }
 }
 
-void ImageForegroundBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void ImageForegroundBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ImagesFieldMask & whichField))
-    {
-        _mfImages.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (ImagesFieldMask & whichField)) {
+    _mfImages.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (PositionsFieldMask & whichField))
-    {
-        _mfPositions.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (PositionsFieldMask & whichField)) {
+    _mfPositions.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ImageForegroundBase::executeSyncImpl(      ImageForegroundBase *pOther,
-                                        const BitVector         &whichField)
-{
+void ImageForegroundBase::executeSyncImpl(
+    ImageForegroundBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (ImagesFieldMask & whichField))
-        _mfImages.syncWith(pOther->_mfImages);
+  if (FieldBits::NoField != (ImagesFieldMask & whichField))
+    _mfImages.syncWith(pOther->_mfImages);
 
-    if(FieldBits::NoField != (PositionsFieldMask & whichField))
-        _mfPositions.syncWith(pOther->_mfPositions);
-
-
+  if (FieldBits::NoField != (PositionsFieldMask & whichField))
+    _mfPositions.syncWith(pOther->_mfPositions);
 }
 #else
-void ImageForegroundBase::executeSyncImpl(      ImageForegroundBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void ImageForegroundBase::executeSyncImpl(
+    ImageForegroundBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
+  if (FieldBits::NoField != (ImagesFieldMask & whichField))
+    _mfImages.syncWith(pOther->_mfImages, sInfo);
 
-    if(FieldBits::NoField != (ImagesFieldMask & whichField))
-        _mfImages.syncWith(pOther->_mfImages, sInfo);
-
-    if(FieldBits::NoField != (PositionsFieldMask & whichField))
-        _mfPositions.syncWith(pOther->_mfPositions, sInfo);
-
-
+  if (FieldBits::NoField != (PositionsFieldMask & whichField))
+    _mfPositions.syncWith(pOther->_mfPositions, sInfo);
 }
 
-void ImageForegroundBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void ImageForegroundBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (ImagesFieldMask & whichField))
-        _mfImages.beginEdit(uiAspect, uiContainerSize);
+  if (FieldBits::NoField != (ImagesFieldMask & whichField))
+    _mfImages.beginEdit(uiAspect, uiContainerSize);
 
-    if(FieldBits::NoField != (PositionsFieldMask & whichField))
-        _mfPositions.beginEdit(uiAspect, uiContainerSize);
-
+  if (FieldBits::NoField != (PositionsFieldMask & whichField))
+    _mfPositions.beginEdit(uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>
@@ -317,6 +255,3 @@ OSG_DLLEXPORT_SFIELD_DEF1(ImageForegroundPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 OSG_DLLEXPORT_MFIELD_DEF1(ImageForegroundPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
-
-
-

@@ -36,17 +36,13 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifdef __APPLE__
-
 
 OSG_BEGIN_NAMESPACE
 
-
 OSG_END_NAMESPACE
-
 
 #endif // __APPLE__
 
-
-#define OSGTEXTMACBACKEND_INLINE_CVSID "@(#)$Id: OSGTextMacBackend.inl,v 1.1 2005/03/03 13:43:07 a-m-z Exp $"
+#define OSGTEXTMACBACKEND_INLINE_CVSID                                                             \
+  "@(#)$Id: OSGTextMacBackend.inl,v 1.1 2005/03/03 13:43:07 a-m-z Exp $"

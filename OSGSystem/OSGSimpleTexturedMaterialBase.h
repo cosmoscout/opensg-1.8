@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGSIMPLETEXTUREDMATERIALBASE_H_
 #define _OSGSIMPLETEXTUREDMATERIALBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -67,11 +65,11 @@
 
 #include <OSGSimpleMaterial.h> // Parent
 
-#include <OSGImageFields.h> // Image type
+#include <OSGImageFields.h>  // Image type
 #include <OSGGLenumFields.h> // MinFilter type
 #include <OSGGLenumFields.h> // MagFilter type
 #include <OSGGLenumFields.h> // EnvMode type
-#include <OSGBoolFields.h> // EnvMap type
+#include <OSGBoolFields.h>   // EnvMap type
 
 #include <OSGSimpleTexturedMaterialFields.h>
 
@@ -82,209 +80,189 @@ class BinaryDataHandler;
 
 //! \brief SimpleTexturedMaterial Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING SimpleTexturedMaterialBase : public SimpleMaterial
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING SimpleTexturedMaterialBase : public SimpleMaterial {
+ private:
+  typedef SimpleMaterial Inherited;
 
-    typedef SimpleMaterial    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef SimpleTexturedMaterialPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    ImageFieldId     = Inherited::NextFieldId,
+    MinFilterFieldId = ImageFieldId + 1,
+    MagFilterFieldId = MinFilterFieldId + 1,
+    EnvModeFieldId   = MagFilterFieldId + 1,
+    EnvMapFieldId    = EnvModeFieldId + 1,
+    NextFieldId      = EnvMapFieldId + 1
+  };
 
-    typedef SimpleTexturedMaterialPtr  Ptr;
+  static const OSG::BitVector ImageFieldMask;
+  static const OSG::BitVector MinFilterFieldMask;
+  static const OSG::BitVector MagFilterFieldMask;
+  static const OSG::BitVector EnvModeFieldMask;
+  static const OSG::BitVector EnvMapFieldMask;
 
-    enum
-    {
-        ImageFieldId     = Inherited::NextFieldId,
-        MinFilterFieldId = ImageFieldId     + 1,
-        MagFilterFieldId = MinFilterFieldId + 1,
-        EnvModeFieldId   = MagFilterFieldId + 1,
-        EnvMapFieldId    = EnvModeFieldId   + 1,
-        NextFieldId      = EnvMapFieldId    + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector ImageFieldMask;
-    static const OSG::BitVector MinFilterFieldMask;
-    static const OSG::BitVector MagFilterFieldMask;
-    static const OSG::BitVector EnvModeFieldMask;
-    static const OSG::BitVector EnvMapFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFImagePtr* getSFImage(void);
+  SFGLenum*   getSFMinFilter(void);
+  SFGLenum*   getSFMagFilter(void);
+  SFGLenum*   getSFEnvMode(void);
+  SFBool*     getSFEnvMap(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  ImagePtr&       getImage(void);
+  const ImagePtr& getImage(void) const;
+  GLenum&         getMinFilter(void);
+  const GLenum&   getMinFilter(void) const;
+  GLenum&         getMagFilter(void);
+  const GLenum&   getMagFilter(void) const;
+  GLenum&         getEnvMode(void);
+  const GLenum&   getEnvMode(void) const;
+  bool&           getEnvMap(void);
+  const bool&     getEnvMap(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFImagePtr          *getSFImage          (void);
-           SFGLenum            *getSFMinFilter      (void);
-           SFGLenum            *getSFMagFilter      (void);
-           SFGLenum            *getSFEnvMode        (void);
-           SFBool              *getSFEnvMap         (void);
+  void setImage(const ImagePtr& value);
+  void setMinFilter(const GLenum& value);
+  void setMagFilter(const GLenum& value);
+  void setEnvMode(const GLenum& value);
+  void setEnvMap(const bool& value);
 
-           ImagePtr            &getImage          (void);
-     const ImagePtr            &getImage          (void) const;
-           GLenum              &getMinFilter      (void);
-     const GLenum              &getMinFilter      (void) const;
-           GLenum              &getMagFilter      (void);
-     const GLenum              &getMagFilter      (void) const;
-           GLenum              &getEnvMode        (void);
-     const GLenum              &getEnvMode        (void) const;
-           bool                &getEnvMap         (void);
-     const bool                &getEnvMap         (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setImage          ( const ImagePtr &value );
-     void setMinFilter      ( const GLenum &value );
-     void setMagFilter      ( const GLenum &value );
-     void setEnvMode        ( const GLenum &value );
-     void setEnvMap         ( const bool &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static SimpleTexturedMaterialPtr create(void);
+  static SimpleTexturedMaterialPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  SimpleTexturedMaterialPtr      create          (void); 
-    static  SimpleTexturedMaterialPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFImagePtr _sfImage;
+  SFGLenum   _sfMinFilter;
+  SFGLenum   _sfMagFilter;
+  SFGLenum   _sfEnvMode;
+  SFBool     _sfEnvMap;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  SimpleTexturedMaterialBase(void);
+  SimpleTexturedMaterialBase(const SimpleTexturedMaterialBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~SimpleTexturedMaterialBase(void);
 
-    SFImagePtr          _sfImage;
-    SFGLenum            _sfMinFilter;
-    SFGLenum            _sfMagFilter;
-    SFGLenum            _sfEnvMode;
-    SFBool              _sfEnvMap;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    SimpleTexturedMaterialBase(void);
-    SimpleTexturedMaterialBase(const SimpleTexturedMaterialBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~SimpleTexturedMaterialBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      SimpleTexturedMaterialBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(SimpleTexturedMaterialBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      SimpleTexturedMaterialBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      SimpleTexturedMaterialBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const SimpleTexturedMaterialBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const SimpleTexturedMaterialBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef SimpleTexturedMaterialBase* SimpleTexturedMaterialBaseP;
 
-typedef SimpleTexturedMaterialBase *SimpleTexturedMaterialBaseP;
-
-typedef osgIF<SimpleTexturedMaterialBase::isNodeCore,
-              CoredNodePtr<SimpleTexturedMaterial>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet SimpleTexturedMaterialNodePtr;
+typedef osgIF<SimpleTexturedMaterialBase::isNodeCore, CoredNodePtr<SimpleTexturedMaterial>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet
+    SimpleTexturedMaterialNodePtr;
 
 typedef RefPtr<SimpleTexturedMaterialPtr> SimpleTexturedMaterialRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGSIMPLETEXTUREDMATERIALBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGSIMPLETEXTUREDMATERIALBASE_HEADER_CVSID                                                 \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGSIMPLETEXTUREDMATERIALBASE_H_ */

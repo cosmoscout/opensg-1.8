@@ -48,92 +48,85 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief Class to manage multiple displays for clusters, see \ref 
+/*! \brief Class to manage multiple displays for clusters, see \ref
     PageSystemClusterMultiDisplayWindow for details.
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING MultiDisplayWindow : public MultiDisplayWindowBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING MultiDisplayWindow : public MultiDisplayWindowBase {
+ private:
+  typedef MultiDisplayWindowBase Inherited;
 
-    typedef MultiDisplayWindowBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector whichField, 
-                         UInt32    origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name      server window funcitons                                 */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  virtual void serverInit(WindowPtr window, UInt32 id);
+  virtual void serverRender(WindowPtr window, UInt32 id, RenderActionBase* action);
+  virtual void serverSwap(WindowPtr window, UInt32 id);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name      client window funcitons                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name      server window funcitons                                 */
-    /*! \{                                                                 */
+  virtual void clientInit(void);
+  virtual void clientSwap(void);
 
-    virtual void serverInit   ( WindowPtr window,UInt32 id  );
-    virtual void serverRender ( WindowPtr window,UInt32 id,
-                                RenderActionBase *action    );
-    virtual void serverSwap   ( WindowPtr window,UInt32 id  );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name      client window funcitons                                 */
-    /*! \{                                                                 */
+  MultiDisplayWindow(void);
+  MultiDisplayWindow(const MultiDisplayWindow& source);
 
-    virtual void clientInit              ( void                        );
-    virtual void clientSwap              ( void                        );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~MultiDisplayWindow(void);
 
-    MultiDisplayWindow(void);
-    MultiDisplayWindow(const MultiDisplayWindow &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Helper                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  void updateViewport(ViewportPtr& serverPort, ViewportPtr& clientPort);
 
-    virtual ~MultiDisplayWindow(void); 
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Helper                                     */
-    /*! \{                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class MultiDisplayWindowBase;
 
-    void updateViewport(ViewportPtr &serverPort,ViewportPtr &clientPort); 
+  static void initMethod(void);
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
-    friend class FieldContainer;
-    friend class MultiDisplayWindowBase;
+  // prohibit default functions (move to 'public' if you need one)
 
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const MultiDisplayWindow &source);
+  void operator=(const MultiDisplayWindow& source);
 };
 
-typedef MultiDisplayWindow *MultiDisplayWindowP;
+typedef MultiDisplayWindow* MultiDisplayWindowP;
 
 OSG_END_NAMESPACE
 
@@ -143,4 +136,3 @@ OSG_END_NAMESPACE
 #define OSGMULTIDISPLAYCONFIG_HEADER_CVSID "@(#)$Id:$"
 
 #endif /* _OSGMULTIDISPLAYCONFIG_H_ */
-

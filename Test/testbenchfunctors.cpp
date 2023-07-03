@@ -1,7 +1,6 @@
 
 #include <OSGConfig.h>
 
-
 #include <iostream>
 
 #ifdef __linux
@@ -13,16 +12,16 @@
 
 using namespace OSG;
 
-Int32 repeats;
-Int32 worksize;
-Real32 lowtime,hightime;
+Int32  repeats;
+Int32  worksize;
+Real32 lowtime, hightime;
 
-#define WORK(res) \
-{                                           \
-    (res) = 0;                              \
-    for (Int32 i=0; i < worksize; i++ )     \
-        (res) = (res) + ( i / 100.0f );     \
-}
+#define WORK(res)                                                                                  \
+  {                                                                                                \
+    (res) = 0;                                                                                     \
+    for (Int32 i = 0; i < worksize; i++)                                                           \
+      (res) = (res) + (i / 100.0f);                                                                \
+  }
 
 #ifndef WIN32
 
@@ -32,13 +31,13 @@ Real32 lowtime,hightime;
 struct tms t_struct;
 
 // return current time
-#define now()   ( times( &t_struct), t_struct.tms_utime )
+#define now() (times(&t_struct), t_struct.tms_utime)
 // time difference in seconds
 
 #ifdef __linux
-#define delta(a,b)  ( ( a - b ) / float(sysconf(_SC_CLK_TCK)) )
+#define delta(a, b) ((a - b) / float(sysconf(_SC_CLK_TCK)))
 #else
-#define delta(a,b)  ( ( a - b ) / float(CLK_TCK) )
+#define delta(a, b) ((a - b) / float(CLK_TCK))
 #endif
 
 #else /* use system time. Not a good idea, but better than nothing */
@@ -46,63 +45,55 @@ struct tms t_struct;
 #include <OSGTime.h>
 
 // return current time
-#define now()   getSystemTime()
+#define now() getSystemTime()
 // time difference in seconds
-#define delta(a,b)  ( a - b )
+#define delta(a, b) (a - b)
 
 #endif
 
 // print the result
 
-#define pres(text,time)                             \
-    cerr << text << ": " << float((time) - basetime) / float(repeats) * 1e6 \
-         << " us " << endl
-
+#define pres(text, time)                                                                           \
+  cerr << text << ": " << float((time)-basetime) / float(repeats) * 1e6 << " us " << endl
 
 // test sets
 
 // simple function
 
-Real32 function( Int32 )
-{
-    Real32 result;
-    WORK(result);
-    return result;
+Real32 function(Int32) {
+  Real32 result;
+  WORK(result);
+  return result;
 }
 
 // method & virtual method
 
-struct test
-{
-    virtual ~test() {}
+struct test {
+  virtual ~test() {
+  }
 
-    Real32 method( Int32 );
+  Real32 method(Int32);
 
-    virtual Real32 vmethod( Int32 );
+  virtual Real32 vmethod(Int32);
 };
 
-Real32 test::method( Int32 )
-{
-    Real32 result;
-    WORK(result);
-    return result;
+Real32 test::method(Int32) {
+  Real32 result;
+  WORK(result);
+  return result;
 }
 
-Real32 test::vmethod( Int32 )
-{
-    Real32 result;
-    WORK(result);
-    return result;
+Real32 test::vmethod(Int32) {
+  Real32 result;
+  WORK(result);
+  return result;
 }
-
 
 // Functors
 
-//typedef Functor1Base<Real32, Int32> benchFunctor;
+// typedef Functor1Base<Real32, Int32> benchFunctor;
 
-
-int main( int argc, char *argv[] )
-{
+int main(int argc, char* argv[]) {
 #if 0
     Real32 result = 0;
     Int32 l;
@@ -235,5 +226,5 @@ int main( int argc, char *argv[] )
     // just use result, otherwise naked is optimized away
     return result > 0 ? 1 : 0;
 #endif
-    return 0;
+  return 0;
 }

@@ -56,160 +56,135 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief General Navigator for wrapping simple navigators. See \ref 
+/*! \brief General Navigator for wrapping simple navigators. See \ref
     PageSystemWindowNavigatorsNavigator for a description.
 */
-class OSG_SYSTEMLIB_DLLMAPPING Navigator
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
-  
-    enum Mode
-    {
-        TRACKBALL=0,
-        FLY,
-        WALK,
-        NONE
-    };
+class OSG_SYSTEMLIB_DLLMAPPING Navigator {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  enum Mode { TRACKBALL = 0, FLY, WALK, NONE };
 
-    enum State
-    {
-        IDLE=0,
-        ROTATING,
-        TRANSLATING_XY,
-        TRANSLATING_Z,
+  enum State {
+    IDLE = 0,
+    ROTATING,
+    TRANSLATING_XY,
+    TRANSLATING_Z,
 
-        TRANSLATING_ZPLUS=10,
-        TRANSLATING_ZMINUS
-    };
+    TRANSLATING_ZPLUS = 10,
+    TRANSLATING_ZMINUS
+  };
 
-    enum MouseButton
-    {
-        LEFT_MOUSE=0,
-        MIDDLE_MOUSE,
-        RIGHT_MOUSE,
-        UP_MOUSE,
-        DOWN_MOUSE
-    };
+  enum MouseButton { LEFT_MOUSE = 0, MIDDLE_MOUSE, RIGHT_MOUSE, UP_MOUSE, DOWN_MOUSE };
 
-    enum Key
-    {
-        LEFT=0,
-        RIGHT,
-        FORWARDS,
-        BACKWARDS,
-        LEFTROT,
-        RIGHTROT
-    };
+  enum Key { LEFT = 0, RIGHT, FORWARDS, BACKWARDS, LEFTROT, RIGHTROT };
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  Navigator();
 
-    Navigator();
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  virtual ~Navigator();
 
-    virtual ~Navigator();
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Notificators                              */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Notificators                              */
-    /*! \{                                                                 */
+  virtual void buttonPress(Int16 button, Int16 x, Int16 y);
+  virtual void buttonRelease(Int16 button, Int16 x, Int16 y);
+  virtual void keyPress(Int16 key, Int16 x, Int16 y);
+  virtual void moveTo(Int16 x, Int16 y);
+  virtual void idle(Int16 buttons, Int16 x, Int16 y);
 
-    virtual void buttonPress  (Int16 button,  Int16 x, Int16 y);
-    virtual void buttonRelease(Int16 button,  Int16 x, Int16 y);
-    virtual void keyPress     (Int16 key   ,  Int16 x, Int16 y);
-    virtual void moveTo       (               Int16 x, Int16 y);
-    virtual void idle         (Int16 buttons, Int16 x, Int16 y);
+  void updateCameraTransformation();
 
-    void updateCameraTransformation();
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                        Set                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                        Set                                   */
-    /*! \{                                                                 */
+  void setMode(Mode new_mode);
+  void setViewport(ViewportPtr new_viewport);
+  void setRotationAngle(Real32 new_angle);
+  void setMotionFactor(Real32 new_factor);
+  void setFrom(Pnt3f new_from);
+  void setAt(Pnt3f new_at);
+  void setDistance(Real32 new_distance);
+  void setUp(Vec3f new_up);
+  void set(Pnt3f new_from, Pnt3f new_at, Vec3f new_up);
+  void set(const Matrix& new_matrix);
+  bool setAbsolute(bool state);
+  bool setClickCenter(bool state);
 
-    void setMode         (Mode          new_mode    );
-    void setViewport     (ViewportPtr   new_viewport);
-    void setRotationAngle(Real32        new_angle   );
-    void setMotionFactor (Real32        new_factor  );
-    void setFrom         (Pnt3f         new_from    );
-    void setAt           (Pnt3f         new_at      );
-    void setDistance     (Real32        new_distance);
-    void setUp           (Vec3f         new_up      );
-    void set             (Pnt3f         new_from, Pnt3f new_at, Vec3f new_up);
-    void set             (const Matrix &new_matrix  );
-    bool setAbsolute     (bool          state       );
-    bool setClickCenter  (bool          state       );
+  bool setClickNoIntersect(bool state);
 
-    bool setClickNoIntersect (bool state);
+  void setCameraTransformation(const NodePtr& new_cartn);
 
-    void setCameraTransformation(const NodePtr & new_cartn);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                        Get                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                        Get                                   */
-    /*! \{                                                                 */
+  const Matrix& getMatrix();
+  const Pnt3f&  getFrom();
+  const Pnt3f&  getAt();
+  const Vec3f&  getUp();
+  Real32        getDistance();
+  State         getState();
+  Mode          getMode();
+  Real32        getRotationAngle();
+  Real32        getMotionFactor();
+  bool          getAbsolute();
+  bool          getClickCenter();
+  bool          getClickNoIntersect();
 
-    const Matrix &getMatrix();
-    const Pnt3f  &getFrom();
-    const Pnt3f  &getAt();
-    const Vec3f  &getUp();
-          Real32  getDistance();
-          State   getState();
-          Mode    getMode();
-          Real32  getRotationAngle();
-          Real32  getMotionFactor();
-          bool    getAbsolute();
-          bool    getClickCenter();
-          bool    getClickNoIntersect();
-    
-          WalkNavigator* getWalkNavigator() { return &_walker; }
+  WalkNavigator* getWalkNavigator() {
+    return &_walker;
+  }
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Fields                              */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Fields                              */
-    /*! \{                                                                 */
+  TrackballNavigator _trackball;
+  FlyNavigator       _flyer;
+  WalkNavigator      _walker;
 
-    TrackballNavigator _trackball;
-    FlyNavigator       _flyer;
-    WalkNavigator      _walker;
+  Real32 _rRotationAngle;
+  Real32 _rMotionFactor;
+  State  _currentState;
+  Mode   _currentMode;
+  bool   _absolute;
 
-    Real32      _rRotationAngle;
-    Real32      _rMotionFactor;
-    State       _currentState;
-    Mode        _currentMode;
-    bool        _absolute;
+  ViewportPtr _vp;
+  NodePtr     _cartN;
 
-    ViewportPtr _vp;
-    NodePtr     _cartN;
+  bool   _moved;
+  bool   _clickCenter;
+  bool   _clickNoIntersect;
+  Real32 _lastX, _lastY;
+  Pnt3f  _ip;
+  Vec3f  _dir;
+  Matrix theMatrix;
 
-    bool        _moved;
-    bool        _clickCenter;
-    bool        _clickNoIntersect;
-    Real32      _lastX, _lastY;
-    Pnt3f       _ip;
-    Vec3f       _dir;
-    Matrix      theMatrix;
+  Matrix _NoneMatrix;
 
-    Matrix      _NoneMatrix;
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
+  void setNoneMatrix(Pnt3f new_from, Pnt3f new_at, Vec3f new_up);
 
-    void setNoneMatrix(Pnt3f new_from, Pnt3f new_at, Vec3f new_up);
-
-    void getIntersectionPoint(Int16 x, Int16 y);
-    void calcDeltas(Int16 fromX, Int16 fromY, Int16 toX, Int16 toY,
-                          Real32 &distanceX, Real32 &distanceY);
-
+  void getIntersectionPoint(Int16 x, Int16 y);
+  void calcDeltas(
+      Int16 fromX, Int16 fromY, Int16 toX, Int16 toY, Real32& distanceX, Real32& distanceY);
 };
 
 OSG_END_NAMESPACE

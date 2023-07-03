@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILELOGICOPCHUNKINST
 
 #include <stdlib.h>
@@ -61,16 +60,13 @@
 #include "OSGLogicOpChunkBase.h"
 #include "OSGLogicOpChunk.h"
 
-
 OSG_BEGIN_NAMESPACE
 
-const OSG::BitVector  LogicOpChunkBase::LogicOpFieldMask = 
+const OSG::BitVector LogicOpChunkBase::LogicOpFieldMask =
     (TypeTraits<BitVector>::One << LogicOpChunkBase::LogicOpFieldId);
 
-const OSG::BitVector LogicOpChunkBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector LogicOpChunkBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
@@ -80,187 +76,133 @@ const OSG::BitVector LogicOpChunkBase::MTInfluenceMask =
 
 //! LogicOpChunk description
 
-FieldDescription *LogicOpChunkBase::_desc[] = 
-{
-    new FieldDescription(SFGLenum::getClassType(), 
-                     "LogicOp", 
-                     LogicOpFieldId, LogicOpFieldMask,
-                     false,
-                     (FieldAccessMethod) &LogicOpChunkBase::getSFLogicOp)
-};
+FieldDescription* LogicOpChunkBase::_desc[] = {
+    new FieldDescription(SFGLenum::getClassType(), "LogicOp", LogicOpFieldId, LogicOpFieldMask,
+        false, (FieldAccessMethod)&LogicOpChunkBase::getSFLogicOp)};
 
-
-FieldContainerType LogicOpChunkBase::_type(
-    "LogicOpChunk",
-    "StateChunk",
-    NULL,
-    (PrototypeCreateF) &LogicOpChunkBase::createEmpty,
-    LogicOpChunk::initMethod,
-    _desc,
+FieldContainerType LogicOpChunkBase::_type("LogicOpChunk", "StateChunk", NULL,
+    (PrototypeCreateF)&LogicOpChunkBase::createEmpty, LogicOpChunk::initMethod, _desc,
     sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(LogicOpChunkBase, LogicOpChunkPtr)
+// OSG_FIELD_CONTAINER_DEF(LogicOpChunkBase, LogicOpChunkPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &LogicOpChunkBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &LogicOpChunkBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr LogicOpChunkBase::shallowCopy(void) const 
-{ 
-    LogicOpChunkPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const LogicOpChunk *>(this)); 
-
-    return returnValue; 
+FieldContainerType& LogicOpChunkBase::getType(void) {
+  return _type;
 }
 
-UInt32 LogicOpChunkBase::getContainerSize(void) const 
-{ 
-    return sizeof(LogicOpChunk); 
+const FieldContainerType& LogicOpChunkBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr LogicOpChunkBase::shallowCopy(void) const {
+  LogicOpChunkPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const LogicOpChunk*>(this));
+
+  return returnValue;
+}
+
+UInt32 LogicOpChunkBase::getContainerSize(void) const {
+  return sizeof(LogicOpChunk);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void LogicOpChunkBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((LogicOpChunkBase *) &other, whichField);
+void LogicOpChunkBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((LogicOpChunkBase*)&other, whichField);
 }
 #else
-void LogicOpChunkBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((LogicOpChunkBase *) &other, whichField, sInfo);
+void LogicOpChunkBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((LogicOpChunkBase*)&other, whichField, sInfo);
 }
-void LogicOpChunkBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void LogicOpChunkBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void LogicOpChunkBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void LogicOpChunkBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-LogicOpChunkBase::LogicOpChunkBase(void) :
-    _sfLogicOp                (GLenum(GL_COPY)), 
-    Inherited() 
-{
+LogicOpChunkBase::LogicOpChunkBase(void)
+    : _sfLogicOp(GLenum(GL_COPY))
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-LogicOpChunkBase::LogicOpChunkBase(const LogicOpChunkBase &source) :
-    _sfLogicOp                (source._sfLogicOp                ), 
-    Inherited                 (source)
-{
+LogicOpChunkBase::LogicOpChunkBase(const LogicOpChunkBase& source)
+    : _sfLogicOp(source._sfLogicOp)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-LogicOpChunkBase::~LogicOpChunkBase(void)
-{
+LogicOpChunkBase::~LogicOpChunkBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 LogicOpChunkBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 LogicOpChunkBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (LogicOpFieldMask & whichField))
-    {
-        returnValue += _sfLogicOp.getBinSize();
-    }
+  if (FieldBits::NoField != (LogicOpFieldMask & whichField)) {
+    returnValue += _sfLogicOp.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void LogicOpChunkBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void LogicOpChunkBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (LogicOpFieldMask & whichField))
-    {
-        _sfLogicOp.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (LogicOpFieldMask & whichField)) {
+    _sfLogicOp.copyToBin(pMem);
+  }
 }
 
-void LogicOpChunkBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void LogicOpChunkBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (LogicOpFieldMask & whichField))
-    {
-        _sfLogicOp.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (LogicOpFieldMask & whichField)) {
+    _sfLogicOp.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void LogicOpChunkBase::executeSyncImpl(      LogicOpChunkBase *pOther,
-                                        const BitVector         &whichField)
-{
+void LogicOpChunkBase::executeSyncImpl(LogicOpChunkBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (LogicOpFieldMask & whichField))
-        _sfLogicOp.syncWith(pOther->_sfLogicOp);
-
-
+  if (FieldBits::NoField != (LogicOpFieldMask & whichField))
+    _sfLogicOp.syncWith(pOther->_sfLogicOp);
 }
 #else
-void LogicOpChunkBase::executeSyncImpl(      LogicOpChunkBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void LogicOpChunkBase::executeSyncImpl(
+    LogicOpChunkBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (LogicOpFieldMask & whichField))
-        _sfLogicOp.syncWith(pOther->_sfLogicOp);
-
-
-
+  if (FieldBits::NoField != (LogicOpFieldMask & whichField))
+    _sfLogicOp.syncWith(pOther->_sfLogicOp);
 }
 
-void LogicOpChunkBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void LogicOpChunkBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 OSG_END_NAMESPACE
 
@@ -277,4 +219,3 @@ OSG_DLLEXPORT_SFIELD_DEF1(LogicOpChunkPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 OSG_DLLEXPORT_MFIELD_DEF1(LogicOpChunkPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
-

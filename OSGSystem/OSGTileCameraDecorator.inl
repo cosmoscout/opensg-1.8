@@ -41,17 +41,13 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 /*------------------------------ access -----------------------------------*/
 
-inline void TileCameraDecorator::setFullSize( UInt32 width, UInt32 height )
-{
-    setFullWidth( width );
-    setFullHeight( height );
+inline void TileCameraDecorator::setFullSize(UInt32 width, UInt32 height) {
+  setFullWidth(width);
+  setFullHeight(height);
 }
 
 OSG_END_NAMESPACE
 
 #define OSGTILECAMERADECORATOR_INLINE_CVSID "@(#)$Id: $"
-
-

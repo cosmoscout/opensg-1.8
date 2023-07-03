@@ -56,56 +56,66 @@ OSG_BEGIN_NAMESPACE
 
 class BezierCurve3D;
 
-typedef std::vector< BezierCurve3D > bezier3dvector;
-typedef std::vector< bezier3dvector> bezier3dmatrix;
-typedef std::deque< BezierCurve3D > bezier3ddeque;
-typedef std::vector< bezier3ddeque > bezier3ddequevector;
+typedef std::vector<BezierCurve3D>  bezier3dvector;
+typedef std::vector<bezier3dvector> bezier3dmatrix;
+typedef std::deque<BezierCurve3D>   bezier3ddeque;
+typedef std::vector<bezier3ddeque>  bezier3ddequevector;
 
 class OSG_SYSTEMLIB_DLLMAPPING BezierCurve3D {
-protected:
-  int approximate_sub( std::vector< double > &vertices, double delta, double min, double max, unsigned char strategy );
+ protected:
+  int approximate_sub(
+      std::vector<double>& vertices, double delta, double min, double max, unsigned char strategy);
 
-  DCTPVec4dvector control_points; //control points of the curve
+  DCTPVec4dvector control_points; // control points of the curve
 
-  static std::vector< std::vector< std::vector< double > > >	m_svvvdCreateMatrix;
-  Vec4d computewdeCasteljau4D( double t, int &error ); //compute curve at parameter value t
+  static std::vector<std::vector<std::vector<double>>> m_svvvdCreateMatrix;
+  Vec4d                                                computewdeCasteljau4D(double t, int& error); // compute curve at parameter value t
 
-public:
-  static const unsigned char	SUBDIVISION = 1;
-  static const unsigned char	MIDPOINT_SUBDIVISION = 0;
-  static const unsigned char	ARBITRARY_SUBDIVISION = 1;
+ public:
+  static const unsigned char SUBDIVISION           = 1;
+  static const unsigned char MIDPOINT_SUBDIVISION  = 0;
+  static const unsigned char ARBITRARY_SUBDIVISION = 1;
 
-  static const unsigned char	DISTANCE = 2;
-  static const unsigned char	POINT_DISTANCE = 0;
-  static const unsigned char	LINE_DISTANCE = 2;
+  static const unsigned char DISTANCE       = 2;
+  static const unsigned char POINT_DISTANCE = 0;
+  static const unsigned char LINE_DISTANCE  = 2;
   BezierCurve3D();
-  ~BezierCurve3D() {}
- 
-  //setup functions
-  int setControlPointVector( const DCTPVec4dvector& cps ); //ok, acts like its name says 
+  ~BezierCurve3D() {
+  }
 
-  //query functions
-  DCTPVec4dvector& getControlPointVector( void ) { return control_points; } //guess what!
+  // setup functions
+  int setControlPointVector(const DCTPVec4dvector& cps); // ok, acts like its name says
 
-  //some REAL functionality
-  Vec3d computewdeCasteljau( double t, int &error ); //compute curve at parameter value t
-  Vec3d computeLinearApproximation( double t, int &error ); //ok like its name sayz
-  int midPointSubDivision( bezier3dvector &newbeziers ); //subdivide curve at midpoint into two new curves
-  int midPointSubDivision( BezierCurve3D &newcurve ); //subdivide curve at midpoint into two new curves
-  int subDivision( double t, bezier3dvector &newbeziers ); //subdivide curvee at t into two new curves
-  int subDivision( double t, BezierCurve3D &newcurve );
-  int approximate( std::vector< double > &vertices, double delta, unsigned char strategy = MIDPOINT_SUBDIVISION | POINT_DISTANCE ); // approximate curve linearly with given maximum tolerance
-  int createCurve( DCTPVec4dvector &points ); // generate a (rational) bezier curve through these points
-  bool reduceDegree( double tol = DCTP_EPS );
+  // query functions
+  DCTPVec4dvector& getControlPointVector(void) {
+    return control_points;
+  } // guess what!
 
-  inline void optimizeDegree( )
-  {
-//	  std::cerr << "reduce degree (3d): " << control_points.size( ) - 1;
-	  while( reduceDegree( 0.001 ) ) { }
-//	  std::cerr << " -> " << control_points.size( ) - 1 << std::endl;
+  // some REAL functionality
+  Vec3d computewdeCasteljau(double t, int& error);        // compute curve at parameter value t
+  Vec3d computeLinearApproximation(double t, int& error); // ok like its name sayz
+  int midPointSubDivision(
+      bezier3dvector& newbeziers); // subdivide curve at midpoint into two new curves
+  int midPointSubDivision(
+      BezierCurve3D& newcurve); // subdivide curve at midpoint into two new curves
+  int subDivision(double t, bezier3dvector& newbeziers); // subdivide curvee at t into two new
+                                                         // curves
+  int subDivision(double t, BezierCurve3D& newcurve);
+  int approximate(std::vector<double>& vertices, double delta,
+      unsigned char strategy =
+          MIDPOINT_SUBDIVISION |
+          POINT_DISTANCE); // approximate curve linearly with given maximum tolerance
+  int createCurve(
+      DCTPVec4dvector& points); // generate a (rational) bezier curve through these points
+  bool reduceDegree(double tol = DCTP_EPS);
+
+  inline void optimizeDegree() {
+    //	  std::cerr << "reduce degree (3d): " << control_points.size( ) - 1;
+    while (reduceDegree(0.001)) {}
+    //	  std::cerr << " -> " << control_points.size( ) - 1 << std::endl;
   }
 };
 
 OSG_END_NAMESPACE
 
-#endif //BezierCurve3D.h
+#endif // BezierCurve3D.h

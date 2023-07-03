@@ -34,7 +34,7 @@
 #include "OSGGradientBackground.h"
 //#include "OSGUniformBackground.h"
 
-#if defined(__linux) || ( defined(WIN32) && ! defined(OSG_BUILD_DLL) )
+#if defined(__linux) || (defined(WIN32) && !defined(OSG_BUILD_DLL))
 #include "OSGRAWSceneFileType.h"
 #endif
 
@@ -42,330 +42,308 @@
 
 using namespace OSG;
 
-DrawAction * ract;
+DrawAction* ract;
 
-NodePtr  root;
+NodePtr root;
 
-NodePtr  file;
+NodePtr file;
 
 PerspectiveCameraPtr cam;
-ViewportPtr vp;
-WindowPtr win;
+ViewportPtr          vp;
+WindowPtr            win;
 
 TransformPtr cam_trans;
 
 Trackball tball;
 
 int mouseb = 0;
-int lastx=0, lasty=0;
+int lastx = 0, lasty = 0;
 
-void 
-display(void)
-{
-    Matrix m1, m2, m3;
-    Quaternion q1;
+void display(void) {
+  Matrix     m1, m2, m3;
+  Quaternion q1;
 
-    tball.getRotation().getValue(m3);
+  tball.getRotation().getValue(m3);
 
-    q1.setValue(m3);
+  q1.setValue(m3);
 
-    m1.setRotate(q1);
-    
-//    std::cout << "TBROT" << std::endl << tball.getRotation() << std::endl;
-//    std::cout << "M3" << std::endl << m3 << std::endl;
-//    std::cout << "Q1" << std::endl << q1 << std::endl;
-//    std::cout << "M1" << std::endl << m1 << std::endl;
+  m1.setRotate(q1);
 
-//  m1.setRotate( tball.getRotation() );
-    m2.setTranslate( tball.getPosition() );
-    
-//std::cout << "Pos: " << tball.getPosition() << ", Rot: " << tball.getRotation() << std::endl;
+  //    std::cout << "TBROT" << std::endl << tball.getRotation() << std::endl;
+  //    std::cout << "M3" << std::endl << m3 << std::endl;
+  //    std::cout << "Q1" << std::endl << q1 << std::endl;
+  //    std::cout << "M1" << std::endl << m1 << std::endl;
 
-//    std::cout << tball.getRotation() << std::endl;
+  //  m1.setRotate( tball.getRotation() );
+  m2.setTranslate(tball.getPosition());
 
-    m1.mult( m2 );
-    cam_trans->getSFMatrix()->setValue( m1 );
+  // std::cout << "Pos: " << tball.getPosition() << ", Rot: " << tball.getRotation() << std::endl;
 
-    win->draw( ract );
+  //    std::cout << tball.getRotation() << std::endl;
+
+  m1.mult(m2);
+  cam_trans->getSFMatrix()->setValue(m1);
+
+  win->draw(ract);
 }
 
-void reshape( int w, int h )
-{
-    std::cerr << "Reshape: " << w << "," << h << std::endl;
-    win->resize( w, h );
+void reshape(int w, int h) {
+  std::cerr << "Reshape: " << w << "," << h << std::endl;
+  win->resize(w, h);
 }
 
-
-void
-animate(void)
-{
-    glutPostRedisplay();
+void animate(void) {
+  glutPostRedisplay();
 }
 
 // tballall stuff
 
+void motion(int x, int y) {
+  Real32 w = win->getWidth(), h = win->getHeight();
 
-void
-motion(int x, int y)
-{   
-    Real32 w = win->getWidth(), h = win->getHeight();
-    
+  Real32 a = -2. * (lastx / w - .5), b = -2. * (.5 - lasty / h), c = -2. * (x / w - .5),
+         d = -2. * (.5 - y / h);
 
-    Real32  a = -2. * ( lastx / w - .5 ),
-                b = -2. * ( .5 - lasty / h ),
-                c = -2. * ( x / w - .5 ),
-                d = -2. * ( .5 - y / h );
-
-    if ( mouseb & ( 1 << GLUT_LEFT_BUTTON ) )
-    {
-        tball.updateRotation( a, b, c, d );     
-    }
-    else if ( mouseb & ( 1 << GLUT_MIDDLE_BUTTON ) )
-    {
-        tball.updatePosition( a, b, c, d );     
-    }
-    else if ( mouseb & ( 1 << GLUT_RIGHT_BUTTON ) )
-    {
-        tball.updatePositionNeg( a, b, c, d );  
-    }
-    lastx = x;
-    lasty = y;
+  if (mouseb & (1 << GLUT_LEFT_BUTTON)) {
+    tball.updateRotation(a, b, c, d);
+  } else if (mouseb & (1 << GLUT_MIDDLE_BUTTON)) {
+    tball.updatePosition(a, b, c, d);
+  } else if (mouseb & (1 << GLUT_RIGHT_BUTTON)) {
+    tball.updatePositionNeg(a, b, c, d);
+  }
+  lastx = x;
+  lasty = y;
 }
 
-void
-mouse(int button, int state, int x, int y)
-{
-    if ( state == 0 )
-    {
-        switch ( button )
-        {
-        case GLUT_LEFT_BUTTON:  break;
-        case GLUT_MIDDLE_BUTTON:tball.setAutoPosition(true);
-                                break;
-        case GLUT_RIGHT_BUTTON:     tball.setAutoPositionNeg(true);
-                                break;
-        }
-        mouseb |= 1 << button;
+void mouse(int button, int state, int x, int y) {
+  if (state == 0) {
+    switch (button) {
+    case GLUT_LEFT_BUTTON:
+      break;
+    case GLUT_MIDDLE_BUTTON:
+      tball.setAutoPosition(true);
+      break;
+    case GLUT_RIGHT_BUTTON:
+      tball.setAutoPositionNeg(true);
+      break;
     }
-    else if ( state == 1 )
-    {
-        switch ( button )
-        {
-        case GLUT_LEFT_BUTTON:  break;
-        case GLUT_MIDDLE_BUTTON:tball.setAutoPosition(false);
-                                break;
-        case GLUT_RIGHT_BUTTON:     tball.setAutoPositionNeg(false);
-                                break;
-        }       
-        mouseb &= ~(1 << button);
+    mouseb |= 1 << button;
+  } else if (state == 1) {
+    switch (button) {
+    case GLUT_LEFT_BUTTON:
+      break;
+    case GLUT_MIDDLE_BUTTON:
+      tball.setAutoPosition(false);
+      break;
+    case GLUT_RIGHT_BUTTON:
+      tball.setAutoPositionNeg(false);
+      break;
     }
-    lastx = x;
-    lasty = y;
+    mouseb &= ~(1 << button);
+  }
+  lastx = x;
+  lasty = y;
 }
 
-void
-vis(int visible)
-{
-    if (visible == GLUT_VISIBLE) 
-    {
-        glutIdleFunc(animate);
-    } 
-    else 
-    {
-        glutIdleFunc(NULL);
-    }
+void vis(int visible) {
+  if (visible == GLUT_VISIBLE) {
+    glutIdleFunc(animate);
+  } else {
+    glutIdleFunc(NULL);
+  }
 }
 
-void key(unsigned char key, int , int )
-{
-    switch ( key )
-    {
-    case 27:    osgExit(); exit(0);
-    case 'a':   glDisable( GL_LIGHTING );
-                std::cerr << "Lighting disabled." << std::endl;
-                break;
-    case 's':   glEnable( GL_LIGHTING );
-                std::cerr << "Lighting enabled." << std::endl;
-                break;
-    case 'z':   glPolygonMode( GL_FRONT_AND_BACK, GL_POINT);
-                std::cerr << "PolygonMode: Point." << std::endl;
-                break;
-    case 'x':   glPolygonMode( GL_FRONT_AND_BACK, GL_LINE);
-                std::cerr << "PolygonMode: Line." << std::endl;
-                break;
-    case 'c':   glPolygonMode( GL_FRONT_AND_BACK, GL_FILL);
-                std::cerr << "PolygonMode: Fill." << std::endl;
-                break;
-    }
+void key(unsigned char key, int, int) {
+  switch (key) {
+  case 27:
+    osgExit();
+    exit(0);
+  case 'a':
+    glDisable(GL_LIGHTING);
+    std::cerr << "Lighting disabled." << std::endl;
+    break;
+  case 's':
+    glEnable(GL_LIGHTING);
+    std::cerr << "Lighting enabled." << std::endl;
+    break;
+  case 'z':
+    glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+    std::cerr << "PolygonMode: Point." << std::endl;
+    break;
+  case 'x':
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    std::cerr << "PolygonMode: Line." << std::endl;
+    break;
+  case 'c':
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    std::cerr << "PolygonMode: Fill." << std::endl;
+    break;
+  }
 }
 
+int main(int argc, char** argv) {
+  osgInit(argc, argv);
 
-int main (int argc, char **argv)
-{
-    osgInit(argc,argv);
+  // GLUT init
 
-    // GLUT init
+  glutInit(&argc, argv);
+  glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
+  int winid = glutCreateWindow("OpenSG");
+  glutKeyboardFunc(key);
+  glutVisibilityFunc(vis);
+  glutReshapeFunc(reshape);
+  glutDisplayFunc(display);
+  glutMouseFunc(mouse);
+  glutMotionFunc(motion);
 
-    glutInit(&argc, argv);
-    glutInitDisplayMode( GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
-    int winid = glutCreateWindow("OpenSG");
-    glutKeyboardFunc(key);
-    glutVisibilityFunc(vis);
-    glutReshapeFunc(reshape);
-    glutDisplayFunc(display);       
-    glutMouseFunc(mouse);   
-    glutMotionFunc(motion); 
-    
-    glutIdleFunc(display);  
+  glutIdleFunc(display);
 
-    // glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-    
-    glEnable( GL_DEPTH_TEST );
-    glEnable( GL_LIGHTING );
-    glEnable( GL_LIGHT0 );
+  // glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 
-    // OSG
+  glEnable(GL_DEPTH_TEST);
+  glEnable(GL_LIGHTING);
+  glEnable(GL_LIGHT0);
 
-    SceneFileHandler::the().print();
+  // OSG
 
-    // create the graph
+  SceneFileHandler::the().print();
 
-    // beacon for camera and light  
-    NodePtr b1n = Node::create();
-    GroupPtr b1 = Group::create();
-    beginEditCP(b1n);
-    b1n->setCore( b1 );
-    endEditCP(b1n);
+  // create the graph
 
-    // transformation
-    NodePtr t1n = Node::create();
-    TransformPtr t1 = Transform::create();
-    beginEditCP(t1n);
-    t1n->setCore( t1 );
-    t1n->addChild( b1n );
-    endEditCP(t1n);
+  // beacon for camera and light
+  NodePtr  b1n = Node::create();
+  GroupPtr b1  = Group::create();
+  beginEditCP(b1n);
+  b1n->setCore(b1);
+  endEditCP(b1n);
 
-    cam_trans = t1;
+  // transformation
+  NodePtr      t1n = Node::create();
+  TransformPtr t1  = Transform::create();
+  beginEditCP(t1n);
+  t1n->setCore(t1);
+  t1n->addChild(b1n);
+  endEditCP(t1n);
 
-    // light
-    
-    NodePtr dlight = Node::create();
-    DirectionalLightPtr dl = DirectionalLight::create();
+  cam_trans = t1;
 
-    beginEditCP(dlight);
-    dlight->setCore( dl );
-    endEditCP(dlight);
-    
-    beginEditCP(dl);
-    dl->setAmbient( .3, .3, .3, 1 );
-    dl->setDiffuse( 1, 1, 1, 1 );
-    dl->setDirection(0,0,1);
-    dl->setBeacon( b1n);
-    endEditCP(dl);
+  // light
 
-    // root
-    root = Node::create();
-    GroupPtr gr1 = Group::create();
-    beginEditCP(root);
-    root->setCore( gr1 );
-    root->addChild( t1n );
-    root->addChild( dlight );
-    endEditCP(root);
+  NodePtr             dlight = Node::create();
+  DirectionalLightPtr dl     = DirectionalLight::create();
 
-    // Load the file
+  beginEditCP(dlight);
+  dlight->setCore(dl);
+  endEditCP(dlight);
 
-    NodePtr file = NullFC;
-    
-    if ( argc > 1 )
-        file = SceneFileHandler::the().read(argv[1]);
-    
-    if ( file == NullFC )
-    {
-        std::cerr << "Couldn't load file, ignoring" << std::endl;
-        file = makeTorus( .5, 2, 16, 16 );
-    }
-    
-    file->updateVolume();
+  beginEditCP(dl);
+  dl->setAmbient(.3, .3, .3, 1);
+  dl->setDiffuse(1, 1, 1, 1);
+  dl->setDirection(0, 0, 1);
+  dl->setBeacon(b1n);
+  endEditCP(dl);
 
-    Vec3f min,max;
-    file->getVolume().getBounds( min, max );
-    
-    std::cout << "Volume: from " << min << " to " << max << std::endl;
+  // root
+  root         = Node::create();
+  GroupPtr gr1 = Group::create();
+  beginEditCP(root);
+  root->setCore(gr1);
+  root->addChild(t1n);
+  root->addChild(dlight);
+  endEditCP(root);
 
-    beginEditCP(dlight);
-    dlight->addChild( file );
-    endEditCP(dlight);
+  // Load the file
 
-    std::cerr << "Tree: " << std::endl;
-    root->dump();
+  NodePtr file = NullFC;
 
-    // Camera
-    
-    cam = PerspectiveCamera::create();
-    cam->setBeacon( b1n );
-    cam->setFov( deg2rad( 90 ) );
-    cam->setNear( 0.1 );
-    cam->setFar( 10000 );
+  if (argc > 1)
+    file = SceneFileHandler::the().read(argv[1]);
 
-    // Background
-    GradientBackgroundPtr gbkgnd = GradientBackground::create();
+  if (file == NullFC) {
+    std::cerr << "Couldn't load file, ignoring" << std::endl;
+    file = makeTorus(.5, 2, 16, 16);
+  }
 
-    beginEditCP(gbkgnd, GradientBackground::LineFieldMask);
-    gbkgnd->addLine( Color3f(1, 0, 0), 0.0 );
-    gbkgnd->addLine( Color3f(0, 1, 0), 0.2 );
-    gbkgnd->addLine( Color3f(0, 0, 1), 0.3 );
-    gbkgnd->addLine( Color3f(0, 1, 1), 0.4 );
-    gbkgnd->addLine( Color3f(0, 1, 0), 0.5 );
-    gbkgnd->addLine( Color3f(1, 1, 0), 0.6 );
-    gbkgnd->addLine( Color3f(0, 1, 0), 0.7 );
-    gbkgnd->addLine( Color3f(1, 0, 0), 0.8 );
-    gbkgnd->addLine( Color3f(0, 0, 1), 0.9 );
-    gbkgnd->addLine( Color3f(0, 0, 1), 1.0 );
-    endEditCP  (gbkgnd, GradientBackground::LineFieldMask);
+  file->updateVolume();
 
-    // Viewport
+  Vec3f min, max;
+  file->getVolume().getBounds(min, max);
 
-    vp = Viewport::create();
-    vp->setCamera( cam );
-    vp->setBackground( gbkgnd );
-    vp->setRoot( root );
-    vp->setSize( 0,0, 1,1 );
+  std::cout << "Volume: from " << min << " to " << max << std::endl;
 
-    // Window
-    std::cout << "GLUT winid: " << winid << std::endl;
+  beginEditCP(dlight);
+  dlight->addChild(file);
+  endEditCP(dlight);
 
-    GLUTWindowPtr gwin;
+  std::cerr << "Tree: " << std::endl;
+  root->dump();
 
-    GLint glvp[4];
-    glGetIntegerv( GL_VIEWPORT, glvp );
+  // Camera
 
-    gwin = GLUTWindow::create();
-    gwin->setId(winid);
-    gwin->setSize( glvp[2], glvp[3] );
+  cam = PerspectiveCamera::create();
+  cam->setBeacon(b1n);
+  cam->setFov(deg2rad(90));
+  cam->setNear(0.1);
+  cam->setFar(10000);
 
-    win = gwin;
+  // Background
+  GradientBackgroundPtr gbkgnd = GradientBackground::create();
 
-    win->addPort( vp );
+  beginEditCP(gbkgnd, GradientBackground::LineFieldMask);
+  gbkgnd->addLine(Color3f(1, 0, 0), 0.0);
+  gbkgnd->addLine(Color3f(0, 1, 0), 0.2);
+  gbkgnd->addLine(Color3f(0, 0, 1), 0.3);
+  gbkgnd->addLine(Color3f(0, 1, 1), 0.4);
+  gbkgnd->addLine(Color3f(0, 1, 0), 0.5);
+  gbkgnd->addLine(Color3f(1, 1, 0), 0.6);
+  gbkgnd->addLine(Color3f(0, 1, 0), 0.7);
+  gbkgnd->addLine(Color3f(1, 0, 0), 0.8);
+  gbkgnd->addLine(Color3f(0, 0, 1), 0.9);
+  gbkgnd->addLine(Color3f(0, 0, 1), 1.0);
+  endEditCP(gbkgnd, GradientBackground::LineFieldMask);
 
-    win->init();
+  // Viewport
 
-    // Action
-    
-    ract = DrawAction::create();
+  vp = Viewport::create();
+  vp->setCamera(cam);
+  vp->setBackground(gbkgnd);
+  vp->setRoot(root);
+  vp->setSize(0, 0, 1, 1);
 
-    // tball
+  // Window
+  std::cout << "GLUT winid: " << winid << std::endl;
 
-    Vec3f pos( 0, 0, max[2] + ( max[2] - min[2] ) * 1.5 );
+  GLUTWindowPtr gwin;
 
-    tball.setMode( Trackball::OSGObject );
-    tball.setStartPosition( pos, true );
-    tball.setSum( true );
-    tball.setTranslationMode( Trackball::OSGFree );
+  GLint glvp[4];
+  glGetIntegerv(GL_VIEWPORT, glvp);
 
-    // run...
-    
-    glutMainLoop();
-    
-    return 0;
+  gwin = GLUTWindow::create();
+  gwin->setId(winid);
+  gwin->setSize(glvp[2], glvp[3]);
+
+  win = gwin;
+
+  win->addPort(vp);
+
+  win->init();
+
+  // Action
+
+  ract = DrawAction::create();
+
+  // tball
+
+  Vec3f pos(0, 0, max[2] + (max[2] - min[2]) * 1.5);
+
+  tball.setMode(Trackball::OSGObject);
+  tball.setStartPosition(pos, true);
+  tball.setSum(true);
+  tball.setTranslationMode(Trackball::OSGFree);
+
+  // run...
+
+  glutMainLoop();
+
+  return 0;
 }
-

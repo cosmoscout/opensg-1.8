@@ -52,81 +52,59 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &TransformChunkBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& TransformChunkBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 TransformChunkBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 TransformChunkBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-TransformChunkPtr TransformChunkBase::create(void) 
-{
-    TransformChunkPtr fc; 
+inline TransformChunkPtr TransformChunkBase::create(void) {
+  TransformChunkPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = TransformChunkPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = TransformChunkPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-TransformChunkPtr TransformChunkBase::createEmpty(void) 
-{ 
-    TransformChunkPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline TransformChunkPtr TransformChunkBase::createEmpty(void) {
+  TransformChunkPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the TransformChunk::_sfMatrix field.
-inline
-SFMatrix *TransformChunkBase::getSFMatrix(void)
-{
-    return &_sfMatrix;
-}
-
-
-//! Get the value of the TransformChunk::_sfMatrix field.
-inline
-Matrix &TransformChunkBase::getMatrix(void)
-{
-    return _sfMatrix.getValue();
+inline SFMatrix* TransformChunkBase::getSFMatrix(void) {
+  return &_sfMatrix;
 }
 
 //! Get the value of the TransformChunk::_sfMatrix field.
-inline
-const Matrix &TransformChunkBase::getMatrix(void) const
-{
-    return _sfMatrix.getValue();
+inline Matrix& TransformChunkBase::getMatrix(void) {
+  return _sfMatrix.getValue();
+}
+
+//! Get the value of the TransformChunk::_sfMatrix field.
+inline const Matrix& TransformChunkBase::getMatrix(void) const {
+  return _sfMatrix.getValue();
 }
 
 //! Set the value of the TransformChunk::_sfMatrix field.
-inline
-void TransformChunkBase::setMatrix(const Matrix &value)
-{
-    _sfMatrix.setValue(value);
+inline void TransformChunkBase::setMatrix(const Matrix& value) {
+  _sfMatrix.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGTRANSFORMCHUNKBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGTRANSFORMCHUNKBASE_INLINE_CVSID                                                         \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

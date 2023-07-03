@@ -36,7 +36,7 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-/*! testNodes is a simple test program for creation of the basic node types 
+/*! testNodes is a simple test program for creation of the basic node types
  */
 
 #include <OSGConfig.h>
@@ -58,83 +58,78 @@ using namespace std;
 
 #define DO_EXPECT_FAILx
 
+int main(int argc, char** argv) {
+  osgInit(argc, argv);
 
-int main (int argc, char **argv)
-{
-    osgInit( argc, argv );
-   
-    NodeRefPtr np(Node::create());
-    TransformRefPtr tp(Transform::create());
-    beginEditCP(np);
-    np->setCore(tp);
-    endEditCP(np);
+  NodeRefPtr      np(Node::create());
+  TransformRefPtr tp(Transform::create());
+  beginEditCP(np);
+  np->setCore(tp);
+  endEditCP(np);
 
-    // Default constructor
-    TransformNodePtr t;
+  // Default constructor
+  TransformNodePtr t;
 
-    cout << "Default const(t): " << endl << t << endl << endl;
-    
-    // Core Assignment constructor
-    GroupNodePtr g(Group::create());
- 
-    cout << "Core Assignment constructor (g): " << endl << g << endl << endl;
-    
-    // Copy constructor
-    GroupNodePtr g2(g);
- 
-    cout << "Copy constructor (g2): " << endl << g2 << endl << endl;
-    
-    // Create
-    GroupNodePtr g3 = GroupNodePtr::create();
- 
-    cout << "Create (g3): " << endl << g3 << endl << endl;    
-   
-    // Core Assignment
-    g = Group::create();
- 
-    cout << "Core Assignment(g): " << endl << g << endl << endl;
-    
-    // Node Assignment
-    t = np;
- 
-    cout << "Node Assignment(t): " << endl << t << endl << endl;
-  
-    // Core Access
-    
-    g2.coreChanged(); // g = Group::create(); changed it
-    cout << "Core access (g2): " << g2.core() << endl << endl;
-   
-    // -> operator 
-    
-    cout << "-> operator (t): " << t->getMatrix() << endl << endl;
-   
-    // NodePtr operator 
-    
-    NodePtr nn = t;
-    
-    cout << "NodePtr operator (t): " << nn << endl << endl;
-   
-    // CorePtr operator 
-    
-    TransformPtr tt = t;
-    
-    cout << "CorePtr operator (tt): " << tt << endl << endl;
-   
-    // Assign NullFC 
-    
-    tt = NullFC;
-    
-    cout << "CorePtr operator =NullFC(tt): " << tt << endl << endl;
-   
-    
+  cout << "Default const(t): " << endl << t << endl << endl;
+
+  // Core Assignment constructor
+  GroupNodePtr g(Group::create());
+
+  cout << "Core Assignment constructor (g): " << endl << g << endl << endl;
+
+  // Copy constructor
+  GroupNodePtr g2(g);
+
+  cout << "Copy constructor (g2): " << endl << g2 << endl << endl;
+
+  // Create
+  GroupNodePtr g3 = GroupNodePtr::create();
+
+  cout << "Create (g3): " << endl << g3 << endl << endl;
+
+  // Core Assignment
+  g = Group::create();
+
+  cout << "Core Assignment(g): " << endl << g << endl << endl;
+
+  // Node Assignment
+  t = np;
+
+  cout << "Node Assignment(t): " << endl << t << endl << endl;
+
+  // Core Access
+
+  g2.coreChanged(); // g = Group::create(); changed it
+  cout << "Core access (g2): " << g2.core() << endl << endl;
+
+  // -> operator
+
+  cout << "-> operator (t): " << t->getMatrix() << endl << endl;
+
+  // NodePtr operator
+
+  NodePtr nn = t;
+
+  cout << "NodePtr operator (t): " << nn << endl << endl;
+
+  // CorePtr operator
+
+  TransformPtr tt = t;
+
+  cout << "CorePtr operator (tt): " << tt << endl << endl;
+
+  // Assign NullFC
+
+  tt = NullFC;
+
+  cout << "CorePtr operator =NullFC(tt): " << tt << endl << endl;
+
 #ifdef DO_EXPECT_FAIL
 
-    // Create instance of non-NodeCorePtr
-    WindowNodePtr w;
-    
-#endif
-   
- 
-    return 0;
-}
+  // Create instance of non-NodeCorePtr
+  WindowNodePtr w;
 
+#endif
+
+  return 0;
+}

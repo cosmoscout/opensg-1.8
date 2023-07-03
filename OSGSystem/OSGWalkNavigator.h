@@ -47,69 +47,68 @@ OSG_BEGIN_NAMESPACE
 /*! \brief WalkNavigator class
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING WalkNavigator: public FlyNavigator
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+class OSG_SYSTEMLIB_DLLMAPPING WalkNavigator : public FlyNavigator {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    WalkNavigator();
+  WalkNavigator();
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    ~WalkNavigator();
+  ~WalkNavigator();
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                        Get                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                        Get                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                        Set                                   */
-    /*! \{                                                                 */
-    
-    void setGround  (NodePtr &new_ground);
-    void setWorld   (NodePtr &new_world );
-    
-    void setGroundDistance  (Real32 groundDistance);
-    void setMinWallDistance (Real32 wallDistance  );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                        Set                                   */
+  /*! \{                                                                 */
 
-    void setPersonDimensions(Real32 height, Real32 width, Real32 fatness);
-    
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Walker Transformations                      */
-    /*! \{                                                                 */
+  void setGround(NodePtr& new_ground);
+  void setWorld(NodePtr& new_world);
 
-    void rotate (Real32 deltaX, Real32 deltaY);
-    Real32 forward(Real32 step);
-    Real32 right  (Real32 step);
+  void setGroundDistance(Real32 groundDistance);
+  void setMinWallDistance(Real32 wallDistance);
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Members                                  */
-    /*! \{                                                                 */    
-  
-    NodePtr _ground;
-    NodePtr _world;
+  void setPersonDimensions(Real32 height, Real32 width, Real32 fatness);
 
-    Real32 _groundDistance;
-    Real32 _wallDistance;
-    Real32 _height;
-    Real32 _width;
-    Real32 _fatness;
-    
-    IntersectAction *_act;
-          
-    /*! \}                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Walker Transformations                      */
+  /*! \{                                                                 */
+
+  void   rotate(Real32 deltaX, Real32 deltaY);
+  Real32 forward(Real32 step);
+  Real32 right(Real32 step);
+
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Members                                  */
+  /*! \{                                                                 */
+
+  NodePtr _ground;
+  NodePtr _world;
+
+  Real32 _groundDistance;
+  Real32 _wallDistance;
+  Real32 _height;
+  Real32 _width;
+  Real32 _fatness;
+
+  IntersectAction* _act;
+
+  /*! \}                                                                 */
 };
 
 OSG_END_NAMESPACE

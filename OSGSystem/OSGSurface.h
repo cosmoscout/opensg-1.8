@@ -49,7 +49,6 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 /*! \brief The OpenSG NURBS node.
  */
 
@@ -62,168 +61,149 @@ class BSplineTensorSurface;
 class SimplePolygon;
 class BSplineCurve2D;
 
-//class vec3d;
+// class vec3d;
 
-class OSG_SYSTEMLIB_DLLMAPPING Surface : public SurfaceBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING Surface : public SurfaceBase {
+ private:
+  typedef SurfaceBase Inherited;
 
-    typedef SurfaceBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  static const osg::BitVector CurveFieldMask;
+  static const osg::BitVector SurfaceFieldMask;
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                      user actions                            */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  void addCurve(UInt32 dim, std::vector<Real64>& knots, std::vector<Pnt2f>& controlpoints,
+      bool newloop = false);
 
-    static const osg::BitVector CurveFieldMask;
-    static const osg::BitVector SurfaceFieldMask;
+  void addCurve(UInt32 dim, std::vector<Real64>& knots, std::vector<Pnt3f>& controlpoints,
+      bool newloop = false);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      user actions                            */
-    /*! \{                                                                 */
+  void removeCurves(void);
 
-    void addCurve( UInt32 dim,
-                   std::vector<Real64>& knots,
-                   std::vector<Pnt2f>& controlpoints,
-                   bool newloop = false);
+  SurfacePtr clone(void);
+  void       readfromtso(std::istream& infile, bool useTextures = false);
+  void       writetotso(std::ostream& outfile);
+  UInt32     writetoobj(std::ostream& outfile, UInt32 offset);
 
-    void addCurve( UInt32 dim,
-                   std::vector<Real64>& knots,
-                   std::vector<Pnt3f>& controlpoints,
-                   bool newloop = false);
+  Real64 getDesiredError(Pnt3f viewPos, Real64 halfPixelSize);
 
-    void removeCurves( void );
+  void forceTessellate(void);
 
-    SurfacePtr clone( void );
-    void readfromtso( std::istream &infile, bool useTextures = false );
-    void writetotso( std::ostream &outfile );
-    UInt32 writetoobj( std::ostream &outfile, UInt32 offset );
+  void flip(void);
 
-    Real64 getDesiredError( Pnt3f viewPos, Real64 halfPixelSize );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-    void forceTessellate(void);
+  void setControlPoints(const GeoPositionsPtr& value);
+  void setTextureControlPoints(const GeoTexCoordsPtr& value);
 
-    void flip(void);
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    void setControlPoints       (const GeoPositionsPtr &value);
-    void setTextureControlPoints(const GeoTexCoordsPtr &value);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32 origin);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  static const UInt32 TESSELLATE     = 0x0001;
+  static const UInt32 RETESSELLATE   = 0x0002;
+  static const UInt32 DONTTESSELLATE = 0x0004;
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  // Variables should all be in SurfaceBase.
 
-    /*! \}                                                                 */
-   
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    static const UInt32 TESSELLATE     = 0x0001;
-    static const UInt32 RETESSELLATE   = 0x0002;
-    static const UInt32 DONTTESSELLATE = 0x0004;
+  Surface(void);
+  Surface(const Surface& source);
 
-    // Variables should all be in SurfaceBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~Surface(void);
 
-    Surface(void);
-    Surface(const Surface &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Internal functions                         */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  // tessellate from the beginning
+  void tessellate(void);
+  // only retessellate because error/delaunay mode change
+  void  reTessellate(void);
+  Int32 convertSurface(void);
+  Int32 tessellateSurface(
+      std::vector<SimplePolygon>& triangles, std::vector<Pnt3f>& gverts, std::vector<Vec3f>& norms);
+  Int32 tessellateSurface(std::vector<SimplePolygon>& triangles, std::vector<Pnt3f>& gverts,
+      std::vector<Vec3f>& norms, std::vector<Pnt2f>& texcoords);
+  Int32 tessellateSurface(std::vector<SimplePolygon>& triangles, std::vector<Pnt3f>& gverts,
+      std::vector<Pnt2f>& texcoords);
 
-    virtual ~Surface(void); 
+  Int32 buildSurface(std::vector<SimplePolygon>& triangles, std::vector<Pnt3f>& gverts,
+      std::vector<Vec3f>& norms, std::vector<Pnt2f>& texcoords);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Internal functions                         */
-    /*! \{                                                                 */
+  bool checkOrient(UInt32 ui_v1, UInt32 ui_v2, UInt32 ui_v3,
+      std::vector<Pnt3f>& m_vclGlobalVertices, std::vector<Vec3f>& m_vclNormal);
 
-    // tessellate from the beginning
-    void tessellate(void);
-    // only retessellate because error/delaunay mode change
-    void reTessellate(void);
-    Int32 convertSurface( void );
-    Int32 tessellateSurface( std::vector< SimplePolygon > &triangles,
-                             std::vector< Pnt3f > &gverts,
-                             std::vector< Vec3f > &norms );
-    Int32 tessellateSurface( std::vector< SimplePolygon > &triangles,
-                             std::vector< Pnt3f > &gverts,
-                             std::vector< Vec3f > &norms,
-                             std::vector< Pnt2f > &texcoords );
-    Int32 tessellateSurface( std::vector< SimplePolygon > &triangles,
-                             std::vector< Pnt3f > &gverts, 
-                             std::vector< Pnt2f > &texcoords );
-                             
-    Int32 buildSurface ( std::vector< SimplePolygon > &triangles,
-                         std::vector< Pnt3f > &gverts,
-                         std::vector< Vec3f > &norms,
-                         std::vector< Pnt2f > &texcoords );
+  /* protected functions for adaptive tessellation */
+  bool updateError(Pnt3f viewPos, Real64 halfPixelSize);
+  void FindClosestPoint(Vec3f& rDist, const Pnt3f viewPos) const;
+  void FindClosestPointExact(Vec3f& rDist, const Pnt3f viewPos) const;
 
-    bool checkOrient( UInt32 ui_v1, UInt32 ui_v2, UInt32 ui_v3,
-                      std::vector< Pnt3f > &m_vclGlobalVertices,
-                      std::vector< Vec3f > &m_vclNormal );
+  void onCreate(const Surface* source = NULL);
+  void onDestroy(void);
 
-    /* protected functions for adaptive tessellation */   
-    bool updateError( Pnt3f viewPos, Real64 halfPixelSize );
-    void FindClosestPoint( Vec3f& rDist, const Pnt3f viewPos ) const;
-    void FindClosestPointExact( Vec3f& rDist, const Pnt3f viewPos ) const;
+  void handleGL(Window* win, UInt32 idstatus);
 
-    void onCreate(const Surface *source = NULL);
-    void onDestroy(void);
+  void adjustVolume(Volume& volume);
 
-    void handleGL(Window* win, UInt32 idstatus);
+  virtual Action::ResultE drawPrimitives(DrawActionBase* action);
 
-    void adjustVolume(Volume & volume);
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class SurfaceBase;
 
-    virtual Action::ResultE drawPrimitives (DrawActionBase * action );
+  // private class variables
+  // FIXME: this is UGLY, having 3 variables for almost the same thing
+  // OK, it's just two now, but still...
+  BSplineTrimmedSurface* _trimmedSurface; // internal representation
+  CNurbsPatchSurface*    _surfacePatch;   // encompassing class
+                                          // (tessellator class)
+  Pnt3d _min;                             // trimming curves BB
+  Pnt3d _max;
+  Pnt2d _minParam; // trimming curves BB in
+  Pnt2d _maxParam; // parameter space
+                   // all the surfaces)
+  static void initMethod(void);
 
-    /*==========================  PRIVATE  ================================*/
-  private:
+  void calcIndexMapping(void);
 
-    friend class FieldContainer;
-    friend class SurfaceBase;
+  // private variables:
+  // prohibit default functions (move to 'public' if you need one)
 
-    // private class variables
-    // FIXME: this is UGLY, having 3 variables for almost the same thing
-    // OK, it's just two now, but still...
-    BSplineTrimmedSurface *_trimmedSurface;     // internal representation
-    CNurbsPatchSurface *_surfacePatch;          // encompassing class 
-                                                // (tessellator class)
-    Pnt3d   _min;                               // trimming curves BB
-    Pnt3d   _max;
-    Pnt2d   _minParam;                          // trimming curves BB in
-    Pnt2d   _maxParam;                          // parameter space
-	                                            // all the surfaces)
-    static void initMethod(void);
-
-    void calcIndexMapping(void);
-
-    // private variables:
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const Surface &source);    
+  void operator=(const Surface& source);
 };
 
-typedef Surface *SurfaceP;
+typedef Surface* SurfaceP;
 
 OSG_END_NAMESPACE
 

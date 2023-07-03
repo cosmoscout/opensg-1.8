@@ -36,17 +36,13 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifdef FT2_LIB
-
 
 OSG_BEGIN_NAMESPACE
 
-
 OSG_END_NAMESPACE
-
 
 #endif // FT2_LIB
 
-
-#define OSGTEXTFT2BACKEND_INLINE_CVSID "@(#)$Id: OSGTextFT2Backend.inl,v 1.1 2005/03/03 13:43:06 a-m-z Exp $"
+#define OSGTEXTFT2BACKEND_INLINE_CVSID                                                             \
+  "@(#)$Id: OSGTextFT2Backend.inl,v 1.1 2005/03/03 13:43:06 a-m-z Exp $"

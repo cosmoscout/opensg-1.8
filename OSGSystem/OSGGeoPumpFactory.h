@@ -62,211 +62,189 @@ class GeoIndicesInterface;
 #endif
 
 /*! \brief Selects a pump function for drawing the given geometry.
-*/
+ */
 
-class OSG_SYSTEMLIB_DLLMAPPING GeoPumpFactory
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING GeoPumpFactory {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef UInt32 Index;
 
-    typedef UInt32 Index;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Pump Types                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Pump Types                                */
-    /*! \{                                                                 */
+  typedef void (*GeoPump)(Window* win, Geometry* geo);
 
-    typedef void (*GeoPump)( Window *win, Geometry * geo );
+  typedef void (*PartialGeoPump)(
+      Window* win, Geometry* geo, UInt32 primtype, UInt32 firstvert, UInt32 nvert);
 
-    typedef void (*PartialGeoPump)( Window *win, Geometry * geo,
-        UInt32 primtype, UInt32 firstvert, UInt32 nvert );
+  typedef void (*InterfacePump)(Window* win, GeoPositionsInterface* pos, GeoNormalsInterface* norm,
+      GeoColorsInterface* col, GeoColorsInterface* seccol, GeoTexCoordsInterface* texcoords,
+      GeoTexCoordsInterface* texcoords1, GeoTexCoordsInterface* texcoords2,
+      GeoTexCoordsInterface* texcoords3, GeoPTypesInterface* type, GeoPLengthsInterface* len,
+      GeoIndicesInterface* ind, UInt16* map, UInt16 nmap);
 
-    typedef void (*InterfacePump)( Window *win,
-        GeoPositionsInterface *pos, GeoNormalsInterface *norm,
-        GeoColorsInterface *col, GeoColorsInterface *seccol,
-        GeoTexCoordsInterface *texcoords,
-        GeoTexCoordsInterface *texcoords1,
-        GeoTexCoordsInterface *texcoords2,
-        GeoTexCoordsInterface *texcoords3,
-        GeoPTypesInterface *type, GeoPLengthsInterface *len,
-        GeoIndicesInterface *ind, UInt16 *map, UInt16 nmap );
+  typedef void (*PartialInterfacePump)(Window* win, GeoPositionsInterface* pos,
+      GeoNormalsInterface* norm, GeoColorsInterface* col, GeoColorsInterface* seccol,
+      GeoTexCoordsInterface* texcoords, GeoTexCoordsInterface* texcoords1,
+      GeoTexCoordsInterface* texcoords2, GeoTexCoordsInterface* texcoords3,
+      GeoPTypesInterface* type, GeoPLengthsInterface* len, GeoIndicesInterface* ind, UInt16* map,
+      UInt16 nmap, UInt32 primtype, UInt32 firstvert, UInt32 nvert);
 
-    typedef void (*PartialInterfacePump)( Window *win,
-        GeoPositionsInterface *pos, GeoNormalsInterface *norm,
-        GeoColorsInterface *col, GeoColorsInterface *seccol,
-        GeoTexCoordsInterface *texcoords,
-        GeoTexCoordsInterface *texcoords1,
-        GeoTexCoordsInterface *texcoords2,
-        GeoTexCoordsInterface *texcoords3,
-        GeoPTypesInterface *type, GeoPLengthsInterface *len,
-        GeoIndicesInterface *ind, UInt16 *map, UInt16 nmap,
-        UInt32 primtype, UInt32 firstvert, UInt32 nvert );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  static const char* getClassname(void) {
+    return "GeoPumpFactory";
+  }
 
-    static const char *getClassname(void) { return "GeoPumpFactory"; }
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  virtual ~GeoPumpFactory(void);
 
-    virtual ~GeoPumpFactory(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Get                                    */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Get                                    */
-    /*! \{                                                                 */
+  Index getIndex(Geometry* geo);
 
-    Index                getIndex                (Geometry * geo          );
+  GeoPump getGeoPump(Window* win, Index index);
 
-    GeoPump              getGeoPump              (Window *win, Index index);
+  PartialGeoPump getPartialGeoPump(Window* win, Index index);
 
-    PartialGeoPump       getPartialGeoPump       (Window *win, Index index);
+  InterfacePump getInterfacePump(Window* win, Index index);
 
-    InterfacePump        getInterfacePump        (Window *win, Index index);
+  PartialInterfacePump getPartialInterfacePump(Window* win, Index index);
 
-    PartialInterfacePump getPartialInterfacePump (Window *win, Index index);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Access                                 */
+  /*! \{                                                                 */
 
+  static GeoPumpFactory* the(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Access                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name               OpenGL Extension handling                      */
+  /*! \{                                                                 */
 
-    static GeoPumpFactory *the( void );
+  static UInt32 _extSecondaryColor;
+  static UInt32 _extMultitexture;
+  static UInt32 _extCompiledVertexArray;
+  static UInt32 _extDrawRangeElements;
+  static UInt32 _arbVBO;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name               OpenGL Extension handling                      */
-    /*! \{                                                                 */
+  static UInt32 _funcglSecondaryColorPointer;
+  static UInt32 _funcglClientActiveTextureARB;
+  static UInt32 _funcglLockArraysEXT;
+  static UInt32 _funcglUnlockArraysEXT;
+  static UInt32 _funcglDrawRangeElementsEXT;
 
-    static UInt32           _extSecondaryColor;
-    static UInt32           _extMultitexture;
-    static UInt32           _extCompiledVertexArray;
-    static UInt32           _extDrawRangeElements;
-    static UInt32           _arbVBO;
+  static UInt32 _funcglGenBuffersARB;
+  static UInt32 _funcglDeleteBuffersARB;
+  static UInt32 _funcglBindBufferARB;
+  static UInt32 _funcglBufferDataARB;
+  static UInt32 _funcglBufferSubDataARB;
 
-    static UInt32           _funcglSecondaryColorPointer;
-    static UInt32           _funcglClientActiveTextureARB;
-    static UInt32           _funcglLockArraysEXT;
-    static UInt32           _funcglUnlockArraysEXT;
-    static UInt32           _funcglDrawRangeElementsEXT;
+  static UInt32 _funcglGenBuffers;
+  static UInt32 _funcglDeleteBuffers;
+  static UInt32 _funcglBindBuffer;
+  static UInt32 _funcglBufferData;
+  static UInt32 _funcglBufferSubData;
 
-    static UInt32           _funcglGenBuffersARB;
-    static UInt32           _funcglDeleteBuffersARB;
-    static UInt32           _funcglBindBufferARB;
-    static UInt32           _funcglBufferDataARB;
-    static UInt32           _funcglBufferSubDataARB;
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  virtual Index numIndices(void);
 
-    static UInt32           _funcglGenBuffers;
-    static UInt32           _funcglDeleteBuffers;
-    static UInt32           _funcglBindBuffer;
-    static UInt32           _funcglBufferData;
-    static UInt32           _funcglBufferSubData;
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  GeoPumpFactory(void);
 
-    virtual Index numIndices(void);
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  static char cvsid[];
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  static GeoPumpFactory* _the;
+  static GeoPump         GeoPumps[131];
 
-    GeoPumpFactory(void);
+  /*---------------------------------------------------------------------*/
+  /*! \name               OpenGL Extension handling                      */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  static bool            glextInitFunction(void);
+  static InitFuncWrapper _glextInitFuncWrapper;
 
-    static char cvsid[];
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       The Pumps                              */
+  /*! \{                                                                 */
 
-    static GeoPumpFactory *_the;
-    static GeoPump GeoPumps[131];
+  static void masterGeoPump(Window* win, Geometry* geo);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name               OpenGL Extension handling                      */
-    /*! \{                                                                 */
+  static void masterPartialGeoPump(
+      Window* win, Geometry* geo, UInt32 primtype, UInt32 firstvert, UInt32 nvert);
 
-    static bool             glextInitFunction(void);
-    static InitFuncWrapper _glextInitFuncWrapper;
+  static void masterInterfacePump(Window* win, GeoPositionsInterface* pos,
+      GeoNormalsInterface* norm, GeoColorsInterface* col, GeoColorsInterface* seccol,
+      GeoTexCoordsInterface* texcoords, GeoTexCoordsInterface* texcoords2,
+      GeoTexCoordsInterface* texcoords3, GeoTexCoordsInterface* texcoords4,
+      GeoPTypesInterface* type, GeoPLengthsInterface* len, GeoIndicesInterface* ind, UInt16* map,
+      UInt16 nmap);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       The Pumps                              */
-    /*! \{                                                                 */
+  static void masterPartialInterfacePump(Window* win, GeoPositionsInterface* pos,
+      GeoNormalsInterface* norm, GeoColorsInterface* col, GeoColorsInterface* seccol,
+      GeoTexCoordsInterface* texcoords, GeoTexCoordsInterface* texcoords2,
+      GeoTexCoordsInterface* texcoords3, GeoTexCoordsInterface* texcoords4,
+      GeoPTypesInterface* type, GeoPLengthsInterface* len, GeoIndicesInterface* ind, UInt16* map,
+      UInt16 nmap, UInt32 primtype, UInt32 firstvert, UInt32 nvert);
 
-    static void masterGeoPump(Window *win, Geometry *geo);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    static void masterPartialGeoPump(Window *win, Geometry *geo,
-        UInt32 primtype, UInt32 firstvert, UInt32 nvert);
+  GeoPumpFactory(const GeoPumpFactory& source);
 
-    static void masterInterfacePump(Window *win,
-        GeoPositionsInterface *pos, GeoNormalsInterface *norm,
-        GeoColorsInterface *col, GeoColorsInterface *seccol,
-        GeoTexCoordsInterface *texcoords,
-        GeoTexCoordsInterface *texcoords2,
-        GeoTexCoordsInterface *texcoords3,
-        GeoTexCoordsInterface *texcoords4,
-        GeoPTypesInterface *type, GeoPLengthsInterface*len,
-        GeoIndicesInterface *ind, UInt16 *map, UInt16 nmap);
+  /*! \}                                                                 */
 
-    static void masterPartialInterfacePump(Window *win,
-        GeoPositionsInterface *pos, GeoNormalsInterface *norm,
-        GeoColorsInterface *col, GeoColorsInterface *seccol,
-        GeoTexCoordsInterface *texcoords,
-        GeoTexCoordsInterface *texcoords2,
-        GeoTexCoordsInterface *texcoords3,
-        GeoTexCoordsInterface *texcoords4,
-        GeoPTypesInterface *type, GeoPLengthsInterface*len,
-        GeoIndicesInterface *ind, UInt16 *map, UInt16 nmap,
-        UInt32 primtype, UInt32 firstvert, UInt32 nvert);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    GeoPumpFactory(const GeoPumpFactory &source);
-
-    /*! \}                                                                 */
-
-    void operator =(const GeoPumpFactory &source);
-
+  void operator=(const GeoPumpFactory& source);
 };
 
-class OSG_SYSTEMLIB_DLLMAPPING GeoVBO
-{
-public:
+class OSG_SYSTEMLIB_DLLMAPPING GeoVBO {
+ public:
+  GeoVBO(Window* win, Geometry* geo);
+  ~GeoVBO();
 
-    GeoVBO(Window *win, Geometry *geo);
-    ~GeoVBO();
+  void update(void);
+  void draw(void);
 
-    void update(void);
-    void draw(void);
+ private:
+  GLuint _positions;
+  GLuint _normals;
+  GLuint _colors;
+  GLuint _secColors;
+  GLuint _texCoords;
+  GLuint _texCoords1;
+  GLuint _texCoords2;
+  GLuint _texCoords3;
+  GLuint _texCoords4;
+  GLuint _texCoords5;
+  GLuint _texCoords6;
+  GLuint _texCoords7;
+  GLuint _indices;
 
-private:
-
-    GLuint _positions;
-    GLuint _normals;
-    GLuint _colors;
-    GLuint _secColors;
-    GLuint _texCoords;
-    GLuint _texCoords1;
-    GLuint _texCoords2;
-    GLuint _texCoords3;
-    GLuint _texCoords4;
-    GLuint _texCoords5;
-    GLuint _texCoords6;
-    GLuint _texCoords7;
-    GLuint _indices;
-
-    Window   *_win;
-    Geometry *_geo;
+  Window*   _win;
+  Geometry* _geo;
 };
 
 OSG_END_NAMESPACE

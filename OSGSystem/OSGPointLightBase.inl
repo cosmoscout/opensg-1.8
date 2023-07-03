@@ -52,81 +52,59 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &PointLightBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& PointLightBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 PointLightBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 PointLightBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-PointLightPtr PointLightBase::create(void) 
-{
-    PointLightPtr fc; 
+inline PointLightPtr PointLightBase::create(void) {
+  PointLightPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = PointLightPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = PointLightPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-PointLightPtr PointLightBase::createEmpty(void) 
-{ 
-    PointLightPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline PointLightPtr PointLightBase::createEmpty(void) {
+  PointLightPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the PointLight::_sfPosition field.
-inline
-SFPnt3f *PointLightBase::getSFPosition(void)
-{
-    return &_sfPosition;
-}
-
-
-//! Get the value of the PointLight::_sfPosition field.
-inline
-Pnt3f &PointLightBase::getPosition(void)
-{
-    return _sfPosition.getValue();
+inline SFPnt3f* PointLightBase::getSFPosition(void) {
+  return &_sfPosition;
 }
 
 //! Get the value of the PointLight::_sfPosition field.
-inline
-const Pnt3f &PointLightBase::getPosition(void) const
-{
-    return _sfPosition.getValue();
+inline Pnt3f& PointLightBase::getPosition(void) {
+  return _sfPosition.getValue();
+}
+
+//! Get the value of the PointLight::_sfPosition field.
+inline const Pnt3f& PointLightBase::getPosition(void) const {
+  return _sfPosition.getValue();
 }
 
 //! Set the value of the PointLight::_sfPosition field.
-inline
-void PointLightBase::setPosition(const Pnt3f &value)
-{
-    _sfPosition.setValue(value);
+inline void PointLightBase::setPosition(const Pnt3f& value) {
+  _sfPosition.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGPOINTLIGHTBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGPOINTLIGHTBASE_INLINE_CVSID                                                             \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

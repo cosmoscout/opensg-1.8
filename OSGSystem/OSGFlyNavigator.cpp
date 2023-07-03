@@ -52,7 +52,7 @@ OSG_USING_NAMESPACE
 /*! \class osg::FlyNavigator
     \ingroup GrpSystemWindowNavigators
 
-The FlyNavigator models a simple flying navigation model, see \ref 
+The FlyNavigator models a simple flying navigation model, see \ref
 PageSystemWindowNavigatorsFly for a description.
 
 */
@@ -77,176 +77,156 @@ PageSystemWindowNavigatorsFly for a description.
     The transformation matrix for this navigator.
 */
 
-
 /*------------------------- constructors ----------------------------------*/
 
-FlyNavigator::FlyNavigator()
-{
-    _rFrom  .setValues(0,0,0);
-    _rAt    .setValues(0,0,1);
-    _vUp    .setValues(0,1,0);
-    _tMatrix.setIdentity();
+FlyNavigator::FlyNavigator() {
+  _rFrom.setValues(0, 0, 0);
+  _rAt.setValues(0, 0, 1);
+  _vUp.setValues(0, 1, 0);
+  _tMatrix.setIdentity();
 }
-
 
 /*-------------------------- destructors ----------------------------------*/
 
-FlyNavigator::~FlyNavigator()
-{
+FlyNavigator::~FlyNavigator() {
 }
 
 /*------------------------------ get --------------------------------------*/
 
 /*! Get the current transformation matrix.
-*/
-Matrix &FlyNavigator::getMatrix()
-{
-    MatrixLookAt(_tMatrix,_rFrom,_rAt,_vUp);
-    return _tMatrix;
+ */
+Matrix& FlyNavigator::getMatrix() {
+  MatrixLookAt(_tMatrix, _rFrom, _rAt, _vUp);
+  return _tMatrix;
 }
 
 /*! Get the from point.
-*/
-Pnt3f &FlyNavigator::getFrom()
-{
-    return _rFrom;
+ */
+Pnt3f& FlyNavigator::getFrom() {
+  return _rFrom;
 }
 
 /*! Get the at point.
-*/
-Pnt3f &FlyNavigator::getAt()
-{
-    return _rAt;
+ */
+Pnt3f& FlyNavigator::getAt() {
+  return _rAt;
 }
 
 /*! Get the up vector.
-*/
-Vec3f &FlyNavigator::getUp()
-{
-    return _vUp;
+ */
+Vec3f& FlyNavigator::getUp() {
+  return _vUp;
 }
-
 
 /*------------------------------ set --------------------------------------*/
 
-/*! Set the from point, the point where the viewer is (i.e the center 
+/*! Set the from point, the point where the viewer is (i.e the center
     of all transformations).
 */
-void FlyNavigator::setFrom(Pnt3f new_from)
-{
-    _rFrom=new_from;
+void FlyNavigator::setFrom(Pnt3f new_from) {
+  _rFrom = new_from;
 }
 
 /*! Sets the target point at which the viewer is looking.
-*/
-void FlyNavigator::setAt(Pnt3f new_At)
-{
-    _rAt=new_At;
+ */
+void FlyNavigator::setAt(Pnt3f new_At) {
+  _rAt = new_At;
 }
 
 /*! Sets the up vector, i.e. the direction that point up on the screen.
-*/
-void FlyNavigator::setUp(Vec3f new_up)
-{
-    _vUp=new_up;
+ */
+void FlyNavigator::setUp(Vec3f new_up) {
+  _vUp = new_up;
 }
 
 /*! Set the position and the orientation at once.
-*/
-void FlyNavigator::set(Pnt3f new_from,Pnt3f new_At,Vec3f new_up)
-{
-    _rFrom=new_from;
-    _rAt=new_At;
-    _vUp=new_up;
+ */
+void FlyNavigator::set(Pnt3f new_from, Pnt3f new_At, Vec3f new_up) {
+  _rFrom = new_from;
+  _rAt   = new_At;
+  _vUp   = new_up;
 }
 
 /*! Set the position and the orientation at once using a matrix.
-*/
-void FlyNavigator::set(Matrix new_matrix)
-{
-    _rFrom= (Pnt3f) new_matrix[3];
-    _rAt  = (Pnt3f)(new_matrix[3] - new_matrix[2]);
-    _vUp  = (Vec3f) new_matrix[1];
-    set(_rFrom, _rAt, _vUp);
+ */
+void FlyNavigator::set(Matrix new_matrix) {
+  _rFrom = (Pnt3f)new_matrix[3];
+  _rAt   = (Pnt3f)(new_matrix[3] - new_matrix[2]);
+  _vUp   = (Vec3f)new_matrix[1];
+  set(_rFrom, _rAt, _vUp);
 }
 
 /*---------------------- Flyer Transformations ----------------------------*/
 
-/*! Rotate the viewer \a deltaX around the up axis and deltaY around the 
+/*! Rotate the viewer \a deltaX around the up axis and deltaY around the
     left/right axis. \a deltaX and \a deltaY should be between -Pi and Pi.
 */
-void FlyNavigator::rotate(Real32 deltaX, Real32 deltaY)
-{
-    // rotate around the up vector
-    Matrix final,temp;
-    Quaternion q;
+void FlyNavigator::rotate(Real32 deltaX, Real32 deltaY) {
+  // rotate around the up vector
+  Matrix     final, temp;
+  Quaternion q;
 
-    q.setValueAsAxisRad(_vUp,-deltaX);
-    q.getValue(temp);
+  q.setValueAsAxisRad(_vUp, -deltaX);
+  q.getValue(temp);
 
-    final.setIdentity();
-    final.setTranslate(_rFrom);
-    final.mult(temp);
+  final.setIdentity();
+  final.setTranslate(_rFrom);
+  final.mult(temp);
 
-    temp.setIdentity();
-    temp.setTranslate(-_rFrom[0],-_rFrom[1],-_rFrom[2]);
+  temp.setIdentity();
+  temp.setTranslate(-_rFrom[0], -_rFrom[1], -_rFrom[2]);
 
-    final.mult(temp);
-    final.multMatrixPnt(_rAt);
+  final.mult(temp);
+  final.multMatrixPnt(_rAt);
 
-    // rotate around the side vector
-    Vec3f lv = _rAt-_rFrom;
-    lv.normalize();
+  // rotate around the side vector
+  Vec3f lv = _rAt - _rFrom;
+  lv.normalize();
 
-    Vec3f sv = lv;
-    sv.crossThis(_vUp);
-    sv.normalize();
-    q.setValueAsAxisRad(sv,-deltaY);
-    q.getValue(temp);
+  Vec3f sv = lv;
+  sv.crossThis(_vUp);
+  sv.normalize();
+  q.setValueAsAxisRad(sv, -deltaY);
+  q.getValue(temp);
 
-    final.setIdentity();
-    final.setTranslate(_rFrom);
-    final.mult(temp);
+  final.setIdentity();
+  final.setTranslate(_rFrom);
+  final.mult(temp);
 
-    temp.setIdentity();
-    temp.setTranslate(-_rFrom[0],-_rFrom[1],-_rFrom[2]);
+  temp.setIdentity();
+  temp.setTranslate(-_rFrom[0], -_rFrom[1], -_rFrom[2]);
 
-    final.mult(temp);
-    final.multMatrixPnt(_rAt);
+  final.mult(temp);
+  final.multMatrixPnt(_rAt);
 }
 
 /*! Flies forward, i.e. translation \a step units along the view vector.
-*/
-Real32 FlyNavigator::forward(Real32 step)
-{
-    Vec3f lv;
-    lv = _rFrom-_rAt;
-    lv.normalize();
-    lv *= (step);
-    Matrix transl;
-    transl.setIdentity();
-    transl.setTranslate(lv);
-    transl.multMatrixPnt(_rAt);
-    transl.multMatrixPnt(_rFrom);
-    return 0.0;
+ */
+Real32 FlyNavigator::forward(Real32 step) {
+  Vec3f lv;
+  lv = _rFrom - _rAt;
+  lv.normalize();
+  lv *= (step);
+  Matrix transl;
+  transl.setIdentity();
+  transl.setTranslate(lv);
+  transl.multMatrixPnt(_rAt);
+  transl.multMatrixPnt(_rFrom);
+  return 0.0;
 }
 
 /*! Strafes to the right, i.e. translates along the side vector.
-*/
-Real32 FlyNavigator::right(Real32 step)
-{
-    Vec3f sv;
-    sv = _rFrom-_rAt;
-    sv.crossThis(_vUp);
-    sv.normalize();
-    sv *= (step);
-    Matrix transl;
-    transl.setIdentity();
-    transl.setTranslate(sv);
-    transl.multMatrixPnt(_rAt);
-    transl.multMatrixPnt(_rFrom);
-    return 0.0;
+ */
+Real32 FlyNavigator::right(Real32 step) {
+  Vec3f sv;
+  sv = _rFrom - _rAt;
+  sv.crossThis(_vUp);
+  sv.normalize();
+  sv *= (step);
+  Matrix transl;
+  transl.setIdentity();
+  transl.setTranslate(sv);
+  transl.multMatrixPnt(_rAt);
+  transl.multMatrixPnt(_rFrom);
+  return 0.0;
 }
-
-
-

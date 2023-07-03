@@ -49,9 +49,9 @@ OSG_USING_NAMESPACE
 
 /*! Constructor. Add ClusterLib to the error text
  */
-ClusterException::ClusterException():Exception()
-{
-    _what += "ClusterLib: ";
+ClusterException::ClusterException()
+    : Exception() {
+  _what += "ClusterLib: ";
 }
 
 /** \class ConnectionClosed
@@ -61,9 +61,9 @@ ClusterException::ClusterException():Exception()
 
 /*! Constructor. Add error text.
  */
-ConnectionClosed::ConnectionClosed():ClusterException()
-{
-    _what += "Connection closed by endpoint. ";
+ConnectionClosed::ConnectionClosed()
+    : ClusterException() {
+  _what += "Connection closed by endpoint. ";
 }
 
 /** \class RemoteSyncError
@@ -73,9 +73,7 @@ ConnectionClosed::ConnectionClosed():ClusterException()
 
 /*! Constructor. Add error text.
  */
-RemoteSyncError::RemoteSyncError():ClusterException()
-{
-    _what += "Error in synchronisation data stream. ";
+RemoteSyncError::RemoteSyncError()
+    : ClusterException() {
+  _what += "Error in synchronisation data stream. ";
 }
-
-

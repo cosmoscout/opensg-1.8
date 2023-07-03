@@ -44,7 +44,6 @@
 
 #undef OSG_INCLUDE_SOVOLUME
 
-
 #include <OSGConfig.h>
 
 #include <OSGDVRVolumeBase.h>
@@ -53,13 +52,10 @@
 #include <OSGTextureManager.h>
 #include <OSGDVRClipper.h>
 
-
 //! Conveniance macros - makes code much more readable
 
-#define DVRVOLUME_PARAMETER(volume, class) \
-class##Ptr::dcast(volume->findParameter(class::getClassType()))
-
-
+#define DVRVOLUME_PARAMETER(volume, class)                                                         \
+  class##Ptr::dcast(volume->findParameter(class ::getClassType()))
 
 #ifdef OSG_INCLUDE_SOVOLUME
 class SoVolume;
@@ -67,170 +63,159 @@ class SoVolume;
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief *put brief class description here* 
+/*! \brief *put brief class description here*
  */
 
-class OSG_SYSTEMLIB_DLLMAPPING DVRVolume : public DVRVolumeBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING DVRVolume : public DVRVolumeBase {
+ private:
+  typedef DVRVolumeBase Inherited;
 
-    typedef DVRVolumeBase Inherited;
+  /*==========================  PUBLIC  =================================*/
 
-    /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-  public:
+  void setAppearance(const DVRAppearancePtr& value);
+  void setGeometry(const DVRGeometryPtr& value);
+  void setShader(const DVRShaderPtr& value);
+  void setRenderMaterial(const MaterialPtr& value);
+  void setTextureStorage(const ChunkMaterialPtr& value);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-     void setAppearance    (const DVRAppearancePtr &value);
-     void setGeometry      (const DVRGeometryPtr   &value);
-     void setShader        (const DVRShaderPtr     &value);
-     void setRenderMaterial(const MaterialPtr      &value);
-     void setTextureStorage(const ChunkMaterialPtr &value);
+  virtual void changed(BitVector whichField, UInt32 from);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     from);
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Draw                                     */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  // execute the OpenGL commands to draw the geometry
+  Action::ResultE doDraw(Action* action);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Draw                                     */
+  // low-level OpenGL calls, ignoring materials
+  Action::ResultE draw(DrawActionBase* action);
 
-    // execute the OpenGL commands to draw the geometry	
-    Action::ResultE doDraw(Action         *action);
-	
-    // low-level OpenGL calls, ignoring materials	
-    Action::ResultE draw  (DrawActionBase *action);
+  // generate draw tree
+  Action::ResultE render(Action* action);
 
-    // generate draw tree
-    Action::ResultE render(Action         *action);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                Volume Parameter                              */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                Volume Parameter                              */
+  AttachmentPtr findParameter(const FieldContainerType& type, UInt16 binding = 0);
 
-    AttachmentPtr findParameter(const FieldContainerType &type,
-                                      UInt16              binding = 0);
+  AttachmentPtr findParameter(UInt32 groupId, UInt16 binding = 0);
 
-    AttachmentPtr findParameter(      UInt32              groupId, 
-                                      UInt16              binding = 0);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Volume                                   */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Volume                                   */
+  void buildDrawStyleList(Window* win = NULL);
 
-    void          buildDrawStyleList   (      Window         *win = NULL    );
+  //! Prepare the clip objects for this volume
+  void initializeClipObjects(DrawActionBase* action, const Matrix& volumeToWorld);
 
-    //! Prepare the clip objects for this volume    
-    void          initializeClipObjects(      DrawActionBase *action, 
-                                        const Matrix          &volumeToWorld);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   TextureManager                             */
 
+  TextureManager& getTextureManager(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   TextureManager                             */
+  TextureManager::TextureMode getTextureMode(Window* window);
 
-    TextureManager              &getTextureManager(void          );
+  //!! FIXME: This methods are to be removed as soon as the node gets informed
+  //!!	about modified attachments of the appearance
 
-    TextureManager::TextureMode  getTextureMode   (Window *window);
+  // updates the texture color table
+  void reload(void);
 
-//!! FIXME: This methods are to be removed as soon as the node gets informed
-//!!	about modified attachments of the appearance
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
 
-    // updates the texture color table
-    void reload(void);
-    
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-  protected:
+  DVRVolume(void);
+  DVRVolume(const DVRVolume& source);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    DVRVolume(void);
-    DVRVolume(const DVRVolume &source);
+  virtual ~DVRVolume(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Volume                                  */
+  /*! \{                                                                 */
 
-    virtual ~DVRVolume(void); 
+  virtual void adjustVolume(Volume& volume);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Volume                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                        GL                                    */
+  /*! \{                                                                 */
 
-    virtual void adjustVolume(Volume &volume);
+  // extension indices for used extensions;
+  static UInt32 _extTex3D;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                        GL                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
 
-    // extension indices for used extensions;
-    static UInt32 _extTex3D;
-    
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class DVRVolumeBase;
 
-  private:
+  static void initMethod(void);
 
-    friend class FieldContainer;
-    friend class DVRVolumeBase;
-    
-    static void initMethod(void);
+  // prohibit default functions (move to 'public' if you need one)
 
-    // prohibit default functions (move to 'public' if you need one)
+  void operator=(const DVRVolume& source);
 
-    void operator =(const DVRVolume &source);
+  /*! \brief used to initialize class to initialize member variables -
+   *         method is called by every constructor
+   */
+  void commonConstructor(void);
 
-    /*! \brief used to initialize class to initialize member variables -
-     *         method is called by every constructor
-     */
-    void commonConstructor( void );
+  // intersect action: ray test
+  Action::ResultE intersect(Action* action);
 
-    // intersect action: ray test
-    Action::ResultE intersect(Action * action);
-
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Volume-Rendering                        */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Volume-Rendering                        */
+  /*! \{                                                                 */
 
 #ifdef OSG_INCLUDE_SOVOLUME
-    SoVolume       *volumeImpl;
-    UInt32          nextDrawStyle;
+  SoVolume* volumeImpl;
+  UInt32    nextDrawStyle;
 #endif
-    bool            drawStyleListValid;
-    TextureManager  textureManager;
-    bool            shadingInitialized;
+  bool           drawStyleListValid;
+  TextureManager textureManager;
+  bool           shadingInitialized;
 
-    DVRClipper      clipper;
-    
-    /*! \}                                                                 */
+  DVRClipper clipper;
 
-    //!! FIXME:
-    friend class TextureManager;
+  /*! \}                                                                 */
+
+  //!! FIXME:
+  friend class TextureManager;
 };
 
-typedef DVRVolume *DVRVolumeP;
+typedef DVRVolume* DVRVolumeP;
 
 OSG_END_NAMESPACE
 

@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILESCLIPPLANECHUNKINST
 
 #include <stdlib.h>
@@ -61,206 +60,151 @@
 #include "OSGSClipPlaneChunkBase.h"
 #include "OSGSClipPlaneChunk.h"
 
-
 OSG_BEGIN_NAMESPACE
 
-const OSG::BitVector  SClipPlaneChunkBase::EquationFieldMask = 
+const OSG::BitVector SClipPlaneChunkBase::EquationFieldMask =
     (TypeTraits<BitVector>::One << SClipPlaneChunkBase::EquationFieldId);
 
-const OSG::BitVector SClipPlaneChunkBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector SClipPlaneChunkBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
 /*! \var Vec4f           SClipPlaneChunkBase::_sfEquation
-    Defines the equation of the clip plane. Standard format, if (a,b,c,d) is         the plane a point (x,y,z) is visible if a*x+b*y+c*z+d &gt;= 0.
+    Defines the equation of the clip plane. Standard format, if (a,b,c,d) is         the plane a
+   point (x,y,z) is visible if a*x+b*y+c*z+d &gt;= 0.
 */
 
 //! SClipPlaneChunk description
 
-FieldDescription *SClipPlaneChunkBase::_desc[] = 
-{
-    new FieldDescription(SFVec4f::getClassType(), 
-                     "equation", 
-                     EquationFieldId, EquationFieldMask,
-                     false,
-                     (FieldAccessMethod) &SClipPlaneChunkBase::getSFEquation)
-};
+FieldDescription* SClipPlaneChunkBase::_desc[] = {
+    new FieldDescription(SFVec4f::getClassType(), "equation", EquationFieldId, EquationFieldMask,
+        false, (FieldAccessMethod)&SClipPlaneChunkBase::getSFEquation)};
 
-
-FieldContainerType SClipPlaneChunkBase::_type(
-    "SClipPlaneChunk",
-    "StateChunk",
-    NULL,
-    (PrototypeCreateF) &SClipPlaneChunkBase::createEmpty,
-    SClipPlaneChunk::initMethod,
-    _desc,
+FieldContainerType SClipPlaneChunkBase::_type("SClipPlaneChunk", "StateChunk", NULL,
+    (PrototypeCreateF)&SClipPlaneChunkBase::createEmpty, SClipPlaneChunk::initMethod, _desc,
     sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(SClipPlaneChunkBase, SClipPlaneChunkPtr)
+// OSG_FIELD_CONTAINER_DEF(SClipPlaneChunkBase, SClipPlaneChunkPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &SClipPlaneChunkBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &SClipPlaneChunkBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr SClipPlaneChunkBase::shallowCopy(void) const 
-{ 
-    SClipPlaneChunkPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const SClipPlaneChunk *>(this)); 
-
-    return returnValue; 
+FieldContainerType& SClipPlaneChunkBase::getType(void) {
+  return _type;
 }
 
-UInt32 SClipPlaneChunkBase::getContainerSize(void) const 
-{ 
-    return sizeof(SClipPlaneChunk); 
+const FieldContainerType& SClipPlaneChunkBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr SClipPlaneChunkBase::shallowCopy(void) const {
+  SClipPlaneChunkPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const SClipPlaneChunk*>(this));
+
+  return returnValue;
+}
+
+UInt32 SClipPlaneChunkBase::getContainerSize(void) const {
+  return sizeof(SClipPlaneChunk);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void SClipPlaneChunkBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((SClipPlaneChunkBase *) &other, whichField);
+void SClipPlaneChunkBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((SClipPlaneChunkBase*)&other, whichField);
 }
 #else
-void SClipPlaneChunkBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((SClipPlaneChunkBase *) &other, whichField, sInfo);
+void SClipPlaneChunkBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((SClipPlaneChunkBase*)&other, whichField, sInfo);
 }
-void SClipPlaneChunkBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void SClipPlaneChunkBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void SClipPlaneChunkBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void SClipPlaneChunkBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-SClipPlaneChunkBase::SClipPlaneChunkBase(void) :
-    _sfEquation               (Vec4f(0, 0, 1, 0)), 
-    Inherited() 
-{
+SClipPlaneChunkBase::SClipPlaneChunkBase(void)
+    : _sfEquation(Vec4f(0, 0, 1, 0))
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-SClipPlaneChunkBase::SClipPlaneChunkBase(const SClipPlaneChunkBase &source) :
-    _sfEquation               (source._sfEquation               ), 
-    Inherited                 (source)
-{
+SClipPlaneChunkBase::SClipPlaneChunkBase(const SClipPlaneChunkBase& source)
+    : _sfEquation(source._sfEquation)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-SClipPlaneChunkBase::~SClipPlaneChunkBase(void)
-{
+SClipPlaneChunkBase::~SClipPlaneChunkBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 SClipPlaneChunkBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 SClipPlaneChunkBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (EquationFieldMask & whichField))
-    {
-        returnValue += _sfEquation.getBinSize();
-    }
+  if (FieldBits::NoField != (EquationFieldMask & whichField)) {
+    returnValue += _sfEquation.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void SClipPlaneChunkBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void SClipPlaneChunkBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (EquationFieldMask & whichField))
-    {
-        _sfEquation.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (EquationFieldMask & whichField)) {
+    _sfEquation.copyToBin(pMem);
+  }
 }
 
-void SClipPlaneChunkBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void SClipPlaneChunkBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (EquationFieldMask & whichField))
-    {
-        _sfEquation.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (EquationFieldMask & whichField)) {
+    _sfEquation.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void SClipPlaneChunkBase::executeSyncImpl(      SClipPlaneChunkBase *pOther,
-                                        const BitVector         &whichField)
-{
+void SClipPlaneChunkBase::executeSyncImpl(
+    SClipPlaneChunkBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (EquationFieldMask & whichField))
-        _sfEquation.syncWith(pOther->_sfEquation);
-
-
+  if (FieldBits::NoField != (EquationFieldMask & whichField))
+    _sfEquation.syncWith(pOther->_sfEquation);
 }
 #else
-void SClipPlaneChunkBase::executeSyncImpl(      SClipPlaneChunkBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void SClipPlaneChunkBase::executeSyncImpl(
+    SClipPlaneChunkBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (EquationFieldMask & whichField))
-        _sfEquation.syncWith(pOther->_sfEquation);
-
-
-
+  if (FieldBits::NoField != (EquationFieldMask & whichField))
+    _sfEquation.syncWith(pOther->_sfEquation);
 }
 
-void SClipPlaneChunkBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void SClipPlaneChunkBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 OSG_END_NAMESPACE
 
@@ -277,4 +221,3 @@ OSG_DLLEXPORT_SFIELD_DEF1(SClipPlaneChunkPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 OSG_DLLEXPORT_MFIELD_DEF1(SClipPlaneChunkPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
-

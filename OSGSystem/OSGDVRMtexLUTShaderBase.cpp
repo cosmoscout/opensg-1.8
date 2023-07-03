@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEDVRMTEXLUTSHADERINST
 
 #include <stdlib.h>
@@ -61,169 +60,120 @@
 #include "OSGDVRMtexLUTShaderBase.h"
 #include "OSGDVRMtexLUTShader.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector DVRMtexLUTShaderBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
+const OSG::BitVector DVRMtexLUTShaderBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
+FieldContainerType DVRMtexLUTShaderBase::_type("DVRMtexLUTShader", "DVRSimpleLUTShader", NULL,
+    (PrototypeCreateF)&DVRMtexLUTShaderBase::createEmpty, DVRMtexLUTShader::initMethod, NULL, 0);
 
-
-FieldContainerType DVRMtexLUTShaderBase::_type(
-    "DVRMtexLUTShader",
-    "DVRSimpleLUTShader",
-    NULL,
-    (PrototypeCreateF) &DVRMtexLUTShaderBase::createEmpty,
-    DVRMtexLUTShader::initMethod,
-    NULL,
-    0);
-
-//OSG_FIELD_CONTAINER_DEF(DVRMtexLUTShaderBase, DVRMtexLUTShaderPtr)
+// OSG_FIELD_CONTAINER_DEF(DVRMtexLUTShaderBase, DVRMtexLUTShaderPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &DVRMtexLUTShaderBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &DVRMtexLUTShaderBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr DVRMtexLUTShaderBase::shallowCopy(void) const 
-{ 
-    DVRMtexLUTShaderPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const DVRMtexLUTShader *>(this)); 
-
-    return returnValue; 
+FieldContainerType& DVRMtexLUTShaderBase::getType(void) {
+  return _type;
 }
 
-UInt32 DVRMtexLUTShaderBase::getContainerSize(void) const 
-{ 
-    return sizeof(DVRMtexLUTShader); 
+const FieldContainerType& DVRMtexLUTShaderBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr DVRMtexLUTShaderBase::shallowCopy(void) const {
+  DVRMtexLUTShaderPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const DVRMtexLUTShader*>(this));
+
+  return returnValue;
+}
+
+UInt32 DVRMtexLUTShaderBase::getContainerSize(void) const {
+  return sizeof(DVRMtexLUTShader);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void DVRMtexLUTShaderBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((DVRMtexLUTShaderBase *) &other, whichField);
+void DVRMtexLUTShaderBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((DVRMtexLUTShaderBase*)&other, whichField);
 }
 #else
-void DVRMtexLUTShaderBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((DVRMtexLUTShaderBase *) &other, whichField, sInfo);
+void DVRMtexLUTShaderBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((DVRMtexLUTShaderBase*)&other, whichField, sInfo);
 }
-void DVRMtexLUTShaderBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void DVRMtexLUTShaderBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void DVRMtexLUTShaderBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void DVRMtexLUTShaderBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-DVRMtexLUTShaderBase::DVRMtexLUTShaderBase(void) :
-    Inherited() 
-{
+DVRMtexLUTShaderBase::DVRMtexLUTShaderBase(void)
+    : Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-DVRMtexLUTShaderBase::DVRMtexLUTShaderBase(const DVRMtexLUTShaderBase &source) :
-    Inherited                 (source)
-{
+DVRMtexLUTShaderBase::DVRMtexLUTShaderBase(const DVRMtexLUTShaderBase& source)
+    : Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-DVRMtexLUTShaderBase::~DVRMtexLUTShaderBase(void)
-{
+DVRMtexLUTShaderBase::~DVRMtexLUTShaderBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 DVRMtexLUTShaderBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 DVRMtexLUTShaderBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void DVRMtexLUTShaderBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
-
-
+void DVRMtexLUTShaderBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 }
 
-void DVRMtexLUTShaderBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
-
-
+void DVRMtexLUTShaderBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void DVRMtexLUTShaderBase::executeSyncImpl(      DVRMtexLUTShaderBase *pOther,
-                                        const BitVector         &whichField)
-{
+void DVRMtexLUTShaderBase::executeSyncImpl(
+    DVRMtexLUTShaderBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
-
-
+  Inherited::executeSyncImpl(pOther, whichField);
 }
 #else
-void DVRMtexLUTShaderBase::executeSyncImpl(      DVRMtexLUTShaderBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void DVRMtexLUTShaderBase::executeSyncImpl(
+    DVRMtexLUTShaderBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
-
-
-
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 }
 
-void DVRMtexLUTShaderBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void DVRMtexLUTShaderBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 OSG_BEGIN_NAMESPACE
 
 #if !defined(OSG_DO_DOC) || defined(OSG_DOC_DEV)
-DataType FieldDataTraits<DVRMtexLUTShaderPtr>::_type("DVRMtexLUTShaderPtr", "DVRSimpleLUTShaderPtr");
+DataType FieldDataTraits<DVRMtexLUTShaderPtr>::_type(
+    "DVRMtexLUTShaderPtr", "DVRSimpleLUTShaderPtr");
 #endif
-
 
 OSG_END_NAMESPACE

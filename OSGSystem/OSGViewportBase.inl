@@ -52,361 +52,259 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &ViewportBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& ViewportBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 ViewportBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 ViewportBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-ViewportPtr ViewportBase::create(void) 
-{
-    ViewportPtr fc; 
+inline ViewportPtr ViewportBase::create(void) {
+  ViewportPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = ViewportPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = ViewportPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-ViewportPtr ViewportBase::createEmpty(void) 
-{ 
-    ViewportPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline ViewportPtr ViewportBase::createEmpty(void) {
+  ViewportPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the Viewport::_sfLeft field.
-inline
-SFReal32 *ViewportBase::getSFLeft(void)
-{
-    return &_sfLeft;
+inline SFReal32* ViewportBase::getSFLeft(void) {
+  return &_sfLeft;
 }
 
 //! Get the Viewport::_sfRight field.
-inline
-SFReal32 *ViewportBase::getSFRight(void)
-{
-    return &_sfRight;
+inline SFReal32* ViewportBase::getSFRight(void) {
+  return &_sfRight;
 }
 
 //! Get the Viewport::_sfBottom field.
-inline
-SFReal32 *ViewportBase::getSFBottom(void)
-{
-    return &_sfBottom;
+inline SFReal32* ViewportBase::getSFBottom(void) {
+  return &_sfBottom;
 }
 
 //! Get the Viewport::_sfTop field.
-inline
-SFReal32 *ViewportBase::getSFTop(void)
-{
-    return &_sfTop;
+inline SFReal32* ViewportBase::getSFTop(void) {
+  return &_sfTop;
 }
 
 //! Get the Viewport::_sfParent field.
-inline
-SFWindowPtr *ViewportBase::getSFParent(void)
-{
-    return &_sfParent;
+inline SFWindowPtr* ViewportBase::getSFParent(void) {
+  return &_sfParent;
 }
 
 //! Get the Viewport::_sfCamera field.
-inline
-SFCameraPtr *ViewportBase::getSFCamera(void)
-{
-    return &_sfCamera;
+inline SFCameraPtr* ViewportBase::getSFCamera(void) {
+  return &_sfCamera;
 }
 
 //! Get the Viewport::_sfRoot field.
-inline
-SFNodePtr *ViewportBase::getSFRoot(void)
-{
-    return &_sfRoot;
+inline SFNodePtr* ViewportBase::getSFRoot(void) {
+  return &_sfRoot;
 }
 
 //! Get the Viewport::_sfBackground field.
-inline
-SFBackgroundPtr *ViewportBase::getSFBackground(void)
-{
-    return &_sfBackground;
+inline SFBackgroundPtr* ViewportBase::getSFBackground(void) {
+  return &_sfBackground;
 }
 
 //! Get the Viewport::_mfForegrounds field.
-inline
-MFForegroundPtr *ViewportBase::getMFForegrounds(void)
-{
-    return &_mfForegrounds;
+inline MFForegroundPtr* ViewportBase::getMFForegrounds(void) {
+  return &_mfForegrounds;
 }
 
 //! Get the Viewport::_sfTravMask field.
-inline
-SFUInt32 *ViewportBase::getSFTravMask(void)
-{
-    return &_sfTravMask;
+inline SFUInt32* ViewportBase::getSFTravMask(void) {
+  return &_sfTravMask;
 }
 
 //! Get the Viewport::_sfDrawTime field.
-inline
-SFReal32 *ViewportBase::getSFDrawTime(void)
-{
-    return &_sfDrawTime;
-}
-
-
-//! Get the value of the Viewport::_sfLeft field.
-inline
-Real32 &ViewportBase::getLeft(void)
-{
-    return _sfLeft.getValue();
+inline SFReal32* ViewportBase::getSFDrawTime(void) {
+  return &_sfDrawTime;
 }
 
 //! Get the value of the Viewport::_sfLeft field.
-inline
-const Real32 &ViewportBase::getLeft(void) const
-{
-    return _sfLeft.getValue();
+inline Real32& ViewportBase::getLeft(void) {
+  return _sfLeft.getValue();
+}
+
+//! Get the value of the Viewport::_sfLeft field.
+inline const Real32& ViewportBase::getLeft(void) const {
+  return _sfLeft.getValue();
 }
 
 //! Set the value of the Viewport::_sfLeft field.
-inline
-void ViewportBase::setLeft(const Real32 &value)
-{
-    _sfLeft.setValue(value);
+inline void ViewportBase::setLeft(const Real32& value) {
+  _sfLeft.setValue(value);
 }
 
 //! Get the value of the Viewport::_sfRight field.
-inline
-Real32 &ViewportBase::getRight(void)
-{
-    return _sfRight.getValue();
+inline Real32& ViewportBase::getRight(void) {
+  return _sfRight.getValue();
 }
 
 //! Get the value of the Viewport::_sfRight field.
-inline
-const Real32 &ViewportBase::getRight(void) const
-{
-    return _sfRight.getValue();
+inline const Real32& ViewportBase::getRight(void) const {
+  return _sfRight.getValue();
 }
 
 //! Set the value of the Viewport::_sfRight field.
-inline
-void ViewportBase::setRight(const Real32 &value)
-{
-    _sfRight.setValue(value);
+inline void ViewportBase::setRight(const Real32& value) {
+  _sfRight.setValue(value);
 }
 
 //! Get the value of the Viewport::_sfBottom field.
-inline
-Real32 &ViewportBase::getBottom(void)
-{
-    return _sfBottom.getValue();
+inline Real32& ViewportBase::getBottom(void) {
+  return _sfBottom.getValue();
 }
 
 //! Get the value of the Viewport::_sfBottom field.
-inline
-const Real32 &ViewportBase::getBottom(void) const
-{
-    return _sfBottom.getValue();
+inline const Real32& ViewportBase::getBottom(void) const {
+  return _sfBottom.getValue();
 }
 
 //! Set the value of the Viewport::_sfBottom field.
-inline
-void ViewportBase::setBottom(const Real32 &value)
-{
-    _sfBottom.setValue(value);
+inline void ViewportBase::setBottom(const Real32& value) {
+  _sfBottom.setValue(value);
 }
 
 //! Get the value of the Viewport::_sfTop field.
-inline
-Real32 &ViewportBase::getTop(void)
-{
-    return _sfTop.getValue();
+inline Real32& ViewportBase::getTop(void) {
+  return _sfTop.getValue();
 }
 
 //! Get the value of the Viewport::_sfTop field.
-inline
-const Real32 &ViewportBase::getTop(void) const
-{
-    return _sfTop.getValue();
+inline const Real32& ViewportBase::getTop(void) const {
+  return _sfTop.getValue();
 }
 
 //! Set the value of the Viewport::_sfTop field.
-inline
-void ViewportBase::setTop(const Real32 &value)
-{
-    _sfTop.setValue(value);
+inline void ViewportBase::setTop(const Real32& value) {
+  _sfTop.setValue(value);
 }
 
 //! Get the value of the Viewport::_sfParent field.
-inline
-WindowPtr &ViewportBase::getParent(void)
-{
-    return _sfParent.getValue();
+inline WindowPtr& ViewportBase::getParent(void) {
+  return _sfParent.getValue();
 }
 
 //! Get the value of the Viewport::_sfParent field.
-inline
-const WindowPtr &ViewportBase::getParent(void) const
-{
-    return _sfParent.getValue();
+inline const WindowPtr& ViewportBase::getParent(void) const {
+  return _sfParent.getValue();
 }
 
 //! Set the value of the Viewport::_sfParent field.
-inline
-void ViewportBase::setParent(const WindowPtr &value)
-{
-    _sfParent.setValue(value);
+inline void ViewportBase::setParent(const WindowPtr& value) {
+  _sfParent.setValue(value);
 }
 
 //! Get the value of the Viewport::_sfCamera field.
-inline
-CameraPtr &ViewportBase::getCamera(void)
-{
-    return _sfCamera.getValue();
+inline CameraPtr& ViewportBase::getCamera(void) {
+  return _sfCamera.getValue();
 }
 
 //! Get the value of the Viewport::_sfCamera field.
-inline
-const CameraPtr &ViewportBase::getCamera(void) const
-{
-    return _sfCamera.getValue();
+inline const CameraPtr& ViewportBase::getCamera(void) const {
+  return _sfCamera.getValue();
 }
 
 //! Set the value of the Viewport::_sfCamera field.
-inline
-void ViewportBase::setCamera(const CameraPtr &value)
-{
-    _sfCamera.setValue(value);
+inline void ViewportBase::setCamera(const CameraPtr& value) {
+  _sfCamera.setValue(value);
 }
 
 //! Get the value of the Viewport::_sfRoot field.
-inline
-NodePtr &ViewportBase::getRoot(void)
-{
-    return _sfRoot.getValue();
+inline NodePtr& ViewportBase::getRoot(void) {
+  return _sfRoot.getValue();
 }
 
 //! Get the value of the Viewport::_sfRoot field.
-inline
-const NodePtr &ViewportBase::getRoot(void) const
-{
-    return _sfRoot.getValue();
+inline const NodePtr& ViewportBase::getRoot(void) const {
+  return _sfRoot.getValue();
 }
 
 //! Set the value of the Viewport::_sfRoot field.
-inline
-void ViewportBase::setRoot(const NodePtr &value)
-{
-    _sfRoot.setValue(value);
+inline void ViewportBase::setRoot(const NodePtr& value) {
+  _sfRoot.setValue(value);
 }
 
 //! Get the value of the Viewport::_sfBackground field.
-inline
-BackgroundPtr &ViewportBase::getBackground(void)
-{
-    return _sfBackground.getValue();
+inline BackgroundPtr& ViewportBase::getBackground(void) {
+  return _sfBackground.getValue();
 }
 
 //! Get the value of the Viewport::_sfBackground field.
-inline
-const BackgroundPtr &ViewportBase::getBackground(void) const
-{
-    return _sfBackground.getValue();
+inline const BackgroundPtr& ViewportBase::getBackground(void) const {
+  return _sfBackground.getValue();
 }
 
 //! Set the value of the Viewport::_sfBackground field.
-inline
-void ViewportBase::setBackground(const BackgroundPtr &value)
-{
-    _sfBackground.setValue(value);
+inline void ViewportBase::setBackground(const BackgroundPtr& value) {
+  _sfBackground.setValue(value);
 }
 
 //! Get the value of the Viewport::_sfTravMask field.
-inline
-UInt32 &ViewportBase::getTravMask(void)
-{
-    return _sfTravMask.getValue();
+inline UInt32& ViewportBase::getTravMask(void) {
+  return _sfTravMask.getValue();
 }
 
 //! Get the value of the Viewport::_sfTravMask field.
-inline
-const UInt32 &ViewportBase::getTravMask(void) const
-{
-    return _sfTravMask.getValue();
+inline const UInt32& ViewportBase::getTravMask(void) const {
+  return _sfTravMask.getValue();
 }
 
 //! Set the value of the Viewport::_sfTravMask field.
-inline
-void ViewportBase::setTravMask(const UInt32 &value)
-{
-    _sfTravMask.setValue(value);
+inline void ViewportBase::setTravMask(const UInt32& value) {
+  _sfTravMask.setValue(value);
 }
 
 //! Get the value of the Viewport::_sfDrawTime field.
-inline
-Real32 &ViewportBase::getDrawTime(void)
-{
-    return _sfDrawTime.getValue();
+inline Real32& ViewportBase::getDrawTime(void) {
+  return _sfDrawTime.getValue();
 }
 
 //! Get the value of the Viewport::_sfDrawTime field.
-inline
-const Real32 &ViewportBase::getDrawTime(void) const
-{
-    return _sfDrawTime.getValue();
+inline const Real32& ViewportBase::getDrawTime(void) const {
+  return _sfDrawTime.getValue();
 }
 
 //! Set the value of the Viewport::_sfDrawTime field.
-inline
-void ViewportBase::setDrawTime(const Real32 &value)
-{
-    _sfDrawTime.setValue(value);
+inline void ViewportBase::setDrawTime(const Real32& value) {
+  _sfDrawTime.setValue(value);
 }
-
 
 //! Get the value of the \a index element the Viewport::_mfForegrounds field.
-inline
-ForegroundPtr &ViewportBase::getForegrounds(const UInt32 index)
-{
-    return _mfForegrounds[index];
+inline ForegroundPtr& ViewportBase::getForegrounds(const UInt32 index) {
+  return _mfForegrounds[index];
 }
 
 //! Get the Viewport::_mfForegrounds field.
-inline
-MFForegroundPtr &ViewportBase::getForegrounds(void)
-{
-    return _mfForegrounds;
+inline MFForegroundPtr& ViewportBase::getForegrounds(void) {
+  return _mfForegrounds;
 }
 
 //! Get the Viewport::_mfForegrounds field.
-inline
-const MFForegroundPtr &ViewportBase::getForegrounds(void) const
-{
-    return _mfForegrounds;
+inline const MFForegroundPtr& ViewportBase::getForegrounds(void) const {
+  return _mfForegrounds;
 }
 
 OSG_END_NAMESPACE
 
-#define OSGVIEWPORTBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGVIEWPORTBASE_INLINE_CVSID                                                               \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

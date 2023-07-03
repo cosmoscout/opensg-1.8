@@ -36,13 +36,11 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _STATTIMESTAMPELEM_H_
 #define _STATTIMESTAMPELEM_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGBaseTypes.h>
 #include <OSGSystemDef.h>
@@ -56,91 +54,88 @@ OSG_BEGIN_NAMESPACE
 class StatElemDescBase;
 
 /*! \brief Time Statistics element, see \ref PageSystemStatistics for details.
-*/
-class OSG_SYSTEMLIB_DLLMAPPING StatTimeStampElem : public StatElem 
-{
+ */
+class OSG_SYSTEMLIB_DLLMAPPING StatTimeStampElem : public StatElem {
 
-    /*==========================  PUBLIC  =================================*/
+  /*==========================  PUBLIC  =================================*/
  public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
-    
-    static const char *getClassname(void) { return "StatTimeStampElem"; }
+  static const char* getClassname(void) {
+    return "StatTimeStampElem";
+  }
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    your_category                             */
-    /*! \{                                                                 */
- 
-    static StatElem *create ( StatElemDescBase *desc );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    your_category                             */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    instance                                  */
-    /*! \{                                                                 */
+  static StatElem* create(StatElemDescBase* desc);
 
-    virtual void             reset        (void);
-    
-    inline  const TimeStamp &start        (void);
-      
-    inline  const TimeStamp &stop         (void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    instance                                  */
+  /*! \{                                                                 */
 
-    inline  const TimeStamp &getTime      (void) const;
-        
-    virtual void             putToString  (std::string &str, 
-                                      const char *format = NULL) const;
- 
-    virtual bool             getFromString(const Char8 *&inVal);
+  virtual void reset(void);
 
-    virtual Real64           getValue     (void) const;
+  inline const TimeStamp& start(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    comparison                                */
-    /*! \{                                                                 */
+  inline const TimeStamp& stop(void);
 
-    bool operator < (const StatTimeStampElem &other) const;
+  inline const TimeStamp& getTime(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Creation                                   */
-    /*! \{                                                                 */
+  virtual void putToString(std::string& str, const char* format = NULL) const;
 
-    virtual StatElem *clone(void) const;
+  virtual bool getFromString(const Char8*& inVal);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Operators                                */
-    /*! \{                                                                 */
+  virtual Real64 getValue(void) const;
 
-    virtual StatElem &operator += (const StatElem &other);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    comparison                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  bool operator<(const StatTimeStampElem& other) const;
 
-    /*=========================  PROTECTED  ===============================*/
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Creation                                   */
+  /*! \{                                                                 */
+
+  virtual StatElem* clone(void) const;
+
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Operators                                */
+  /*! \{                                                                 */
+
+  virtual StatElem& operator+=(const StatElem& other);
+
+  /*! \}                                                                 */
+
+  /*=========================  PROTECTED  ===============================*/
  protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-  
-    StatTimeStampElem(StatElemDescBase *desc);
+  StatTimeStampElem(StatElemDescBase* desc);
 
-    virtual ~StatTimeStampElem(void); 
+  virtual ~StatTimeStampElem(void);
 
-    /*! \}                                                                 */
-    /*=========================  PRIVATE    ===============================*/
+  /*! \}                                                                 */
+  /*=========================  PRIVATE    ===============================*/
  private:
+  typedef StatElem Inherited;
 
-    typedef StatElem Inherited;
+  TimeStamp _time;
 
-    TimeStamp _time;
+  StatTimeStampElem(const StatTimeStampElem& source);
 
-    StatTimeStampElem            (const StatTimeStampElem &source);
-  
-    StatTimeStampElem& operator =(const StatTimeStampElem &source);
+  StatTimeStampElem& operator=(const StatTimeStampElem& source);
 };
 
 //---------------------------------------------------------------------------
@@ -149,12 +144,13 @@ class OSG_SYSTEMLIB_DLLMAPPING StatTimeStampElem : public StatElem
 
 // class pointer
 
-typedef StatTimeStampElem *StatTimeStampElemP;
+typedef StatTimeStampElem* StatTimeStampElemP;
 
 OSG_END_NAMESPACE
 
 #include <OSGStatTimeStampElem.inl>
 
-#define OSGSTATTIMESTAMPELEM_HEADER_CVSID "@(#)$Id: OSGStatTimeStampElem.h,v 1.1 2005/10/02 15:16:45 dirk Exp $"
+#define OSGSTATTIMESTAMPELEM_HEADER_CVSID                                                          \
+  "@(#)$Id: OSGStatTimeStampElem.h,v 1.1 2005/10/02 15:16:45 dirk Exp $"
 
 #endif /* _STATTIMESTAMPELEM_H_ */

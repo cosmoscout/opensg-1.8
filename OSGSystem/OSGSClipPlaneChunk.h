@@ -52,110 +52,104 @@ OSG_BEGIN_NAMESPACE
     PageSystemSClipPlaneChunk for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING SClipPlaneChunk : public SClipPlaneChunkBase 
-{ 
-    /*==========================  PUBLIC  =================================*/
-  public:
-    
-    /*---------------------------------------------------------------------*/
-    /*! \name                 Chunk Class Access                           */
-    /*! \{                                                                 */
+class OSG_SYSTEMLIB_DLLMAPPING SClipPlaneChunk : public SClipPlaneChunkBase {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                 Chunk Class Access                           */
+  /*! \{                                                                 */
 
-           virtual const StateChunkClass * getClass         (void) const;
+  virtual const StateChunkClass* getClass(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name              Static Chunk Class Access                       */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name              Static Chunk Class Access                       */
+  /*! \{                                                                 */
 
-    inline static        UInt32           getStaticClassId  (void);
-    inline static  const StateChunkClass *getStaticClass    (void);
+  inline static UInt32                 getStaticClassId(void);
+  inline static const StateChunkClass* getStaticClass(void);
 
-    /*! \}                                                                 */ 
-    /*---------------------------------------------------------------------*/ 
-    /*! \name                      Sync                                    */ 
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       State                                  */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       State                                  */
+  /*! \{                                                                 */
 
-    virtual void activate   ( DrawActionBase * action, UInt32 index = 0 );
+  virtual void activate(DrawActionBase* action, UInt32 index = 0);
 
-    virtual void changeFrom ( DrawActionBase * action, StateChunk * old,
-                             UInt32 index = 0 );
+  virtual void changeFrom(DrawActionBase* action, StateChunk* old, UInt32 index = 0);
 
-    virtual void deactivate ( DrawActionBase * action, UInt32 index = 0 );
+  virtual void deactivate(DrawActionBase* action, UInt32 index = 0);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Comparison                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Comparison                                */
+  /*! \{                                                                 */
 
-    virtual Real32 switchCost  ( StateChunk * chunk );
+  virtual Real32 switchCost(StateChunk* chunk);
 
-    virtual bool   operator <  (const StateChunk &other) const;
+  virtual bool operator<(const StateChunk& other) const;
 
-    virtual bool   operator == (const StateChunk &other) const;
-    virtual bool   operator != (const StateChunk &other) const;
+  virtual bool operator==(const StateChunk& other) const;
+  virtual bool operator!=(const StateChunk& other) const;
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in SClipPlaneChunkBase.
 
-    // Variables should all be in SClipPlaneChunkBase.
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  SClipPlaneChunk(void);
+  SClipPlaneChunk(const SClipPlaneChunk& source);
 
-    SClipPlaneChunk(void);
-    SClipPlaneChunk(const SClipPlaneChunk &source);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  virtual ~SClipPlaneChunk(void);
 
-    virtual ~SClipPlaneChunk(void); 
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class SClipPlaneChunkBase;
 
-    friend class FieldContainer;
-    friend class SClipPlaneChunkBase;
+  typedef SClipPlaneChunkBase Inherited;
 
-    typedef SClipPlaneChunkBase Inherited;
+  // class. Used for indexing in State
+  static StateChunkClass _class;
 
-    // class. Used for indexing in State
-    static StateChunkClass _class;
+  // prohibit default functions (move to 'public' if you need one)
 
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const SClipPlaneChunk &source);
+  void operator=(const SClipPlaneChunk& source);
 };
 
-typedef SClipPlaneChunk *SClipPlaneChunkP;
+typedef SClipPlaneChunk* SClipPlaneChunkP;
 
 OSG_END_NAMESPACE
 
 #include <OSGSClipPlaneChunkBase.inl>
 #include <OSGSClipPlaneChunk.inl>
 
-#define OSGSCLIPPLANECHUNK_HEADER_CVSID "@(#)$Id: OSGSClipPlaneChunk.h,v 1.1 2007/04/26 15:22:01 a-m-z Exp $"
+#define OSGSCLIPPLANECHUNK_HEADER_CVSID                                                            \
+  "@(#)$Id: OSGSClipPlaneChunk.h,v 1.1 2007/04/26 15:22:01 a-m-z Exp $"
 
 #endif /* _OSGSCLIPPLANECHUNK_H_ */

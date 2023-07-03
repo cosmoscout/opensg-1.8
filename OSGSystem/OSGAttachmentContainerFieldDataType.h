@@ -61,27 +61,26 @@ OSG_BEGIN_NAMESPACE
 #endif
 
 template <>
-struct OSG_SYSTEMLIB_DLLMAPPING FieldDataTraits<AttachmentContainerPtr> : 
-    public FieldTraitsRecurseMapper<AttachmentContainerPtr, true>
-{
-    typedef FieldDataTraits<AttachmentContainerPtr> Self;
+struct OSG_SYSTEMLIB_DLLMAPPING FieldDataTraits<AttachmentContainerPtr>
+    : public FieldTraitsRecurseMapper<AttachmentContainerPtr, true> {
+  typedef FieldDataTraits<AttachmentContainerPtr> Self;
 
-    static  DataType                                _type;
+  static DataType _type;
 
-    enum                            
-    {
-        StringConvertable = Self::ToStringConvertable
-    };
+  enum { StringConvertable = Self::ToStringConvertable };
 
-    enum                            
-    { 
-        bHasParent        = 0x01
-    };
+  enum { bHasParent = 0x01 };
 
-    static DataType &getType (void) { return _type;                          }
+  static DataType& getType(void) {
+    return _type;
+  }
 
-    static char     *getSName(void) { return "SFAttachmentContainerPtr";     }
-    static char     *getMName(void) { return "MFAttachmentContainerPtr";     }
+  static char* getSName(void) {
+    return "SFAttachmentContainerPtr";
+  }
+  static char* getMName(void) {
+    return "MFAttachmentContainerPtr";
+  }
 };
 
 #if !defined(OSG_DOC_DEV_TRAITS)
@@ -96,10 +95,3 @@ OSG_END_NAMESPACE
 #define OSGATTACHMENTCONTAINERFIELDDATATYPE_HEADER_CVSID "@(#)$Id: $"
 
 #endif /* _OSG_ATTACHMENTCONTAINERFIELDDATATYPE_H_ */
-
-
-
-
-
-
-

@@ -61,7 +61,7 @@ OSG_USING_NAMESPACE
 
 /*! \class osg::SClipPlaneChunk
     \ingroup GrpSystemState
-    
+
 See \ref PageSystemSClipPlaneChunk for a description.
 
 This chunk wraps glCLipPlane() (osg::SClipPlaneChunk::_sfEquation) and
@@ -73,7 +73,7 @@ system the plane is in is defined by osg::SClipPlaneChunk::_sfBeacon.
 /***************************************************************************\
  *                           Class variables                               *
 \***************************************************************************/
-   
+
 StateChunkClass SClipPlaneChunk::_class("SClipPlane", 6);
 
 /***************************************************************************\
@@ -83,120 +83,99 @@ StateChunkClass SClipPlaneChunk::_class("SClipPlane", 6);
 /*-------------------------------------------------------------------------*\
  -  private                                                                 -
 \*-------------------------------------------------------------------------*/
-   
+
 /*----------------------- constructors & destructors ----------------------*/
 
-SClipPlaneChunk::SClipPlaneChunk(void) :
-    Inherited()
-{
+SClipPlaneChunk::SClipPlaneChunk(void)
+    : Inherited() {
 }
 
-SClipPlaneChunk::SClipPlaneChunk(const SClipPlaneChunk &source) :
-    Inherited(source)
-{
+SClipPlaneChunk::SClipPlaneChunk(const SClipPlaneChunk& source)
+    : Inherited(source) {
 }
 
-SClipPlaneChunk::~SClipPlaneChunk(void)
-{
+SClipPlaneChunk::~SClipPlaneChunk(void) {
 }
 
 /*----------------------- Chunk Class Access -----------------------------*/
 
-const StateChunkClass *SClipPlaneChunk::getClass(void) const
-{
-     return &_class;
+const StateChunkClass* SClipPlaneChunk::getClass(void) const {
+  return &_class;
 }
 
 /*------------------------------- Sync -----------------------------------*/
 
-void SClipPlaneChunk::changed(BitVector, UInt32)
-{
+void SClipPlaneChunk::changed(BitVector, UInt32) {
 }
 
 /*------------------------------ Output ----------------------------------*/
 
-void SClipPlaneChunk::dump(      UInt32    , 
-                          const BitVector) const
-{
-    SLOG << "Dump SClipPlaneChunk NI" << std::endl;
+void SClipPlaneChunk::dump(UInt32, const BitVector) const {
+  SLOG << "Dump SClipPlaneChunk NI" << std::endl;
 }
-
 
 /*------------------------------ State ------------------------------------*/
 
-void SClipPlaneChunk::activate(DrawActionBase *action, UInt32 idx)
-{
-    RenderAction *ra = dynamic_cast<RenderAction *>(action);
+void SClipPlaneChunk::activate(DrawActionBase* action, UInt32 idx) {
+  RenderAction* ra = dynamic_cast<RenderAction*>(action);
 
-    GLdouble glEq[4];
-    Vec4f   & eq = getEquation();
-    glEq[0] = eq[0];
-    glEq[1] = eq[1];
-    glEq[2] = eq[2];
-    glEq[3] = eq[3];
+  GLdouble glEq[4];
+  Vec4f&   eq = getEquation();
+  glEq[0]     = eq[0];
+  glEq[1]     = eq[1];
+  glEq[2]     = eq[2];
+  glEq[3]     = eq[3];
 
-    glClipPlane( GL_CLIP_PLANE0 + idx, glEq);
-    glEnable( GL_CLIP_PLANE0 + idx);
+  glClipPlane(GL_CLIP_PLANE0 + idx, glEq);
+  glEnable(GL_CLIP_PLANE0 + idx);
 }
 
+void SClipPlaneChunk::changeFrom(DrawActionBase* action, StateChunk* old_chunk, UInt32 idx) {
+  SClipPlaneChunk const* old = dynamic_cast<SClipPlaneChunk const*>(old_chunk);
 
+  // change from me to me?
+  // this assumes I haven't changed in the meantime. is that a valid assumption?
+  if (old == this)
+    return;
 
+  RenderAction* ra = dynamic_cast<RenderAction*>(action);
 
-void SClipPlaneChunk::changeFrom(DrawActionBase *action, StateChunk * old_chunk, 
-                                UInt32 idx)
-{
-    SClipPlaneChunk const *old = dynamic_cast<SClipPlaneChunk const*>(old_chunk);
+  GLdouble glEq[4];
+  Vec4f&   eq = getEquation();
+  glEq[0]     = eq[0];
+  glEq[1]     = eq[1];
+  glEq[2]     = eq[2];
+  glEq[3]     = eq[3];
 
-    // change from me to me?
-    // this assumes I haven't changed in the meantime. is that a valid assumption?
-    if(old == this)
-        return;
-
-    RenderAction *ra = dynamic_cast<RenderAction *>(action);
-
-    GLdouble glEq[4];
-    Vec4f   & eq = getEquation();
-    glEq[0] = eq[0];
-    glEq[1] = eq[1];
-    glEq[2] = eq[2];
-    glEq[3] = eq[3];
-
-    glClipPlane( GL_CLIP_PLANE0 + idx, glEq);
+  glClipPlane(GL_CLIP_PLANE0 + idx, glEq);
 }
 
-
-void SClipPlaneChunk::deactivate(DrawActionBase *, UInt32 idx)
-{
-    glDisable( GL_CLIP_PLANE0 + idx);
+void SClipPlaneChunk::deactivate(DrawActionBase*, UInt32 idx) {
+  glDisable(GL_CLIP_PLANE0 + idx);
 }
-
 
 /*-------------------------- Comparison -----------------------------------*/
 
-Real32 SClipPlaneChunk::switchCost(StateChunk *OSG_CHECK_ARG(chunk))
-{
-    return 0;
+Real32 SClipPlaneChunk::switchCost(StateChunk* OSG_CHECK_ARG(chunk)) {
+  return 0;
 }
 
-bool SClipPlaneChunk::operator < (const StateChunk &other) const
-{
-    return this < &other;
+bool SClipPlaneChunk::operator<(const StateChunk& other) const {
+  return this < &other;
 }
 
-bool SClipPlaneChunk::operator == (const StateChunk &other) const
-{
-    SClipPlaneChunk const *tother = dynamic_cast<SClipPlaneChunk const*>(&other);
+bool SClipPlaneChunk::operator==(const StateChunk& other) const {
+  SClipPlaneChunk const* tother = dynamic_cast<SClipPlaneChunk const*>(&other);
 
-    if(!tother)
-        return false;
+  if (!tother)
+    return false;
 
-    if(getEquation() != tother->getEquation())
-        return false;
+  if (getEquation() != tother->getEquation())
+    return false;
 
-    return true;
+  return true;
 }
 
-bool SClipPlaneChunk::operator != (const StateChunk &other) const
-{
-    return ! (*this == other);
+bool SClipPlaneChunk::operator!=(const StateChunk& other) const {
+  return !(*this == other);
 }

@@ -40,7 +40,6 @@
 //  Includes
 //---------------------------------------------------------------------------
 
-
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -54,16 +53,13 @@ OSG_BEGIN_NAMESPACE
  *                               Types                                     *
 \***************************************************************************/
 
-
 /***************************************************************************\
  *                           Class variables                               *
 \***************************************************************************/
 
-
 /***************************************************************************\
  *                           Class methods                                 *
 \***************************************************************************/
-
 
 /*-------------------------------------------------------------------------*\
  -  public                                                                 -
@@ -73,11 +69,9 @@ OSG_BEGIN_NAMESPACE
  -  protected                                                              -
 \*-------------------------------------------------------------------------*/
 
-
 /*-------------------------------------------------------------------------*\
  -  private                                                                -
 \*-------------------------------------------------------------------------*/
-
 
 /***************************************************************************\
  *                           Instance methods                              *
@@ -92,67 +86,56 @@ OSG_BEGIN_NAMESPACE
 /** \brief Constructor
  */
 
-
-
 /** \brief Destructor
  */
 
-
 /*------------------------------ access -----------------------------------*/
 
-inline const Line& IntersectAction::getLine( void ) const
-{
-    return _line;
+inline const Line& IntersectAction::getLine(void) const {
+  return _line;
 }
 
-inline Real32 IntersectAction::getMaxDist( void ) const
-{
-    return _maxdist;
+inline Real32 IntersectAction::getMaxDist(void) const {
+  return _maxdist;
 }
 
-inline bool IntersectAction::didHit( void ) const
-{
-    return _hit;
+inline bool IntersectAction::didHit(void) const {
+  return _hit;
 }
 
-inline Real32 IntersectAction::getHitT( void ) const
-{
-    if ( ! didHit() )
-        return -1;
-    return _hitT;
+inline Real32 IntersectAction::getHitT(void) const {
+  if (!didHit())
+    return -1;
+  return _hitT;
 }
 
-inline Pnt3f IntersectAction::getHitPoint( void ) const
-{
-    if ( ! didHit() )
-        return Pnt3f::Null;
-    
-    Pnt3f res;
-    res = _line.getPosition() + getHitT() * _line.getDirection();
-    return res;
+inline Pnt3f IntersectAction::getHitPoint(void) const {
+  if (!didHit())
+    return Pnt3f::Null;
+
+  Pnt3f res;
+  res = _line.getPosition() + getHitT() * _line.getDirection();
+  return res;
 }
 
-inline Vec3f IntersectAction::getHitNormal( void ) const
-{
-    if ( ! didHit() )
-        return Vec3f::Null;
-    
-    return _hitNormal;
+inline Vec3f IntersectAction::getHitNormal(void) const {
+  if (!didHit())
+    return Vec3f::Null;
+
+  return _hitNormal;
 }
 
-inline NodePtr IntersectAction::getHitObject( void ) const
-{
-    if ( ! didHit() )
-        return NullFC;
+inline NodePtr IntersectAction::getHitObject(void) const {
+  if (!didHit())
+    return NullFC;
 
-    return _hitObject;
+  return _hitObject;
 }
 
-inline Int32 IntersectAction::getHitTriangle( void ) const
-{
-    if ( ! didHit() )
-        return -1;
-    return _hitTriangle;
+inline Int32 IntersectAction::getHitTriangle(void) const {
+  if (!didHit())
+    return -1;
+  return _hitTriangle;
 }
 
 /*---------------------------- properties ---------------------------------*/
@@ -164,27 +147,20 @@ inline Int32 IntersectAction::getHitTriangle( void ) const
 /** \brief assignment
  */
 
-
 /*-------------------------- comparison -----------------------------------*/
 
 /** \brief assignment
  */
 
-
 /** \brief equal
  */
-
 
 /** \brief unequal
  */
 
-
-
 /*-------------------------------------------------------------------------*\
  -  protected                                                              -
 \*-------------------------------------------------------------------------*/
-
-
 
 /*-------------------------------------------------------------------------*\
  -  private                                                                -
@@ -193,30 +169,29 @@ inline Int32 IntersectAction::getHitTriangle( void ) const
 OSG_END_NAMESPACE
 
 ///---------------------------------------------------------------------------
-///  FUNCTION: 
+///  FUNCTION:
 ///---------------------------------------------------------------------------
 //:  Example for the head comment of a function
 ///---------------------------------------------------------------------------
 ///
-//p: Paramaters: 
-//p: 
+// p: Paramaters:
+// p:
 ///
-//g: GlobalVars:
-//g: 
+// g: GlobalVars:
+// g:
 ///
-//r: Return:
-//r: 
+// r: Return:
+// r:
 ///
-//c: Caution:
-//c: 
+// c: Caution:
+// c:
 ///
-//a: Assumptions:
-//a: 
+// a: Assumptions:
+// a:
 ///
-//d: Description:
-//d: 
+// d: Description:
+// d:
 ///
-//s: SeeAlso:
-//s: 
+// s: SeeAlso:
+// s:
 ///---------------------------------------------------------------------------
-

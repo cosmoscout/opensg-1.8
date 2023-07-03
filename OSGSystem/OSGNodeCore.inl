@@ -52,198 +52,143 @@ OSG_ABSTR_FIELD_CONTAINER_INL_DEF(NodeCore, NodeCorePtr)
 /*-------------------------------------------------------------------------*/
 /*                              Parents                                    */
 
-inline
-MFNodePtr &NodeCore::getParents(void)
-{
-    return _parents;
+inline MFNodePtr& NodeCore::getParents(void) {
+  return _parents;
 }
 
-inline
-const MFNodePtr &NodeCore::getParents(void) const
-{
-    return _parents;
+inline const MFNodePtr& NodeCore::getParents(void) const {
+  return _parents;
 }
 
-inline
-MFNodePtr *NodeCore::getMFParents(void)
-{
-    return &_parents;
+inline MFNodePtr* NodeCore::getMFParents(void) {
+  return &_parents;
 }
 
 /*-------------------------------------------------------------------------*/
 /*                         Binary Interface                                */
 
-inline
-UInt32 NodeCore::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+inline UInt32 NodeCore::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (ParentsFieldMask & whichField))
-    {
-        returnValue += _parents.getBinSize();
-    }
+  if (FieldBits::NoField != (ParentsFieldMask & whichField)) {
+    returnValue += _parents.getBinSize();
+  }
 
-    return returnValue;
+  return returnValue;
 }
 
-inline
-void NodeCore::copyToBin(      BinaryDataHandler &pMem,
-                         const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+inline void NodeCore::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ParentsFieldMask & whichField))
-    {
-        _parents.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (ParentsFieldMask & whichField)) {
+    _parents.copyToBin(pMem);
+  }
 }
 
-inline
-void NodeCore::copyFromBin(      BinaryDataHandler &pMem,
-                           const BitVector         &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+inline void NodeCore::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ParentsFieldMask & whichField))
-    {
-        _parents.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (ParentsFieldMask & whichField)) {
+    _parents.copyFromBin(pMem);
+  }
 }
 
 /*-------------------------------------------------------------------------*/
 /*                            Constructors                                 */
 
-inline
-NodeCore::NodeCore(void) :
-     Inherited(),
-    _parents  ()
-{
+inline NodeCore::NodeCore(void)
+    : Inherited()
+    , _parents() {
 }
 
-inline
-NodeCore::NodeCore(const NodeCore &obj) :
-     Inherited(obj),
-    _parents  (   )
-{
+inline NodeCore::NodeCore(const NodeCore& obj)
+    : Inherited(obj)
+    , _parents() {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                             Destructor                                  */
 
-inline
-NodeCore::~NodeCore(void)
-{
+inline NodeCore::~NodeCore(void) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                          MT Destruction                                 */
 
-inline
-void NodeCore::onDestroy(void)
-{
+inline void NodeCore::onDestroy(void) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                              Parents                                    */
 
-inline
-void NodeCore::addParent(const NodePtr &parent)
-{
-    _parents.push_back(parent);
+inline void NodeCore::addParent(const NodePtr& parent) {
+  _parents.push_back(parent);
 }
 
-inline
-void NodeCore::subParent(const NodePtr &parent)
-{
-    MFNodePtr::iterator parentIt = _parents.find(parent);
+inline void NodeCore::subParent(const NodePtr& parent) {
+  MFNodePtr::iterator parentIt = _parents.find(parent);
 
-    if(parentIt != _parents.end())
-    {
-        _parents.erase(parentIt);
-    }
+  if (parentIt != _parents.end()) {
+    _parents.erase(parentIt);
+  }
 }
 
 /*-------------------------------------------------------------------------*/
 /*                              Pointer                                    */
 
-inline
-NodeCorePtr NodeCore::getPtr(void) const
-{
-    return NodeCorePtr(*this);
+inline NodeCorePtr NodeCore::getPtr(void) const {
+  return NodeCorePtr(*this);
 }
 
 /*-------------------------------------------------------------------------*/
 /*                                Sync                                     */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-inline
-void NodeCore::executeSyncImpl(      NodeCore  *pOther,
-                               const BitVector &whichField)
-{
-    Inherited::executeSyncImpl(pOther, whichField);
+inline void NodeCore::executeSyncImpl(NodeCore* pOther, const BitVector& whichField) {
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (ParentsFieldMask & whichField))
-    {
-        _parents.syncWith(pOther->_parents);
-    }
+  if (FieldBits::NoField != (ParentsFieldMask & whichField)) {
+    _parents.syncWith(pOther->_parents);
+  }
 }
 
-inline
-void NodeCore::executeSync(      FieldContainer &other,
-                           const BitVector      &whichField)
-{
-    this->executeSyncImpl((NodeCore *) &other, whichField);
+inline void NodeCore::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((NodeCore*)&other, whichField);
 }
 #else
-inline
-void NodeCore::executeSyncImpl(      NodeCore  *pOther,
-                               const BitVector &whichField,
-                               const SyncInfo  &sInfo     )
-{
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+inline void NodeCore::executeSyncImpl(
+    NodeCore* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (ParentsFieldMask & whichField))
-    {
-        _parents.syncWith(pOther->_parents, sInfo);
-    }
+  if (FieldBits::NoField != (ParentsFieldMask & whichField)) {
+    _parents.syncWith(pOther->_parents, sInfo);
+  }
 }
 
-inline
-void NodeCore::executeSync(      FieldContainer &other,
-                           const BitVector      &whichField,
-                           const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((NodeCore *) &other, whichField, sInfo);
+inline void NodeCore::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((NodeCore*)&other, whichField, sInfo);
 }
 #endif
 
 /*-------------------------------------------------------------------------*/
 /*                              Matrix                                     */
 
-inline
-void NodeCore::accumulateMatrix(Matrix &)
-{
+inline void NodeCore::accumulateMatrix(Matrix&) {
 }
 
 /*-------------------------------------------------------------------------*/
 /*                              Volume                                     */
 
-inline
-void NodeCore::adjustVolume(Volume &)
-{
+inline void NodeCore::adjustVolume(Volume&) {
 }
 
-inline
-void NodeCore::invalidateVolume(void)
-{
-    for(UInt32 i = 0; i < _parents.size(); i++)
-    {
-        _parents[i]->invalidateVolume();
-    }
+inline void NodeCore::invalidateVolume(void) {
+  for (UInt32 i = 0; i < _parents.size(); i++) {
+    _parents[i]->invalidateVolume();
+  }
 }
-
 
 OSG_END_NAMESPACE
 
 #define OSGNODECORE_INLINE_CVSID "@(#)$Id: $"
-

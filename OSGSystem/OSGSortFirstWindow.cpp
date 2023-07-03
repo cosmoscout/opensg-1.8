@@ -71,53 +71,46 @@ ClusterViewBuffer SortFirstWindow::_bufferHandler;
 
 //! Constructor
 
-SortFirstWindow::SortFirstWindow(void) :
-    Inherited(),
-    _tileLoadBalancer(NULL),
-    _renderNode(NULL)
-{
+SortFirstWindow::SortFirstWindow(void)
+    : Inherited()
+    , _tileLoadBalancer(NULL)
+    , _renderNode(NULL) {
 }
 
 //! Copy Constructor
 
-SortFirstWindow::SortFirstWindow(const SortFirstWindow &source) :
-    Inherited(source),
-    _tileLoadBalancer(NULL),
-    _renderNode(NULL)
-{
+SortFirstWindow::SortFirstWindow(const SortFirstWindow& source)
+    : Inherited(source)
+    , _tileLoadBalancer(NULL)
+    , _renderNode(NULL) {
 }
 
 //! Destructor
 
-SortFirstWindow::~SortFirstWindow(void)
-{
-    if(_tileLoadBalancer)
-        delete _tileLoadBalancer;
-    if(_renderNode)
-        delete _renderNode;
+SortFirstWindow::~SortFirstWindow(void) {
+  if (_tileLoadBalancer)
+    delete _tileLoadBalancer;
+  if (_renderNode)
+    delete _renderNode;
 }
 
 /*----------------------------- class specific ----------------------------*/
 
 //! initialize the static features of the class, e.g. action callbacks
 
-void SortFirstWindow::initMethod (void)
-{
+void SortFirstWindow::initMethod(void) {
 }
 
 //! react to field changes
 
-void SortFirstWindow::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void SortFirstWindow::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
 //! output the instance for debug purposes
 
-void SortFirstWindow::dump(      UInt32    , 
-                           const BitVector ) const
-{
-    SLOG << "Dump SortFirstWindow NI" << std::endl;
+void SortFirstWindow::dump(UInt32, const BitVector) const {
+  SLOG << "Dump SortFirstWindow NI" << std::endl;
 }
 
 /*----------------------------- server methods ----------------------------*/
@@ -125,26 +118,24 @@ void SortFirstWindow::dump(      UInt32    ,
 /** transfer server cababilities to the client
  *
  **/
-void SortFirstWindow::serverInit( WindowPtr serverWindow,
-                                  UInt32 id)
-{
+void SortFirstWindow::serverInit(WindowPtr serverWindow, UInt32 id) {
 #if USE_VPORT_SLICES
 
 #else
-    UInt32 sync;
-    RenderNode renderNode;
-    Connection *connection=getNetwork()->getMainConnection();
+  UInt32      sync;
+  RenderNode  renderNode;
+  Connection* connection = getNetwork()->getMainConnection();
 
-    // create cluster node information
-    // get performance
-    renderNode.determinePerformance(serverWindow);
-    renderNode.dump();
-    // transfer to client for load balancing
-    connection->putValue(id);
-    renderNode.copyToBin(*connection);
-    connection->flush();
-    connection->selectChannel();
-    connection->getValue(sync);
+  // create cluster node information
+  // get performance
+  renderNode.determinePerformance(serverWindow);
+  renderNode.dump();
+  // transfer to client for load balancing
+  connection->putValue(id);
+  renderNode.copyToBin(*connection);
+  connection->flush();
+  connection->selectChannel();
+  connection->getValue(sync);
 #endif
 }
 
@@ -152,158 +143,129 @@ void SortFirstWindow::serverInit( WindowPtr serverWindow,
  *
  * todo: enamble frustum culling if error is removed
  **/
-void SortFirstWindow::serverRender( WindowPtr serverWindow,
-                                    UInt32 id,
-                                    RenderActionBase *action )
-{
-    TileCameraDecoratorPtr deco;
-    ViewportPtr serverPort;
-    ViewportPtr clientPort;
-    UInt32 sv,cv,regionStart;
-    UInt32 vpWidth;
-    UInt32 vpHeight;
+void SortFirstWindow::serverRender(WindowPtr serverWindow, UInt32 id, RenderActionBase* action) {
+  TileCameraDecoratorPtr deco;
+  ViewportPtr            serverPort;
+  ViewportPtr            clientPort;
+  UInt32                 sv, cv, regionStart;
+  UInt32                 vpWidth;
+  UInt32                 vpHeight;
 
-    // duplicate viewports
-    for(cv=0,sv=0;cv<getPort().size();cv++)
-    {
-        clientPort = getPort()[cv];
-        if(serverWindow->getPort().size() <= sv)
-        {
-            // create new port
-            //serverPort = StereoBufferViewport::create();
-            serverPort = ViewportPtr::dcast(clientPort->shallowCopy());
-            deco=TileCameraDecorator::create();
-            beginEditCP(serverWindow);
-            serverWindow->addPort(serverPort);
-            serverPort->setCamera(deco);
-            endEditCP(serverWindow);
-        }
-        else
-        {
-            serverPort = serverWindow->getPort()[sv];
-            deco=TileCameraDecoratorPtr::dcast(serverPort->getCamera());
-            if(serverWindow->getPort()[sv]->getType() != 
-               clientPort->getType())
-            {
-                // there is a viewport with the wrong type
-                subRefCP(serverWindow->getPort()[sv]);
-                serverPort = ViewportPtr::dcast(clientPort->shallowCopy());
-                beginEditCP(serverWindow);
-                serverWindow->getPort()[sv] = serverPort;
-                serverPort->setCamera(deco);
-                endEditCP(serverWindow);
-            }
-            else
-            {
-                deco=TileCameraDecoratorPtr::dcast(serverPort->getCamera());
-            }
-            //serverPort = serverWindow->getPort()[sv];
-            //deco=TileCameraDecoratorPtr::dcast(serverPort->getCamera());
-        }
-
-        // duplicate values
-        beginEditCP(serverPort);
-        regionStart=cv * getServers().size() * 4 + id * 4;
-        serverPort->setSize( 
-            Real32(getRegion()[regionStart+0] + clientPort->getPixelLeft()),
-            Real32(getRegion()[regionStart+1] + clientPort->getPixelBottom()),
-            Real32(getRegion()[regionStart+2] + clientPort->getPixelLeft()),
-            Real32(getRegion()[regionStart+3] + clientPort->getPixelBottom()));
-
-        serverPort->setRoot      ( clientPort->getRoot()       );
-        serverPort->setBackground( clientPort->getBackground() );
-        serverPort->getMFForegrounds()->setValues( clientPort->getForegrounds() );
-        serverPort->setTravMask  ( clientPort->getTravMask()   );
-        endEditCP(serverPort);
-
-        // calculate tile parameters
-        vpWidth =clientPort->getPixelWidth();
-        vpHeight=clientPort->getPixelHeight();
-        beginEditCP(deco);
-        deco->setFullWidth ( vpWidth );
-        deco->setFullHeight( vpHeight );
-        deco->setSize( getRegion()[ regionStart+0 ]/(float)vpWidth,
-                       getRegion()[ regionStart+1 ]/(float)vpHeight,
-                       getRegion()[ regionStart+2 ]/(float)vpWidth,
-                       getRegion()[ regionStart+3 ]/(float)vpHeight );
-        deco->setDecoratee( clientPort->getCamera() );
-        endEditCP(deco);
-        sv++;
-    }
-    // remove unused ports
-    while(serverWindow->getPort().size()>sv)
-    {
-        serverWindow->subPort(sv);
+  // duplicate viewports
+  for (cv = 0, sv = 0; cv < getPort().size(); cv++) {
+    clientPort = getPort()[cv];
+    if (serverWindow->getPort().size() <= sv) {
+      // create new port
+      // serverPort = StereoBufferViewport::create();
+      serverPort = ViewportPtr::dcast(clientPort->shallowCopy());
+      deco       = TileCameraDecorator::create();
+      beginEditCP(serverWindow);
+      serverWindow->addPort(serverPort);
+      serverPort->setCamera(deco);
+      endEditCP(serverWindow);
+    } else {
+      serverPort = serverWindow->getPort()[sv];
+      deco       = TileCameraDecoratorPtr::dcast(serverPort->getCamera());
+      if (serverWindow->getPort()[sv]->getType() != clientPort->getType()) {
+        // there is a viewport with the wrong type
+        subRefCP(serverWindow->getPort()[sv]);
+        serverPort = ViewportPtr::dcast(clientPort->shallowCopy());
+        beginEditCP(serverWindow);
+        serverWindow->getPort()[sv] = serverPort;
+        serverPort->setCamera(deco);
+        endEditCP(serverWindow);
+      } else {
+        deco = TileCameraDecoratorPtr::dcast(serverPort->getCamera());
+      }
+      // serverPort = serverWindow->getPort()[sv];
+      // deco=TileCameraDecoratorPtr::dcast(serverPort->getCamera());
     }
 
-    Inherited::serverRender(serverWindow,id,action);
+    // duplicate values
+    beginEditCP(serverPort);
+    regionStart = cv * getServers().size() * 4 + id * 4;
+    serverPort->setSize(Real32(getRegion()[regionStart + 0] + clientPort->getPixelLeft()),
+        Real32(getRegion()[regionStart + 1] + clientPort->getPixelBottom()),
+        Real32(getRegion()[regionStart + 2] + clientPort->getPixelLeft()),
+        Real32(getRegion()[regionStart + 3] + clientPort->getPixelBottom()));
 
-    // compression type
-    if(getCompose())
-    {
-        if(getCompression().empty())
-        {
-            _bufferHandler.setImgTransType(NULL);
-        }
-        else
-        {
-            _bufferHandler.setImgTransType(getCompression().c_str());
-        }
-        if(getSubtileSize())
-        {
-            _bufferHandler.setSubtileSize(getSubtileSize());
-        }
+    serverPort->setRoot(clientPort->getRoot());
+    serverPort->setBackground(clientPort->getBackground());
+    serverPort->getMFForegrounds()->setValues(clientPort->getForegrounds());
+    serverPort->setTravMask(clientPort->getTravMask());
+    endEditCP(serverPort);
+
+    // calculate tile parameters
+    vpWidth  = clientPort->getPixelWidth();
+    vpHeight = clientPort->getPixelHeight();
+    beginEditCP(deco);
+    deco->setFullWidth(vpWidth);
+    deco->setFullHeight(vpHeight);
+    deco->setSize(getRegion()[regionStart + 0] / (float)vpWidth,
+        getRegion()[regionStart + 1] / (float)vpHeight,
+        getRegion()[regionStart + 2] / (float)vpWidth,
+        getRegion()[regionStart + 3] / (float)vpHeight);
+    deco->setDecoratee(clientPort->getCamera());
+    endEditCP(deco);
+    sv++;
+  }
+  // remove unused ports
+  while (serverWindow->getPort().size() > sv) {
+    serverWindow->subPort(sv);
+  }
+
+  Inherited::serverRender(serverWindow, id, action);
+
+  // compression type
+  if (getCompose()) {
+    if (getCompression().empty()) {
+      _bufferHandler.setImgTransType(NULL);
+    } else {
+      _bufferHandler.setImgTransType(getCompression().c_str());
     }
+    if (getSubtileSize()) {
+      _bufferHandler.setSubtileSize(getSubtileSize());
+    }
+  }
 
 #if 1
-    glDisable(GL_SCISSOR_TEST);
-    glClearColor(0,0,0,0);
-    glClear(GL_COLOR_BUFFER_BIT);
+  glDisable(GL_SCISSOR_TEST);
+  glClearColor(0, 0, 0, 0);
+  glClear(GL_COLOR_BUFFER_BIT);
 #endif
 
-    // render the viewports
-    serverWindow->activate();
-    serverWindow->frameInit();
-    action->setWindow( serverWindow.getCPtr() );
-    for(sv=0;sv<serverWindow->getPort().size();++sv)
-    {
-        ViewportPtr vp=serverWindow->getPort()[sv];
-        vp->render( action );
+  // render the viewports
+  serverWindow->activate();
+  serverWindow->frameInit();
+  action->setWindow(serverWindow.getCPtr());
+  for (sv = 0; sv < serverWindow->getPort().size(); ++sv) {
+    ViewportPtr vp = serverWindow->getPort()[sv];
+    vp->render(action);
 
-        // send resulting image
-        if(getCompose())
-        {
-            // activate the appropriate viewport to retrieve image
-            vp->activate();
+    // send resulting image
+    if (getCompose()) {
+      // activate the appropriate viewport to retrieve image
+      vp->activate();
 
-            // send image
-            _bufferHandler.send(
-                *getNetwork()->getMainPointConnection(),
-                ClusterViewBuffer::RGB,
-                vp->getPixelLeft(),
-                vp->getPixelBottom(),
-                vp->getPixelRight(),
-                vp->getPixelTop(),
-                0,0);
+      // send image
+      _bufferHandler.send(*getNetwork()->getMainPointConnection(), ClusterViewBuffer::RGB,
+          vp->getPixelLeft(), vp->getPixelBottom(), vp->getPixelRight(), vp->getPixelTop(), 0, 0);
 
-            // deactivate the viewport
-            vp->deactivate();
-        }
+      // deactivate the viewport
+      vp->deactivate();
     }
+  }
 }
 
 /*! send image to client
  */
-void SortFirstWindow::serverSwap( WindowPtr window,
-                                  UInt32 )
-{
-    if(!getCompose())
-    {
-        Connection *connection=getNetwork()->getMainConnection();
-        connection->signal();
-        connection->wait();
-    }
-    window->swap();
+void SortFirstWindow::serverSwap(WindowPtr window, UInt32) {
+  if (!getCompose()) {
+    Connection* connection = getNetwork()->getMainConnection();
+    connection->signal();
+    connection->wait();
+  }
+  window->swap();
 }
 
 /*----------------------------- client methods ----------------------------*/
@@ -311,65 +273,52 @@ void SortFirstWindow::serverSwap( WindowPtr window,
 /*! read server cababilities
  */
 
-void SortFirstWindow::clientInit( void )
-{
+void SortFirstWindow::clientInit(void) {
 #if USE_VPORT_SLICES
 
 #else
-    UInt32               id;
-    RenderNode           renderNode;
-    GroupConnection     *connection = getNetwork()->getMainGroupConnection();
-    Connection::Channel  channel;
+  UInt32              id;
+  RenderNode          renderNode;
+  GroupConnection*    connection = getNetwork()->getMainGroupConnection();
+  Connection::Channel channel;
 
-    _tileLoadBalancer=new TileLoadBalancer(getUseFaceDistribution());
-    // read all node infos
-    for(UInt32 i=0;i<connection->getChannelCount();++i)
-    {
-        printf("%d\n",i);
-        channel = connection->selectChannel();
-        connection->subSelection(channel);
-        connection->getValue(id);
-        renderNode.copyFromBin(*connection);
-        renderNode.dump();
-        _tileLoadBalancer->addRenderNode(renderNode,id);    
-    }
-    connection->resetSelection();
-    printf("end\n");
-    // sync servers
-    connection->putValue(id);
-    connection->flush();
+  _tileLoadBalancer = new TileLoadBalancer(getUseFaceDistribution());
+  // read all node infos
+  for (UInt32 i = 0; i < connection->getChannelCount(); ++i) {
+    printf("%d\n", i);
+    channel = connection->selectChannel();
+    connection->subSelection(channel);
+    connection->getValue(id);
+    renderNode.copyFromBin(*connection);
+    renderNode.dump();
+    _tileLoadBalancer->addRenderNode(renderNode, id);
+  }
+  connection->resetSelection();
+  printf("end\n");
+  // sync servers
+  connection->putValue(id);
+  connection->flush();
 #endif
 
-    Inherited::clientInit();
+  Inherited::clientInit();
 }
 
 /*! client frame init
  */
 
-void SortFirstWindow::clientPreSync( void )
-{
-    SortFirstWindowPtr ptr=SortFirstWindowPtr(this);
-    if(getCompose())
-    {
-        // get window size from client window
-        if(getClientWindow() != NullFC)
-        {
-            if(getWidth()  != getClientWindow()->getWidth() ||
-               getHeight() != getClientWindow()->getHeight())
-            {
-                beginEditCP(ptr,
-                            Window::WidthFieldMask|
-                            Window::HeightFieldMask);
-                {
-                    setSize(getClientWindow()->getWidth(),
-                            getClientWindow()->getHeight());
-                }
-                endEditCP(ptr,
-                          Window::WidthFieldMask|
-                          Window::HeightFieldMask);
-            }
-        }
+void SortFirstWindow::clientPreSync(void) {
+  SortFirstWindowPtr ptr = SortFirstWindowPtr(this);
+  if (getCompose()) {
+    // get window size from client window
+    if (getClientWindow() != NullFC) {
+      if (getWidth() != getClientWindow()->getWidth() ||
+          getHeight() != getClientWindow()->getHeight()) {
+        beginEditCP(ptr, Window::WidthFieldMask | Window::HeightFieldMask);
+        { setSize(getClientWindow()->getWidth(), getClientWindow()->getHeight()); }
+        endEditCP(ptr, Window::WidthFieldMask | Window::HeightFieldMask);
+      }
     }
+  }
 #if 0
     else
     {
@@ -385,90 +334,74 @@ void SortFirstWindow::clientPreSync( void )
                   Window::HeightFieldMask);
     }
 #endif
-    UInt32 i;
-    UInt32 cv;
-    TileLoadBalancer::ResultT region;
-    
-    beginEditCP(ptr,SortFirstWindow::RegionFieldMask);
-    getRegion().clear();
+  UInt32                    i;
+  UInt32                    cv;
+  TileLoadBalancer::ResultT region;
+
+  beginEditCP(ptr, SortFirstWindow::RegionFieldMask);
+  getRegion().clear();
 #if USE_VPORT_SLICES
-    for(cv=0;cv<getPort().size();cv++)
-    {
-        int s=getServers().size();
-        for(i=0;i<s;i++)
-        {
-            getRegion().push_back(i/float(s)*getWidth());
-            getRegion().push_back(0);
-            getRegion().push_back((i+1)/float(s)*getWidth());
-            getRegion().push_back(1*getHeight());
-        }
+  for (cv = 0; cv < getPort().size(); cv++) {
+    int s = getServers().size();
+    for (i = 0; i < s; i++) {
+      getRegion().push_back(i / float(s) * getWidth());
+      getRegion().push_back(0);
+      getRegion().push_back((i + 1) / float(s) * getWidth());
+      getRegion().push_back(1 * getHeight());
     }
+  }
 #else
-    for(cv=0;cv<getPort().size();cv++)
-    {
-        _tileLoadBalancer->update( getPort()[cv]->getRoot() );
-        _tileLoadBalancer->balance(getPort()[cv],
-                              false,
-                              region);
-        for(i=0;i<getServers().size();i++)
-        {
-            getRegion().push_back(region[i].x1);
-            getRegion().push_back(region[i].y1);
-            getRegion().push_back(region[i].x2);
-            getRegion().push_back(region[i].y2);
-        }
+  for (cv = 0; cv < getPort().size(); cv++) {
+    _tileLoadBalancer->update(getPort()[cv]->getRoot());
+    _tileLoadBalancer->balance(getPort()[cv], false, region);
+    for (i = 0; i < getServers().size(); i++) {
+      getRegion().push_back(region[i].x1);
+      getRegion().push_back(region[i].y1);
+      getRegion().push_back(region[i].x2);
+      getRegion().push_back(region[i].y2);
     }
+  }
 #endif
 
-    endEditCP(ptr,SortFirstWindow::RegionFieldMask);
+  endEditCP(ptr, SortFirstWindow::RegionFieldMask);
 
-    Inherited::clientPreSync();
+  Inherited::clientPreSync();
 }
 
 /*! client rendering
- *  
+ *
  *  one tile is rendered by the client
  */
 
-void SortFirstWindow::clientRender( RenderActionBase *  /* action */ )
-{
-//    Inherited::clientRender(action);
+void SortFirstWindow::clientRender(RenderActionBase* /* action */) {
+  //    Inherited::clientRender(action);
 }
 
 /*! show data
  */
 
-void SortFirstWindow::clientSwap( void )
-{
-    UInt32 cv;
-    GroupConnection *connection=getNetwork()->getMainGroupConnection();
-    if(getCompose())
-    {
-        if(getClientWindow()!=NullFC)
-        {
-            // receive all viewports
-            for(cv=0;cv<getPort().size();++cv)
-            {
-                ViewportPtr vp=getPort()[cv];
+void SortFirstWindow::clientSwap(void) {
+  UInt32           cv;
+  GroupConnection* connection = getNetwork()->getMainGroupConnection();
+  if (getCompose()) {
+    if (getClientWindow() != NullFC) {
+      // receive all viewports
+      for (cv = 0; cv < getPort().size(); ++cv) {
+        ViewportPtr vp = getPort()[cv];
 
-                // activate the appropriate viewport to receive image
-                vp->activate();
+        // activate the appropriate viewport to receive image
+        vp->activate();
 
-                // receive image
-                _bufferHandler.recv(*connection);
+        // receive image
+        _bufferHandler.recv(*connection);
 
-                // deactivate the viewport
-                vp->deactivate();
-            }
-            Inherited::clientSwap();
-        }
+        // deactivate the viewport
+        vp->deactivate();
+      }
+      Inherited::clientSwap();
     }
-    else
-    {
-        connection->wait();
-        connection->signal();
-    }
+  } else {
+    connection->wait();
+    connection->signal();
+  }
 }
-
-
-

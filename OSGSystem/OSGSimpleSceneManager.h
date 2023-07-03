@@ -43,7 +43,7 @@
 #endif
 
 #include <OSGBaseTypes.h>
-#include <OSGWindow.h>          
+#include <OSGWindow.h>
 
 #include <OSGDrawAction.h>
 #include <OSGRenderAction.h>
@@ -65,156 +65,154 @@ OSG_BEGIN_NAMESPACE
     \ingroup GrpSystemLib
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING SimpleSceneManager
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Enums                                   */
-    /*! \{                                                                 */
+class OSG_SYSTEMLIB_DLLMAPPING SimpleSceneManager {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Enums                                   */
+  /*! \{                                                                 */
 
-    enum {  MouseLeft   =  0,
-            MouseMiddle =  1, 
-            MouseRight  =  2,
-            MouseUp     =  3,
-            MouseDown   =  4,
-            NoButton    =  -1
-         };
-         
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  enum {
+    MouseLeft   = 0,
+    MouseMiddle = 1,
+    MouseRight  = 2,
+    MouseUp     = 3,
+    MouseDown   = 4,
+    NoButton    = -1
+  };
 
-    SimpleSceneManager(void);
-    SimpleSceneManager *create( void );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructor                                 */
-    /*! \{                                                                 */
+  SimpleSceneManager(void);
+  SimpleSceneManager* create(void);
 
-    virtual ~SimpleSceneManager(void);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructor                                 */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Get                                     */
-    /*! \{                                                                 */
+  virtual ~SimpleSceneManager(void);
 
-    virtual NodePtr              getRoot            ( void );
-    virtual WindowPtr            getWindow          ( void );
-    virtual NodePtr              getHighlight       ( void );
-    virtual DrawActionBase      *getAction          ( void );
-    virtual Navigator           *getNavigator       ( void );
-    virtual bool                 getHeadlightState  ( void );
-    virtual DirectionalLightPtr  getHeadlight       ( void );
-    virtual PerspectiveCameraPtr getCamera          ( void );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Get                                     */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Set                                     */
-    /*! \{                                                                 */
+  virtual NodePtr              getRoot(void);
+  virtual WindowPtr            getWindow(void);
+  virtual NodePtr              getHighlight(void);
+  virtual DrawActionBase*      getAction(void);
+  virtual Navigator*           getNavigator(void);
+  virtual bool                 getHeadlightState(void);
+  virtual DirectionalLightPtr  getHeadlight(void);
+  virtual PerspectiveCameraPtr getCamera(void);
 
-    virtual void  setAction        ( RenderAction *action );
-    virtual void  setRoot          ( NodePtr root );
-    virtual void  setWindow        ( WindowPtr win );
-    virtual void  setHighlight     ( NodePtr obj );
-    virtual void  setHeadlight     ( bool on );
-    virtual void  turnHeadlightOn  ( void );
-    virtual void  turnHeadlightOff ( void );
-    virtual void  setCamera        ( PerspectiveCameraPtr camera );
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Set                                     */
+  /*! \{                                                                 */
 
-    virtual void  showAll          ( void );
+  virtual void setAction(RenderAction* action);
+  virtual void setRoot(NodePtr root);
+  virtual void setWindow(WindowPtr win);
+  virtual void setHighlight(NodePtr obj);
+  virtual void setHeadlight(bool on);
+  virtual void turnHeadlightOn(void);
+  virtual void turnHeadlightOff(void);
+  virtual void setCamera(PerspectiveCameraPtr camera);
 
-    virtual void  useOpenSGLogo    ( void );
-    
-            void  setNavigationMode( Navigator::Mode new_mode );
-    inline  bool  setClickCenter   ( bool mode );
+  virtual void showAll(void);
 
-    virtual void  setStatistics    ( bool on );
+  virtual void useOpenSGLogo(void);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name               Interaction handling                           */
-    /*! \{                                                                 */
+  void        setNavigationMode(Navigator::Mode new_mode);
+  inline bool setClickCenter(bool mode);
 
-    virtual void resize(UInt16 width, UInt16 height);
-    virtual void mouseMove(Int16 x, Int16 y);
-    virtual void mouseButtonPress(UInt16 button, Int16 x, Int16 y);
-    virtual void mouseButtonRelease(UInt16 button, Int16 x, Int16 y);
-    virtual void key(UChar8 key, Int16 x, Int16 y);
+  virtual void setStatistics(bool on);
 
-            Line calcViewRay(Int16 x, Int16 y);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name               Interaction handling                           */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Actions                                  */
-    /*! \{                                                                 */
+  virtual void resize(UInt16 width, UInt16 height);
+  virtual void mouseMove(Int16 x, Int16 y);
+  virtual void mouseButtonPress(UInt16 button, Int16 x, Int16 y);
+  virtual void mouseButtonRelease(UInt16 button, Int16 x, Int16 y);
+  virtual void key(UChar8 key, Int16 x, Int16 y);
 
-    virtual void redraw( void );
-    virtual void idle( void );
+  Line calcViewRay(Int16 x, Int16 y);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Comparison                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Actions                                  */
+  /*! \{                                                                 */
 
-    bool operator < (const SimpleSceneManager &other) const;
+  virtual void redraw(void);
+  virtual void idle(void);
 
-    //bool operator == (const SimpleSceneManager &other) const;
-    //bool operator != (const SimpleSceneManager &other) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Comparison                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  bool operator<(const SimpleSceneManager& other) const;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Updates                                  */
-    /*! \{                                                                 */
+  // bool operator == (const SimpleSceneManager &other) const;
+  // bool operator != (const SimpleSceneManager &other) const;
 
-            void  initialize      (void);
-    virtual void  highlightChanged(void);
-    virtual void  updateHighlight (void);
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Updates                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Member                                  */
-    /*! \{                                                                 */
+  void         initialize(void);
+  virtual void highlightChanged(void);
+  virtual void updateHighlight(void);
 
-    WindowPtr                    _win;
-    NodePtr                      _root;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Member                                  */
+  /*! \{                                                                 */
 
-    ImageForegroundPtr           _foreground;
-    StatisticsForegroundPtr      _statforeground;
-    bool                         _statstate;
+  WindowPtr _win;
+  NodePtr   _root;
 
-    NodePtr                      _highlight;
-    NodePtr                      _highlightNode;
-    GeoPositions3fPtr            _highlightPoints;
-     
-    NodePtr                      _internalRoot;
-    DirectionalLightPtr          _headlight;
-    RenderAction *               _action;
-    RenderAction *               _ownAction;
-    TransformPtr                 _cart;
-    PerspectiveCameraPtr         _camera;
+  ImageForegroundPtr      _foreground;
+  StatisticsForegroundPtr _statforeground;
+  bool                    _statstate;
 
-    Navigator                    _navigator;
+  NodePtr           _highlight;
+  NodePtr           _highlightNode;
+  GeoPositions3fPtr _highlightPoints;
 
-    Int16                        _lastx;
-    Int16                        _lasty;
-    UInt16                       _mousebuttons;
+  NodePtr              _internalRoot;
+  DirectionalLightPtr  _headlight;
+  RenderAction*        _action;
+  RenderAction*        _ownAction;
+  TransformPtr         _cart;
+  PerspectiveCameraPtr _camera;
 
-    static  SimpleMaterialPtr    _highlightMaterial;
- 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
-   
-    /* prohibit default function (move to 'public' if needed) */
+  Navigator _navigator;
 
-    SimpleSceneManager(const SimpleSceneManager &source);
-    void operator =(const SimpleSceneManager &source);
+  Int16  _lastx;
+  Int16  _lasty;
+  UInt16 _mousebuttons;
+
+  static SimpleMaterialPtr _highlightMaterial;
+
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /* prohibit default function (move to 'public' if needed) */
+
+  SimpleSceneManager(const SimpleSceneManager& source);
+  void operator=(const SimpleSceneManager& source);
 };
 
 //---------------------------------------------------------------------------
@@ -223,12 +221,13 @@ class OSG_SYSTEMLIB_DLLMAPPING SimpleSceneManager
 
 // class pointer
 
-typedef SimpleSceneManager *SimpleSceneManagerP;
+typedef SimpleSceneManager* SimpleSceneManagerP;
 
 OSG_END_NAMESPACE
 
 #include "OSGSimpleSceneManager.inl"
 
-#define OSGSIMPLESCENEMANAGER_HEADER_CVSID "@(#)$Id: OSGSimpleSceneManager.h,v 1.11 2001/11/19 18:40:50 dirk Exp $"
+#define OSGSIMPLESCENEMANAGER_HEADER_CVSID                                                         \
+  "@(#)$Id: OSGSimpleSceneManager.h,v 1.11 2001/11/19 18:40:50 dirk Exp $"
 
 #endif /* _OSGSIMPLESCENEMANAGER_H_ */

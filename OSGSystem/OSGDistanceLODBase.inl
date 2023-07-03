@@ -52,109 +52,79 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &DistanceLODBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& DistanceLODBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 DistanceLODBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 DistanceLODBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-DistanceLODPtr DistanceLODBase::create(void) 
-{
-    DistanceLODPtr fc; 
+inline DistanceLODPtr DistanceLODBase::create(void) {
+  DistanceLODPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = DistanceLODPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = DistanceLODPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-DistanceLODPtr DistanceLODBase::createEmpty(void) 
-{ 
-    DistanceLODPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline DistanceLODPtr DistanceLODBase::createEmpty(void) {
+  DistanceLODPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the DistanceLOD::_sfCenter field.
-inline
-SFPnt3f *DistanceLODBase::getSFCenter(void)
-{
-    return &_sfCenter;
+inline SFPnt3f* DistanceLODBase::getSFCenter(void) {
+  return &_sfCenter;
 }
 
 //! Get the DistanceLOD::_mfRange field.
-inline
-MFReal32 *DistanceLODBase::getMFRange(void)
-{
-    return &_mfRange;
-}
-
-
-//! Get the value of the DistanceLOD::_sfCenter field.
-inline
-Pnt3f &DistanceLODBase::getCenter(void)
-{
-    return _sfCenter.getValue();
+inline MFReal32* DistanceLODBase::getMFRange(void) {
+  return &_mfRange;
 }
 
 //! Get the value of the DistanceLOD::_sfCenter field.
-inline
-const Pnt3f &DistanceLODBase::getCenter(void) const
-{
-    return _sfCenter.getValue();
+inline Pnt3f& DistanceLODBase::getCenter(void) {
+  return _sfCenter.getValue();
+}
+
+//! Get the value of the DistanceLOD::_sfCenter field.
+inline const Pnt3f& DistanceLODBase::getCenter(void) const {
+  return _sfCenter.getValue();
 }
 
 //! Set the value of the DistanceLOD::_sfCenter field.
-inline
-void DistanceLODBase::setCenter(const Pnt3f &value)
-{
-    _sfCenter.setValue(value);
+inline void DistanceLODBase::setCenter(const Pnt3f& value) {
+  _sfCenter.setValue(value);
 }
-
 
 //! Get the value of the \a index element the DistanceLOD::_mfRange field.
-inline
-Real32 &DistanceLODBase::getRange(const UInt32 index)
-{
-    return _mfRange[index];
+inline Real32& DistanceLODBase::getRange(const UInt32 index) {
+  return _mfRange[index];
 }
 
 //! Get the DistanceLOD::_mfRange field.
-inline
-MFReal32 &DistanceLODBase::getRange(void)
-{
-    return _mfRange;
+inline MFReal32& DistanceLODBase::getRange(void) {
+  return _mfRange;
 }
 
 //! Get the DistanceLOD::_mfRange field.
-inline
-const MFReal32 &DistanceLODBase::getRange(void) const
-{
-    return _mfRange;
+inline const MFReal32& DistanceLODBase::getRange(void) const {
+  return _mfRange;
 }
 
 OSG_END_NAMESPACE
 
-#define OSGDISTANCELODBASE_INLINE_CVSID "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"
-
+#define OSGDISTANCELODBASE_INLINE_CVSID                                                            \
+  "@(#)$Id: FCBaseTemplate_inl.h,v 1.20 2002/12/04 14:22:22 dirk Exp $"

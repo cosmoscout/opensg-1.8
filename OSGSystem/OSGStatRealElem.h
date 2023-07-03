@@ -36,7 +36,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGSTATREALELEM_H_
 #define _OSGSTATREALELEM_H_
 #ifdef __sgi
@@ -55,93 +54,90 @@ OSG_BEGIN_NAMESPACE
 class StatElemDescBase;
 
 /*! \brief Real32 Statistics element, see \ref PageSystemStatistics for details.
-*/
-class OSG_SYSTEMLIB_DLLMAPPING StatRealElem : public StatElem 
-{
+ */
+class OSG_SYSTEMLIB_DLLMAPPING StatRealElem : public StatElem {
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  static const char* getClassname(void) {
+    return "StatRealElem";
+  }
 
-    static const char *getClassname(void) { return "StatRealElem"; }
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    your_category                             */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    your_category                             */
-    /*! \{                                                                 */
+  static StatElem* create(StatElemDescBase* desc);
 
-    static StatElem *create(StatElemDescBase *desc);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    instance                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    instance                                  */
-    /*! \{                                                                 */
+  inline void set(Real32 value);
 
-    inline void    set          (Real32 value);
+  inline Real32 get(void) const;
 
-    inline Real32  get          (void) const;
+  inline void add(Real32 v);
 
-    inline void    add          (Real32 v);
-    
-    inline void    sub          (Real32 v);
+  inline void sub(Real32 v);
 
-    virtual void   reset        (void);
+  virtual void reset(void);
 
-    virtual void   putToString  (std::string &str, 
-                                 const char *format = NULL) const;
+  virtual void putToString(std::string& str, const char* format = NULL) const;
 
-    virtual bool   getFromString(const Char8 *&inVal);
+  virtual bool getFromString(const Char8*& inVal);
 
-    virtual Real64 getValue     (void) const;
+  virtual Real64 getValue(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    comparison                                */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    comparison                                */
+  /*! \{                                                                 */
 
-    bool operator < (const StatRealElem &other) const;
- 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Creation                                   */
-    /*! \{                                                                 */
+  bool operator<(const StatRealElem& other) const;
 
-    virtual StatElem *clone(void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Creation                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Operators                                */
-    /*! \{                                                                 */
+  virtual StatElem* clone(void) const;
 
-    virtual StatElem &operator += (const StatElem &other);
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Operators                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  virtual StatElem& operator+=(const StatElem& other);
 
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    StatRealElem ( StatElemDescBase *desc );
+  StatRealElem(StatElemDescBase* desc);
 
-    virtual ~StatRealElem(void); 
+  virtual ~StatRealElem(void);
 
-    /*! \}                                                                 */
-    /*=========================  PRIVATE    ===============================*/
-  private:
+  /*! \}                                                                 */
+  /*=========================  PRIVATE    ===============================*/
+ private:
+  typedef StatElem Inherited;
 
-    typedef StatElem Inherited;
+  Real32 _value;
 
-    Real32 _value;
- 
-    StatRealElem(const StatRealElem &source);
-   
-    StatRealElem& operator =(const StatRealElem &source);
+  StatRealElem(const StatRealElem& source);
+
+  StatRealElem& operator=(const StatRealElem& source);
 };
 
 //---------------------------------------------------------------------------
@@ -150,7 +146,7 @@ class OSG_SYSTEMLIB_DLLMAPPING StatRealElem : public StatElem
 
 // class pointer
 
-typedef StatRealElem *StatRealElemP;
+typedef StatRealElem* StatRealElemP;
 
 OSG_END_NAMESPACE
 

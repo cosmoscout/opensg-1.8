@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILEIMAGEBACKGROUNDINST
 
 #include <stdlib.h>
@@ -61,22 +60,19 @@
 #include "OSGImageBackgroundBase.h"
 #include "OSGImageBackground.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  ImageBackgroundBase::ColorFieldMask = 
+const OSG::BitVector ImageBackgroundBase::ColorFieldMask =
     (TypeTraits<BitVector>::One << ImageBackgroundBase::ColorFieldId);
 
-const OSG::BitVector  ImageBackgroundBase::ImageFieldMask = 
+const OSG::BitVector ImageBackgroundBase::ImageFieldMask =
     (TypeTraits<BitVector>::One << ImageBackgroundBase::ImageFieldId);
 
-const OSG::BitVector  ImageBackgroundBase::ScaleFieldMask = 
+const OSG::BitVector ImageBackgroundBase::ScaleFieldMask =
     (TypeTraits<BitVector>::One << ImageBackgroundBase::ScaleFieldId);
 
-const OSG::BitVector ImageBackgroundBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector ImageBackgroundBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
@@ -92,243 +88,178 @@ const OSG::BitVector ImageBackgroundBase::MTInfluenceMask =
 
 //! ImageBackground description
 
-FieldDescription *ImageBackgroundBase::_desc[] = 
-{
-    new FieldDescription(SFColor3f::getClassType(), 
-                     "color", 
-                     ColorFieldId, ColorFieldMask,
-                     false,
-                     (FieldAccessMethod) &ImageBackgroundBase::getSFColor),
-    new FieldDescription(SFImagePtr::getClassType(), 
-                     "image", 
-                     ImageFieldId, ImageFieldMask,
-                     false,
-                     (FieldAccessMethod) &ImageBackgroundBase::getSFImage),
-    new FieldDescription(SFBool::getClassType(), 
-                     "scale", 
-                     ScaleFieldId, ScaleFieldMask,
-                     false,
-                     (FieldAccessMethod) &ImageBackgroundBase::getSFScale)
-};
+FieldDescription* ImageBackgroundBase::_desc[] = {
+    new FieldDescription(SFColor3f::getClassType(), "color", ColorFieldId, ColorFieldMask, false,
+        (FieldAccessMethod)&ImageBackgroundBase::getSFColor),
+    new FieldDescription(SFImagePtr::getClassType(), "image", ImageFieldId, ImageFieldMask, false,
+        (FieldAccessMethod)&ImageBackgroundBase::getSFImage),
+    new FieldDescription(SFBool::getClassType(), "scale", ScaleFieldId, ScaleFieldMask, false,
+        (FieldAccessMethod)&ImageBackgroundBase::getSFScale)};
 
-
-FieldContainerType ImageBackgroundBase::_type(
-    "ImageBackground",
-    "Background",
-    NULL,
-    (PrototypeCreateF) &ImageBackgroundBase::createEmpty,
-    ImageBackground::initMethod,
-    _desc,
+FieldContainerType ImageBackgroundBase::_type("ImageBackground", "Background", NULL,
+    (PrototypeCreateF)&ImageBackgroundBase::createEmpty, ImageBackground::initMethod, _desc,
     sizeof(_desc));
 
-//OSG_FIELD_CONTAINER_DEF(ImageBackgroundBase, ImageBackgroundPtr)
+// OSG_FIELD_CONTAINER_DEF(ImageBackgroundBase, ImageBackgroundPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &ImageBackgroundBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &ImageBackgroundBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr ImageBackgroundBase::shallowCopy(void) const 
-{ 
-    ImageBackgroundPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const ImageBackground *>(this)); 
-
-    return returnValue; 
+FieldContainerType& ImageBackgroundBase::getType(void) {
+  return _type;
 }
 
-UInt32 ImageBackgroundBase::getContainerSize(void) const 
-{ 
-    return sizeof(ImageBackground); 
+const FieldContainerType& ImageBackgroundBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr ImageBackgroundBase::shallowCopy(void) const {
+  ImageBackgroundPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const ImageBackground*>(this));
+
+  return returnValue;
+}
+
+UInt32 ImageBackgroundBase::getContainerSize(void) const {
+  return sizeof(ImageBackground);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ImageBackgroundBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((ImageBackgroundBase *) &other, whichField);
+void ImageBackgroundBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((ImageBackgroundBase*)&other, whichField);
 }
 #else
-void ImageBackgroundBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((ImageBackgroundBase *) &other, whichField, sInfo);
+void ImageBackgroundBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((ImageBackgroundBase*)&other, whichField, sInfo);
 }
-void ImageBackgroundBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void ImageBackgroundBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void ImageBackgroundBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void ImageBackgroundBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-ImageBackgroundBase::ImageBackgroundBase(void) :
-    _sfColor                  (Color3f(0,0,0)), 
-    _sfImage                  (), 
-    _sfScale                  (), 
-    Inherited() 
-{
+ImageBackgroundBase::ImageBackgroundBase(void)
+    : _sfColor(Color3f(0, 0, 0))
+    , _sfImage()
+    , _sfScale()
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-ImageBackgroundBase::ImageBackgroundBase(const ImageBackgroundBase &source) :
-    _sfColor                  (source._sfColor                  ), 
-    _sfImage                  (source._sfImage                  ), 
-    _sfScale                  (source._sfScale                  ), 
-    Inherited                 (source)
-{
+ImageBackgroundBase::ImageBackgroundBase(const ImageBackgroundBase& source)
+    : _sfColor(source._sfColor)
+    , _sfImage(source._sfImage)
+    , _sfScale(source._sfScale)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-ImageBackgroundBase::~ImageBackgroundBase(void)
-{
+ImageBackgroundBase::~ImageBackgroundBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 ImageBackgroundBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 ImageBackgroundBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (ColorFieldMask & whichField))
-    {
-        returnValue += _sfColor.getBinSize();
-    }
+  if (FieldBits::NoField != (ColorFieldMask & whichField)) {
+    returnValue += _sfColor.getBinSize();
+  }
 
-    if(FieldBits::NoField != (ImageFieldMask & whichField))
-    {
-        returnValue += _sfImage.getBinSize();
-    }
+  if (FieldBits::NoField != (ImageFieldMask & whichField)) {
+    returnValue += _sfImage.getBinSize();
+  }
 
-    if(FieldBits::NoField != (ScaleFieldMask & whichField))
-    {
-        returnValue += _sfScale.getBinSize();
-    }
+  if (FieldBits::NoField != (ScaleFieldMask & whichField)) {
+    returnValue += _sfScale.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void ImageBackgroundBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void ImageBackgroundBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ColorFieldMask & whichField))
-    {
-        _sfColor.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (ColorFieldMask & whichField)) {
+    _sfColor.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ImageFieldMask & whichField))
-    {
-        _sfImage.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (ImageFieldMask & whichField)) {
+    _sfImage.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ScaleFieldMask & whichField))
-    {
-        _sfScale.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (ScaleFieldMask & whichField)) {
+    _sfScale.copyToBin(pMem);
+  }
 }
 
-void ImageBackgroundBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void ImageBackgroundBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ColorFieldMask & whichField))
-    {
-        _sfColor.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (ColorFieldMask & whichField)) {
+    _sfColor.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ImageFieldMask & whichField))
-    {
-        _sfImage.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (ImageFieldMask & whichField)) {
+    _sfImage.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (ScaleFieldMask & whichField))
-    {
-        _sfScale.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (ScaleFieldMask & whichField)) {
+    _sfScale.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void ImageBackgroundBase::executeSyncImpl(      ImageBackgroundBase *pOther,
-                                        const BitVector         &whichField)
-{
+void ImageBackgroundBase::executeSyncImpl(
+    ImageBackgroundBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (ColorFieldMask & whichField))
-        _sfColor.syncWith(pOther->_sfColor);
+  if (FieldBits::NoField != (ColorFieldMask & whichField))
+    _sfColor.syncWith(pOther->_sfColor);
 
-    if(FieldBits::NoField != (ImageFieldMask & whichField))
-        _sfImage.syncWith(pOther->_sfImage);
+  if (FieldBits::NoField != (ImageFieldMask & whichField))
+    _sfImage.syncWith(pOther->_sfImage);
 
-    if(FieldBits::NoField != (ScaleFieldMask & whichField))
-        _sfScale.syncWith(pOther->_sfScale);
-
-
+  if (FieldBits::NoField != (ScaleFieldMask & whichField))
+    _sfScale.syncWith(pOther->_sfScale);
 }
 #else
-void ImageBackgroundBase::executeSyncImpl(      ImageBackgroundBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void ImageBackgroundBase::executeSyncImpl(
+    ImageBackgroundBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (ColorFieldMask & whichField))
-        _sfColor.syncWith(pOther->_sfColor);
+  if (FieldBits::NoField != (ColorFieldMask & whichField))
+    _sfColor.syncWith(pOther->_sfColor);
 
-    if(FieldBits::NoField != (ImageFieldMask & whichField))
-        _sfImage.syncWith(pOther->_sfImage);
+  if (FieldBits::NoField != (ImageFieldMask & whichField))
+    _sfImage.syncWith(pOther->_sfImage);
 
-    if(FieldBits::NoField != (ScaleFieldMask & whichField))
-        _sfScale.syncWith(pOther->_sfScale);
-
-
-
+  if (FieldBits::NoField != (ScaleFieldMask & whichField))
+    _sfScale.syncWith(pOther->_sfScale);
 }
 
-void ImageBackgroundBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void ImageBackgroundBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 
@@ -341,4 +272,3 @@ DataType FieldDataTraits<ImageBackgroundPtr>::_type("ImageBackgroundPtr", "Backg
 OSG_DLLEXPORT_SFIELD_DEF1(ImageBackgroundPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
-

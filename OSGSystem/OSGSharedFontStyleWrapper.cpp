@@ -50,38 +50,32 @@
 OSG_USING_NAMESPACE
 
 /*! \class osg::SharedFontStyleWrapper
-This class is needed to prevent font styles to be loaded n times when n Text Nodes using the SharedFontStyle are loaded
+This class is needed to prevent font styles to be loaded n times when n Text Nodes using the
+SharedFontStyle are loaded
 */
 
 /*----------------------- constructors & destructors ----------------------*/
 
-SharedFontStyleWrapper::SharedFontStyleWrapper(void) :
-    Inherited()
-{
+SharedFontStyleWrapper::SharedFontStyleWrapper(void)
+    : Inherited() {
 }
 
-SharedFontStyleWrapper::SharedFontStyleWrapper(const SharedFontStyleWrapper &source) :
-    Inherited(source)
-{
+SharedFontStyleWrapper::SharedFontStyleWrapper(const SharedFontStyleWrapper& source)
+    : Inherited(source) {
 }
 
-SharedFontStyleWrapper::~SharedFontStyleWrapper(void)
-{
+SharedFontStyleWrapper::~SharedFontStyleWrapper(void) {
 }
 
 /*----------------------------- class specific ----------------------------*/
 
-void SharedFontStyleWrapper::initMethod (void)
-{
+void SharedFontStyleWrapper::initMethod(void) {
 }
 
-void SharedFontStyleWrapper::changed(BitVector whichField, UInt32 origin)
-{
-    Inherited::changed(whichField, origin);
+void SharedFontStyleWrapper::changed(BitVector whichField, UInt32 origin) {
+  Inherited::changed(whichField, origin);
 }
 
-void SharedFontStyleWrapper::dump(      UInt32    , 
-                         const BitVector ) const
-{
-    SLOG << "Dump SharedFontStyleWrapper NI" << std::endl;
+void SharedFontStyleWrapper::dump(UInt32, const BitVector) const {
+  SLOG << "Dump SharedFontStyleWrapper NI" << std::endl;
 }

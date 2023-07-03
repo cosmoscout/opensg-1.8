@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGSHEAREDSTEREOCAMERADECORATORBASE_H_
 #define _OSGSHEAREDSTEREOCAMERADECORATORBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -79,188 +77,169 @@ class BinaryDataHandler;
 
 //! \brief ShearedStereoCameraDecorator Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING ShearedStereoCameraDecoratorBase : public StereoCameraDecorator
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING ShearedStereoCameraDecoratorBase : public StereoCameraDecorator {
+ private:
+  typedef StereoCameraDecorator Inherited;
 
-    typedef StereoCameraDecorator    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef ShearedStereoCameraDecoratorPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    ZeroParallaxDistanceFieldId = Inherited::NextFieldId,
+    OverlapFieldId              = ZeroParallaxDistanceFieldId + 1,
+    NextFieldId                 = OverlapFieldId + 1
+  };
 
-    typedef ShearedStereoCameraDecoratorPtr  Ptr;
+  static const OSG::BitVector ZeroParallaxDistanceFieldMask;
+  static const OSG::BitVector OverlapFieldMask;
 
-    enum
-    {
-        ZeroParallaxDistanceFieldId = Inherited::NextFieldId,
-        OverlapFieldId              = ZeroParallaxDistanceFieldId + 1,
-        NextFieldId                 = OverlapFieldId              + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector ZeroParallaxDistanceFieldMask;
-    static const OSG::BitVector OverlapFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFReal32* getSFZeroParallaxDistance(void);
+  SFReal32* getSFOverlap(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  Real32&       getZeroParallaxDistance(void);
+  const Real32& getZeroParallaxDistance(void) const;
+  Real32&       getOverlap(void);
+  const Real32& getOverlap(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFReal32            *getSFZeroParallaxDistance(void);
-           SFReal32            *getSFOverlap        (void);
+  void setZeroParallaxDistance(const Real32& value);
+  void setOverlap(const Real32& value);
 
-           Real32              &getZeroParallaxDistance(void);
-     const Real32              &getZeroParallaxDistance(void) const;
-           Real32              &getOverlap        (void);
-     const Real32              &getOverlap        (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setZeroParallaxDistance( const Real32 &value );
-     void setOverlap        ( const Real32 &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static ShearedStereoCameraDecoratorPtr create(void);
+  static ShearedStereoCameraDecoratorPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  ShearedStereoCameraDecoratorPtr      create          (void); 
-    static  ShearedStereoCameraDecoratorPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFReal32 _sfZeroParallaxDistance;
+  SFReal32 _sfOverlap;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  ShearedStereoCameraDecoratorBase(void);
+  ShearedStereoCameraDecoratorBase(const ShearedStereoCameraDecoratorBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~ShearedStereoCameraDecoratorBase(void);
 
-    SFReal32            _sfZeroParallaxDistance;
-    SFReal32            _sfOverlap;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    ShearedStereoCameraDecoratorBase(void);
-    ShearedStereoCameraDecoratorBase(const ShearedStereoCameraDecoratorBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~ShearedStereoCameraDecoratorBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      ShearedStereoCameraDecoratorBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(ShearedStereoCameraDecoratorBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      ShearedStereoCameraDecoratorBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      ShearedStereoCameraDecoratorBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const ShearedStereoCameraDecoratorBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const ShearedStereoCameraDecoratorBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
-
-typedef ShearedStereoCameraDecoratorBase *ShearedStereoCameraDecoratorBaseP;
+typedef ShearedStereoCameraDecoratorBase* ShearedStereoCameraDecoratorBaseP;
 
 typedef osgIF<ShearedStereoCameraDecoratorBase::isNodeCore,
-              CoredNodePtr<ShearedStereoCameraDecorator>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet ShearedStereoCameraDecoratorNodePtr;
+    CoredNodePtr<ShearedStereoCameraDecorator>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet
+    ShearedStereoCameraDecoratorNodePtr;
 
 typedef RefPtr<ShearedStereoCameraDecoratorPtr> ShearedStereoCameraDecoratorRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGSHEAREDSTEREOCAMERADECORATORBASE_HEADER_CVSID "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
+#define OSGSHEAREDSTEREOCAMERADECORATORBASE_HEADER_CVSID                                           \
+  "@(#)$Id: FCBaseTemplate_h.h,v 1.40 2005/07/20 00:10:14 vossg Exp $"
 
 #endif /* _OSGSHEAREDSTEREOCAMERADECORATORBASE_H_ */

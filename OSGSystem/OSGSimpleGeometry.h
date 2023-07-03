@@ -34,7 +34,6 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-
 #ifndef _OSGGeoSimpleGeometry_H_
 #define _OSGGeoSimpleGeometry_H_
 #ifdef __sgi
@@ -49,119 +48,64 @@
 #include <OSGGeometry.h>
 #include <OSGMaterial.h>
 
-
 OSG_BEGIN_NAMESPACE
 
 /*---------------------------------------------------------------------*/
 /*! \name                   Construction functions                     */
 /*! \{                                                                 */
 
-OSG_SYSTEMLIB_DLLMAPPING 
-GeometryPtr               makePlaneGeo          (Real32 xsize, 
-                                                 Real32 ysize,
-                                                 UInt16 hor,   
-                                                 UInt16 vert);
+OSG_SYSTEMLIB_DLLMAPPING
+GeometryPtr makePlaneGeo(Real32 xsize, Real32 ysize, UInt16 hor, UInt16 vert);
 
-OSG_SYSTEMLIB_DLLMAPPING 
-NodePtr                   makePlane             (Real32 xsize, 
-                                                 Real32 ysize,
-                                                 UInt16 hor,   
-                                                 UInt16 vert);
+OSG_SYSTEMLIB_DLLMAPPING
+NodePtr makePlane(Real32 xsize, Real32 ysize, UInt16 hor, UInt16 vert);
 
-OSG_SYSTEMLIB_DLLMAPPING 
-GeometryPtr               makeBoxGeo            (Real32 xsize,
-                                                 Real32 ysize,
-                                                 Real32 zsize,
-                                                 UInt16 hor,
-                                                 UInt16 vert,
-                                                 UInt16 depth);
+OSG_SYSTEMLIB_DLLMAPPING
+GeometryPtr makeBoxGeo(
+    Real32 xsize, Real32 ysize, Real32 zsize, UInt16 hor, UInt16 vert, UInt16 depth);
 
-OSG_SYSTEMLIB_DLLMAPPING 
-NodePtr                   makeBox               (Real32 xsize,
-                                                 Real32 ysize,
-                                                 Real32 zsize,
-                                                 UInt16 hor,
-                                                 UInt16 vert,
-                                                 UInt16 depth);
+OSG_SYSTEMLIB_DLLMAPPING
+NodePtr makeBox(Real32 xsize, Real32 ysize, Real32 zsize, UInt16 hor, UInt16 vert, UInt16 depth);
 
-OSG_SYSTEMLIB_DLLMAPPING 
-GeometryPtr               makeConeGeo           (Real32 height,
-                                                 Real32 botradius,
-                                                 UInt16 sides,
-                                                 bool   doSide,
-                                                 bool   doBottom);
+OSG_SYSTEMLIB_DLLMAPPING
+GeometryPtr makeConeGeo(Real32 height, Real32 botradius, UInt16 sides, bool doSide, bool doBottom);
 
-OSG_SYSTEMLIB_DLLMAPPING 
-NodePtr                   makeCone              (Real32 height,
-                                                 Real32 botradius,
-                                                 UInt16 sides,
-                                                 bool   doSide,
-                                                 bool   doBottom);
+OSG_SYSTEMLIB_DLLMAPPING
+NodePtr makeCone(Real32 height, Real32 botradius, UInt16 sides, bool doSide, bool doBottom);
 
-OSG_SYSTEMLIB_DLLMAPPING 
-GeometryPtr               makeCylinderGeo       (Real32 height,
-                                                 Real32 radius,
-                                                 UInt16 sides,
-                                                 bool   doSide,
-                                                 bool   doTop,
-                                                 bool   doBottom);
+OSG_SYSTEMLIB_DLLMAPPING
+GeometryPtr makeCylinderGeo(
+    Real32 height, Real32 radius, UInt16 sides, bool doSide, bool doTop, bool doBottom);
 
-OSG_SYSTEMLIB_DLLMAPPING 
-NodePtr                   makeCylinder          (Real32 height,
-                                                 Real32 radius,
-                                                 UInt16 sides,
-                                                 bool   doSide,
-                                                 bool   doTop,
-                                                 bool   doBottom);
+OSG_SYSTEMLIB_DLLMAPPING
+NodePtr makeCylinder(
+    Real32 height, Real32 radius, UInt16 sides, bool doSide, bool doTop, bool doBottom);
 
-OSG_SYSTEMLIB_DLLMAPPING 
-GeometryPtr               makeTorusGeo          (Real32 innerRadius,
-                                                 Real32 outerRadius,
-                                                 UInt16 sides, 
-                                                 UInt16 rings );
+OSG_SYSTEMLIB_DLLMAPPING
+GeometryPtr makeTorusGeo(Real32 innerRadius, Real32 outerRadius, UInt16 sides, UInt16 rings);
 
+OSG_SYSTEMLIB_DLLMAPPING
+NodePtr makeTorus(Real32 innerRadius, Real32 outerRadius, UInt16 sides, UInt16 rings);
 
-OSG_SYSTEMLIB_DLLMAPPING 
-NodePtr                   makeTorus             (Real32 innerRadius,
-                                                 Real32 outerRadius,
-                                                 UInt16 sides, 
-                                                 UInt16 rings);
+OSG_SYSTEMLIB_DLLMAPPING
+GeometryPtr makeSphereGeo(UInt16 depth, Real32 radius);
 
-OSG_SYSTEMLIB_DLLMAPPING 
-GeometryPtr               makeSphereGeo         (UInt16 depth,
-                                                 Real32 radius);
+OSG_SYSTEMLIB_DLLMAPPING
+NodePtr makeSphere(UInt16 depth, Real32 radius);
 
-OSG_SYSTEMLIB_DLLMAPPING 
-NodePtr                   makeSphere            (UInt16 depth, 
-                                                 Real32 radius);
+OSG_SYSTEMLIB_DLLMAPPING
+GeometryPtr makeLatLongSphereGeo(UInt16 latres, UInt16 longres, Real32 radius);
 
-OSG_SYSTEMLIB_DLLMAPPING 
-GeometryPtr               makeLatLongSphereGeo  (UInt16 latres,
-                                                 UInt16 longres,
-                                                 Real32 radius);
+OSG_SYSTEMLIB_DLLMAPPING
+NodePtr makeLatLongSphere(UInt16 latres, UInt16 longres, Real32 radius);
 
-OSG_SYSTEMLIB_DLLMAPPING 
-NodePtr                   makeLatLongSphere     (UInt16 latres, 
-                                                 UInt16 longres,
-                                                 Real32 radius);
+OSG_SYSTEMLIB_DLLMAPPING
+GeometryPtr makeConicalFrustumGeo(Real32 height, Real32 topradius, Real32 botradius, UInt16 sides,
+    bool doSide, bool doTop, bool doBottom);
 
-OSG_SYSTEMLIB_DLLMAPPING 
-GeometryPtr               makeConicalFrustumGeo (Real32 height,
-                                                 Real32 topradius,
-                                                 Real32 botradius,
-                                                 UInt16 sides,
-                                                 bool   doSide,
-                                                 bool   doTop,
-                                                 bool   doBottom);
-
-OSG_SYSTEMLIB_DLLMAPPING 
-NodePtr                   makeConicalFrustum    (Real32 height,
-                                                 Real32 topradius,
-                                                 Real32 botradius,
-                                                 UInt16 sides,
-                                                 bool   doSide,
-                                                 bool   doTop,
-                                                 bool   doBottom);
+OSG_SYSTEMLIB_DLLMAPPING
+NodePtr makeConicalFrustum(Real32 height, Real32 topradius, Real32 botradius, UInt16 sides,
+    bool doSide, bool doTop, bool doBottom);
 
 /*! \}                                                                 */
 /*---------------------------------------------------------------------*/
@@ -182,11 +126,10 @@ OSG_SYSTEMLIB_DLLMAPPING MaterialPtr getDefaultUnlitMaterial(void);
 
 OSG_SYSTEMLIB_DLLMAPPING GeoPositions3fPtr makeGeoPositions3fPtr(UInt32 uiSize);
 OSG_SYSTEMLIB_DLLMAPPING GeoIndicesUI32Ptr makeGeoIndicesUI32Ptr(UInt32 uiSize);
-OSG_SYSTEMLIB_DLLMAPPING GeoPLengthsPtr    makeGeoPLengthsPtr   (UInt32 uiSize);
-OSG_SYSTEMLIB_DLLMAPPING GeoPTypesPtr      makeGeoPTypesPtr     (UInt32 uiSize);
+OSG_SYSTEMLIB_DLLMAPPING GeoPLengthsPtr    makeGeoPLengthsPtr(UInt32 uiSize);
+OSG_SYSTEMLIB_DLLMAPPING GeoPTypesPtr      makeGeoPTypesPtr(UInt32 uiSize);
 
-#endif            // exclude from doc
-
+#endif // exclude from doc
 
 OSG_END_NAMESPACE
 

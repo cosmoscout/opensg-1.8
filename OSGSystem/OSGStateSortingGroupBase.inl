@@ -52,81 +52,59 @@
 
 OSG_BEGIN_NAMESPACE
 
-
 //! access the type of the class
-inline
-OSG::FieldContainerType &StateSortingGroupBase::getClassType(void)
-{
-    return _type; 
-} 
+inline OSG::FieldContainerType& StateSortingGroupBase::getClassType(void) {
+  return _type;
+}
 
 //! access the numerical type of the class
-inline
-OSG::UInt32 StateSortingGroupBase::getClassTypeId(void) 
-{
-    return _type.getId(); 
-} 
+inline OSG::UInt32 StateSortingGroupBase::getClassTypeId(void) {
+  return _type.getId();
+}
 
 //! create a new instance of the class
-inline
-StateSortingGroupPtr StateSortingGroupBase::create(void) 
-{
-    StateSortingGroupPtr fc; 
+inline StateSortingGroupPtr StateSortingGroupBase::create(void) {
+  StateSortingGroupPtr fc;
 
-    if(getClassType().getPrototype() != OSG::NullFC) 
-    {
-        fc = StateSortingGroupPtr::dcast(
-            getClassType().getPrototype()-> shallowCopy()); 
-    }
-    
-    return fc; 
+  if (getClassType().getPrototype() != OSG::NullFC) {
+    fc = StateSortingGroupPtr::dcast(getClassType().getPrototype()->shallowCopy());
+  }
+
+  return fc;
 }
 
 //! create an empty new instance of the class, do not copy the prototype
-inline
-StateSortingGroupPtr StateSortingGroupBase::createEmpty(void) 
-{ 
-    StateSortingGroupPtr returnValue; 
-    
-    newPtr(returnValue); 
+inline StateSortingGroupPtr StateSortingGroupBase::createEmpty(void) {
+  StateSortingGroupPtr returnValue;
 
-    return returnValue; 
+  newPtr(returnValue);
+
+  return returnValue;
 }
-
 
 /*------------------------------ get -----------------------------------*/
 
 //! Get the StateSortingGroup::_sfSorting field.
-inline
-SFBool *StateSortingGroupBase::getSFSorting(void)
-{
-    return &_sfSorting;
-}
-
-
-//! Get the value of the StateSortingGroup::_sfSorting field.
-inline
-bool &StateSortingGroupBase::getSorting(void)
-{
-    return _sfSorting.getValue();
+inline SFBool* StateSortingGroupBase::getSFSorting(void) {
+  return &_sfSorting;
 }
 
 //! Get the value of the StateSortingGroup::_sfSorting field.
-inline
-const bool &StateSortingGroupBase::getSorting(void) const
-{
-    return _sfSorting.getValue();
+inline bool& StateSortingGroupBase::getSorting(void) {
+  return _sfSorting.getValue();
+}
+
+//! Get the value of the StateSortingGroup::_sfSorting field.
+inline const bool& StateSortingGroupBase::getSorting(void) const {
+  return _sfSorting.getValue();
 }
 
 //! Set the value of the StateSortingGroup::_sfSorting field.
-inline
-void StateSortingGroupBase::setSorting(const bool &value)
-{
-    _sfSorting.setValue(value);
+inline void StateSortingGroupBase::setSorting(const bool& value) {
+  _sfSorting.setValue(value);
 }
-
 
 OSG_END_NAMESPACE
 
-#define OSGSTATESORTINGGROUPBASE_INLINE_CVSID "@(#)$Id: OSGStateSortingGroupBase.inl,v 1.5 2006/02/20 16:54:23 dirk Exp $"
-
+#define OSGSTATESORTINGGROUPBASE_INLINE_CVSID                                                      \
+  "@(#)$Id: OSGStateSortingGroupBase.inl,v 1.5 2006/02/20 16:54:23 dirk Exp $"

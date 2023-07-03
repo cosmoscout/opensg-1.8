@@ -53,47 +53,45 @@
 
 OSG_BEGIN_NAMESPACE
 
-class OSG_BASE_DLLMAPPING StreamSocket:public Socket
-{ 
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_BASE_DLLMAPPING StreamSocket : public Socket {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  static const char* getClassname(void) {
+    return "CLASSNAME";
+  }
 
-    static const char *getClassname(void) { return "CLASSNAME"; }
- 
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    StreamSocket();
-    StreamSocket(const StreamSocket &source);
+  StreamSocket();
+  StreamSocket(const StreamSocket& source);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Socket functionaliy                        */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Socket functionaliy                        */
+  /*! \{                                                                 */
 
-    virtual void         open      (void                  );
-    virtual void         close     (void                  );
-            StreamSocket acceptFrom(SocketAddress &address);
-            StreamSocket accept    (void                  );
-            void         setDelay  (bool           value  );
+  virtual void open(void);
+  virtual void close(void);
+  StreamSocket acceptFrom(SocketAddress& address);
+  StreamSocket accept(void);
+  void         setDelay(bool value);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Assignment                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Assignment                                 */
+  /*! \{                                                                 */
 
-	const StreamSocket & operator =(const StreamSocket &source);
+  const StreamSocket& operator=(const StreamSocket& source);
 
-    /*! \}                                                                 */
+  /*! \}                                                                 */
 
-    /*=========================  PROTECTED  ===============================*/
-  protected:
-
-    /*==========================  PRIVATE  ================================*/
-  private:
-
-    typedef Socket Inherited;
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*==========================  PRIVATE  ================================*/
+ private:
+  typedef Socket Inherited;
 };
 
 OSG_END_NAMESPACE

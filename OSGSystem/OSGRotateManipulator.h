@@ -48,85 +48,74 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief RotateManipulator class. See \ref 
+/*! \brief RotateManipulator class. See \ref
            PageManipulatorsRotateManipulator for a description.
 */
 
-class OSG_SYSTEMLIB_DLLMAPPING RotateManipulator : public RotateManipulatorBase
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING RotateManipulator : public RotateManipulatorBase {
+ private:
+  typedef RotateManipulatorBase Inherited;
 
-    typedef RotateManipulatorBase Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Sync                                    */
+  /*! \{                                                                 */
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  virtual void changed(BitVector whichField, UInt32 origin);
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Sync                                    */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                     Output                                   */
+  /*! \{                                                                 */
 
-    virtual void changed(BitVector  whichField, 
-                         UInt32     origin    );
+  virtual void dump(UInt32 uiIndent = 0, const BitVector bvFlags = 0) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                     Output                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  // Variables should all be in RotateManipulatorBase.
 
-    virtual void dump(      UInt32     uiIndent = 0, 
-                      const BitVector  bvFlags  = 0) const;
+  /*---------------------------------------------------------------------*/
+  /*! \name                  Constructors                                */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  RotateManipulator(void);
+  RotateManipulator(const RotateManipulator& source);
 
-    // Variables should all be in RotateManipulatorBase.
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                  Constructors                                */
-    /*! \{                                                                 */
+  virtual ~RotateManipulator(void);
 
-    RotateManipulator(void);
-    RotateManipulator(const RotateManipulator &source);
+  /*! \}                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
+  virtual NodePtr makeHandleGeo();
+  virtual void    doMovement(TransformPtr t, Int32 coord, Real32 value, const Vec3f& translation,
+         const Quaternion& rotation, const Vec3f& scaleFactor, const Quaternion& scaleOrientation);
 
-    virtual ~RotateManipulator(void); 
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
+  friend class RotateManipulatorBase;
 
-    /*! \}                                                                 */
+  static void initMethod(void);
 
-	virtual NodePtr makeHandleGeo();    
-	virtual void    doMovement(TransformPtr t,
-							   Int32 coord,
-							   Real32 value,
-							   const Vec3f      &translation,
-							   const Quaternion &rotation,
-							   const Vec3f      &scaleFactor,
-							   const Quaternion &scaleOrientation );
+  // prohibit default functions (move to 'public' if you need one)
 
-    /*==========================  PRIVATE  ================================*/
-private:
-
-    friend class FieldContainer;
-    friend class RotateManipulatorBase;
-
-    static void initMethod(void);
-
-    // prohibit default functions (move to 'public' if you need one)
-
-    void operator =(const RotateManipulator &source);
+  void operator=(const RotateManipulator& source);
 };
 
-typedef RotateManipulator *RotateManipulatorP;
+typedef RotateManipulator* RotateManipulatorP;
 
 OSG_END_NAMESPACE
 
 #include <OSGRotateManipulatorBase.inl>
 #include <OSGRotateManipulator.inl>
 
-#define OSGROTATEMANIPULATOR_HEADER_CVSID "@(#)$Id: OSGRotateManipulator.h,v 1.1 2005/06/26 12:44:40 a-m-z Exp $"
+#define OSGROTATEMANIPULATOR_HEADER_CVSID                                                          \
+  "@(#)$Id: OSGRotateManipulator.h,v 1.1 2005/06/26 12:44:40 a-m-z Exp $"
 
 #endif /* _OSGROTATEMANIPULATOR_H_ */

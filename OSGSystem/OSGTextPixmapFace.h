@@ -40,9 +40,8 @@
 #define _OSGTEXTPIXMAPFACE_H_
 
 #ifdef _MSC_VER
-# pragma once
+#pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -57,13 +56,10 @@
 #include <map>
 #include <memory>
 
-
 OSG_BEGIN_NAMESPACE
-
 
 class TextPixmapGlyph;
 class TextLayoutResult;
-
 
 /**
  * Represents a pixmap face. A pixmap face allows to render texts into
@@ -108,101 +104,95 @@ class TextLayoutResult;
  *
  * @author Patrick D&auml;hne
  */
-class OSG_SYSTEMLIB_DLLMAPPING TextPixmapFace: public TextFace
-{
-    /*==========================  PUBLIC  =================================*/
-  public:
+class OSG_SYSTEMLIB_DLLMAPPING TextPixmapFace : public TextFace {
+  /*==========================  PUBLIC  =================================*/
+ public:
+  /**
+   * Returns the actual size of the face in pixels.
+   * @return The size in pixels.
+   */
+  inline UInt32 getSize() const;
 
-    /**
-     * Returns the actual size of the face in pixels.
-     * @return The size in pixels.
-     */
-    inline UInt32 getSize() const;
+  /**
+   * Returns information about a glyph.
+   * @param glyphIndex The index of the glyph. Use the layout method
+   * to get the glyph indices corresponding to a character string.
+   * @return A glyph object containing information about the glyph.
+   */
+  virtual const TextGlyph& getGlyph(TextGlyph::Index glyphIndex);
 
-    /**
-     * Returns information about a glyph.
-     * @param glyphIndex The index of the glyph. Use the layout method
-     * to get the glyph indices corresponding to a character string.
-     * @return A glyph object containing information about the glyph.
-     */
-    virtual const TextGlyph &getGlyph(TextGlyph::Index glyphIndex);
+  /**
+   * Returns information about a glyph.
+   * @param glyphIndex The index of the glyph. Use the layout method
+   * to get the glyph indices corresponding to a character string.
+   * @return A glyph object containing information about the glyph.
+   */
+  const TextPixmapGlyph& getPixmapGlyph(TextGlyph::Index glyphIndex);
 
-    /**
-     * Returns information about a glyph.
-     * @param glyphIndex The index of the glyph. Use the layout method
-     * to get the glyph indices corresponding to a character string.
-     * @return A glyph object containing information about the glyph.
-     */
-    const TextPixmapGlyph &getPixmapGlyph(TextGlyph::Index glyphIndex);
+  /**
+   * Creates a texture image with the result of a layout operation.
+   * The format of the texture image is GL_INTENSITY.
+   * @param layoutResult The result of a layout operation.
+   * @param offset Gets filled with the offset of the upper left
+   * corner of the image from the coordinate origin.
+   * @param border The number of clear pixels around the text
+   * @return The image filled with the text.
+   */
+  ImagePtr makeImage(const TextLayoutResult& layoutResult, Vec2f& offset, UInt32 border = 1);
 
-    /**
-     * Creates a texture image with the result of a layout operation.
-     * The format of the texture image is GL_INTENSITY.
-     * @param layoutResult The result of a layout operation.
-     * @param offset Gets filled with the offset of the upper left
-     * corner of the image from the coordinate origin.
-     * @param border The number of clear pixels around the text
-     * @return The image filled with the text.
-     */
-    ImagePtr makeImage(const TextLayoutResult &layoutResult, Vec2f &offset, UInt32 border = 1);
+  /**
+   * Tries to create a pixmap face.
+   * @param family The font family of the face (Arial, Courier etc.)
+   * @param style The style of the face (bold, italic etc.)
+   * @param size The size of the pixmap font in pixels.
+   * @return The pixmap face object or 0 in case of an error.
+   */
+  static TextPixmapFace* create(
+      const std::string& family, Style style = STYLE_PLAIN, UInt32 size = 32);
 
-    /**
-     * Tries to create a pixmap face.
-     * @param family The font family of the face (Arial, Courier etc.)
-     * @param style The style of the face (bold, italic etc.)
-     * @param size The size of the pixmap font in pixels.
-     * @return The pixmap face object or 0 in case of an error.
-     */
-    static TextPixmapFace *create(const std::string &family,
-                                  Style style = STYLE_PLAIN,
-                                  UInt32 size = 32);
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /** Creates a new %TextPixmapFace object. */
+  inline TextPixmapFace();
 
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /** Destroys the %TextPixmapFace object. */
+  virtual ~TextPixmapFace();
 
-    /** Creates a new %TextPixmapFace object. */
-    inline TextPixmapFace();
+  /** The size of the face in pixels */
+  UInt32 _size;
 
-    /** Destroys the %TextPixmapFace object. */
-    virtual ~TextPixmapFace();
+  /** Defines a map of glyphs */
+  typedef std::map<TextGlyph::Index, TextPixmapGlyph*> GlyphMap;
 
-    /** The size of the face in pixels */
-    UInt32 _size;
+  /** The map of glyphs */
+  GlyphMap _glyphMap;
 
-    /** Defines a map of glyphs */
-    typedef std::map<TextGlyph::Index, TextPixmapGlyph*> GlyphMap;
+  /**
+   * Creates a new Glyph object.
+   * This method has to be implemented by descendants of the %TextPixmapFace class.
+   * @param glyphIndex The index of the glyph.
+   * @return The glyph object or 0 when no glyph exists for the given
+   * glyph index.
+   */
+  virtual std::auto_ptr<TextPixmapGlyph> createGlyph(TextGlyph::Index glyphIndex) = 0;
 
-    /** The map of glyphs */
-    GlyphMap _glyphMap;
+  /** An empty glyph */
+  static TextPixmapGlyph _emptyGlyph;
 
-    /**
-     * Creates a new Glyph object.
-     * This method has to be implemented by descendants of the %TextPixmapFace class.
-     * @param glyphIndex The index of the glyph.
-     * @return The glyph object or 0 when no glyph exists for the given
-     * glyph index.
-     */
-    virtual std::auto_ptr<TextPixmapGlyph> createGlyph(TextGlyph::Index glyphIndex) = 0;
+  /*==========================  PRIVATE  ================================*/
+ private:
+  /** Copy constructor (not implemented!) */
+  TextPixmapFace(const TextPixmapFace&);
 
-    /** An empty glyph */
-    static TextPixmapGlyph _emptyGlyph;
-
-    /*==========================  PRIVATE  ================================*/
-  private:
-
-    /** Copy constructor (not implemented!) */
-    TextPixmapFace(const TextPixmapFace &);
-
-    /** Copy operator (not implemented!) */
-    const TextPixmapFace &operator=(const TextPixmapFace &);
+  /** Copy operator (not implemented!) */
+  const TextPixmapFace& operator=(const TextPixmapFace&);
 };
-
 
 OSG_END_NAMESPACE
 
-
 #include <OSGTextPixmapFace.inl>
 
-#define OSGTEXTPIXMAPFACE_HEADER_CVSID "@(#)$Id: OSGTextPixmapFace.h,v 1.2 2006/05/19 09:56:30 pdaehne Exp $"
+#define OSGTEXTPIXMAPFACE_HEADER_CVSID                                                             \
+  "@(#)$Id: OSGTextPixmapFace.h,v 1.2 2006/05/19 09:56:30 pdaehne Exp $"
 
 #endif /* _OSGTEXTPIXMAPFACE_H_ */

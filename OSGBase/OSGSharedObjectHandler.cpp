@@ -106,48 +106,41 @@ Char8 SharedObject::_szApplicationObjectName[] = "Application";
 
 /*------------- constructors & destructors --------------------------------*/
 
-SharedObject::SharedObject(const Char8 *szName) :
-	 Inherited(       ),
-    _szName   (       ),
-    _pHandle  (NULL   ),
-    _type     (Invalid)
-{
-    if(szName == NULL)
-    {
-        _szName.assign(_szApplicationObjectName);
+SharedObject::SharedObject(const Char8* szName)
+    : Inherited()
+    , _szName()
+    , _pHandle(NULL)
+    , _type(Invalid) {
+  if (szName == NULL) {
+    _szName.assign(_szApplicationObjectName);
 
-        _type = Application;
-    }
-    else
-    {
-        _szName.assign(szName);
+    _type = Application;
+  } else {
+    _szName.assign(szName);
 
-        _type = SharedLibrary;
-    }    
-    
-    FINFO(("construct SharedObject %s\n", _szName.c_str()));
+    _type = SharedLibrary;
+  }
+
+  FINFO(("construct SharedObject %s\n", _szName.c_str()));
 }
 
-SharedObject::~SharedObject(void)
-{
-    FINFO(("destroy SharedObject %s\n", _szName.c_str()));
+SharedObject::~SharedObject(void) {
+  FINFO(("destroy SharedObject %s\n", _szName.c_str()));
 }
 
-bool SharedObject::close(void)
-{
-    bool returnValue = false;
+bool SharedObject::close(void) {
+  bool returnValue = false;
 
-    if(_pHandle != NULL)
-    {
+  if (_pHandle != NULL) {
 #ifndef WIN32
-        returnValue = (dlclose(_pHandle) == 0);
+    returnValue = (dlclose(_pHandle) == 0);
 #else
-        returnValue = FreeLibrary(_pHandle);
+    returnValue = FreeLibrary(_pHandle);
 #endif
-        _pHandle    = NULL;
-    }
+    _pHandle = NULL;
+  }
 
-    return returnValue;
+  return returnValue;
 }
 
 /*-------------------------------------------------------------------------*\
@@ -156,107 +149,90 @@ bool SharedObject::close(void)
 
 /*------------------------------ access -----------------------------------*/
 
-bool SharedObject::open()
-{
-    const Char8 *libName = NULL;
+bool SharedObject::open() {
+  const Char8* libName = NULL;
 
-    if(_pHandle != NULL)
-    {
-        return true;
-    }
+  if (_pHandle != NULL) {
+    return true;
+  }
 
-    if(_type == SharedLibrary)
-    {
-        libName = _szName.c_str();
-    }
-    
+  if (_type == SharedLibrary) {
+    libName = _szName.c_str();
+  }
+
 #ifndef WIN32
 #ifdef OSG_DLOPEN_LAZY
-    _pHandle = dlopen(libName, RTLD_LAZY);
+  _pHandle = dlopen(libName, RTLD_LAZY);
 #else
-    _pHandle = dlopen(libName, RTLD_NOW);
+  _pHandle = dlopen(libName, RTLD_NOW);
 #endif
 
-    if(_pHandle == NULL)
-    {
-        FWARNING(("Could not open shared object : %s\n", dlerror()));
-    }
+  if (_pHandle == NULL) {
+    FWARNING(("Could not open shared object : %s\n", dlerror()));
+  }
 #else
 
-    if(libName == NULL)
-    {
-        Char8 szModuleName[1024];
+  if (libName == NULL) {
+    Char8 szModuleName[1024];
 
-        GetModuleFileName(NULL, szModuleName, 1024);
+    GetModuleFileName(NULL, szModuleName, 1024);
 
-        _pHandle = LoadLibrary(szModuleName);
-    }
-    else
-    {
-        _pHandle = LoadLibrary(libName);
-    }
+    _pHandle = LoadLibrary(szModuleName);
+  } else {
+    _pHandle = LoadLibrary(libName);
+  }
 #endif
 
-    return (_pHandle != NULL);
+  return (_pHandle != NULL);
 }
 
-AnonSymbolHandle SharedObject::getSymbol(const Char8 *szSymbolName)
-{
-    AnonSymbolHandle returnValue = NULL;
+AnonSymbolHandle SharedObject::getSymbol(const Char8* szSymbolName) {
+  AnonSymbolHandle returnValue = NULL;
 
-    if(isOpen() == false)
-    {
-        if(open() == false)
-        {
-            return returnValue;
-        }
+  if (isOpen() == false) {
+    if (open() == false) {
+      return returnValue;
     }
+  }
 
-    if(_pHandle != NULL && szSymbolName != NULL)
-    {
+  if (_pHandle != NULL && szSymbolName != NULL) {
 #ifndef WIN32
-        returnValue = dlsym(_pHandle, szSymbolName);
+    returnValue = dlsym(_pHandle, szSymbolName);
 #else
-        returnValue = GetProcAddress(_pHandle, szSymbolName);
+    returnValue = GetProcAddress(_pHandle, szSymbolName);
 #endif
-    }
+  }
 
 #ifndef WIN32
-    if(returnValue == NULL)
-    {
-        FWARNING(("could not get symbol %s : %s\n", szSymbolName, dlerror()));
-    }
+  if (returnValue == NULL) {
+    FWARNING(("could not get symbol %s : %s\n", szSymbolName, dlerror()));
+  }
 #else
 #endif
 
-    return returnValue;
+  return returnValue;
 }
 
-bool SharedObject::isOpen(void)
-{
-    return _pHandle != NULL;
+bool SharedObject::isOpen(void) {
+  return _pHandle != NULL;
 }
 
-bool SharedObject::reOpen(void)
-{
-    close();
-    
-    return open();
+bool SharedObject::reOpen(void) {
+  close();
+
+  return open();
 }
 
-const std::string &SharedObject::getName(void)
-{
-    return _szName;
+const std::string& SharedObject::getName(void) {
+  return _szName;
 }
 
-const Char8 *SharedObject::getCName(void)
-{
-    return _szName.c_str();
+const Char8* SharedObject::getCName(void) {
+  return _szName.c_str();
 }
 
-void SharedObject::dump(void)
-{
-    FINFO(("\tObject %s | %p\n", _szName.c_str(), _pHandle));
+void SharedObject::dump(void) {
+  FINFO(("\tObject %s | %p\n", _szName.c_str(), _pHandle));
 }
 
 /*---------------------------- properties ---------------------------------*/
@@ -266,10 +242,6 @@ void SharedObject::dump(void)
 /*-------------------------- assignment -----------------------------------*/
 
 /*-------------------------- comparison -----------------------------------*/
-
-
-
-
 
 //---------------------------------------------------------------------------
 //  Class
@@ -301,14 +273,12 @@ SharedObjectHandlerP SharedObjectHandler::_the = NULL;
  -  public                                                                 -
 \*-------------------------------------------------------------------------*/
 
-SharedObjectHandlerP SharedObjectHandler::the(void)
-{
-    if(_the == NULL)
-    {
-        _the = new SharedObjectHandler;
-    }
+SharedObjectHandlerP SharedObjectHandler::the(void) {
+  if (_the == NULL) {
+    _the = new SharedObjectHandler;
+  }
 
-    return _the;
+  return _the;
 }
 
 /***************************************************************************\
@@ -325,38 +295,34 @@ SharedObjectHandlerP SharedObjectHandler::the(void)
 
 /*------------- constructors & destructors --------------------------------*/
 
-SharedObjectHandler::SharedObjectHandler(void) :
-    _mSharedObjects(),
-    _vLoadedNames  ()
-{
-    FINFO(("create SharedObjectHandler\n"));
+SharedObjectHandler::SharedObjectHandler(void)
+    : _mSharedObjects()
+    , _vLoadedNames() {
+  FINFO(("create SharedObjectHandler\n"));
 }
 
-SharedObjectHandler::~SharedObjectHandler(void)
-{
-    FINFO(("destroy SharedObjectHandler\n"));
+SharedObjectHandler::~SharedObjectHandler(void) {
+  FINFO(("destroy SharedObjectHandler\n"));
 }
 
-void SharedObjectHandler::terminate(void)
-{
-    FINFO(("terminate SharedObjectHandler\n"));
+void SharedObjectHandler::terminate(void) {
+  FINFO(("terminate SharedObjectHandler\n"));
 
-    this->dump();
+  this->dump();
 
-    SharedObjectMapIt soIt  = _mSharedObjects.begin();
-    SharedObjectMapIt soEnd = _mSharedObjects.end  ();
+  SharedObjectMapIt soIt  = _mSharedObjects.begin();
+  SharedObjectMapIt soEnd = _mSharedObjects.end();
 
-    while(soIt != soEnd)
-    {
-        soIt->second->close();
+  while (soIt != soEnd) {
+    soIt->second->close();
 
-        soIt->second->subRef();
+    soIt->second->subRef();
 
-        ++soIt;
-    }
+    ++soIt;
+  }
 
-    _the = NULL;
-    delete this;
+  _the = NULL;
+  delete this;
 }
 
 /*-------------------------------------------------------------------------*\
@@ -365,27 +331,23 @@ void SharedObjectHandler::terminate(void)
 
 /*------------------------------ access -----------------------------------*/
 
-SharedObjectP SharedObjectHandler::getSharedObject(
-    const Char8 *szName)
-{
-    SharedObjectP returnValue = NULL;
+SharedObjectP SharedObjectHandler::getSharedObject(const Char8* szName) {
+  SharedObjectP returnValue = NULL;
 
-    returnValue = findSharedObject(szName);
+  returnValue = findSharedObject(szName);
 
-    if(returnValue == NULL)
-    {
-        returnValue = new SharedObject(szName);
+  if (returnValue == NULL) {
+    returnValue = new SharedObject(szName);
 
-        returnValue->open  ();
-        returnValue->addRef();
+    returnValue->open();
+    returnValue->addRef();
 
-        _mSharedObjects[returnValue->getName()] = returnValue;
+    _mSharedObjects[returnValue->getName()] = returnValue;
 
-        if(GlobalSystemState == Running)
-        {
-//            FactoryController::the()->initializePendingElements();
-        }
+    if (GlobalSystemState == Running) {
+      //            FactoryController::the()->initializePendingElements();
     }
+  }
 
 #if 0
     for(UInt32 i = 0; i < _vLoadedNames.size(); ++i)
@@ -394,130 +356,109 @@ SharedObjectP SharedObjectHandler::getSharedObject(
     }
 #endif
 
-    _vLoadedNames.clear();
+  _vLoadedNames.clear();
 
-    return returnValue;
+  return returnValue;
 }
 
-SharedObjectP SharedObjectHandler::getOSGSharedObject(
-    const Char8 *szName)
-{
-    SharedObjectP returnValue = NULL;
+SharedObjectP SharedObjectHandler::getOSGSharedObject(const Char8* szName) {
+  SharedObjectP returnValue = NULL;
 
-    std::string tmpString; 
+  std::string tmpString;
 
-#ifndef WIN32    
-    tmpString.append("lib");
-    tmpString.append(szName);
-    tmpString.append(".so");
+#ifndef WIN32
+  tmpString.append("lib");
+  tmpString.append(szName);
+  tmpString.append(".so");
 #else
-    tmpString.append(szName);
-    tmpString.append(".dll");
+  tmpString.append(szName);
+  tmpString.append(".dll");
 #endif
 
-    returnValue = getSharedObject(tmpString.c_str());
+  returnValue = getSharedObject(tmpString.c_str());
 
-    return returnValue;
+  return returnValue;
 }
 
-SharedObjectP SharedObjectHandler::findSharedObject(
-    const Char8 *szName) const
-{
-    SharedObjectMapConstIt  mapIt;
-    SharedObjectP           returnValue  = NULL;
-    std::string             szSearchName;
+SharedObjectP SharedObjectHandler::findSharedObject(const Char8* szName) const {
+  SharedObjectMapConstIt mapIt;
+  SharedObjectP          returnValue = NULL;
+  std::string            szSearchName;
 
-    if(szName != NULL)
-    {
-        szSearchName.assign(szName);
-    }
-    else
-    {
-        szSearchName.assign(SharedObject::_szApplicationObjectName);
-    }
+  if (szName != NULL) {
+    szSearchName.assign(szName);
+  } else {
+    szSearchName.assign(SharedObject::_szApplicationObjectName);
+  }
 
-    mapIt = _mSharedObjects.find(szSearchName);
+  mapIt = _mSharedObjects.find(szSearchName);
 
-    if(mapIt != _mSharedObjects.end())
-    {
-        returnValue = mapIt->second;
-    }
-    
-    return returnValue;
+  if (mapIt != _mSharedObjects.end()) {
+    returnValue = mapIt->second;
+  }
+
+  return returnValue;
 }
 
-void SharedObjectHandler::removeSharedObject(const Char8 *szName)
-{
-    SharedObjectMapIt  mapIt;
-    std::string        szSearchName;
+void SharedObjectHandler::removeSharedObject(const Char8* szName) {
+  SharedObjectMapIt mapIt;
+  std::string       szSearchName;
 
-    if(szName != NULL)
-    {
-        szSearchName.assign(szName);
-    }
-    else
-    {
-        szSearchName.assign(SharedObject::_szApplicationObjectName);
-    }
+  if (szName != NULL) {
+    szSearchName.assign(szName);
+  } else {
+    szSearchName.assign(SharedObject::_szApplicationObjectName);
+  }
 
-    mapIt = _mSharedObjects.find(szSearchName);
+  mapIt = _mSharedObjects.find(szSearchName);
 
-    _mSharedObjects.erase(mapIt);
+  _mSharedObjects.erase(mapIt);
 }
 
-void SharedObjectHandler::removeSharedObject(SharedObjectP pObject)
-{
-    if(pObject != NULL)
-    {
-        removeSharedObject(pObject->getCName());
-    }
+void SharedObjectHandler::removeSharedObject(SharedObjectP pObject) {
+  if (pObject != NULL) {
+    removeSharedObject(pObject->getCName());
+  }
 }
 
-void SharedObjectHandler::registerLoadedObject(const Char8 *szName)
-{
-    std::string tmpString;
+void SharedObjectHandler::registerLoadedObject(const Char8* szName) {
+  std::string tmpString;
 
-#ifndef WIN32    
-    tmpString.append("lib");
-    tmpString.append(szName);
-    tmpString.append(".so");
+#ifndef WIN32
+  tmpString.append("lib");
+  tmpString.append(szName);
+  tmpString.append(".so");
 #else
-    tmpString.append(szName);
-    tmpString.append(".dll");
+  tmpString.append(szName);
+  tmpString.append(".dll");
 #endif
 
-    _vLoadedNames.push_back(tmpString);
+  _vLoadedNames.push_back(tmpString);
 }
 
-bool SharedObjectHandler::initialize(void)
-{
-    SharedObjectP pAppHandle = getSharedObject(NULL);
+bool SharedObjectHandler::initialize(void) {
+  SharedObjectP pAppHandle = getSharedObject(NULL);
 
-    for(UInt32 i = 0; i < _vLoadedNames.size(); ++i)
-    {
-        FINFO(("Preloaded %s %p\n", _vLoadedNames[i].c_str(), pAppHandle));
+  for (UInt32 i = 0; i < _vLoadedNames.size(); ++i) {
+    FINFO(("Preloaded %s %p\n", _vLoadedNames[i].c_str(), pAppHandle));
 
-		_mSharedObjects[_vLoadedNames[i]] = pAppHandle;
-        pAppHandle->addRef();
-    }
+    _mSharedObjects[_vLoadedNames[i]] = pAppHandle;
+    pAppHandle->addRef();
+  }
 
-    _vLoadedNames.clear();
+  _vLoadedNames.clear();
 
-    return true;
+  return true;
 }
 
-void SharedObjectHandler::dump(void)
-{
-    SharedObjectMapIt soIt  = _mSharedObjects.begin();
-    SharedObjectMapIt soEnd = _mSharedObjects.end  ();
+void SharedObjectHandler::dump(void) {
+  SharedObjectMapIt soIt  = _mSharedObjects.begin();
+  SharedObjectMapIt soEnd = _mSharedObjects.end();
 
-    while(soIt != soEnd)
-    {
-        FINFO(("SO : %s | %p\n", soIt->first.c_str(), soIt->second));
+  while (soIt != soEnd) {
+    FINFO(("SO : %s | %p\n", soIt->first.c_str(), soIt->second));
 
-        soIt->second->dump();
-        ++soIt;
-    }
+    soIt->second->dump();
+    ++soIt;
+  }
 }
-
-

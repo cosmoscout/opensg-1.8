@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGSHADOWMAPVIEWPORTBASE_H_
 #define _OSGSHADOWMAPVIEWPORTBASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -67,16 +65,16 @@
 
 #include <OSGStereoBufferViewport.h> // Parent
 
-#include <OSGReal32Fields.h> // OffBias type
-#include <OSGReal32Fields.h> // OffFactor type
-#include <OSGNodeFields.h> // SceneRoot type
+#include <OSGReal32Fields.h>  // OffBias type
+#include <OSGReal32Fields.h>  // OffFactor type
+#include <OSGNodeFields.h>    // SceneRoot type
 #include <OSGColor4fFields.h> // ShadowColor type
-#include <OSGUInt32Fields.h> // MapSize type
-#include <OSGNodeFields.h> // LightNodes type
-#include <OSGNodeFields.h> // ExcludeNodes type
-#include <OSGBoolFields.h> // ShadowOn type
-#include <OSGBoolFields.h> // MapAutoUpdate type
-#include <OSGUInt32Fields.h> // ShadowMapTextureIndex type
+#include <OSGUInt32Fields.h>  // MapSize type
+#include <OSGNodeFields.h>    // LightNodes type
+#include <OSGNodeFields.h>    // ExcludeNodes type
+#include <OSGBoolFields.h>    // ShadowOn type
+#include <OSGBoolFields.h>    // MapAutoUpdate type
+#include <OSGUInt32Fields.h>  // ShadowMapTextureIndex type
 
 #include <OSGShadowMapViewportFields.h>
 
@@ -87,244 +85,224 @@ class BinaryDataHandler;
 
 //! \brief ShadowMapViewport Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING ShadowMapViewportBase : public StereoBufferViewport
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING ShadowMapViewportBase : public StereoBufferViewport {
+ private:
+  typedef StereoBufferViewport Inherited;
 
-    typedef StereoBufferViewport    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef ShadowMapViewportPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    OffBiasFieldId               = Inherited::NextFieldId,
+    OffFactorFieldId             = OffBiasFieldId + 1,
+    SceneRootFieldId             = OffFactorFieldId + 1,
+    ShadowColorFieldId           = SceneRootFieldId + 1,
+    MapSizeFieldId               = ShadowColorFieldId + 1,
+    LightNodesFieldId            = MapSizeFieldId + 1,
+    ExcludeNodesFieldId          = LightNodesFieldId + 1,
+    ShadowOnFieldId              = ExcludeNodesFieldId + 1,
+    MapAutoUpdateFieldId         = ShadowOnFieldId + 1,
+    ShadowMapTextureIndexFieldId = MapAutoUpdateFieldId + 1,
+    NextFieldId                  = ShadowMapTextureIndexFieldId + 1
+  };
 
-    typedef ShadowMapViewportPtr  Ptr;
+  static const OSG::BitVector OffBiasFieldMask;
+  static const OSG::BitVector OffFactorFieldMask;
+  static const OSG::BitVector SceneRootFieldMask;
+  static const OSG::BitVector ShadowColorFieldMask;
+  static const OSG::BitVector MapSizeFieldMask;
+  static const OSG::BitVector LightNodesFieldMask;
+  static const OSG::BitVector ExcludeNodesFieldMask;
+  static const OSG::BitVector ShadowOnFieldMask;
+  static const OSG::BitVector MapAutoUpdateFieldMask;
+  static const OSG::BitVector ShadowMapTextureIndexFieldMask;
 
-    enum
-    {
-        OffBiasFieldId               = Inherited::NextFieldId,
-        OffFactorFieldId             = OffBiasFieldId               + 1,
-        SceneRootFieldId             = OffFactorFieldId             + 1,
-        ShadowColorFieldId           = SceneRootFieldId             + 1,
-        MapSizeFieldId               = ShadowColorFieldId           + 1,
-        LightNodesFieldId            = MapSizeFieldId               + 1,
-        ExcludeNodesFieldId          = LightNodesFieldId            + 1,
-        ShadowOnFieldId              = ExcludeNodesFieldId          + 1,
-        MapAutoUpdateFieldId         = ShadowOnFieldId              + 1,
-        ShadowMapTextureIndexFieldId = MapAutoUpdateFieldId         + 1,
-        NextFieldId                  = ShadowMapTextureIndexFieldId + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector OffBiasFieldMask;
-    static const OSG::BitVector OffFactorFieldMask;
-    static const OSG::BitVector SceneRootFieldMask;
-    static const OSG::BitVector ShadowColorFieldMask;
-    static const OSG::BitVector MapSizeFieldMask;
-    static const OSG::BitVector LightNodesFieldMask;
-    static const OSG::BitVector ExcludeNodesFieldMask;
-    static const OSG::BitVector ShadowOnFieldMask;
-    static const OSG::BitVector MapAutoUpdateFieldMask;
-    static const OSG::BitVector ShadowMapTextureIndexFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFReal32*  getSFOffBias(void);
+  SFReal32*  getSFOffFactor(void);
+  SFNodePtr* getSFSceneRoot(void);
+  SFColor4f* getSFShadowColor(void);
+  SFUInt32*  getSFMapSize(void);
+  MFNodePtr* getMFLightNodes(void);
+  MFNodePtr* getMFExcludeNodes(void);
+  SFBool*    getSFShadowOn(void);
+  SFBool*    getSFMapAutoUpdate(void);
+  SFUInt32*  getSFShadowMapTextureIndex(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  Real32&          getOffBias(void);
+  const Real32&    getOffBias(void) const;
+  Real32&          getOffFactor(void);
+  const Real32&    getOffFactor(void) const;
+  NodePtr&         getSceneRoot(void);
+  const NodePtr&   getSceneRoot(void) const;
+  Color4f&         getShadowColor(void);
+  const Color4f&   getShadowColor(void) const;
+  UInt32&          getMapSize(void);
+  const UInt32&    getMapSize(void) const;
+  bool&            getShadowOn(void);
+  const bool&      getShadowOn(void) const;
+  bool&            getMapAutoUpdate(void);
+  const bool&      getMapAutoUpdate(void) const;
+  UInt32&          getShadowMapTextureIndex(void);
+  const UInt32&    getShadowMapTextureIndex(void) const;
+  NodePtr&         getLightNodes(const UInt32 index);
+  MFNodePtr&       getLightNodes(void);
+  const MFNodePtr& getLightNodes(void) const;
+  NodePtr&         getExcludeNodes(const UInt32 index);
+  MFNodePtr&       getExcludeNodes(void);
+  const MFNodePtr& getExcludeNodes(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFReal32            *getSFOffBias        (void);
-           SFReal32            *getSFOffFactor      (void);
-           SFNodePtr           *getSFSceneRoot      (void);
-           SFColor4f           *getSFShadowColor    (void);
-           SFUInt32            *getSFMapSize        (void);
-           MFNodePtr           *getMFLightNodes     (void);
-           MFNodePtr           *getMFExcludeNodes   (void);
-           SFBool              *getSFShadowOn       (void);
-           SFBool              *getSFMapAutoUpdate  (void);
-           SFUInt32            *getSFShadowMapTextureIndex(void);
+  void setOffBias(const Real32& value);
+  void setOffFactor(const Real32& value);
+  void setSceneRoot(const NodePtr& value);
+  void setShadowColor(const Color4f& value);
+  void setMapSize(const UInt32& value);
+  void setShadowOn(const bool& value);
+  void setMapAutoUpdate(const bool& value);
+  void setShadowMapTextureIndex(const UInt32& value);
 
-           Real32              &getOffBias        (void);
-     const Real32              &getOffBias        (void) const;
-           Real32              &getOffFactor      (void);
-     const Real32              &getOffFactor      (void) const;
-           NodePtr             &getSceneRoot      (void);
-     const NodePtr             &getSceneRoot      (void) const;
-           Color4f             &getShadowColor    (void);
-     const Color4f             &getShadowColor    (void) const;
-           UInt32              &getMapSize        (void);
-     const UInt32              &getMapSize        (void) const;
-           bool                &getShadowOn       (void);
-     const bool                &getShadowOn       (void) const;
-           bool                &getMapAutoUpdate  (void);
-     const bool                &getMapAutoUpdate  (void) const;
-           UInt32              &getShadowMapTextureIndex(void);
-     const UInt32              &getShadowMapTextureIndex(void) const;
-           NodePtr             &getLightNodes     (const UInt32 index);
-           MFNodePtr           &getLightNodes     (void);
-     const MFNodePtr           &getLightNodes     (void) const;
-           NodePtr             &getExcludeNodes   (const UInt32 index);
-           MFNodePtr           &getExcludeNodes   (void);
-     const MFNodePtr           &getExcludeNodes   (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setOffBias        ( const Real32 &value );
-     void setOffFactor      ( const Real32 &value );
-     void setSceneRoot      ( const NodePtr &value );
-     void setShadowColor    ( const Color4f &value );
-     void setMapSize        ( const UInt32 &value );
-     void setShadowOn       ( const bool &value );
-     void setMapAutoUpdate  ( const bool &value );
-     void setShadowMapTextureIndex( const UInt32 &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static ShadowMapViewportPtr create(void);
+  static ShadowMapViewportPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  ShadowMapViewportPtr      create          (void); 
-    static  ShadowMapViewportPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFReal32  _sfOffBias;
+  SFReal32  _sfOffFactor;
+  SFNodePtr _sfSceneRoot;
+  SFColor4f _sfShadowColor;
+  SFUInt32  _sfMapSize;
+  MFNodePtr _mfLightNodes;
+  MFNodePtr _mfExcludeNodes;
+  SFBool    _sfShadowOn;
+  SFBool    _sfMapAutoUpdate;
+  SFUInt32  _sfShadowMapTextureIndex;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  ShadowMapViewportBase(void);
+  ShadowMapViewportBase(const ShadowMapViewportBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~ShadowMapViewportBase(void);
 
-    SFReal32            _sfOffBias;
-    SFReal32            _sfOffFactor;
-    SFNodePtr           _sfSceneRoot;
-    SFColor4f           _sfShadowColor;
-    SFUInt32            _sfMapSize;
-    MFNodePtr           _mfLightNodes;
-    MFNodePtr           _mfExcludeNodes;
-    SFBool              _sfShadowOn;
-    SFBool              _sfMapAutoUpdate;
-    SFUInt32            _sfShadowMapTextureIndex;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    ShadowMapViewportBase(void);
-    ShadowMapViewportBase(const ShadowMapViewportBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~ShadowMapViewportBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      ShadowMapViewportBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(ShadowMapViewportBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      ShadowMapViewportBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      ShadowMapViewportBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const ShadowMapViewportBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const ShadowMapViewportBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef ShadowMapViewportBase* ShadowMapViewportBaseP;
 
-typedef ShadowMapViewportBase *ShadowMapViewportBaseP;
-
-typedef osgIF<ShadowMapViewportBase::isNodeCore,
-              CoredNodePtr<ShadowMapViewport>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet ShadowMapViewportNodePtr;
+typedef osgIF<ShadowMapViewportBase::isNodeCore, CoredNodePtr<ShadowMapViewport>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet
+    ShadowMapViewportNodePtr;
 
 typedef RefPtr<ShadowMapViewportPtr> ShadowMapViewportRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGSHADOWMAPVIEWPORTBASE_HEADER_CVSID "@(#)$Id: OSGShadowMapViewportBase.h,v 1.13 2006/07/27 13:43:08 a-m-z Exp $"
+#define OSGSHADOWMAPVIEWPORTBASE_HEADER_CVSID                                                      \
+  "@(#)$Id: OSGShadowMapViewportBase.h,v 1.13 2006/07/27 13:43:08 a-m-z Exp $"
 
 #endif /* _OSGSHADOWMAPVIEWPORTBASE_H_ */

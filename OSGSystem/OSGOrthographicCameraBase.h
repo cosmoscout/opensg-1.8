@@ -50,13 +50,11 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #ifndef _OSGORTHOGRAPHICCAMERABASE_H_
 #define _OSGORTHOGRAPHICCAMERABASE_H_
 #ifdef __sgi
 #pragma once
 #endif
-
 
 #include <OSGConfig.h>
 #include <OSGSystemDef.h>
@@ -79,188 +77,168 @@ class BinaryDataHandler;
 
 //! \brief OrthographicCamera Base Class.
 
-class OSG_SYSTEMLIB_DLLMAPPING OrthographicCameraBase : public Camera
-{
-  private:
+class OSG_SYSTEMLIB_DLLMAPPING OrthographicCameraBase : public Camera {
+ private:
+  typedef Camera Inherited;
 
-    typedef Camera    Inherited;
+  /*==========================  PUBLIC  =================================*/
+ public:
+  typedef OrthographicCameraPtr Ptr;
 
-    /*==========================  PUBLIC  =================================*/
-  public:
+  enum {
+    VerticalSizeFieldId = Inherited::NextFieldId,
+    AspectFieldId       = VerticalSizeFieldId + 1,
+    NextFieldId         = AspectFieldId + 1
+  };
 
-    typedef OrthographicCameraPtr  Ptr;
+  static const OSG::BitVector VerticalSizeFieldMask;
+  static const OSG::BitVector AspectFieldMask;
 
-    enum
-    {
-        VerticalSizeFieldId = Inherited::NextFieldId,
-        AspectFieldId       = VerticalSizeFieldId + 1,
-        NextFieldId         = AspectFieldId       + 1
-    };
+  static const OSG::BitVector MTInfluenceMask;
 
-    static const OSG::BitVector VerticalSizeFieldMask;
-    static const OSG::BitVector AspectFieldMask;
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Class Get                                 */
+  /*! \{                                                                 */
 
+  static FieldContainerType& getClassType(void);
+  static UInt32              getClassTypeId(void);
 
-    static const OSG::BitVector MTInfluenceMask;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                FieldContainer Get                            */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Class Get                                 */
-    /*! \{                                                                 */
+  virtual FieldContainerType&       getType(void);
+  virtual const FieldContainerType& getType(void) const;
 
-    static        FieldContainerType &getClassType    (void); 
-    static        UInt32              getClassTypeId  (void); 
+  virtual UInt32 getContainerSize(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                FieldContainer Get                            */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Get                                 */
+  /*! \{                                                                 */
 
-    virtual       FieldContainerType &getType  (void); 
-    virtual const FieldContainerType &getType  (void) const; 
+  SFReal32* getSFVerticalSize(void);
+  SFReal32* getSFAspect(void);
 
-    virtual       UInt32              getContainerSize(void) const;
+  Real32&       getVerticalSize(void);
+  const Real32& getVerticalSize(void) const;
+  Real32&       getAspect(void);
+  const Real32& getAspect(void) const;
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                    Field Set                                 */
+  /*! \{                                                                 */
 
-           SFReal32            *getSFVerticalSize   (void);
-           SFReal32            *getSFAspect         (void);
+  void setVerticalSize(const Real32& value);
+  void setAspect(const Real32& value);
 
-           Real32              &getVerticalSize   (void);
-     const Real32              &getVerticalSize   (void) const;
-           Real32              &getAspect         (void);
-     const Real32              &getAspect         (void) const;
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Binary Access                              */
+  /*! \{                                                                 */
 
-     void setVerticalSize   ( const Real32 &value );
-     void setAspect         ( const Real32 &value );
+  virtual UInt32 getBinSize(const BitVector& whichField);
+  virtual void   copyToBin(BinaryDataHandler& pMem, const BitVector& whichField);
+  virtual void   copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField);
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Construction                               */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Binary Access                              */
-    /*! \{                                                                 */
+  static OrthographicCameraPtr create(void);
+  static OrthographicCameraPtr createEmpty(void);
 
-    virtual UInt32 getBinSize (const BitVector         &whichField);
-    virtual void   copyToBin  (      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
-    virtual void   copyFromBin(      BinaryDataHandler &pMem,
-                               const BitVector         &whichField);
+  /*! \}                                                                 */
 
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Copy                                   */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Construction                               */
-    /*! \{                                                                 */
+  virtual FieldContainerPtr shallowCopy(void) const;
 
-    static  OrthographicCameraPtr      create          (void); 
-    static  OrthographicCameraPtr      createEmpty     (void); 
+  /*! \}                                                                 */
+  /*=========================  PROTECTED  ===============================*/
+ protected:
+  /*---------------------------------------------------------------------*/
+  /*! \name                      Fields                                  */
+  /*! \{                                                                 */
 
-    /*! \}                                                                 */
+  SFReal32 _sfVerticalSize;
+  SFReal32 _sfAspect;
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Copy                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Constructors                               */
+  /*! \{                                                                 */
 
-    virtual FieldContainerPtr     shallowCopy     (void) const; 
+  OrthographicCameraBase(void);
+  OrthographicCameraBase(const OrthographicCameraBase& source);
 
-    /*! \}                                                                 */
-    /*=========================  PROTECTED  ===============================*/
-  protected:
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                   Destructors                                */
+  /*! \{                                                                 */
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
+  virtual ~OrthographicCameraBase(void);
 
-    SFReal32            _sfVerticalSize;
-    SFReal32            _sfAspect;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Constructors                               */
-    /*! \{                                                                 */
-
-    OrthographicCameraBase(void);
-    OrthographicCameraBase(const OrthographicCameraBase &source);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Destructors                                */
-    /*! \{                                                                 */
-
-    virtual ~OrthographicCameraBase(void); 
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                       Sync                                   */
-    /*! \{                                                                 */
+  /*! \}                                                                 */
+  /*---------------------------------------------------------------------*/
+  /*! \name                       Sync                                   */
+  /*! \{                                                                 */
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-    void executeSyncImpl(      OrthographicCameraBase *pOther,
-                         const BitVector         &whichField);
+  void executeSyncImpl(OrthographicCameraBase* pOther, const BitVector& whichField);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField);
+  virtual void executeSync(FieldContainer& other, const BitVector& whichField);
 #else
-    void executeSyncImpl(      OrthographicCameraBase *pOther,
-                         const BitVector         &whichField,
-                         const SyncInfo          &sInfo     );
+  void executeSyncImpl(
+      OrthographicCameraBase* pOther, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void   executeSync(      FieldContainer    &other,
-                               const BitVector         &whichField,
-                               const SyncInfo          &sInfo);
+  virtual void executeSync(
+      FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo);
 
-    virtual void execBeginEdit     (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  virtual void execBeginEdit(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-            void execBeginEditImpl (const BitVector &whichField,
-                                          UInt32     uiAspect,
-                                          UInt32     uiContainerSize);
+  void execBeginEditImpl(const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize);
 
-    virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
+  virtual void onDestroyAspect(UInt32 uiId, UInt32 uiAspect);
 #endif
 
-    /*! \}                                                                 */
-    /*==========================  PRIVATE  ================================*/
-  private:
+  /*! \}                                                                 */
+  /*==========================  PRIVATE  ================================*/
+ private:
+  friend class FieldContainer;
 
-    friend class FieldContainer;
+  static FieldDescription*  _desc[];
+  static FieldContainerType _type;
 
-    static FieldDescription   *_desc[];
-    static FieldContainerType  _type;
-
-
-    // prohibit default functions (move to 'public' if you need one)
-    void operator =(const OrthographicCameraBase &source);
+  // prohibit default functions (move to 'public' if you need one)
+  void operator=(const OrthographicCameraBase& source);
 };
 
 //---------------------------------------------------------------------------
 //   Exported Types
 //---------------------------------------------------------------------------
 
+typedef OrthographicCameraBase* OrthographicCameraBaseP;
 
-typedef OrthographicCameraBase *OrthographicCameraBaseP;
-
-typedef osgIF<OrthographicCameraBase::isNodeCore,
-              CoredNodePtr<OrthographicCamera>,
-              FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC
-              >::_IRet OrthographicCameraNodePtr;
+typedef osgIF<OrthographicCameraBase::isNodeCore, CoredNodePtr<OrthographicCamera>,
+    FieldContainer::attempt_to_create_CoredNodePtr_on_non_NodeCore_FC>::_IRet
+    OrthographicCameraNodePtr;
 
 typedef RefPtr<OrthographicCameraPtr> OrthographicCameraRefPtr;
 
 OSG_END_NAMESPACE
 
-#define OSGORTHOGRAPHICCAMERABASE_HEADER_CVSID "@(#)$Id: OSGOrthographicCameraBase.h,v 1.2 2006/02/20 16:54:30 dirk Exp $"
+#define OSGORTHOGRAPHICCAMERABASE_HEADER_CVSID                                                     \
+  "@(#)$Id: OSGOrthographicCameraBase.h,v 1.2 2006/02/20 16:54:30 dirk Exp $"
 
 #endif /* _OSGORTHOGRAPHICCAMERABASE_H_ */

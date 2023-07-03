@@ -50,7 +50,6 @@
  *****************************************************************************
 \*****************************************************************************/
 
-
 #define OSG_COMPILESLICESINST
 
 #include <stdlib.h>
@@ -61,19 +60,16 @@
 #include "OSGSlicesBase.h"
 #include "OSGSlices.h"
 
-
 OSG_USING_NAMESPACE
 
-const OSG::BitVector  SlicesBase::SizeFieldMask = 
+const OSG::BitVector SlicesBase::SizeFieldMask =
     (TypeTraits<BitVector>::One << SlicesBase::SizeFieldId);
 
-const OSG::BitVector  SlicesBase::SliceDistanceFieldMask = 
+const OSG::BitVector SlicesBase::SliceDistanceFieldMask =
     (TypeTraits<BitVector>::One << SlicesBase::SliceDistanceFieldId);
 
-const OSG::BitVector SlicesBase::MTInfluenceMask = 
-    (Inherited::MTInfluenceMask) | 
-    (static_cast<BitVector>(0x0) << Inherited::NextFieldId); 
-
+const OSG::BitVector SlicesBase::MTInfluenceMask =
+    (Inherited::MTInfluenceMask) | (static_cast<BitVector>(0x0) << Inherited::NextFieldId);
 
 // Field descriptions
 
@@ -81,220 +77,159 @@ const OSG::BitVector SlicesBase::MTInfluenceMask =
     terrain size in local coords
 */
 /*! \var Real32          SlicesBase::_sfSliceDistance
-    
+
 */
 
 //! Slices description
 
-FieldDescription *SlicesBase::_desc[] = 
-{
-    new FieldDescription(SFVec3f::getClassType(), 
-                     "size", 
-                     SizeFieldId, SizeFieldMask,
-                     false,
-                     (FieldAccessMethod) &SlicesBase::getSFSize),
-    new FieldDescription(SFReal32::getClassType(), 
-                     "sliceDistance", 
-                     SliceDistanceFieldId, SliceDistanceFieldMask,
-                     false,
-                     (FieldAccessMethod) &SlicesBase::getSFSliceDistance)
-};
+FieldDescription* SlicesBase::_desc[] = {
+    new FieldDescription(SFVec3f::getClassType(), "size", SizeFieldId, SizeFieldMask, false,
+        (FieldAccessMethod)&SlicesBase::getSFSize),
+    new FieldDescription(SFReal32::getClassType(), "sliceDistance", SliceDistanceFieldId,
+        SliceDistanceFieldMask, false, (FieldAccessMethod)&SlicesBase::getSFSliceDistance)};
 
+FieldContainerType SlicesBase::_type("Slices", "MaterialDrawable", NULL,
+    (PrototypeCreateF)&SlicesBase::createEmpty, Slices::initMethod, _desc, sizeof(_desc));
 
-FieldContainerType SlicesBase::_type(
-    "Slices",
-    "MaterialDrawable",
-    NULL,
-    (PrototypeCreateF) &SlicesBase::createEmpty,
-    Slices::initMethod,
-    _desc,
-    sizeof(_desc));
-
-//OSG_FIELD_CONTAINER_DEF(SlicesBase, SlicesPtr)
+// OSG_FIELD_CONTAINER_DEF(SlicesBase, SlicesPtr)
 
 /*------------------------------ get -----------------------------------*/
 
-FieldContainerType &SlicesBase::getType(void) 
-{
-    return _type; 
-} 
-
-const FieldContainerType &SlicesBase::getType(void) const 
-{
-    return _type;
-} 
-
-
-FieldContainerPtr SlicesBase::shallowCopy(void) const 
-{ 
-    SlicesPtr returnValue; 
-
-    newPtr(returnValue, dynamic_cast<const Slices *>(this)); 
-
-    return returnValue; 
+FieldContainerType& SlicesBase::getType(void) {
+  return _type;
 }
 
-UInt32 SlicesBase::getContainerSize(void) const 
-{ 
-    return sizeof(Slices); 
+const FieldContainerType& SlicesBase::getType(void) const {
+  return _type;
 }
 
+FieldContainerPtr SlicesBase::shallowCopy(void) const {
+  SlicesPtr returnValue;
+
+  newPtr(returnValue, dynamic_cast<const Slices*>(this));
+
+  return returnValue;
+}
+
+UInt32 SlicesBase::getContainerSize(void) const {
+  return sizeof(Slices);
+}
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void SlicesBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField)
-{
-    this->executeSyncImpl((SlicesBase *) &other, whichField);
+void SlicesBase::executeSync(FieldContainer& other, const BitVector& whichField) {
+  this->executeSyncImpl((SlicesBase*)&other, whichField);
 }
 #else
-void SlicesBase::executeSync(      FieldContainer &other,
-                                    const BitVector      &whichField,                                    const SyncInfo       &sInfo     )
-{
-    this->executeSyncImpl((SlicesBase *) &other, whichField, sInfo);
+void SlicesBase::executeSync(
+    FieldContainer& other, const BitVector& whichField, const SyncInfo& sInfo) {
+  this->executeSyncImpl((SlicesBase*)&other, whichField, sInfo);
 }
-void SlicesBase::execBeginEdit(const BitVector &whichField, 
-                                            UInt32     uiAspect,
-                                            UInt32     uiContainerSize) 
-{
-    this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
+void SlicesBase::execBeginEdit(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  this->execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 
-void SlicesBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect)
-{
-    Inherited::onDestroyAspect(uiId, uiAspect);
-
+void SlicesBase::onDestroyAspect(UInt32 uiId, UInt32 uiAspect) {
+  Inherited::onDestroyAspect(uiId, uiAspect);
 }
 #endif
 
 /*------------------------- constructors ----------------------------------*/
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (disable : 383)
+#pragma warning(disable : 383)
 #endif
 
-SlicesBase::SlicesBase(void) :
-    _sfSize                   (Vec3f(1, 1, 1)), 
-    _sfSliceDistance          (Real32(100)), 
-    Inherited() 
-{
+SlicesBase::SlicesBase(void)
+    : _sfSize(Vec3f(1, 1, 1))
+    , _sfSliceDistance(Real32(100))
+    , Inherited() {
 }
 
 #ifdef OSG_WIN32_ICL
-#pragma warning (default : 383)
+#pragma warning(default : 383)
 #endif
 
-SlicesBase::SlicesBase(const SlicesBase &source) :
-    _sfSize                   (source._sfSize                   ), 
-    _sfSliceDistance          (source._sfSliceDistance          ), 
-    Inherited                 (source)
-{
+SlicesBase::SlicesBase(const SlicesBase& source)
+    : _sfSize(source._sfSize)
+    , _sfSliceDistance(source._sfSliceDistance)
+    , Inherited(source) {
 }
 
 /*-------------------------- destructors ----------------------------------*/
 
-SlicesBase::~SlicesBase(void)
-{
+SlicesBase::~SlicesBase(void) {
 }
 
 /*------------------------------ access -----------------------------------*/
 
-UInt32 SlicesBase::getBinSize(const BitVector &whichField)
-{
-    UInt32 returnValue = Inherited::getBinSize(whichField);
+UInt32 SlicesBase::getBinSize(const BitVector& whichField) {
+  UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (SizeFieldMask & whichField))
-    {
-        returnValue += _sfSize.getBinSize();
-    }
+  if (FieldBits::NoField != (SizeFieldMask & whichField)) {
+    returnValue += _sfSize.getBinSize();
+  }
 
-    if(FieldBits::NoField != (SliceDistanceFieldMask & whichField))
-    {
-        returnValue += _sfSliceDistance.getBinSize();
-    }
+  if (FieldBits::NoField != (SliceDistanceFieldMask & whichField)) {
+    returnValue += _sfSliceDistance.getBinSize();
+  }
 
-
-    return returnValue;
+  return returnValue;
 }
 
-void SlicesBase::copyToBin(      BinaryDataHandler &pMem,
-                                  const BitVector         &whichField)
-{
-    Inherited::copyToBin(pMem, whichField);
+void SlicesBase::copyToBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (SizeFieldMask & whichField))
-    {
-        _sfSize.copyToBin(pMem);
-    }
+  if (FieldBits::NoField != (SizeFieldMask & whichField)) {
+    _sfSize.copyToBin(pMem);
+  }
 
-    if(FieldBits::NoField != (SliceDistanceFieldMask & whichField))
-    {
-        _sfSliceDistance.copyToBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (SliceDistanceFieldMask & whichField)) {
+    _sfSliceDistance.copyToBin(pMem);
+  }
 }
 
-void SlicesBase::copyFromBin(      BinaryDataHandler &pMem,
-                                    const BitVector    &whichField)
-{
-    Inherited::copyFromBin(pMem, whichField);
+void SlicesBase::copyFromBin(BinaryDataHandler& pMem, const BitVector& whichField) {
+  Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (SizeFieldMask & whichField))
-    {
-        _sfSize.copyFromBin(pMem);
-    }
+  if (FieldBits::NoField != (SizeFieldMask & whichField)) {
+    _sfSize.copyFromBin(pMem);
+  }
 
-    if(FieldBits::NoField != (SliceDistanceFieldMask & whichField))
-    {
-        _sfSliceDistance.copyFromBin(pMem);
-    }
-
-
+  if (FieldBits::NoField != (SliceDistanceFieldMask & whichField)) {
+    _sfSliceDistance.copyFromBin(pMem);
+  }
 }
 
 #if !defined(OSG_FIXED_MFIELDSYNC)
-void SlicesBase::executeSyncImpl(      SlicesBase *pOther,
-                                        const BitVector         &whichField)
-{
+void SlicesBase::executeSyncImpl(SlicesBase* pOther, const BitVector& whichField) {
 
-    Inherited::executeSyncImpl(pOther, whichField);
+  Inherited::executeSyncImpl(pOther, whichField);
 
-    if(FieldBits::NoField != (SizeFieldMask & whichField))
-        _sfSize.syncWith(pOther->_sfSize);
+  if (FieldBits::NoField != (SizeFieldMask & whichField))
+    _sfSize.syncWith(pOther->_sfSize);
 
-    if(FieldBits::NoField != (SliceDistanceFieldMask & whichField))
-        _sfSliceDistance.syncWith(pOther->_sfSliceDistance);
-
-
+  if (FieldBits::NoField != (SliceDistanceFieldMask & whichField))
+    _sfSliceDistance.syncWith(pOther->_sfSliceDistance);
 }
 #else
-void SlicesBase::executeSyncImpl(      SlicesBase *pOther,
-                                        const BitVector         &whichField,
-                                        const SyncInfo          &sInfo      )
-{
+void SlicesBase::executeSyncImpl(
+    SlicesBase* pOther, const BitVector& whichField, const SyncInfo& sInfo) {
 
-    Inherited::executeSyncImpl(pOther, whichField, sInfo);
+  Inherited::executeSyncImpl(pOther, whichField, sInfo);
 
-    if(FieldBits::NoField != (SizeFieldMask & whichField))
-        _sfSize.syncWith(pOther->_sfSize);
+  if (FieldBits::NoField != (SizeFieldMask & whichField))
+    _sfSize.syncWith(pOther->_sfSize);
 
-    if(FieldBits::NoField != (SliceDistanceFieldMask & whichField))
-        _sfSliceDistance.syncWith(pOther->_sfSliceDistance);
-
-
-
+  if (FieldBits::NoField != (SliceDistanceFieldMask & whichField))
+    _sfSliceDistance.syncWith(pOther->_sfSliceDistance);
 }
 
-void SlicesBase::execBeginEditImpl (const BitVector &whichField, 
-                                                 UInt32     uiAspect,
-                                                 UInt32     uiContainerSize)
-{
-    Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
-
+void SlicesBase::execBeginEditImpl(
+    const BitVector& whichField, UInt32 uiAspect, UInt32 uiContainerSize) {
+  Inherited::execBeginEditImpl(whichField, uiAspect, uiContainerSize);
 }
 #endif
-
-
 
 #include <OSGSFieldTypeDef.inl>
 #include <OSGMFieldTypeDef.inl>
@@ -309,6 +244,3 @@ OSG_DLLEXPORT_SFIELD_DEF1(SlicesPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 OSG_DLLEXPORT_MFIELD_DEF1(SlicesPtr, OSG_SYSTEMLIB_DLLTMPLMAPPING);
 
 OSG_END_NAMESPACE
-
-
-
