@@ -359,9 +359,9 @@ unsigned int count;
 __yy_memcpy(char* to, const char* from, unsigned int count)
 #endif
 {
-  register const char* f = from;
-  register char*       t = to;
-  register int         i = count;
+  const char* f = from;
+  char*       t = to;
+  int         i = count;
 
   while (i-- > 0)
     *t++ = *f++;

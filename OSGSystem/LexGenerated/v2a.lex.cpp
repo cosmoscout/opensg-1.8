@@ -673,9 +673,9 @@ YY_MALLOC_DECL
 #define YY_RULE_SETUP YY_USER_ACTION
 
 YY_DECL {
-  register yy_state_type yy_current_state;
-  register char *        yy_cp, *yy_bp;
-  register int           yy_act;
+  yy_state_type yy_current_state;
+  char *        yy_cp, *yy_bp;
+  int           yy_act;
 
 #line 62 "../../../Experimental/VRMLLoader/v2a.l"
 

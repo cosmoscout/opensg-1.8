@@ -155,7 +155,7 @@ Int32 TTVectorFontGlyph::processArc(FontGlyphContour* glyphContour, TT_Outline o
         glyphContour->addPoint(point, normal);
       }
 
-      for (register Int32 j = 1; j < steps; ++j, t += dt) {
+      for (Int32 j = 1; j < steps; ++j, t += dt) {
         tt       = 1. - t;
         t1       = tt * tt;
         t2       = 2. * t * tt;
