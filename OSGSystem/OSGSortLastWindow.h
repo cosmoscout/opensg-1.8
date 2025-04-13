@@ -45,6 +45,7 @@
 #include <utility>
 #include <vector>
 #include <queue>
+#include <functional>
 
 #include <OSGConfig.h>
 #include <OSGRenderAction.h>

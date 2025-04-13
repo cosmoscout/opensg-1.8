@@ -44,6 +44,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <functional>
 
 #include <OSGConfig.h>
 
