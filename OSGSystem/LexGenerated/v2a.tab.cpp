@@ -434,8 +434,8 @@ int yyparse(YYPARSE_PARAM_ARG) YYPARSE_PARAM_DECL {
   YY_DECL_VARIABLES
 #endif /* !YYPURE */
 
-  register int yystate;
-  register int yyn;
+  int yystate;
+  int yyn;
   /* Number of tokens to shift before error messages enabled.  */
   int yyerrstatus;
   /* Lookahead token as an internal (translated) token number.  */
@@ -452,12 +452,12 @@ int yyparse(YYPARSE_PARAM_ARG) YYPARSE_PARAM_DECL {
   /* The state stack. */
   short           yyssa[YYINITDEPTH];
   short*          yyss = yyssa;
-  register short* yyssp;
+  short* yyssp;
 
   /* The semantic value stack.  */
   YYSTYPE           yyvsa[YYINITDEPTH];
   YYSTYPE*          yyvs = yyvsa;
-  register YYSTYPE* yyvsp;
+  YYSTYPE* yyvsp;
 
 #if YYLSP_NEEDED
   /* The location stack.  */
