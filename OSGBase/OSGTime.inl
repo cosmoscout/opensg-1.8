@@ -68,7 +68,7 @@ inline TimeStamp getTimeStamp(void) {
   return static_cast<TimeStamp>(iCounter);
 #elif defined(__linux) && defined(__i386)
 
-  register uint64_t result;
+  uint64_t result;
   // asm volatile ("rdtsc" : "=A"(result));
   asm volatile(".byte 0x0f, 0x31"
                : "=A"(result)); // same thing as rdtsc... inject the bytes for the opcode.

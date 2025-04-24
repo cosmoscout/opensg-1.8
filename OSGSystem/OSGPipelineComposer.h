@@ -49,6 +49,8 @@
 #include <OSGBaseThread.h>
 #include <OSGLock.h>
 
+#include <functional>
+
 OSG_BEGIN_NAMESPACE
 
 //#define USE_NV_OCCLUSION 1
