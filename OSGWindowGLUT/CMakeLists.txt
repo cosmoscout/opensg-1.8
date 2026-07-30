@@ -20,14 +20,14 @@ if (WIN32)
     add_definitions(-DOSG_COMPILEWINDOWGLUTLIB )
     target_link_libraries(${TARGET_NAME} 
         OSGSystem 
-        OSGBase 
-        GLUT::GLUT 
+        OSGBase
+        GLUT::GLUT
         OpenGL::GL)
 else()
     target_link_libraries(${TARGET_NAME} 
         OSGSystem 
-        OSGBase 
-        GLUT::GLUT 
+        OSGBase
+        GLUT::GLUT
         OpenGL::GL
         OpenGL::GLU)
 endif()

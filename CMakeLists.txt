@@ -5,12 +5,10 @@
 # ---------------------------------------------------------------------------- #
 
 project(OpenSG CXX)
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.28)
 
-if (${CMAKE_VERSION} GREATER_EQUAL 3.16)
-    option(OPENSG_USE_PRECOMPILED_HEADERS "Turn on generation of precompiled headers" OFF)
-    set(CMAKE_UNITY_BUILD_BATCH_SIZE 20)
-endif()
+option(OPENSG_USE_PRECOMPILED_HEADERS "Turn on generation of precompiled headers" OFF)
+set(CMAKE_UNITY_BUILD_BATCH_SIZE 20)
 
 # use cmake 3.12's <PACKAGE>_ROOT variabled for searching
 cmake_policy(SET CMP0074 NEW)
@@ -27,8 +25,6 @@ option(OPENSG_INFINITE_REVERSE_PROJECTION "Use a reverse infinite projection ins
 if(OPENSG_INFINITE_REVERSE_PROJECTION)
     add_definitions("-DOSG_INFINITE_REVERSE_PROJECTION")
 endif(OPENSG_INFINITE_REVERSE_PROJECTION)
-
-
 
 include_directories(
     "OSGBase"

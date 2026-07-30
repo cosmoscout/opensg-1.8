@@ -48,6 +48,8 @@
 #include <OSGGraphOp.h>
 #include <OSGAction.h>
 
+#include <functional>
+
 OSG_BEGIN_NAMESPACE
 
 //! \ingroup GrpSystemRenderingBackend
