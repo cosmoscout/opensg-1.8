@@ -10,9 +10,6 @@ cmake_minimum_required(VERSION 3.28)
 option(OPENSG_USE_PRECOMPILED_HEADERS "Turn on generation of precompiled headers" OFF)
 set(CMAKE_UNITY_BUILD_BATCH_SIZE 20)
 
-# use cmake 3.12's <PACKAGE>_ROOT variabled for searching
-cmake_policy(SET CMP0074 NEW)
-
 find_package(OpenGL REQUIRED)
 
 if (WIN32)
@@ -35,8 +32,8 @@ include_directories(
 add_subdirectory(OSGBase)
 add_subdirectory(OSGSystem)
 
-option(OPENSG_BUILD_TESTS "Turn off building on test applications" ON)
-option(OPENSG_BUILD_WINDOW "Turn on building the window API" ON)
+option(OPENSG_BUILD_WINDOW "Turn on building the window API"        ON)
+option(OPENSG_BUILD_TESTS  "Turn off building on test applications" ON)
 
 if (OPENSG_BUILD_WINDOW)
     find_package(GLUT REQUIRED)
