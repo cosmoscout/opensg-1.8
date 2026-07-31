@@ -4,8 +4,8 @@
 #                                                                              #
 # ---------------------------------------------------------------------------- #
 
-project(OpenSG CXX)
 cmake_minimum_required(VERSION 3.28)
+project(OpenSG VERSION 1.8 LANGUAGES CXX)
 
 option(OPENSG_USE_PRECOMPILED_HEADERS "Turn on generation of precompiled headers" OFF)
 set(CMAKE_UNITY_BUILD_BATCH_SIZE 20)
@@ -29,6 +29,8 @@ include_directories(
     "OSGSystem/LexGenerated"
 )
 
+include(GNUInstallDirs)
+
 add_subdirectory(OSGBase)
 add_subdirectory(OSGSystem)
 
@@ -37,8 +39,6 @@ option(OPENSG_BUILD_TESTS  "Turn off building on test applications" ON)
 
 if (OPENSG_BUILD_WINDOW)
     find_package(GLUT REQUIRED)
-    add_definitions("-DOSG_WITH_GLUT")
-    include_directories("OSGWindowGLUT")
     add_subdirectory(OSGWindowGLUT)
 endif()
 
@@ -49,3 +49,29 @@ if (OPENSG_BUILD_TESTS)
         message(WARNING "OSGWindow not enabled, but required for building tests. Skipping tests.")
     endif()
 endif()
+
+include(CMakePackageConfigHelpers)
+
+configure_package_config_file (
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/OpenSGConfig.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/cmake/OpenSGConfig.cmake
+    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/OpenSG
+)
+
+write_basic_package_version_file(
+    ${CMAKE_CURRENT_BINARY_DIR}/OpenSGConfigVersion.cmake
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY SameMinorVersion
+)
+
+install(FILES
+    "${CMAKE_CURRENT_BINARY_DIR}/cmake/OpenSGConfig.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/OpenSGConfigVersion.cmake"
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/OpenSG"
+)
+
+install(EXPORT OpenSGTargets
+    FILE OpenSGTargets.cmake
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/OpenSG
+    NAMESPACE OpenSG::
+)
