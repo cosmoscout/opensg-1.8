@@ -46,6 +46,12 @@ target_link_libraries(OSGBase
 		$<$<PLATFORM_ID:Linux>:pthread dl>
 )
 
+target_include_directories(OSGBase
+    PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+        $<INSTALL_INTERFACE:include/OpenSG>
+)
+
 # install
 # ==============================================================================
 install(
