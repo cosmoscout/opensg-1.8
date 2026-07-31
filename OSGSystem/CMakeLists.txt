@@ -61,7 +61,6 @@ target_compile_definitions(OSGSystem
 target_link_libraries(OSGSystem
     PUBLIC
         OSGBase
-    PRIVATE
         $<$<PLATFORM_ID:Windows>:opengl32 glu32>
 )
 
@@ -69,7 +68,6 @@ target_include_directories(OSGSystem
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
         $<INSTALL_INTERFACE:include/OpenSG>
-        $<INSTALL_INTERFACE:OpenSG>
 )
 
 # install

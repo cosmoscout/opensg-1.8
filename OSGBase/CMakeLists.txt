@@ -50,7 +50,6 @@ target_include_directories(OSGBase
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
         $<INSTALL_INTERFACE:include/OpenSG>
-        $<INSTALL_INTERFACE:OpenSG>
 )
 
 # install

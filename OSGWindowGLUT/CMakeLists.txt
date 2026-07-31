@@ -42,9 +42,14 @@ target_link_libraries(OSGWindowGLUT
         OSGSystem
         OSGBase
         GLUT::GLUT
-    PRIVATE
         OpenGL::GL
         $<$<PLATFORM_ID:Linux>:OpenGL::GLU>
+)
+
+target_include_directories(OSGWindowGLUT
+    PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+        $<INSTALL_INTERFACE:include/OpenSG>
 )
 
 # install
