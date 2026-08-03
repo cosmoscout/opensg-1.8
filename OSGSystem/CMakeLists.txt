@@ -10,7 +10,7 @@ add_library(OSGSystem SHARED ${SOURCE_FILES} ${HEADER_FILES})
 add_library(OpenSG::System ALIAS OSGSystem)
 
 set_target_properties(OSGSystem
-        PROPERTIES
+    PROPERTIES
         DEBUG_POSTFIX "D"
         EXPORT_NAME   System
 )
