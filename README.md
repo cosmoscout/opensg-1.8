@@ -59,19 +59,33 @@ cmake --build . --target install
 
 OpenSG is available as a vcpkg port. To use it in your project:
 
-1. Install OpenSG via vcpkg:
+1. Copy the port from the `port` folder to your vcpkg ports directory:
 
 ```bash
-vcpkg install opensg:x64-windows
-vcpkg install opensg:x64-linux
+cp -r port <vcpkg-root>/ports/opensg
 ```
 
-2. In your CMake project, use find_package:
+2. Update the revision and SHA512 in `<vcpkg-root>/ports/opensg/portfile.cmake`:
+
+- Set `REF` to the desired git commit hash or tag
+- Generate the SHA512 hash for that revision and update the `SHA512` value
+
+3. Add OpenSG to your vcpkg.json:
+
+```json
+{
+  "dependencies": [
+    "opensg"
+  ]
+}
+```
+
+4. In your CMake project, use find_package:
 
 ```cmake
-find_package(opensg CONFIG REQUIRED)
+find_package(OpenSG CONFIG REQUIRED)
 
-target_link_libraries(your_target PRIVATE OpenSG::Base OpenSG::System)
+target_link_libraries(your_target PRIVATE OpenSG::OpenSG)
 ```
 
 ## Features

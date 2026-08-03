@@ -64,7 +64,7 @@ write_basic_package_version_file(
 install(FILES
     "${CMAKE_CURRENT_BINARY_DIR}/cmake/OpenSGConfig.cmake"
     "${CMAKE_CURRENT_BINARY_DIR}/OpenSGConfigVersion.cmake"
-    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/OpenSG"
+    DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/OpenSG"
 )
 
 add_library(OpenSG INTERFACE)
@@ -75,6 +75,6 @@ endif()
 
 install(EXPORT OpenSGTargets
     FILE OpenSGTargets.cmake
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/OpenSG
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/OpenSG
     NAMESPACE OpenSG::
 )
