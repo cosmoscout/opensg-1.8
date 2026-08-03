@@ -67,6 +67,12 @@ install(FILES
     DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/OpenSG"
 )
 
+add_library(OpenSG INTERFACE)
+target_link_libraries(OpenSG INTERFACE OpenSG::Base OpenSG::System)
+if (OPENSG_BUILD_WINDOW)
+    target_link_libraries(OpenSG INTERFACE OpenSG::WindowGLUT)
+endif()
+
 install(EXPORT OpenSGTargets
     FILE OpenSGTargets.cmake
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/OpenSG

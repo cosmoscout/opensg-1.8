@@ -11,8 +11,7 @@ add_library(OpenSG::WindowGLUT ALIAS OSGWindowGLUT)
 
 set_target_properties(OSGWindowGLUT
     PROPERTIES
-        DEBUG_POSTFIX "D"
-        EXPORT_NAME   WindowGLUT
+        EXPORT_NAME WindowGLUT
 )
 
 # sources

@@ -11,8 +11,7 @@ add_library(OpenSG::System ALIAS OSGSystem)
 
 set_target_properties(OSGSystem
     PROPERTIES
-        DEBUG_POSTFIX "D"
-        EXPORT_NAME   System
+        EXPORT_NAME System
 )
 
 # sources

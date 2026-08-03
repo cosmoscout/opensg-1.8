@@ -11,8 +11,7 @@ add_library(OpenSG::Base ALIAS OSGBase)
 
 set_target_properties(OSGBase
 	PROPERTIES
-		DEBUG_POSTFIX "D"
-		EXPORT_NAME   Base
+		EXPORT_NAME Base
 )
 
 # sources
