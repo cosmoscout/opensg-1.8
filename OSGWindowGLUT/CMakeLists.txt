@@ -35,6 +35,7 @@ target_compile_definitions(OSGWindowGLUT
         $<$<PLATFORM_ID:Windows>:OSG_COMPILEWINDOWGLUTLIB>
     PUBLIC
         OSG_WITH_GLUT
+        $<$<PLATFORM_ID:Windows>:OSG_BUILD_DLL>
 )
 
 target_link_libraries(OSGWindowGLUT

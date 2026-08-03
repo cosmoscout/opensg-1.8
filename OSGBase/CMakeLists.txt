@@ -38,6 +38,9 @@ endif()
 target_compile_definitions(OSGBase
 	PRIVATE
 		$<$<PLATFORM_ID:Windows>:OSG_COMPILEBASELIB>
+	PUBLIC
+		$<$<PLATFORM_ID:Windows>:OSG_BUILD_DLL _OSG_HAVE_CONFIGURED_H_>
+		$<$<BOOL:${OPENSG_INFINITE_REVERSE_PROJECTION}>:OSG_INFINITE_REVERSE_PROJECTION>
 )
 
 target_link_libraries(OSGBase

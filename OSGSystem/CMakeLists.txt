@@ -56,6 +56,9 @@ endif()
 target_compile_definitions(OSGSystem
     PRIVATE
         $<$<PLATFORM_ID:Windows>:OSG_COMPILESYSTEMLIB>
+    PUBLIC
+        $<$<PLATFORM_ID:Windows>:OSG_BUILD_DLL>
+        $<$<BOOL:${OPENSG_INFINITE_REVERSE_PROJECTION}>:OSG_INFINITE_REVERSE_PROJECTION>
 )
 
 target_link_libraries(OSGSystem
