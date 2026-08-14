@@ -924,7 +924,7 @@
 #include <OSGExportDefines.h>
 
 #ifdef _OSG_HAVE_CONFIGURED_H_
-#include <OSGConfigured.h>
+#include <LexGenerated/OSGConfigured.h>
 #endif
 
 #if defined(OSG_DEBUG_NO_FCPTR_ARITHM)

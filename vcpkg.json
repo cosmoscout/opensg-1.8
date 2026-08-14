@@ -1,0 +1,18 @@
+{
+  "name": "opensg",
+  "version": "1.8.0",
+  "description": "",
+  "license": "LGPL-2.0-or-later",
+  "supports": "(windows & x64) | (linux & x64)",
+  "default-features": [
+    "window"
+  ],
+  "features": {
+    "window": {
+      "description": "Windowing System",
+      "dependencies": [
+        "freeglut"
+      ]
+    }
+  }
+}

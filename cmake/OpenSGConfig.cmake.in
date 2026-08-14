@@ -1,0 +1,9 @@
+@PACKAGE_INIT@
+include ("${CMAKE_CURRENT_LIST_DIR}/OpenSGTargets.cmake")
+
+set(OPENSG_BUILD_WINDOW @OPENSG_BUILD_WINDOW@)
+
+if (OPENSG_BUILD_WINDOW)
+    include(CMakeFindDependencyMacro)
+    find_dependency(GLUT)
+endif()

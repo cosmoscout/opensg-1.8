@@ -4,49 +4,61 @@
 #                                                                              #
 # ---------------------------------------------------------------------------- #
 
-set(TARGET_NAME OSGWindowGLUT)
+# lib
+# ==============================================================================
+add_library(OSGWindowGLUT SHARED)
+add_library(OpenSG::WindowGLUT ALIAS OSGWindowGLUT)
+
+set_target_properties(OSGWindowGLUT
+    PROPERTIES
+        EXPORT_NAME WindowGLUT
+)
 
 # sources
 # ==============================================================================
 file(GLOB SOURCE_FILES *.cpp)
 file(GLOB HEADER_FILES *.h *.inl)
 
+target_sources(OSGWindowGLUT
+    PRIVATE
+        ${SOURCE_FILES}
+    PUBLIC
+        FILE_SET HEADERS
+        FILES ${HEADER_FILES}
+)
+
 # build
 # ==============================================================================
-add_library(${TARGET_NAME} SHARED ${SOURCE_FILES} ${HEADER_FILES})
-set_target_properties(${TARGET_NAME} PROPERTIES DEBUG_POSTFIX "D")
+target_compile_definitions(OSGWindowGLUT
+    PRIVATE
+        $<$<PLATFORM_ID:Windows>:OSG_COMPILEWINDOWGLUTLIB>
+    PUBLIC
+        OSG_WITH_GLUT
+        $<$<PLATFORM_ID:Windows>:OSG_BUILD_DLL>
+)
 
-if (WIN32)
-    add_definitions(-DOSG_COMPILEWINDOWGLUTLIB )
-    target_link_libraries(${TARGET_NAME} 
-        OSGSystem 
-        OSGBase 
-        GLUT::GLUT 
-        OpenGL::GL)
-else()
-    target_link_libraries(${TARGET_NAME} 
-        OSGSystem 
-        OSGBase 
-        GLUT::GLUT 
+target_link_libraries(OSGWindowGLUT
+    PUBLIC
+        OSGSystem
+        OSGBase
+        GLUT::GLUT
         OpenGL::GL
-        OpenGL::GLU)
-endif()
+        $<$<PLATFORM_ID:Linux>:OpenGL::GLU>
+)
 
-source_group("headers" FILES ${HEADER_FILES})
-source_group("sources" FILES ${SOURCE_FILES})
+target_include_directories(OSGWindowGLUT
+    PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+        $<INSTALL_INTERFACE:include/OpenSG>
+)
 
 # install
 # ==============================================================================
 install(
-    TARGETS ${TARGET_NAME}
-    RUNTIME DESTINATION "bin"
-    ARCHIVE DESTINATION "lib"
-    LIBRARY DESTINATION "lib"
-)
-
-install(
-    FILES
-        ${HEADER_FILES}
-    DESTINATION
-        "include/OpenSG"
+    TARGETS OSGWindowGLUT
+    EXPORT  OpenSGTargets
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    FILE_SET HEADERS DESTINATION "include/OpenSG"
 )

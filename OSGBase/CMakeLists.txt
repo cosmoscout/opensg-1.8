@@ -4,48 +4,63 @@
 #                                                                              #
 # ---------------------------------------------------------------------------- #
 
-set(TARGET_NAME OSGBase)
+# lib
+# ==============================================================================
+add_library(OSGBase SHARED)
+add_library(OpenSG::Base ALIAS OSGBase)
+
+set_target_properties(OSGBase
+	PROPERTIES
+		EXPORT_NAME Base
+)
 
 # sources
 # ==============================================================================
 file(GLOB SOURCE_FILES *.cpp)
 file(GLOB HEADER_FILES *.h *.inl)
 
+target_sources(OSGBase
+	PRIVATE
+		${SOURCE_FILES}
+	PUBLIC
+		FILE_SET HEADERS
+		FILES ${HEADER_FILES}
+)
+
 # build
 # ==============================================================================
-add_library(${TARGET_NAME} SHARED ${SOURCE_FILES} ${SOURCE_FILES})
-set_target_properties(${TARGET_NAME} PROPERTIES DEBUG_POSTFIX "D")
 
 if (OPENSG_USE_PRECOMPILED_HEADERS)
-	target_precompile_headers(${TARGET_NAME} PRIVATE precompiled.pch)
+	target_precompile_headers(OSGBase PRIVATE precompiled.pch)
 endif()
 
-if (WIN32)
-    add_definitions(-DOSG_COMPILEBASELIB )
-endif()
+target_compile_definitions(OSGBase
+	PRIVATE
+		$<$<PLATFORM_ID:Windows>:OSG_COMPILEBASELIB>
+	PUBLIC
+		$<$<PLATFORM_ID:Windows>:OSG_BUILD_DLL _OSG_HAVE_CONFIGURED_H_>
+		$<$<BOOL:${OPENSG_INFINITE_REVERSE_PROJECTION}>:OSG_INFINITE_REVERSE_PROJECTION>
+)
 
-if (WIN32)
-	target_link_libraries(${TARGET_NAME} winmm wsock32)
-else()
-	target_link_libraries(${TARGET_NAME} pthread dl)
-endif()
+target_link_libraries(OSGBase
+	PUBLIC
+		$<$<PLATFORM_ID:Windows>:winmm wsock32>
+		$<$<PLATFORM_ID:Linux>:pthread dl>
+)
 
-
-source_group("headers" FILES ${HEADER_FILES})
-source_group("sources" FILES ${SOURCE_FILES})
+target_include_directories(OSGBase
+    PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+        $<INSTALL_INTERFACE:include/OpenSG>
+)
 
 # install
 # ==============================================================================
 install(
-    TARGETS ${TARGET_NAME}
-    RUNTIME DESTINATION "bin"
-    ARCHIVE DESTINATION "lib"
-    LIBRARY DESTINATION "lib"
-)
-
-install(
-    FILES
-        ${HEADER_FILES}
-    DESTINATION
-        "include/OpenSG"
+    TARGETS OSGBase
+	EXPORT  OpenSGTargets
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	FILE_SET HEADERS DESTINATION "include/OpenSG"
 )

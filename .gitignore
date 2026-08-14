@@ -1,0 +1,12 @@
+/build
+/install
+/data
+
+*.sublime*
+.vscode
+.idea
+.CMakeUserPresets.json
+
+# ignore files created by cmake-gui on Windows
+CMakeCache.txt
+CMakeFiles

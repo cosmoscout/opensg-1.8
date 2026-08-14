@@ -22,3 +22,11 @@ foreach( TEST_FILE ${TEST_FILES} )
     )
 endforeach()
 
+# Install freeglut to the bin folder so the tests can be run.
+install(
+    DIRECTORY
+        "${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/bin/"
+    DESTINATION
+        "bin"
+    FILES_MATCHING PATTERN "*.so*" PATTERN "*.dll*"
+)

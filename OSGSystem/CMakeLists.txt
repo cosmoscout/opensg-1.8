@@ -4,18 +4,31 @@
 #                                                                              #
 # ---------------------------------------------------------------------------- #
 
-set(TARGET_NAME OSGSystem)
+# lib
+# ==============================================================================
+add_library(OSGSystem SHARED ${SOURCE_FILES} ${HEADER_FILES})
+add_library(OpenSG::System ALIAS OSGSystem)
+
+set_target_properties(OSGSystem
+    PROPERTIES
+        EXPORT_NAME System
+)
 
 # sources
 # ==============================================================================
 file(GLOB SOURCE_FILES *.cpp LexGenerated/*.cpp LexGenerated/*.cc)
 file(GLOB HEADER_FILES *.h *.inl LexGenerated/*.h)
 
+target_sources(OSGSystem
+    PRIVATE
+        ${SOURCE_FILES}
+    PUBLIC
+        FILE_SET HEADERS
+        FILES ${HEADER_FILES}
+)
+
 # build
 # ==============================================================================
-add_library(${TARGET_NAME} SHARED ${SOURCE_FILES} ${HEADER_FILES})
-set_target_properties(${TARGET_NAME} PROPERTIES DEBUG_POSTFIX "D")
-
 if (CMAKE_UNITY_BUILD)
     file(GLOB LEX_SOURCES LexGenerated/*.cpp LexGenerated/*.cc)
 
@@ -36,31 +49,36 @@ if (CMAKE_UNITY_BUILD)
 endif()
 
 if (OPENSG_USE_PRECOMPILED_HEADERS)
-    target_precompile_headers(${TARGET_NAME} PRIVATE precompiled.pch)
+    target_precompile_headers(OSGSystem PRIVATE precompiled.pch)
 endif()
 
-if (WIN32)
-    add_definitions(-DOSG_COMPILESYSTEMLIB )
-    target_link_libraries(${TARGET_NAME} OSGBase opengl32 glu32)
-else()
-    target_link_libraries(${TARGET_NAME} OSGBase)
-endif()
+target_compile_definitions(OSGSystem
+    PRIVATE
+        $<$<PLATFORM_ID:Windows>:OSG_COMPILESYSTEMLIB>
+    PUBLIC
+        $<$<PLATFORM_ID:Windows>:OSG_BUILD_DLL>
+        $<$<BOOL:${OPENSG_INFINITE_REVERSE_PROJECTION}>:OSG_INFINITE_REVERSE_PROJECTION>
+)
 
-source_group("headers" FILES ${HEADER_FILES})
-source_group("sources" FILES ${SOURCE_FILES})
+target_link_libraries(OSGSystem
+    PUBLIC
+        OSGBase
+        $<$<PLATFORM_ID:Windows>:opengl32 glu32>
+)
+
+target_include_directories(OSGSystem
+    PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+        $<INSTALL_INTERFACE:include/OpenSG>
+)
 
 # install
 # ==============================================================================
 install(
-    TARGETS ${TARGET_NAME}
-    RUNTIME DESTINATION "bin"
-    ARCHIVE DESTINATION "lib"
-    LIBRARY DESTINATION "lib"
-)
-
-install(
-    FILES
-        ${HEADER_FILES}
-    DESTINATION
-        "include/OpenSG"
+    TARGETS OSGSystem
+    EXPORT  OpenSGTargets
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    FILE_SET HEADERS DESTINATION "include/OpenSG"
 )
