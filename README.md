@@ -15,19 +15,8 @@ Several source files have been adapted to be compatible with these new compilers
 1. Initialize git submodules (includes vcpkg):
 
 ```bash
-git submodule update --init --recursive
+git submodule update --init
 ```
-
-2. Bootstrap vcpkg (if using the bundled version):
-
-```bash
-cd tools/vcpkg
-./bootstrap-vcpkg.sh        # Linux/macOS
-.\bootstrap-vcpkg.bat       # Windows
-cd ../..
-```
-
-Alternatively, provide your own vcpkg installation and adjust the `toolchainFile` path in `CMakePresets.json`.
 
 ## Using CMake Presets
 
